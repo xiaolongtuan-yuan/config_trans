@@ -1,0 +1,70 @@
+请按照以下格式将华为配置解析为 JSON。每条配置命令作为一个节点，节点的键为配置命令本身，值为解析后的 JSON 结构。解析时需提取以下信息：
+- `template`：配置命令的通用格式
+- `command`：具体的命令示例
+- `explanation`：命令的解释
+- `parameters`：参数列表，每个参数需包含：
+  - `name`：参数名
+  - `type`：参数类型
+  - `explanation`：参数解释
+
+若命令包含子配置，则作为其子节点嵌套，解析方式相同。
+### 示例：
+#### 配置命令
+interface GigabitEthernet1/0/0
+    undo shutdown
+    ip address 192.168.0.1 255.255.255.0
+
+#### 对应 JSON：
+{
+  "sysname PE2": {
+    "template": "sysname [parameter1]",
+    "command": "sysname PE2",
+    "explanation": "设置设备的主机名为 'PE2'",
+    "parameters": [
+      {
+        "name": "host name",
+        "type": "string",
+        "explanation": "主机名"
+      }
+    ]
+  },
+  "interface GigabitEthernet1/0/0": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet1/0/0",
+    "explanation": "...'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "undo shutdown": {
+      "template": "undo shutdown",
+      "command": "undo shutdown",
+      "explanation": "启用接口 (默认情况下接口是关闭的)",
+      "parameters": []
+    },
+    "ip address 192.168.0.1 255.255.255.0": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 192.168.0.1 255.255.255.0",
+      "explanation": "配置接口的IPv4地址为 192.168.0.1，子网掩码为 255.255.255.0",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4地址"
+        },
+        {
+          "name": "sub musk",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    }
+  }
+}
+
+### 任务：
+请将以下配置转换为 JSON，并直接以JSON格式输出：
+{配置命令}

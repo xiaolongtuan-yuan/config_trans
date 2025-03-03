@@ -3,6 +3,8 @@ import argparse
 import glob
 from pathlib import Path
 import os
+from tqdm import tqdm
+
 
 def merge_nodes(existing_node: dict, new_node: dict):
     """
@@ -21,6 +23,7 @@ def merge_nodes(existing_node: dict, new_node: dict):
                 merge_nodes(existing_node[key], val)
             # 其余情况按照“保留第一次出现”的原则，不覆盖 existing_node[key]
     return existing_node
+
 
 def simplify_json(input_dict: dict) -> dict:
     """
@@ -57,8 +60,8 @@ def simplify_json(input_dict: dict) -> dict:
             for child_k, child_v in sub_dict.items():
                 # 判断是不是子节点（child_k 对应的值是 dict，并且里面有 template）
                 if (
-                    isinstance(child_v, dict)
-                    and "template" in child_v
+                        isinstance(child_v, dict)
+                        and "template" in child_v
                 ):
                     # 先递归处理子节点自身
                     # 再将其合并到 child_dict 中
@@ -66,7 +69,7 @@ def simplify_json(input_dict: dict) -> dict:
                     merge_nodes(child_dict, simplified_sub)
                 else:
                     # 不是子节点，就先原样放进去
-                    if child_k not in ("template",):  
+                    if child_k not in ("template",):
                         # "template" 字段不需要再放到 child_dict 的下一层
                         child_dict[child_k] = child_v
 
@@ -83,7 +86,7 @@ def simplify_json(input_dict: dict) -> dict:
             else:
                 # 如果 template_key 已经存在，需要合并
                 merge_nodes(temp_result[template_key], new_node)
-            
+
             # print('temp_result:', json.dumps(temp_result, indent=4, ensure_ascii=False))
 
         return temp_result
@@ -114,10 +117,12 @@ def merge_models(config1, config2):
             # 所以这里什么都不做即可
     return config1
 
+
 def get_json_filenames(folder_path):
     folder = Path(folder_path)
     json_filenames = [str(file.name) for file in folder.rglob('*.json')]
     return json_filenames
+
 
 # load JSON fie and load data
 def load_json_file(file_path):
@@ -125,12 +130,14 @@ def load_json_file(file_path):
         data = json.load(json_file)
     return data
 
+
 # save JSON fie
 def save_json_file(data, file_path):
     with open(file_path, 'w', encoding='utf-8') as json_file:
         # json.dump(data, json_file, indent=4)
         json.dump(data, json_file, ensure_ascii=False, indent=4)
     # print("JSON文件已保存至{}".format(file_path))
+
 
 # insert 'template' item into juniper config model
 def insert_template(config_model: dict) -> dict:
@@ -144,11 +151,12 @@ def insert_template(config_model: dict) -> dict:
         if not template_key:
             # 没有 template 就插入
             sub_dict["template"] = k
-        
+
         for child_k, child_v in sub_dict.items():
-            insert_template({child_k:child_v})
+            insert_template({child_k: child_v})
 
     return config_model
+
 
 def delete_all_json_files(folder_path):
     # 使用glob模块找到文件夹中所有的.json文件
@@ -234,7 +242,7 @@ if __name__ == "__main__":
         vendor_model_path = 'config_trans/dataset_multi_vendor_config/config_model/{}.json'.format(vendor)
         json_files = get_json_filenames(folder_path)
         merge_count = 0
-        for json_file in json_files:
+        for json_file in tqdm(json_files, desc="Merged config num"):
             json_config_path = folder_path + '/' + json_file
             print(json_config_path)
             # 加载设备配置模型
@@ -247,4 +255,3 @@ if __name__ == "__main__":
         print(merge_count)
 
 
-   

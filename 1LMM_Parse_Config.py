@@ -4,7 +4,7 @@ from pathlib import Path
 import os
 from openai import OpenAI
 from tqdm import tqdm
-
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 def load_client(model_name:str, endpoint_url:str):
     if 'gpt' in model_name:
@@ -82,6 +82,20 @@ def parse_config(client, model_name, prompt, messages, config):
             time.sleep(2 ** retry_count)  # 指数退避
     return None
 
+
+def process_file(config_file, full_config_path, save_path, vendor, client, model_name):
+    # 检查目标文件是否已经存在
+    output_file = os.path.join(save_path, config_file)
+    if os.path.exists(output_file):
+        return
+
+    prompt, messages = prompt_massage_for_vendors(vendor)
+    config = load_config(full_config_path, config_file)
+    response = parse_config(client, model_name, prompt, messages, config)
+    save_parsed_config(save_path, config_file, response)
+
+
+
 if __name__ == "__main__":
     model_name = "deepseek-chat"
     client = load_client(model_name, endpoint_url='https://api.deepseek.com/v1')
@@ -100,25 +114,27 @@ if __name__ == "__main__":
     total_time = 0
     num_iterations = 1  # 测试次数
     start_time = time.time()
-    # for i in tqdm(range(2)): # 测试
-    for i in tqdm(range(len(txt_files))):
-        config_file = txt_files[i]
-        if os.path.exists(os.path.join(save_path, config_file)):
-            continue # 跳过已经处理的配置文件
+    num_threads = 8  # 设置线程数量
 
-        iteration_start_time = time.time()  # 记录每次迭代的开始时间
-        # 加载prompt, messages
-        prompt, messages = prompt_massage_for_vendors(vendor)
-        config = load_config(full_config_path, config_file)
+    with ThreadPoolExecutor(max_workers=num_threads) as executor:
+        # 过滤掉已处理的文件
+        unprocessed_files = [
+            f for f in txt_files
+            if not os.path.exists(os.path.join(save_path, f))
+        ]
 
-        response = parse_config(client, model_name, prompt, messages, config)
-        if not response:
-            continue
+        futures = [
+            executor.submit(process_file, config_file, full_config_path, save_path, vendor, client, model_name)
+            for config_file in unprocessed_files
+        ]
 
-        save_parsed_config(save_path, config_file, response)
-        iteration_end_time = time.time()
-        iteration_time = iteration_end_time - iteration_start_time  # 计算每次迭代的耗时
-        total_time += iteration_time
+        for future in tqdm(as_completed(futures), total=len(unprocessed_files)):
+            iteration_start_time = time.time()
+            future.result()
+            iteration_end_time = time.time()
+            iteration_time = iteration_end_time - iteration_start_time
+            total_time += iteration_time
+
     end_time = time.time()
     total_elapsed_time = end_time - start_time
     average_time = total_time / num_iterations
