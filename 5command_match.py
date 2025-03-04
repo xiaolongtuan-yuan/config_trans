@@ -1,9 +1,8 @@
 from sklearn.metrics.pairwise import cosine_similarity
-import re
 import json
 import numpy as np
 import copy 
-
+from tqdm import tqdm 
 '''
 配置匹配器运行逻辑：
 1、对比基础语义嵌入, 获取功能相似度(基础语义特征：模板、命令、解释+所有参数名与解释)
@@ -120,8 +119,9 @@ def _build_mapping_template_library(vendors, template_path, save_path):
                 continue
             command_mapping = {}
             # 映射每一条配置命令到目标供应商配置命令
-            for template, command_node in command_templates[vendor].items():  
-                print(template)
+            description = "Match process from {} to {}".format(vendor, target_vendor)
+            for template, command_node in tqdm(command_templates[vendor].items(), desc=description):  
+                # print(template)
                 matched_configuration = configuration_matchers[target_vendor].find_best_match(command_node)
                 command_mapping[template] = matched_configuration
             save_json_file(command_mapping, save_path.format(vendor, target_vendor))

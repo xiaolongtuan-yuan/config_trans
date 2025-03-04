@@ -19,8 +19,10 @@ def parse_command_node(Command_nodes:dict, config_model:dict, embedding_model, p
             continue
 
         template_key = sub_dict.get("template")
-        if not template_key:
-            # 没有 template 就跳过
+        command_key = sub_dict.get("command")
+        explanation_key = sub_dict.get("explanation")
+        if not template_key: # or not command_key or not explanation_key:
+            # 没有 template/command/explanation 就跳过, 要保证配置命令语义/结构的完整性
             continue
         else:
             # 逐个解析每个命令节点的数据项
@@ -44,10 +46,10 @@ def parse_command_node(Command_nodes:dict, config_model:dict, embedding_model, p
             print(k)
             # break
 
-        for child_k, child_v in sub_dict.items():
+        '''for child_k, child_v in sub_dict.items():
             if not isinstance(child_v, dict):
-                continue
-            parse_command_node(Command_nodes, child_v, embedding_model, k, depth+1)
+                continue'''
+        parse_command_node(Command_nodes, sub_dict, embedding_model, k, depth+1)
         
     return Command_nodes
 
@@ -161,7 +163,7 @@ if __name__ == "__main__":
     # embedding_model = SentenceTransformer(local_EMmodel_path)
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
 
-    vendors = ["Cisco", "HUAWEI", "Juniper"]
+    vendors = ["Juniper"] # ["Cisco", "HUAWEI", "Juniper"]
     for vendor in vendors:
         Command_nodes = {}    # 'command_template': CommandNode_Object
         config_model_path = 'config_trans/dataset_multi_vendor_config/config_model/{}.json'.format(vendor)

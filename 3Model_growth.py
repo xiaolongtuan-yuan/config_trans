@@ -3,6 +3,7 @@ import argparse
 import glob
 from pathlib import Path
 import os
+from tqdm import tqdm 
 
 def merge_nodes(existing_node: dict, new_node: dict):
     """
@@ -234,7 +235,7 @@ if __name__ == "__main__":
         vendor_model_path = 'config_trans/dataset_multi_vendor_config/config_model/{}.json'.format(vendor)
         json_files = get_json_filenames(folder_path)
         merge_count = 0
-        for json_file in json_files:
+        for json_file in tqdm(json_files, desc="Merged config num"):
             json_config_path = folder_path + '/' + json_file
             print(json_config_path)
             # 加载设备配置模型
