@@ -10,8 +10,7 @@ def load_client(model_name:str, endpoint_url:str):
     if 'gpt' in model_name:
         api_key = os.getenv("OPENAI_KEY")
     elif 'deepseek' in model_name:
-        # api_key = os.getenv("DEEPSEEK_API_KEY")
-        api_key = "sk-1562416f8d2b44b7bd9d37f3aebc3a56"
+        api_key = os.getenv("DEEPSEEK_API_KEY")
     else:
         raise ValueError("Invalid model name")
     client = OpenAI(api_key = api_key, base_url=endpoint_url)
