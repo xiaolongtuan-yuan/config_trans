@@ -33,21 +33,29 @@ def save_parsed_config(parsed_file_path, file_mane, parsed_config):
         file.write(parsed_config)
 
 def prompt_massage_for_vendors(vendor):
+    project_root = Path(__file__).parent.parent
+
     system_prompt = "You are a helpful assistant specialized in network configuration analysis and transformation. Think step-by-step and provide detailed explanations."
     if vendor == 'Cisco':
-        prompt = open('resource/Cisco_parse_config_prompt.txt', 'r', encoding='utf-8').read()
+        prompt_file = project_root / 'resource/Cisco_parse_config_prompt.txt'
+
+        prompt = open(prompt_file, 'r', encoding='utf-8').read()
         massages = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt}
         ]
     elif vendor == 'HUAWEI':
-        prompt = open('resource/HUAWEI_parse_config_prompt.txt', 'r', encoding='utf-8').read()
+        prompt_file = project_root / 'resource/HUAWEI_parse_config_prompt.txt'
+
+        prompt = open(prompt_file, 'r', encoding='utf-8').read()
         massages = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt}
         ]
     elif vendor == 'Juniper':
-        prompt = open('resource/Juniper_parse_config_prompt.txt', 'r', encoding='utf-8').read()
+        prompt_file = project_root / 'resource/Juniper_parse_config_prompt.txt'
+
+        prompt = open(prompt_file, 'r', encoding='utf-8').read()
         massages = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt}
@@ -84,9 +92,9 @@ def parse_config(client, model_name, prompt, messages, config):
 
 def process_file(config_file, full_config_path, save_path, vendor, client, model_name):
     # 检查目标文件是否已经存在
-    output_file = os.path.join(save_path, config_file)
-    if os.path.exists(output_file):
-        return
+    # output_file = os.path.join(save_path, config_file)
+    # if os.path.exists(output_file):
+    #     return
 
     prompt, messages = prompt_massage_for_vendors(vendor)
     config = load_config(full_config_path, config_file)
