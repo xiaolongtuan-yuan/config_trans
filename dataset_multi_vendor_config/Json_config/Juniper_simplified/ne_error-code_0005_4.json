@@ -1,0 +1,97 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name CE2",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] ether-options 802.3ad lacp [parameter2]": {
+            "template": "set interfaces [parameter1] ether-options 802.3ad lacp [parameter2]",
+            "command": "set interfaces ge-0/0/1 ether-options 802.3ad lacp active",
+            "explanation": "配置接口的以太网选项，启用LACP并设置为主动模式。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                },
+                {
+                    "name": "lacp-mode",
+                    "type": "string",
+                    "explanation": "LACP模式，active表示主动模式。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] disable": {
+            "template": "set interfaces [parameter1] disable",
+            "command": "set interfaces ge-0/0/1 disable",
+            "explanation": "禁用指定接口。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] aggregated-ether-options lacp [parameter2]": {
+            "template": "set interfaces [parameter1] aggregated-ether-options lacp [parameter2]",
+            "command": "set interfaces ae10 aggregated-ether-options lacp active",
+            "explanation": "配置聚合接口的以太网选项，启用LACP并设置为主动模式。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "聚合接口名称，例如ae10。"
+                },
+                {
+                    "name": "lacp-mode",
+                    "type": "string",
+                    "explanation": "LACP模式，active表示主动模式。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family ethernet-switching vlan members [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching vlan members [parameter3]",
+            "command": "set interfaces ae10 unit 0 family ethernet-switching vlan members 10",
+            "explanation": "配置聚合接口的以太网交换选项，指定VLAN成员。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "聚合接口名称，例如ae10。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN ID，指定接口所属的VLAN。"
+                }
+            ]
+        }
+    },
+    "commit": {
+        "template": "commit",
+        "commit": {
+            "template": "commit",
+            "command": "commit",
+            "explanation": "提交配置更改，使配置生效。",
+            "parameters": []
+        }
+    }
+}

@@ -1,0 +1,125 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name CE",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] aggregated-ether-options lacp [parameter2]": {
+            "template": "set interfaces [parameter1] aggregated-ether-options lacp [parameter2]",
+            "command": "set interfaces ae100 aggregated-ether-options lacp active",
+            "explanation": "配置聚合接口的LACP模式为主动模式。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "聚合接口名称，例如ae100。"
+                },
+                {
+                    "name": "lacp-mode",
+                    "type": "string",
+                    "explanation": "LACP模式，active表示主动模式。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family ethernet-switching vlan members [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching vlan members [parameter3]",
+            "command": "set interfaces ae100 unit 0 family ethernet-switching vlan members 100",
+            "explanation": "配置接口的以太网交换VLAN成员。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ae100。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN ID，标识VLAN。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] gigether-options 802.3ad [parameter2]": {
+            "template": "set interfaces [parameter1] gigether-options 802.3ad [parameter2]",
+            "command": "set interfaces ge-1/0/1 gigether-options 802.3ad ae100",
+            "explanation": "将物理接口加入到聚合接口中。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "物理接口名称，例如ge-1/0/1。"
+                },
+                {
+                    "name": "aggregated-interface",
+                    "type": "string",
+                    "explanation": "聚合接口名称，例如ae100。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] ether-options no-auto-negotiation": {
+            "template": "set interfaces [parameter1] ether-options no-auto-negotiation",
+            "command": "set interfaces ge-1/0/1 ether-options no-auto-negotiation",
+            "explanation": "禁用接口的自动协商功能。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/1。"
+                }
+            ]
+        }
+    },
+    "set vlans": {
+        "template": "set vlans",
+        "set vlans [parameter1] vlan-id [parameter2]": {
+            "template": "set vlans [parameter1] vlan-id [parameter2]",
+            "command": "set vlans VLAN100 vlan-id 100",
+            "explanation": "配置VLAN的ID。",
+            "parameters": [
+                {
+                    "name": "vlan-name",
+                    "type": "string",
+                    "explanation": "VLAN名称，例如VLAN100。"
+                },
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN ID，标识VLAN。"
+                }
+            ]
+        },
+        "set vlans [parameter1] interface [parameter2]": {
+            "template": "set vlans [parameter1] interface [parameter2]",
+            "command": "set vlans VLAN100 interface ae100",
+            "explanation": "将VLAN绑定到指定接口。",
+            "parameters": [
+                {
+                    "name": "vlan-name",
+                    "type": "string",
+                    "explanation": "VLAN名称，例如VLAN100。"
+                },
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ae100。"
+                }
+            ]
+        }
+    }
+}

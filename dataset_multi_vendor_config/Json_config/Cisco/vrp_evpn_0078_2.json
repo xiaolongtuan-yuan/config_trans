@@ -1,0 +1,490 @@
+{
+  "hostname PE3": {
+    "template": "hostname [parameter1]",
+    "command": "hostname PE3",
+    "explanation": "设置设备的主机名为 'PE3'",
+    "parameters": [
+      {
+        "name": "host name",
+        "type": "string",
+        "explanation": "主机名"
+      }
+    ]
+  },
+  "l2vpn": {
+    "template": "l2vpn",
+    "command": "l2vpn",
+    "explanation": "进入 L2VPN 配置模式",
+    "parameters": [],
+    "evpn": {
+      "template": "evpn",
+      "command": "evpn",
+      "explanation": "进入 EVPN 配置模式",
+      "parameters": [],
+      "vrf evrf1": {
+        "template": "vrf [parameter1]",
+        "command": "vrf evrf1",
+        "explanation": "配置名为 'evrf1' 的 VRF",
+        "parameters": [
+          {
+            "name": "vrf name",
+            "type": "string",
+            "explanation": "VRF 名称"
+          }
+        ],
+        "rd 100:1": {
+          "template": "rd [parameter1]",
+          "command": "rd 100:1",
+          "explanation": "配置 VRF 的路由区分符为 100:1",
+          "parameters": [
+            {
+              "name": "route distinguisher",
+              "type": "string",
+              "explanation": "路由区分符"
+            }
+          ]
+        },
+        "route-target export 1:1": {
+          "template": "route-target export [parameter1]",
+          "command": "route-target export 1:1",
+          "explanation": "配置 VRF 的导出路由目标为 1:1",
+          "parameters": [
+            {
+              "name": "route target",
+              "type": "string",
+              "explanation": "路由目标"
+            }
+          ]
+        },
+        "route-target import 1:1": {
+          "template": "route-target import [parameter1]",
+          "command": "route-target import 1:1",
+          "explanation": "配置 VRF 的导入路由目标为 1:1",
+          "parameters": [
+            {
+              "name": "route target",
+              "type": "string",
+              "explanation": "路由目标"
+            }
+          ]
+        },
+        "inclusive-multicast leaf": {
+          "template": "inclusive-multicast leaf",
+          "command": "inclusive-multicast leaf",
+          "explanation": "配置 VRF 为叶节点，用于包含多播",
+          "parameters": []
+        }
+      }
+    }
+  },
+  "mpls": {
+    "template": "mpls",
+    "command": "mpls",
+    "explanation": "进入 MPLS 配置模式",
+    "parameters": [],
+    "mpls label protocol ldp": {
+      "template": "mpls label protocol [parameter1]",
+      "command": "mpls label protocol ldp",
+      "explanation": "配置 MPLS 标签分发协议为 LDP",
+      "parameters": [
+        {
+          "name": "label protocol",
+          "type": "string",
+          "explanation": "标签分发协议"
+        }
+      ]
+    }
+  },
+  "bridge-domain 10": {
+    "template": "bridge-domain [parameter1]",
+    "command": "bridge-domain 10",
+    "explanation": "配置桥接域 10",
+    "parameters": [
+      {
+        "name": "bridge domain id",
+        "type": "integer",
+        "explanation": "桥接域 ID"
+      }
+    ],
+    "vfi evrf1": {
+      "template": "vfi [parameter1]",
+      "command": "vfi evrf1",
+      "explanation": "配置虚拟转发实例 'evrf1'",
+      "parameters": [
+        {
+          "name": "vfi name",
+          "type": "string",
+          "explanation": "虚拟转发实例名称"
+        }
+      ],
+      "vpn id 10": {
+        "template": "vpn id [parameter1]",
+        "command": "vpn id 10",
+        "explanation": "配置 VPN ID 为 10",
+        "parameters": [
+          {
+            "name": "vpn id",
+            "type": "integer",
+            "explanation": "VPN ID"
+          }
+        ]
+      }
+    }
+  },
+  "interface port-channel 10": {
+    "template": "interface [parameter1]",
+    "command": "interface port-channel 10",
+    "explanation": "配置端口通道 10",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "mac-address 0000.1111.3333.4444.5555": {
+      "template": "mac-address [parameter1]",
+      "command": "mac-address 0000.1111.3333.4444.5555",
+      "explanation": "配置接口的 MAC 地址为 0000.1111.3333.4444.5555",
+      "parameters": [
+        {
+          "name": "mac address",
+          "type": "string",
+          "explanation": "MAC 地址"
+        }
+      ]
+    }
+  },
+  "interface port-channel 10.1": {
+    "template": "interface [parameter1]",
+    "command": "interface port-channel 10.1",
+    "explanation": "配置子接口端口通道 10.1",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "encapsulation dot1q 100": {
+      "template": "encapsulation dot1q [parameter1]",
+      "command": "encapsulation dot1q 100",
+      "explanation": "配置子接口的封装类型为 dot1q，VLAN ID 为 100",
+      "parameters": [
+        {
+          "name": "vlan id",
+          "type": "integer",
+          "explanation": "VLAN ID"
+        }
+      ]
+    },
+    "bridge-domain 10": {
+      "template": "bridge-domain [parameter1]",
+      "command": "bridge-domain 10",
+      "explanation": "将子接口关联到桥接域 10",
+      "parameters": [
+        {
+          "name": "bridge domain id",
+          "type": "integer",
+          "explanation": "桥接域 ID"
+        }
+      ]
+    },
+    "rewrite ingress tag pop 1 symmetric": {
+      "template": "rewrite ingress tag pop [parameter1] symmetric",
+      "command": "rewrite ingress tag pop 1 symmetric",
+      "explanation": "配置入口方向的标签操作为弹出 1 层标签，并对称操作",
+      "parameters": [
+        {
+          "name": "number of tags",
+          "type": "integer",
+          "explanation": "标签层数"
+        }
+      ]
+    }
+  },
+  "interface GigabitEthernet1/0/0": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet1/0/0",
+    "explanation": "配置接口 'GigabitEthernet1/0/0'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "no shutdown": {
+      "template": "no shutdown",
+      "command": "no shutdown",
+      "explanation": "启用接口（默认情况下接口是关闭的）",
+      "parameters": []
+    },
+    "channel-group 10 mode active": {
+      "template": "channel-group [parameter1] mode [parameter2]",
+      "command": "channel-group 10 mode active",
+      "explanation": "将接口加入到通道组 10，并设置为主动模式",
+      "parameters": [
+        {
+          "name": "channel group number",
+          "type": "integer",
+          "explanation": "通道组编号"
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "explanation": "模式"
+        }
+      ]
+    }
+  },
+  "interface GigabitEthernet2/0/0": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet2/0/0",
+    "explanation": "配置接口 'GigabitEthernet2/0/0'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "no shutdown": {
+      "template": "no shutdown",
+      "command": "no shutdown",
+      "explanation": "启用接口（默认情况下接口是关闭的）",
+      "parameters": []
+    },
+    "ip address 10.3.1.2 255.255.255.0": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 10.3.1.2 255.255.255.0",
+      "explanation": "配置接口的 IPv4 地址为 10.3.1.2，子网掩码为 255.255.255.0",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4 地址"
+        },
+        {
+          "name": "subnet mask",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    },
+    "mpls ip": {
+      "template": "mpls ip",
+      "command": "mpls ip",
+      "explanation": "在接口上启用 MPLS IP",
+      "parameters": []
+    },
+    "mpls ldp": {
+      "template": "mpls ldp",
+      "command": "mpls ldp",
+      "explanation": "在接口上启用 MPLS LDP",
+      "parameters": []
+    }
+  },
+  "interface Loopback0": {
+    "template": "interface [parameter1]",
+    "command": "interface Loopback0",
+    "explanation": "配置环回接口 'Loopback0'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "ip address 4.4.4.4 255.255.255.255": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 4.4.4.4 255.255.255.255",
+      "explanation": "配置环回接口的 IPv4 地址为 4.4.4.4，子网掩码为 255.255.255.255",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4 地址"
+        },
+        {
+          "name": "subnet mask",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    }
+  },
+  "router bgp 100": {
+    "template": "router bgp [parameter1]",
+    "command": "router bgp 100",
+    "explanation": "进入 BGP 配置模式，AS 号为 100",
+    "parameters": [
+      {
+        "name": "AS number",
+        "type": "integer",
+        "explanation": "AS 号"
+      }
+    ],
+    "neighbor 3.3.3.3 remote-as 100": {
+      "template": "neighbor [parameter1] remote-as [parameter2]",
+      "command": "neighbor 3.3.3.3 remote-as 100",
+      "explanation": "配置 BGP 邻居 3.3.3.3，远程 AS 号为 100",
+      "parameters": [
+        {
+          "name": "neighbor ip",
+          "type": "IPv4",
+          "explanation": "邻居 IP 地址"
+        },
+        {
+          "name": "remote AS number",
+          "type": "integer",
+          "explanation": "远程 AS 号"
+        }
+      ]
+    },
+    "neighbor 3.3.3.3 update-source Loopback0": {
+      "template": "neighbor [parameter1] update-source [parameter2]",
+      "command": "neighbor 3.3.3.3 update-source Loopback0",
+      "explanation": "配置 BGP 邻居 3.3.3.3 的更新源为环回接口 'Loopback0'",
+      "parameters": [
+        {
+          "name": "neighbor ip",
+          "type": "IPv4",
+          "explanation": "邻居 IP 地址"
+        },
+        {
+          "name": "update source",
+          "type": "string",
+          "explanation": "更新源"
+        }
+      ]
+    },
+    "address-family ipv4": {
+      "template": "address-family ipv4",
+      "command": "address-family ipv4",
+      "explanation": "进入 IPv4 地址族配置模式",
+      "parameters": [],
+      "network 4.4.4.4 mask 255.255.255.255": {
+        "template": "network [parameter1] mask [parameter2]",
+        "command": "network 4.4.4.4 mask 255.255.255.255",
+        "explanation": "在 BGP 中宣告网络 4.4.4.4/32",
+        "parameters": [
+          {
+            "name": "network",
+            "type": "IPv4",
+            "explanation": "网络地址"
+          },
+          {
+            "name": "mask",
+            "type": "IPv4",
+            "explanation": "子网掩码"
+          }
+        ]
+      },
+      "network 10.3.1.0 mask 255.255.255.0": {
+        "template": "network [parameter1] mask [parameter2]",
+        "command": "network 10.3.1.0 mask 255.255.255.0",
+        "explanation": "在 BGP 中宣告网络 10.3.1.0/24",
+        "parameters": [
+          {
+            "name": "network",
+            "type": "IPv4",
+            "explanation": "网络地址"
+          },
+          {
+            "name": "mask",
+            "type": "IPv4",
+            "explanation": "子网掩码"
+          }
+        ]
+      },
+      "neighbor 3.3.3.3 activate": {
+        "template": "neighbor [parameter1] activate",
+        "command": "neighbor 3.3.3.3 activate",
+        "explanation": "激活 BGP 邻居 3.3.3.3 的 IPv4 地址族",
+        "parameters": [
+          {
+            "name": "neighbor ip",
+            "type": "IPv4",
+            "explanation": "邻居 IP 地址"
+          }
+        ]
+      }
+    },
+    "address-family l2vpn evpn": {
+      "template": "address-family l2vpn evpn",
+      "command": "address-family l2vpn evpn",
+      "explanation": "进入 L2VPN EVPN 地址族配置模式",
+      "parameters": [],
+      "neighbor 3.3.3.3 activate": {
+        "template": "neighbor [parameter1] activate",
+        "command": "neighbor 3.3.3.3 activate",
+        "explanation": "激活 BGP 邻居 3.3.3.3 的 L2VPN EVPN 地址族",
+        "parameters": [
+          {
+            "name": "neighbor ip",
+            "type": "IPv4",
+            "explanation": "邻居 IP 地址"
+          }
+        ]
+      }
+    }
+  },
+  "router ospf 1": {
+    "template": "router ospf [parameter1]",
+    "command": "router ospf 1",
+    "explanation": "进入 OSPF 配置模式，进程 ID 为 1",
+    "parameters": [
+      {
+        "name": "process id",
+        "type": "integer",
+        "explanation": "进程 ID"
+      }
+    ],
+    "network 4.4.4.4 0.0.0.0 area 0": {
+      "template": "network [parameter1] [parameter2] area [parameter3]",
+      "command": "network 4.4.4.4 0.0.0.0 area 0",
+      "explanation": "在 OSPF 中宣告网络 4.4.4.4/32，区域为 0",
+      "parameters": [
+        {
+          "name": "network",
+          "type": "IPv4",
+          "explanation": "网络地址"
+        },
+        {
+          "name": "wildcard mask",
+          "type": "IPv4",
+          "explanation": "通配符掩码"
+        },
+        {
+          "name": "area",
+          "type": "integer",
+          "explanation": "区域号"
+        }
+      ]
+    },
+    "network 10.3.1.0 0.0.0.255 area 0": {
+      "template": "network [parameter1] [parameter2] area [parameter3]",
+      "command": "network 10.3.1.0 0.0.0.255 area 0",
+      "explanation": "在 OSPF 中宣告网络 10.3.1.0/24，区域为 0",
+      "parameters": [
+        {
+          "name": "network",
+          "type": "IPv4",
+          "explanation": "网络地址"
+        },
+        {
+          "name": "wildcard mask",
+          "type": "IPv4",
+          "explanation": "通配符掩码"
+        },
+        {
+          "name": "area",
+          "type": "integer",
+          "explanation": "区域号"
+        }
+      ]
+    }
+  },
+  "evpn": {
+    "template": "

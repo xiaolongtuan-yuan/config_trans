@@ -1,0 +1,210 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name DeviceA",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set routing-options": {
+        "template": "set routing-options",
+        "set routing-options multicast": {
+            "template": "set routing-options multicast",
+            "command": "set routing-options multicast",
+            "explanation": "启用多播路由选项。",
+            "parameters": []
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.1/24",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols pim interface [parameter1] mode [parameter2]": {
+            "template": "set protocols pim interface [parameter1] mode [parameter2]",
+            "command": "set protocols pim interface ge-1/0/0 mode sparse-dense",
+            "explanation": "配置PIM协议在指定接口上的模式。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0。"
+                },
+                {
+                    "name": "mode",
+                    "type": "string",
+                    "explanation": "PIM模式，例如sparse-dense。"
+                }
+            ]
+        },
+        "set protocols ospf area [parameter1] interface [parameter2]": {
+            "template": "set protocols ospf area [parameter1] interface [parameter2]",
+            "command": "set protocols ospf area 0 interface ge-1/0/0.0",
+            "explanation": "配置OSPF协议在指定区域和接口上的应用。",
+            "parameters": [
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "OSPF区域号。"
+                },
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0.0。"
+                }
+            ]
+        }
+    },
+    "set services analytics": {
+        "template": "set services analytics",
+        "set services analytics sensor-definition [parameter1]": {
+            "template": "set services analytics sensor-definition [parameter1]",
+            "command": "set services analytics sensor-definition emdimonitor",
+            "explanation": "定义分析服务的传感器。",
+            "parameters": [
+                {
+                    "name": "sensor-definition",
+                    "type": "string",
+                    "explanation": "传感器定义名称，例如emdimonitor。"
+                }
+            ]
+        },
+        "set services analytics destination-profile [parameter1]": {
+            "template": "set services analytics destination-profile [parameter1]",
+            "command": "set services analytics destination-profile Monitor",
+            "explanation": "定义分析服务的目的地配置文件。",
+            "parameters": [
+                {
+                    "name": "destination-profile",
+                    "type": "string",
+                    "explanation": "目的地配置文件名称，例如Monitor。"
+                }
+            ]
+        },
+        "set services analytics destination-profile [parameter1] destinations collector-address [parameter2] port [parameter3]": {
+            "template": "set services analytics destination-profile [parameter1] destinations collector-address [parameter2] port [parameter3]",
+            "command": "set services analytics destination-profile Monitor destinations collector-address 10.1.7.2 port 10001",
+            "explanation": "配置分析服务目的地配置文件的收集器地址和端口。",
+            "parameters": [
+                {
+                    "name": "destination-profile",
+                    "type": "string",
+                    "explanation": "目的地配置文件名称，例如Monitor。"
+                },
+                {
+                    "name": "collector-address",
+                    "type": "string",
+                    "explanation": "收集器地址。"
+                },
+                {
+                    "name": "port",
+                    "type": "integer",
+                    "explanation": "收集器端口号。"
+                }
+            ]
+        },
+        "set services analytics export-profile [parameter1] format [parameter2] transport [parameter3]": {
+            "template": "set services analytics export-profile [parameter1] format [parameter2] transport [parameter3]",
+            "command": "set services analytics export-profile Monitor format gpb-compact transport grpc",
+            "explanation": "配置分析服务的导出配置文件格式和传输协议。",
+            "parameters": [
+                {
+                    "name": "export-profile",
+                    "type": "string",
+                    "explanation": "导出配置文件名称，例如Monitor。"
+                },
+                {
+                    "name": "format",
+                    "type": "string",
+                    "explanation": "数据格式，例如gpb-compact。"
+                },
+                {
+                    "name": "transport",
+                    "type": "string",
+                    "explanation": "传输协议，例如grpc。"
+                }
+            ]
+        },
+        "set services analytics subscriptions subscription-name [parameter1]": {
+            "template": "set services analytics subscriptions subscription-name [parameter1]",
+            "command": "set services analytics subscriptions subscription-name EMDI",
+            "explanation": "定义分析服务的订阅名称。",
+            "parameters": [
+                {
+                    "name": "subscription-name",
+                    "type": "string",
+                    "explanation": "订阅名称，例如EMDI。"
+                }
+            ]
+        },
+        "set services analytics subscriptions subscription-name [parameter1] sensors [parameter2]": {
+            "template": "set services analytics subscriptions subscription-name [parameter1] sensors [parameter2]",
+            "command": "set services analytics subscriptions subscription-name EMDI sensors emdimonitor",
+            "explanation": "配置分析服务订阅的传感器。",
+            "parameters": [
+                {
+                    "name": "subscription-name",
+                    "type": "string",
+                    "explanation": "订阅名称，例如EMDI。"
+                },
+                {
+                    "name": "sensors",
+                    "type": "string",
+                    "explanation": "传感器名称，例如emdimonitor。"
+                }
+            ]
+        },
+        "set services analytics subscriptions subscription-name [parameter1] destinations [parameter2]": {
+            "template": "set services analytics subscriptions subscription-name [parameter1] destinations [parameter2]",
+            "command": "set services analytics subscriptions subscription-name EMDI destinations Monitor",
+            "explanation": "配置分析服务订阅的目的地配置文件。",
+            "parameters": [
+                {
+                    "name": "subscription-name",
+                    "type": "string",
+                    "explanation": "订阅名称，例如EMDI。"
+                },
+                {
+                    "name": "destinations",
+                    "type": "string",
+                    "explanation": "目的地配置文件名称，例如Monitor。"
+                }
+            ]
+        }
+    }
+}

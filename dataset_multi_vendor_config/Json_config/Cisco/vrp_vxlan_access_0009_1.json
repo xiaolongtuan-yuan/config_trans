@@ -1,0 +1,266 @@
+{
+  "hostname DeviceB": {
+    "template": "hostname [parameter1]",
+    "command": "hostname DeviceB",
+    "explanation": "设置设备的主机名为 'DeviceB'",
+    "parameters": [
+      {
+        "name": "host name",
+        "type": "string",
+        "explanation": "主机名"
+      }
+    ]
+  },
+  "interface GigabitEthernet1/0/1": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet1/0/1",
+    "explanation": "配置接口 'GigabitEthernet1/0/1'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "no shutdown": {
+      "template": "no shutdown",
+      "command": "no shutdown",
+      "explanation": "启用接口（默认情况下接口是关闭的）",
+      "parameters": []
+    },
+    "ip address 192.168.1.2 255.255.255.0": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 192.168.1.2 255.255.255.0",
+      "explanation": "配置接口的 IPv4 地址为 192.168.1.2，子网掩码为 255.255.255.0",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4 地址"
+        },
+        {
+          "name": "subnet mask",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    }
+  },
+  "interface Loopback1": {
+    "template": "interface [parameter1]",
+    "command": "interface Loopback1",
+    "explanation": "配置环回接口 'Loopback1'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "ip address 1.1.1.2 255.255.255.255": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 1.1.1.2 255.255.255.255",
+      "explanation": "配置接口的 IPv4 地址为 1.1.1.2，子网掩码为 255.255.255.255",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4 地址"
+        },
+        {
+          "name": "subnet mask",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    }
+  },
+  "interface nve1": {
+    "template": "interface [parameter1]",
+    "command": "interface nve1",
+    "explanation": "配置网络虚拟化边缘接口 'nve1'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "source-interface Loopback1": {
+      "template": "source-interface [parameter1]",
+      "command": "source-interface Loopback1",
+      "explanation": "设置源接口为 'Loopback1'",
+      "parameters": [
+        {
+          "name": "source interface",
+          "type": "string",
+          "explanation": "源接口名"
+        }
+      ]
+    },
+    "member vni 10": {
+      "template": "member vni [parameter1]",
+      "command": "member vni 10",
+      "explanation": "配置成员 VNI 为 10",
+      "parameters": [
+        {
+          "name": "VNI",
+          "type": "integer",
+          "explanation": "虚拟网络标识符"
+        }
+      ]
+    },
+    "member evpn": {
+      "template": "member evpn",
+      "command": "member evpn",
+      "explanation": "配置成员为 EVPN",
+      "parameters": []
+    },
+    "host-reachability protocol bgp": {
+      "template": "host-reachability protocol [parameter1]",
+      "command": "host-reachability protocol bgp",
+      "explanation": "设置主机可达性协议为 BGP",
+      "parameters": [
+        {
+          "name": "protocol",
+          "type": "string",
+          "explanation": "协议名"
+        }
+      ]
+    }
+  },
+  "interface pseudowire1": {
+    "template": "interface [parameter1]",
+    "command": "interface pseudowire1",
+    "explanation": "配置伪线接口 'pseudowire1'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "encapsulation l2vpn evpn": {
+      "template": "encapsulation [parameter1]",
+      "command": "encapsulation l2vpn evpn",
+      "explanation": "设置封装类型为 L2VPN EVPN",
+      "parameters": [
+        {
+          "name": "encapsulation type",
+          "type": "string",
+          "explanation": "封装类型"
+        }
+      ]
+    },
+    "neighbor 1.1.1.1 pw-id 10": {
+      "template": "neighbor [parameter1] pw-id [parameter2]",
+      "command": "neighbor 1.1.1.1 pw-id 10",
+      "explanation": "配置邻居为 1.1.1.1，伪线 ID 为 10",
+      "parameters": [
+        {
+          "name": "neighbor",
+          "type": "IPv4",
+          "explanation": "邻居地址"
+        },
+        {
+          "name": "pseudo-wire ID",
+          "type": "integer",
+          "explanation": "伪线标识符"
+        }
+      ]
+    },
+    "exit": {
+      "template": "exit",
+      "command": "exit",
+      "explanation": "退出当前配置模式",
+      "parameters": []
+    }
+  },
+  "router bgp <your AS number>": {
+    "template": "router bgp [parameter1]",
+    "command": "router bgp <your AS number>",
+    "explanation": "配置 BGP 路由进程，AS 号为 <your AS number>",
+    "parameters": [
+      {
+        "name": "AS number",
+        "type": "integer",
+        "explanation": "自治系统号"
+      }
+    ],
+    "neighbor 1.1.1.1 remote-as <peer AS number>": {
+      "template": "neighbor [parameter1] remote-as [parameter2]",
+      "command": "neighbor 1.1.1.1 remote-as <peer AS number>",
+      "explanation": "配置 BGP 邻居为 1.1.1.1，远程 AS 号为 <peer AS number>",
+      "parameters": [
+        {
+          "name": "neighbor",
+          "type": "IPv4",
+          "explanation": "邻居地址"
+        },
+        {
+          "name": "remote AS number",
+          "type": "integer",
+          "explanation": "远程自治系统号"
+        }
+      ]
+    },
+    "address-family l2vpn evpn": {
+      "template": "address-family [parameter1]",
+      "command": "address-family l2vpn evpn",
+      "explanation": "进入 L2VPN EVPN 地址族配置模式",
+      "parameters": [
+        {
+          "name": "address family",
+          "type": "string",
+          "explanation": "地址族"
+        }
+      ],
+      "advertise ipv4 unicast": {
+        "template": "advertise [parameter1]",
+        "command": "advertise ipv4 unicast",
+        "explanation": "在 EVPN 中通告 IPv4 单播路由",
+        "parameters": [
+          {
+            "name": "address type",
+            "type": "string",
+            "explanation": "地址类型"
+          }
+        ]
+      },
+      "exit-address-family": {
+        "template": "exit-address-family",
+        "command": "exit-address-family",
+        "explanation": "退出地址族配置模式",
+        "parameters": []
+      }
+    },
+    "exit": {
+      "template": "exit",
+      "command": "exit",
+      "explanation": "退出当前配置模式",
+      "parameters": []
+    }
+  },
+  "ip route 1.1.1.1 255.255.255.255 192.168.1.1": {
+    "template": "ip route [parameter1] [parameter2] [parameter3]",
+    "command": "ip route 1.1.1.1 255.255.255.255 192.168.1.1",
+    "explanation": "配置静态路由，目的地址为 1.1.1.1/32，下一跳为 192.168.1.1",
+    "parameters": [
+      {
+        "name": "destination",
+        "type": "IPv4",
+        "explanation": "目的地址"
+      },
+      {
+        "name": "subnet mask",
+        "type": "IPv4",
+        "explanation": "子网掩码"
+      },
+      {
+        "name": "next hop",
+        "type": "IPv4",
+        "explanation": "下一跳地址"
+      }
+    ]
+  }
+}

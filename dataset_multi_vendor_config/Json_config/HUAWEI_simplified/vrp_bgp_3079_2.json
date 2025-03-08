@@ -1,0 +1,215 @@
+{
+    "sysname [parameter1]": {
+        "template": "sysname [parameter1]",
+        "command": "sysname DeviceC",
+        "explanation": "设置设备的主机名为 'DeviceC'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "进入接口配置模式",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "启用接口 (默认情况下接口是关闭的)",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.10.1.2 255.255.255.0",
+            "explanation": "配置接口的IPv4地址为 10.10.1.2，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "sub musk",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        }
+    },
+    "bgp [parameter1]": {
+        "template": "bgp [parameter1]",
+        "command": "bgp 300",
+        "explanation": "进入BGP配置模式，AS号为300",
+        "parameters": [
+            {
+                "name": "AS number",
+                "type": "integer",
+                "explanation": "AS号"
+            }
+        ],
+        "router-id [parameter1]": {
+            "template": "router-id [parameter1]",
+            "command": "router-id 3.3.3.3",
+            "explanation": "设置BGP的Router ID为3.3.3.3",
+            "parameters": [
+                {
+                    "name": "router id",
+                    "type": "IPv4",
+                    "explanation": "Router ID"
+                }
+            ]
+        },
+        "peer [parameter1] as-number [parameter2]": {
+            "template": "peer [parameter1] as-number [parameter2]",
+            "command": "peer 10.10.1.1 as-number 100",
+            "explanation": "配置BGP对等体10.10.1.1，AS号为100",
+            "parameters": [
+                {
+                    "name": "peer ip",
+                    "type": "IPv4",
+                    "explanation": "对等体IP地址"
+                },
+                {
+                    "name": "AS number",
+                    "type": "integer",
+                    "explanation": "对等体AS号"
+                }
+            ]
+        },
+        "ipv4-family unicast": {
+            "template": "ipv4-family unicast",
+            "command": "ipv4-family unicast",
+            "explanation": "进入IPv4单播地址族配置模式",
+            "parameters": [],
+            "undo synchronization": {
+                "template": "undo synchronization",
+                "command": "undo synchronization",
+                "explanation": "关闭BGP同步功能",
+                "parameters": []
+            },
+            "dampening route-policy [parameter1]": {
+                "template": "dampening route-policy [parameter1]",
+                "command": "dampening route-policy dampen-policy",
+                "explanation": "应用路由策略dampen-policy进行路由衰减",
+                "parameters": [
+                    {
+                        "name": "route-policy name",
+                        "type": "string",
+                        "explanation": "路由策略名"
+                    }
+                ]
+            },
+            "peer [parameter1] enable": {
+                "template": "peer [parameter1] enable",
+                "command": "peer 10.10.1.1 enable",
+                "explanation": "启用对等体10.10.1.1的IPv4单播地址族",
+                "parameters": [
+                    {
+                        "name": "peer ip",
+                        "type": "IPv4",
+                        "explanation": "对等体IP地址"
+                    }
+                ]
+            }
+        }
+    },
+    "route-policy [parameter1] permit node [parameter2]": {
+        "template": "route-policy [parameter1] permit node [parameter2]",
+        "command": "route-policy dampen-policy permit node 10",
+        "explanation": "创建路由策略dampen-policy的节点10，动作为允许",
+        "parameters": [
+            {
+                "name": "route-policy name",
+                "type": "string",
+                "explanation": "路由策略名"
+            },
+            {
+                "name": "node number",
+                "type": "integer",
+                "explanation": "节点号"
+            }
+        ],
+        "if-match ip-prefix [parameter1]": {
+            "template": "if-match ip-prefix [parameter1]",
+            "command": "if-match ip-prefix prefix-a",
+            "explanation": "匹配IP前缀列表prefix-a",
+            "parameters": [
+                {
+                    "name": "ip-prefix name",
+                    "type": "string",
+                    "explanation": "IP前缀列表名"
+                }
+            ]
+        },
+        "apply dampening [parameter1] [parameter2] [parameter3] [parameter4]": {
+            "template": "apply dampening [parameter1] [parameter2] [parameter3] [parameter4]",
+            "command": "apply dampening 10 1000 2000 5000",
+            "explanation": "应用路由衰减，参数分别为半衰期、重用阈值、抑制阈值、最大抑制时间",
+            "parameters": [
+                {
+                    "name": "half-life",
+                    "type": "integer",
+                    "explanation": "半衰期"
+                },
+                {
+                    "name": "reuse",
+                    "type": "integer",
+                    "explanation": "重用阈值"
+                },
+                {
+                    "name": "suppress",
+                    "type": "integer",
+                    "explanation": "抑制阈值"
+                },
+                {
+                    "name": "max-suppress-time",
+                    "type": "integer",
+                    "explanation": "最大抑制时间"
+                }
+            ]
+        }
+    },
+    "ip ip-prefix [parameter1] index [parameter2] permit [parameter3] [parameter4]": {
+        "template": "ip ip-prefix [parameter1] index [parameter2] permit [parameter3] [parameter4]",
+        "command": "ip ip-prefix prefix-a index 10 permit 8.0.0.0 8",
+        "explanation": "创建IP前缀列表prefix-a的索引10，允许8.0.0.0/8",
+        "parameters": [
+            {
+                "name": "ip-prefix name",
+                "type": "string",
+                "explanation": "IP前缀列表名"
+            },
+            {
+                "name": "index number",
+                "type": "integer",
+                "explanation": "索引号"
+            },
+            {
+                "name": "ip address",
+                "type": "IPv4",
+                "explanation": "IP地址"
+            },
+            {
+                "name": "prefix length",
+                "type": "integer",
+                "explanation": "前缀长度"
+            }
+        ]
+    },
+    "return": {
+        "template": "return",
+        "command": "return",
+        "explanation": "退出当前视图，返回到用户视图",
+        "parameters": []
+    }
+}

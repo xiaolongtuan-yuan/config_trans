@@ -1,0 +1,147 @@
+{
+    "hostname [parameter1]": {
+        "template": "hostname [parameter1]",
+        "command": "hostname DeviceB",
+        "explanation": "设置设备的主机名为 'DeviceB'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "配置接口 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.1.1.2 255.255.255.252",
+            "explanation": "配置接口的 IPv4 地址为 10.1.1.2，子网掩码为 255.255.255.252",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        }
+    },
+    "router bgp [parameter1]": {
+        "template": "router bgp [parameter1]",
+        "command": "router bgp 10",
+        "explanation": "配置 BGP 路由进程，AS 号为 10",
+        "parameters": [
+            {
+                "name": "AS number",
+                "type": "integer",
+                "explanation": "自治系统号"
+            }
+        ],
+        "bgp router-id [parameter1]": {
+            "template": "bgp router-id [parameter1]",
+            "command": "bgp router-id 2.2.2.2",
+            "explanation": "设置 BGP 路由器的 ID 为 2.2.2.2",
+            "parameters": [
+                {
+                    "name": "router-id",
+                    "type": "IPv4",
+                    "explanation": "路由器 ID"
+                }
+            ]
+        },
+        "neighbor [parameter1] remote-as [parameter2]": {
+            "template": "neighbor [parameter1] remote-as [parameter2]",
+            "command": "neighbor 1.1.1.1 remote-as 10",
+            "explanation": "配置 BGP 邻居 1.1.1.1，远程 AS 号为 10",
+            "parameters": [
+                {
+                    "name": "neighbor ip",
+                    "type": "IPv4",
+                    "explanation": "邻居 IP 地址"
+                },
+                {
+                    "name": "remote AS number",
+                    "type": "integer",
+                    "explanation": "远程自治系统号"
+                }
+            ]
+        },
+        "neighbor [parameter1] update-source [parameter2]": {
+            "template": "neighbor [parameter1] update-source [parameter2]",
+            "command": "neighbor 1.1.1.1 update-source Loopback0",
+            "explanation": "配置 BGP 邻居 1.1.1.1 的更新源为 Loopback0 接口",
+            "parameters": [
+                {
+                    "name": "neighbor ip",
+                    "type": "IPv4",
+                    "explanation": "邻居 IP 地址"
+                },
+                {
+                    "name": "update source",
+                    "type": "string",
+                    "explanation": "更新源接口名"
+                }
+            ]
+        }
+    },
+    "router ospf [parameter1]": {
+        "template": "router ospf [parameter1]",
+        "command": "router ospf 1",
+        "explanation": "配置 OSPF 路由进程，进程 ID 为 1",
+        "parameters": [
+            {
+                "name": "process ID",
+                "type": "integer",
+                "explanation": "进程 ID"
+            }
+        ],
+        "network [parameter1] [parameter2] area [parameter3]": {
+            "template": "network [parameter1] [parameter2] area [parameter3]",
+            "command": "network 10.1.1.0 0.0.0.3 area 0",
+            "explanation": "配置 OSPF 网络 10.1.1.0/30 在区域 0",
+            "parameters": [
+                {
+                    "name": "network address",
+                    "type": "IPv4",
+                    "explanation": "网络地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                },
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "区域号"
+                }
+            ]
+        },
+        "passive-interface default": {
+            "template": "passive-interface default",
+            "command": "passive-interface default",
+            "explanation": "默认情况下，所有接口都设置为被动模式，不发送 OSPF 路由更新",
+            "parameters": []
+        }
+    }
+}

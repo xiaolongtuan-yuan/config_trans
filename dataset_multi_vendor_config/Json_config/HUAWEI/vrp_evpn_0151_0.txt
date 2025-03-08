@@ -1,0 +1,473 @@
+{
+  "sysname PE1": {
+    "template": "sysname [parameter1]",
+    "command": "sysname PE1",
+    "explanation": "设置设备的主机名为 'PE1'",
+    "parameters": [
+      {
+        "name": "host name",
+        "type": "string",
+        "explanation": "主机名"
+      }
+    ]
+  },
+  "ip vpn-instance vpn1": {
+    "template": "ip vpn-instance [parameter1]",
+    "command": "ip vpn-instance vpn1",
+    "explanation": "创建VPN实例vpn1",
+    "parameters": [
+      {
+        "name": "vpn instance name",
+        "type": "string",
+        "explanation": "VPN实例名"
+      }
+    ],
+    "ipv6-family": {
+      "template": "ipv6-family",
+      "command": "ipv6-family",
+      "explanation": "进入IPv6地址族视图",
+      "parameters": [],
+      "route-distinguisher 100:1": {
+        "template": "route-distinguisher [parameter1]",
+        "command": "route-distinguisher 100:1",
+        "explanation": "配置VPN实例的RD值为100:1",
+        "parameters": [
+          {
+            "name": "route distinguisher",
+            "type": "string",
+            "explanation": "路由标识符"
+          }
+        ]
+      },
+      "apply-label per-instance": {
+        "template": "apply-label per-instance",
+        "command": "apply-label per-instance",
+        "explanation": "为VPN实例配置标签分配方式为每个实例分配一个标签",
+        "parameters": []
+      },
+      "vpn-target 1:1 export-extcommunity evpn": {
+        "template": "vpn-target [parameter1] export-extcommunity [parameter2]",
+        "command": "vpn-target 1:1 export-extcommunity evpn",
+        "explanation": "配置VPN实例的导出RT值为1:1，并应用于EVPN",
+        "parameters": [
+          {
+            "name": "route target",
+            "type": "string",
+            "explanation": "路由目标"
+          },
+          {
+            "name": "extcommunity type",
+            "type": "string",
+            "explanation": "扩展团体类型"
+          }
+        ]
+      },
+      "vpn-target 1:1 import-extcommunity evpn": {
+        "template": "vpn-target [parameter1] import-extcommunity [parameter2]",
+        "command": "vpn-target 1:1 import-extcommunity evpn",
+        "explanation": "配置VPN实例的导入RT值为1:1，并应用于EVPN",
+        "parameters": [
+          {
+            "name": "route target",
+            "type": "string",
+            "explanation": "路由目标"
+          },
+          {
+            "name": "extcommunity type",
+            "type": "string",
+            "explanation": "扩展团体类型"
+          }
+        ]
+      }
+    }
+  },
+  "segment-routing ipv6": {
+    "template": "segment-routing ipv6",
+    "command": "segment-routing ipv6",
+    "explanation": "进入IPv6段路由视图",
+    "parameters": [],
+    "encapsulation source-address 2001:DB8:1::1": {
+      "template": "encapsulation source-address [parameter1]",
+      "command": "encapsulation source-address 2001:DB8:1::1",
+      "explanation": "配置IPv6段路由的封装源地址为2001:DB8:1::1",
+      "parameters": [
+        {
+          "name": "source address",
+          "type": "IPv6",
+          "explanation": "源地址"
+        }
+      ]
+    },
+    "locator PE1 ipv6-prefix 2001:DB8:100:: 64 static 32": {
+      "template": "locator [parameter1] ipv6-prefix [parameter2] [parameter3] static [parameter4]",
+      "command": "locator PE1 ipv6-prefix 2001:DB8:100:: 64 static 32",
+      "explanation": "配置IPv6段路由的定位器PE1，IPv6前缀为2001:DB8:100::，前缀长度为64，静态段长度为32",
+      "parameters": [
+        {
+          "name": "locator name",
+          "type": "string",
+          "explanation": "定位器名"
+        },
+        {
+          "name": "ipv6 prefix",
+          "type": "IPv6",
+          "explanation": "IPv6前缀"
+        },
+        {
+          "name": "prefix length",
+          "type": "integer",
+          "explanation": "前缀长度"
+        },
+        {
+          "name": "static segment length",
+          "type": "integer",
+          "explanation": "静态段长度"
+        }
+      ]
+    }
+  },
+  "isis 1": {
+    "template": "isis [parameter1]",
+    "command": "isis 1",
+    "explanation": "进入IS-IS进程1视图",
+    "parameters": [
+      {
+        "name": "process id",
+        "type": "integer",
+        "explanation": "进程ID"
+      }
+    ],
+    "is-level level-1": {
+      "template": "is-level [parameter1]",
+      "command": "is-level level-1",
+      "explanation": "配置IS-IS级别为level-1",
+      "parameters": [
+        {
+          "name": "level",
+          "type": "string",
+          "explanation": "级别"
+        }
+      ]
+    },
+    "cost-style wide": {
+      "template": "cost-style [parameter1]",
+      "command": "cost-style wide",
+      "explanation": "配置IS-IS的cost风格为wide",
+      "parameters": [
+        {
+          "name": "cost style",
+          "type": "string",
+          "explanation": "cost风格"
+        }
+      ]
+    },
+    "network-entity 10.0000.0000.0001.00": {
+      "template": "network-entity [parameter1]",
+      "command": "network-entity 10.0000.0000.0001.00",
+      "explanation": "配置IS-IS的网络实体标题为10.0000.0000.0001.00",
+      "parameters": [
+        {
+          "name": "network entity title",
+          "type": "string",
+          "explanation": "网络实体标题"
+        }
+      ]
+    },
+    "ipv6 enable topology ipv6": {
+      "template": "ipv6 enable topology [parameter1]",
+      "command": "ipv6 enable topology ipv6",
+      "explanation": "在IS-IS进程中启用IPv6拓扑",
+      "parameters": [
+        {
+          "name": "topology type",
+          "type": "string",
+          "explanation": "拓扑类型"
+        }
+      ]
+    },
+    "segment-routing ipv6 locator PE1": {
+      "template": "segment-routing ipv6 locator [parameter1]",
+      "command": "segment-routing ipv6 locator PE1",
+      "explanation": "在IS-IS进程中启用IPv6段路由，并指定定位器为PE1",
+      "parameters": [
+        {
+          "name": "locator name",
+          "type": "string",
+          "explanation": "定位器名"
+        }
+      ]
+    }
+  },
+  "interface GigabitEthernet1/0/0": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet1/0/0",
+    "explanation": "进入GigabitEthernet1/0/0接口视图",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "undo shutdown": {
+      "template": "undo shutdown",
+      "command": "undo shutdown",
+      "explanation": "启用接口 (默认情况下接口是关闭的)",
+      "parameters": []
+    },
+    "ipv6 enable": {
+      "template": "ipv6 enable",
+      "command": "ipv6 enable",
+      "explanation": "在接口上启用IPv6",
+      "parameters": []
+    },
+    "ipv6 address 2001:DB8:10::1/64": {
+      "template": "ipv6 address [parameter1]",
+      "command": "ipv6 address 2001:DB8:10::1/64",
+      "explanation": "配置接口的IPv6地址为2001:DB8:10::1，前缀长度为64",
+      "parameters": [
+        {
+          "name": "ipv6 address",
+          "type": "IPv6",
+          "explanation": "IPv6地址"
+        }
+      ]
+    },
+    "isis ipv6 enable 1": {
+      "template": "isis ipv6 enable [parameter1]",
+      "command": "isis ipv6 enable 1",
+      "explanation": "在接口上启用IS-IS IPv6，并指定进程ID为1",
+      "parameters": [
+        {
+          "name": "process id",
+          "type": "integer",
+          "explanation": "进程ID"
+        }
+      ]
+    }
+  },
+  "interface GigabitEthernet2/0/0": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet2/0/0",
+    "explanation": "进入GigabitEthernet2/0/0接口视图",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "undo shutdown": {
+      "template": "undo shutdown",
+      "command": "undo shutdown",
+      "explanation": "启用接口 (默认情况下接口是关闭的)",
+      "parameters": []
+    },
+    "ip binding vpn-instance vpn1": {
+      "template": "ip binding vpn-instance [parameter1]",
+      "command": "ip binding vpn-instance vpn1",
+      "explanation": "将接口绑定到VPN实例vpn1",
+      "parameters": [
+        {
+          "name": "vpn instance name",
+          "type": "string",
+          "explanation": "VPN实例名"
+        }
+      ]
+    },
+    "ipv6 enable": {
+      "template": "ipv6 enable",
+      "command": "ipv6 enable",
+      "explanation": "在接口上启用IPv6",
+      "parameters": []
+    },
+    "ipv6 address 2001:DB8:11::1/64": {
+      "template": "ipv6 address [parameter1]",
+      "command": "ipv6 address 2001:DB8:11::1/64",
+      "explanation": "配置接口的IPv6地址为2001:DB8:11::1，前缀长度为64",
+      "parameters": [
+        {
+          "name": "ipv6 address",
+          "type": "IPv6",
+          "explanation": "IPv6地址"
+        }
+      ]
+    }
+  },
+  "interface LoopBack1": {
+    "template": "interface [parameter1]",
+    "command": "interface LoopBack1",
+    "explanation": "进入LoopBack1接口视图",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "ipv6 enable": {
+      "template": "ipv6 enable",
+      "command": "ipv6 enable",
+      "explanation": "在接口上启用IPv6",
+      "parameters": []
+    },
+    "ipv6 address 2001:DB8:1::1/128": {
+      "template": "ipv6 address [parameter1]",
+      "command": "ipv6 address 2001:DB8:1::1/128",
+      "explanation": "配置接口的IPv6地址为2001:DB8:1::1，前缀长度为128",
+      "parameters": [
+        {
+          "name": "ipv6 address",
+          "type": "IPv6",
+          "explanation": "IPv6地址"
+        }
+      ]
+    },
+    "isis ipv6 enable 1": {
+      "template": "isis ipv6 enable [parameter1]",
+      "command": "isis ipv6 enable 1",
+      "explanation": "在接口上启用IS-IS IPv6，并指定进程ID为1",
+      "parameters": [
+        {
+          "name": "process id",
+          "type": "integer",
+          "explanation": "进程ID"
+        }
+      ]
+    }
+  },
+  "bgp 100": {
+    "template": "bgp [parameter1]",
+    "command": "bgp 100",
+    "explanation": "进入BGP进程100视图",
+    "parameters": [
+      {
+        "name": "as number",
+        "type": "integer",
+        "explanation": "AS号"
+      }
+    ],
+    "router-id 1.1.1.1": {
+      "template": "router-id [parameter1]",
+      "command": "router-id 1.1.1.1",
+      "explanation": "配置BGP的Router ID为1.1.1.1",
+      "parameters": [
+        {
+          "name": "router id",
+          "type": "IPv4",
+          "explanation": "路由器ID"
+        }
+      ]
+    },
+    "peer 2001:DB8:3::3 as-number 100": {
+      "template": "peer [parameter1] as-number [parameter2]",
+      "command": "peer 2001:DB8:3::3 as-number 100",
+      "explanation": "配置BGP对等体2001:DB8:3::3，AS号为100",
+      "parameters": [
+        {
+          "name": "peer address",
+          "type": "IPv6",
+          "explanation": "对等体地址"
+        },
+        {
+          "name": "as number",
+          "type": "integer",
+          "explanation": "AS号"
+        }
+      ]
+    },
+    "peer 2001:DB8:3::3 connect-interface LoopBack1": {
+      "template": "peer [parameter1] connect-interface [parameter2]",
+      "command": "peer 2001:DB8:3::3 connect-interface LoopBack1",
+      "explanation": "配置BGP对等体2001:DB8:3::3的连接接口为LoopBack1",
+      "parameters": [
+        {
+          "name": "peer address",
+          "type": "IPv6",
+          "explanation": "对等体地址"
+        },
+        {
+          "name": "interface name",
+          "type": "string",
+          "explanation": "接口名"
+        }
+      ]
+    },
+    "ipv4-family unicast": {
+      "template": "ipv4-family unicast",
+      "command": "ipv4-family unicast",
+      "explanation": "进入BGP IPv4单播地址族视图",
+      "parameters": [],
+      "undo synchronization": {
+        "template": "undo synchronization",
+        "command": "undo synchronization",
+        "explanation": "关闭BGP与IGP的同步",
+        "parameters": []
+      }
+    },
+    "ipv6-family vpn-instance vpn1": {
+      "template": "ipv6-family vpn-instance [parameter1]",
+      "command": "ipv6-family vpn-instance vpn1",
+      "explanation": "进入BGP IPv6 VPN实例vpn1地址族视图",
+      "parameters": [
+        {
+          "name": "vpn instance name",
+          "type": "string",
+          "explanation": "VPN实例名"
+        }
+      ],
+      "import-route direct": {
+        "template": "import-route direct",
+        "command": "import-route direct",
+        "explanation": "引入直连路由",
+        "parameters": []
+      },
+      "advertise l2vpn evpn": {
+        "template": "advertise l2vpn evpn",
+        "command": "advertise l2vpn evpn",
+        "explanation": "在BGP中发布L2VPN EVPN路由",
+        "parameters": []
+      },
+      "segment-routing ipv6 locator PE1 evpn": {
+        "template": "segment-routing ipv6 locator [parameter1] evpn",
+        "command": "segment-routing ipv6 locator PE1 evpn",
+        "explanation": "在BGP中启用IPv6段路由，并指定定位器为PE1，应用于EVPN",
+        "parameters": [
+          {
+            "name": "locator name",
+            "type": "string",
+            "explanation": "定位器名"
+          }
+        ]
+      },
+      "segment-routing ipv6 best-effort evpn": {
+        "template": "segment-routing ipv6 best-effort evpn",
+        "command": "segment-routing ipv6 best-effort evpn",
+        "explanation": "在BGP中启用IPv6段路由尽力而为模式，应用于EVPN",
+        "parameters": []
+      }
+    },
+    "l2vpn-family evpn": {
+      "template": "l2vpn-family evpn",
+      "command": "l2vpn-family evpn",
+      "explanation": "进入BGP L2VPN EVPN地址族视图",
+      "parameters": [],
+      "undo policy vpn-target": {
+        "template": "undo policy vpn-target",
+        "command": "undo policy vpn-target",
+        "explanation": "取消VPN目标策略",
+        "parameters": []
+      },
+      "peer 2001:DB8:3::3 enable": {
+        "template": "peer [parameter1] enable",
+        "command": "peer 2001:DB8:3::3 enable",
+        "explanation": "启用对等体2001:DB8:3::3的EVPN功能",
+        "parameters": [
+          {
+            "name": "peer address",
+            "type": "IPv6",
+            "explanation": "对等体地址"
+          }
+        ]
+      },
+      "peer 2001:

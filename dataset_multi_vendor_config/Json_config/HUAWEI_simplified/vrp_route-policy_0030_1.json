@@ -1,0 +1,287 @@
+{
+    "sysname [parameter1]": {
+        "template": "sysname [parameter1]",
+        "command": "sysname DeviceB",
+        "explanation": "设置设备的主机名为 'DeviceB'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "acl number [parameter1]": {
+        "template": "acl number [parameter1]",
+        "command": "acl number 2002",
+        "explanation": "创建一个编号为2002的ACL",
+        "parameters": [
+            {
+                "name": "acl number",
+                "type": "integer",
+                "explanation": "ACL编号"
+            }
+        ],
+        "rule [parameter1] permit source [parameter2] [parameter3]": {
+            "template": "rule [parameter1] permit source [parameter2] [parameter3]",
+            "command": "rule 5 permit source 172.16.2.0 0.0.0.255",
+            "explanation": "在ACL 2002中添加一条规则，允许源地址为172.16.2.0/24的流量",
+            "parameters": [
+                {
+                    "name": "rule id",
+                    "type": "integer",
+                    "explanation": "规则ID"
+                },
+                {
+                    "name": "source ip",
+                    "type": "IPv4",
+                    "explanation": "源IP地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                }
+            ]
+        }
+    },
+    "isis [parameter1]": {
+        "template": "isis [parameter1]",
+        "command": "isis 1",
+        "explanation": "启用IS-IS进程1",
+        "parameters": [
+            {
+                "name": "process id",
+                "type": "integer",
+                "explanation": "IS-IS进程ID"
+            }
+        ],
+        "is-level [parameter1]": {
+            "template": "is-level [parameter1]",
+            "command": "is-level level-2",
+            "explanation": "设置IS-IS的级别为level-2",
+            "parameters": [
+                {
+                    "name": "level",
+                    "type": "string",
+                    "explanation": "IS-IS级别"
+                }
+            ]
+        },
+        "network-entity [parameter1]": {
+            "template": "network-entity [parameter1]",
+            "command": "network-entity 10.0000.0000.0002.00",
+            "explanation": "设置IS-IS的网络实体标题",
+            "parameters": [
+                {
+                    "name": "network entity title",
+                    "type": "string",
+                    "explanation": "网络实体标题"
+                }
+            ]
+        }
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "进入GigabitEthernet1/0/0接口的配置模式",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "启用接口 (默认情况下接口是关闭的)",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 192.168.1.2 255.255.255.0",
+            "explanation": "配置接口的IPv4地址为192.168.1.2，子网掩码为255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "isis enable [parameter1]": {
+            "template": "isis enable [parameter1]",
+            "command": "isis enable 1",
+            "explanation": "在接口上启用IS-IS进程1",
+            "parameters": [
+                {
+                    "name": "process id",
+                    "type": "integer",
+                    "explanation": "IS-IS进程ID"
+                }
+            ]
+        }
+    },
+    "ospf [parameter1]": {
+        "template": "ospf [parameter1]",
+        "command": "ospf 1",
+        "explanation": "启用OSPF进程1",
+        "parameters": [
+            {
+                "name": "process id",
+                "type": "integer",
+                "explanation": "OSPF进程ID"
+            }
+        ],
+        "import-route isis [parameter1] route-policy [parameter2]": {
+            "template": "import-route isis [parameter1] route-policy [parameter2]",
+            "command": "import-route isis 1 route-policy isis2ospf",
+            "explanation": "将IS-IS进程1的路由导入到OSPF中，并应用路由策略isis2ospf",
+            "parameters": [
+                {
+                    "name": "isis process id",
+                    "type": "integer",
+                    "explanation": "IS-IS进程ID"
+                },
+                {
+                    "name": "route-policy name",
+                    "type": "string",
+                    "explanation": "路由策略名称"
+                }
+            ]
+        },
+        "area [parameter1]": {
+            "template": "area [parameter1]",
+            "command": "area 0.0.0.0",
+            "explanation": "进入OSPF区域0.0.0.0的配置模式",
+            "parameters": [
+                {
+                    "name": "area id",
+                    "type": "IPv4",
+                    "explanation": "OSPF区域ID"
+                }
+            ],
+            "network [parameter1] [parameter2]": {
+                "template": "network [parameter1] [parameter2]",
+                "command": "network 192.168.1.0 0.0.0.255",
+                "explanation": "在OSPF区域0.0.0.0中宣告网络192.168.1.0/24",
+                "parameters": [
+                    {
+                        "name": "network address",
+                        "type": "IPv4",
+                        "explanation": "网络地址"
+                    },
+                    {
+                        "name": "wildcard mask",
+                        "type": "IPv4",
+                        "explanation": "通配符掩码"
+                    }
+                ]
+            }
+        }
+    },
+    "route-policy [parameter1] permit node [parameter2]": {
+        "template": "route-policy [parameter1] permit node [parameter2]",
+        "command": "route-policy isis2ospf permit node 10",
+        "explanation": "创建名为isis2ospf的路由策略，并添加一个允许节点10",
+        "parameters": [
+            {
+                "name": "route-policy name",
+                "type": "string",
+                "explanation": "路由策略名称"
+            },
+            {
+                "name": "node id",
+                "type": "integer",
+                "explanation": "节点ID"
+            }
+        ],
+        "if-match ip-prefix [parameter1]": {
+            "template": "if-match ip-prefix [parameter1]",
+            "command": "if-match ip-prefix prefix-a",
+            "explanation": "匹配IP前缀列表prefix-a",
+            "parameters": [
+                {
+                    "name": "ip-prefix name",
+                    "type": "string",
+                    "explanation": "IP前缀列表名称"
+                }
+            ]
+        },
+        "apply cost [parameter1]": {
+            "template": "apply cost [parameter1]",
+            "command": "apply cost 100",
+            "explanation": "设置路由的cost值为100",
+            "parameters": [
+                {
+                    "name": "cost",
+                    "type": "integer",
+                    "explanation": "路由cost值"
+                }
+            ]
+        },
+        "if-match acl [parameter1]": {
+            "template": "if-match acl [parameter1]",
+            "command": "if-match acl 2002",
+            "explanation": "匹配ACL 2002",
+            "parameters": [
+                {
+                    "name": "acl number",
+                    "type": "integer",
+                    "explanation": "ACL编号"
+                }
+            ]
+        },
+        "apply tag [parameter1]": {
+            "template": "apply tag [parameter1]",
+            "command": "apply tag 20",
+            "explanation": "设置路由的tag值为20",
+            "parameters": [
+                {
+                    "name": "tag",
+                    "type": "integer",
+                    "explanation": "路由tag值"
+                }
+            ]
+        }
+    },
+    "ip ip-prefix [parameter1] index [parameter2] permit [parameter3] [parameter4]": {
+        "template": "ip ip-prefix [parameter1] index [parameter2] permit [parameter3] [parameter4]",
+        "command": "ip ip-prefix prefix-a index 10 permit 172.16.1.0 24",
+        "explanation": "在IP前缀列表prefix-a中添加一条规则，允许172.16.1.0/24",
+        "parameters": [
+            {
+                "name": "ip-prefix name",
+                "type": "string",
+                "explanation": "IP前缀列表名称"
+            },
+            {
+                "name": "index",
+                "type": "integer",
+                "explanation": "规则索引"
+            },
+            {
+                "name": "network address",
+                "type": "IPv4",
+                "explanation": "网络地址"
+            },
+            {
+                "name": "prefix length",
+                "type": "integer",
+                "explanation": "前缀长度"
+            }
+        ]
+    },
+    "return": {
+        "template": "return",
+        "command": "return",
+        "explanation": "退出当前配置模式，返回到用户视图",
+        "parameters": []
+    }
+}

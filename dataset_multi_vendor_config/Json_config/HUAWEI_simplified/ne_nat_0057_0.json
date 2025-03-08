@@ -1,0 +1,367 @@
+{
+    "sysname [parameter1]": {
+        "template": "sysname [parameter1]",
+        "command": "sysname NATA",
+        "explanation": "设置设备的主机名为 'NATA'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "license active nat session-table size [parameter1] slot [parameter2] card [parameter3]": {
+        "template": "license active nat session-table size [parameter1] slot [parameter2] card [parameter3]",
+        "command": "license active nat session-table size 6 slot 1 card 0",
+        "explanation": "激活NAT会话表大小的许可证，大小为6，槽位1，卡0",
+        "parameters": [
+            {
+                "name": "size",
+                "type": "integer",
+                "explanation": "会话表大小"
+            },
+            {
+                "name": "slot",
+                "type": "integer",
+                "explanation": "槽位号"
+            },
+            {
+                "name": "card",
+                "type": "integer",
+                "explanation": "卡号"
+            }
+        ]
+    },
+    "service-location [parameter1]": {
+        "template": "service-location [parameter1]",
+        "command": "service-location 1",
+        "explanation": "配置服务位置1",
+        "parameters": [
+            {
+                "name": "location id",
+                "type": "integer",
+                "explanation": "服务位置ID"
+            }
+        ],
+        "location slot [parameter1] card [parameter2]": {
+            "template": "location slot [parameter1] card [parameter2]",
+            "command": "location slot 1 card 0",
+            "explanation": "指定服务位置1的槽位1，卡0",
+            "parameters": [
+                {
+                    "name": "slot",
+                    "type": "integer",
+                    "explanation": "槽位号"
+                },
+                {
+                    "name": "card",
+                    "type": "integer",
+                    "explanation": "卡号"
+                }
+            ]
+        }
+    },
+    "service-instance-group [parameter1]": {
+        "template": "service-instance-group [parameter1]",
+        "command": "service-instance-group group1",
+        "explanation": "配置服务实例组group1",
+        "parameters": [
+            {
+                "name": "group name",
+                "type": "string",
+                "explanation": "服务实例组名称"
+            }
+        ],
+        "service-location [parameter1]": {
+            "template": "service-location [parameter1]",
+            "command": "service-location 1",
+            "explanation": "将服务位置1分配给服务实例组group1",
+            "parameters": [
+                {
+                    "name": "location id",
+                    "type": "integer",
+                    "explanation": "服务位置ID"
+                }
+            ]
+        }
+    },
+    "nat instance [parameter1] id [parameter2]": {
+        "template": "nat instance [parameter1] id [parameter2]",
+        "command": "nat instance nat1 id 1",
+        "explanation": "配置NAT实例nat1，ID为1",
+        "parameters": [
+            {
+                "name": "instance name",
+                "type": "string",
+                "explanation": "NAT实例名称"
+            },
+            {
+                "name": "id",
+                "type": "integer",
+                "explanation": "NAT实例ID"
+            }
+        ],
+        "port-range [parameter1]": {
+            "template": "port-range [parameter1]",
+            "command": "port-range 1024",
+            "explanation": "设置NAT实例nat1的端口范围为1024",
+            "parameters": [
+                {
+                    "name": "port range",
+                    "type": "integer",
+                    "explanation": "端口范围"
+                }
+            ]
+        },
+        "service-instance-group [parameter1]": {
+            "template": "service-instance-group [parameter1]",
+            "command": "service-instance-group group1",
+            "explanation": "将服务实例组group1分配给NAT实例nat1",
+            "parameters": [
+                {
+                    "name": "group name",
+                    "type": "string",
+                    "explanation": "服务实例组名称"
+                }
+            ]
+        },
+        "nat address-group [parameter1] group-id [parameter2]": {
+            "template": "nat address-group [parameter1] group-id [parameter2]",
+            "command": "nat address-group address-group1 group-id 1",
+            "explanation": "配置NAT地址组address-group1，组ID为1",
+            "parameters": [
+                {
+                    "name": "address group name",
+                    "type": "string",
+                    "explanation": "NAT地址组名称"
+                },
+                {
+                    "name": "group id",
+                    "type": "integer",
+                    "explanation": "组ID"
+                }
+            ],
+            "section [parameter1] [parameter2] [parameter3]": {
+                "template": "section [parameter1] [parameter2] [parameter3]",
+                "command": "section 1 11.11.11.101 11.11.11.105",
+                "explanation": "配置NAT地址组address-group1的地址段1，起始地址11.11.11.101，结束地址11.11.11.105",
+                "parameters": [
+                    {
+                        "name": "section id",
+                        "type": "integer",
+                        "explanation": "地址段ID"
+                    },
+                    {
+                        "name": "start ip",
+                        "type": "IPv4",
+                        "explanation": "起始IP地址"
+                    },
+                    {
+                        "name": "end ip",
+                        "type": "IPv4",
+                        "explanation": "结束IP地址"
+                    }
+                ]
+            }
+        },
+        "nat outbound [parameter1] address-group [parameter2]": {
+            "template": "nat outbound [parameter1] address-group [parameter2]",
+            "command": "nat outbound 3001 address-group address-group1",
+            "explanation": "配置NAT实例nat1的出方向NAT，使用ACL 3001和地址组address-group1",
+            "parameters": [
+                {
+                    "name": "acl id",
+                    "type": "integer",
+                    "explanation": "ACL ID"
+                },
+                {
+                    "name": "address group name",
+                    "type": "string",
+                    "explanation": "NAT地址组名称"
+                }
+            ]
+        },
+        "nat filter mode [parameter1]": {
+            "template": "nat filter mode [parameter1]",
+            "command": "nat filter mode full-cone",
+            "explanation": "配置NAT实例nat1的过滤模式为全锥形",
+            "parameters": [
+                {
+                    "name": "filter mode",
+                    "type": "string",
+                    "explanation": "过滤模式"
+                }
+            ]
+        }
+    },
+    "acl number [parameter1]": {
+        "template": "acl number [parameter1]",
+        "command": "acl number 3001",
+        "explanation": "配置ACL 3001",
+        "parameters": [
+            {
+                "name": "acl id",
+                "type": "integer",
+                "explanation": "ACL ID"
+            }
+        ],
+        "rule [parameter1] permit ip source [parameter2] [parameter3]": {
+            "template": "rule [parameter1] permit ip source [parameter2] [parameter3]",
+            "command": "rule 1 permit ip source 192.168.10.0 0.0.0.255",
+            "explanation": "配置ACL 3001的规则1，允许源IP地址192.168.10.0/24的IP流量",
+            "parameters": [
+                {
+                    "name": "rule id",
+                    "type": "integer",
+                    "explanation": "规则ID"
+                },
+                {
+                    "name": "source ip",
+                    "type": "IPv4",
+                    "explanation": "源IP地址"
+                },
+                {
+                    "name": "wildcard",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                }
+            ]
+        }
+    },
+    "traffic classifier [parameter1]": {
+        "template": "traffic classifier [parameter1]",
+        "command": "traffic classifier classifier1",
+        "explanation": "配置流量分类器classifier1",
+        "parameters": [
+            {
+                "name": "classifier name",
+                "type": "string",
+                "explanation": "流量分类器名称"
+            }
+        ],
+        "if-match acl [parameter1]": {
+            "template": "if-match acl [parameter1]",
+            "command": "if-match acl 3001",
+            "explanation": "配置流量分类器classifier1匹配ACL 3001",
+            "parameters": [
+                {
+                    "name": "acl id",
+                    "type": "integer",
+                    "explanation": "ACL ID"
+                }
+            ]
+        }
+    },
+    "traffic behavior [parameter1]": {
+        "template": "traffic behavior [parameter1]",
+        "command": "traffic behavior behavior1",
+        "explanation": "配置流量行为behavior1",
+        "parameters": [
+            {
+                "name": "behavior name",
+                "type": "string",
+                "explanation": "流量行为名称"
+            }
+        ],
+        "nat bind instance [parameter1]": {
+            "template": "nat bind instance [parameter1]",
+            "command": "nat bind instance nat1",
+            "explanation": "配置流量行为behavior1绑定NAT实例nat1",
+            "parameters": [
+                {
+                    "name": "instance name",
+                    "type": "string",
+                    "explanation": "NAT实例名称"
+                }
+            ]
+        }
+    },
+    "traffic policy [parameter1]": {
+        "template": "traffic policy [parameter1]",
+        "command": "traffic policy policy1",
+        "explanation": "配置流量策略policy1",
+        "parameters": [
+            {
+                "name": "policy name",
+                "type": "string",
+                "explanation": "流量策略名称"
+            }
+        ],
+        "classifier [parameter1] behavior [parameter2]": {
+            "template": "classifier [parameter1] behavior [parameter2]",
+            "command": "classifier classifier1 behavior behavior1",
+            "explanation": "配置流量策略policy1使用流量分类器classifier1和流量行为behavior1",
+            "parameters": [
+                {
+                    "name": "classifier name",
+                    "type": "string",
+                    "explanation": "流量分类器名称"
+                },
+                {
+                    "name": "behavior name",
+                    "type": "string",
+                    "explanation": "流量行为名称"
+                }
+            ]
+        }
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet 2/0/0",
+        "explanation": "进入接口GigabitEthernet 2/0/0的配置模式",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "启用接口 (默认情况下接口是关闭的)",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 192.168.10.1 255.255.255.0",
+            "explanation": "配置接口的IPv4地址为 192.168.10.1，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "sub musk",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "traffic-policy [parameter1] [parameter2]": {
+            "template": "traffic-policy [parameter1] [parameter2]",
+            "command": "traffic-policy policy1 inbound",
+            "explanation": "在接口GigabitEthernet 2/0/0的入方向应用流量策略policy1",
+            "parameters": [
+                {
+                    "name": "policy name",
+                    "type": "string",
+                    "explanation": "流量策略名称"
+                },
+                {
+                    "name": "direction",
+                    "type": "string",
+                    "explanation": "方向"
+                }
+            ]
+        }
+    },
+    "return": {
+        "template": "return",
+        "command": "return",
+        "explanation": "退出当前视图，返回到用户视图",
+        "parameters": []
+    }
+}
