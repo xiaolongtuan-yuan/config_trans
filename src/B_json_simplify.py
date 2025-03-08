@@ -158,12 +158,13 @@ def insert_template(config_model: dict) -> dict:
     return config_model
 
 if __name__ == "__main__":
-    vendors = ["Cisco", "HUAWEI", "Juniper"]
+    vendors = ["Juniper"]
+    project_root = Path(__file__).parent.parent
 
     # simplify the device configuration model
     for vendor in vendors:
-        folder_path = 'config_trans/dataset_multi_vendor_config/Json_config/{}'.format(vendor)
-        save_path = 'config_trans/dataset_multi_vendor_config/Json_config/{}'.format(vendor+'_simplified')
+        folder_path = str(project_root / 'dataset_multi_vendor_config/Json_config/{}'.format(vendor))
+        save_path = str(project_root / 'dataset_multi_vendor_config/Json_config/{}'.format(vendor+'_simplified'))
         json_files = get_json_filenames(folder_path)
         for json_file in json_files:
             json_config_path = folder_path + '/' + json_file

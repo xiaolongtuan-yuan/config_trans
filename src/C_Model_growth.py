@@ -87,18 +87,22 @@ def insert_template(config_model: dict) -> dict:
 
 if __name__ == "__main__":
     vendors = ["Cisco", "HUAWEI", "Juniper"]
+    project_root = Path(__file__).parent.parent
 
     # merge the device configuration to the vendor model
     for vendor in vendors:
-        folder_path = 'config_trans/dataset_multi_vendor_config/Json_config/{}_simplified'.format(vendor)
-        vendor_model_path = 'config_trans/dataset_multi_vendor_config/config_model/{}.json'.format(vendor)
+        folder_path = str(project_root / 'dataset_multi_vendor_config/Json_config/{}_simplified'.format(vendor))
+        vendor_model_path = str(project_root / 'dataset_multi_vendor_config/config_model/{}.json'.format(vendor))
+
         json_files = get_json_filenames(folder_path)
         merge_count = 0
         for json_file in tqdm(json_files, desc="Merged config num"):
             json_config_path = folder_path + '/' + json_file
-            print(json_config_path)
             # 加载设备配置模型
-            json_config = load_json_file(json_config_path)
+            try:
+                json_config = load_json_file(json_config_path)
+            except:
+                continue
             # 加载供应商配置模型
             vendor_model = load_json_file(vendor_model_path)
             vendor_model = merge_models(vendor_model, json_config)

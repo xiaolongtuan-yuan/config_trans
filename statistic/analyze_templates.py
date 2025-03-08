@@ -72,13 +72,6 @@ if __name__ == "__main__":
     vendors =["Cisco","HUAWEI","Juniper"]
     for vendor in vendors:
         stats = analyze_templates(config_dir, vendor)
-        # print("模板使用统计结果：")
-        # print("有效文件比例：", stats['valid_file_rate'])
-        # for template, data in stats['templates']:
-        #     print(f"模板: {template}")
-        #     print(f"  使用次数: {data['count']}")
-        #     print(f"  使用概率: {data['probability']:.2%}")
-        #     print("-------------------")
         # 将统计结果保存为 JSON 文件
         with open(f"./statistic_res/{vendor}_template_stats.json", 'w') as f:
             json.dump(stats, f, indent=4)
