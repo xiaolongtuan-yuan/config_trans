@@ -92,9 +92,9 @@ def parse_config(client, model_name, prompt, messages, config):
 
 def process_file(config_file, full_config_path, save_path, vendor, client, model_name):
     # 检查目标文件是否已经存在
-    # output_file = os.path.join(save_path, config_file)
-    # if os.path.exists(output_file):
-    #     return
+    output_file = os.path.join(save_path, config_file)
+    if os.path.exists(output_file):
+        return
 
     prompt, messages = prompt_massage_for_vendors(vendor)
     config = load_config(full_config_path, config_file)
@@ -112,11 +112,12 @@ if __name__ == "__main__":
         sys.exit(1)
     vendor = sys.argv[1]
     config_path = sys.argv[2]
+    project_root = Path(__file__).parent.parent
 
-    full_config_path =  'dataset_multi_vendor_config/{}/{}'.format(config_path, vendor)
+    full_config_path =  str(project_root / 'dataset_multi_vendor_config/{}/{}'.format(config_path, vendor))
     ## 获取文件名
     txt_files = get_txt_filenames(full_config_path)
-    save_path = 'dataset_multi_vendor_config/Json_config/{}'.format(vendor)
+    save_path = str(project_root / 'dataset_multi_vendor_config/Json_config/{}'.format(vendor))
 
     total_time = 0
     num_iterations = 1  # 测试次数
