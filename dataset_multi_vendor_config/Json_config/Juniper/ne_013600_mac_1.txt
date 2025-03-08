@@ -1,0 +1,444 @@
+{
+  "set system": {
+    "set system services dhcp-local-server group pool1 interface <interface_name>": {
+      "template": "set system services dhcp-local-server group [parameter1] interface [parameter2]",
+      "command": "set system services dhcp-local-server group pool1 interface <interface_name>",
+      "explanation": "配置DHCP本地服务器组，指定接口。",
+      "parameters": [
+        {
+          "name": "group",
+          "type": "string",
+          "explanation": "DHCP服务器组的名称。"
+        },
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称，用于指定DHCP服务绑定的接口。"
+        }
+      ]
+    },
+    "set system authentication-order [ radius password ]": {
+      "template": "set system authentication-order [parameter1]",
+      "command": "set system authentication-order [ radius password ]",
+      "explanation": "配置系统认证顺序。",
+      "parameters": [
+        {
+          "name": "authentication-methods",
+          "type": "list",
+          "explanation": "认证方法列表，例如radius和password。"
+        }
+      ]
+    },
+    "set system radius-server <IP_address> secret <shared_key>": {
+      "template": "set system radius-server [parameter1] secret [parameter2]",
+      "command": "set system radius-server <IP_address> secret <shared_key>",
+      "explanation": "配置RADIUS服务器及其共享密钥。",
+      "parameters": [
+        {
+          "name": "IP_address",
+          "type": "string",
+          "explanation": "RADIUS服务器的IP地址。"
+        },
+        {
+          "name": "shared_key",
+          "type": "string",
+          "explanation": "与RADIUS服务器通信的共享密钥。"
+        }
+      ]
+    },
+    "set system accounting events interactive": {
+      "template": "set system accounting events [parameter1]",
+      "command": "set system accounting events interactive",
+      "explanation": "配置系统账户事件为交互式。",
+      "parameters": [
+        {
+          "name": "event-type",
+          "type": "string",
+          "explanation": "账户事件类型，例如interactive。"
+        }
+      ]
+    },
+    "set system authentication-order password": {
+      "template": "set system authentication-order [parameter1]",
+      "command": "set system authentication-order password",
+      "explanation": "配置系统认证顺序为密码。",
+      "parameters": [
+        {
+          "name": "authentication-method",
+          "type": "string",
+          "explanation": "认证方法，例如password。"
+        }
+      ]
+    },
+    "set system login user 172.30.0.8@printer class super-user authentication plain-text-password \"%^%#4*RHO=w*}.d\\>j09'Z:%=:co~p\\w9'G-^|-zR'N4%^%#\"": {
+      "template": "set system login user [parameter1] class [parameter2] authentication plain-text-password [parameter3]",
+      "command": "set system login user 172.30.0.8@printer class super-user authentication plain-text-password \"%^%#4*RHO=w*}.d\\>j09'Z:%=:co~p\\w9'G-^|-zR'N4%^%#\"",
+      "explanation": "配置系统登录用户，指定用户类及认证方式为明文密码。",
+      "parameters": [
+        {
+          "name": "username",
+          "type": "string",
+          "explanation": "用户名。"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "explanation": "用户类，例如super-user。"
+        },
+        {
+          "name": "password",
+          "type": "string",
+          "explanation": "用户的明文密码。"
+        }
+      ]
+    }
+  },
+  "set access": {
+    "set access address-assignment pool pool1 family inet network 172.30.0.0/24": {
+      "template": "set access address-assignment pool [parameter1] family inet network [parameter2]/[parameter3]",
+      "command": "set access address-assignment pool pool1 family inet network 172.30.0.0/24",
+      "explanation": "配置地址分配池的网络地址及子网掩码。",
+      "parameters": [
+        {
+          "name": "pool",
+          "type": "string",
+          "explanation": "地址分配池的名称。"
+        },
+        {
+          "name": "network-address",
+          "type": "string",
+          "explanation": "网络地址。"
+        },
+        {
+          "name": "subnet-mask",
+          "type": "integer",
+          "explanation": "子网掩码的位数。"
+        }
+      ]
+    },
+    "set access address-assignment pool pool1 family inet dhcp-attributes router 172.30.0.1": {
+      "template": "set access address-assignment pool [parameter1] family inet dhcp-attributes router [parameter2]",
+      "command": "set access address-assignment pool pool1 family inet dhcp-attributes router 172.30.0.1",
+      "explanation": "配置DHCP属性中的路由器地址。",
+      "parameters": [
+        {
+          "name": "pool",
+          "type": "string",
+          "explanation": "地址分配池的名称。"
+        },
+        {
+          "name": "router-address",
+          "type": "string",
+          "explanation": "路由器的IP地址。"
+        }
+      ]
+    },
+    "set access address-assignment pool pool1 family inet exclude-address 172.30.0.8": {
+      "template": "set access address-assignment pool [parameter1] family inet exclude-address [parameter2]",
+      "command": "set access address-assignment pool pool1 family inet exclude-address 172.30.0.8",
+      "explanation": "配置地址分配池中排除的地址。",
+      "parameters": [
+        {
+          "name": "pool",
+          "type": "string",
+          "explanation": "地址分配池的名称。"
+        },
+        {
+          "name": "exclude-address",
+          "type": "string",
+          "explanation": "排除的IP地址。"
+        }
+      ]
+    },
+    "set access profile domain_auth authentication-order radius": {
+      "template": "set access profile [parameter1] authentication-order [parameter2]",
+      "command": "set access profile domain_auth authentication-order radius",
+      "explanation": "配置访问配置文件的认证顺序为RADIUS。",
+      "parameters": [
+        {
+          "name": "profile",
+          "type": "string",
+          "explanation": "访问配置文件的名称。"
+        },
+        {
+          "name": "authentication-method",
+          "type": "string",
+          "explanation": "认证方法，例如radius。"
+        }
+      ]
+    },
+    "set access profile domain_auth client-radius-server <IP_address>": {
+      "template": "set access profile [parameter1] client-radius-server [parameter2]",
+      "command": "set access profile domain_auth client-radius-server <IP_address>",
+      "explanation": "配置访问配置文件的客户端RADIUS服务器地址。",
+      "parameters": [
+        {
+          "name": "profile",
+          "type": "string",
+          "explanation": "访问配置文件的名称。"
+        },
+        {
+          "name": "IP_address",
+          "type": "string",
+          "explanation": "客户端RADIUS服务器的IP地址。"
+        }
+      ]
+    },
+    "set access profile domain_auth address-assignment pool <pool_name>": {
+      "template": "set access profile [parameter1] address-assignment pool [parameter2]",
+      "command": "set access profile domain_auth address-assignment pool <pool_name>",
+      "explanation": "配置访问配置文件的地址分配池。",
+      "parameters": [
+        {
+          "name": "profile",
+          "type": "string",
+          "explanation": "访问配置文件的名称。"
+        },
+        {
+          "name": "pool",
+          "type": "string",
+          "explanation": "地址分配池的名称。"
+        }
+      ]
+    },
+    "set access profile local_auth authentication-order password": {
+      "template": "set access profile [parameter1] authentication-order [parameter2]",
+      "command": "set access profile local_auth authentication-order password",
+      "explanation": "配置访问配置文件的认证顺序为密码。",
+      "parameters": [
+        {
+          "name": "profile",
+          "type": "string",
+          "explanation": "访问配置文件的名称。"
+        },
+        {
+          "name": "authentication-method",
+          "type": "string",
+          "explanation": "认证方法，例如password。"
+        }
+      ]
+    }
+  },
+  "set interfaces": {
+    "set interfaces ge-1/0/2 unit 0 family ethernet-switching port-mode access": {
+      "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching port-mode [parameter3]",
+      "command": "set interfaces ge-1/0/2 unit 0 family ethernet-switching port-mode access",
+      "explanation": "配置接口的以太网交换端口模式为访问模式。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称。"
+        },
+        {
+          "name": "unit",
+          "type": "integer",
+          "explanation": "接口单元号。"
+        },
+        {
+          "name": "port-mode",
+          "type": "string",
+          "explanation": "端口模式，例如access。"
+        }
+      ]
+    },
+    "set interfaces ge-1/0/2 unit 0 family ethernet-switching vlan members <VLAN_ID>": {
+      "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching vlan members [parameter3]",
+      "command": "set interfaces ge-1/0/2 unit 0 family ethernet-switching vlan members <VLAN_ID>",
+      "explanation": "配置接口的VLAN成员。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称。"
+        },
+        {
+          "name": "unit",
+          "type": "integer",
+          "explanation": "接口单元号。"
+        },
+        {
+          "name": "vlan-members",
+          "type": "string",
+          "explanation": "VLAN成员，例如VLAN ID。"
+        }
+      ]
+    },
+    "set interfaces ge-1/0/2 unit 0 family ethernet-switching voice-vlan <VLAN_ID>": {
+      "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching voice-vlan [parameter3]",
+      "command": "set interfaces ge-1/0/2 unit 0 family ethernet-switching voice-vlan <VLAN_ID>",
+      "explanation": "配置接口的语音VLAN。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称。"
+        },
+        {
+          "name": "unit",
+          "type": "integer",
+          "explanation": "接口单元号。"
+        },
+        {
+          "name": "voice-vlan",
+          "type": "string",
+          "explanation": "语音VLAN的ID。"
+        }
+      ]
+    },
+    "set interfaces ge-1/0/2 unit 0 family ethernet-switching authentication order [ mab dot1x ]": {
+      "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching authentication order [parameter3]",
+      "command": "set interfaces ge-1/0/2 unit 0 family ethernet-switching authentication order [ mab dot1x ]",
+      "explanation": "配置接口的认证顺序。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称。"
+        },
+        {
+          "name": "unit",
+          "type": "integer",
+          "explanation": "接口单元号。"
+        },
+        {
+          "name": "authentication-methods",
+          "type": "list",
+          "explanation": "认证方法列表，例如mab和dot1x。"
+        }
+      ]
+    },
+    "set interfaces ge-1/0/2 unit 0 family ethernet-switching authentication priority [ mab dot1x ]": {
+      "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching authentication priority [parameter3]",
+      "command": "set interfaces ge-1/0/2 unit 0 family ethernet-switching authentication priority [ mab dot1x ]",
+      "explanation": "配置接口的认证优先级。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称。"
+        },
+        {
+          "name": "unit",
+          "type": "integer",
+          "explanation": "接口单元号。"
+        },
+        {
+          "name": "authentication-methods",
+          "type": "list",
+          "explanation": "认证方法列表，例如mab和dot1x。"
+        }
+      ]
+    },
+    "set interfaces ge-1/0/2 unit 0 family ethernet-switching authentication port-control auto": {
+      "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching authentication port-control [parameter3]",
+      "command": "set interfaces ge-1/0/2 unit 0 family ethernet-switching authentication port-control auto",
+      "explanation": "配置接口的认证端口控制为自动。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称。"
+        },
+        {
+          "name": "unit",
+          "type": "integer",
+          "explanation": "接口单元号。"
+        },
+        {
+          "name": "port-control",
+          "type": "string",
+          "explanation": "端口控制模式，例如auto。"
+        }
+      ]
+    },
+    "set interfaces ge-1/0/2 unit 0 family ethernet-switching authentication host-mode multi-auth": {
+      "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching authentication host-mode [parameter3]",
+      "command": "set interfaces ge-1/0/2 unit 0 family ethernet-switching authentication host-mode multi-auth",
+      "explanation": "配置接口的认证主机模式为多认证。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称。"
+        },
+        {
+          "name": "unit",
+          "type": "integer",
+          "explanation": "接口单元号。"
+        },
+        {
+          "name": "host-mode",
+          "type": "string",
+          "explanation": "主机模式，例如multi-auth。"
+        }
+      ]
+    },
+    "set interfaces ge-1/0/2 unit 0 family ethernet-switching mac-authentication dot1x pae": {
+      "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching mac-authentication dot1x [parameter3]",
+      "command": "set interfaces ge-1/0/2 unit 0 family ethernet-switching mac-authentication dot1x pae",
+      "explanation": "配置接口的MAC认证dot1x PAE。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称。"
+        },
+        {
+          "name": "unit",
+          "type": "integer",
+          "explanation": "接口单元号。"
+        },
+        {
+          "name": "pae",
+          "type": "string",
+          "explanation": "PAE类型，例如pae。"
+        }
+      ]
+    }
+  },
+  "set protocols": {
+    "set protocols dot1x authenticator interface ge-1/0/2 reauthentication interval 1800": {
+      "template": "set protocols dot1x authenticator interface [parameter1] reauthentication interval [parameter2]",
+      "command": "set protocols dot1x authenticator interface ge-1/0/2 reauthentication interval 1800",
+      "explanation": "配置dot1x认证器的重新认证间隔。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称。"
+        },
+        {
+          "name": "interval",
+          "type": "integer",
+          "explanation": "重新认证间隔时间，单位为秒。"
+        }
+      ]
+    },
+    "set protocols dot1x authenticator interface ge-1/0/2 retry 3": {
+      "template": "set protocols dot1x authenticator interface [parameter1] retry [parameter2]",
+      "command": "set protocols dot1x authenticator interface ge-1/0/2 retry 3",
+      "explanation": "配置dot1x认证器的重试次数。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称。"
+        },
+        {
+          "name": "retry",
+          "type": "integer",
+          "explanation": "重试次数。"
+        }
+      ]
+    }
+  },
+  "set ethernet-switching-options": {
+    "set ethernet-switching-options voip interface ge-1/0/2 vlan <VLAN_ID>": {
+      "template": "set ethernet-switching-options voip interface [parameter1] vlan [parameter2]",
+      "command": "set ethernet-switching-options voip interface ge-1/0/2 vlan <VLAN_ID>",
+      "explanation": "配置VoIP接口的VLAN。",
+      "parameters": [
+        {
+          "name": "interface",
+          "

@@ -1,0 +1,215 @@
+{
+    "hostname [parameter1]": {
+        "template": "hostname [parameter1]",
+        "command": "hostname ASBR1",
+        "explanation": "设置设备的主机名为 'ASBR1'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "mpls label protocol [parameter1]": {
+        "template": "mpls label protocol [parameter1]",
+        "command": "mpls label protocol ldp",
+        "explanation": "配置 MPLS 标签分发协议为 LDP",
+        "parameters": [
+            {
+                "name": "protocol",
+                "type": "string",
+                "explanation": "协议类型"
+            }
+        ]
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "配置接口 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.10.1.2 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 10.10.1.2，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "mpls ip": {
+            "template": "mpls ip",
+            "command": "mpls ip",
+            "explanation": "在接口上启用 MPLS IP",
+            "parameters": []
+        }
+    },
+    "router bgp [parameter1]": {
+        "template": "router bgp [parameter1]",
+        "command": "router bgp 100",
+        "explanation": "配置 BGP 进程，AS 号为 100",
+        "parameters": [
+            {
+                "name": "AS number",
+                "type": "integer",
+                "explanation": "AS 号"
+            }
+        ],
+        "neighbor [parameter1] remote-as [parameter2]": {
+            "template": "neighbor [parameter1] remote-as [parameter2]",
+            "command": "neighbor 1.1.1.1 remote-as 100",
+            "explanation": "配置 BGP 邻居，IP 地址为 1.1.1.1，AS 号为 100",
+            "parameters": [
+                {
+                    "name": "neighbor ip",
+                    "type": "IPv4",
+                    "explanation": "邻居 IP 地址"
+                },
+                {
+                    "name": "AS number",
+                    "type": "integer",
+                    "explanation": "AS 号"
+                }
+            ]
+        },
+        "neighbor [parameter1] update-source [parameter2]": {
+            "template": "neighbor [parameter1] update-source [parameter2]",
+            "command": "neighbor 1.1.1.1 update-source Loopback1",
+            "explanation": "配置 BGP 邻居 1.1.1.1 的更新源为 Loopback1 接口",
+            "parameters": [
+                {
+                    "name": "neighbor ip",
+                    "type": "IPv4",
+                    "explanation": "邻居 IP 地址"
+                },
+                {
+                    "name": "source interface",
+                    "type": "string",
+                    "explanation": "更新源接口"
+                }
+            ]
+        }
+    },
+    "ip route [parameter1] [parameter2] [parameter3]": {
+        "template": "ip route [parameter1] [parameter2] [parameter3]",
+        "command": "ip route 1.1.1.1 255.255.255.255 Null0",
+        "explanation": "配置静态路由，目的地址为 1.1.1.1/32，下一跳为 Null0 接口",
+        "parameters": [
+            {
+                "name": "destination ip",
+                "type": "IPv4",
+                "explanation": "目的 IP 地址"
+            },
+            {
+                "name": "subnet mask",
+                "type": "IPv4",
+                "explanation": "子网掩码"
+            },
+            {
+                "name": "next hop",
+                "type": "string",
+                "explanation": "下一跳"
+            }
+        ]
+    },
+    "route-map [parameter1] [parameter2] [parameter3]": {
+        "template": "route-map [parameter1] [parameter2] [parameter3]",
+        "command": "route-map policy1 permit 10",
+        "explanation": "配置路由映射 'policy1'，允许序列号为 10 的条目",
+        "parameters": [
+            {
+                "name": "route-map name",
+                "type": "string",
+                "explanation": "路由映射名称"
+            },
+            {
+                "name": "action",
+                "type": "string",
+                "explanation": "动作（permit/deny）"
+            },
+            {
+                "name": "sequence number",
+                "type": "integer",
+                "explanation": "序列号"
+            }
+        ],
+        "match mpls experimental topmost [parameter1]": {
+            "template": "match mpls experimental topmost [parameter1]",
+            "command": "match mpls experimental topmost 1",
+            "explanation": "匹配 MPLS 标签的顶层实验值为 1",
+            "parameters": [
+                {
+                    "name": "experimental value",
+                    "type": "integer",
+                    "explanation": "实验值"
+                }
+            ]
+        },
+        "set mpls experimental topmost [parameter1]": {
+            "template": "set mpls experimental topmost [parameter1]",
+            "command": "set mpls experimental topmost 1",
+            "explanation": "设置 MPLS 标签的顶层实验值为 1",
+            "parameters": [
+                {
+                    "name": "experimental value",
+                    "type": "integer",
+                    "explanation": "实验值"
+                }
+            ]
+        }
+    },
+    "router ospf [parameter1]": {
+        "template": "router ospf [parameter1]",
+        "command": "router ospf 1",
+        "explanation": "配置 OSPF 进程，进程号为 1",
+        "parameters": [
+            {
+                "name": "process id",
+                "type": "integer",
+                "explanation": "进程号"
+            }
+        ],
+        "network [parameter1] [parameter2] area [parameter3]": {
+            "template": "network [parameter1] [parameter2] area [parameter3]",
+            "command": "network 2.2.2.2 0.0.0.0 area 0",
+            "explanation": "配置 OSPF 网络，IP 地址为 2.2.2.2/32，区域为 0",
+            "parameters": [
+                {
+                    "name": "network ip",
+                    "type": "IPv4",
+                    "explanation": "网络 IP 地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                },
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "区域号"
+                }
+            ]
+        }
+    }
+}

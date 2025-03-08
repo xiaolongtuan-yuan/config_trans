@@ -1,0 +1,194 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name UPE1",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols ldp interface [parameter1]": {
+            "template": "set protocols ldp interface [parameter1]",
+            "command": "set protocols ldp interface ge-0/0/0",
+            "explanation": "配置LDP协议在指定接口上运行。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                }
+            ]
+        },
+        "set protocols mpls interface [parameter1]": {
+            "template": "set protocols mpls interface [parameter1]",
+            "command": "set protocols mpls interface ge-0/0/0",
+            "explanation": "配置MPLS协议在指定接口上运行。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                }
+            ]
+        },
+        "set protocols mpls ldp_interface [parameter1]": {
+            "template": "set protocols mpls ldp_interface [parameter1]",
+            "command": "set protocols mpls ldp_interface ge-0/0/0",
+            "explanation": "配置MPLS协议的LDP接口。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                }
+            ]
+        },
+        "set protocols ospf area [parameter1] passive-interface [parameter2]": {
+            "template": "set protocols ospf area [parameter1] passive-interface [parameter2]",
+            "command": "set protocols ospf area 0 passive-interface default",
+            "explanation": "配置OSPF区域0的默认接口为被动模式。",
+            "parameters": [
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "OSPF区域号。"
+                },
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口模式，例如default表示所有接口。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces ge-0/0/0 unit 0 family inet address 10.10.3.2/24",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet",
+            "command": "set interfaces ge-0/0/1 unit 0 family inet",
+            "explanation": "配置接口支持IPv4协议。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                }
+            ]
+        },
+        "set interfaces [parameter1]_unit_[parameter2] encapsulation dot1q [parameter3]": {
+            "template": "set interfaces [parameter1]_unit_[parameter2] encapsulation dot1q [parameter3]",
+            "command": "set interfaces ge-0/0/1_unit_0 encapsulation dot1q 1",
+            "explanation": "配置接口的VLAN封装类型为dot1q，并指定VLAN ID。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN ID，用于标识不同的VLAN。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] encapsulation mpls ttl-sec [parameter3] connect interface-name [parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] encapsulation mpls ttl-sec [parameter3] connect interface-name [parameter4]",
+            "command": "set interfaces ge-1/0/0 unit 1 encapsulation mpls ttl-sec 64 connect interface-name ge-0/0/0",
+            "explanation": "配置接口的MPLS封装，设置TTL值，并连接到指定接口。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ttl",
+                    "type": "integer",
+                    "explanation": "MPLS封装的TTL值。"
+                },
+                {
+                    "name": "connect-interface",
+                    "type": "string",
+                    "explanation": "连接到的接口名称，例如ge-0/0/0。"
+                }
+            ]
+        }
+    },
+    "set routing-options": {
+        "template": "set routing-options",
+        "set routing-options static route [parameter1]/[parameter2] next-hop [parameter3]": {
+            "template": "set routing-options static route [parameter1]/[parameter2] next-hop [parameter3]",
+            "command": "set routing-options static route 4.4.4.9/32 next-hop 4.4.4.9",
+            "explanation": "配置静态路由，指定目的网络和下一跳地址。",
+            "parameters": [
+                {
+                    "name": "destination",
+                    "type": "string",
+                    "explanation": "目的网络地址。"
+                },
+                {
+                    "name": "prefix-length",
+                    "type": "integer",
+                    "explanation": "目的网络的子网掩码长度。"
+                },
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "下一跳地址。"
+                }
+            ]
+        }
+    }
+}

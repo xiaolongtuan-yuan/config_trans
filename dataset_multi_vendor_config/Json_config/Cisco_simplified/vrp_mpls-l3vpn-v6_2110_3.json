@@ -1,0 +1,326 @@
+{
+    "hostname [parameter1]": {
+        "template": "hostname [parameter1]",
+        "command": "hostname PE1",
+        "explanation": "设置设备的主机名为 'PE1'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "ip vrf [parameter1]": {
+        "template": "ip vrf [parameter1]",
+        "command": "ip vrf vpn1",
+        "explanation": "创建或进入名为 'vpn1' 的 VRF 实例",
+        "parameters": [
+            {
+                "name": "vrf name",
+                "type": "string",
+                "explanation": "VRF 实例名称"
+            }
+        ],
+        "rd [parameter1]": {
+            "template": "rd [parameter1]",
+            "command": "rd 200:1",
+            "explanation": "为 VRF 实例 'vpn1' 设置路由区分符为 200:1",
+            "parameters": [
+                {
+                    "name": "route distinguisher",
+                    "type": "string",
+                    "explanation": "路由区分符"
+                }
+            ]
+        },
+        "route-target export [parameter1]": {
+            "template": "route-target export [parameter1]",
+            "command": "route-target export 1:1",
+            "explanation": "为 VRF 实例 'vpn1' 设置导出的路由目标为 1:1",
+            "parameters": [
+                {
+                    "name": "route target",
+                    "type": "string",
+                    "explanation": "路由目标"
+                }
+            ]
+        },
+        "route-target import [parameter1]": {
+            "template": "route-target import [parameter1]",
+            "command": "route-target import 1:1",
+            "explanation": "为 VRF 实例 'vpn1' 设置导入的路由目标为 1:1",
+            "parameters": [
+                {
+                    "name": "route target",
+                    "type": "string",
+                    "explanation": "路由目标"
+                }
+            ]
+        }
+    },
+    "mpls label protocol [parameter1]": {
+        "template": "mpls label protocol [parameter1]",
+        "command": "mpls label protocol ldp",
+        "explanation": "设置 MPLS 标签分发协议为 LDP",
+        "parameters": [
+            {
+                "name": "protocol",
+                "type": "string",
+                "explanation": "标签分发协议"
+            }
+        ]
+    },
+    "mpls ldp vpn-instance [parameter1]": {
+        "template": "mpls ldp vpn-instance [parameter1]",
+        "command": "mpls ldp vpn-instance vpn1",
+        "explanation": "在 VRF 实例 'vpn1' 上启用 MPLS LDP",
+        "parameters": [
+            {
+                "name": "vpn instance",
+                "type": "string",
+                "explanation": "VPN 实例名称"
+            }
+        ]
+    },
+    "router isis": {
+        "template": "router isis",
+        "command": "router isis",
+        "explanation": "进入 IS-IS 路由进程配置模式",
+        "parameters": [],
+        "net [parameter1]": {
+            "template": "net [parameter1]",
+            "command": "net 10.0000.0000.0004.00",
+            "explanation": "设置 IS-IS 网络实体标题 (NET)",
+            "parameters": [
+                {
+                    "name": "NET",
+                    "type": "string",
+                    "explanation": "网络实体标题"
+                }
+            ]
+        }
+    },
+    "router ospf [parameter1] vrf [parameter2]": {
+        "template": "router ospf [parameter1] vrf [parameter2]",
+        "command": "router ospf 1 vrf vpn1",
+        "explanation": "在 VRF 实例 'vpn1' 上配置 OSPF 进程 1",
+        "parameters": [
+            {
+                "name": "process id",
+                "type": "integer",
+                "explanation": "OSPF 进程 ID"
+            },
+            {
+                "name": "vrf name",
+                "type": "string",
+                "explanation": "VRF 实例名称"
+            }
+        ],
+        "redistribute bgp [parameter1] subnets": {
+            "template": "redistribute bgp [parameter1] subnets",
+            "command": "redistribute bgp 100 subnets",
+            "explanation": "将 BGP 进程 100 的路由重分发到 OSPF 中，包括子网",
+            "parameters": [
+                {
+                    "name": "bgp as number",
+                    "type": "integer",
+                    "explanation": "BGP 自治系统号"
+                }
+            ]
+        },
+        "network [parameter1] [parameter2] area [parameter3]": {
+            "template": "network [parameter1] [parameter2] area [parameter3]",
+            "command": "network 3.3.3.9 0.0.0.0 area 0",
+            "explanation": "将 IP 地址 3.3.3.9 配置为 OSPF 区域 0 的一部分",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IP 地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                },
+                {
+                    "name": "area id",
+                    "type": "integer",
+                    "explanation": "OSPF 区域 ID"
+                }
+            ]
+        }
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "配置接口 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip vrf forwarding [parameter1]": {
+            "template": "ip vrf forwarding [parameter1]",
+            "command": "ip vrf forwarding vpn1",
+            "explanation": "将接口 'GigabitEthernet1/0/0' 关联到 VRF 实例 'vpn1'",
+            "parameters": [
+                {
+                    "name": "vrf name",
+                    "type": "string",
+                    "explanation": "VRF 实例名称"
+                }
+            ]
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 11.1.1.2 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 11.1.1.2，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "mpls ip": {
+            "template": "mpls ip",
+            "command": "mpls ip",
+            "explanation": "在接口 'GigabitEthernet1/0/0' 上启用 MPLS",
+            "parameters": []
+        }
+    },
+    "router bgp [parameter1]": {
+        "template": "router bgp [parameter1]",
+        "command": "router bgp 100",
+        "explanation": "进入 BGP 进程 100 的配置模式",
+        "parameters": [
+            {
+                "name": "as number",
+                "type": "integer",
+                "explanation": "BGP 自治系统号"
+            }
+        ],
+        "neighbor [parameter1] remote-as [parameter2]": {
+            "template": "neighbor [parameter1] remote-as [parameter2]",
+            "command": "neighbor 4.4.4.9 remote-as 100",
+            "explanation": "配置 BGP 邻居 4.4.4.9，其自治系统号为 100",
+            "parameters": [
+                {
+                    "name": "neighbor ip",
+                    "type": "IPv4",
+                    "explanation": "邻居 IP 地址"
+                },
+                {
+                    "name": "as number",
+                    "type": "integer",
+                    "explanation": "邻居的自治系统号"
+                }
+            ]
+        },
+        "neighbor [parameter1] update-source [parameter2]": {
+            "template": "neighbor [parameter1] update-source [parameter2]",
+            "command": "neighbor 4.4.4.9 update-source Loopback1",
+            "explanation": "配置 BGP 使用环回接口 'Loopback1' 作为与邻居 4.4.4.9 通信的源接口",
+            "parameters": [
+                {
+                    "name": "neighbor ip",
+                    "type": "IPv4",
+                    "explanation": "邻居 IP 地址"
+                },
+                {
+                    "name": "source interface",
+                    "type": "string",
+                    "explanation": "源接口名称"
+                }
+            ]
+        },
+        "address-family ipv4 unicast": {
+            "template": "address-family ipv4 unicast",
+            "command": "address-family ipv4 unicast",
+            "explanation": "进入 IPv4 单播地址族配置模式",
+            "parameters": [],
+            "neighbor [parameter1] activate": {
+                "template": "neighbor [parameter1] activate",
+                "command": "neighbor 4.4.4.9 activate",
+                "explanation": "激活与邻居 4.4.4.9 的 IPv4 单播地址族会话",
+                "parameters": [
+                    {
+                        "name": "neighbor ip",
+                        "type": "IPv4",
+                        "explanation": "邻居 IP 地址"
+                    }
+                ]
+            },
+            "no synchronization": {
+                "template": "no synchronization",
+                "command": "no synchronization",
+                "explanation": "禁用 BGP 与 IGP 的同步",
+                "parameters": []
+            }
+        },
+        "address-family vpnv4": {
+            "template": "address-family vpnv4",
+            "command": "address-family vpnv4",
+            "explanation": "进入 VPNv4 地址族配置模式",
+            "parameters": [],
+            "neighbor [parameter1] activate": {
+                "template": "neighbor [parameter1] activate",
+                "command": "neighbor 4.4.4.9 activate",
+                "explanation": "激活与邻居 4.4.4.9 的 VPNv4 地址族会话",
+                "parameters": [
+                    {
+                        "name": "neighbor ip",
+                        "type": "IPv4",
+                        "explanation": "邻居 IP 地址"
+                    }
+                ]
+            }
+        },
+        "address-family ipv4 vrf [parameter1]": {
+            "template": "address-family ipv4 vrf [parameter1]",
+            "command": "address-family ipv4 vrf vpn1",
+            "explanation": "进入 VRF 实例 'vpn1' 的 IPv4 地址族配置模式",
+            "parameters": [
+                {
+                    "name": "vrf name",
+                    "type": "string",
+                    "explanation": "VRF 实例名称"
+                }
+            ],
+            "redistribute ospf [parameter1]": {
+                "template": "redistribute ospf [parameter1]",
+                "command": "redistribute ospf 1",
+                "explanation": "将 OSPF 进程 1 的路由重分发到 BGP 中",
+                "parameters": [
+                    {
+                        "name": "ospf process id",
+                        "type": "integer",
+                        "explanation": "OSPF 进程 ID"
+                    }
+                ]
+            }
+        }
+    },
+    "end": {
+        "template": "end",
+        "command": "end",
+        "explanation": "退出配置模式",
+        "parameters": []
+    }
+}

@@ -1,0 +1,309 @@
+{
+    "hostname [parameter1]": {
+        "template": "hostname [parameter1]",
+        "command": "hostname DeviceC",
+        "explanation": "设置设备的主机名为 'DeviceC'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "ip multicast-routing": {
+        "template": "ip multicast-routing",
+        "command": "ip multicast-routing",
+        "explanation": "启用IP组播路由",
+        "parameters": []
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "配置接口 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no switchport": {
+            "template": "no switchport",
+            "command": "no switchport",
+            "explanation": "将接口设置为三层模式",
+            "parameters": []
+        },
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.1.5.1 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 10.1.5.1，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "ip pim dense-mode": {
+            "template": "ip pim dense-mode",
+            "command": "ip pim dense-mode",
+            "explanation": "在接口上启用PIM密集模式",
+            "parameters": []
+        },
+        "ip igmp join-group [parameter1]": {
+            "template": "ip igmp join-group [parameter1]",
+            "command": "ip igmp join-group 225.1.1.1",
+            "explanation": "加入组播组225.1.1.1",
+            "parameters": [
+                {
+                    "name": "group address",
+                    "type": "IPv4",
+                    "explanation": "组播组地址"
+                }
+            ]
+        }
+    },
+    "router ospf [parameter1]": {
+        "template": "router ospf [parameter1]",
+        "command": "router ospf 1",
+        "explanation": "启用OSPF进程1",
+        "parameters": [
+            {
+                "name": "process id",
+                "type": "integer",
+                "explanation": "OSPF进程ID"
+            }
+        ],
+        "network [parameter1] [parameter2] area [parameter3]": {
+            "template": "network [parameter1] [parameter2] area [parameter3]",
+            "command": "network 10.1.2.0 0.0.0.255 area 0",
+            "explanation": "将网络10.1.2.0/24加入到OSPF区域0",
+            "parameters": [
+                {
+                    "name": "network address",
+                    "type": "IPv4",
+                    "explanation": "网络地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                },
+                {
+                    "name": "area id",
+                    "type": "integer",
+                    "explanation": "区域ID"
+                }
+            ]
+        }
+    },
+    "emdi": {
+        "template": "emdi",
+        "command": "emdi",
+        "explanation": "进入EMDI配置模式",
+        "parameters": [],
+        "channel-group [parameter1]": {
+            "template": "channel-group [parameter1]",
+            "command": "channel-group IPTV-channel",
+            "explanation": "创建或进入名为'IPTV-channel'的频道组",
+            "parameters": [
+                {
+                    "name": "channel group name",
+                    "type": "string",
+                    "explanation": "频道组名称"
+                }
+            ],
+            "channel [parameter1] source [parameter2] group [parameter3] port [parameter4] clock-rate [parameter5]": {
+                "template": "channel [parameter1] source [parameter2] group [parameter3] port [parameter4] clock-rate [parameter5]",
+                "command": "channel 1 source 10.1.4.100 group 225.1.1.1 port 33 clock-rate 90000",
+                "explanation": "配置频道1，源地址为10.1.4.100，组播组为225.1.1.1，端口为33，时钟频率为90000",
+                "parameters": [
+                    {
+                        "name": "channel number",
+                        "type": "integer",
+                        "explanation": "频道号"
+                    },
+                    {
+                        "name": "source address",
+                        "type": "IPv4",
+                        "explanation": "源地址"
+                    },
+                    {
+                        "name": "group address",
+                        "type": "IPv4",
+                        "explanation": "组播组地址"
+                    },
+                    {
+                        "name": "port",
+                        "type": "integer",
+                        "explanation": "端口号"
+                    },
+                    {
+                        "name": "clock rate",
+                        "type": "integer",
+                        "explanation": "时钟频率"
+                    }
+                ]
+            }
+        },
+        "lpu-group [parameter1]": {
+            "template": "lpu-group [parameter1]",
+            "command": "lpu-group _default_",
+            "explanation": "创建或进入名为'_default_'的LPU组",
+            "parameters": [
+                {
+                    "name": "lpu group name",
+                    "type": "string",
+                    "explanation": "LPU组名称"
+                }
+            ],
+            "bind slot [parameter1]": {
+                "template": "bind slot [parameter1]",
+                "command": "bind slot all",
+                "explanation": "绑定所有槽位到当前LPU组",
+                "parameters": [
+                    {
+                        "name": "slot",
+                        "type": "string",
+                        "explanation": "槽位"
+                    }
+                ]
+            }
+        },
+        "bind channel-group [parameter1] lpu-group [parameter2]": {
+            "template": "bind channel-group [parameter1] lpu-group [parameter2]",
+            "command": "bind channel-group IPTV-channel lpu-group IPTV-lpu",
+            "explanation": "绑定频道组'IPTV-channel'到LPU组'IPTV-lpu'",
+            "parameters": [
+                {
+                    "name": "channel group name",
+                    "type": "string",
+                    "explanation": "频道组名称"
+                },
+                {
+                    "name": "lpu group name",
+                    "type": "string",
+                    "explanation": "LPU组名称"
+                }
+            ]
+        },
+        "bind channel-group [parameter1] lpu-group [parameter2] outbound": {
+            "template": "bind channel-group [parameter1] lpu-group [parameter2] outbound",
+            "command": "bind channel-group IPTV-channel lpu-group IPTV-lpu outbound",
+            "explanation": "绑定频道组'IPTV-channel'到LPU组'IPTV-lpu'用于出站流量",
+            "parameters": [
+                {
+                    "name": "channel group name",
+                    "type": "string",
+                    "explanation": "频道组名称"
+                },
+                {
+                    "name": "lpu group name",
+                    "type": "string",
+                    "explanation": "LPU组名称"
+                }
+            ]
+        }
+    },
+    "telemetry": {
+        "template": "telemetry",
+        "command": "telemetry",
+        "explanation": "进入遥测配置模式",
+        "parameters": [],
+        "sensor-group [parameter1]": {
+            "template": "sensor-group [parameter1]",
+            "command": "sensor-group emdimonitor",
+            "explanation": "创建或进入名为'emdimonitor'的传感器组",
+            "parameters": [
+                {
+                    "name": "sensor group name",
+                    "type": "string",
+                    "explanation": "传感器组名称"
+                }
+            ]
+        }
+    },
+    "destination-group [parameter1]": {
+        "template": "destination-group [parameter1]",
+        "command": "destination-group Monitor",
+        "explanation": "创建或进入名为'Monitor'的目的地组",
+        "parameters": [
+            {
+                "name": "destination group name",
+                "type": "string",
+                "explanation": "目的地组名称"
+            }
+        ],
+        "ipv4 [parameter1] port [parameter2] protocol [parameter3] no-tls": {
+            "template": "ipv4 [parameter1] port [parameter2] protocol [parameter3] no-tls",
+            "command": "ipv4 10.1.7.2 port 10001 protocol grpc no-tls",
+            "explanation": "配置IPv4目的地地址为10.1.7.2，端口为10001，协议为gRPC，不使用TLS",
+            "parameters": [
+                {
+                    "name": "ipv4 address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "port",
+                    "type": "integer",
+                    "explanation": "端口号"
+                },
+                {
+                    "name": "protocol",
+                    "type": "string",
+                    "explanation": "协议"
+                }
+            ]
+        }
+    },
+    "subscription [parameter1]": {
+        "template": "subscription [parameter1]",
+        "command": "subscription EMDI",
+        "explanation": "创建或进入名为'EMDI'的订阅",
+        "parameters": [
+            {
+                "name": "subscription name",
+                "type": "string",
+                "explanation": "订阅名称"
+            }
+        ],
+        "sensor-group [parameter1]": {
+            "template": "sensor-group [parameter1]",
+            "command": "sensor-group emdimonitor",
+            "explanation": "将传感器组'emdimonitor'添加到当前订阅",
+            "parameters": [
+                {
+                    "name": "sensor group name",
+                    "type": "string",
+                    "explanation": "传感器组名称"
+                }
+            ]
+        },
+        "destination-group [parameter1]": {
+            "template": "destination-group [parameter1]",
+            "command": "destination-group Monitor",
+            "explanation": "将目的地组'Monitor'添加到当前订阅",
+            "parameters": [
+                {
+                    "name": "destination group name",
+                    "type": "string",
+                    "explanation": "目的地组名称"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,244 @@
+{
+    "set host-name": {
+        "template": "set host-name",
+        "set host-name [parameter1]": {
+            "template": "set host-name [parameter1]",
+            "command": "set host-name PE1",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols bfd peer-group [parameter1] discriminator-local [parameter2] discriminator-remote [parameter3]": {
+            "template": "set protocols bfd peer-group [parameter1] discriminator-local [parameter2] discriminator-remote [parameter3]",
+            "command": "set protocols bfd peer-group p1 discriminator-local 104 discriminator-remote 401",
+            "explanation": "配置BFD协议的本地和远端标识符。",
+            "parameters": [
+                {
+                    "name": "peer-group",
+                    "type": "string",
+                    "explanation": "BFD对等组的名称。"
+                },
+                {
+                    "name": "discriminator-local",
+                    "type": "integer",
+                    "explanation": "本地BFD会话的标识符。"
+                },
+                {
+                    "name": "discriminator-remote",
+                    "type": "integer",
+                    "explanation": "远端BFD会话的标识符。"
+                }
+            ]
+        },
+        "set protocols mpls label protocol [parameter1]": {
+            "template": "set protocols mpls label protocol [parameter1]",
+            "command": "set protocols mpls label protocol ldp",
+            "explanation": "配置MPLS标签分发协议为LDP。",
+            "parameters": [
+                {
+                    "name": "protocol",
+                    "type": "string",
+                    "explanation": "MPLS标签分发协议，例如LDP。"
+                }
+            ]
+        },
+        "set protocols mpls ip": {
+            "template": "set protocols mpls ip",
+            "command": "set protocols mpls ip",
+            "explanation": "启用MPLS的IP转发功能。",
+            "parameters": []
+        },
+        "set protocols l2vpn pw pw-id [parameter1] neighbor [parameter2]": {
+            "template": "set protocols l2vpn pw pw-id [parameter1] neighbor [parameter2]",
+            "command": "set protocols l2vpn pw pw-id 1 neighbor 2.2.2.2",
+            "explanation": "配置L2VPN伪线，指定伪线ID和邻居地址。",
+            "parameters": [
+                {
+                    "name": "pw-id",
+                    "type": "integer",
+                    "explanation": "伪线的唯一标识符。"
+                },
+                {
+                    "name": "neighbor",
+                    "type": "string",
+                    "explanation": "邻居的IP地址。"
+                }
+            ]
+        },
+        "set protocols l2vpn pw-class [parameter1]": {
+            "template": "set protocols l2vpn pw-class [parameter1]",
+            "command": "set protocols l2vpn pw-class vsi1",
+            "explanation": "配置L2VPN伪线类。",
+            "parameters": [
+                {
+                    "name": "pw-class",
+                    "type": "string",
+                    "explanation": "伪线类的名称。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family bridge": {
+            "template": "set interfaces [parameter1] unit [parameter2] family bridge",
+            "command": "set interfaces ge-0/0/0 unit 0 family bridge",
+            "explanation": "配置接口为桥接模式。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family dot1qphoon vlan-id [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family dot1qphoon vlan-id [parameter3]",
+            "command": "set interfaces ge-0/0/2.0 unit 0 family dot1qphoon vlan-id 10",
+            "explanation": "配置接口的VLAN ID。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/2.0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN的标识符。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces lo0 unit 0 family inet address 1.1.1.1/32",
+            "explanation": "配置环回接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如lo0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        }
+    },
+    "set forwarding-options": {
+        "template": "set forwarding-options",
+        "set forwarding-options l2-switch virtual-switch vsi [parameter1] mac-withdraw": {
+            "template": "set forwarding-options l2-switch virtual-switch vsi [parameter1] mac-withdraw",
+            "command": "set forwarding-options l2-switch virtual-switch vsi vsi1 mac-withdraw",
+            "explanation": "配置L2交换的虚拟交换机VSI的MAC地址撤回功能。",
+            "parameters": [
+                {
+                    "name": "vsi",
+                    "type": "string",
+                    "explanation": "虚拟交换机的名称。"
+                }
+            ]
+        },
+        "set forwarding-options l2 forwarding table-id vsi [parameter1]": {
+            "template": "set forwarding-options l2 forwarding table-id vsi [parameter1]",
+            "command": "set forwarding-options l2 forwarding table-id vsi 1",
+            "explanation": "配置L2转发表的VSI ID。",
+            "parameters": [
+                {
+                    "name": "vsi",
+                    "type": "integer",
+                    "explanation": "虚拟交换机的标识符。"
+                }
+            ]
+        }
+    },
+    "set system": {
+        "template": "set system",
+        "set system services ospf area [parameter1] network [parameter2]/[parameter3]": {
+            "template": "set system services ospf area [parameter1] network [parameter2]/[parameter3]",
+            "command": "set system services ospf area 0 network 192.168.1.0/24",
+            "explanation": "配置OSPF区域内的网络。",
+            "parameters": [
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "OSPF区域的标识符。"
+                },
+                {
+                    "name": "network",
+                    "type": "string",
+                    "explanation": "网络的IP地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "子网掩码的位数。"
+                }
+            ]
+        }
+    },
+    "set chassis": {
+        "template": "set chassis",
+        "set chassis fpc [parameter1] slot [parameter2] interface [parameter3] shut": {
+            "template": "set chassis fpc [parameter1] slot [parameter2] interface [parameter3] shut",
+            "command": "set chassis fpc 0 slot 0 interface ge-0/0/0 shut",
+            "explanation": "关闭指定FPC槽位上的接口。",
+            "parameters": [
+                {
+                    "name": "fpc",
+                    "type": "integer",
+                    "explanation": "FPC的编号。"
+                },
+                {
+                    "name": "slot",
+                    "type": "integer",
+                    "explanation": "槽位的编号。"
+                },
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                }
+            ]
+        }
+    },
+    "commit": {
+        "template": "commit",
+        "commit": {
+            "template": "commit",
+            "command": "commit",
+            "explanation": "提交配置更改。",
+            "parameters": []
+        }
+    }
+}

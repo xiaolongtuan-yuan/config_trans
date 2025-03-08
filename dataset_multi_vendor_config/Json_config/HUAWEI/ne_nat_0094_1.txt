@@ -1,0 +1,182 @@
+{
+    "sysname CR": {
+        "template": "sysname [parameter1]",
+        "command": "sysname CR",
+        "explanation": "设置设备的主机名为 'CR'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "acl number 2001": {
+        "template": "acl number [parameter1]",
+        "command": "acl number 2001",
+        "explanation": "创建或进入ACL编号为2001的配置模式",
+        "parameters": [
+            {
+                "name": "ACL number",
+                "type": "integer",
+                "explanation": "ACL的编号"
+            }
+        ],
+        "rule 10 permit source 10.10.10.0 0.0.0.255": {
+            "template": "rule [parameter1] permit source [parameter2] [parameter3]",
+            "command": "rule 10 permit source 10.10.10.0 0.0.0.255",
+            "explanation": "添加一条规则，允许源地址为10.10.10.0/24的流量",
+            "parameters": [
+                {
+                    "name": "rule number",
+                    "type": "integer",
+                    "explanation": "规则编号"
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "explanation": "许可动作，这里是“permit”"
+                },
+                {
+                    "name": "source address",
+                    "type": "IPv4",
+                    "explanation": "源IP地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                }
+            ]
+        }
+    },
+    "traffic classifier c1": {
+        "template": "traffic classifier [parameter1]",
+        "command": "traffic classifier c1",
+        "explanation": "创建一个名为c1的流量分类器",
+        "parameters": [
+            {
+                "name": "classifier name",
+                "type": "string",
+                "explanation": "分类器的名称"
+            }
+        ],
+        "if-match acl 2001": {
+            "template": "if-match acl [parameter1]",
+            "command": "if-match acl 2001",
+            "explanation": "匹配ACL 2001定义的流量",
+            "parameters": [
+                {
+                    "name": "ACL number",
+                    "type": "integer",
+                    "explanation": "要匹配的ACL编号"
+                }
+            ]
+        }
+    },
+    "traffic behavior b1": {
+        "template": "traffic behavior [parameter1]",
+        "command": "traffic behavior b1",
+        "explanation": "创建一个名为b1的流量行为",
+        "parameters": [
+            {
+                "name": "behavior name",
+                "type": "string",
+                "explanation": "行为的名称"
+            }
+        ],
+        "redirect ip-nexthop 192.168.11.2": {
+            "template": "redirect ip-nexthop [parameter1]",
+            "command": "redirect ip-nexthop 192.168.11.2",
+            "explanation": "将匹配的流量重定向到下一个 hop 192.168.11.2",
+            "parameters": [
+                {
+                    "name": "next hop IP",
+                    "type": "IPv4",
+                    "explanation": "下一跳的IP地址"
+                }
+            ]
+        }
+    },
+    "traffic policy p1": {
+        "template": "traffic policy [parameter1]",
+        "command": "traffic policy p1",
+        "explanation": "创建一个名为p1的流量策略",
+        "parameters": [
+            {
+                "name": "policy name",
+                "type": "string",
+                "explanation": "策略的名称"
+            }
+        ],
+        "classifier c1 behavior b1 precedence 1": {
+            "template": "classifier [parameter1] behavior [parameter2] precedence [parameter3]",
+            "command": "classifier c1 behavior b1 precedence 1",
+            "explanation": "将分类器c1和行为b1关联，并设置优先级为1",
+            "parameters": [
+                {
+                    "name": "classifier name",
+                    "type": "string",
+                    "explanation": "分类器的名称"
+                },
+                {
+                    "name": "behavior name",
+                    "type": "string",
+                    "explanation": "行为的名称"
+                },
+                {
+                    "name": "precedence",
+                    "type": "integer",
+                    "explanation": "优先级"
+                }
+            ]
+        }
+    },
+    "interface GigabitEthernet2/0/2": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet2/0/2",
+        "explanation": "进入GigabitEthernet2/0/2接口的配置模式",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名称"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address 192.168.10.2 24": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 192.168.10.2 24",
+            "explanation": "配置接口的IPv4地址为192.168.10.2，子网掩码为255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "integer",
+                    "explanation": "子网掩码（前缀长度）"
+                }
+            ]
+        },
+        "traffic-policy p1 inbound": {
+            "template": "traffic-policy [parameter1] inbound",
+            "command": "traffic-policy p1 inbound",
+            "explanation": "应用流量策略p1到接口的入站流量",
+            "parameters": [
+                {
+                    "name": "policy name",
+                    "type": "string",
+                    "explanation": "流量策略的名称"
+                }
+            ]
+        }
+    }
+}

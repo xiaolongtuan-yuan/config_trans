@@ -1,0 +1,486 @@
+{
+  "sysname CGN2": {
+    "template": "sysname [parameter1]",
+    "command": "sysname CGN2",
+    "explanation": "设置设备的主机名为 'CGN2'",
+    "parameters": [
+      {
+        "name": "host name",
+        "type": "string",
+        "explanation": "主机名"
+      }
+    ]
+  },
+  "license": {
+    "template": "license",
+    "command": "license",
+    "explanation": "进入license配置模式",
+    "parameters": [],
+    "active nat64 vsuf slot 1": {
+      "template": "active nat64 vsuf slot [parameter1]",
+      "command": "active nat64 vsuf slot 1",
+      "explanation": "激活指定槽位的NAT64 VSUF功能",
+      "parameters": [
+        {
+          "name": "slot number",
+          "type": "integer",
+          "explanation": "槽位号"
+        }
+      ]
+    },
+    "active nat session-table size 16 slot 1 engine 0": {
+      "template": "active nat session-table size [parameter1] slot [parameter2] engine [parameter3]",
+      "command": "active nat session-table size 16 slot 1 engine 0",
+      "explanation": "激活指定槽位和引擎的NAT会话表，设置大小为16",
+      "parameters": [
+        {
+          "name": "size",
+          "type": "integer",
+          "explanation": "会话表大小"
+        },
+        {
+          "name": "slot number",
+          "type": "integer",
+          "explanation": "槽位号"
+        },
+        {
+          "name": "engine number",
+          "type": "integer",
+          "explanation": "引擎号"
+        }
+      ]
+    }
+  },
+  "acl ipv6 number 3001": {
+    "template": "acl ipv6 number [parameter1]",
+    "command": "acl ipv6 number 3001",
+    "explanation": "创建一个编号为3001的IPv6 ACL",
+    "parameters": [
+      {
+        "name": "acl number",
+        "type": "integer",
+        "explanation": "ACL编号"
+      }
+    ],
+    "rule 5 permit ipv6 source 2001:db8::1:1112/126 destination 64:FF9B::/96": {
+      "template": "rule [parameter1] permit ipv6 source [parameter2] destination [parameter3]",
+      "command": "rule 5 permit ipv6 source 2001:db8::1:1112/126 destination 64:FF9B::/96",
+      "explanation": "在ACL 3001中添加一条规则，允许源地址为2001:db8::1:1112/126，目的地址为64:FF9B::/96的IPv6流量通过",
+      "parameters": [
+        {
+          "name": "rule number",
+          "type": "integer",
+          "explanation": "规则编号"
+        },
+        {
+          "name": "source address",
+          "type": "IPv6",
+          "explanation": "源IPv6地址"
+        },
+        {
+          "name": "destination address",
+          "type": "IPv6",
+          "explanation": "目的IPv6地址"
+        }
+      ]
+    }
+  },
+  "traffic classifier c1": {
+    "template": "traffic classifier [parameter1]",
+    "command": "traffic classifier c1",
+    "explanation": "创建一个名为c1的流量分类器",
+    "parameters": [
+      {
+        "name": "classifier name",
+        "type": "string",
+        "explanation": "流量分类器名称"
+      }
+    ],
+    "if-match ipv6 acl 3001": {
+      "template": "if-match ipv6 acl [parameter1]",
+      "command": "if-match ipv6 acl 3001",
+      "explanation": "配置流量分类器c1匹配ACL 3001的IPv6流量",
+      "parameters": [
+        {
+          "name": "acl number",
+          "type": "integer",
+          "explanation": "ACL编号"
+        }
+      ]
+    }
+  },
+  "traffic behavior b1": {
+    "template": "traffic behavior [parameter1]",
+    "command": "traffic behavior b1",
+    "explanation": "创建一个名为b1的流量行为",
+    "parameters": [
+      {
+        "name": "behavior name",
+        "type": "string",
+        "explanation": "流量行为名称"
+      }
+    ],
+    "nat64 bind instance nat64": {
+      "template": "nat64 bind instance [parameter1]",
+      "command": "nat64 bind instance nat64",
+      "explanation": "配置流量行为b1绑定到NAT64实例nat64",
+      "parameters": [
+        {
+          "name": "instance name",
+          "type": "string",
+          "explanation": "NAT64实例名称"
+        }
+      ]
+    }
+  },
+  "traffic policy p1": {
+    "template": "traffic policy [parameter1]",
+    "command": "traffic policy p1",
+    "explanation": "创建一个名为p1的流量策略",
+    "parameters": [
+      {
+        "name": "policy name",
+        "type": "string",
+        "explanation": "流量策略名称"
+      }
+    ],
+    "classifier c1 behavior b1 precedence 1": {
+      "template": "classifier [parameter1] behavior [parameter2] precedence [parameter3]",
+      "command": "classifier c1 behavior b1 precedence 1",
+      "explanation": "配置流量策略p1将流量分类器c1与流量行为b1关联，优先级为1",
+      "parameters": [
+        {
+          "name": "classifier name",
+          "type": "string",
+          "explanation": "流量分类器名称"
+        },
+        {
+          "name": "behavior name",
+          "type": "string",
+          "explanation": "流量行为名称"
+        },
+        {
+          "name": "precedence",
+          "type": "integer",
+          "explanation": "优先级"
+        }
+      ]
+    }
+  },
+  "service-ha hot-backup enable": {
+    "template": "service-ha hot-backup enable",
+    "command": "service-ha hot-backup enable",
+    "explanation": "启用服务热备份功能",
+    "parameters": []
+  },
+  "service-location 1": {
+    "template": "service-location [parameter1]",
+    "command": "service-location 1",
+    "explanation": "创建一个编号为1的服务位置",
+    "parameters": [
+      {
+        "name": "location number",
+        "type": "integer",
+        "explanation": "服务位置编号"
+      }
+    ],
+    "location slot 1 engine 0": {
+      "template": "location slot [parameter1] engine [parameter2]",
+      "command": "location slot 1 engine 0",
+      "explanation": "配置服务位置1位于槽位1，引擎0",
+      "parameters": [
+        {
+          "name": "slot number",
+          "type": "integer",
+          "explanation": "槽位号"
+        },
+        {
+          "name": "engine number",
+          "type": "integer",
+          "explanation": "引擎号"
+        }
+      ]
+    },
+    "vrrp vrid 1 interface GigabitEthernet 1/0/1": {
+      "template": "vrrp vrid [parameter1] interface [parameter2]",
+      "command": "vrrp vrid 1 interface GigabitEthernet 1/0/1",
+      "explanation": "配置VRRP组1在接口GigabitEthernet 1/0/1上",
+      "parameters": [
+        {
+          "name": "vrid",
+          "type": "integer",
+          "explanation": "VRRP组ID"
+        },
+        {
+          "name": "interface name",
+          "type": "string",
+          "explanation": "接口名称"
+        }
+      ]
+    },
+    "remote-backup interface GigabitEthernet 1/0/1 peer 10.1.1.1": {
+      "template": "remote-backup interface [parameter1] peer [parameter2]",
+      "command": "remote-backup interface GigabitEthernet 1/0/1 peer 10.1.1.1",
+      "explanation": "配置远程备份接口为GigabitEthernet 1/0/1，对端IP为10.1.1.1",
+      "parameters": [
+        {
+          "name": "interface name",
+          "type": "string",
+          "explanation": "接口名称"
+        },
+        {
+          "name": "peer ip",
+          "type": "IPv4",
+          "explanation": "对端IP地址"
+        }
+      ]
+    }
+  },
+  "service-instance-group group1": {
+    "template": "service-instance-group [parameter1]",
+    "command": "service-instance-group group1",
+    "explanation": "创建一个名为group1的服务实例组",
+    "parameters": [
+      {
+        "name": "group name",
+        "type": "string",
+        "explanation": "服务实例组名称"
+      }
+    ],
+    "service-location 1": {
+      "template": "service-location [parameter1]",
+      "command": "service-location 1",
+      "explanation": "将服务位置1添加到服务实例组group1中",
+      "parameters": [
+        {
+          "name": "location number",
+          "type": "integer",
+          "explanation": "服务位置编号"
+        }
+      ]
+    }
+  },
+  "nat64 instance nat64 id 1": {
+    "template": "nat64 instance [parameter1] id [parameter2]",
+    "command": "nat64 instance nat64 id 1",
+    "explanation": "创建一个ID为1的NAT64实例，名称为nat64",
+    "parameters": [
+      {
+        "name": "instance name",
+        "type": "string",
+        "explanation": "NAT64实例名称"
+      },
+      {
+        "name": "id",
+        "type": "integer",
+        "explanation": "实例ID"
+      }
+    ],
+    "service-instance-group group1": {
+      "template": "service-instance-group [parameter1]",
+      "command": "service-instance-group group1",
+      "explanation": "将服务实例组group1绑定到NAT64实例nat64",
+      "parameters": [
+        {
+          "name": "group name",
+          "type": "string",
+          "explanation": "服务实例组名称"
+        }
+      ]
+    },
+    "nat64 address-group nat64-group1 group-id 1": {
+      "template": "nat64 address-group [parameter1] group-id [parameter2]",
+      "command": "nat64 address-group nat64-group1 group-id 1",
+      "explanation": "创建一个ID为1的NAT64地址组，名称为nat64-group1",
+      "parameters": [
+        {
+          "name": "address group name",
+          "type": "string",
+          "explanation": "地址组名称"
+        },
+        {
+          "name": "group id",
+          "type": "integer",
+          "explanation": "组ID"
+        }
+      ],
+      "section 0 11.1.1.1 mask 24": {
+        "template": "section [parameter1] [parameter2] mask [parameter3]",
+        "command": "section 0 11.1.1.1 mask 24",
+        "explanation": "配置NAT64地址组nat64-group1的地址段为11.1.1.1，掩码为24",
+        "parameters": [
+          {
+            "name": "section number",
+            "type": "integer",
+            "explanation": "段号"
+          },
+          {
+            "name": "ip address",
+            "type": "IPv4",
+            "explanation": "IP地址"
+          },
+          {
+            "name": "mask",
+            "type": "integer",
+            "explanation": "掩码长度"
+          }
+        ]
+      }
+    },
+    "nat64 outbound any address-group nat64-group1": {
+      "template": "nat64 outbound any address-group [parameter1]",
+      "command": "nat64 outbound any address-group nat64-group1",
+      "explanation": "配置NAT64实例nat64的出方向使用地址组nat64-group1",
+      "parameters": [
+        {
+          "name": "address group name",
+          "type": "string",
+          "explanation": "地址组名称"
+        }
+      ]
+    },
+    "nat64 prefix 64:FF9B:: prefix-length 96 1": {
+      "template": "nat64 prefix [parameter1] prefix-length [parameter2] [parameter3]",
+      "command": "nat64 prefix 64:FF9B:: prefix-length 96 1",
+      "explanation": "配置NAT64实例nat64的前缀为64:FF9B::，前缀长度为96，ID为1",
+      "parameters": [
+        {
+          "name": "prefix",
+          "type": "IPv6",
+          "explanation": "前缀"
+        },
+        {
+          "name": "prefix length",
+          "type": "integer",
+          "explanation": "前缀长度"
+        },
+        {
+          "name": "id",
+          "type": "integer",
+          "explanation": "ID"
+        }
+      ]
+    }
+  },
+  "interface GigabitEthernet1/0/1": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet1/0/1",
+    "explanation": "进入接口GigabitEthernet1/0/1的配置模式",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名称"
+      }
+    ],
+    "undo shutdown": {
+      "template": "undo shutdown",
+      "command": "undo shutdown",
+      "explanation": "启用接口 (默认情况下接口是关闭的)",
+      "parameters": []
+    },
+    "ip address 10.1.1.2 255.255.255.0": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 10.1.1.2 255.255.255.0",
+      "explanation": "配置接口的IPv4地址为 10.1.1.2，子网掩码为 255.255.255.0",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4地址"
+        },
+        {
+          "name": "sub musk",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    },
+    "vrrp vrid 1 virtual-ip 10.1.1.3": {
+      "template": "vrrp vrid [parameter1] virtual-ip [parameter2]",
+      "command": "vrrp vrid 1 virtual-ip 10.1.1.3",
+      "explanation": "配置VRRP组1的虚拟IP为10.1.1.3",
+      "parameters": [
+        {
+          "name": "vrid",
+          "type": "integer",
+          "explanation": "VRRP组ID"
+        },
+        {
+          "name": "virtual ip",
+          "type": "IPv4",
+          "explanation": "虚拟IP地址"
+        }
+      ]
+    },
+    "admin-vrrp vrid 1 ignore-if-down": {
+      "template": "admin-vrrp vrid [parameter1] ignore-if-down",
+      "command": "admin-vrrp vrid 1 ignore-if-down",
+      "explanation": "配置VRRP组1在接口关闭时忽略状态",
+      "parameters": [
+        {
+          "name": "vrid",
+          "type": "integer",
+          "explanation": "VRRP组ID"
+        }
+      ]
+    },
+    "vrrp vrid 1 priority 150": {
+      "template": "vrrp vrid [parameter1] priority [parameter2]",
+      "command": "vrrp vrid 1 priority 150",
+      "explanation": "配置VRRP组1的优先级为150",
+      "parameters": [
+        {
+          "name": "vrid",
+          "type": "integer",
+          "explanation": "VRRP组ID"
+        },
+        {
+          "name": "priority",
+          "type": "integer",
+          "explanation": "优先级"
+        }
+      ]
+    },
+    "vrrp vrid 1 track service-location 1 reduced 60": {
+      "template": "vrrp vrid [parameter1] track service-location [parameter2] reduced [parameter3]",
+      "command": "vrrp vrid 1 track service-location 1 reduced 60",
+      "explanation": "配置VRRP组1跟踪服务位置1，优先级减少60",
+      "parameters": [
+        {
+          "name": "vrid",
+          "type": "integer",
+          "explanation": "VRRP组ID"
+        },
+        {
+          "name": "service location",
+          "type": "integer",
+          "explanation": "服务位置编号"
+        },
+        {
+          "name": "reduced priority",
+          "type": "integer",
+          "explanation": "减少的优先级"
+        }
+      ]
+    },
+    "vrrp recover-delay 15": {
+      "template": "vrrp recover-delay [parameter1]",
+      "command": "vrrp recover-delay 15",
+      "explanation": "配置VRRP恢复延迟为15秒",
+      "parameters": [
+        {
+          "name": "delay time",
+          "type": "integer",
+          "explanation": "延迟时间"
+        }
+      ]
+    }
+  },
+  "interface GigabitEthernet 1/0/2": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet 1/0/2",
+    "explanation": "进入接口GigabitEthernet 1/0/2的配置模式",
+    "parameters": [
+      {
+        "name

@@ -1,0 +1,469 @@
+{
+  "hostname BRAS": {
+    "template": "hostname [parameter1]",
+    "command": "hostname BRAS",
+    "explanation": "设置设备的主机名为 'BRAS'",
+    "parameters": [
+      {
+        "name": "host name",
+        "type": "string",
+        "explanation": "主机名"
+      }
+    ]
+  },
+  "interface GigabitEthernet2/0/0.1": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet2/0/0.1",
+    "explanation": "配置接口 'GigabitEthernet2/0/0.1'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "encapsulation dot1q 1": {
+      "template": "encapsulation dot1q [parameter1]",
+      "command": "encapsulation dot1q 1",
+      "explanation": "配置接口的封装类型为 dot1q，VLAN ID 为 1",
+      "parameters": [
+        {
+          "name": "VLAN ID",
+          "type": "integer",
+          "explanation": "VLAN ID"
+        }
+      ]
+    },
+    "ip address 10.10.10.1 255.255.255.0": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 10.10.10.1 255.255.255.0",
+      "explanation": "配置接口的 IPv4 地址为 10.10.10.1，子网掩码为 255.255.255.0",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4 地址"
+        },
+        {
+          "name": "subnet mask",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    },
+    "ip nat inside": {
+      "template": "ip nat inside",
+      "command": "ip nat inside",
+      "explanation": "配置接口为 NAT 内部接口",
+      "parameters": []
+    },
+    "ip virtual-reassembly": {
+      "template": "ip virtual-reassembly",
+      "command": "ip virtual-reassembly",
+      "explanation": "启用 IP 虚拟重组功能",
+      "parameters": []
+    }
+  },
+  "ip dhcp pool pool1": {
+    "template": "ip dhcp pool [parameter1]",
+    "command": "ip dhcp pool pool1",
+    "explanation": "配置 DHCP 地址池 'pool1'",
+    "parameters": [
+      {
+        "name": "pool name",
+        "type": "string",
+        "explanation": "DHCP 地址池名称"
+      }
+    ],
+    "network 10.10.10.0 255.255.255.0": {
+      "template": "network [parameter1] [parameter2]",
+      "command": "network 10.10.10.0 255.255.255.0",
+      "explanation": "配置 DHCP 地址池的网络地址为 10.10.10.0，子网掩码为 255.255.255.0",
+      "parameters": [
+        {
+          "name": "network address",
+          "type": "IPv4",
+          "explanation": "网络地址"
+        },
+        {
+          "name": "subnet mask",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    },
+    "default-router 10.10.10.1": {
+      "template": "default-router [parameter1]",
+      "command": "default-router 10.10.10.1",
+      "explanation": "配置 DHCP 客户端的默认网关为 10.10.10.1",
+      "parameters": [
+        {
+          "name": "default gateway",
+          "type": "IPv4",
+          "explanation": "默认网关"
+        }
+      ]
+    },
+    "dns-server 192.168.7.252": {
+      "template": "dns-server [parameter1]",
+      "command": "dns-server 192.168.7.252",
+      "explanation": "配置 DHCP 客户端的 DNS 服务器为 192.168.7.252",
+      "parameters": [
+        {
+          "name": "DNS server",
+          "type": "IPv4",
+          "explanation": "DNS 服务器地址"
+        }
+      ]
+    }
+  },
+  "ip nat pool pool1 11.11.11.101 11.11.11.105 netmask 255.255.255.0": {
+    "template": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
+    "command": "ip nat pool pool1 11.11.11.101 11.11.11.105 netmask 255.255.255.0",
+    "explanation": "配置 NAT 地址池 'pool1'，地址范围为 11.11.11.101 到 11.11.11.105，子网掩码为 255.255.255.0",
+    "parameters": [
+      {
+        "name": "pool name",
+        "type": "string",
+        "explanation": "NAT 地址池名称"
+      },
+      {
+        "name": "start address",
+        "type": "IPv4",
+        "explanation": "起始地址"
+      },
+      {
+        "name": "end address",
+        "type": "IPv4",
+        "explanation": "结束地址"
+      },
+      {
+        "name": "subnet mask",
+        "type": "IPv4",
+        "explanation": "子网掩码"
+      }
+    ]
+  },
+  "ip nat inside source list 3001 pool pool1 overload": {
+    "template": "ip nat inside source list [parameter1] pool [parameter2] overload",
+    "command": "ip nat inside source list 3001 pool pool1 overload",
+    "explanation": "配置 NAT 内部源地址转换，使用访问控制列表 3001 和地址池 pool1，启用端口地址转换（PAT）",
+    "parameters": [
+      {
+        "name": "access list number",
+        "type": "integer",
+        "explanation": "访问控制列表编号"
+      },
+      {
+        "name": "pool name",
+        "type": "string",
+        "explanation": "NAT 地址池名称"
+      }
+    ]
+  },
+  "ip access-list extended ACL-3001": {
+    "template": "ip access-list extended [parameter1]",
+    "command": "ip access-list extended ACL-3001",
+    "explanation": "配置扩展访问控制列表 'ACL-3001'",
+    "parameters": [
+      {
+        "name": "access list name",
+        "type": "string",
+        "explanation": "访问控制列表名称"
+      }
+    ],
+    "permit ip 10.10.10.0 0.0.0.255 any": {
+      "template": "permit ip [parameter1] [parameter2] any",
+      "command": "permit ip 10.10.10.0 0.0.0.255 any",
+      "explanation": "允许来自网络 10.10.10.0/24 的 IP 流量访问任何目的地",
+      "parameters": [
+        {
+          "name": "source network",
+          "type": "IPv4",
+          "explanation": "源网络地址"
+        },
+        {
+          "name": "wildcard mask",
+          "type": "IPv4",
+          "explanation": "通配符掩码"
+        }
+      ]
+    }
+  },
+  "ip access-list extended ACL-6001": {
+    "template": "ip access-list extended [parameter1]",
+    "command": "ip access-list extended ACL-6001",
+    "explanation": "配置扩展访问控制列表 'ACL-6001'",
+    "parameters": [
+      {
+        "name": "access list name",
+        "type": "string",
+        "explanation": "访问控制列表名称"
+      }
+    ],
+    "permit ip any object-group group1": {
+      "template": "permit ip any object-group [parameter1]",
+      "command": "permit ip any object-group group1",
+      "explanation": "允许来自任何源的 IP 流量访问对象组 'group1'",
+      "parameters": [
+        {
+          "name": "object group name",
+          "type": "string",
+          "explanation": "对象组名称"
+        }
+      ]
+    }
+  },
+  "class-map match-all CM-c1": {
+    "template": "class-map match-all [parameter1]",
+    "command": "class-map match-all CM-c1",
+    "explanation": "配置类映射 'CM-c1'，匹配所有条件",
+    "parameters": [
+      {
+        "name": "class map name",
+        "type": "string",
+        "explanation": "类映射名称"
+      }
+    ],
+    "match access-group name ACL-6001": {
+      "template": "match access-group name [parameter1]",
+      "command": "match access-group name ACL-6001",
+      "explanation": "匹配访问控制列表 'ACL-6001'",
+      "parameters": [
+        {
+          "name": "access list name",
+          "type": "string",
+          "explanation": "访问控制列表名称"
+        }
+      ]
+    }
+  },
+  "policy-map PM-p1": {
+    "template": "policy-map [parameter1]",
+    "command": "policy-map PM-p1",
+    "explanation": "配置策略映射 'PM-p1'",
+    "parameters": [
+      {
+        "name": "policy map name",
+        "type": "string",
+        "explanation": "策略映射名称"
+      }
+    ],
+    "class CM-c1": {
+      "template": "class [parameter1]",
+      "command": "class CM-c1",
+      "explanation": "应用类映射 'CM-c1'",
+      "parameters": [
+        {
+          "name": "class map name",
+          "type": "string",
+          "explanation": "类映射名称"
+        }
+      ],
+      "nat": {
+        "template": "nat",
+        "command": "nat",
+        "explanation": "配置 NAT 操作",
+        "parameters": [],
+        "source dynamic pool1 interface": {
+          "template": "source dynamic [parameter1] interface",
+          "command": "source dynamic pool1 interface",
+          "explanation": "配置动态源地址转换，使用地址池 'pool1' 和接口地址",
+          "parameters": [
+            {
+              "name": "pool name",
+              "type": "string",
+              "explanation": "NAT 地址池名称"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "interface GigabitEthernet2/0/0.1": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet2/0/0.1",
+    "explanation": "配置接口 'GigabitEthernet2/0/0.1'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "service-policy input PM-p1": {
+      "template": "service-policy input [parameter1]",
+      "command": "service-policy input PM-p1",
+      "explanation": "在接口的输入方向应用策略映射 'PM-p1'",
+      "parameters": [
+        {
+          "name": "policy map name",
+          "type": "string",
+          "explanation": "策略映射名称"
+        }
+      ]
+    }
+  },
+  "aaa new-model": {
+    "template": "aaa new-model",
+    "command": "aaa new-model",
+    "explanation": "启用 AAA 新模型",
+    "parameters": []
+  },
+  "aaa authentication dot1x default group radius local": {
+    "template": "aaa authentication dot1x default group [parameter1] [parameter2]",
+    "command": "aaa authentication dot1x default group radius local",
+    "explanation": "配置 802.1X 认证，默认使用 RADIUS 服务器组和本地认证",
+    "parameters": [
+      {
+        "name": "authentication method",
+        "type": "string",
+        "explanation": "认证方法"
+      },
+      {
+        "name": "fallback method",
+        "type": "string",
+        "explanation": "备用认证方法"
+      }
+    ]
+  },
+  "aaa authorization network default group radius local": {
+    "template": "aaa authorization network default group [parameter1] [parameter2]",
+    "command": "aaa authorization network default group radius local",
+    "explanation": "配置网络授权，默认使用 RADIUS 服务器组和本地授权",
+    "parameters": [
+      {
+        "name": "authorization method",
+        "type": "string",
+        "explanation": "授权方法"
+      },
+      {
+        "name": "fallback method",
+        "type": "string",
+        "explanation": "备用授权方法"
+      }
+    ]
+  },
+  "aaa accounting dot1x default start-stop group radius": {
+    "template": "aaa accounting dot1x default start-stop group [parameter1]",
+    "command": "aaa accounting dot1x default start-stop group radius",
+    "explanation": "配置 802.1X 计费，默认使用 RADIUS 服务器组，记录开始和停止事件",
+    "parameters": [
+      {
+        "name": "accounting method",
+        "type": "string",
+        "explanation": "计费方法"
+      }
+    ]
+  },
+  "aaa accounting network default start-stop group radius": {
+    "template": "aaa accounting network default start-stop group [parameter1]",
+    "command": "aaa accounting network default start-stop group radius",
+    "explanation": "配置网络计费，默认使用 RADIUS 服务器组，记录开始和停止事件",
+    "parameters": [
+      {
+        "name": "accounting method",
+        "type": "string",
+        "explanation": "计费方法"
+      }
+    ]
+  },
+  "radius-server host 192.168.7.252 auth-port 1812 acct-port 1813 key <shared secret>": {
+    "template": "radius-server host [parameter1] auth-port [parameter2] acct-port [parameter3] key [parameter4]",
+    "command": "radius-server host 192.168.7.252 auth-port 1812 acct-port 1813 key <shared secret>",
+    "explanation": "配置 RADIUS 服务器，地址为 192.168.7.252，认证端口为 1812，计费端口为 1813，共享密钥为 <shared secret>",
+    "parameters": [
+      {
+        "name": "server address",
+        "type": "IPv4",
+        "explanation": "RADIUS 服务器地址"
+      },
+      {
+        "name": "authentication port",
+        "type": "integer",
+        "explanation": "认证端口"
+      },
+      {
+        "name": "accounting port",
+        "type": "integer",
+        "explanation": "计费端口"
+      },
+      {
+        "name": "shared secret",
+        "type": "string",
+        "explanation": "共享密钥"
+      }
+    ]
+  },
+  "interface GigabitEthernet2/0/0.1": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet2/0/0.1",
+    "explanation": "配置接口 'GigabitEthernet2/0/0.1'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "aaa authentication login default group radius local": {
+      "template": "aaa authentication login default group [parameter1] [parameter2]",
+      "command": "aaa authentication login default group radius local",
+      "explanation": "配置登录认证，默认使用 RADIUS 服务器组和本地认证",
+      "parameters": [
+        {
+          "name": "authentication method",
+          "type": "string",
+          "explanation": "认证方法"
+        },
+        {
+          "name": "fallback method",
+          "type": "string",
+          "explanation": "备用认证方法"
+        }
+      ]
+    },
+    "aaa accounting dot1x default start-stop group radius": {
+      "template": "aaa accounting dot1x default start-stop group [parameter1]",
+      "command": "aaa accounting dot1x default start-stop group radius",
+      "explanation": "配置 802.1X 计费，默认使用 RADIUS 服务器组，记录开始和停止事件",
+      "parameters": [
+        {
+          "name": "accounting method",
+          "type": "string",
+          "explanation": "计费方法"
+        }
+      ]
+    },
+    "aaa accounting network default start-stop group radius": {
+      "template": "aaa accounting network default start-stop group [parameter1]",
+      "command": "aaa accounting network default start-stop group radius",
+      "explanation": "配置网络计费，默认使用 RADIUS 服务器组，记录开始和停止事件",
+      "parameters": [
+        {
+          "name": "accounting method",
+          "type": "string",
+          "explanation": "计费方法"
+        }
+      ]
+    }
+  },
+  "radius-server dead-criteria time 5 tries 3": {
+    "template": "radius-server dead-criteria time [parameter1] tries [parameter2]",
+    "command": "radius-server dead-criteria time 5 tries 3",
+    "explanation": "配置 RADIUS 服务器死亡标准，时间为 5 分钟，尝试次数为 3 次",
+    "parameters": [
+      {
+        "name": "time",
+        "type": "integer",
+        "explanation": "时间（分钟）"
+      },
+      {
+        "name": "tries",
+        "type": "integer",
+        "explanation": "尝试次数"
+      }
+    ]
+  },
+  "user-group group1": {
+    "

@@ -1,0 +1,462 @@
+{
+  "sysname PE2": {
+    "template": "sysname [parameter1]",
+    "command": "sysname PE2",
+    "explanation": "设置设备的主机名为 'PE2'",
+    "parameters": [
+      {
+        "name": "host name",
+        "type": "string",
+        "explanation": "主机名"
+      }
+    ]
+  },
+  "multicast routing-enable": {
+    "template": "multicast routing-enable",
+    "command": "multicast routing-enable",
+    "explanation": "启用组播路由功能",
+    "parameters": []
+  },
+  "ip vpn-instance RED": {
+    "template": "ip vpn-instance [parameter1]",
+    "command": "ip vpn-instance RED",
+    "explanation": "创建名为 'RED' 的 VPN 实例",
+    "parameters": [
+      {
+        "name": "vpn-instance name",
+        "type": "string",
+        "explanation": "VPN 实例名称"
+      }
+    ],
+    "ipv4-family": {
+      "template": "ipv4-family",
+      "command": "ipv4-family",
+      "explanation": "进入 IPv4 地址族视图",
+      "parameters": [],
+      "route-distinguisher 300:1": {
+        "template": "route-distinguisher [parameter1]",
+        "command": "route-distinguisher 300:1",
+        "explanation": "配置 VPN 实例的 RD 值为 300:1",
+        "parameters": [
+          {
+            "name": "route distinguisher",
+            "type": "string",
+            "explanation": "路由区分符"
+          }
+        ]
+      },
+      "apply-label per-instance": {
+        "template": "apply-label per-instance",
+        "command": "apply-label per-instance",
+        "explanation": "为 VPN 实例应用标签",
+        "parameters": []
+      },
+      "vpn-target 300:1 export-extcommunity": {
+        "template": "vpn-target [parameter1] export-extcommunity",
+        "command": "vpn-target 300:1 export-extcommunity",
+        "explanation": "配置 VPN 实例的导出扩展团体属性",
+        "parameters": [
+          {
+            "name": "vpn-target",
+            "type": "string",
+            "explanation": "VPN 目标"
+          }
+        ]
+      },
+      "vpn-target 300:1 import-extcommunity": {
+        "template": "vpn-target [parameter1] import-extcommunity",
+        "command": "vpn-target 300:1 import-extcommunity",
+        "explanation": "配置 VPN 实例的导入扩展团体属性",
+        "parameters": [
+          {
+            "name": "vpn-target",
+            "type": "string",
+            "explanation": "VPN 目标"
+          }
+        ]
+      },
+      "multicast routing-enable": {
+        "template": "multicast routing-enable",
+        "command": "multicast routing-enable",
+        "explanation": "启用 VPN 实例的组播路由功能",
+        "parameters": []
+      },
+      "multicast-domain share-group 238.0.0.0 binding mtunnel 1": {
+        "template": "multicast-domain share-group [parameter1] binding mtunnel [parameter2]",
+        "command": "multicast-domain share-group 238.0.0.0 binding mtunnel 1",
+        "explanation": "配置组播域共享组地址为 238.0.0.0，并绑定到 MTunnel 1",
+        "parameters": [
+          {
+            "name": "share-group address",
+            "type": "IPv4",
+            "explanation": "共享组地址"
+          },
+          {
+            "name": "mtunnel id",
+            "type": "integer",
+            "explanation": "MTunnel ID"
+          }
+        ]
+      }
+    }
+  },
+  "interface gigabitethernet2/0/0": {
+    "template": "interface [parameter1]",
+    "command": "interface gigabitethernet2/0/0",
+    "explanation": "进入接口 GigabitEthernet2/0/0 的配置视图",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "undo portswitch": {
+      "template": "undo portswitch",
+      "command": "undo portswitch",
+      "explanation": "将接口从二层模式切换到三层模式",
+      "parameters": []
+    },
+    "undo shutdown": {
+      "template": "undo shutdown",
+      "command": "undo shutdown",
+      "explanation": "启用接口",
+      "parameters": []
+    },
+    "ip address 192.168.2.2 255.255.255.0": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 192.168.2.2 255.255.255.0",
+      "explanation": "配置接口的 IPv4 地址为 192.168.2.2，子网掩码为 255.255.255.0",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4 地址"
+        },
+        {
+          "name": "subnet mask",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    },
+    "pim sm": {
+      "template": "pim sm",
+      "command": "pim sm",
+      "explanation": "在接口上启用 PIM SM（稀疏模式）",
+      "parameters": []
+    }
+  },
+  "interface gigabitethernet1/0/0": {
+    "template": "interface [parameter1]",
+    "command": "interface gigabitethernet1/0/0",
+    "explanation": "进入接口 GigabitEthernet1/0/0 的配置视图",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "undo portswitch": {
+      "template": "undo portswitch",
+      "command": "undo portswitch",
+      "explanation": "将接口从二层模式切换到三层模式",
+      "parameters": []
+    },
+    "undo shutdown": {
+      "template": "undo shutdown",
+      "command": "undo shutdown",
+      "explanation": "启用接口",
+      "parameters": []
+    },
+    "ip binding vpn-instance RED": {
+      "template": "ip binding vpn-instance [parameter1]",
+      "command": "ip binding vpn-instance RED",
+      "explanation": "将接口绑定到 VPN 实例 'RED'",
+      "parameters": [
+        {
+          "name": "vpn-instance name",
+          "type": "string",
+          "explanation": "VPN 实例名称"
+        }
+      ]
+    },
+    "ip address 10.1.3.1 255.255.255.0": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 10.1.3.1 255.255.255.0",
+      "explanation": "配置接口的 IPv4 地址为 10.1.3.1，子网掩码为 255.255.255.0",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4 地址"
+        },
+        {
+          "name": "subnet mask",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    },
+    "pim sm": {
+      "template": "pim sm",
+      "command": "pim sm",
+      "explanation": "在接口上启用 PIM SM（稀疏模式）",
+      "parameters": []
+    }
+  },
+  "interface LoopBack1": {
+    "template": "interface [parameter1]",
+    "command": "interface LoopBack1",
+    "explanation": "进入环回接口 LoopBack1 的配置视图",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "ip address 3.3.3.3 255.255.255.255": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 3.3.3.3 255.255.255.255",
+      "explanation": "配置环回接口的 IPv4 地址为 3.3.3.3，子网掩码为 255.255.255.255",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4 地址"
+        },
+        {
+          "name": "subnet mask",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    },
+    "pim sm": {
+      "template": "pim sm",
+      "command": "pim sm",
+      "explanation": "在接口上启用 PIM SM（稀疏模式）",
+      "parameters": []
+    }
+  },
+  "interface MTunnel1": {
+    "template": "interface [parameter1]",
+    "command": "interface MTunnel1",
+    "explanation": "进入 MTunnel1 接口的配置视图",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "ip binding vpn-instance RED": {
+      "template": "ip binding vpn-instance [parameter1]",
+      "command": "ip binding vpn-instance RED",
+      "explanation": "将接口绑定到 VPN 实例 'RED'",
+      "parameters": [
+        {
+          "name": "vpn-instance name",
+          "type": "string",
+          "explanation": "VPN 实例名称"
+        }
+      ]
+    },
+    "ip address 3.3.3.3 255.255.255.0": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 3.3.3.3 255.255.255.0",
+      "explanation": "配置接口的 IPv4 地址为 3.3.3.3，子网掩码为 255.255.255.0",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4 地址"
+        },
+        {
+          "name": "subnet mask",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    }
+  },
+  "ospf 1": {
+    "template": "ospf [parameter1]",
+    "command": "ospf 1",
+    "explanation": "进入 OSPF 进程 1 的配置视图",
+    "parameters": [
+      {
+        "name": "process id",
+        "type": "integer",
+        "explanation": "OSPF 进程 ID"
+      }
+    ],
+    "area 0.0.0.0": {
+      "template": "area [parameter1]",
+      "command": "area 0.0.0.0",
+      "explanation": "进入 OSPF 区域 0.0.0.0 的配置视图",
+      "parameters": [
+        {
+          "name": "area id",
+          "type": "IPv4",
+          "explanation": "OSPF 区域 ID"
+        }
+      ],
+      "network 3.3.3.3 0.0.0.0": {
+        "template": "network [parameter1] [parameter2]",
+        "command": "network 3.3.3.3 0.0.0.0",
+        "explanation": "在 OSPF 区域 0.0.0.0 中通告网络 3.3.3.3/32",
+        "parameters": [
+          {
+            "name": "network address",
+            "type": "IPv4",
+            "explanation": "网络地址"
+          },
+          {
+            "name": "wildcard mask",
+            "type": "IPv4",
+            "explanation": "通配符掩码"
+          }
+        ]
+      },
+      "network 192.168.2.0 0.0.0.255": {
+        "template": "network [parameter1] [parameter2]",
+        "command": "network 192.168.2.0 0.0.0.255",
+        "explanation": "在 OSPF 区域 0.0.0.0 中通告网络 192.168.2.0/24",
+        "parameters": [
+          {
+            "name": "network address",
+            "type": "IPv4",
+            "explanation": "网络地址"
+          },
+          {
+            "name": "wildcard mask",
+            "type": "IPv4",
+            "explanation": "通配符掩码"
+          }
+        ]
+      }
+    }
+  },
+  "ospf 2 vpn-instance RED": {
+    "template": "ospf [parameter1] vpn-instance [parameter2]",
+    "command": "ospf 2 vpn-instance RED",
+    "explanation": "进入 VPN 实例 'RED' 的 OSPF 进程 2 的配置视图",
+    "parameters": [
+      {
+        "name": "process id",
+        "type": "integer",
+        "explanation": "OSPF 进程 ID"
+      },
+      {
+        "name": "vpn-instance name",
+        "type": "string",
+        "explanation": "VPN 实例名称"
+      }
+    ],
+    "import-route direct": {
+      "template": "import-route direct",
+      "command": "import-route direct",
+      "explanation": "引入直连路由到 OSPF",
+      "parameters": []
+    },
+    "import-route static": {
+      "template": "import-route static",
+      "command": "import-route static",
+      "explanation": "引入静态路由到 OSPF",
+      "parameters": []
+    },
+    "area 0.0.0.0": {
+      "template": "area [parameter1]",
+      "command": "area 0.0.0.0",
+      "explanation": "进入 OSPF 区域 0.0.0.0 的配置视图",
+      "parameters": [
+        {
+          "name": "area id",
+          "type": "IPv4",
+          "explanation": "OSPF 区域 ID"
+        }
+      ],
+      "network 10.1.3.0 0.0.0.255": {
+        "template": "network [parameter1] [parameter2]",
+        "command": "network 10.1.3.0 0.0.0.255",
+        "explanation": "在 OSPF 区域 0.0.0.0 中通告网络 10.1.3.0/24",
+        "parameters": [
+          {
+            "name": "network address",
+            "type": "IPv4",
+            "explanation": "网络地址"
+          },
+          {
+            "name": "wildcard mask",
+            "type": "IPv4",
+            "explanation": "通配符掩码"
+          }
+        ]
+      }
+    }
+  },
+  "pim": {
+    "template": "pim",
+    "command": "pim",
+    "explanation": "进入 PIM 配置视图",
+    "parameters": [],
+    "static-rp 1.1.1.1": {
+      "template": "static-rp [parameter1]",
+      "command": "static-rp 1.1.1.1",
+      "explanation": "配置静态 RP 地址为 1.1.1.1",
+      "parameters": [
+        {
+          "name": "rp address",
+          "type": "IPv4",
+          "explanation": "RP 地址"
+        }
+      ]
+    }
+  },
+  "pim vpn-instance RED": {
+    "template": "pim vpn-instance [parameter1]",
+    "command": "pim vpn-instance RED",
+    "explanation": "进入 VPN 实例 'RED' 的 PIM 配置视图",
+    "parameters": [
+      {
+        "name": "vpn-instance name",
+        "type": "string",
+        "explanation": "VPN 实例名称"
+      }
+    ],
+    "static-rp 1.1.1.1": {
+      "template": "static-rp [parameter1]",
+      "command": "static-rp 1.1.1.1",
+      "explanation": "配置静态 RP 地址为 1.1.1.1",
+      "parameters": [
+        {
+          "name": "rp address",
+          "type": "IPv4",
+          "explanation": "RP 地址"
+        }
+      ]
+    }
+  },
+  "ip route-static vpn-instance RED 1.1.1.1 255.255.255.255 192.168.2.1 public": {
+    "template": "ip route-static vpn-instance [parameter1] [parameter2] [parameter3] [parameter4] [parameter5]",
+    "command": "ip route-static vpn-instance RED 1.1.1.1 255.255.255.255 192.168.2.1 public",
+    "explanation": "在 VPN 实例 'RED' 中配置静态路由，目的地址为 1.1.1.1/32，下一跳为 192.168.2.1，并标记为公网路由",
+    "parameters": [
+      {
+        "name": "vpn-instance name",
+        "type": "string",
+        "explanation": "VPN 实例名称"
+      },
+      {
+        "name": "destination address",
+        "type": "IPv4",
+        "explanation": "目的地址"
+      },
+      {
+        "name": "destination mask",
+        "type": "IPv4",
+        "explanation": "目的地址掩码"
+      },

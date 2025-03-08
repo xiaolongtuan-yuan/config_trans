@@ -1,0 +1,496 @@
+{
+  "sysname NAT64_CGN": {
+    "template": "sysname [parameter1]",
+    "command": "sysname NAT64_CGN",
+    "explanation": "设置设备的主机名为 'NAT64_CGN'",
+    "parameters": [
+      {
+        "name": "host name",
+        "type": "string",
+        "explanation": "主机名"
+      }
+    ]
+  },
+  "license": {
+    "template": "license",
+    "command": "license",
+    "explanation": "进入许可证配置模式",
+    "parameters": [],
+    "active nat session-table size 6 slot 1 engine 0": {
+      "template": "active nat session-table size [parameter1] slot [parameter2] engine [parameter3]",
+      "command": "active nat session-table size 6 slot 1 engine 0",
+      "explanation": "激活NAT会话表大小为6，槽位1，引擎0",
+      "parameters": [
+        {
+          "name": "size",
+          "type": "integer",
+          "explanation": "会话表大小"
+        },
+        {
+          "name": "slot",
+          "type": "integer",
+          "explanation": "槽位号"
+        },
+        {
+          "name": "engine",
+          "type": "integer",
+          "explanation": "引擎号"
+        }
+      ]
+    },
+    "active nat session-table size 16 slot 2 engine 0": {
+      "template": "active nat session-table size [parameter1] slot [parameter2] engine [parameter3]",
+      "command": "active nat session-table size 16 slot 2 engine 0",
+      "explanation": "激活NAT会话表大小为16，槽位2，引擎0",
+      "parameters": [
+        {
+          "name": "size",
+          "type": "integer",
+          "explanation": "会话表大小"
+        },
+        {
+          "name": "slot",
+          "type": "integer",
+          "explanation": "槽位号"
+        },
+        {
+          "name": "engine",
+          "type": "integer",
+          "explanation": "引擎号"
+        }
+      ]
+    },
+    "active nat64 vsuf slot 1": {
+      "template": "active nat64 vsuf slot [parameter1]",
+      "command": "active nat64 vsuf slot 1",
+      "explanation": "激活NAT64 VSUF，槽位1",
+      "parameters": [
+        {
+          "name": "slot",
+          "type": "integer",
+          "explanation": "槽位号"
+        }
+      ]
+    },
+    "active nat64 vsuf slot 2": {
+      "template": "active nat64 vsuf slot [parameter1]",
+      "command": "active nat64 vsuf slot 2",
+      "explanation": "激活NAT64 VSUF，槽位2",
+      "parameters": [
+        {
+          "name": "slot",
+          "type": "integer",
+          "explanation": "槽位号"
+        }
+      ]
+    }
+  },
+  "acl ipv6 number 3000": {
+    "template": "acl ipv6 number [parameter1]",
+    "command": "acl ipv6 number 3000",
+    "explanation": "创建IPv6 ACL编号3000",
+    "parameters": [
+      {
+        "name": "acl number",
+        "type": "integer",
+        "explanation": "ACL编号"
+      }
+    ],
+    "rule 5 permit ipv6 source 2001:db8::1:1112/126 destination 64:FF9B::C0A8:85/96": {
+      "template": "rule [parameter1] permit ipv6 source [parameter2] destination [parameter3]",
+      "command": "rule 5 permit ipv6 source 2001:db8::1:1112/126 destination 64:FF9B::C0A8:85/96",
+      "explanation": "允许IPv6流量，源地址2001:db8::1:1112/126，目的地址64:FF9B::C0A8:85/96",
+      "parameters": [
+        {
+          "name": "rule number",
+          "type": "integer",
+          "explanation": "规则编号"
+        },
+        {
+          "name": "source address",
+          "type": "IPv6",
+          "explanation": "源IPv6地址"
+        },
+        {
+          "name": "destination address",
+          "type": "IPv6",
+          "explanation": "目的IPv6地址"
+        }
+      ]
+    }
+  },
+  "acl ipv6 number 3003": {
+    "template": "acl ipv6 number [parameter1]",
+    "command": "acl ipv6 number 3003",
+    "explanation": "创建IPv6 ACL编号3003",
+    "parameters": [
+      {
+        "name": "acl number",
+        "type": "integer",
+        "explanation": "ACL编号"
+      }
+    ],
+    "rule 5 permit ipv6 source 2001:db8::1:1112/126 destination 64:FF9B::C0A8:85 96": {
+      "template": "rule [parameter1] permit ipv6 source [parameter2] destination [parameter3]",
+      "command": "rule 5 permit ipv6 source 2001:db8::1:1112/126 destination 64:FF9B::C0A8:85 96",
+      "explanation": "允许IPv6流量，源地址2001:db8::1:1112/126，目的地址64:FF9B::C0A8:85 96",
+      "parameters": [
+        {
+          "name": "rule number",
+          "type": "integer",
+          "explanation": "规则编号"
+        },
+        {
+          "name": "source address",
+          "type": "IPv6",
+          "explanation": "源IPv6地址"
+        },
+        {
+          "name": "destination address",
+          "type": "IPv6",
+          "explanation": "目的IPv6地址"
+        }
+      ]
+    }
+  },
+  "traffic classifier c1": {
+    "template": "traffic classifier [parameter1]",
+    "command": "traffic classifier c1",
+    "explanation": "创建流量分类器c1",
+    "parameters": [
+      {
+        "name": "classifier name",
+        "type": "string",
+        "explanation": "分类器名称"
+      }
+    ],
+    "if-match ipv6 acl 3003": {
+      "template": "if-match ipv6 acl [parameter1]",
+      "command": "if-match ipv6 acl 3003",
+      "explanation": "匹配IPv6 ACL 3003",
+      "parameters": [
+        {
+          "name": "acl number",
+          "type": "integer",
+          "explanation": "ACL编号"
+        }
+      ]
+    }
+  },
+  "traffic behavior b1": {
+    "template": "traffic behavior [parameter1]",
+    "command": "traffic behavior b1",
+    "explanation": "创建流量行为b1",
+    "parameters": [
+      {
+        "name": "behavior name",
+        "type": "string",
+        "explanation": "行为名称"
+      }
+    ],
+    "nat64 bind instance nat64-1t": {
+      "template": "nat64 bind instance [parameter1]",
+      "command": "nat64 bind instance nat64-1t",
+      "explanation": "绑定NAT64实例nat64-1t",
+      "parameters": [
+        {
+          "name": "instance name",
+          "type": "string",
+          "explanation": "实例名称"
+        }
+      ]
+    }
+  },
+  "traffic policy p1": {
+    "template": "traffic policy [parameter1]",
+    "command": "traffic policy p1",
+    "explanation": "创建流量策略p1",
+    "parameters": [
+      {
+        "name": "policy name",
+        "type": "string",
+        "explanation": "策略名称"
+      }
+    ],
+    "classifier c1 behavior b1": {
+      "template": "classifier [parameter1] behavior [parameter2]",
+      "command": "classifier c1 behavior b1",
+      "explanation": "将分类器c1与行为b1关联",
+      "parameters": [
+        {
+          "name": "classifier name",
+          "type": "string",
+          "explanation": "分类器名称"
+        },
+        {
+          "name": "behavior name",
+          "type": "string",
+          "explanation": "行为名称"
+        }
+      ]
+    }
+  },
+  "interface GigabitEthernet 1/0/1": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet 1/0/1",
+    "explanation": "进入接口GigabitEthernet 1/0/1的配置模式",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名称"
+      }
+    ],
+    "ipv6 enable": {
+      "template": "ipv6 enable",
+      "command": "ipv6 enable",
+      "explanation": "启用接口的IPv6功能",
+      "parameters": []
+    },
+    "ipv6 address 2001:db8::1:110e 126": {
+      "template": "ipv6 address [parameter1] [parameter2]",
+      "command": "ipv6 address 2001:db8::1:110e 126",
+      "explanation": "配置接口的IPv6地址为2001:db8::1:110e，前缀长度为126",
+      "parameters": [
+        {
+          "name": "ipv6 address",
+          "type": "IPv6",
+          "explanation": "IPv6地址"
+        },
+        {
+          "name": "prefix length",
+          "type": "integer",
+          "explanation": "前缀长度"
+        }
+      ]
+    },
+    "traffic-policy p1 inbound": {
+      "template": "traffic-policy [parameter1] [parameter2]",
+      "command": "traffic-policy p1 inbound",
+      "explanation": "应用流量策略p1到入方向",
+      "parameters": [
+        {
+          "name": "policy name",
+          "type": "string",
+          "explanation": "策略名称"
+        },
+        {
+          "name": "direction",
+          "type": "string",
+          "explanation": "方向"
+        }
+      ]
+    }
+  },
+  "service-ha hot-backup enable": {
+    "template": "service-ha hot-backup enable",
+    "command": "service-ha hot-backup enable",
+    "explanation": "启用服务热备份功能",
+    "parameters": []
+  },
+  "service-ha delay-time 10": {
+    "template": "service-ha delay-time [parameter1]",
+    "command": "service-ha delay-time 10",
+    "explanation": "设置服务热备份延迟时间为10秒",
+    "parameters": [
+      {
+        "name": "delay time",
+        "type": "integer",
+        "explanation": "延迟时间"
+      }
+    ]
+  },
+  "service-location 1": {
+    "template": "service-location [parameter1]",
+    "command": "service-location 1",
+    "explanation": "创建服务位置1",
+    "parameters": [
+      {
+        "name": "location id",
+        "type": "integer",
+        "explanation": "位置ID"
+      }
+    ],
+    "location slot 1 engine 0 backup slot 2 engine 0": {
+      "template": "location slot [parameter1] engine [parameter2] backup slot [parameter3] engine [parameter4]",
+      "command": "location slot 1 engine 0 backup slot 2 engine 0",
+      "explanation": "设置主用槽位1引擎0，备用槽位2引擎0",
+      "parameters": [
+        {
+          "name": "primary slot",
+          "type": "integer",
+          "explanation": "主用槽位"
+        },
+        {
+          "name": "primary engine",
+          "type": "integer",
+          "explanation": "主用引擎"
+        },
+        {
+          "name": "backup slot",
+          "type": "integer",
+          "explanation": "备用槽位"
+        },
+        {
+          "name": "backup engine",
+          "type": "integer",
+          "explanation": "备用引擎"
+        }
+      ]
+    }
+  },
+  "service-instance-group group1": {
+    "template": "service-instance-group [parameter1]",
+    "command": "service-instance-group group1",
+    "explanation": "创建服务实例组group1",
+    "parameters": [
+      {
+        "name": "group name",
+        "type": "string",
+        "explanation": "组名称"
+      }
+    ],
+    "service-location 1": {
+      "template": "service-location [parameter1]",
+      "command": "service-location 1",
+      "explanation": "将服务位置1添加到服务实例组group1",
+      "parameters": [
+        {
+          "name": "location id",
+          "type": "integer",
+          "explanation": "位置ID"
+        }
+      ]
+    }
+  },
+  "nat64 instance nat64-1 id 1": {
+    "template": "nat64 instance [parameter1] id [parameter2]",
+    "command": "nat64 instance nat64-1 id 1",
+    "explanation": "创建NAT64实例nat64-1，ID为1",
+    "parameters": [
+      {
+        "name": "instance name",
+        "type": "string",
+        "explanation": "实例名称"
+      },
+      {
+        "name": "instance id",
+        "type": "integer",
+        "explanation": "实例ID"
+      }
+    ],
+    "service-instance-group group1": {
+      "template": "service-instance-group [parameter1]",
+      "command": "service-instance-group group1",
+      "explanation": "将服务实例组group1关联到NAT64实例nat64-1",
+      "parameters": [
+        {
+          "name": "group name",
+          "type": "string",
+          "explanation": "组名称"
+        }
+      ]
+    },
+    "port-range 4096": {
+      "template": "port-range [parameter1]",
+      "command": "port-range 4096",
+      "explanation": "设置NAT64端口范围为4096",
+      "parameters": [
+        {
+          "name": "port range",
+          "type": "integer",
+          "explanation": "端口范围"
+        }
+      ]
+    },
+    "nat64 alg ftp": {
+      "template": "nat64 alg [parameter1]",
+      "command": "nat64 alg ftp",
+      "explanation": "启用NAT64的FTP ALG功能",
+      "parameters": [
+        {
+          "name": "alg type",
+          "type": "string",
+          "explanation": "ALG类型"
+        }
+      ]
+    },
+    "nat64 address-group nat64-group1 group-id 1": {
+      "template": "nat64 address-group [parameter1] group-id [parameter2]",
+      "command": "nat64 address-group nat64-group1 group-id 1",
+      "explanation": "创建NAT64地址组nat64-group1，组ID为1",
+      "parameters": [
+        {
+          "name": "group name",
+          "type": "string",
+          "explanation": "组名称"
+        },
+        {
+          "name": "group id",
+          "type": "integer",
+          "explanation": "组ID"
+        }
+      ],
+      "section 0 11.1.1.0 mask 24": {
+        "template": "section [parameter1] [parameter2] mask [parameter3]",
+        "command": "section 0 11.1.1.0 mask 24",
+        "explanation": "配置NAT64地址组nat64-group1的地址段为11.1.1.0，掩码为24",
+        "parameters": [
+          {
+            "name": "section id",
+            "type": "integer",
+            "explanation": "段ID"
+          },
+          {
+            "name": "ip address",
+            "type": "IPv4",
+            "explanation": "IP地址"
+          },
+          {
+            "name": "mask",
+            "type": "integer",
+            "explanation": "掩码"
+          }
+        ]
+      }
+    },
+    "nat64 outbound 3000 address-group nat64-group1": {
+      "template": "nat64 outbound [parameter1] address-group [parameter2]",
+      "command": "nat64 outbound 3000 address-group nat64-group1",
+      "explanation": "配置NAT64出方向ACL 3000使用地址组nat64-group1",
+      "parameters": [
+        {
+          "name": "acl number",
+          "type": "integer",
+          "explanation": "ACL编号"
+        },
+        {
+          "name": "address group",
+          "type": "string",
+          "explanation": "地址组名称"
+        }
+      ]
+    },
+    "nat64 log host 1.1.1.1 514 source 2.2.2.2 514 name loghost": {
+      "template": "nat64 log host [parameter1] [parameter2] source [parameter3] [parameter4] name [parameter5]",
+      "command": "nat64 log host 1.1.1.1 514 source 2.2.2.2 514 name loghost",
+      "explanation": "配置NAT64日志主机为1.1.1.1，端口514，源地址2.2.2.2，源端口514，名称为loghost",
+      "parameters": [
+        {
+          "name": "host ip",
+          "type": "IPv4",
+          "explanation": "日志主机IP地址"
+        },
+        {
+          "name": "host port",
+          "type": "integer",
+          "explanation": "日志主机端口"
+        },
+        {
+          "name": "source ip",
+          "type": "IPv4",
+          "explanation": "源IP地址"
+        },
+        {
+          "name": "source port",
+          "type": "
