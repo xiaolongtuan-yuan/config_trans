@@ -1,8 +1,11 @@
-from sentence_transformers import SentenceTransformer
-from langchain.embeddings import HuggingFaceEmbeddings
+from pathlib import Path
+
+from langchain_community.embeddings import HuggingFaceEmbeddings
 import torch
 import json
 import warnings
+
+from tqdm import tqdm
 
 warnings.filterwarnings("ignore", category=UserWarning, module="torch")
 
@@ -44,7 +47,7 @@ def parse_command_node(Command_nodes: dict, config_model: dict, embedding_model,
             Command_nodes[k] = {'structural_features': command_node.structural_features,
                                 'semantic_features': command_node.semantic_features,
                                 'parameter_features': command_node.paras_semantic_features}
-            print(k)
+            # print(k)
             # break
 
         '''for child_k, child_v in sub_dict.items():
@@ -163,21 +166,22 @@ def save_json_file(data, file_path):
 
 
 if __name__ == "__main__":
+    project_root = Path(__file__).parent.parent
     # 加载embedding model
-    local_EMmodel_path = 'config_trans/EmbeddingModel/MiniLM-L6-v2'
+    local_EMmodel_path = str(project_root / 'EmbeddingModel/MiniLM-L6-v2')
     # embedding_model = SentenceTransformer(local_EMmodel_path)
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
 
-    vendors = ["Juniper"]  # ["Cisco", "HUAWEI", "Juniper"]
+    vendors = ["Cisco", "HUAWEI", "Juniper"]
     for vendor in vendors:
         Command_nodes = {}  # 'command_template': CommandNode_Object
-        config_model_path = 'config_trans/dataset_multi_vendor_config/config_model/{}.json'.format(vendor)
+        config_model_path = str(project_root / 'dataset_multi_vendor_config/config_model/{}.json'.format(vendor))
 
         # 加载供应商配置模型
         config_model = load_json_file(config_model_path)
         # 解析配置节点
         Command_nodes = parse_command_node(Command_nodes, config_model, embedding_model)
         # 保存配置节点（json）
-        save_path = 'config_trans/dataset_multi_vendor_config/config_command_node/{}.json'.format(vendor)
+        save_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/{}.json'.format(vendor))
         save_json_file(Command_nodes, save_path)
 

@@ -1,7 +1,8 @@
+from pathlib import Path
+
 from sklearn.metrics.pairwise import cosine_similarity
 import json
 import numpy as np
-import copy
 from tqdm import tqdm
 
 '''
@@ -152,9 +153,12 @@ def save_json_file(data, file_path):
 if __name__ == "__main__":
     print('加载供应商配置模板节点库, 建立相应配置匹配器')
     vendors = ["Cisco", "HUAWEI", "Juniper"]
-    templates_path = 'config_trans/dataset_multi_vendor_config/config_command_node/{}.json'
-    save_path = 'config_trans/dataset_multi_vendor_config/mapping_template_library/{}_{}.json'
+    project_root = Path(__file__).parent.parent
+
+    templates_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/{}.json')
+    save_path = str(project_root / 'dataset_multi_vendor_config/mapping_template_library/{}_{}.json')
     _build_mapping_template_library(vendors, templates_path, save_path)
+
     '''
     command_templates = {}      # 模板库
     configuration_matchers = {}   # 匹配器
