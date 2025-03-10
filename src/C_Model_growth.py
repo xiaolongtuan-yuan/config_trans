@@ -4,7 +4,7 @@ import glob
 from pathlib import Path
 import os
 from tqdm import tqdm
-
+import re
 
 def merge_nodes(existing_node: dict, new_node: dict):
     """
@@ -24,7 +24,46 @@ def merge_nodes(existing_node: dict, new_node: dict):
             # 其余情况按照“保留第一次出现”的原则，不覆盖 existing_node[key]
     return existing_node
 
-def merge_models(config1, config2):
+def check_template_duplication(command:str, template_re_libary:dict):
+    """
+    检查 template_re_libary 中是否存在相同的 能够匹配command 的正则表达式键，
+    如果存在，则返回其对应的值，否则返回 None。
+    """
+    for regex, template_dict in template_re_libary.items():
+        if regex.match(command):
+            return template_dict, regex
+    return None, None
+
+
+def template_to_regex(template: str) -> re.Pattern:
+    """
+    将一个命令模板转换为正则表达式。
+    示例：
+      "binding tunnel [param1]" 转换为 r"^binding\s+tunnel\s+(\S+)$"
+    """
+    # 按空格分割模板
+    tokens = template.split()
+    regex_tokens = []
+
+    for token in tokens:
+        if token.startswith('[') and token.endswith(']'):
+            # 如果是占位符，转换为捕获组，匹配一个非空字符串
+            regex_tokens.append(r"(\S+)")
+        else:
+            # 固定部分，转义特殊字符后加入列表
+            regex_tokens.append(re.escape(token))
+
+    # 使用 \s+ 连接各个部分，表示各部分之间可以有一个或多个空白字符
+    regex_pattern = r"^" + r"\s+".join(regex_tokens) + r"$"
+    return re.compile(regex_pattern)
+
+def placeholder_count(template: str):
+    pattern = r'\[parameter\d+\]'
+    # 查找所有匹配的占位符
+    matches = re.findall(pattern, template)
+    return len(matches)
+
+def merge_models(config1, config2, vendor_command, template_used_statistic):
     """
     递归地将 config2 中不存在于 config1 的节点合并到 config1 中。
     如果 key 存在于 config1 且对应子节点都是字典，则继续合并其子节点；
@@ -32,14 +71,43 @@ def merge_models(config1, config2):
     如果 key 都存在，但对应的值不是字典，则保持 config1 原值不变（即不覆盖）。
     """
     for key, value in config2.items():
+        if not isinstance(value, dict):
+            continue
+        command_line = value.get("command")
+        if command_line:
+            try:
+                if not placeholder_count(key) == len(value["parameters"]):  # llm解析时的错误
+                    continue
+            except:
+                continue
+            template_dict, regex = check_template_duplication(command_line, vendor_command)
+            if template_dict:
+                # 如果 vendor_command 中已经存在这个命令对应的模版, 选择具有最大参数的模版
+                if len(value["parameters"]) <= len(template_dict['parameters']):# 需要模版库
+                    value['template'] = template_dict['template']
+                    key = template_dict['template']
+                    value['parameters'] = template_dict['parameters']
+                    template_used_statistic[key] += 1
+                else:
+                    # 更换regex
+                    template_used_statistic[key] = template_used_statistic[template_dict['template']] + 1
+                    del vendor_command[regex]
+                    del template_used_statistic[template_dict['template']]
+
+                    new_regex = template_to_regex(value['template'])
+                    vendor_command[new_regex] = {k: value[k] for k in ['template', 'parameters'] if k in value}
+            else:
+                new_regex = template_to_regex(value['template'])
+                vendor_command[new_regex] = {k: value[k] for k in ['template', 'parameters'] if k in value}
+                template_used_statistic[value['template']] = 1
+
         if key not in config1:
             # 如果 config1 中没有该键，直接插入
             config1[key] = value
         else:
-            # 如果 config1 中已经存在这个 key，
-            # 且双方都是 dict，则递归合并子节点
-            if isinstance(value, dict) and isinstance(config1[key], dict):
-                merge_models(config1[key], value)
+            # 如果 config1 中已经存在这个 key, 且双方都是 dict，则递归合并子节点
+            if isinstance(value, dict) and len(value) > 4 and isinstance(config1[key], dict):
+                merge_models(config1[key], value, vendor_command, template_used_statistic)
             # 如果不是 dict，则不覆盖，保持原值。
             # 所以这里什么都不做即可
     return config1
@@ -85,12 +153,18 @@ def insert_template(config_model: dict) -> dict:
     return config_model
 
 
+
 if __name__ == "__main__":
     vendors = ["Cisco", "HUAWEI", "Juniper"]
     project_root = Path(__file__).parent.parent
 
     # merge the device configuration to the vendor model
     for vendor in vendors:
+        template_used_statistic = {}
+        # 加载供应商配置模型
+        # vendor_model = load_json_file(vendor_model_path)
+        vendor_model = {}
+        vendor_command_re = {}
         folder_path = str(project_root / 'dataset_multi_vendor_config/Json_config/{}_simplified'.format(vendor))
         vendor_model_path = str(project_root / 'dataset_multi_vendor_config/config_model/{}.json'.format(vendor))
 
@@ -103,11 +177,11 @@ if __name__ == "__main__":
                 json_config = load_json_file(json_config_path)
             except:
                 continue
-            # 加载供应商配置模型
-            vendor_model = load_json_file(vendor_model_path)
-            vendor_model = merge_models(vendor_model, json_config)
-            save_json_file(vendor_model, vendor_model_path)
-            merge_count += 1
-        print(merge_count)
+
+            # 对vendor_model中的模版进行去重，主要问题是同样的conmand，llm在解析时可能出现不同的模版（配置参数缺失了），建议均采用最大的配置参数，我们需要一个字典来记录是否去重
+            vendor_model = merge_models(vendor_model, json_config, vendor_command_re, template_used_statistic)
+        save_json_file(vendor_model, vendor_model_path)
+
+        save_json_file(template_used_statistic, str(project_root / f'statistic/statistic_res/{vendor}_template_used_statistic.json'))
 
 

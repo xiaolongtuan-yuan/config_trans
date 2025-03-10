@@ -1,7 +1,11 @@
 # 从json解析配置到目标供应商配置
+import os
+from pathlib import Path
+
+from openai import OpenAI
 from sklearn.metrics.pairwise import cosine_similarity
 import json
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 import numpy as np
 import torch
 import warnings
@@ -9,7 +13,8 @@ import re
 warnings.filterwarnings("ignore", category=UserWarning, module="torch")
 
 # 指定设备
-device = "cuda:1"  # 使用GPU 1
+device = "cuda:0"  # 使用GPU 1
+project_root = Path(__file__).parent.parent
 
 # 同阶段4--CommandNode
 class CommandNode:
@@ -268,14 +273,14 @@ class Config_Translater:
         commands_feature = {}              # 分拆每一条配置命令特征
         commands_feature = parse_command_node(commands_feature, json_configuration)
 
-        # 阶段一：规则映射rule_mapping
+        # 阶段一：规则映射rule_mapping, rest_commands_feature是在映射库中不存在的配置命令
         rest_commands_feature, config_match = self.rule_mapping(commands_feature, 
                                                                 config_match, vendor, target_vendor)
 
         # 阶段二：模糊映射fuzzy_mapping-->针对规则映射库未覆盖的配置命令
         config_match = self.fuzzy_mapping(rest_commands_feature, config_match, vendor, target_vendor)
         
-        # 阶段三：大模型映射LLMmodel_mapping-->针对供应商配置模型未覆盖的配置命令
+        # 阶段三（删除）：大模型映射LLMmodel_mapping-->针对供应商配置模型未覆盖的配置命令，由于当前不考虑在映射库中不存在的配置命令
         # config_match = self.LLMmodel_mapping(self, rest_commands_feature)
 
         # 阶段四：配置命令编排，配置参数直接填充
@@ -287,8 +292,10 @@ class Config_Translater:
         # print(json.dumps(target_config, indent=4, ensure_ascii=False))
         
         # 阶段六：输出并保存翻译的配置命令
-        save_path = 'config_trans/dataset_multi_vendor_config/translation_config/{}_{}/{}.txt'.format(vendor, target_vendor, file_name)
-        self.print_and_save_translation_config(target_config, file_name)
+        output_dir = project_root / 'dataset_multi_vendor_config/translation_config/{}_{}'.format(vendor, target_vendor)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        save_path = str(output_dir / '{}.txt'.format(vendor, target_vendor, file_name))
+        self.print_and_save_translation_config(target_config, save_path)
         
         return target_config
     
@@ -327,9 +334,10 @@ class Config_Translater:
     
     # 阶段三使用大模型做配置映射，保留接口，当前翻译流程关注前两阶段效果
     def LLMmodel_mapping(self, rest_commands_feature):
-        for command, feature in rest_commands_feature.items():
-            translation_result = self.translation_llm(command, feature)
-        return translation_result
+        raise NotImplementedError
+        # for command, feature in rest_commands_feature.items():
+        #     translation_result = self.translation_llm.translation(command, feature)
+        # return translation_result
     
     # 阶段四进行配置编排，对应正确的视图
     def config_arranging(self, config_matches, target_vendor):
@@ -410,7 +418,7 @@ class Config_Translater:
             # 遍历该需要翻译配置命令中每一层级的配置命令
             for depth, translation_commands in translation.items(): 
                 # 不是字典跳过，包含非翻译命令的信息
-                if not isinstance(translation[depth], dict):
+                if not isinstance(translation_commands, dict):
                     continue
                 # 基于配置参数合并配置命令模板
                 for command, command_v in translation_commands.items():
@@ -495,9 +503,9 @@ class Config_Translater:
         return dest_template
     
     # 输出对应视图的配置命令
-    def print_and_save_translation_config(self, target_config, file_name):
+    def print_and_save_translation_config(self, target_config, save_path):
         # 打开文件用于写入
-        with open(file_name, 'w') as file:
+        with open(save_path, 'w') as file:
             # 遍历每一个需要翻译的配置命令
             for command, translation in target_config.items():
                 # 遍历该需要翻译配置命令中每一层级的配置命令
@@ -511,10 +519,17 @@ class Config_Translater:
 
 # 最后阶段使用大模型做配置映射，保留接口，后续补充
 class translation_model:
-    def __init__(self, ):
-        self.llm_model = ''
+    def __init__(self, model_name: str, endpoint_url: str='https://api.deepseek.com/v1'):
+        if 'gpt' in model_name:
+            api_key = os.getenv("OPENAI_KEY")
+        elif 'deepseek' in model_name:
+            api_key = os.getenv("DEEPSEEK_API_KEY")
+        else:
+            raise ValueError("Invalid model name")
+        self.llm_model = OpenAI(api_key=api_key, base_url=endpoint_url)
     
     def translation(self, command, feature):
+
         return     
 
 # json文件加载
@@ -553,10 +568,9 @@ if __name__ == "__main__":
     commands_feature = parse_command_node(commands_feature, json_config)
     # print(json.dumps(commands_feature, indent=4, ensure_ascii=False))
     '''
-    
     vendors = ["Cisco", "HUAWEI", "Juniper"]
-    mapping_library_path = 'config_trans/dataset_multi_vendor_config/mapping_template_library/{}_{}.json'
-    templates_path = 'config_trans/dataset_multi_vendor_config/config_command_node/{}.json'
+    mapping_library_path = str(project_root / 'dataset_multi_vendor_config/mapping_template_library/{}_{}.json')
+    templates_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/{}.json')
 
     # 加载规则映射库
     print('Mapping library loading.')
@@ -566,13 +580,14 @@ if __name__ == "__main__":
     config_matchers = config_matchers_load(templates_path, vendors)
     # 文本嵌入模型加载
     print('Embedding model loading.')
-    local_EMmodel_path = 'config_trans/EmbeddingModel/MiniLM-L6-v2'
+    local_EMmodel_path = str(project_root / 'EmbeddingModel/MiniLM-L6-v2')
     # embedding_model = SentenceTransformer(local_EMmodel_path)
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path, 
                                             model_kwargs={"device": device})
+
     # 加载用于配置翻译的语言模型
     print('Translation model based on llm loading.')
-    translation_llm = translation_model()
+    translation_llm = translation_model('deepseek-chat')
 
     # 创建翻译器
     print('Config translater loading.')
@@ -581,13 +596,13 @@ if __name__ == "__main__":
     
     # translation test
     file_name = 'cfg_dsvpn_0015_00_0'
-    config_path = 'config_trans/dataset_multi_vendor_config/Json_config/Cisco/{}.json'.format(file_name)
+    config_path = str(project_root / 'dataset_multi_vendor_config/Json_config/Cisco/{}.json'.format(file_name))
     json_config = load_json_file(config_path)
     # 翻译Cisco配置到HUAWEI配置
-    translation_result = config_translater.translation(json_config, 'Cisco', 'HUAWEI')
+    translation_result = config_translater.translation(json_config, 'Cisco', 'HUAWEI', file_name)
     print('Translation result of HUAWEI is:')
     # print(json.dumps(translation_result, indent=4, ensure_ascii=False))
-    translation_result = config_translater.translation(json_config, 'Cisco', 'Juniper')
+    translation_result = config_translater.translation(json_config, 'Cisco', 'Juniper', file_name)
     print('Translation result of Juniper is:')
     # print(json.dumps(translation_result, indent=4, ensure_ascii=False))
     
