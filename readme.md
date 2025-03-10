@@ -1,17 +1,13 @@
-```markdown
-nohup python -u A_LLM_Parse_Config.py HUAWEI config_data_801-1200 > HUAWEI.log 2>&1 &
+①基于大模型：实现文本配置到配置模型{Json}的转换
 
-nohup python -u A_LLM_Parse_Config.py Cisco config_data_801-1200 > Cisco.log 2>&1 &
+②正则匹配从llm输出中匹配json格式配置
 
-----------------
-nohup python -u A_LLM_Parse_Config.py Juniper config_data_1-400 > Juniper1_400.log 2>&1 &
+③设备json配置简化，供应商配置模型融合
 
-nohup python -u A_LLM_Parse_Config.py Juniper config_data_401-800 > Juniper401_800.log 2>&1 &
+④配置命令节点解析，铺垫映射算法
 
-nohup python -u A_LLM_Parse_Config.py Juniper config_data_801-1200 > Juniper801_1200.log 2>&1 &
+⑤配置命令节点映射算法
 
-nohup python -u A_LLM_Parse_Config.py Juniper config_data_1600_1999 > Juniper1600_1999.log 2>&1 &
+⑥设备配置命令整合，参数位置映射
 
-nohup python -u A_LLM_Parse_Config.py Juniper config_data_2400-2889 > Juniper2400_2889.log 2>&1 &
-
-```
+⑦配置命令编排，参数转换，输出
