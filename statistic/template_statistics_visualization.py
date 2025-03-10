@@ -13,15 +13,29 @@ import numpy as np
 # Load data from JSON file
 vendors = ["Cisco", "Juniper", "Huawei"]
 for vendor in vendors:
-    with open(f"./statistic_res/{vendor}_template_stats.json", "r", encoding="utf-8") as f:
+    with open(f"./statistic_res/{vendor}_template_used_statistic.json", "r", encoding="utf-8") as f:
         data = json.load(f)
 
+    '''
+    data = {
+        "sysname [parameter1]": 131,
+        "multicast routing-enable": 175,
+        "interface [parameter1]": 546,
+        "ospf [parameter1]": 793
+    }
+    '''
+
     # Generate word frequency data
-    word_freq = {tpl[0]: tpl[1]['count'] for tpl in data['templates']}
+    word_freq = data
+
     if vendor == "Juniper":
         top_n = 200
         top_word_freq = dict(sorted(word_freq.items(), key=lambda x: x[1], reverse=True)[:top_n])
         wordcloud = WordCloud(width=1000, height=500, background_color='white',prefer_horizontal=1.0).generate_from_frequencies(top_word_freq)
+    elif vendor == "Huawei":
+        top_n = 500
+        top_word_freq = dict(sorted(word_freq.items(), key=lambda x: x[1], reverse=True)[:top_n])
+        wordcloud = WordCloud(width=1000, height=500, background_color='white').generate_from_frequencies(top_word_freq)
 
     else:
         top_n = 300
@@ -37,7 +51,9 @@ for vendor in vendors:
 
 
     # Generate Cumulative Distribution Function (CDF) plot
-    probabilities = [tpl[1]['probability'] for tpl in data['templates']]
+    total_count = sum(data.values())  # 计算总次数
+    probabilities = [count / total_count for count in data.values()]
+
     sorted_probabilities = np.sort(probabilities)
     cumulative_probs = np.cumsum(sorted_probabilities)
 

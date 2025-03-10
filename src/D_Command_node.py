@@ -1,9 +1,14 @@
-from sentence_transformers import SentenceTransformer
-from langchain.embeddings import HuggingFaceEmbeddings
+from pathlib import Path
+
+from langchain_community.embeddings import HuggingFaceEmbeddings
 import torch
 import json
 import warnings
+
+from tqdm import tqdm
+
 warnings.filterwarnings("ignore", category=UserWarning, module="torch")
+
 
 # 输入----
 # Command_nodes= {'command_template': CommandNode_Object}
@@ -12,8 +17,7 @@ warnings.filterwarnings("ignore", category=UserWarning, module="torch")
 # depth_commmand-->配置命令层级
 # 输出---
 # Command_Nodes
-def parse_command_node(Command_nodes:dict, config_model:dict, embedding_model, parent_command='system', depth=0):
-    
+def parse_command_node(Command_nodes: dict, config_model: dict, embedding_model, parent_command='system', depth=0):
     for k, sub_dict in config_model.items():
         if not isinstance(sub_dict, dict):
             continue
@@ -21,37 +25,38 @@ def parse_command_node(Command_nodes:dict, config_model:dict, embedding_model, p
         template_key = sub_dict.get("template")
         command_key = sub_dict.get("command")
         explanation_key = sub_dict.get("explanation")
-        if not template_key: # or not command_key or not explanation_key:
+        if not template_key:  # or not command_key or not explanation_key:
             # 没有 template/command/explanation 就跳过, 要保证配置命令语义/结构的完整性
             continue
         else:
             # 逐个解析每个命令节点的数据项
             # 首先是结构特征（包括depth/param_signature(count/order)/parent_command）
             command_parameters = sub_dict["parameters"] if sub_dict.get("parameters") else {}
-            structural_feature = {'depth':depth, 
-                                  'params':command_parameters, 
-                                  'parent_command':parent_command}
+            structural_feature = {'depth': depth,
+                                  'params': command_parameters,
+                                  'parent_command': parent_command}
             # 其次为语义特征（包括template/command/explanation/parameters）
             command_example = sub_dict["command"] if sub_dict.get("command") else ''
             command_explanation = sub_dict["explanation"] if sub_dict.get("explanation") else ''
-            semantic_feature = {'template':sub_dict['template'],
-                                'command':command_example,
-                                'explanation':command_explanation,
-                                'parameters':command_parameters}
+            semantic_feature = {'template': sub_dict['template'],
+                                'command': command_example,
+                                'explanation': command_explanation,
+                                'parameters': command_parameters}
             # 创建命令节点
             command_node = CommandNode(structural_feature, semantic_feature, embedding_model)
-            Command_nodes[k] = {'structural_features':command_node.structural_features,
-                                'semantic_features':command_node.semantic_features,
-                                'parameter_features':command_node.paras_semantic_features}
-            print(k)
+            Command_nodes[k] = {'structural_features': command_node.structural_features,
+                                'semantic_features': command_node.semantic_features,
+                                'parameter_features': command_node.paras_semantic_features}
+            # print(k)
             # break
 
         '''for child_k, child_v in sub_dict.items():
             if not isinstance(child_v, dict):
                 continue'''
-        parse_command_node(Command_nodes, sub_dict, embedding_model, k, depth+1)
-        
+        parse_command_node(Command_nodes, sub_dict, embedding_model, k, depth + 1)
+
     return Command_nodes
+
 
 class CommandNode:
     def __init__(self, structural_features, semantic_features, embedding_model):
@@ -66,13 +71,13 @@ class CommandNode:
 
         # 上下文拓扑特征
         self._parse_context_topology(structural_features['parent_command'])
-        
+
         # 参数签名特征
         self._build_param_signature(structural_features['params'])
-        
+
         # 深度特征
         self._calculate_depth_levels(structural_features['depth'])
-        
+
         # 语义特征
         self._generate_semantic_embedding(semantic_features, embedding_model)
 
@@ -114,25 +119,25 @@ class CommandNode:
         # 使用预训练模型获取基础语义(配置模板，命令，解释)
         base_embedding = self._get_base_embedding(embedding_model,
                                                   semantic_features['template']
-                                                  +semantic_features['command']
-                                                  +semantic_features['explanation'])
-        
+                                                  + semantic_features['command']
+                                                  + semantic_features['explanation'])
+
         # 参数增强语义(所有参数的名字与解释)
-        param_text = ' '.join([p['name']+p['explanation'] for p in semantic_features['parameters']])
+        param_text = ' '.join([p['name'] + p['explanation'] for p in semantic_features['parameters']])
         param_embedding = self._get_param_embedding(embedding_model, param_text)
-        
+
         # 融合特征
         self.semantic_features = self._fuse_embeddings(
             base_embedding, param_embedding
         )
-    
+
     def _generate_para_semantic_embedding(self, semantic_features, embedding_model):
         # 参数语义(单个参数的名字+完整配置命令解释)
         for p in semantic_features['parameters']:
             para_text = p['name'] + p['explanation'] + semantic_features['explanation']
             self.paras_semantic_features.append(self._get_param_embedding(embedding_model, para_text).tolist())
 
-    # 语义嵌入向量   
+    # 语义嵌入向量
     def _get_base_embedding(self, embedding_model, text):
         return torch.tensor(embedding_model.embed_query(text))
 
@@ -144,11 +149,13 @@ class CommandNode:
         attention_weights = torch.softmax(torch.cat([base, params]), dim=0)
         return (base * attention_weights[0] + params * attention_weights[1]).tolist()
 
+
 # load JSON fie and load data
 def load_json_file(file_path):
     with open(file_path, 'r', encoding='utf-8') as json_file:
         data = json.load(json_file)
     return data
+
 
 # save JSON fie
 def save_json_file(data, file_path):
@@ -157,22 +164,24 @@ def save_json_file(data, file_path):
         json.dump(data, json_file, ensure_ascii=False, indent=4)
     # print("JSON文件已保存至{}".format(file_path))
 
+
 if __name__ == "__main__":
+    project_root = Path(__file__).parent.parent
     # 加载embedding model
-    local_EMmodel_path = 'config_trans/EmbeddingModel/MiniLM-L6-v2'
+    local_EMmodel_path = str(project_root / 'EmbeddingModel/MiniLM-L6-v2')
     # embedding_model = SentenceTransformer(local_EMmodel_path)
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
 
-    vendors = ["Juniper"] # ["Cisco", "HUAWEI", "Juniper"]
+    vendors = ["Cisco", "HUAWEI", "Juniper"]
     for vendor in vendors:
-        Command_nodes = {}    # 'command_template': CommandNode_Object
-        config_model_path = 'config_trans/dataset_multi_vendor_config/config_model/{}.json'.format(vendor)
+        Command_nodes = {}  # 'command_template': CommandNode_Object
+        config_model_path = str(project_root / 'dataset_multi_vendor_config/config_model/{}.json'.format(vendor))
 
         # 加载供应商配置模型
         config_model = load_json_file(config_model_path)
         # 解析配置节点
         Command_nodes = parse_command_node(Command_nodes, config_model, embedding_model)
         # 保存配置节点（json）
-        save_path = 'config_trans/dataset_multi_vendor_config/config_command_node/{}.json'.format(vendor) 
+        save_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/{}.json'.format(vendor))
         save_json_file(Command_nodes, save_path)
 
