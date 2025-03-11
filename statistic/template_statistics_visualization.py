@@ -31,16 +31,16 @@ for vendor in vendors:
     if vendor == "Juniper":
         top_n = 200
         top_word_freq = dict(sorted(word_freq.items(), key=lambda x: x[1], reverse=True)[:top_n])
-        wordcloud = WordCloud(width=1000, height=500, background_color='white',prefer_horizontal=1.0).generate_from_frequencies(top_word_freq)
+        wordcloud = WordCloud(width=1500, height=750, background_color='white',prefer_horizontal=1.0).generate_from_frequencies(top_word_freq)
     elif vendor == "Huawei":
-        top_n = 500
+        top_n = 1000
         top_word_freq = dict(sorted(word_freq.items(), key=lambda x: x[1], reverse=True)[:top_n])
-        wordcloud = WordCloud(width=1000, height=500, background_color='white').generate_from_frequencies(top_word_freq)
+        wordcloud = WordCloud(width=1200, height=600, background_color='white').generate_from_frequencies(top_word_freq)
 
     else:
         top_n = 300
         top_word_freq = dict(sorted(word_freq.items(), key=lambda x: x[1], reverse=True)[:top_n])
-        wordcloud = WordCloud(width=1000, height=500, background_color='white').generate_from_frequencies(top_word_freq)
+        wordcloud = WordCloud(width=1200, height=600, background_color='white').generate_from_frequencies(top_word_freq)
 
     # Plot word cloud
     plt.figure(figsize=(10, 6))
@@ -48,7 +48,6 @@ for vendor in vendors:
     plt.axis('off')
     plt.title(f'{vendor} Template Usage Frequency Word Cloud')
     plt.savefig(f"./statistic_res/{vendor}_template_usage_frequency_word_cloud.png")
-
 
     # Generate Cumulative Distribution Function (CDF) plot
     total_count = sum(data.values())  # 计算总次数
@@ -65,3 +64,15 @@ for vendor in vendors:
     plt.title(f'{vendor} Template Usage Probability Cumulative Distribution Function (CDF)')
     plt.grid(True)
     plt.savefig(f"./statistic_res/{vendor}_template_usage_probability_CDF.png")
+
+    # 绘制柱状图
+    top_n = 120
+    sorted_data = dict(sorted(data.items(), key=lambda x: x[1], reverse=True)[:top_n])
+    plt.figure(figsize=(10, 6))
+    plt.bar(sorted_data.keys(), sorted_data.values(), color='green')
+    plt.xlabel('Command Templates')
+    plt.ylabel('Usage Count')
+    plt.title(f'{vendor} Template Usage Count Bar Chart')
+    plt.xticks([])
+    plt.tight_layout()  # 自动调整布局
+    plt.savefig(f"./statistic_res/{vendor}_template_usage_count_bar_chart.png")
