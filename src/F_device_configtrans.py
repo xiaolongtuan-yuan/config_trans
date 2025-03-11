@@ -265,7 +265,7 @@ class Config_Translater:
     '''
 
     # 进行配置翻译
-    def translation(self, json_configuration, vendor, target_vendor, file_name):
+    def translation(self, json_configuration, vendor, target_vendor, save_path):
         config_match = {}           # 保存翻译（匹配）集合
         # 给juniper配置模型加个保险
         if vendor == 'Juniper':
@@ -292,9 +292,6 @@ class Config_Translater:
         # print(json.dumps(target_config, indent=4, ensure_ascii=False))
         
         # 阶段六：输出并保存翻译的配置命令
-        output_dir = project_root / 'dataset_multi_vendor_config/translation_config/{}_{}'.format(vendor, target_vendor)
-        output_dir.mkdir(parents=True, exist_ok=True)
-        save_path = str(output_dir / '{}.txt'.format(vendor, target_vendor, file_name))
         self.print_and_save_translation_config(target_config, save_path)
         
         return target_config
@@ -335,9 +332,9 @@ class Config_Translater:
     # 阶段三使用大模型做配置映射，保留接口，当前翻译流程关注前两阶段效果
     def LLMmodel_mapping(self, rest_commands_feature):
         raise NotImplementedError
-        # for command, feature in rest_commands_feature.items():
-        #     translation_result = self.translation_llm.translation(command, feature)
-        # return translation_result
+        for command, feature in rest_commands_feature.items():
+            translation_result = self.translation_llm.translation(command, feature)
+        return translation_result
     
     # 阶段四进行配置编排，对应正确的视图
     def config_arranging(self, config_matches, target_vendor):
@@ -526,9 +523,25 @@ class translation_model:
             api_key = os.getenv("DEEPSEEK_API_KEY")
         else:
             raise ValueError("Invalid model name")
+        self.model_name = model_name
         self.llm_model = OpenAI(api_key=api_key, base_url=endpoint_url)
     
     def translation(self, command, feature):
+        prompt_file = project_root /'resource/parameter_mapping_F_prompt.txt'
+
+        messages = [
+            {"role": "system", "content": open(prompt_file, 'r', encoding='utf-8').read()},
+            {"role": "user", "content": "Translate the following command into the target vendor's configuration format: " + command}
+        ]
+
+        response = self.llm_model.chat.completions.create(
+            model=self.model_name,
+            messages=messages,
+            response_format={
+                'type': 'json_object'
+            }
+        )
+        json_response = response.choices[0].message.content
 
         return     
 
@@ -597,12 +610,15 @@ if __name__ == "__main__":
     # translation test
     file_name = 'cfg_dsvpn_0015_00_0'
     config_path = str(project_root / 'dataset_multi_vendor_config/Json_config/Cisco/{}.json'.format(file_name))
+
     json_config = load_json_file(config_path)
     # 翻译Cisco配置到HUAWEI配置
-    translation_result = config_translater.translation(json_config, 'Cisco', 'HUAWEI', file_name)
+    save_path = str(project_root / 'dataset_multi_vendor_config/translation_config/Cisco_HUAWEI/{}.txt'.format(file_name))
+    translation_result = config_translater.translation(json_config, 'Cisco', 'HUAWEI', save_path)
     print('Translation result of HUAWEI is:')
     # print(json.dumps(translation_result, indent=4, ensure_ascii=False))
-    translation_result = config_translater.translation(json_config, 'Cisco', 'Juniper', file_name)
+    save_path = str(project_root / 'dataset_multi_vendor_config/translation_config/Cisco_Juniper/{}.txt'.format(file_name))
+    translation_result = config_translater.translation(json_config, 'Cisco', 'Juniper', save_path)
     print('Translation result of Juniper is:')
     # print(json.dumps(translation_result, indent=4, ensure_ascii=False))
     
