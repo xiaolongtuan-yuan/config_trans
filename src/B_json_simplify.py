@@ -157,6 +157,29 @@ def insert_template(config_model: dict) -> dict:
 
     return config_model
 
+
+def check_juniper_config(config_model: dict) -> bool:
+    '''
+    juniper的配置中，所有的command应该都是以set xxx开头
+    '''
+    VALID_FIRST_WORDS = ['set', 'delete', 'rename', 'deactivate', 'activate','replace','commit']
+    def _check_commands(node: dict):
+        for key, value in node.items():
+            if key == 'command':
+                if not isinstance(value, str):
+                    return False
+                first_word = value.split()[0] if value else ''
+                if first_word not in VALID_FIRST_WORDS:
+                    print(value)
+                    return False
+            elif isinstance(value, dict):
+                if not _check_commands(value):
+                    return False
+        return True
+
+    return _check_commands(config_model)
+
+
 if __name__ == "__main__":
     vendors = ["Juniper"]
     project_root = Path(__file__).parent.parent
@@ -170,6 +193,9 @@ if __name__ == "__main__":
             json_config_path = folder_path + '/' + json_file
             json_config = load_json_file(json_config_path)
             if vendor == 'Juniper':
+                if not check_juniper_config(json_config):
+                    print(json_file)
+                    continue
                 # Juniper配置层级多, 与huawei, cisco一致的化简流程会出错, 插入template保持一致
                 json_config = insert_template(json_config)
             json_config_simplified = simplify_json(json_config)
