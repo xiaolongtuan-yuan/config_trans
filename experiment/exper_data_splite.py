@@ -57,7 +57,7 @@ def main():
         device_name = Path(file).stem
         if validate_json_files(device_name):
             valid_devices.append(device_name)
-            if len(valid_devices) >= 400:
+            if len(valid_devices) >= 600:
                 break
 
     # 复制有效文件到实验数据集目录

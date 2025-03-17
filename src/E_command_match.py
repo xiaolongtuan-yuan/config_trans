@@ -118,8 +118,8 @@ def _build_mapping_template_library(vendors, template_path, save_path):
         # 加载配置匹配器
         configuration_matchers[vendor] = ConfigMatcher(command_templates[vendor])
 
-    for target_vendor in vendors:
-        for vendor in vendors:
+    for vendor in vendors:
+        for target_vendor in vendors:
             if vendor == target_vendor:
                 continue
             command_mapping = {}
