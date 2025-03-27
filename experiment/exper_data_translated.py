@@ -68,7 +68,9 @@ def translate_single_file(config_translater, input_dir, output_dir,
         # 翻译到每个目标供应商
         for target_vendor in target_vendors:
             output_path = os.path.join(output_dir, target_vendor, f"{file_name}.txt")
-            config_translater.translation(json_config, source_vendor, target_vendor, output_path)
+            trans_res, _ = config_translater.translation(json_config, source_vendor, target_vendor)
+            with open(output_path, 'w', encoding='utf-8') as f:
+                f.write(trans_res)
         return True
     except Exception as e:
         print(f"\nError translating {config_file}: {str(e)}")
@@ -81,7 +83,7 @@ def main():
     # 初始化路径
     device = "cuda:0"
     cisco_config_dir = './exper_data/Cisco'
-    output_dir = './exper_data/cisco_translated_config'
+    output_dir = './exper_data/cisco_translated_config_with_mapping_examined'
 
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
@@ -90,7 +92,7 @@ def main():
         os.makedirs(output_path, exist_ok=True)
 
 
-    mapping_library_path = '../dataset_multi_vendor_config/mapping_template_library/{}_{}.json'
+    mapping_library_path = '../dataset_multi_vendor_config/mapping_template_library_examined/{}_{}.json'
     templates_path = '../dataset_multi_vendor_config/config_command_node/{}.json'
 
     print('Mapping library loading.')
@@ -111,12 +113,12 @@ def main():
                     source_vendor='Cisco',
                     target_vendors=['HUAWEI'])
 
-    Juniper_config_translater = Config_Translater(mapping_libraries, config_matchers,
-                                          translation_llm, embedding_model)
-    # 执行批量翻译
-    batch_translate(Juniper_config_translater, cisco_config_dir, output_dir,
-                    source_vendor='Cisco',
-                    target_vendors=['Juniper'])
+    # Juniper_config_translater = Config_Translater(mapping_libraries, config_matchers,
+    #                                       translation_llm, embedding_model)
+    # # 执行批量翻译
+    # batch_translate(Juniper_config_translater, cisco_config_dir, output_dir,
+    #                 source_vendor='Cisco',
+    #                 target_vendors=['Juniper'])
 
 
 if __name__ == "__main__":

@@ -156,32 +156,34 @@ def insert_template(config_model: dict) -> dict:
 
 if __name__ == "__main__":
     vendors = ["Cisco", "HUAWEI", "Juniper"]
+    config_num = [100, 500, 1000, 2000]
     project_root = Path(__file__).parent.parent
 
     # merge the device configuration to the vendor model
     for vendor in vendors:
-        template_used_statistic = {}
-        # 加载供应商配置模型
-        # vendor_model = load_json_file(vendor_model_path)
-        vendor_model = {}
-        vendor_command_re = {}
-        folder_path = str(project_root / 'dataset_multi_vendor_config/Json_config/{}_simplified'.format(vendor))
-        vendor_model_path = str(project_root / 'dataset_multi_vendor_config/config_model/{}.json'.format(vendor))
+        for num in config_num:
+            template_used_statistic = {}
+            # 加载供应商配置模型
+            # vendor_model = load_json_file(vendor_model_path)
+            vendor_model = {}
+            vendor_command_re = {}
+            folder_path = str(project_root / f'dataset_multi_vendor_config/Json_config/partition/{vendor}_{num}')
+            vendor_model_path = str(project_root / f'dataset_multi_vendor_config/config_model/different_scale/{vendor}_{num}.json')
 
-        json_files = get_json_filenames(folder_path)
-        merge_count = 0
-        for json_file in tqdm(json_files, desc="Merged config num"):
-            json_config_path = folder_path + '/' + json_file
-            # 加载设备配置模型
-            try:
-                json_config = load_json_file(json_config_path)
-            except:
-                continue
+            json_files = get_json_filenames(folder_path)
+            merge_count = 0
+            for json_file in tqdm(json_files, desc="Merged config num"):
+                json_config_path = folder_path + '/' + json_file
+                # 加载设备配置模型
+                try:
+                    json_config = load_json_file(json_config_path)
+                except:
+                    continue
 
-            # 对vendor_model中的模版进行去重，主要问题是同样的conmand，llm在解析时可能出现不同的模版（配置参数缺失了），建议均采用最大的配置参数，我们需要一个字典来记录是否去重
-            vendor_model = merge_models(vendor_model, json_config, vendor_command_re, template_used_statistic)
-        save_json_file(vendor_model, vendor_model_path)
+                # 对vendor_model中的模版进行去重，主要问题是同样的conmand，llm在解析时可能出现不同的模版（配置参数缺失了），建议均采用最大的配置参数，我们需要一个字典来记录是否去重
+                vendor_model = merge_models(vendor_model, json_config, vendor_command_re, template_used_statistic)
+            save_json_file(vendor_model, vendor_model_path)
 
-        save_json_file(template_used_statistic, str(project_root / f'statistic/statistic_res/{vendor}_template_used_statistic.json'))
+            # save_json_file(template_used_statistic, str(project_root / f'statistic/statistic_res/{vendor}_template_used_statistic.json')) # 统计模版使用次数
 
 

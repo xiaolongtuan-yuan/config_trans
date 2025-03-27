@@ -89,6 +89,10 @@ def parse_config(client, model_name, prompt, messages, config):
             time.sleep(2 ** retry_count)  # 指数退避
     return None
 
+def process_file_service(config:str, vendor, client, model_name):
+    prompt, messages = prompt_massage_for_vendors(vendor)
+    response = parse_config(client, model_name, prompt, messages, config)
+    return response # 作为一个输出指标
 
 def process_file(config_file, full_config_path, save_path, vendor, client, model_name):
     # 检查目标文件是否已经存在
@@ -101,6 +105,10 @@ def process_file(config_file, full_config_path, save_path, vendor, client, model
     response = parse_config(client, model_name, prompt, messages, config)
     save_parsed_config(save_path, config_file, response)
 
+def process_file_service(config, vendor, client, model_name):
+    prompt, messages = prompt_massage_for_vendors(vendor)
+    response = parse_config(client, model_name, prompt, messages, config)
+    return response
 
 
 if __name__ == "__main__":

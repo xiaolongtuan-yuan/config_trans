@@ -134,6 +134,8 @@ def _build_mapping_template_library(vendors, template_path, save_path):
                                                                                              save_path.format(vendor,
                                                                                                               target_vendor)))
 
+            exit(0)
+
 
 # load JSON fie and load data
 def load_json_file(file_path):

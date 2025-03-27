@@ -22,6 +22,11 @@ def parse_command_node(Command_nodes: dict, config_model: dict, embedding_model,
         if not isinstance(sub_dict, dict):
             continue
 
+        if k in Command_nodes:
+            # k已将在Command_nodes中了，我们的策略是保留depth最小的节点，保证语法正确性
+            if Command_nodes[k]['structural_features']['command_depth'] <= depth:
+                continue
+
         template_key = sub_dict.get("template")
         command_key = sub_dict.get("command")
         explanation_key = sub_dict.get("explanation")
@@ -35,15 +40,23 @@ def parse_command_node(Command_nodes: dict, config_model: dict, embedding_model,
             structural_feature = {'depth': depth,
                                   'params': command_parameters,
                                   'parent_command': parent_command}
-            # 其次为语义特征（包括template/command/explanation/parameters）
-            command_example = sub_dict["command"] if sub_dict.get("command") else ''
-            command_explanation = sub_dict["explanation"] if sub_dict.get("explanation") else ''
-            semantic_feature = {'template': sub_dict['template'],
-                                'command': command_example,
-                                'explanation': command_explanation,
-                                'parameters': command_parameters}
+
             # 创建命令节点
-            command_node = CommandNode(structural_feature, semantic_feature, embedding_model)
+            if run_type == 'main':
+                # 其次为语义特征（包括template/command/explanation/parameters）
+                command_example = sub_dict["command"] if sub_dict.get("command") else ''
+                command_explanation = sub_dict["explanation"] if sub_dict.get("explanation") else ''
+                semantic_feature = {'template': sub_dict['template'],
+                                    'command': command_example,
+                                    'explanation': command_explanation,
+                                    'parameters': command_parameters}
+
+                command_node = CommandNode(structural_feature, semantic_feature, embedding_model)
+            elif run_type == 'debug':
+                command_node = CommandNode(structural_feature, {}, embedding_model)
+            else:
+                raise ValueError('run_type error')
+
             Command_nodes[k] = {'structural_features': command_node.structural_features,
                                 'semantic_features': command_node.semantic_features,
                                 'parameter_features': command_node.paras_semantic_features}
@@ -78,11 +91,12 @@ class CommandNode:
         # 深度特征
         self._calculate_depth_levels(structural_features['depth'])
 
-        # 语义特征
-        self._generate_semantic_embedding(semantic_features, embedding_model)
+        if run_type == 'main':
+            # 语义特征
+            self._generate_semantic_embedding(semantic_features, embedding_model)
 
-        # 参数语义特征
-        self._generate_para_semantic_embedding(semantic_features, embedding_model)
+            # 参数语义特征
+            self._generate_para_semantic_embedding(semantic_features, embedding_model)
 
     def _parse_context_topology(self, parent_command):
         """解析上下文拓扑关系"""
@@ -165,7 +179,7 @@ def save_json_file(data, file_path):
     # print("JSON文件已保存至{}".format(file_path))
 
 
-if __name__ == "__main__":
+def main():
     project_root = Path(__file__).parent.parent
     # 加载embedding model
     local_EMmodel_path = str(project_root / 'EmbeddingModel/MiniLM-L6-v2')
@@ -173,6 +187,34 @@ if __name__ == "__main__":
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
+    config_num = [100, 500, 1000]
+
+    # vendors = ["HUAWEI"]
+    for vendor in vendors:
+        for num in config_num:
+            Command_nodes = {}  # 'command_template': CommandNode_Object
+            config_model_path = str(project_root / f'dataset_multi_vendor_config/config_model/different_scale/{vendor}_{num}.json')
+
+            # 加载供应商配置模型
+            config_model = load_json_file(config_model_path)
+            # 解析配置节点
+            Command_nodes = parse_command_node(Command_nodes, config_model, embedding_model)
+            # 保存配置节点（json）
+            save_path = str(project_root / f'dataset_multi_vendor_config/config_command_node/different_scale/{vendor}_{num}.json')
+            save_json_file(Command_nodes, save_path)
+
+            # save_path = str(project_root / 'dataset_multi_vendor_config/config_command_node_debug/{}.json'.format(vendor))
+            # save_json_file(Command_nodes, save_path)
+
+def debug():
+    project_root = Path(__file__).parent.parent
+    # 加载embedding model
+    local_EMmodel_path = str(project_root / 'EmbeddingModel/MiniLM-L6-v2')
+    # embedding_model = SentenceTransformer(local_EMmodel_path)
+    embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
+
+    vendors = ["Cisco", "HUAWEI", "Juniper"]
+    # vendors = ["HUAWEI"]
     for vendor in vendors:
         Command_nodes = {}  # 'command_template': CommandNode_Object
         config_model_path = str(project_root / 'dataset_multi_vendor_config/config_model/{}.json'.format(vendor))
@@ -181,7 +223,17 @@ if __name__ == "__main__":
         config_model = load_json_file(config_model_path)
         # 解析配置节点
         Command_nodes = parse_command_node(Command_nodes, config_model, embedding_model)
-        # 保存配置节点（json）
-        save_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/{}.json'.format(vendor))
+
+        save_path = str(project_root / 'dataset_multi_vendor_config/config_command_node_debug/{}.json'.format(vendor))
         save_json_file(Command_nodes, save_path)
+
+if __name__ == "__main__":
+    run_type = 'main'
+
+    if run_type == 'main':
+        main()
+    if run_type == 'debug':
+        debug()
+
+
 
