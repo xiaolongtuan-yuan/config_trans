@@ -202,6 +202,7 @@ def main():
             # 保存配置节点（json）
             save_path = str(project_root / f'dataset_multi_vendor_config/config_command_node/different_scale/{vendor}_{num}.json')
             save_json_file(Command_nodes, save_path)
+            print(f"finished {vendor} with {num} scales")
 
             # save_path = str(project_root / 'dataset_multi_vendor_config/config_command_node_debug/{}.json'.format(vendor))
             # save_json_file(Command_nodes, save_path)
@@ -214,21 +215,24 @@ def debug():
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
+    config_num = [100, 500, 1000]
     # vendors = ["HUAWEI"]
     for vendor in vendors:
-        Command_nodes = {}  # 'command_template': CommandNode_Object
-        config_model_path = str(project_root / 'dataset_multi_vendor_config/config_model/{}.json'.format(vendor))
+        for num in config_num:
+            Command_nodes = {}  # 'command_template': CommandNode_Object
+            config_model_path = str(project_root / f'dataset_multi_vendor_config/config_model/different_scale/{vendor}_{num}.json')
 
-        # 加载供应商配置模型
-        config_model = load_json_file(config_model_path)
-        # 解析配置节点
-        Command_nodes = parse_command_node(Command_nodes, config_model, embedding_model)
+            # 加载供应商配置模型
+            config_model = load_json_file(config_model_path)
+            # 解析配置节点
+            Command_nodes = parse_command_node(Command_nodes, config_model, embedding_model)
 
-        save_path = str(project_root / 'dataset_multi_vendor_config/config_command_node_debug/{}.json'.format(vendor))
-        save_json_file(Command_nodes, save_path)
+            save_path = str(project_root / f'dataset_multi_vendor_config/config_command_node_debug/different_scale/{vendor}_{num}.json')
+            save_json_file(Command_nodes, save_path)
+            print(f"finished {vendor} with {num} scales")
 
 if __name__ == "__main__":
-    run_type = 'main'
+    run_type = 'debug'
 
     if run_type == 'main':
         main()

@@ -173,30 +173,39 @@ def llm_check_mapping(client, model_name, mapping_data, source_vendor, target_ve
 
 if __name__ == '__main__':
     project_root = Path(__file__).parent.parent
-    mapping_library_path = project_root / 'dataset_multi_vendor_config' / 'mapping_template_library'
-    simple_templates_path = str(project_root / 'dataset_multi_vendor_config/config_command_node_debug/{}.json')
+    mapping_library_path = project_root / 'dataset_multi_vendor_config' / 'mapping_template_library' / 'different_scale'
+    config_num = [100, 500, 1000]
 
-    mapping_files = ['Cisco_HUAWEI.json']
-    for mapping_file in mapping_files:
-        mapping_file_path = mapping_library_path / mapping_file
-        source_vendor, target_vendor = mapping_file.split(".")[0].split("_")
-        simple_templates_path = simple_templates_path.format(target_vendor)
-        with open(simple_templates_path, 'r', encoding='utf-8') as f:
-            simple_templates = json.load(f)
+    simple_templates_dir = project_root / 'dataset_multi_vendor_config/config_command_node_debug/different_scale'
+    vendors = ["Cisco", "HUAWEI", "Juniper"]
+    prompt_path = project_root / "resource" / "match_examine_prompt.txt"
+    model_name = "deepseek-chat"
+    client = load_client(model_name, endpoint_url='https://api.deepseek.com/v1')
 
-        with open(mapping_file_path, 'r', encoding='utf-8') as f:
-            mapping_data = json.load(f)
+    for scale in config_num:
+        for source_vendor in vendors:
+            for target_vendor in vendors:
+                if source_vendor == target_vendor:
+                    continue
+                if f"{target_vendor}_{scale}.json" == 'Cisco_HUAWEI_100.json':
+                    continue
+                mapping_file_path = mapping_library_path / f"{source_vendor}_{target_vendor}_{scale}.json"
 
-        print(f"审查从{source_vendor}映射到{target_vendor}的知识库")
-        prompt_path = project_root / "resource" / "match_examine_prompt.txt"
-        model_name = "deepseek-chat"
-        client = load_client(model_name, endpoint_url='https://api.deepseek.com/v1')
-        response = llm_check_mapping(client, model_name, mapping_data, source_vendor, target_vendor, prompt_path,
+                simple_templates_path = simple_templates_dir / f"{target_vendor}_{scale}.json"
+                with open(simple_templates_path, 'r', encoding='utf-8') as f:
+                    simple_templates = json.load(f)
+
+                with open(mapping_file_path, 'r', encoding='utf-8') as f:
+                    mapping_data = json.load(f)
+
+                response = llm_check_mapping(client, model_name, mapping_data, source_vendor, target_vendor, prompt_path,
                                      simple_templates)
-        # 保存response
-        save_path = project_root / 'dataset_multi_vendor_config' / 'mapping_template_library_examined'
-        save_path.mkdir(parents=True, exist_ok=True)
-        save_file = f"{source_vendor}_{target_vendor}.json"
-        save_file_path = save_path / save_file
-        with open(save_file_path, 'w', encoding='utf-8') as f:
-            json.dump(response, f, ensure_ascii=False, indent=4)
+                # 保存response
+                save_path = project_root / 'dataset_multi_vendor_config' / 'mapping_template_library_examined' / 'different_scale'
+                save_path.mkdir(parents=True, exist_ok=True)
+                save_file = f"{source_vendor}_{target_vendor}_{scale}.json"
+                save_file_path = save_path / save_file
+                with open(save_file_path, 'w', encoding='utf-8') as f:
+                    json.dump(response, f, ensure_ascii=False, indent=4)
+                print(f"处理完成scale{scale}: {source_vendor}到{target_vendor}的映射")
+
