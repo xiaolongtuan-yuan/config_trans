@@ -6,7 +6,7 @@
 """
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from src.F_device_configtrans import Config_Translater, translation_model, mapping_library_load, config_matchers_load
+from src.F_device_configtrans import Config_Translater, Translation_Model, mapping_library_load, config_matchers_load
 import os
 import json
 from tqdm import tqdm  # 用于显示进度条
@@ -104,7 +104,7 @@ def main():
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})
     print('Translation model based on llm loading.')
-    translation_llm = translation_model('deepseek-chat')
+    translation_llm = Translation_Model('deepseek-chat')
 
     HUAWEI_config_translater = Config_Translater(mapping_libraries, config_matchers,
                                           translation_llm, embedding_model)

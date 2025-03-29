@@ -9,7 +9,7 @@ from pathlib import Path
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
 from src.A_LLM_Parse_Config import load_client, process_file_service
-from src.F_device_configtrans import mapping_library_load, config_matchers_load, translation_model, Config_Translater
+from src.F_device_configtrans import mapping_library_load, config_matchers_load, Translation_Model, Config_Translater
 
 project_root = Path(__file__).parent.parent
 device = "cuda:0"
@@ -32,7 +32,7 @@ def initialize_translation_service():
 
     # 加载用于配置翻译的语言模型
     print('Translation model based on llm loading.')
-    translation_llm = translation_model('deepseek-chat')
+    translation_llm = Translation_Model('deepseek-chat')
 
     # 创建翻译器
     print('Config translater loading.')

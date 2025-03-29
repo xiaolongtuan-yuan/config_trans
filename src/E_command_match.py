@@ -108,7 +108,7 @@ class ConfigMatcher:
 
 
 def _build_mapping_template_library(vendors, template_path, save_path):
-    scales = [100, 500, 1000]
+    scales = [2000]
     for scale in scales:
         command_templates = {}  # 模板库
         configuration_matchers = {}  # 匹配器
