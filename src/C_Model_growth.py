@@ -155,7 +155,7 @@ def insert_template(config_model: dict) -> dict:
 
 
 if __name__ == "__main__":
-    vendors = ["Cisco", "HUAWEI", "Juniper"]
+    vendors = ["Juniper"]
     config_num = [100, 500, 1000, 2000]
     project_root = Path(__file__).parent.parent
 

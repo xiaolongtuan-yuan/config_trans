@@ -199,8 +199,8 @@ def main():
     # embedding_model = SentenceTransformer(local_EMmodel_path)
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
 
-    vendors = ["Cisco", "HUAWEI", "Juniper"]
-    config_num = [2000]
+    vendors = ["Juniper"]
+    config_num = [100, 500, 1000, 2000]
 
     # vendors = ["HUAWEI"]
     for vendor in vendors:
@@ -227,8 +227,8 @@ def debug():
     # embedding_model = SentenceTransformer(local_EMmodel_path)
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
 
-    vendors = ["Cisco", "HUAWEI", "Juniper"]
-    config_num = [2000]
+    vendors = ["Juniper"]
+    config_num = [100,500,1000,2000]
     # vendors = ["HUAWEI"]
     for vendor in vendors:
         for num in config_num:

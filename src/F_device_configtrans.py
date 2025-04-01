@@ -489,6 +489,8 @@ class Config_Translater:
             for src_command, translation in target_commands.items():
                 # 遍历该需要翻译配置命令中每一层级的配置命令
                 for depth, translation_commands in translation.items():
+                    if depth == -1:
+                        continue
                     # 基于配置参数插入配置命令模板
                     for command, command_v in translation_commands.items():
                         # 使用llm进行参数映射修复
@@ -603,6 +605,8 @@ class Config_Translater:
         for command, translation in target_config.items():
             # 遍历该需要翻译配置命令中每一层级的配置命令
             for depth, target_command in translation.items():
+                if depth == -1:
+                    continue
                 # 输出该层级下所有的配置命令
                 for target_temp, command_info in target_command.items():
                     # print(depth, int(depth))
@@ -624,7 +628,7 @@ class Config_Translater:
         return trans_res, trans_mapping_info
 
     def insert_parent_command(self, target_commands, src_command, src_depth, parent_command, all_params):
-        if parent_command == 'system':
+        if parent_command in ['system', 'set system']:
             return target_commands
 
         newest_parent = None
@@ -747,14 +751,15 @@ class Translation_Model:
         prompt_file = project_root / 'resource/parameter_mapping_F_prompt2.txt'
         prompt = open(prompt_file, 'r', encoding='utf-8').read()
         command_template_info = self.find_command_template(target_vendor, command_v['target_command'])
+        if not command_template_info:
+            raise ValueError(f"未找到命令模板: {command_v['target_command']}")
 
         command_object = {
             'para_match': command_v['para_match'],
             'target_command': command_v['target_command'],
             'para_num': len(command_template_info['parameters'])
         }
-        if not command_template_info:
-            raise ValueError(f"未找到命令模板: {command_v['target_command']}")
+
         param_info = {
             'command template': command_template_info['template'],
             'parameters': command_template_info['parameters']
@@ -816,18 +821,10 @@ def config_matchers_load(file_path, vendors):
 
 
 if __name__ == "__main__":
-    '''
-    commands_feature = {}              # 分拆每一条配置命令特征
-    config_path = 'config_trans/dataset_multi_vendor_config/Json_config/Cisco/cfg_dsvpn_0015_00_0.json'
-    json_config = load_json_file(config_path)
-    # print(json.dumps(json_config, indent=4, ensure_ascii=False))
-    commands_feature = parse_command_node(commands_feature, json_config)
-    # print(json.dumps(commands_feature, indent=4, ensure_ascii=False))
-    '''
     vendors = ["Cisco", "HUAWEI", "Juniper"]
     # mapping_library_path = str(project_root / 'dataset_multi_vendor_config/mapping_template_library_examined/{}_{}.json')
     mapping_library_path = str(
-        project_root / 'dataset_multi_vendor_config/mapping_template_library/different_scale/{}_{}_2000.json')
+        project_root / 'dataset_multi_vendor_config/mapping_template_library_examined/different_scale/{}_{}_2000.json')
 
     templates_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/different_scale/{}_2000.json')
     config_model_dir = str(project_root / 'dataset_multi_vendor_config/config_model/different_scale/{}_2000.json')
@@ -855,14 +852,14 @@ if __name__ == "__main__":
                                           translation_llm, embedding_model)
 
     # translation test
-    file_name = 'ne_pos_0013_0'
+    file_name = 'ne_clock_5015_0'
     config_path = str(project_root / f'dataset_multi_vendor_config/test/{file_name}.json')
 
     json_config = load_json_file(config_path)
     # 翻译Cisco配置到HUAWEI配置
     save_path = str(
         project_root / 'dataset_multi_vendor_config/translation_config/Cisco_HUAWEI/{}.txt'.format(file_name))
-    translation_result, _ = config_translater.translation(json_config, 'Juniper', 'HUAWEI')
+    translation_result, _ = config_translater.translation(json_config, 'HUAWEI', 'Juniper')
     with open(save_path, 'w', encoding='utf-8') as file:
         file.write(translation_result)
     print(f'Translation result of HUAWEI is: \n{translation_result}')

@@ -63,38 +63,43 @@ def merge_mapping_chunks(chunks, mapping_data, simple_templates):
     """
     将多个chunk合并为一个字典
     """
-    merged_dict = {}
     llm_dict = {}
     for chunk_str in chunks:
-        chunk = json.loads(chunk_str)
-        llm_dict.update(chunk)
+        try:
+            chunk = json.loads(chunk_str)
+            llm_dict.update(chunk)
+        except Exception as e:
+            continue
 
     for source_command, detail in llm_dict.items():
-        old_detail = mapping_data[source_command]
-        if not detail == old_detail:
-            if isinstance(detail, list):
-                try:
-                    index = 0
-                    for line in detail:
-                        i, j, target_command = line[0], line[1], line[2]
-                        if not i == index:
-                            raise ValueError("index error")
+        try:
+            old_detail = mapping_data[source_command]
+            if not detail == old_detail:
+                if isinstance(detail, list):
+                    try:
+                        index = 0
+                        for line in detail:
+                            i, j, target_command = line[0], line[1], line[2]
+                            if not i == index:
+                                raise ValueError("index error")
 
-                        index += 1
-                        if target_command not in simple_templates:
-                            continue
-                        else:
-                            old_detail[i] = [i, j, target_command]
+                            index += 1
+                            if target_command not in simple_templates:
+                                continue
+                            else:
+                                old_detail[i] = [i, j, target_command]
 
-                except Exception as e:
-                    continue
-            elif isinstance(detail, str):
-                if detail not in simple_templates:
-                    continue
+                    except Exception as e:
+                        continue
+                elif isinstance(detail, str):
+                    if detail not in simple_templates:
+                        continue
+                    else:
+                        mapping_data[source_command] = detail
                 else:
-                    mapping_data[source_command] = detail
-            else:
-                raise ValueError("detail type error")
+                    raise ValueError("detail type error")
+        except Exception as e:
+            continue
 
     return mapping_data
 
@@ -153,7 +158,7 @@ def llm_check_mapping(client, model_name, mapping_data, source_vendor, target_ve
     mapping_chunks = split_mapping_data(mapping_data, chunk_size=10)
 
     new_match_chunks = []
-    with ThreadPoolExecutor(max_workers=10) as executor:
+    with ThreadPoolExecutor() as executor:
         futures = {executor.submit(chunk_llm_check, client, model_name, prompt, chunk): chunk for chunk in
                    mapping_chunks}
 
@@ -174,7 +179,7 @@ def llm_check_mapping(client, model_name, mapping_data, source_vendor, target_ve
 if __name__ == '__main__':
     project_root = Path(__file__).parent.parent
     mapping_library_path = project_root / 'dataset_multi_vendor_config' / 'mapping_template_library' / 'different_scale'
-    config_num = [100, 500, 1000]
+    config_num = [100, 500, 1000, 2000]
 
     simple_templates_dir = project_root / 'dataset_multi_vendor_config/config_command_node_debug/different_scale'
     vendors = ["Cisco", "HUAWEI", "Juniper"]
@@ -182,12 +187,10 @@ if __name__ == '__main__':
     model_name = "deepseek-chat"
     client = load_client(model_name, endpoint_url='https://api.deepseek.com/v1')
 
-    for scale in config_num:
-        for source_vendor in vendors:
+    for scale in [500, 1000, 2000]:
+        for source_vendor in ["HUAWEI", "Juniper"]:  # cisco还有从100-2000的没跑
             for target_vendor in vendors:
                 if source_vendor == target_vendor:
-                    continue
-                if f"{target_vendor}_{scale}.json" == 'Cisco_HUAWEI_100.json':
                     continue
                 mapping_file_path = mapping_library_path / f"{source_vendor}_{target_vendor}_{scale}.json"
 

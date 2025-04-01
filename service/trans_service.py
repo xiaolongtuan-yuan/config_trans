@@ -13,10 +13,13 @@ from src.F_device_configtrans import mapping_library_load, config_matchers_load,
 
 project_root = Path(__file__).parent.parent
 device = "cuda:0"
+
+
 def initialize_translation_service():
     vendors = ["Cisco", "HUAWEI", "Juniper"]
-    mapping_library_path = str(project_root / 'dataset_multi_vendor_config/mapping_template_library/{}_{}.json')
-    templates_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/{}.json')
+    mapping_library_path = str(project_root / 'dataset_multi_vendor_config/mapping_template_library_examined/different_scale/{}_{}_2000.json')
+    templates_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/different_scale/{}_2000.json')
+    config_model_dir = str(project_root / 'dataset_multi_vendor_config/config_model/different_scale/{}_2000.json')
 
     # 加载规则映射库
     print('Mapping library loading.')
@@ -32,7 +35,7 @@ def initialize_translation_service():
 
     # 加载用于配置翻译的语言模型
     print('Translation model based on llm loading.')
-    translation_llm = Translation_Model('deepseek-chat')
+    translation_llm = Translation_Model('deepseek-chat', config_model_dir=config_model_dir, vendors=vendors)
 
     # 创建翻译器
     print('Config translater loading.')
@@ -40,12 +43,15 @@ def initialize_translation_service():
                                           translation_llm, embedding_model)
     return config_translater
 
+
 config_translater = initialize_translation_service()
+
 
 def translate_config(json_config, vendor, target_vendor):
     # 执行翻译
     translation_result, trans_mapping_info = config_translater.translation(json_config, vendor, target_vendor)
     return translation_result, trans_mapping_info
+
 
 def config_parse(config, vendor):
     model_name = "deepseek-chat"
@@ -53,6 +59,7 @@ def config_parse(config, vendor):
     config_str = process_file_service(config, vendor, client, model_name)
     config = json.loads(config_str)
     return config
+
 
 def parse_json_2_visible_txt(data, indent=0):
     result = ""

@@ -11,13 +11,14 @@ import os
 import json
 from tqdm import tqdm  # 用于显示进度条
 
+
 def load_json_file(file_path):
     """加载JSON文件"""
     with open(file_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 
-def batch_translate(config_translater, input_dir, output_dir, source_vendor, target_vendors):
+def batch_translate(config_translater, input_dir, output_dir, source_vendor, target_vendor):
     """
     批量翻译配置文件
     :param config_translater: 配置翻译器实例
@@ -30,8 +31,7 @@ def batch_translate(config_translater, input_dir, output_dir, source_vendor, tar
     config_files = [f for f in os.listdir(input_dir) if f.endswith('.json')][:200]
 
     # 创建输出目录
-    for vendor in target_vendors:
-        os.makedirs(os.path.join(output_dir, vendor), exist_ok=True)
+    os.makedirs(os.path.join(output_dir, target_vendor), exist_ok=True)
 
     # 遍历每个文件进行翻译
     successed_files = 0
@@ -51,26 +51,26 @@ def batch_translate(config_translater, input_dir, output_dir, source_vendor, tar
     for config_file in tqdm(config_files, desc="Translating configs"):
         try:
             if translate_single_file(config_translater, input_dir, output_dir,
-                                     source_vendor, target_vendors, config_file):
+                                     source_vendor, target_vendor, config_file):
                 successed_files += 1
         except Exception as e:
             print(f"\nError: {str(e)}")
     print(f"Translated {successed_files} configs")
 
+
 def translate_single_file(config_translater, input_dir, output_dir,
-                         source_vendor, target_vendors, config_file):
+                          source_vendor, target_vendor, config_file):
     try:
         # 加载配置
         config_path = os.path.join(input_dir, config_file)
         json_config = load_json_file(config_path)
         file_name = os.path.splitext(config_file)[0]
 
-        # 翻译到每个目标供应商
-        for target_vendor in target_vendors:
-            output_path = os.path.join(output_dir, target_vendor, f"{file_name}.txt")
-            trans_res, _ = config_translater.translation(json_config, source_vendor, target_vendor)
-            with open(output_path, 'w', encoding='utf-8') as f:
-                f.write(trans_res)
+        # 翻译到目标供应商
+        output_path = os.path.join(output_dir, target_vendor, f"{file_name}.txt")
+        trans_res, _ = config_translater.translation(json_config, source_vendor, target_vendor)
+        with open(output_path, 'w', encoding='utf-8') as f:
+            f.write(trans_res)
         return True
     except Exception as e:
         print(f"\nError translating {config_file}: {str(e)}")
@@ -82,43 +82,46 @@ def translate_single_file(config_translater, input_dir, output_dir,
 def main():
     # 初始化路径
     device = "cuda:0"
-    cisco_config_dir = './exper_data/Cisco'
     output_dir = './exper_data/cisco_translated_config_with_mapping_examined'
 
-
     vendors = ["Cisco", "HUAWEI", "Juniper"]
-    for target_vendor in ['HUAWEI', 'Juniper']:
-        output_path = os.path.join(output_dir, target_vendor)
-        os.makedirs(output_path, exist_ok=True)
-
-
-    mapping_library_path = '../dataset_multi_vendor_config/mapping_template_library_examined/{}_{}.json'
-    templates_path = '../dataset_multi_vendor_config/config_command_node/{}.json'
-
-    print('Mapping library loading.')
-    mapping_libraries = mapping_library_load(mapping_library_path, vendors)
-    print('Config matchers loading.')
-    config_matchers = config_matchers_load(templates_path, vendors)
-    print('Embedding model loading.')
+    config_num = [2000]
     local_EMmodel_path = '../EmbeddingModel/MiniLM-L6-v2'
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})
-    print('Translation model based on llm loading.')
-    translation_llm = Translation_Model('deepseek-chat')
 
-    HUAWEI_config_translater = Config_Translater(mapping_libraries, config_matchers,
-                                          translation_llm, embedding_model)
-    # 执行批量翻译
-    batch_translate(HUAWEI_config_translater, cisco_config_dir, output_dir,
-                    source_vendor='Cisco',
-                    target_vendors=['HUAWEI'])
+    for scale in config_num:
+        for source_vendor in vendors:
+            for target_vendor in vendors:
+                if source_vendor == target_vendor:
+                    continue
+                source_config_dir = f'./exper_data/{source_vendor}'
+                output_save_dir = os.path.join(output_dir, str(scale), source_vendor)  # 当前处理的是哪个scale的哪个源供应商
+                os.makedirs(output_save_dir, exist_ok=True)
 
-    # Juniper_config_translater = Config_Translater(mapping_libraries, config_matchers,
-    #                                       translation_llm, embedding_model)
-    # # 执行批量翻译
-    # batch_translate(Juniper_config_translater, cisco_config_dir, output_dir,
-    #                 source_vendor='Cisco',
-    #                 target_vendors=['Juniper'])
+                print(f"exper for {scale} translation")
+                mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library_examined/different_scale/{{}}_{{}}_{scale}.json'
+                templates_path = f'../dataset_multi_vendor_config/config_command_node/different_scale/{{}}_{scale}.json'
+                config_model_dir = f'../dataset_multi_vendor_config/config_model/different_scale/{{}}_{scale}.json'
+
+                mapping_libraries = mapping_library_load(mapping_library_path, vendors)
+                config_matchers = config_matchers_load(templates_path, vendors)
+
+                translation_llm = Translation_Model('deepseek-chat', config_model_dir=config_model_dir, vendors=vendors)
+
+                config_translater = Config_Translater(mapping_libraries, config_matchers,
+                                                      translation_llm, embedding_model)
+                # 执行批量翻译
+                batch_translate(config_translater, source_config_dir, output_save_dir,
+                                source_vendor=source_vendor,
+                                target_vendor=target_vendor)
+
+        # Juniper_config_translater = Config_Translater(mapping_libraries, config_matchers,
+        #                                       translation_llm, embedding_model)
+        # # 执行批量翻译
+        # batch_translate(Juniper_config_translater, cisco_config_dir, output_dir,
+        #                 source_vendor='Cisco',
+        #                 target_vendors=['Juniper'])
 
 
 if __name__ == "__main__":

@@ -189,6 +189,7 @@ if __name__ == "__main__":
         folder_path = str(project_root / 'dataset_multi_vendor_config/Json_config/{}'.format(vendor))
         save_path = str(project_root / 'dataset_multi_vendor_config/Json_config/{}'.format(vendor+'_simplified'))
         json_files = get_json_filenames(folder_path)
+        i = 0
         for json_file in json_files:
             json_config_path = folder_path + '/' + json_file
             json_config = load_json_file(json_config_path)
@@ -202,5 +203,7 @@ if __name__ == "__main__":
             json_name, _ = os.path.splitext(json_file)
             save_file_path = save_path + '/' + json_name + '.json'
             save_json_file(json_config_simplified, save_file_path)
+            i += 1
+        print("finished" + str(i))
 
 

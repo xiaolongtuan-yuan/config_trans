@@ -8,30 +8,33 @@ import os
 import json
 import re
 
+from experiment.syntax_correctness import find_template
+
+
 def load_config_model(config_model_path):
     """加载配置模板"""
     with open(config_model_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
-def find_template(command, config_model):
-    """递归查找命令对应的模板"""
-    for template, details in config_model.items():
-        # 递归查找子命令
-        if isinstance(details, dict) and 'template' in details:
-            sub_template = find_template(command, details)
-            if sub_template:
-                return sub_template
-
-        # 使用正则表达式匹配模板
-        if template == 'template':
-            pattern = re.sub(r'\[parameter\d+\]', r'(\\S+)', details)
-            pattern = f'^{pattern}$'
-            if re.match(pattern, command):
-                return details
-            else:
-                continue
-
-    return None
+# def find_template(command, config_model):
+#     """递归查找命令对应的模板"""
+#     for template, details in config_model.items():
+#         # 递归查找子命令
+#         if isinstance(details, dict) and 'template' in details:
+#             sub_template = find_template(command, details)
+#             if sub_template:
+#                 return sub_template
+#
+#         # 使用正则表达式匹配模板
+#         if template == 'template':
+#             pattern = re.sub(r'\[parameter\d+\]', r'(\\S+)', details)
+#             pattern = f'^{pattern}$'
+#             if re.match(pattern, command):
+#                 return details
+#             else:
+#                 continue
+#
+#     return None
 
 def parse_config_file(file_path, config_model):
     """解析配置文件为模板序列"""
@@ -85,58 +88,65 @@ def calculate_match_ratio(result_templates, expected_templates, result_extra_com
 
     return match_count, (len(result_templates) + len(result_extra_commands)), error_templates
 
+if __name__ == '__main__':
+    scale = 2000
+    vendors = ['Cisco', 'HUAWEI', 'Juniper']
+    translated_config_base = './exper_data/cisco_translated_config_with_mapping_examined'
 
-target_vendor = 'HUAWEI'
-cisco_huawei_config_dir = './exper_data/cisco_translated_config_with_mapping_examined/HUAWEI'
-# cisco_huawei_config_dir = './exper_data/cisco_translated_config/HUAWEI'
+    for source_vendor in ['Cisco']:
+        for target_vendor in ['HUAWEI']:
+            if target_vendor == source_vendor:
+                continue
 
+            translated_config_dir = os.path.join(translated_config_base, str(scale), source_vendor, target_vendor)
+            trannlated_config_files = [f for f in os.listdir(translated_config_dir) if f.endswith('.txt')]
+            real_config_dir = f'./exper_data/lable/{target_vendor}'
+            # config_model = f'../dataset_multi_vendor_config/config_model/different_scale/{target_vendor}_{scale}.json'
+            config_model = f'../dataset_multi_vendor_config/config_model/{target_vendor}.json'
+            config_model = load_config_model(config_model)
 
-cisco_to_huawei_config_files = [f for f in os.listdir(cisco_huawei_config_dir) if f.endswith('.txt')]
-huawei_real_config_dir = './exper_data/HUAWEI'
+            total_match_score = 0
+            total_match_account = 0
 
-config_model = f'../dataset_multi_vendor_config/config_model/{target_vendor}.json'
-config_model = load_config_model(config_model)
+            total_intact_match_score = 0
+            total_intact_match_account = 0
+            file_count = len(trannlated_config_files)
 
-total_match_score = 0
-total_match_account = 0
+            for file_name in trannlated_config_files:
+                file_result = os.path.join(translated_config_dir, file_name)
+                file_expected = os.path.join(real_config_dir, file_name)
 
-total_intact_match_score = 0
-total_intact_match_account = 0
-file_count = len(cisco_to_huawei_config_files)
+                # 解析配置文件
+                result_templates, result_extra_command = parse_config_file(file_result, config_model)
+                result_commands = parse_config_file_intact(file_result)
 
-for file_name in cisco_to_huawei_config_files:
-    file_result = os.path.join(cisco_huawei_config_dir, file_name)
-    file_expected = os.path.join(huawei_real_config_dir, file_name)
+                expected_templates, expected_extra_command = parse_config_file(file_expected, config_model)
+                expected_commands = parse_config_file_intact(file_expected)
 
-    # 解析配置文件
-    result_templates, result_extra_command = parse_config_file(file_result, config_model)
-    result_commands = parse_config_file_intact(file_result)
+                # 计算匹配度
+                match_score, match_account, error_templates = calculate_match_ratio(result_templates,
+                                                                                    expected_templates,
+                                                                                    result_extra_command,
+                                                                                    expected_extra_command)
+                intact_match_score, intact_match_account, error_commands = calculate_match_ratio(result_commands,
+                                                                                                 expected_commands, [],
+                                                                                                 [])
+                total_match_score += match_score
+                total_match_account += match_account
 
-    expected_templates, expected_extra_command = parse_config_file(file_expected, config_model)
-    expected_commands = parse_config_file_intact(file_expected)
+                total_intact_match_score += intact_match_score
+                total_intact_match_account += intact_match_account
 
-    # 计算匹配度
-    match_score, match_account, error_templates = calculate_match_ratio(result_templates, expected_templates, result_extra_command, expected_extra_command)
-    intact_match_score, intact_match_account, error_commands = calculate_match_ratio(result_commands, expected_commands, [], [])
-    total_match_score += match_score
-    total_match_account += match_account
-
-    total_intact_match_score += intact_match_score
-    total_intact_match_account += intact_match_account
-
-
-# 计算并输出平均匹配度
-average_match_ratio = total_match_score / total_match_account if total_match_account > 0 else 0
-average_intact_match_ratio = total_intact_match_score / total_intact_match_account if file_count > 0 else 0
-print(f"\nAverage Match Ratio: {average_match_ratio:.2f}")
-print(f"\nAverage intact Match Ratio: {average_intact_match_ratio:.2f}")
-
+            # 计算并输出平均匹配度
+            average_match_ratio = total_match_score / total_match_account if total_match_account > 0 else 0
+            average_intact_match_ratio = total_intact_match_score / total_intact_match_account if file_count > 0 else 0
+            print(f"Scale {scale}:from {source_vendor} tp {target_vendor} Average Match Ratio: {average_match_ratio:.2f}")
+            print(f"Scale {scale}:from {source_vendor} tp {target_vendor} Average intact Match Ratio: {average_intact_match_ratio:.2f}")
 
 # Average Exact Match Ratio: 0.70
 # Average Tree Match Ratio: 0.91
 
 '''
 Average Match Ratio: 0.67
-
 Average intact Match Ratio: 0.64
 '''

@@ -62,9 +62,12 @@ def find_template(command, config_model):
         if template == 'template':
             pattern = re.sub(r'\[parameter\d+\]', r'(\\S+)', details)
             pattern = f'^{pattern}$'
-            if re.match(pattern, command):
-                return details
-            else:
+            try:
+                if re.match(pattern, command):
+                    return details
+                else:
+                    continue
+            except re.error:
                 continue
 
     return None
@@ -99,27 +102,37 @@ def cul_syntax_score(parsed_config, config_model, syntax_score=0, match_times=0)
 
 
 if __name__ == '__main__':
-    target_vendor = 'HUAWEI'
-    cisco_huawei_config_dir = './exper_data/cisco_translated_config_with_mapping_examined/HUAWEI'
-    cisco_to_huawei_config_files = [f for f in os.listdir(cisco_huawei_config_dir) if f.endswith('.txt')]
+    scale = 2000
+    vendors = ['Cisco', 'HUAWEI', 'Juniper']
+    translated_config_base = './exper_data/cisco_translated_config_with_mapping_examined'
 
-    config_model = f'../dataset_multi_vendor_config/config_model/{target_vendor}.json'
-    config_model = load_config_model(config_model)
+    for source_vendor in ['Cisco']:
+        for target_vendor in vendors:
+            if target_vendor == source_vendor:
+                continue
 
-    total_syntax_ratio = 0
-    for file_name in cisco_to_huawei_config_files:
-        file_path = os.path.join(cisco_huawei_config_dir, file_name)
-        file_content = open(file_path, 'r', encoding='utf-8').read()
-        parsed_config = parse_config(file_content)
-        total_syntax_score, total_match_times = cul_syntax_score(parsed_config, config_model)
-        if total_match_times == 0:
-            total_syntax_ratio += 1
-            continue
-        total_syntax_ratio += total_syntax_score / total_match_times
+            translated_config_dir = os.path.join(translated_config_base, str(scale), source_vendor, target_vendor)
+            trannlated_config_files = [f for f in os.listdir(translated_config_dir) if f.endswith('.txt')]
+            config_model = f'../dataset_multi_vendor_config/config_model/different_scale/{target_vendor}_{scale}.json'
+            config_model = load_config_model(config_model)
 
-    avarage_syntax_score = total_syntax_ratio / len(cisco_to_huawei_config_files)
-    print(f'avage syntax ratio: {avarage_syntax_score}')
+            total_syntax_ratio = 0
+            for file_name in trannlated_config_files:
+                file_path = os.path.join(translated_config_dir, file_name)
+                file_content = open(file_path, 'r', encoding='utf-8').read()
+                parsed_config = parse_config(file_content)
+                total_syntax_score, total_match_times = cul_syntax_score(parsed_config, config_model)
+                if total_match_times == 0:
+                    total_syntax_ratio += 1
+                    continue
+                total_syntax_ratio += total_syntax_score / total_match_times
 
+            avarage_syntax_score = total_syntax_ratio / len(trannlated_config_files)
+            print(f'Scale {scale}: from {source_vendor} tp {target_vendor} avage syntax ratio: {avarage_syntax_score}')
+'''
+Scale 2000: from Cisco tp HUAWEI avage syntax ratio: 0.8890777939174053
+Scale 2000: from Cisco tp Juniper avage syntax ratio: 1.0
+'''
 
 
 

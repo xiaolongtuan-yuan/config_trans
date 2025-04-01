@@ -5,8 +5,11 @@
 @File ：compute_bleu.py
 """
 import os
+
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from nltk.translate.bleu_score import sentence_bleu
-import json
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
 
 def preprocess_text(text):
     # 去除注释（以#或!开头的行）
@@ -15,6 +18,11 @@ def preprocess_text(text):
     cleaned_text = ''.join(char for char in ' '.join(lines) if ord(char) < 128)
     return cleaned_text.split()
 
+def clean_config_text(text):
+    # 去除注释行（以#或!开头的行）和空行
+    lines = [line for line in text.splitlines()
+             if line.strip() and not line.strip().startswith(('#', '!', '*', '/*', '*/'))]
+    return '\n'.join(lines)
 
 def compute_bleu_for_configs(translated_dir, real_dir, config_files):
     total_bleu = 0.0
@@ -57,23 +65,54 @@ def compute_word_match_rate(translated_dir, real_dir, config_files):
         matched_word_count += sum(1 for word in translated_words if word in real_words)
     return matched_word_count / total_word_count if total_word_count > 0 else 0.0
 
-cisco_huawei_config_dir = './exper_data/cisco_translated_config/HUAWEI'
-# cisco_huawei_config_dir = './exper_data/cisco_translated_config_with_mapping_examined/HUAWEI'
+def compute_embded_similarity(translated_dir, real_dir, config_files):
+    local_EMmodel_path = '../EmbeddingModel/MiniLM-L6-v2'
+    # embedding_model = SentenceTransformer(local_EMmodel_path)
+    embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
+                                            model_kwargs={"device": "cuda:0"})
+    total_similarity = 0.0
+    count = 0
+    for config_file in config_files:
+        # 读取翻译后的配置文件
+        with open(os.path.join(translated_dir, config_file), 'r') as f:
+            translated_config = f.read()
+        # 读取真实配置文件
+        with open(os.path.join(real_dir, config_file), 'r') as f:
+            real_config = f.read()
+            real_words = clean_config_text(real_config)
 
-cisco_to_huawei_config_files = [f for f in os.listdir(cisco_huawei_config_dir) if f.endswith('.txt')]
-huawei_real_config_dir = './exper_data/HUAWEI'
+        translated_embedding = embedding_model.embed_query(translated_config)
+        real_embedding = embedding_model.embed_query(real_words)
 
-cisco_juniper_config_dir = './exper_data/cisco_translated_config/Juniper'
-cisco_to_juniper_config_files = [f for f in os.listdir(cisco_juniper_config_dir) if f.endswith('.txt')]
-juniper_real_config_dir = './exper_data/Juniper'
+        similarity = cosine_similarity(
+            np.array(translated_embedding).reshape(1, -1),
+            np.array(real_embedding).reshape(1, -1)
+        )[0][0]
 
-# 计算Cisco到Huawei的BLEU分数
-huawei_words = compute_word_match_rate(cisco_huawei_config_dir, huawei_real_config_dir, cisco_to_huawei_config_files)
-print(f"Cisco to Huawei words accuracy score: {huawei_words}")
+        total_similarity += similarity
+        count += 1
+    return total_similarity / count if count > 0 else 0.0
 
-# # 计算Cisco到Juniper的BLEU分数
-# juniper_bleu = compute_bleu_for_configs(cisco_juniper_config_dir, juniper_real_config_dir, cisco_to_juniper_config_files)
-# print(f"Cisco to Juniper BLEU score: {juniper_bleu}")
+
+if __name__ == '__main__':
+    scale = 2000
+    vendors = ['Cisco', 'HUAWEI', 'Juniper']
+    translated_config_base = './exper_data/cisco_translated_config_with_mapping_examined'
+
+    for source_vendor in ['Cisco']:
+        for target_vendor in vendors:
+            if target_vendor == source_vendor:
+                continue
+
+            translated_config_dir = os.path.join(translated_config_base, str(scale), source_vendor, target_vendor)
+            trannlated_config_files = [f for f in os.listdir(translated_config_dir) if f.endswith('.txt')]
+            real_config_dir = f'./exper_data/lable/{target_vendor}'
+
+
+            # 计算Cisco到Huawei的BLEU分数
+            # score = compute_word_match_rate(translated_config_dir, real_config_dir, trannlated_config_files)
+            score = compute_embded_similarity(translated_config_dir, real_config_dir, trannlated_config_files)
+            print(f"scale {scale},{source_vendor} to {target_vendor} embded similarity: {score}")
 
 '''
 huawei
@@ -81,6 +120,9 @@ huawei
 pre 0.5082217889716625
 examined 
 0.526246478680124
+
+scale 2000,Cisco to HUAWEI embded similarity: 0.8599730785426216
+scale 2000,Cisco to Juniper embded similarity: 0.5767573199858755
 '''
 
 
