@@ -75,7 +75,9 @@ def find_template(command, config_model):
 def tree_match(parent_command, child_command, config_model):
     for template, details in config_model.items():
         # 使用正则表达式匹配模板
-        pattern = re.sub(r'\[parameter\d+\]', r'[\\w\\s]+', template)
+        # pattern = re.sub(r'\[parameter\d+\]', r'[\\w\\s]+', template)
+        pattern = re.sub(r'\[parameter\d+\]', r'(\\S+)', template)
+        pattern = f'^{pattern}$'
         if re.match(pattern, parent_command):
             if isinstance(details, dict) and 'template' in details:
                 sub_template = find_template(child_command, details)
@@ -87,7 +89,7 @@ def tree_match(parent_command, child_command, config_model):
             match_res = tree_match(parent_command, child_command, details)
             if match_res:
                 return True
-    return False
+    return True
 
 def cul_syntax_score(parsed_config, config_model, syntax_score=0, match_times=0):
     for parent_command, child_commands in parsed_config.items():
@@ -104,7 +106,7 @@ def cul_syntax_score(parsed_config, config_model, syntax_score=0, match_times=0)
 if __name__ == '__main__':
     scale = 2000
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
-    translated_config_base = './exper_data/cisco_translated_config_with_mapping_examined'
+    translated_config_base = './exper_data/translated_config'
 
     for source_vendor in ['Cisco']:
         for target_vendor in vendors:

@@ -16,26 +16,6 @@ def load_config_model(config_model_path):
     with open(config_model_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
-# def find_template(command, config_model):
-#     """递归查找命令对应的模板"""
-#     for template, details in config_model.items():
-#         # 递归查找子命令
-#         if isinstance(details, dict) and 'template' in details:
-#             sub_template = find_template(command, details)
-#             if sub_template:
-#                 return sub_template
-#
-#         # 使用正则表达式匹配模板
-#         if template == 'template':
-#             pattern = re.sub(r'\[parameter\d+\]', r'(\\S+)', details)
-#             pattern = f'^{pattern}$'
-#             if re.match(pattern, command):
-#                 return details
-#             else:
-#                 continue
-#
-#     return None
-
 def parse_config_file(file_path, config_model):
     """解析配置文件为模板序列"""
     templates = []
@@ -47,9 +27,9 @@ def parse_config_file(file_path, config_model):
             if command:
                 template = find_template(command, config_model)
                 if template:
-                    templates.append(template if template else command)
+                    templates.append(template.lower())
                 else:
-                    extra_commands.append(command)
+                    extra_commands.append(command.lower())
 
     # templates_set = set(templates)
     # extra_commands_set = set(extra_commands)
@@ -63,7 +43,8 @@ def parse_config_file_intact(file_path):
         for line in f:
             # 去除前后空格和缩进
             command = line.strip()
-            commands.append(command)
+            if command:
+                commands.append(command.lower())
     # commands = set(commands)
     return commands
 
@@ -91,10 +72,10 @@ def calculate_match_ratio(result_templates, expected_templates, result_extra_com
 if __name__ == '__main__':
     scale = 2000
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
-    translated_config_base = './exper_data/cisco_translated_config_with_mapping_examined'
+    translated_config_base = './exper_data/translated_config'
 
     for source_vendor in ['Cisco']:
-        for target_vendor in ['HUAWEI']:
+        for target_vendor in ['Juniper']:
             if target_vendor == source_vendor:
                 continue
 
@@ -102,7 +83,7 @@ if __name__ == '__main__':
             trannlated_config_files = [f for f in os.listdir(translated_config_dir) if f.endswith('.txt')]
             real_config_dir = f'./exper_data/lable/{target_vendor}'
             # config_model = f'../dataset_multi_vendor_config/config_model/different_scale/{target_vendor}_{scale}.json'
-            config_model = f'../dataset_multi_vendor_config/config_model/{target_vendor}.json'
+            config_model = f'../dataset_multi_vendor_config/config_model/different_scale/{target_vendor}_{scale}.json'
             config_model = load_config_model(config_model)
 
             total_match_score = 0
@@ -120,6 +101,7 @@ if __name__ == '__main__':
                 result_templates, result_extra_command = parse_config_file(file_result, config_model)
                 result_commands = parse_config_file_intact(file_result)
 
+                # 解析标准文件
                 expected_templates, expected_extra_command = parse_config_file(file_expected, config_model)
                 expected_commands = parse_config_file_intact(file_expected)
 

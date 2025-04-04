@@ -39,6 +39,16 @@ def validate_json_files(device_name):
 
     return True
 
+def delete_outdate_files(file_dir):
+    os.makedirs(file_dir, exist_ok=True)
+    # 清空目录下的所有文件
+    for file in os.listdir(file_dir):
+        file_path = os.path.join(file_dir, file)
+        try:
+            if os.path.isfile(file_path):
+                os.unlink(file_path)
+        except Exception as e:
+            print(f"Error deleting {file_path}: {e}")
 
 def main():
     # 创建输出目录
@@ -46,6 +56,7 @@ def main():
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
     for vendor in vendors:
         os.makedirs(os.path.join(output_base, vendor), exist_ok=True)
+        delete_outdate_files(os.path.join(output_base, vendor))
 
     # 获取Cisco目录下的所有json文件
     cisco_path = '../dataset_multi_vendor_config/Json_config/Cisco'

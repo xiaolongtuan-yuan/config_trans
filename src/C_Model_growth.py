@@ -6,6 +6,9 @@ import os
 from tqdm import tqdm
 import re
 
+from src.F_device_configtrans import process_juniper_json
+
+
 def merge_nodes(existing_node: dict, new_node: dict):
     """
     将 new_node 合并到 existing_node 中：
@@ -177,6 +180,8 @@ if __name__ == "__main__":
                 # 加载设备配置模型
                 try:
                     json_config = load_json_file(json_config_path)
+                    if vendor == 'Juniper':
+                        json_config = process_juniper_json(json_config)
                 except:
                     continue
 

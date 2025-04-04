@@ -484,28 +484,28 @@ class Config_Translater:
 
         # 参数插入配置命令模板
         # 创建一个线程池，将llm映射的任务提交给线程池
-        with ThreadPoolExecutor() as executor:
-            futures = []
-            for src_command, translation in target_commands.items():
-                # 遍历该需要翻译配置命令中每一层级的配置命令
-                for depth, translation_commands in translation.items():
-                    if depth == -1:
-                        continue
-                    # 基于配置参数插入配置命令模板
-                    for command, command_v in translation_commands.items():
-                        # 使用llm进行参数映射修复
-                        future = executor.submit(
-                            self.translation_llm.param_map_repair,
-                            target_vendor,
-                            command_v
-                        )
-                        futures.append((command_v, future))
-            # 获取结果并更新
-            for command_v, future in futures:
-                llm_target_command = future.result()
-                if llm_target_command != '':
-                    command_v['target_command'] = self.para_fill(llm_target_command['para_match'],
-                                                                 llm_target_command['target_command'])
+        # with ThreadPoolExecutor() as executor:
+        #     futures = []
+        #     for src_command, translation in target_commands.items():
+        #         # 遍历该需要翻译配置命令中每一层级的配置命令
+        #         for depth, translation_commands in translation.items():
+        #             if depth == -1:
+        #                 continue
+        #             # 基于配置参数插入配置命令模板
+        #             for command, command_v in translation_commands.items():
+        #                 # 使用llm进行参数映射修复
+        #                 future = executor.submit(
+        #                     self.translation_llm.param_map_repair,
+        #                     target_vendor,
+        #                     command_v
+        #                 )
+        #                 futures.append((command_v, future))
+        #     # 获取结果并更新
+        #     for command_v, future in futures:
+        #         llm_target_command = future.result()
+        #         if llm_target_command != '':
+        #             command_v['target_command'] = self.para_fill(llm_target_command['para_match'],
+        #                                                          llm_target_command['target_command'])
 
         return target_commands
 
@@ -633,7 +633,7 @@ class Config_Translater:
 
         newest_parent = None
         # 遍历是否存在与command相同的命令
-        for pre_src_command, translation in target_commands.items():  # 变量名重复，已改
+        for pre_src_command, translation in target_commands.items():
             for depth, translation_commands in translation.items():
                 for command_k, command_v in translation_commands.items():
                     # 若有相同的配置命令模板
@@ -819,12 +819,22 @@ def config_matchers_load(file_path, vendors):
         config_matchers[vendor] = ConfigMatcher(command_templates)
     return config_matchers
 
+def process_juniper_json(json_config):
+    processed_json = {}
+    for k, v in json_config.items():
+        if 'template' in v:
+            del v['template']
+        if isinstance(v, dict):
+            for command, info in v.items():
+                processed_json[command] = info
+    return processed_json
+
 
 if __name__ == "__main__":
     vendors = ["Cisco", "HUAWEI", "Juniper"]
     # mapping_library_path = str(project_root / 'dataset_multi_vendor_config/mapping_template_library_examined/{}_{}.json')
     mapping_library_path = str(
-        project_root / 'dataset_multi_vendor_config/mapping_template_library_examined/different_scale/{}_{}_2000.json')
+        project_root / 'dataset_multi_vendor_config/mapping_template_library/different_scale/{}_{}_2000.json')
 
     templates_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/different_scale/{}_2000.json')
     config_model_dir = str(project_root / 'dataset_multi_vendor_config/config_model/different_scale/{}_2000.json')
@@ -852,17 +862,23 @@ if __name__ == "__main__":
                                           translation_llm, embedding_model)
 
     # translation test
-    file_name = 'ne_clock_5015_0'
+    file_name = 'ne_pos_0013_0'
     config_path = str(project_root / f'dataset_multi_vendor_config/test/{file_name}.json')
 
+    source_vendor = 'Juniper'
+    target_vendor = 'HUAWEI'
     json_config = load_json_file(config_path)
+    if source_vendor == 'Juniper':
+        json_config = process_juniper_json(json_config)
     # 翻译Cisco配置到HUAWEI配置
-    save_path = str(
-        project_root / 'dataset_multi_vendor_config/translation_config/Cisco_HUAWEI/{}.txt'.format(file_name))
-    translation_result, _ = config_translater.translation(json_config, 'HUAWEI', 'Juniper')
-    with open(save_path, 'w', encoding='utf-8') as file:
-        file.write(translation_result)
-    print(f'Translation result of HUAWEI is: \n{translation_result}')
+
+    translation_result, _ = config_translater.translation(json_config, source_vendor, target_vendor)
+    print(f'Translation result of {target_vendor} is: \n{translation_result}')
+
+    # save_path = str(
+    #     project_root / f'dataset_multi_vendor_config/translation_config/{source_vendor}_{target_vendor}/{file_name}.txt')
+    # with open(save_path, 'w', encoding='utf-8') as file:
+    #     file.write(translation_result)
     # save_path = str(project_root / 'dataset_multi_vendor_config/translation_config/Cisco_Juniper/{}.txt'.format(file_name))
     # translation_result = config_translater.translation(json_config, 'Cisco', 'Juniper')
     # with open(save_path, 'w', encoding='utf-8') as file:
