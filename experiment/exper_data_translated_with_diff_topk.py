@@ -4,13 +4,13 @@
 @Auth ： xiaolongtuan
 @File ：exper_data_translated.py
 """
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from src.F_device_configtrans import Config_Translater, Translation_Model, mapping_library_load, config_matchers_load, \
     process_juniper_json
 import os
 import json
-from tqdm import tqdm  # 用于显示进度条
+from tqdm import tqdm
 
 
 def load_json_file(file_path):
@@ -20,21 +20,9 @@ def load_json_file(file_path):
 
 
 def batch_translate(config_translater, input_dir, output_dir, source_vendor, target_vendor, batch_size=100):
-    """
-    批量翻译配置文件
-    :param config_translater: 配置翻译器实例
-    :param input_dir: 输入目录
-    :param output_dir: 输出目录
-    :param source_vendor: 源供应商
-    :param target_vendors: 目标供应商列表
-    """
-    # 获取所有配置文件
     config_files = [f for f in os.listdir(input_dir) if f.endswith('.json')]
-
-    # 创建输出目录
     os.makedirs(os.path.join(output_dir, target_vendor), exist_ok=True)
 
-    # 遍历每个文件进行翻译
     successed_files = 0
     with ThreadPoolExecutor(max_workers=5) as executor:  # 多线程好像有点问题，暂时不使用
         futures = []
@@ -61,18 +49,6 @@ def batch_translate(config_translater, input_dir, output_dir, source_vendor, tar
                 i += 1
 
         print(f"Translated {successed_files} configs")
-
-    # with tqdm(total=batch_size, desc="Successed files") as pbar:
-    #     for config_file in config_files:
-    #         if successed_files >= batch_size:
-    #             break
-    #         # try:
-    #         if translate_single_file(config_translater, input_dir, output_dir,
-    #                                  source_vendor, target_vendor, config_file):
-    #             successed_files += 1
-    #             pbar.update(1)
-    #         # except Exception as e:
-    #         #     print(f"\nError: {str(e)}")
     print(f"Translated {successed_files} configs")
 
 
@@ -108,31 +84,31 @@ def delete_outdate_files(file_dir):
 def main():
     # 初始化路径
     device = "cuda:0"
-    output_dir = './exper_data/translated_config'
+    output_dir = './exper_data/translated_config_diff_topk'
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
-    config_num = [100, 500, 1000, 2000]
+    top_ks = [1,2,3,4]
     local_EMmodel_path = '../EmbeddingModel/MiniLM-L6-v2'
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})
 
-    for scale in config_num:
+    for topk in top_ks:
         for source_vendor in vendors:
             for target_vendor in vendors:
                 if source_vendor == target_vendor:
                     continue
                 source_config_dir = f'./exper_data/{source_vendor}'
-                output_save_dir = os.path.join(output_dir, str(scale), source_vendor)  # 当前处理的是哪个scale的哪个源供应商
+                output_save_dir = os.path.join(output_dir, str(topk), source_vendor)
                 os.makedirs(output_save_dir, exist_ok=True)
-                delete_outdate_files(os.path.join(output_dir, str(scale), source_vendor, target_vendor))
+                delete_outdate_files(os.path.join(output_dir, str(topk), source_vendor, target_vendor))
 
-                print(f"exper for {scale}, {source_vendor} to {target_vendor} translation")
-                mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/different_scale/{{}}_{{}}_{scale}.json'
-                templates_path = f'../dataset_multi_vendor_config/config_command_node/different_scale/{{}}_{scale}.json'
-                config_model_dir = f'../dataset_multi_vendor_config/config_model/different_scale/{{}}_{scale}.json'
+                print(f"exper for topk={topk}, {source_vendor} to {target_vendor} translation")
+                mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/different_scale/{{}}_{{}}_100.json'
+                templates_path = f'../dataset_multi_vendor_config/config_command_node/different_scale/{{}}_100.json'
+                config_model_dir = f'../dataset_multi_vendor_config/config_model/different_scale/{{}}_100.json'
 
                 mapping_libraries = mapping_library_load(mapping_library_path, vendors)
-                config_matchers = config_matchers_load(templates_path, vendors)
+                config_matchers = config_matchers_load(templates_path, vendors, semantic_topk=topk)
 
                 translation_llm = Translation_Model('deepseek-chat', config_model_dir=config_model_dir, vendors=vendors)
 
@@ -143,14 +119,6 @@ def main():
                                 source_vendor=source_vendor,
                                 target_vendor=target_vendor,
                                 batch_size=100)
-
-        # Juniper_config_translater = Config_Translater(mapping_libraries, config_matchers,
-        #                                       translation_llm, embedding_model)
-        # # 执行批量翻译
-        # batch_translate(Juniper_config_translater, cisco_config_dir, output_dir,
-        #                 source_vendor='Cisco',
-        #                 target_vendors=['Juniper'])
-
 
 if __name__ == "__main__":
     main()

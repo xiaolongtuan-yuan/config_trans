@@ -102,6 +102,19 @@ def cul_syntax_score(parsed_config, config_model, syntax_score=0, match_times=0)
             match_times += sub_match_time
     return syntax_score, match_times
 
+def cul_view_accuracy(translated_config_dir, trannlated_config_files, config_model:{}):
+    total_syntax_ratio = 0
+    for file_name in trannlated_config_files:
+        file_path = os.path.join(translated_config_dir, file_name)
+        file_content = open(file_path, 'r', encoding='utf-8').read()
+        parsed_config = parse_config(file_content)
+        total_syntax_score, total_match_times = cul_syntax_score(parsed_config, config_model)
+        if total_match_times == 0:
+            total_syntax_ratio += 1
+            continue
+        total_syntax_ratio += (total_syntax_score / total_match_times)
+    return total_syntax_ratio / len(trannlated_config_files)
+
 
 if __name__ == '__main__':
     scale = 2000

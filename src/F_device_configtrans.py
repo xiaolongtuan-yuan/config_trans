@@ -109,7 +109,7 @@ class CommandNode:
 
 # 同阶段5--ConfigMatcher
 class ConfigMatcher:
-    def __init__(self, target_command_templates):
+    def __init__(self, target_command_templates, semantic_topk=3):
         self.templates = target_command_templates  # 预加载的配置(节点)模板库
         self.semantic_topk = 3  # 语义匹配top k纳入候选集
 
@@ -117,6 +117,7 @@ class ConfigMatcher:
         """执行多级匹配流程"""
         # 第一阶段：基础语义匹配--功能匹配（计算对比所有配置节点语义嵌入排序）
         ranked_candidates = self._semantic_ranking(command_node)
+        match_score = sum([sim[1][0][0] for sim in ranked_candidates]) / len(ranked_candidates)
 
         # 第二阶段：参数语义匹配--组织/结构特征（计算对比候选集中所有参数嵌入）
         para_match = self._param_semantic_match(command_node, ranked_candidates)
@@ -124,7 +125,7 @@ class ConfigMatcher:
         # 第三阶段：整合匹配的参数对，并延伸至命令
         match_result = self._integrate_commands(ranked_candidates, para_match)
 
-        return match_result
+        return match_result, match_score
 
     def _semantic_ranking(self, command_node):
         """语义特征排序"""
@@ -304,6 +305,81 @@ class Config_Translater:
 
         return trans_res, trans_mapping_info
 
+    def translation_with_tau(self, json_configuration, vendor, target_vendor, tau=0.65):
+        '''
+        测试tau阈值对翻译效果的影响
+        '''
+        config_match = {}  # 保存翻译（匹配）集合
+        # 给juniper配置模型加个保险
+        if vendor == 'Juniper':
+            json_configuration = insert_template(json_configuration)
+        commands_feature = {}  # 分拆每一条配置命令特征
+        commands_feature = parse_command_node(commands_feature, json_configuration)
+
+        # 阶段一：规则映射rule_mapping, rest_commands_feature是在映射库中不存在的配置命令
+        rest_commands_feature, config_match = self.rule_mapping(commands_feature,
+                                                                config_match, vendor, target_vendor)
+
+        # 阶段二：模糊映射fuzzy_mapping-->针对规则映射库未覆盖的配置命令
+        config_match = self.fuzzy_mapping(rest_commands_feature, config_match, vendor, target_vendor, tau=tau)
+
+        # 阶段四：配置命令编排，配置参数直接填充
+        arranged_config = self.config_arranging(config_match, target_vendor)
+        # print(json.dumps(arranged_config, indent=4, ensure_ascii=False))
+
+        # 阶段五：llm配置参数映射与修正
+        # target_config = self.parameter_mapping_with_LLM_rewrite(arranged_config, vendor, target_vendor)
+        target_config = self.parameter_mapping_with_LLM_remapping(arranged_config, vendor, target_vendor)
+
+        # print(json.dumps(target_config, indent=4, ensure_ascii=False))
+
+        # 阶段六：输出并保存翻译的配置命令
+        trans_res, trans_mapping_info = self.print_and_save_translation_config(target_config)
+
+        return trans_res, trans_mapping_info
+
+    def translation_without_llm(self, json_configuration, vendor, target_vendor, istatistics=False):
+        '''
+        启发式翻译
+        '''
+        config_match = {}  # 保存翻译（匹配）集合
+        # 给juniper配置模型加个保险
+        if vendor == 'Juniper':
+            json_configuration = insert_template(json_configuration)
+        commands_feature = {}  # 分拆每一条配置命令特征
+        commands_feature = parse_command_node(commands_feature, json_configuration)
+
+        # 阶段一：规则映射rule_mapping, rest_commands_feature是在映射库中不存在的配置命令
+        rest_commands_feature, config_match = self.rule_mapping(commands_feature,
+                                                                config_match, vendor, target_vendor)
+
+        if not istatistics:
+            # 阶段二：模糊映射fuzzy_mapping-->针对规则映射库未覆盖的配置命令
+            config_match = self.fuzzy_mapping(rest_commands_feature, config_match, vendor, target_vendor)
+
+            # 阶段四：配置命令编排，配置参数直接填充
+            arranged_config = self.config_arranging(config_match, target_vendor)
+            # print(json.dumps(arranged_config, indent=4, ensure_ascii=False))
+
+            # 阶段五：参数映射
+            target_config = self.parameter_mapping(arranged_config, vendor, target_vendor)
+
+            # 阶段六：输出并保存翻译的配置命令
+            trans_res, trans_mapping_info = self.print_and_save_translation_config(target_config)
+
+            return trans_res, trans_mapping_info
+
+        else:
+            statistic_data = {
+                "command_count": len(commands_feature),
+                "rule_ccount": len(config_match),
+                "llm_ccount": 0,
+            }
+            _, filtered_commands_feature = self.fuzzy_mapping_for_statistic(rest_commands_feature, config_match, vendor, target_vendor)
+            statistic_data['llm_ccount'] = len(filtered_commands_feature)
+            return statistic_data, {}
+
+
     # 阶段一借助模板映射库实现规则映射
     def rule_mapping(self, commands_feature, config_match, vendor, target_vendor):
         rest_commands_feature = {}  # 保存不包含在规则映射库中的配置命令
@@ -321,21 +397,60 @@ class Config_Translater:
         return rest_commands_feature, config_match
 
     # 阶段二借助目标供应商配置模板基于语义相似度实现模糊映射
-    def fuzzy_mapping(self, rest_commands_feature, config_match, vendor, target_vendor):
+    def fuzzy_mapping(self, rest_commands_feature, config_match, vendor, target_vendor, tau=0.65):
         # 根据语义做模糊匹配
+        filtered_commands_feature = []
         for command, feature in rest_commands_feature.items():
             structural_feature = feature['structural_feature']
             semantic_feature = feature['semantic_feature']
             # 创建命令节点，执行语义/参数嵌入
             command_node = CommandNode(structural_feature, semantic_feature, self.embedding_model)
-            matched_result = self.config_matchers[target_vendor].find_best_match(command_node)
+            matched_result, match_score = self.config_matchers[target_vendor].find_best_match(command_node)
+            if match_score > tau:  # 匹配度大于阈值
+                template = feature['semantic_feature']['template']
+                config_match[command] = {'template': template, 'match': matched_result}
+                # 补充现有的模板库
+                self.mapping_libraries['{}_{}'.format(vendor, target_vendor)][template] = matched_result
+            else:
+                filtered_commands_feature.append(command)
+                matched_result = self.translation_llm.llm_command_mapping(command, vendor,
+                                                                          target_vendor)  # matched_result = str
+                result_node = {"structural_features": {'depth': structural_feature['depth'],
+                                                      'params': [],
+                                                      'parent_command': 'system'}}
 
-            template = feature['semantic_feature']['template']
-            config_match[command] = {'template': template, 'match': matched_result}
-            # 补充现有的模板库
-            self.mapping_libraries['{}_{}'.format(vendor, target_vendor)][template] = matched_result
+                self.config_matchers[target_vendor].templates[matched_result] = result_node
+                template = feature['semantic_feature']['template']
+                config_match[command] = {'template': template, 'match': matched_result}
 
         return config_match
+
+    def fuzzy_mapping_for_statistic(self, rest_commands_feature, config_match, vendor, target_vendor, tau=0.65):
+        # 根据语义做模糊匹配
+        filtered_commands_feature = []
+        for command, feature in rest_commands_feature.items():
+            structural_feature = feature['structural_feature']
+            semantic_feature = feature['semantic_feature']
+            # 创建命令节点，执行语义/参数嵌入
+            command_node = CommandNode(structural_feature, semantic_feature, self.embedding_model)
+            matched_result, match_score = self.config_matchers[target_vendor].find_best_match(command_node)
+            if match_score > tau:  # 匹配度大于阈值
+                template = feature['semantic_feature']['template']
+                config_match[command] = {'template': template, 'match': matched_result}
+                # 补充现有的模板库
+                self.mapping_libraries['{}_{}'.format(vendor, target_vendor)][template] = matched_result
+            else:
+                filtered_commands_feature.append(command)
+                matched_result = command
+                result_node = {"structural_features": {'depth': structural_feature['depth'],
+                                                      'params': [],
+                                                      'parent_command': 'system'}}
+
+                self.config_matchers[target_vendor].templates[matched_result] = result_node
+                template = feature['semantic_feature']['template']
+                config_match[command] = {'template': template, 'match': matched_result}
+
+        return config_match, filtered_commands_feature
 
     # 阶段三使用大模型做配置映射，保留接口，当前翻译流程关注前两阶段效果
     def LLMmodel_mapping(self, rest_commands_feature, config_match, vendor, target_vendor):
@@ -477,36 +592,65 @@ class Config_Translater:
                 # 基于配置参数合并配置命令模板
                 for command, command_v in translation_commands.items():
                     parent_command = command_v['parent_node']
-                    self.insert_parent_command(target_commands, src_command, int(depth), parent_command, all_params) # 补充父节点
+                    self.insert_parent_command(target_commands, src_command, int(depth), parent_command,
+                                               all_params)  # 补充父节点
                     target_commands = self.command_param_merge(target_commands, src_command,
                                                                int(depth), command, command_v)
 
-
         # 参数插入配置命令模板
         # 创建一个线程池，将llm映射的任务提交给线程池
-        # with ThreadPoolExecutor() as executor:
-        #     futures = []
-        #     for src_command, translation in target_commands.items():
-        #         # 遍历该需要翻译配置命令中每一层级的配置命令
-        #         for depth, translation_commands in translation.items():
-        #             if depth == -1:
-        #                 continue
-        #             # 基于配置参数插入配置命令模板
-        #             for command, command_v in translation_commands.items():
-        #                 # 使用llm进行参数映射修复
-        #                 future = executor.submit(
-        #                     self.translation_llm.param_map_repair,
-        #                     target_vendor,
-        #                     command_v
-        #                 )
-        #                 futures.append((command_v, future))
-        #     # 获取结果并更新
-        #     for command_v, future in futures:
-        #         llm_target_command = future.result()
-        #         if llm_target_command != '':
-        #             command_v['target_command'] = self.para_fill(llm_target_command['para_match'],
-        #                                                          llm_target_command['target_command'])
+        with ThreadPoolExecutor() as executor:
+            futures = []
+            for src_command, translation in target_commands.items():
+                # 遍历该需要翻译配置命令中每一层级的配置命令
+                for depth, translation_commands in translation.items():
+                    if depth == -1:
+                        continue
+                    # 基于配置参数插入配置命令模板
+                    for command, command_v in translation_commands.items():
+                        # 使用llm进行参数映射修复
+                        future = executor.submit(
+                            self.translation_llm.param_map_repair,
+                            target_vendor,
+                            command_v
+                        )
+                        futures.append((command_v, future))
+            # 获取结果并更新
+            for command_v, future in futures:
+                llm_target_command = future.result()
+                if llm_target_command != '':
+                    command_v['target_command'] = self.para_fill(llm_target_command['para_match'],
+                                                                 llm_target_command['target_command'])
 
+        return target_commands
+
+    def parameter_mapping(self, arranged_config: dict, vendor, target_vendor) -> dict:
+        target_commands = {}  # 最终配置命令
+        # 遍历每一个需要翻译的配置命令
+        for src_command, translation in arranged_config.items():
+            all_params = translation['para']
+            # 遍历该需要翻译配置命令中每一层级的配置命令
+            for depth, translation_commands in translation.items():
+                # 不是字典跳过，包含非翻译命令的信息
+                if not isinstance(translation_commands, dict):
+                    continue
+                # 基于配置参数合并配置命令模板
+                for command, command_v in translation_commands.items():
+                    parent_command = command_v['parent_node']
+                    self.insert_parent_command(target_commands, src_command, int(depth), parent_command,
+                                               all_params)  # 补充父节点
+                    target_commands = self.command_param_merge(target_commands, src_command,
+                                                               int(depth), command, command_v)
+
+        # 参数插入配置命令模板
+        for src_command, translation in target_commands.items():
+            # 遍历该需要翻译配置命令中每一层级的配置命令
+            for depth, translation_commands in translation.items():
+                if depth == -1:
+                    continue
+                for command, command_v in translation_commands.items():
+                    command_v['target_command'] = self.para_fill(command_v['para_match'],
+                                                                 command_v['target_command'])
         return target_commands
 
     # 基于配置参数合并配置命令模板(带翻译的配置命令参数分布在多个命令中，并包含共享的命令)
@@ -532,7 +676,6 @@ class Config_Translater:
                             command_v['para_match'] = merged_paras
                             merged_flag = 1
         if merged_flag == 0:
-            # 使用 setdefault 确保每一层键存在
             target_commands.setdefault(src_command, {}).setdefault(src_depth, {})[command] = command_info
         return target_commands
 
@@ -621,16 +764,12 @@ class Config_Translater:
 
                     trans_pairs.append(f"{command} -- {command_info['target_command']}")
 
-
         merged_config_tree = self.merge_config_nodes(root)
         trans_res = "\n".join(merged_config_tree.to_lines()[1:])
         trans_mapping_info = '\n'.join(trans_pairs)
         return trans_res, trans_mapping_info
 
     def insert_parent_command(self, target_commands, src_command, src_depth, parent_command, all_params):
-        if parent_command in ['system', 'set system']:
-            return target_commands
-
         newest_parent = None
         # 遍历是否存在与command相同的命令
         for pre_src_command, translation in target_commands.items():
@@ -642,13 +781,14 @@ class Config_Translater:
 
         if not newest_parent:  # 前面配置过父视图节点，直接复制
             newest_parent = {'para_num': -1,
-                                   'para_placeholders': [],
-                                   'para_match': list[all_params],
-                                   'target_command': parent_command,
-                                   'parent_node': 'system'}
+                             'para_placeholders': [],
+                             'para_match': list[all_params],
+                             'target_command': parent_command,
+                             'parent_node': 'system'}
         target_commands.setdefault(src_command, {}).setdefault(src_depth - 1, {})[parent_command] = newest_parent
 
         return target_commands
+
 
 class ConfigNode:
     def __init__(self, line):
@@ -660,7 +800,7 @@ class ConfigNode:
 
     def to_lines(self, indent=-1):
         if indent == -1:
-            lines =  [self.line]
+            lines = [self.line]
         else:
             lines = [" " * indent + self.line]
         for child in self.children:
@@ -703,32 +843,32 @@ class Translation_Model:
                 config_models[vendor] = config_model
         return config_models
 
-    def param_map_rewrite(self, vendor, src_command, target_vendor, target_temp_command):
-        prompt_file = project_root / 'resource/parameter_mapping_F_prompt.txt'
-        prompt = open(prompt_file, 'r', encoding='utf-8').read()
-        prompt = prompt.replace("{vendor}", vendor)
-        prompt = prompt.replace("{target_vendor}", target_vendor)
-        prompt = prompt.replace("{src_command}", src_command)
-        prompt = prompt.replace("{target_command}", target_temp_command)
-
-        messages = [
-            {"role": "user", "content": prompt}
-        ]
-        for i in range(3):
-            try:
-                response = self.llm_model.chat.completions.create(
-                    model=self.model_name,
-                    messages=messages,
-                    response_format={
-                        'type': 'json_object'
-                    }
-                )
-                json_response = response.choices[0].message.content
-                json_response = json.loads(json_response)
-                return json_response.get('target_command', '')
-            except Exception as e:
-                print(f"第 {i + 1} 次尝试失败，错误信息: {str(e)}")
-        return ''
+    # def param_map_rewrite(self, vendor, src_command, target_vendor, target_temp_command):
+    #     prompt_file = project_root / 'resource/parameter_mapping_F_prompt.txt'
+    #     prompt = open(prompt_file, 'r', encoding='utf-8').read()
+    #     prompt = prompt.replace("{vendor}", vendor)
+    #     prompt = prompt.replace("{target_vendor}", target_vendor)
+    #     prompt = prompt.replace("{src_command}", src_command)
+    #     prompt = prompt.replace("{target_command}", target_temp_command)
+    #
+    #     messages = [
+    #         {"role": "user", "content": prompt}
+    #     ]
+    #     for i in range(3):
+    #         try:
+    #             response = self.llm_model.chat.completions.create(
+    #                 model=self.model_name,
+    #                 messages=messages,
+    #                 response_format={
+    #                     'type': 'json_object'
+    #                 }
+    #             )
+    #             json_response = response.choices[0].message.content
+    #             json_response = json.loads(json_response)
+    #             return json_response.get('target_command', '')
+    #         except Exception as e:
+    #             print(f"第 {i + 1} 次尝试失败，错误信息: {str(e)}")
+    #     return ''
 
     def find_command_template(self, vendor, command_template):
         # 在字典中递归寻找该命令
@@ -787,6 +927,33 @@ class Translation_Model:
                 print(f"第 {i + 1} 次尝试失败，错误信息: {str(e)}")
         return ''
 
+    def llm_command_mapping(self, source_command, source_vendor, target_vendor):
+        prompt_file = project_root / 'resource/command_mapping_F_prompt.txt'
+        prompt = open(prompt_file, 'r', encoding='utf-8').read()
+
+        prompt = prompt.replace("{source_vendor}", source_vendor)
+        prompt = prompt.replace("{source_command}", source_command)
+        prompt = prompt.replace("{target_vendor}", target_vendor)
+
+        messages = [
+            {"role": "user", "content": prompt}
+        ]
+        for i in range(2):
+            try:
+                response = self.llm_model.chat.completions.create(
+                    model=self.model_name,
+                    messages=messages,
+                    response_format={
+                        'type': 'json_object'
+                    }
+                )
+                json_response = response.choices[0].message.content
+                json_response = json.loads(json_response)
+                return json_response['target_command']
+            except Exception as e:
+                print(f"第 {i + 1} 次尝试失败，错误信息: {str(e)}")
+        return ''
+
 
 # json文件加载
 def load_json_file(file_path):
@@ -812,12 +979,13 @@ def mapping_library_load(file_path, vendors):
 
 
 # 配置匹配器加载
-def config_matchers_load(file_path, vendors):
+def config_matchers_load(file_path, vendors, semantic_topk=3):
     config_matchers = {}
     for vendor in vendors:
         command_templates = load_json_file(file_path.format(vendor))
-        config_matchers[vendor] = ConfigMatcher(command_templates)
+        config_matchers[vendor] = ConfigMatcher(command_templates, semantic_topk=semantic_topk)
     return config_matchers
+
 
 def process_juniper_json(json_config):
     processed_json = {}
@@ -834,10 +1002,10 @@ if __name__ == "__main__":
     vendors = ["Cisco", "HUAWEI", "Juniper"]
     # mapping_library_path = str(project_root / 'dataset_multi_vendor_config/mapping_template_library_examined/{}_{}.json')
     mapping_library_path = str(
-        project_root / 'dataset_multi_vendor_config/mapping_template_library/different_scale/{}_{}_2000.json')
+        project_root / 'dataset_multi_vendor_config/mapping_template_library/different_scale/{}_{}_100.json')
 
-    templates_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/different_scale/{}_2000.json')
-    config_model_dir = str(project_root / 'dataset_multi_vendor_config/config_model/different_scale/{}_2000.json')
+    templates_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/different_scale/{}_100.json')
+    config_model_dir = str(project_root / 'dataset_multi_vendor_config/config_model/different_scale/{}_100.json')
 
     # 加载规则映射库
     print('Mapping library loading.')
@@ -862,10 +1030,10 @@ if __name__ == "__main__":
                                           translation_llm, embedding_model)
 
     # translation test
-    file_name = 'ne_pos_0013_0'
+    file_name = 'ne_1588v2_5025_1'
     config_path = str(project_root / f'dataset_multi_vendor_config/test/{file_name}.json')
 
-    source_vendor = 'Juniper'
+    source_vendor = 'Cisco'
     target_vendor = 'HUAWEI'
     json_config = load_json_file(config_path)
     if source_vendor == 'Juniper':
