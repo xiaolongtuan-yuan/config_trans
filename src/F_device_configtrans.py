@@ -45,7 +45,7 @@ class CommandNode:
         self._calculate_depth_levels(structural_features['depth'])
 
         # 语义特征
-        self._generate_semantic_embedding(semantic_features, embedding_model)
+        self._generate_semantic_embedding(structural_features, semantic_features, embedding_model)
 
         # 参数语义特征
         self._generate_para_semantic_embedding(semantic_features, embedding_model)
@@ -63,6 +63,15 @@ class CommandNode:
             'order': [p['type'] for p in params]
             # 'constraints': []
         }
+        '''
+        for p in params:
+            constraint = {}
+            if p.get('format'):
+                constraint['format'] = p['format']
+            if p.get('options'):
+                constraint['predefined'] = p['options']
+            param_spec['constraints'].append(constraint)
+        '''
         self.structural_features['param_signature'] = param_spec
 
     def _calculate_depth_levels(self, depth):
@@ -71,13 +80,27 @@ class CommandNode:
         logical_depth = self._infer_logical_depth(template)"""
         self.structural_features['command_depth'] = depth
 
-    def _generate_semantic_embedding(self, semantic_features, embedding_model):
+    def _generate_semantic_embedding(self, structural_features, semantic_features, embedding_model):
         """生成语义嵌入向量"""
         # 使用预训练模型获取基础语义(配置模板，命令，解释)
-        base_embedding = self._get_base_embedding(embedding_model,
+        '''结构特征T_{s} ，包括了配置命令层级，参数数量，父视图配置命令
+           功能特征T_{f}，包括配置命令的模板，命令示例以及解释
+           参数合集特征T_{P}，汇总了所有配置参数的名称、类型与解释'''
+        structural_text = str(structural_features['depth']) + \
+                          str(len(structural_features['params'])) + \
+                          structural_features['parent_command']
+
+        function_text = semantic_features['template'] + \
+                       semantic_features['command'] +\
+                       semantic_features['explanation']
+        
+        '''base_embedding = self._get_base_embedding(embedding_model,
                                                   semantic_features['template']
                                                   + semantic_features['command']
-                                                  + semantic_features['explanation'])
+                                                  + semantic_features['explanation'])'''
+        
+        structural_embedding = self._get_base_embedding(embedding_model, structural_text)
+        function_embedding = self._get_base_embedding(embedding_model, function_text)
 
         # 参数增强语义(所有参数的名字与解释)
         param_text = ' '.join([p['name'] + p['explanation'] for p in semantic_features['parameters']])
@@ -85,13 +108,13 @@ class CommandNode:
 
         # 融合特征
         self.semantic_features = self._fuse_embeddings(
-            base_embedding, param_embedding
+            structural_embedding, function_embedding, param_embedding
         )
 
     def _generate_para_semantic_embedding(self, semantic_features, embedding_model):
         # 参数语义(单个参数的名字+完整配置命令解释)
         for p in semantic_features['parameters']:
-            para_text = p['name'] + p['explanation'] + semantic_features['explanation']
+            para_text = p['name'] + p['explanation'] + semantic_features['template'] 
             self.paras_semantic_features.append(self._get_param_embedding(embedding_model, para_text).tolist())
 
     # 语义嵌入向量   
@@ -101,10 +124,10 @@ class CommandNode:
     def _get_param_embedding(self, embedding_model, text):
         return torch.tensor(embedding_model.embed_query(text))
 
-    def _fuse_embeddings(self, base, params):
+    def _fuse_embeddings(self, structure, function, param):
         # 使用注意力机制融合特征
-        attention_weights = torch.softmax(torch.cat([base, params]), dim=0)
-        return (base * attention_weights[0] + params * attention_weights[1]).tolist()
+        attention_weights = torch.softmax(torch.cat([structure, function, param]), dim=0)
+        return (structure * attention_weights[0] + function * attention_weights[1] + param * attention_weights[2]).tolist()
 
 
 # 同阶段5--ConfigMatcher
