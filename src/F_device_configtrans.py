@@ -133,6 +133,8 @@ class ConfigMatcher:
         similarities = []
 
         for template, target_node in self.templates.items():
+            if 'semantic_features' not in target_node:
+                continue
             target_embedding = np.array(target_node['semantic_features']).reshape(1, -1)
             sim = cosine_similarity(semantic_embedding, target_embedding)
             similarities.append((template, sim))

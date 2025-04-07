@@ -40,25 +40,24 @@ def batch_translate(config_translater, input_dir, output_dir, source_vendor, tar
             i = 0
             while i < len(futures):
                 future = futures[i]
-                try:
-                    if future.result():
-                        successed_files += 1
-                        pbar.update(1)
-                except Exception as e:
-                    print(f"\nError: {str(e)}")
-                    if config_files:
-                        config_file = config_files.pop(0)
-                        futures.append(executor.submit(translate_single_file,
-                                                       config_translater, input_dir, statistic_res,
-                                                       source_vendor, target_vendor, config_file))
+                # try:
+                if future.result():
+                    successed_files += 1
+                    pbar.update(1)
+                # except Exception as e:
+                #     print(f"\nError: {str(e)}")
+                #     if config_files:
+                #         config_file = config_files.pop(0)
+                #         futures.append(executor.submit(translate_single_file,
+                #                                        config_translater, input_dir, statistic_res,
+                #                                        source_vendor, target_vendor, config_file))
                 i += 1
 
         print(f"Translated {successed_files} configs")
-    statistic_res['rule_cover_rate'] = statistic_res['rule_ccount'] / statistic_res['command_count']
-    statistic_res['llm_cover_rate'] = statistic_res['llm_ccount'] / statistic_res['command_count']
     print(statistic_res)
-    with open(os.path.join('./exper_res/cover_statistic.json', "statistic.json"), 'w', encoding='utf-8') as f:
-        json.dump(statistic_res, f, ensure_ascii=False, indent=4)
+    return statistic_res
+
+
 
 def translate_single_file(config_translater, input_dir, statistic_res,
                           source_vendor, target_vendor, config_file):
@@ -96,12 +95,17 @@ def main():
     output_dir = './exper_data/translated_config_without_llm'
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
-    config_num = [2000]
     local_EMmodel_path = '../EmbeddingModel/MiniLM-L6-v2'
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})
-
-    for scale in config_num:
+    scales = [2000]
+    scales_covers_res = {}
+    for scale in scales:
+        statistic_res = {
+            "command_count": 0,
+            "rule_ccount": 0,
+            "llm_ccount": 0,
+        }
         for source_vendor in vendors:
             for target_vendor in vendors:
                 if source_vendor == target_vendor:
@@ -124,10 +128,19 @@ def main():
                 config_translater = Config_Translater(mapping_libraries, config_matchers,
                                                       translation_llm, embedding_model)
                 # 执行批量翻译
-                batch_translate(config_translater, source_config_dir, output_save_dir,
+                cover_data = batch_translate(config_translater, source_config_dir, output_save_dir,
                                 source_vendor=source_vendor,
                                 target_vendor=target_vendor,
-                                batch_size=100)
+                                batch_size=500)
+                statistic_res['command_count'] += cover_data['command_count']
+                statistic_res['rule_ccount'] += cover_data['rule_ccount']
+                statistic_res['llm_ccount'] += cover_data['llm_ccount']
+        statistic_res['rule_cover_rate'] = statistic_res['rule_ccount'] / statistic_res['command_count']
+        statistic_res['llm_cover_rate'] = statistic_res['llm_ccount'] / statistic_res['command_count']
+        scales_covers_res[scale] = statistic_res
+        print(statistic_res)
+    # with open('./exper_res/cover_statistic.json', 'w', encoding='utf-8') as f:
+    #     json.dump(scales_covers_res, f, ensure_ascii=False, indent=4)
 
 
 if __name__ == "__main__":
