@@ -92,8 +92,8 @@ class CommandNode:
                           structural_features['parent_command']
 
         function_text = semantic_features['template'] + \
-                        semantic_features['command'] + \
-                        semantic_features['explanation']
+                       semantic_features['command'] +\
+                       semantic_features['explanation']
 
         '''base_embedding = self._get_base_embedding(embedding_model,
                                                   semantic_features['template']
@@ -115,11 +115,10 @@ class CommandNode:
     def _generate_para_semantic_embedding(self, semantic_features, embedding_model):
         # 参数语义(单个参数的名字+完整配置命令解释)
         for p in semantic_features['parameters']:
-            para_text = p['name'] + p['explanation'] + semantic_features[
-                'template']  # + semantic_features['explanation']
+            para_text = p['name'] + p['explanation'] + semantic_features['template']
             self.paras_semantic_features.append(self._get_param_embedding(embedding_model, para_text).tolist())
 
-    # 语义嵌入向量
+    # 语义嵌入向量   
     def _get_base_embedding(self, embedding_model, text):
         return torch.tensor(embedding_model.embed_query(text))
 
@@ -129,8 +128,7 @@ class CommandNode:
     def _fuse_embeddings(self, structure, function, param):
         # 使用注意力机制融合特征
         attention_weights = torch.softmax(torch.cat([structure, function, param]), dim=0)
-        return (structure * attention_weights[0] + function * attention_weights[1] + param * attention_weights[
-            2]).tolist()
+        return (structure * attention_weights[0] + function * attention_weights[1] + param * attention_weights[2]).tolist()
 
 
 # 同阶段5--ConfigMatcher
