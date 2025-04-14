@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import torch
 from sklearn.metrics.pairwise import cosine_similarity
 import json
 import numpy as np
@@ -37,17 +38,39 @@ class ConfigMatcher:
 
         return match_result
 
+    # def _semantic_ranking(self, command_node):
+    #     """语义特征排序"""
+    #     semantic_embedding = np.array(command_node['semantic_features']).reshape(1, -1)
+    #     similarities = []
+    #
+    #     for template, target_node in self.templates.items():
+    #         target_embedding = np.array(target_node['semantic_features']).reshape(1, -1)
+    #         sim = cosine_similarity(semantic_embedding, target_embedding)
+    #         similarities.append((template, sim))
+    #
+    #     return sorted(similarities, key=lambda x: x[1], reverse=True)[:self.semantic_topk]
     def _semantic_ranking(self, command_node):
         """语义特征排序"""
-        semantic_embedding = np.array(command_node['semantic_features']).reshape(1, -1)
-        similarities = []
+        semantic_embedding = torch.tensor(command_node['semantic_features'], dtype=torch.float32).unsqueeze(0).cuda()
+        target_embeddings = []
 
         for template, target_node in self.templates.items():
-            target_embedding = np.array(target_node['semantic_features']).reshape(1, -1)
-            sim = cosine_similarity(semantic_embedding, target_embedding)
-            similarities.append((template, sim))
+            target_embedding = torch.tensor(target_node['semantic_features'], dtype=torch.float32).unsqueeze(0)
+            target_embeddings.append(target_embedding)
 
-        return sorted(similarities, key=lambda x: x[1], reverse=True)[:self.semantic_topk]
+        target_embeddings = torch.cat(target_embeddings, dim=0).cuda()
+
+        # 计算余弦相似度
+        norm_semantic = torch.norm(semantic_embedding, dim=1, keepdim=True)
+        norm_target = torch.norm(target_embeddings, dim=1, keepdim=True)
+        dot_product = torch.matmul(semantic_embedding, target_embeddings.T)
+        similarities = dot_product / (norm_semantic * norm_target.T)
+
+        similarities = similarities.squeeze(0).cpu().numpy()
+        template_list = list(self.templates.keys())
+        similarity_pairs = [(template, sim) for template, sim in zip(template_list, similarities)]
+
+        return sorted(similarity_pairs, key=lambda x: x[1], reverse=True)[:self.semantic_topk]
 
     def _get_parent_commands(self, ranked_candidates):
         # 按照配置视图层次，加入所有的父配置命令
@@ -108,7 +131,7 @@ class ConfigMatcher:
 
 
 def _build_mapping_template_library(vendors, template_path, save_path):
-    scales = [2000]
+    scales = [2000, 1000, 500, 100]
     for scale in scales:
         command_templates = {}  # 模板库
         configuration_matchers = {}  # 匹配器

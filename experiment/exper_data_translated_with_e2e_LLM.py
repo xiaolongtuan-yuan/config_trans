@@ -135,7 +135,7 @@ def main():
     output_dir = './exper_data/e2e_llm_translated_config'
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
-    llm_models = ["deepseek-reasoner", "gpt-4o-mini"]
+    llm_models = ["deepseek-chat", "gpt-4o-mini"]
     for llm_model in llm_models:
         for source_vendor in vendors:
             for target_vendor in vendors:
@@ -149,7 +149,7 @@ def main():
 
                 print(f"exper for {llm_model}, from {source_vendor} to {target_vendor} translation")
 
-                config_translater = E2E_Config_Translater('deepseek-chat')
+                config_translater = E2E_Config_Translater(llm_model)
 
                 # 执行批量翻译
                 batch_translate(config_translater=config_translater,

@@ -20,6 +20,8 @@ def parse_config_file(file_path, config_model):
         for line in f:
             # 去除前后空格和缩进
             command = line.strip()
+            if command.startswith(('#', '!', '*', '/*', '*/')): # 注释行
+                continue
             if command:
                 template = find_template(command, config_model)
                 if template:
@@ -159,7 +161,7 @@ def cul_param_accuracy(translated_dir, real_dir, config_files, config_model: {})
 
 if __name__ == '__main__':
     scale = 2000
-    vendors = ['Cisco', 'HUAWEI', 'Juniper']
+    vendors = ['Juniper']
     translated_config_base = './exper_data/translated_config'
 
     for source_vendor in ['Cisco']:
@@ -174,49 +176,8 @@ if __name__ == '__main__':
             config_model = f'../dataset_multi_vendor_config/config_model/different_scale/{target_vendor}_{scale}.json'
             config_model = load_config_model(config_model)
 
-            total_match_score = 0
-            total_match_account = 0
-
-            total_intact_match_score = 0
-            total_intact_match_account = 0
-            file_count = len(trannlated_config_files)
-
-            for file_name in trannlated_config_files:
-                file_result = os.path.join(translated_config_dir, file_name)
-                file_expected = os.path.join(real_config_dir, file_name)
-
-                # 解析配置文件
-                result_templates, result_extra_command = parse_config_file(file_result, config_model)
-                result_commands = parse_config_file_intact(file_result)
-
-                # 解析标准文件
-                expected_templates, expected_extra_command = parse_config_file(file_expected, config_model)
-                expected_commands = parse_config_file_intact(file_expected)
-
-                # 计算匹配度
-                match_score, match_account, error_templates = calculate_match_ratio(result_templates,
-                                                                                    expected_templates,
-                                                                                    result_extra_command,
-                                                                                    expected_extra_command)
-                intact_match_score, intact_match_account, error_commands = calculate_match_ratio(result_commands,
-                                                                                                 expected_commands, [],
-                                                                                                 [])
-                total_match_score += match_score
-                total_match_account += match_account
-
-                total_intact_match_score += intact_match_score
-                total_intact_match_account += intact_match_account
-
-            # 计算并输出平均匹配度
-            average_match_ratio = total_match_score / total_match_account if total_match_account > 0 else 0
-            average_intact_match_ratio = total_intact_match_score / total_intact_match_account if file_count > 0 else 0
-            print(
-                f"Scale {scale}:from {source_vendor} tp {target_vendor} Average Match Ratio: {average_match_ratio:.2f}")
-            print(
-                f"Scale {scale}:from {source_vendor} tp {target_vendor} Average intact Match Ratio: {average_intact_match_ratio:.2f}")
-
-# Average Exact Match Ratio: 0.70
-# Average Tree Match Ratio: 0.91
+            command_accuracy = cul_command_accuracy(translated_config_dir, real_config_dir, trannlated_config_files)
+            print(command_accuracy)
 
 '''
 Average Match Ratio: 0.67

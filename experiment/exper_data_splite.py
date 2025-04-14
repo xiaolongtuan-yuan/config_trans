@@ -15,6 +15,25 @@ import json
 import shutil
 from pathlib import Path
 
+def process_juniper_json(json_config):
+    processed_json = {}
+    for k, v in json_config.items():
+        if 'template' in v:
+            del v['template']
+        if isinstance(v, dict):
+            for command, info in v.items():
+                processed_json[command] = info
+    return processed_json
+
+def juniper_config_filter(config):
+    config = process_juniper_json(config)
+    with open('../dataset_multi_vendor_config/config_model/Juniper_error_command.json', 'r') as f:
+        juniper_error_commands = json.load(f)
+    for command in config.keys():
+        if command in juniper_error_commands:
+            return False
+
+    return True
 
 def validate_json_files(device_name):
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
@@ -34,6 +53,11 @@ def validate_json_files(device_name):
                 content = json.load(f)
                 if 'error' in str(content):
                     return False
+                if vendor == 'Juniper':
+                    # 检测其中是否有错误行
+                    if not juniper_config_filter(content):
+                        print(device_name)
+                        return False
         except:
             return False
 
@@ -71,6 +95,7 @@ def main():
             if len(valid_devices) >= 600:
                 break
 
+    print(len(valid_devices))
     # 复制有效文件到实验数据集目录
     for device in valid_devices:
         for vendor in vendors:

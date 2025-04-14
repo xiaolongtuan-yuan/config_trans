@@ -36,7 +36,7 @@ def batch_translate(config_translater, input_dir, output_dir, source_vendor, tar
 
     # 遍历每个文件进行翻译
     successed_files = 0
-    with ThreadPoolExecutor(max_workers=5) as executor:  # 多线程好像有点问题，暂时不使用
+    with ThreadPoolExecutor(max_workers=10) as executor:  # 多线程好像有点问题，暂时不使用
         futures = []
         for file_index in range(batch_size):
             config_file = config_files.pop(0)
@@ -61,18 +61,6 @@ def batch_translate(config_translater, input_dir, output_dir, source_vendor, tar
                 i += 1
 
         print(f"Translated {successed_files} configs")
-
-    # with tqdm(total=batch_size, desc="Successed files") as pbar:
-    #     for config_file in config_files:
-    #         if successed_files >= batch_size:
-    #             break
-    #         # try:
-    #         if translate_single_file(config_translater, input_dir, output_dir,
-    #                                  source_vendor, target_vendor, config_file):
-    #             successed_files += 1
-    #             pbar.update(1)
-    #         # except Exception as e:
-    #         #     print(f"\nError: {str(e)}")
     print(f"Translated {successed_files} configs")
 
 
@@ -112,6 +100,7 @@ def main():
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
     config_num = [100, 500, 1000, 2000]
+    # config_num = [2000]
     local_EMmodel_path = '../EmbeddingModel/MiniLM-L6-v2'
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})
@@ -120,6 +109,9 @@ def main():
         for source_vendor in vendors:
             for target_vendor in vendors:
                 if source_vendor == target_vendor:
+                    continue
+                if (not source_vendor == 'Juniper') and (not target_vendor == 'Juniper'): # 只翻译Juniper到其他供应商
+                # if (source_vendor == 'Juniper') or (target_vendor == 'Juniper'): # 不考虑juniper
                     continue
                 source_config_dir = f'./exper_data/{source_vendor}'
                 output_save_dir = os.path.join(output_dir, str(scale), source_vendor)  # 当前处理的是哪个scale的哪个源供应商
@@ -143,14 +135,6 @@ def main():
                                 source_vendor=source_vendor,
                                 target_vendor=target_vendor,
                                 batch_size=100)
-
-        # Juniper_config_translater = Config_Translater(mapping_libraries, config_matchers,
-        #                                       translation_llm, embedding_model)
-        # # 执行批量翻译
-        # batch_translate(Juniper_config_translater, cisco_config_dir, output_dir,
-        #                 source_vendor='Cisco',
-        #                 target_vendors=['Juniper'])
-
 
 if __name__ == "__main__":
     main()

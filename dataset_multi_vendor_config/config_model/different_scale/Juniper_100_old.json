@@ -854,6 +854,23 @@
             }
         ]
     },
+    "set interfaces [parameter1] unit [parameter2] mpls traffic-engineering": {
+        "template": "set interfaces [parameter1] unit [parameter2] mpls traffic-engineering",
+        "command": "set interfaces ge-3/0/3 unit 0 mpls traffic-engineering",
+        "explanation": "配置接口的MPLS流量工程。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-3/0/3。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            }
+        ]
+    },
     "set interfaces [parameter1] unit [parameter2] protocols rsvp": {
         "template": "set interfaces [parameter1] unit [parameter2] protocols rsvp",
         "command": "set interfaces ge-3/0/3 unit 0 protocols rsvp",
@@ -886,6 +903,18 @@
                 "name": "interface",
                 "type": "string",
                 "explanation": "接口名称及单元号，例如ge-3/0/3.0。"
+            }
+        ]
+    },
+    "set protocols mpls traffic-engineering router-id [parameter1]": {
+        "template": "set protocols mpls traffic-engineering router-id [parameter1]",
+        "command": "set protocols mpls traffic-engineering router-id 3.3.3.9",
+        "explanation": "配置MPLS流量工程的路由器ID。",
+        "parameters": [
+            {
+                "name": "router-id",
+                "type": "string",
+                "explanation": "MPLS流量工程的路由器ID。"
             }
         ]
     },
@@ -1281,6 +1310,18 @@
         "explanation": "启用多播路由功能。",
         "parameters": []
     },
+    "set protocols ldp interface [parameter1]": {
+        "template": "set protocols ldp interface [parameter1]",
+        "command": "set protocols ldp interface all",
+        "explanation": "在所有接口上启用LDP协议。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，all表示所有接口。"
+            }
+        ]
+    },
     "set protocols bgp group [parameter1] local-address [parameter2]": {
         "template": "set protocols bgp group [parameter1] local-address [parameter2]",
         "command": "set protocols bgp group IBGP-200 local-address 3.3.3.9",
@@ -1327,6 +1368,18 @@
             }
         ]
     },
+    "set systems host-name [parameter1]": {
+        "template": "set systems host-name [parameter1]",
+        "command": "set systems host-name Spin1",
+        "explanation": "配置设备的主机名。",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "设备的主机名，用于标识网络中的设备。"
+            }
+        ]
+    },
     "set routing-options router-id [parameter1]": {
         "template": "set routing-options router-id [parameter1]",
         "command": "set routing-options router-id 3.3.3.3",
@@ -1365,6 +1418,45 @@
                 "name": "authentication-methods",
                 "type": "string",
                 "explanation": "认证方法，例如none。"
+            }
+        ]
+    },
+    "set routing-options multicast mroute [parameter1] to [parameter2]": {
+        "template": "set routing-options multicast mroute [parameter1] to [parameter2]",
+        "command": "set routing-options multicast mroute 10.0.0.0/16 to 10.0.0.1",
+        "explanation": "配置多播路由。",
+        "parameters": [
+            {
+                "name": "mroute",
+                "type": "string",
+                "explanation": "多播路由的目标网络地址及掩码。"
+            },
+            {
+                "name": "to",
+                "type": "string",
+                "explanation": "多播路由的下一跳地址。"
+            }
+        ]
+    },
+    "set firewall family inet filter [parameter1] term [parameter2] from source-address [parameter3]": {
+        "template": "set firewall family inet filter [parameter1] term [parameter2] from source-address [parameter3]",
+        "command": "set firewall family inet filter list1 term permit1 from source-address 225.1.1.1/32",
+        "explanation": "配置防火墙过滤器的源地址条件。",
+        "parameters": [
+            {
+                "name": "filter",
+                "type": "string",
+                "explanation": "过滤器名称。"
+            },
+            {
+                "name": "term",
+                "type": "string",
+                "explanation": "过滤条件名称。"
+            },
+            {
+                "name": "source-address",
+                "type": "string",
+                "explanation": "源地址。"
             }
         ]
     },
@@ -1631,6 +1723,23 @@
             }
         ]
     },
+    "set interfaces [parameter1] vlan-id [parameter2]": {
+        "template": "set interfaces [parameter1] vlan-id [parameter2]",
+        "command": "set interfaces ge-1/0/0.1 vlan-id 10",
+        "explanation": "配置接口的VLAN ID。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-1/0/0.1。"
+            },
+            {
+                "name": "vlan-id",
+                "type": "integer",
+                "explanation": "VLAN ID，用于标识虚拟局域网。"
+            }
+        ]
+    },
     "set interfaces [parameter1] unit [parameter2] family ethernet-switching interface-mode [parameter3]": {
         "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching interface-mode [parameter3]",
         "command": "set interfaces ge-0/0/0 unit 0 family ethernet-switching interface-mode access",
@@ -1772,6 +1881,33 @@
             }
         ]
     },
+    "set routing-instances [parameter1] routing-options static route [parameter2]/[parameter3] next-hop [parameter4]": {
+        "template": "set routing-instances [parameter1] routing-options static route [parameter2]/[parameter3] next-hop [parameter4]",
+        "command": "set routing-instances instance0 routing-options static route 0.0.0.0/0 next-hop self",
+        "explanation": "配置路由实例的静态路由。",
+        "parameters": [
+            {
+                "name": "instance",
+                "type": "string",
+                "explanation": "路由实例名称。"
+            },
+            {
+                "name": "route",
+                "type": "string",
+                "explanation": "路由地址。"
+            },
+            {
+                "name": "subnet-mask",
+                "type": "integer",
+                "explanation": "子网掩码的位数。"
+            },
+            {
+                "name": "next-hop",
+                "type": "string",
+                "explanation": "下一跳地址。"
+            }
+        ]
+    },
     "set routing-options synchronize bgp [parameter1] except-internal": {
         "template": "set routing-options synchronize bgp [parameter1] except-internal",
         "command": "set routing-options synchronize bgp all except-internal",
@@ -1783,6 +1919,12 @@
                 "explanation": "同步范围，例如all。"
             }
         ]
+    },
+    "set protocols ldp": {
+        "template": "set protocols ldp",
+        "command": "set protocols ldp",
+        "explanation": "启用LDP协议。",
+        "parameters": []
     },
     "set protocols mpls": {
         "template": "set protocols mpls",
@@ -2016,6 +2158,50 @@
             }
         ]
     },
+    "set interfaces [parameter1] unit [parameter2] tunnel source [parameter3]": {
+        "template": "set interfaces [parameter1] unit [parameter2] tunnel source [parameter3]",
+        "command": "set interfaces gr-0/0/0 unit 0 tunnel source 10.1.3.10",
+        "explanation": "配置隧道接口的源地址。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如gr-0/0/0。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "source-ip",
+                "type": "string",
+                "explanation": "隧道接口的源IPv4地址。"
+            }
+        ]
+    },
+    "set interfaces [parameter1] unit [parameter2] tunnel destination [parameter3]": {
+        "template": "set interfaces [parameter1] unit [parameter2] tunnel destination [parameter3]",
+        "command": "set interfaces gr-0/0/0 unit 0 tunnel destination [IP address of the spoke2 hub]",
+        "explanation": "配置隧道接口的目的地址。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如gr-0/0/0。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "destination-ip",
+                "type": "string",
+                "explanation": "隧道接口的目的IPv4地址。"
+            }
+        ]
+    },
     "set protocols ospf area [parameter1] interface [parameter2] passive": {
         "template": "set protocols ospf area [parameter1] interface [parameter2] passive",
         "command": "set protocols ospf area 0.0.0.0 interface ge-0/0/0.0 passive",
@@ -2064,6 +2250,23 @@
                 "name": "policy-name",
                 "type": "string",
                 "explanation": "IPSec策略的名称。"
+            }
+        ]
+    },
+    "set routing-instances [parameter1] instance-type [parameter2]": {
+        "template": "set routing-instances [parameter1] instance-type [parameter2]",
+        "command": "set routing-instances vpn1 instance-type vrf",
+        "explanation": "配置路由实例的类型为VRF。",
+        "parameters": [
+            {
+                "name": "instance-name",
+                "type": "string",
+                "explanation": "路由实例的名称。"
+            },
+            {
+                "name": "instance-type",
+                "type": "string",
+                "explanation": "路由实例的类型，例如vrf。"
             }
         ]
     },
@@ -2250,6 +2453,60 @@
             }
         ]
     },
+    "set interfaces [parameter1] unit [parameter2] family ethernet-switching error-threshold [parameter3] [parameter4] [parameter5]": {
+        "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching error-threshold [parameter3] [parameter4] [parameter5]",
+        "command": "set interfaces gigabit-ethernet1/0/1 unit 0 family ethernet-switching error-threshold 5 5 5",
+        "explanation": "配置接口的以太网交换错误阈值。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如gigabit-ethernet1/0/1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "error-threshold1",
+                "type": "integer",
+                "explanation": "第一个错误阈值。"
+            },
+            {
+                "name": "error-threshold2",
+                "type": "integer",
+                "explanation": "第二个错误阈值。"
+            },
+            {
+                "name": "error-threshold3",
+                "type": "integer",
+                "explanation": "第三个错误阈值。"
+            }
+        ]
+    },
+    "set interfaces [parameter1] unit [parameter2] family ethernet-switching no-notification [parameter3]": {
+        "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching no-notification [parameter3]",
+        "command": "set interfaces gigabit-ethernet1/0/1 unit 0 family ethernet-switching no-notification enable",
+        "explanation": "启用接口的以太网交换无通知功能。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如gigabit-ethernet1/0/1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "no-notification",
+                "type": "string",
+                "explanation": "无通知功能的状态，例如enable表示启用。"
+            }
+        ]
+    },
     "set interfaces [parameter1] unit [parameter2] family ethernet-switching interval [parameter3]": {
         "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching interval [parameter3]",
         "command": "set interfaces gigabit-ethernet1/0/1 unit 0 family ethernet-switching interval 120",
@@ -2286,6 +2543,33 @@
                 "name": "scope",
                 "type": "string",
                 "explanation": "应用范围，例如all-interfaces表示应用于所有接口。"
+            }
+        ]
+    },
+    "set interfaces [parameter1] unit [parameter2] family ipv4 address [parameter3]/[parameter4]": {
+        "template": "set interfaces [parameter1] unit [parameter2] family ipv4 address [parameter3]/[parameter4]",
+        "command": "set interfaces ge-0/0/0 unit 10 family ipv4 address 10.10.10.1/24",
+        "explanation": "配置接口的IPv4地址及子网掩码。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/0。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "ip-address",
+                "type": "string",
+                "explanation": "分配给接口的IPv4地址。"
+            },
+            {
+                "name": "subnet-mask",
+                "type": "integer",
+                "explanation": "IPv4子网掩码的位数。"
             }
         ]
     },
@@ -2733,6 +3017,23 @@
             }
         ]
     },
+    "set system login class [parameter1] permissions [parameter2]": {
+        "template": "set system login class [parameter1] permissions [parameter2]",
+        "command": "set system login class l-h permissions <permissions>",
+        "explanation": "配置登录类的权限。",
+        "parameters": [
+            {
+                "name": "class-name",
+                "type": "string",
+                "explanation": "登录类的名称。"
+            },
+            {
+                "name": "permissions",
+                "type": "string",
+                "explanation": "分配给登录类的权限。"
+            }
+        ]
+    },
     "set system login user [parameter1] authentication-order [parameter2]": {
         "template": "set system login user [parameter1] authentication-order [parameter2]",
         "command": "set system login user <username> authentication-order [ tacplus password ]",
@@ -3154,6 +3455,23 @@
             }
         ]
     },
+    "set interfaces [parameter1] disable [parameter2]": {
+        "template": "set interfaces [parameter1] disable [parameter2]",
+        "command": "set interfaces ge-1/0/1 disable false",
+        "explanation": "启用接口。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-1/0/1。"
+            },
+            {
+                "name": "disable",
+                "type": "boolean",
+                "explanation": "是否禁用接口，'false'表示启用。"
+            }
+        ]
+    },
     "set protocols mpls forwarding": {
         "template": "set protocols mpls forwarding",
         "command": "set protocols mpls forwarding",
@@ -3177,6 +3495,12 @@
             }
         ]
     },
+    "set protocols mpls traffic-eng tunnel": {
+        "template": "set protocols mpls traffic-eng tunnel",
+        "command": "set protocols mpls traffic-eng tunnel",
+        "explanation": "启用MPLS流量工程隧道功能。",
+        "parameters": []
+    },
     "set protocols mpls traffic-eng metric [parameter1]": {
         "template": "set protocols mpls traffic-eng metric [parameter1]",
         "command": "set protocols mpls traffic-eng metric 10",
@@ -3198,6 +3522,18 @@
                 "name": "router-id",
                 "type": "string",
                 "explanation": "路由器ID，通常为环回接口的地址。"
+            }
+        ]
+    },
+    "set interfaces [parameter1] mpls ip": {
+        "template": "set interfaces [parameter1] mpls ip",
+        "command": "set interfaces gigabit-ethernet1/0/0 mpls ip",
+        "explanation": "在接口上启用MPLS IP。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如gigabit-ethernet1/0/0。"
             }
         ]
     },
@@ -3398,6 +3734,28 @@
             }
         ]
     },
+    "set interfaces [parameter1] unit [parameter2] input filter [parameter3]": {
+        "template": "set interfaces [parameter1] unit [parameter2] input filter [parameter3]",
+        "command": "set interfaces ge-1/0/1 unit 0 input filter acl-2001",
+        "explanation": "配置接口的输入过滤器。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-1/0/1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "filter-name",
+                "type": "string",
+                "explanation": "过滤器的名称。"
+            }
+        ]
+    },
     "set interfaces [parameter1] enable": {
         "template": "set interfaces [parameter1] enable",
         "command": "set interfaces ge-1/0/1 enable",
@@ -3441,6 +3799,18 @@
                 "name": "interface",
                 "type": "string",
                 "explanation": "输出接口的名称。"
+            }
+        ]
+    },
+    "set system domain-name [parameter1]": {
+        "template": "set system domain-name [parameter1]",
+        "command": "set system domain-name example.com",
+        "explanation": "配置设备的域名。",
+        "parameters": [
+            {
+                "name": "domain-name",
+                "type": "string",
+                "explanation": "设备的域名。"
             }
         ]
     },
@@ -3596,6 +3966,18 @@
                 "name": "path-name",
                 "type": "string",
                 "explanation": "标签交换路径的名称。"
+            }
+        ]
+    },
+    "delete interfaces [parameter1] disable": {
+        "template": "delete interfaces [parameter1] disable",
+        "command": "delete interfaces ge-0/0/1 disable",
+        "explanation": "删除接口的禁用状态。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/1。"
             }
         ]
     },
@@ -3978,6 +4360,40 @@
             }
         ]
     },
+    "set protocols isis level [parameter1] circuit-type [parameter2]": {
+        "template": "set protocols isis level [parameter1] circuit-type [parameter2]",
+        "command": "set protocols isis level 1 circuit-type point-to-point",
+        "explanation": "配置IS-IS协议的级别和电路类型。",
+        "parameters": [
+            {
+                "name": "level",
+                "type": "integer",
+                "explanation": "IS-IS协议的级别，1表示级别1。"
+            },
+            {
+                "name": "circuit-type",
+                "type": "string",
+                "explanation": "电路类型，point-to-point表示点对点。"
+            }
+        ]
+    },
+    "set interfaces [parameter1] description [parameter2]": {
+        "template": "set interfaces [parameter1] description [parameter2]",
+        "command": "set interfaces ge-1/0/0 description \"Interface GigabitEthernet1/0/0\"",
+        "explanation": "配置接口的描述信息。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-1/0/0。"
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "explanation": "接口的描述信息，用于标识接口用途。"
+            }
+        ]
+    },
     "set protocols bfd interface [parameter1]": {
         "template": "set protocols bfd interface [parameter1]",
         "command": "set protocols bfd interface ge-1/0/0",
@@ -4262,6 +4678,18 @@
         "explanation": "启用MPLS LDP的IPv4地址族。",
         "parameters": []
     },
+    "set protocols isis level [parameter1]": {
+        "template": "set protocols isis level [parameter1]",
+        "command": "set protocols isis level 2",
+        "explanation": "配置IS-IS协议的级别。",
+        "parameters": [
+            {
+                "name": "level",
+                "type": "integer",
+                "explanation": "IS-IS协议的级别，1表示Level 1，2表示Level 2。"
+            }
+        ]
+    },
     "set protocols isis [parameter1] net [parameter2]": {
         "template": "set protocols isis [parameter1] net [parameter2]",
         "command": "set protocols isis 1 net 10.0000.0000.0003.00",
@@ -4340,6 +4768,55 @@
             }
         ]
     },
+    "set interfaces [parameter1] unit [parameter2] family ethernet-switching ccm-send mep-id [parameter3] interval [parameter4]": {
+        "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching ccm-send mep-id [parameter3] interval [parameter4]",
+        "command": "set interfaces ge-0/0/1 unit 0 family ethernet-switching ccm-send mep-id 2 interval 1",
+        "explanation": "配置接口的以太网交换CCM发送参数。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "mep-id",
+                "type": "integer",
+                "explanation": "维护端点ID。"
+            },
+            {
+                "name": "interval",
+                "type": "integer",
+                "explanation": "CCM发送间隔时间。"
+            }
+        ]
+    },
+    "set interfaces [parameter1] unit [parameter2] family ethernet-switching ccm-receive mep-id [parameter3] enable": {
+        "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching ccm-receive mep-id [parameter3] enable",
+        "command": "set interfaces ge-0/0/1 unit 0 family ethernet-switching ccm-receive mep-id 1 enable",
+        "explanation": "配置接口的以太网交换CCM接收参数。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "mep-id",
+                "type": "integer",
+                "explanation": "维护端点ID。"
+            }
+        ]
+    },
     "set interfaces [parameter1] unit [parameter2] family ethernet-switching loss-measurement single-ended test-id [parameter3]": {
         "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching loss-measurement single-ended test-id [parameter3]",
         "command": "set interfaces ge-0/0/1 unit 0 family ethernet-switching loss-measurement single-ended test-id 1",
@@ -4393,6 +4870,23 @@
                 "name": "interface",
                 "type": "string",
                 "explanation": "接口名称，例如ge-0/0/1。"
+            }
+        ]
+    },
+    "set bridge-domains [parameter1] member [parameter2]": {
+        "template": "set bridge-domains [parameter1] member [parameter2]",
+        "command": "set bridge-domains bd-1 member ge-0/0/1",
+        "explanation": "配置桥接域的成员接口。",
+        "parameters": [
+            {
+                "name": "bridge-domain",
+                "type": "string",
+                "explanation": "桥接域名称，例如bd-1。"
+            },
+            {
+                "name": "member",
+                "type": "string",
+                "explanation": "成员接口名称，例如ge-0/0/1。"
             }
         ]
     },
@@ -4480,6 +4974,28 @@
                 "name": "metric-style",
                 "type": "string",
                 "explanation": "度量风格，例如wide。"
+            }
+        ]
+    },
+    "set interfaces [parameter1](unit [parameter2]) family mpls traffic-eng bandwidth-max-reservable-bandwidth [parameter3]": {
+        "template": "set interfaces [parameter1](unit [parameter2]) family mpls traffic-eng bandwidth-max-reservable-bandwidth [parameter3]",
+        "command": "set interfaces ge-0/0/0(unit 0) family mpls traffic-eng bandwidth-max-reservable-bandwidth 1000000",
+        "explanation": "配置接口的MPLS流量工程最大可预留带宽。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/0。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "bandwidth",
+                "type": "integer",
+                "explanation": "最大可预留带宽值。"
             }
         ]
     },
@@ -4584,6 +5100,30 @@
         "explanation": "启用MPLS流量工程隧道。",
         "parameters": []
     },
+    "set forwarding-options mpls traffic-eng tunnel-destination [parameter1]": {
+        "template": "set forwarding-options mpls traffic-eng tunnel-destination [parameter1]",
+        "command": "set forwarding-options mpls traffic-eng tunnel-destination 4.4.4.9",
+        "explanation": "配置MPLS流量工程隧道的目的地址。",
+        "parameters": [
+            {
+                "name": "tunnel-destination",
+                "type": "string",
+                "explanation": "隧道目的地址。"
+            }
+        ]
+    },
+    "set forwarding-options mpls traffic-eng priority [parameter1]": {
+        "template": "set forwarding-options mpls traffic-eng priority [parameter1]",
+        "command": "set forwarding-options mpls traffic-eng priority 1",
+        "explanation": "配置MPLS流量工程隧道的优先级。",
+        "parameters": [
+            {
+                "name": "priority",
+                "type": "integer",
+                "explanation": "隧道优先级。"
+            }
+        ]
+    },
     "set forwarding-options mpls traffic-eng bandwidth c0 [parameter1]": {
         "template": "set forwarding-options mpls traffic-eng bandwidth c0 [parameter1]",
         "command": "set forwarding-options mpls traffic-eng bandwidth c0 20000",
@@ -4593,6 +5133,23 @@
                 "name": "bandwidth",
                 "type": "integer",
                 "explanation": "C0带宽值。"
+            }
+        ]
+    },
+    "set bridge-domains [parameter1] vlan-id [parameter2]": {
+        "template": "set bridge-domains [parameter1] vlan-id [parameter2]",
+        "command": "set bridge-domains BD10 vlan-id 10",
+        "explanation": "配置桥接域的VLAN ID。",
+        "parameters": [
+            {
+                "name": "bridge-domain",
+                "type": "string",
+                "explanation": "桥接域名称，例如BD10。"
+            },
+            {
+                "name": "vlan-id",
+                "type": "integer",
+                "explanation": "分配给桥接域的VLAN ID。"
             }
         ]
     },
@@ -4727,6 +5284,18 @@
             }
         ]
     },
+    "set protocols mpls label protocol [parameter1]": {
+        "template": "set protocols mpls label protocol [parameter1]",
+        "command": "set protocols mpls label protocol ldp",
+        "explanation": "配置MPLS标签分发协议为LDP。",
+        "parameters": [
+            {
+                "name": "protocol",
+                "type": "string",
+                "explanation": "标签分发协议，例如LDP。"
+            }
+        ]
+    },
     "set protocols mpls traffic-eng area [parameter1]": {
         "template": "set protocols mpls traffic-eng area [parameter1]",
         "command": "set protocols mpls traffic-eng area 0",
@@ -4748,6 +5317,33 @@
                 "name": "router-id",
                 "type": "string",
                 "explanation": "路由器ID，例如Loopback1。"
+            }
+        ]
+    },
+    "set interfaces [parameter1] unit [parameter2] family ip address [parameter3] [parameter4]": {
+        "template": "set interfaces [parameter1] unit [parameter2] family ip address [parameter3] [parameter4]",
+        "command": "set interfaces eth-trunk1 unit 0 family ip address 10.1.1.2 255.255.255.0",
+        "explanation": "配置接口的IPv4地址及子网掩码。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如eth-trunk1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "ip-address",
+                "type": "string",
+                "explanation": "分配给接口的IPv4地址。"
+            },
+            {
+                "name": "subnet-mask",
+                "type": "string",
+                "explanation": "IPv4子网掩码。"
             }
         ]
     },
@@ -5078,6 +5674,23 @@
             }
         ]
     },
+    "set protocols bgp group [parameter1] neighbor [parameter2] activate": {
+        "template": "set protocols bgp group [parameter1] neighbor [parameter2] activate",
+        "command": "set protocols bgp group external neighbor 172.17.1.1 activate",
+        "explanation": "激活BGP邻居。",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP组的名称。"
+            },
+            {
+                "name": "neighbor",
+                "type": "string",
+                "explanation": "BGP邻居的IP地址。"
+            }
+        ]
+    },
     "set interfaces [parameter1] unit [parameter2] family dot1q vlan-id [parameter3] encapsulation dot1q [parameter4]": {
         "template": "set interfaces [parameter1] unit [parameter2] family dot1q vlan-id [parameter3] encapsulation dot1q [parameter4]",
         "command": "set interfaces ge-0/0/1 unit 1 family dot1q vlan-id 200 encapsulation dot1q 200",
@@ -5181,6 +5794,23 @@
             }
         ]
     },
+    "set interfaces [parameter1] unit [parameter2] ccm-management transmit": {
+        "template": "set interfaces [parameter1] unit [parameter2] ccm-management transmit",
+        "command": "set interfaces ge-0/0/1 unit 1 ccm-management transmit",
+        "explanation": "启用CCM管理传输。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            }
+        ]
+    },
     "set interfaces [parameter1] unit [parameter2] remote-mep index [parameter3] role [parameter4]": {
         "template": "set interfaces [parameter1] unit [parameter2] remote-mep index [parameter3] role [parameter4]",
         "command": "set interfaces ge-0/0/1 unit 1 remote-mep index 3 role peer",
@@ -5205,6 +5835,23 @@
                 "name": "role",
                 "type": "string",
                 "explanation": "远程MEP的角色，例如peer。"
+            }
+        ]
+    },
+    "set interfaces [parameter1] unit [parameter2] ccm-management receive": {
+        "template": "set interfaces [parameter1] unit [parameter2] ccm-management receive",
+        "command": "set interfaces ge-0/0/1 unit 1 ccm-management receive",
+        "explanation": "启用CCM管理接收。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
             }
         ]
     },
@@ -5519,6 +6166,23 @@
             }
         ]
     },
+    "set protocols bgp group [parameter1] network [parameter2]": {
+        "template": "set protocols bgp group [parameter1] network [parameter2]",
+        "command": "set protocols bgp group external network 33.33.33.33/32",
+        "explanation": "配置BGP组通告的网络。",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP组的名称。"
+            },
+            {
+                "name": "network",
+                "type": "string",
+                "explanation": "要通告的网络地址及掩码。"
+            }
+        ]
+    },
     "set chassis fpc [parameter1] pic [parameter2] t1-options timeslots [parameter3]": {
         "template": "set chassis fpc [parameter1] pic [parameter2] t1-options timeslots [parameter3]",
         "command": "set chassis fpc 1 pic 0 t1-options timeslots 1-15",
@@ -5560,6 +6224,18 @@
                 "name": "group",
                 "type": "integer",
                 "explanation": "MLPPP捆绑组的编号。"
+            }
+        ]
+    },
+    "set system hostname [parameter1]": {
+        "template": "set system hostname [parameter1]",
+        "command": "set system hostname CE1",
+        "explanation": "配置设备的主机名。",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "设备的主机名，用于标识网络中的设备。"
             }
         ]
     },

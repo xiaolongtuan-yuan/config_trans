@@ -1,5 +1,6 @@
 # 从json解析配置到目标供应商配置
 import os
+import types
 from collections import OrderedDict
 from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
@@ -45,7 +46,7 @@ class CommandNode:
         self._calculate_depth_levels(structural_features['depth'])
 
         # 语义特征
-        self._generate_semantic_embedding(semantic_features, embedding_model)
+        self._generate_semantic_embedding(structural_features, semantic_features, embedding_model)
 
         # 参数语义特征
         self._generate_para_semantic_embedding(semantic_features, embedding_model)
@@ -63,6 +64,15 @@ class CommandNode:
             'order': [p['type'] for p in params]
             # 'constraints': []
         }
+        '''
+        for p in params:
+            constraint = {}
+            if p.get('format'):
+                constraint['format'] = p['format']
+            if p.get('options'):
+                constraint['predefined'] = p['options']
+            param_spec['constraints'].append(constraint)
+        '''
         self.structural_features['param_signature'] = param_spec
 
     def _calculate_depth_levels(self, depth):
@@ -71,13 +81,27 @@ class CommandNode:
         logical_depth = self._infer_logical_depth(template)"""
         self.structural_features['command_depth'] = depth
 
-    def _generate_semantic_embedding(self, semantic_features, embedding_model):
+    def _generate_semantic_embedding(self, structural_features, semantic_features, embedding_model):
         """生成语义嵌入向量"""
         # 使用预训练模型获取基础语义(配置模板，命令，解释)
-        base_embedding = self._get_base_embedding(embedding_model,
+        '''结构特征T_{s} ，包括了配置命令层级，参数数量，父视图配置命令
+           功能特征T_{f}，包括配置命令的模板，命令示例以及解释
+           参数合集特征T_{P}，汇总了所有配置参数的名称、类型与解释'''
+        structural_text = str(structural_features['depth']) + \
+                          str(len(structural_features['params'])) + \
+                          structural_features['parent_command']
+
+        function_text = semantic_features['template'] + \
+                        semantic_features['command'] + \
+                        semantic_features['explanation']
+
+        '''base_embedding = self._get_base_embedding(embedding_model,
                                                   semantic_features['template']
                                                   + semantic_features['command']
-                                                  + semantic_features['explanation'])
+                                                  + semantic_features['explanation'])'''
+
+        structural_embedding = self._get_base_embedding(embedding_model, structural_text)
+        function_embedding = self._get_base_embedding(embedding_model, function_text)
 
         # 参数增强语义(所有参数的名字与解释)
         param_text = ' '.join([p['name'] + p['explanation'] for p in semantic_features['parameters']])
@@ -85,26 +109,28 @@ class CommandNode:
 
         # 融合特征
         self.semantic_features = self._fuse_embeddings(
-            base_embedding, param_embedding
+            structural_embedding, function_embedding, param_embedding
         )
 
     def _generate_para_semantic_embedding(self, semantic_features, embedding_model):
         # 参数语义(单个参数的名字+完整配置命令解释)
         for p in semantic_features['parameters']:
-            para_text = p['name'] + p['explanation'] + semantic_features['explanation']
+            para_text = p['name'] + p['explanation'] + semantic_features[
+                'template']  # + semantic_features['explanation']
             self.paras_semantic_features.append(self._get_param_embedding(embedding_model, para_text).tolist())
 
-    # 语义嵌入向量   
+    # 语义嵌入向量
     def _get_base_embedding(self, embedding_model, text):
         return torch.tensor(embedding_model.embed_query(text))
 
     def _get_param_embedding(self, embedding_model, text):
         return torch.tensor(embedding_model.embed_query(text))
 
-    def _fuse_embeddings(self, base, params):
+    def _fuse_embeddings(self, structure, function, param):
         # 使用注意力机制融合特征
-        attention_weights = torch.softmax(torch.cat([base, params]), dim=0)
-        return (base * attention_weights[0] + params * attention_weights[1]).tolist()
+        attention_weights = torch.softmax(torch.cat([structure, function, param]), dim=0)
+        return (structure * attention_weights[0] + function * attention_weights[1] + param * attention_weights[
+            2]).tolist()
 
 
 # 同阶段5--ConfigMatcher
@@ -129,17 +155,26 @@ class ConfigMatcher:
 
     def _semantic_ranking(self, command_node):
         """语义特征排序"""
-        semantic_embedding = np.array(command_node.semantic_features).reshape(1, -1)
-        similarities = []
+        semantic_embedding = torch.tensor(command_node['semantic_features'], dtype=torch.float32).unsqueeze(0).cuda()
+        target_embeddings = []
 
         for template, target_node in self.templates.items():
-            if 'semantic_features' not in target_node:
-                continue
-            target_embedding = np.array(target_node['semantic_features']).reshape(1, -1)
-            sim = cosine_similarity(semantic_embedding, target_embedding)
-            similarities.append((template, sim))
+            target_embedding = torch.tensor(target_node['semantic_features'], dtype=torch.float32).unsqueeze(0)
+            target_embeddings.append(target_embedding)
 
-        return sorted(similarities, key=lambda x: x[1], reverse=True)[:self.semantic_topk]
+        target_embeddings = torch.cat(target_embeddings, dim=0).cuda()
+
+        # 计算余弦相似度
+        norm_semantic = torch.norm(semantic_embedding, dim=1, keepdim=True)
+        norm_target = torch.norm(target_embeddings, dim=1, keepdim=True)
+        dot_product = torch.matmul(semantic_embedding, target_embeddings.T)
+        similarities = dot_product / (norm_semantic * norm_target.T)
+
+        similarities = similarities.squeeze(0).cpu().numpy()
+        template_list = list(self.templates.keys())
+        similarity_pairs = [(template, sim) for template, sim in zip(template_list, similarities)]
+
+        return sorted(similarity_pairs, key=lambda x: x[1], reverse=True)[:self.semantic_topk]
 
     def _get_parent_commands(self, ranked_candidates):
         # 按照配置视图层次，加入所有的父配置命令
@@ -357,7 +392,7 @@ class Config_Translater:
 
         if not istatistics:
             # 阶段二：模糊映射fuzzy_mapping-->针对规则映射库未覆盖的配置命令
-            config_match = self.fuzzy_mapping(rest_commands_feature, config_match, vendor, target_vendor)
+            config_match = self.fuzzy_mapping(rest_commands_feature, config_match, vendor, target_vendor,  tau=0.65)
 
             # 阶段四：配置命令编排，配置参数直接填充
             arranged_config = self.config_arranging(config_match, target_vendor)
@@ -417,9 +452,9 @@ class Config_Translater:
                 filtered_commands_feature.append(command)
                 matched_result = self.translation_llm.llm_command_mapping(command, vendor,
                                                                           target_vendor)  # matched_result = str
-                result_node = {"structural_features": {'depth': structural_feature['depth'],
-                                                      'params': [],
-                                                      'parent_command': 'system'}}
+                result_node = {"structural_features": {'command_depth': structural_feature['depth'],
+                                                      'param_signature': {},
+                                                      'context_topology': {'parent_command': 'system'}}}
 
                 self.config_matchers[target_vendor].templates[matched_result] = result_node
                 template = feature['semantic_feature']['template']
@@ -689,7 +724,7 @@ class Config_Translater:
 
     def match_and_extract(self, paras: list, para_num: int,
                           para_match: list, target_template: str) -> list:
-        result = [''] * para_num
+        result = ['none'] * para_num
         if isinstance(para_match, list) and para_num > 0:
             for item in para_match:
                 # 检查最后一项是否匹配目标模板
@@ -710,7 +745,10 @@ class Config_Translater:
         # print(src_cmd, src_template)
         # 将源模板转换为正则表达式
         # 例如 "hostname [parameter1]" -> r"hostname (\S+)"
-        src_regex = re.sub(r"\[parameter\d*\]", r"(\\S+)", src_template)
+        if bool(re.search(r"\[parameter\d*\]", src_template)):
+            src_regex = re.sub(r"\[parameter\d*\]", r"(\\S+)", src_template)
+        else:
+            src_regex = re.escape(src_template)
         # 匹配源命令并提取参数
         match = re.match(src_regex, src_cmd)
         if not match:
@@ -721,6 +759,8 @@ class Config_Translater:
 
     def para_fill(self, params: list, dest_template: str) -> str:
         # 填充到目标模板
+        if isinstance(params, types.GenericAlias):
+            return dest_template
         for index, param in enumerate(params):
             # dest_template = dest_template.replace(f"[parameter{index + 1}]", '{' + param + '}')
             dest_template = dest_template.replace(f"[parameter{index + 1}]", param)

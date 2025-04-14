@@ -245,7 +245,7 @@ def debug():
             print(f"finished {vendor} with {num} scales")
 
 if __name__ == "__main__":
-    run_type = 'debug'
+    run_type = 'main'
 
     if run_type == 'main':
         main()
