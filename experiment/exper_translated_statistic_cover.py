@@ -19,7 +19,7 @@ def load_json_file(file_path):
         return json.load(f)
 
 
-def batch_translate(config_translater, input_dir, output_dir, source_vendor, target_vendor, batch_size=100):
+def batch_translate(config_translater, input_dir, output_dir, source_vendor, target_vendor, batch_size=None):
     config_files = [f for f in os.listdir(input_dir) if f.endswith('.json')]
     os.makedirs(os.path.join(output_dir, target_vendor), exist_ok=True)
 
@@ -29,37 +29,35 @@ def batch_translate(config_translater, input_dir, output_dir, source_vendor, tar
         "rule_ccount": 0,
         "llm_ccount": 0,
     }
+    map_rule_freq = {}
+    if batch_size is None:
+        batch_size = len(config_files)
     with ThreadPoolExecutor(max_workers=1) as executor:  # 多线程好像有点问题，暂时不使用
         futures = []
         for file_index in range(batch_size):
             config_file = config_files.pop(0)
             futures.append(executor.submit(translate_single_file,
-                                           config_translater, input_dir, statistic_res,
+                                           config_translater, input_dir, statistic_res, map_rule_freq,
                                            source_vendor, target_vendor, config_file))
         with tqdm(total=batch_size, desc="Successed files") as pbar:
             i = 0
             while i < len(futures):
                 future = futures[i]
-                # try:
                 if future.result():
                     successed_files += 1
                     pbar.update(1)
-                # except Exception as e:
-                #     print(f"\nError: {str(e)}")
-                #     if config_files:
-                #         config_file = config_files.pop(0)
-                #         futures.append(executor.submit(translate_single_file,
-                #                                        config_translater, input_dir, statistic_res,
-                #                                        source_vendor, target_vendor, config_file))
                 i += 1
 
         print(f"Translated {successed_files} configs")
     print(statistic_res)
-    return statistic_res
+    total_usage = sum(map_rule_freq.values())
+    map_rule_freq = {k: round(v / total_usage, 4) for k, v in
+                     sorted(map_rule_freq.items(), key=lambda item: item[1], reverse=True)}
+    return statistic_res, map_rule_freq
 
 
 
-def translate_single_file(config_translater, input_dir, statistic_res,
+def translate_single_file(config_translater, input_dir, statistic_res, map_rule_freq,
                           source_vendor, target_vendor, config_file):
     # 加载配置
     config_path = os.path.join(input_dir, config_file)
@@ -68,11 +66,16 @@ def translate_single_file(config_translater, input_dir, statistic_res,
         json_config = process_juniper_json(json_config)
     file_name = os.path.splitext(config_file)[0]
 
-    statistic_data, _ = config_translater.translation_without_llm(json_config, source_vendor, target_vendor,
+    statistic_data, map_rule_data = config_translater.translation_without_llm(json_config, source_vendor, target_vendor,
                                                                  istatistics=True)
     statistic_res['command_count'] += statistic_data['command_count']
     statistic_res['rule_ccount'] += statistic_data['rule_ccount']
     statistic_res['llm_ccount'] += statistic_data['llm_ccount']
+    for rule, use_count in map_rule_data.items():
+        if rule in map_rule_freq:
+            map_rule_freq[rule] += use_count
+        else:
+            map_rule_freq[rule] = use_count
 
     return True
 
@@ -128,10 +131,12 @@ def main():
                 config_translater = Config_Translater(mapping_libraries, config_matchers,
                                                       translation_llm, embedding_model)
                 # 执行批量翻译
-                cover_data = batch_translate(config_translater, source_config_dir, output_save_dir,
+                cover_data, map_rule_freq = batch_translate(config_translater, source_config_dir, output_save_dir,
                                 source_vendor=source_vendor,
                                 target_vendor=target_vendor,
                                 batch_size=500)
+                with open(f'./exper_res/{source_vendor}_{target_vendor}_map_rule_freq.json', 'w', encoding='utf-8') as f:
+                    json.dump(map_rule_freq, f, ensure_ascii=False, indent=4)
                 statistic_res['command_count'] += cover_data['command_count']
                 statistic_res['rule_ccount'] += cover_data['rule_ccount']
                 statistic_res['llm_ccount'] += cover_data['llm_ccount']
@@ -139,8 +144,9 @@ def main():
         statistic_res['llm_cover_rate'] = statistic_res['llm_ccount'] / statistic_res['command_count']
         scales_covers_res[scale] = statistic_res
         print(statistic_res)
-    # with open('./exper_res/cover_statistic.json', 'w', encoding='utf-8') as f:
-    #     json.dump(scales_covers_res, f, ensure_ascii=False, indent=4)
+    with open('./exper_res/cover_statistic.json', 'w', encoding='utf-8') as f:
+        json.dump(scales_covers_res, f, ensure_ascii=False, indent=4)
+
 
 
 if __name__ == "__main__":

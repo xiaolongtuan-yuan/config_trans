@@ -219,6 +219,24 @@ def main():
 
             # save_path = str(project_root / 'dataset_multi_vendor_config/config_command_node_debug/{}.json'.format(vendor))
             # save_json_file(Command_nodes, save_path)
+def juniper_pre_400():
+    project_root = Path(__file__).parent.parent
+    local_EMmodel_path = str(project_root / 'EmbeddingModel/MiniLM-L6-v2')
+    embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
+    Command_nodes = {}
+    config_model_path = str(
+        project_root / f'dataset_multi_vendor_config/config_model/different_scale/juniper_pre_400.json')
+
+    config_model = load_json_file(config_model_path)
+    # 解析配置节点
+    Command_nodes = parse_command_node(Command_nodes, config_model, embedding_model)
+    # 保存配置节点（json）
+    save_path = str(
+        project_root / f'dataset_multi_vendor_config/config_command_node/different_scale/juniper_pre_400.json')
+    save_json_file(Command_nodes, save_path)
+    print(f"finished juniper_pre_400")
+
+
 
 def debug():
     project_root = Path(__file__).parent.parent
@@ -248,7 +266,8 @@ if __name__ == "__main__":
     run_type = 'main'
 
     if run_type == 'main':
-        main()
+        # main()
+        juniper_pre_400()
     if run_type == 'debug':
         debug()
 

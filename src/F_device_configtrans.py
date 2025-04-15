@@ -141,7 +141,7 @@ class ConfigMatcher:
         """执行多级匹配流程"""
         # 第一阶段：基础语义匹配--功能匹配（计算对比所有配置节点语义嵌入排序）
         ranked_candidates = self._semantic_ranking(command_node)
-        match_score = sum([sim[1][0][0] for sim in ranked_candidates]) / len(ranked_candidates)
+        match_score = sum([sim[1] for sim in ranked_candidates]) / len(ranked_candidates)
 
         # 第二阶段：参数语义匹配--组织/结构特征（计算对比候选集中所有参数嵌入）
         para_match = self._param_semantic_match(command_node, ranked_candidates)
@@ -153,10 +153,12 @@ class ConfigMatcher:
 
     def _semantic_ranking(self, command_node):
         """语义特征排序"""
-        semantic_embedding = torch.tensor(command_node['semantic_features'], dtype=torch.float32).unsqueeze(0).cuda()
+        semantic_embedding = torch.tensor(command_node.semantic_features, dtype=torch.float32).unsqueeze(0).cuda()
         target_embeddings = []
 
         for template, target_node in self.templates.items():
+            if not 'semantic_features' in target_node:
+                continue
             target_embedding = torch.tensor(target_node['semantic_features'], dtype=torch.float32).unsqueeze(0)
             target_embeddings.append(target_embedding)
 
@@ -403,16 +405,23 @@ class Config_Translater:
             trans_res, trans_mapping_info = self.print_and_save_translation_config(target_config)
 
             return trans_res, trans_mapping_info
-
         else:
             statistic_data = {
                 "command_count": len(commands_feature),
                 "rule_ccount": len(config_match),
-                "llm_ccount": 0,
+                "llm_ccount": 0
             }
+            map_rule_freq = {}
+            for command, match in config_match.items():
+                map_rule = str((match['template'], match['match']))
+
+                if map_rule not in map_rule_freq.keys():
+                    map_rule_freq[map_rule] = 1
+                else:
+                    map_rule_freq[map_rule] += 1
             _, filtered_commands_feature = self.fuzzy_mapping_for_statistic(rest_commands_feature, config_match, vendor, target_vendor)
             statistic_data['llm_ccount'] = len(filtered_commands_feature)
-            return statistic_data, {}
+            return statistic_data, map_rule_freq
 
 
     # 阶段一借助模板映射库实现规则映射
@@ -1022,7 +1031,10 @@ def mapping_library_load(file_path, vendors):
 def config_matchers_load(file_path, vendors, semantic_topk=3):
     config_matchers = {}
     for vendor in vendors:
-        command_templates = load_json_file(file_path.format(vendor))
+        if vendor == 'Juniper':
+            command_templates = load_json_file(str(project_root / 'dataset_multi_vendor_config/config_command_node/different_scale/juniper_pre_400.json'))
+        else:
+            command_templates = load_json_file(file_path.format(vendor))
         config_matchers[vendor] = ConfigMatcher(command_templates, semantic_topk=semantic_topk)
     return config_matchers
 

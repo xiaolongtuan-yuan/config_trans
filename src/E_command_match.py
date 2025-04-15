@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import torch
@@ -161,6 +162,44 @@ def _build_mapping_template_library(vendors, template_path, save_path):
                                                                                                  save_path.format(vendor,
                                                                                                                   target_vendor, scale)))
 
+def _build_juniper_400_mapping_library(vendors, template_path, save_path):
+    scales = [2000]
+    for scale in scales:
+        command_templates = {}  # 模板库
+        configuration_matchers = {}  # 匹配器
+
+        for vendor in vendors:
+            if vendor == 'Juniper':
+                vendor_templates_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/different_scale/juniper_pre_400.json')
+            else:
+                vendor_templates_path = template_path.format(vendor, scale)
+            # 加载模板库
+            command_templates[vendor] = load_json_file(vendor_templates_path)
+            # 加载配置匹配器
+            configuration_matchers[vendor] = ConfigMatcher(command_templates[vendor])
+
+        for vendor in vendors:
+            for target_vendor in vendors:
+                if vendor == target_vendor:
+                    continue
+                if (not vendor == 'Juniper') and (not target_vendor == 'Juniper'):
+                    continue
+                command_mapping = {}
+                # 映射每一条配置命令到目标供应商配置命令
+                description = "Match process from {} to {}".format(vendor, target_vendor)
+                for template, command_node in tqdm(command_templates[vendor].items(), desc=description):
+                    # print(template)
+                    matched_configuration = configuration_matchers[target_vendor].find_best_match(command_node)
+                    command_mapping[template] = matched_configuration
+                save_json_file(command_mapping, save_path.format(vendor, target_vendor, scale))
+                print('Mapping template libraries {}->{} scale {} have been built and saved in {}'.format(vendor,
+                                                                                                          target_vendor,
+                                                                                                          scale,
+                                                                                                          save_path.format(
+                                                                                                              vendor,
+                                                                                                              target_vendor,
+                                                                                                              scale)))
+
 
 # load JSON fie and load data
 def load_json_file(file_path):
@@ -183,8 +222,9 @@ if __name__ == "__main__":
     project_root = Path(__file__).parent.parent
 
     templates_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/different_scale/{}_{}.json')
-    save_path = str(project_root / 'dataset_multi_vendor_config/mapping_template_library/different_scale/{}_{}_{}.json')
-    _build_mapping_template_library(vendors, templates_path, save_path)
+    save_path = str(project_root / 'dataset_multi_vendor_config/mapping_template_library/pre_400/{}_{}_{}.json')
+    os.makedirs(save_path, exist_ok=True)
+    _build_juniper_400_mapping_library(vendors, templates_path, save_path)
 
     '''
     command_templates = {}      # 模板库
