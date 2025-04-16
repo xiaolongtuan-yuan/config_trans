@@ -4,6 +4,7 @@
 @Auth ： xiaolongtuan
 @File ：tree_match.py
 """
+import ast
 import os
 import json
 import re
@@ -104,6 +105,27 @@ def cul_grammatical_accuracy(translated_dir, real_dir, config_files, config_mode
         total_match_account += match_account
     average_match_ratio = total_match_score / total_match_account if total_match_account > 0 else 0
     return average_match_ratio
+
+def grammatical_match(device_name, match_rule, real_dir, config_model:{}):
+    file_expected = os.path.join(real_dir, f"{device_name}.txt")
+    expected_templates, expected_extra_command = parse_config_file(file_expected, config_model)
+    error_mapping_rules = defaultdict(set)
+    error_mapping_rules_count = defaultdict(int)
+    for map_rule_str in match_rule.keys():
+        match_rule = ast.literal_eval(map_rule_str)
+        target_template_matchs = match_rule[1]
+        if isinstance(target_template_matchs, list):
+            for target_match in target_template_matchs:
+                if target_match[2] not in expected_templates:
+                    error_mapping_rules[match_rule[0]].add(target_match[2])
+                    error_mapping_rules_count[match_rule[0]] += 1
+        else:
+            if target_template_matchs not in expected_templates+expected_extra_command:
+                error_mapping_rules[match_rule[0]].add(target_template_matchs)
+                error_mapping_rules_count[match_rule[0]] += 1
+    return error_mapping_rules, error_mapping_rules_count
+
+
 
 def calculate_param_match_ratio(result_templates:{}, expected_templates:{}, result_extra_commands:[], expected_extra_commands:[]):
     """计算翻译的模板序列的匹配度"""

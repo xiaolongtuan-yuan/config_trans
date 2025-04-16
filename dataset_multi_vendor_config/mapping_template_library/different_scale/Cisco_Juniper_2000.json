@@ -11,10 +11,10 @@
         [
             0,
             0,
-            "delete interfaces [parameter1] disable"
+            "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]"
         ]
     ],
-    "no shutdown": "delete interfaces [parameter1] disable",
+    "no shutdown": "",
     "ip address [parameter1] [parameter2]": [
         [
             0,
@@ -42,7 +42,13 @@
             "set protocols igmp static-group [parameter1]"
         ]
     ],
-    "mpls ip": "set protocols mpls traffic-engineering",
+    "mpls ip": [
+        [
+            -1,
+            0,
+            "set protocols mpls interface [parameter1]"
+        ]
+    ],
     "mpls ldp autoconfig": "set protocols mpls ldp",
     "ethernet segment identifier [parameter1]": [
         [
@@ -2523,24 +2529,24 @@
         [
             0,
             0,
-            "set protocols ospf router-id [parameter1]"
+            "set protocols ospf area [parameter1] interface [parameter2]"
         ]
     ],
     "network [parameter1] [parameter2] area [parameter3]": [
         [
             0,
-            1,
-            "set protocols ospf area [parameter1] network [parameter2]/[parameter3]"
+            -1,
+            "set protocols ospf area [parameter1] interface [parameter2]"
         ],
         [
             1,
-            2,
-            "set protocols ospf area [parameter1] network [parameter2]/[parameter3]"
+            -1,
+            "set protocols ospf area [parameter1] interface [parameter2]"
         ],
         [
             2,
             0,
-            "set protocols ospf area [parameter1] network [parameter2]/[parameter3]"
+            "set protocols ospf area [parameter1] interface [parameter2]"
         ]
     ],
     "router-id [parameter1]": [
@@ -3051,7 +3057,7 @@
         [
             0,
             1,
-            "set protocols bgp group [parameter1] neighbor [parameter2]"
+            "set protocols bgp group [parameter1] family inet [parameter2]"
         ]
     ],
     "exit-address-family": "set routing-options dynamic-tunnels segment-routing mpls",

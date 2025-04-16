@@ -266,8 +266,8 @@ if __name__ == "__main__":
     run_type = 'main'
 
     if run_type == 'main':
-        # main()
-        juniper_pre_400()
+        main()
+        # juniper_pre_400()
     if run_type == 'debug':
         debug()
 

@@ -413,7 +413,7 @@ class Config_Translater:
             }
             map_rule_freq = {}
             for command, match in config_match.items():
-                map_rule = str((match['template'], match['match']))
+                map_rule = str([match['template'], match['match']])
 
                 if map_rule not in map_rule_freq.keys():
                     map_rule_freq[map_rule] = 1
