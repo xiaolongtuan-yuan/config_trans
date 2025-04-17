@@ -51,11 +51,11 @@
             "ip address unnumbered interface [parameter1]"
         ]
     ],
-    "encapsulation dot1q [parameter1]": [
+    "encapsulation [parameter1] [parameter2]": [
         [
             0,
             0,
-            "encapsulation dot1q vid [parameter1]"
+            "vlan-type [parameter1] [parameter2]"
         ]
     ],
     "bridge-domain [parameter1]": [
@@ -396,13 +396,6 @@
         ]
     ],
     "mpls ldp": "mpls ldp",
-    "encapsulation dot1Q [parameter1]": [
-        [
-            0,
-            0,
-            "encapsulation dot1q vid [parameter1]"
-        ]
-    ],
     "standby [parameter1] preempt delay minimum [parameter2]": [
         [
             0,
@@ -473,14 +466,9 @@
     ],
     "channel-group [parameter1] mode [parameter2]": [
         [
+            1,
             0,
-            1,
-            "ve-group [parameter1] [parameter2]"
-        ],
-        [
-            1,
-            1,
-            "ve-group [parameter1] [parameter2]"
+            "mode [parameter1]"
         ]
     ],
     "clock synchronization enable": "clock synchronization enable",
@@ -889,7 +877,9 @@
             "l2-multicast static-group group-address [parameter1] vsi [parameter2]"
         ]
     ],
-    "router isis": "ipv6",
+    "router isis": [
+      [-1, 0, "isis enable [parameter1]"]
+    ],
     "mpls traffic-eng level-2": "mpls te",
     "mpls ldp router-id [parameter1] force": [
         [
@@ -987,8 +977,8 @@
     "mpls label protocol [parameter1]": [
         [
             0,
-            0,
-            "mpls ldp"
+            -1,
+            "mpls"
         ]
     ],
     "ipv6 router isis": "ipv6 enable",
@@ -1309,19 +1299,7 @@
         ]
     ],
     "spanning-tree guard root": "stp root-protection",
-    "exit": "Return",
-    "encapsulation [parameter1] [parameter2]": [
-        [
-            0,
-            1,
-            "vlan batch [parameter1] to [parameter2]"
-        ],
-        [
-            1,
-            0,
-            "dot1q vid [parameter1]"
-        ]
-    ],
+    "exit": "return",
     "mls qos trust [parameter1]": [
         [
             0,
@@ -2529,18 +2507,18 @@
     "network [parameter1] [parameter2] area [parameter3]": [
         [
             0,
-            1,
-            "interface [parameter1] ip address [parameter2] [parameter3]"
+            0,
+            "network [parameter1] [parameter2]"
         ],
         [
             1,
             1,
-            "route add [parameter1] mask [parameter2] [parameter3]"
+            "network [parameter1] [parameter2]"
         ],
         [
             2,
             0,
-            "route add [parameter1] mask [parameter2] [parameter3]"
+            "area [parameter1]"
         ]
     ],
     "router-id [parameter1]": [
@@ -3067,13 +3045,7 @@
             "peer [parameter1] connect-interface [parameter2]"
         ]
     ],
-    "address-family [parameter1]": [
-        [
-            0,
-            0,
-            "ipv4-family [parameter1]"
-        ]
-    ],
+    "address-family [parameter1]": "[parameter1] unicast",
     "neighbor [parameter1] send-community extended": [
         [
             0,
@@ -3105,13 +3077,13 @@
     "network [parameter1] mask [parameter2]": [
         [
             0,
-            1,
+            0,
             "network [parameter1] [parameter2]"
         ],
         [
             1,
-            2,
-            "peer [parameter1] listen-net [parameter2] [parameter3]"
+            1,
+            "network [parameter1] [parameter2]"
         ]
     ],
     "neighbor [parameter1] send-community [parameter2]": [
@@ -4276,7 +4248,7 @@
             "locator [parameter1] ipv6-prefix [parameter2] [parameter3] static [parameter4]"
         ]
     ],
-    "end": "Return",
+    "end": "return",
     "ipv6 multicast-routing": "multicast ipv6 routing-enable",
     "ipv6 pim rp-address [parameter1]": [
         [
@@ -13127,7 +13099,7 @@
             "interface [parameter1] [parameter2]"
         ]
     ],
-    "End": "Return",
+    "End": "return",
     "bfd ipv6 session [parameter1]": [
         [
             0,
