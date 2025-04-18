@@ -15,6 +15,7 @@ import json
 import shutil
 from pathlib import Path
 
+
 def process_juniper_json(json_config):
     processed_json = {}
     for k, v in json_config.items():
@@ -25,15 +26,19 @@ def process_juniper_json(json_config):
                 processed_json[command] = info
     return processed_json
 
+
 def juniper_config_filter(config):
     config = process_juniper_json(config)
     with open('../dataset_multi_vendor_config/config_model/Juniper_error_command.json', 'r') as f:
         juniper_error_commands = json.load(f)
+    if len(config) < 3:  # 命令太少了，可能是错误的配置
+        return False
     for command in config.keys():
         if command in juniper_error_commands:
             return False
 
     return True
+
 
 def validate_json_files(device_name):
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
@@ -63,6 +68,7 @@ def validate_json_files(device_name):
 
     return True
 
+
 def delete_outdate_files(file_dir):
     os.makedirs(file_dir, exist_ok=True)
     # 清空目录下的所有文件
@@ -73,6 +79,7 @@ def delete_outdate_files(file_dir):
                 os.unlink(file_path)
         except Exception as e:
             print(f"Error deleting {file_path}: {e}")
+
 
 def main():
     # 创建输出目录

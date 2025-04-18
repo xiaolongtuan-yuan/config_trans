@@ -199,7 +199,7 @@ def main():
     # embedding_model = SentenceTransformer(local_EMmodel_path)
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
 
-    vendors = ["Juniper"]
+    vendors = ["Juniper", "Cisco", "HUAWEI"]
     config_num = [100, 500, 1000, 2000]
 
     # vendors = ["HUAWEI"]

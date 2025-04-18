@@ -35,17 +35,20 @@ def batch_translate(config_translater, input_dir, output_dir, source_vendor, tar
             i = 0
             while i < len(futures):
                 future = futures[i]
-                try:
-                    if future.result():
-                        successed_files += 1
-                        pbar.update(1)
-                except Exception as e:
-                    print(f"\nError: {str(e)}")
-                    if config_files:
-                        config_file = config_files.pop(0)
-                        futures.append(executor.submit(translate_single_file,
-                                                       config_translater, input_dir, output_dir,
-                                                       source_vendor, target_vendor, config_file))
+                # try:
+                #     if future.result():
+                #         successed_files += 1
+                #         pbar.update(1)
+                # except Exception as e:
+                #     print(f"\nError: {str(e)}")
+                #     if config_files:
+                #         config_file = config_files.pop(0)
+                #         futures.append(executor.submit(translate_single_file,
+                #                                        config_translater, input_dir, output_dir,
+                #                                        source_vendor, target_vendor, config_file))
+                if future.result():
+                    successed_files += 1
+                    pbar.update(1)
                 i += 1
 
         print(f"Translated {successed_files} configs")

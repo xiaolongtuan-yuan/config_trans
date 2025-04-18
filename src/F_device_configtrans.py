@@ -515,9 +515,16 @@ class Config_Translater:
             if isinstance(item_v['match'], list):
                 for para_match in item_v['match']:  # 遍历每一个参数映射信息
                     # 查找翻译命令的视图层级
-                    translated_command = para_match[-1]  # 翻译的配置命令
+                    if isinstance(para_match, list):
+                        translated_command = para_match[-1]  # 翻译的配置命令
+                    else:
+                        translated_command = para_match
                     # 配置命令节点
-                    command_node = self.config_matchers[target_vendor].templates[translated_command]  # 至少这这前面的不能随便改
+                    try:
+                        command_node = self.config_matchers[target_vendor].templates[translated_command]  # 至少这这前面的不能随便改
+                    except KeyError:
+                        print(f"KeyError: {translated_command}")
+                        continue
                     # 命令视图层级
                     depth = command_node['structural_features']['command_depth'] if target_vendor != 'Juniper' else 0
                     # 参数数量
@@ -528,7 +535,12 @@ class Config_Translater:
                         # 参数填充占位符
                         para_placeholders = [0] if para_num == 0 else [
                                                                           0] * para_num  # 为什么每一个参数映射信息都要有一个站位符呢？而且站位符的长度是目标命令的参数数量？
-                        para_placeholders[para_match[1]] = 1  # ==1表示目标命令的该位置被映射到了
+                        if isinstance(para_match, list):
+                            if not -1 in para_match:
+                                try:
+                                    para_placeholders[para_match[1]] = 1  # ==1表示目标命令的该位置被映射到了
+                                except IndexError:
+                                    print(f"IndexError: para_placeholders index out of range: {para_match}")
                         arranged_command[item_k][depth] = {translated_command:
                                                                {'para_num': para_num,
                                                                 'para_placeholders': para_placeholders,
@@ -542,7 +554,12 @@ class Config_Translater:
                     elif translated_command not in arranged_command[item_k][depth].keys():
                         # 参数填充占位符
                         para_placeholders = [0] * para_num
-                        para_placeholders[para_match[1]] = 1
+                        if isinstance(para_match, list):
+                            if not -1 in para_match:
+                                try:
+                                    para_placeholders[para_match[1]] = 1
+                                except IndexError:
+                                    print(f"IndexError: para_placeholders index out of range: {para_match}")
                         arranged_command[item_k][depth].update({translated_command:
                                                                     {'para_num': para_num,
                                                                      'para_placeholders': para_placeholders,
@@ -556,13 +573,25 @@ class Config_Translater:
                                                                 })
                     # 如果该层级包含这一配置命令
                     else:
-                        arranged_command[item_k][depth][translated_command]['para_placeholders'][para_match[1]] = 1
+                        if isinstance(para_match, list):
+                            if not -1 in para_match:
+                                try:
+                                    arranged_command[item_k][depth][translated_command]['para_placeholders'][
+                                        para_match[1]] = 1
+                                except IndexError:
+                                    print(f"IndexError: para_placeholders index out of range: {para_match}")
             # 不是list，没有参数
             else:
                 # 查找翻译命令的视图层级
                 translated_command = item_v['match']  # 纠正错误
+                if not translated_command: # 空字符
+                    continue
                 # 配置命令节点
-                command_node = self.config_matchers[target_vendor].templates[translated_command]
+                try:
+                    command_node = self.config_matchers[target_vendor].templates[translated_command]  # 至少这这前面的不能随便改
+                except KeyError:
+                    print(f"KeyError: {translated_command}")
+                    continue
                 # 命令视图层级
                 depth = command_node['structural_features']['command_depth'] if target_vendor != 'Juniper' else 0
                 # 参数数量
@@ -734,10 +763,16 @@ class Config_Translater:
         result = ['none'] * para_num
         if isinstance(para_match, list) and para_num > 0:
             for item in para_match:
+                if isinstance(item, str):
+                    continue
                 # 检查最后一项是否匹配目标模板
-                if item[-1] == target_template:
+                if item[-1] == target_template and (not -1 in item):
                     # paras的第item[0]个参数是result的item[1]个参数
-                    result[item[1]] = paras[item[0]]
+                    try:
+                        result[item[1]] = paras[item[0]]
+                    except Exception as e:
+                        continue
+
         return result
 
     """
@@ -759,7 +794,8 @@ class Config_Translater:
         # 匹配源命令并提取参数
         match = re.match(src_regex, src_cmd)
         if not match:
-            raise ValueError(f"源命令 '{src_cmd}' 不匹配模板 '{src_template}'")
+            # raise ValueError(f"源命令 '{src_cmd}' 不匹配模板 '{src_template}'")
+            return []
         # 提取参数
         parameters = match.groups()
         return parameters
@@ -1031,10 +1067,7 @@ def mapping_library_load(file_path, vendors):
 def config_matchers_load(file_path, vendors, semantic_topk=3):
     config_matchers = {}
     for vendor in vendors:
-        if vendor == 'Juniper':
-            command_templates = load_json_file(str(project_root / 'dataset_multi_vendor_config/config_command_node/different_scale/juniper_pre_400.json'))
-        else:
-            command_templates = load_json_file(file_path.format(vendor))
+        command_templates = load_json_file(file_path.format(vendor))
         config_matchers[vendor] = ConfigMatcher(command_templates, semantic_topk=semantic_topk)
     return config_matchers
 
