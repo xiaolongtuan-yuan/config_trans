@@ -1,0 +1,23 @@
+sysname name routerB
+ip route-static none acl-2001 none preference none
+acl ipv6 number none rule none permit ipv6 source 32 destination none
+ip extcommunity-filter none index none permit rt accept
+ip extcommunity-filter none index none permit rt discard
+ip dhcp snooping rate-limit unicast threshold 100g burst port-mirror
+mirror instance mirror-instance location
+traffic behavior none nat64 bind instance mirror-instance
+nat instance acl-2001 id none simple-configuration
+bgp 1 instance capture-instance
+bgp none instance capture-instance
+ip as-path-filter none permit acl-2001
+nat instance capture-instance id none simple-configuration
+bgp ge-1/0/3 instance none
+interface ge-1/0/1
+arp static none none vid none interface 0
+ ip address 7.1.1.2 24
+ ip address 8.1.1.2 24
+ccc none interface 0 out-interface none
+static-lsp egress none incoming-interface none in-label acl-2001
+interface ge-1/0/2
+interface none 0
+l2tpv3 local connection dot1q interface none out-interface ge-1/0/3

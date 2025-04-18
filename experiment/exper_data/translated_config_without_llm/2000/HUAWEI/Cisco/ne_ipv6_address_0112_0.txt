@@ -1,0 +1,38 @@
+hostname Device
+aaa group server radius rd1
+ address ipv4 10.6.55.55 auth-port none acct-port none
+ server-private none auth-port 1550 acct-port none
+radius server 0
+ key %^%#vS%796FO7%C~pB%CR=q;j}gSCqR-X6+P!.DYI@)%^%#
+interface Virtual-Template1
+ ppp authentication pap
+ isis authentication mode radius
+ipv6 local pool none pre1
+ipv6 dhcp pool [parameter1]
+ address prefix 2001:DB8::/64
+ address prefix pre1
+ address prefix pre2
+ipv6 prefix-list pre2 seq none none none
+ instance nat64 id [parameter1]
+  prefix 63 none
+ip local pool pool1 none none
+ipv6 local pool pool2 none
+ip name-server 2001:DB8::2:2
+ipv6 dhcp client duid 006735f300188253a56a
+aaa new-model
+aaa authentication login none auth1
+aaa accounting exec acct1 none
+ptp mode radius
+ip domain-name isp1
+ipv6 dhcp pool pool1
+ipv6 dhcp pool pool2
+interface GigabitEthernet1/0/1.1
+ ipv6 enable
+ bas
+vlan 1
+interface GigabitEthernet1/0/2
+ pppoe-server bind Virtual-Template 5
+evpn
+ advertise-ip
+cfm
+ domain isp1

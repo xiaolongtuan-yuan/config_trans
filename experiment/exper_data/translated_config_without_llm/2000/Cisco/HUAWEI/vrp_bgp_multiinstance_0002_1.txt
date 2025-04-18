@@ -1,0 +1,20 @@
+sysname DeviceB
+ip vpn-instance vpn1
+evpn vpn-instance [parameter1] bd-mode
+ route-distinguisher 100:3
+import-route 100:1
+ evpn instance [parameter1]
+  route-target both 100:1
+interface GigabitEthernet0/1/0
+ undo shutdown
+ ip address 10.1.1.2 255.255.255.0
+interface GigabitEthernet2/0/0
+ ip address 10.1.2.2 255.255.255.0
+bgp 100
+ peer 10.1.1.1 as-number 200
+ peer 10.1.1.1 enable
+ipv4-family unicast
+ undo synchronization
+bgp 200
+ ipv4-family vpn-instance vpn1
+ peer 10.1.2.3 as-number 100

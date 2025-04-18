@@ -1,0 +1,24 @@
+hostname LSRB
+mpls ldp router-id 2.2.2.2 none
+mpls ip
+mpls traffic-eng
+mpls
+ mpls te p2mp-te
+mpls traffic-eng cspf
+router ospf 1
+ capability opaque
+ area 0.0.0.0
+network 3.1.1.0 0.0.0.255 area none
+network 3.2.1.0 0.0.0.255 area none
+network 2.1.1.0 0.0.0.255 area none
+network 2.2.2.2 0.0.0.0 area none
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 3.2.1.1 255.255.255.0
+interface GigabitEthernet2/0/0
+ ip address 3.1.1.1 255.255.255.0
+interface GigabitEthernet3/0/0
+ ip address 2.1.1.2 255.255.255.0
+interface LoopBack1
+ ip address 2.2.2.2 255.255.255.255
+end

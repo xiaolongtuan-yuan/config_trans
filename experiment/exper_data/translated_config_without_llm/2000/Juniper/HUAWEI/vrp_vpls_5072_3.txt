@@ -1,0 +1,29 @@
+sysname name PE4
+bgp 100 instance none
+l2protocol-tunnel none group-mac lo0.0
+ospf 0
+interface ge-1/0/2
+interface lo0.0
+interface ge-1/0/1
+arp static none none vid none interface 0
+ ip address 10.1.5.2 24
+ ip address 4.4.4.4 32
+interface none 0
+interface ge-1/0/3
+interface none 1
+interface lo0
+vlan 2
+flow-route vfi1 vpn-instance vpls
+ip route-static none none 4.4.4.1
+ip route-static none none ge-1/0/3.1
+ptp-adaptive atr unicast-negotiate enable
+bfd atob bind peer-ip default-ip interface ge-1/0/1
+bfd atob bind peer-ip default-ip interface ge-1/0/3.0
+ccc none interface 1 out-interface none
+mep mep-id 10 interface none none
+l2tpv3 local connection dot1q interface 1 out-interface none
+bridge none route 2
+dot1q vid 1,2
+arp vlink-direct-route advertise route-policy vfi1
+nat instance vfi1 id none simple-configuration
+ds-lite instance none id 2

@@ -1,0 +1,15 @@
+sysname PE2
+vlan 100
+vlan 200
+stp mode rapid-pvst
+interface GigabitEthernet1/0/1
+ undo shutdown
+ portswitch
+ port default vlan 200
+ ptp mode enable
+ port-master
+interface GigabitEthernet1/0/2
+ port trunk allow-pass vlan 100,200
+interface GigabitEthernet1/0/3
+ port default vlan 100
+return

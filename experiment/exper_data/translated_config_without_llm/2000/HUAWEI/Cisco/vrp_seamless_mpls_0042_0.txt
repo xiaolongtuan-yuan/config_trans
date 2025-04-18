@@ -1,0 +1,32 @@
+hostname CSG
+bfd
+mpls ldp router-id 1.1.1.1 none
+mpls ip
+mpls
+ mpls bfd enable
+mpls traffic-eng bfd-mode host
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+interface LoopBack0
+ ip address 1.1.1.1 255.255.255.255
+router bgp 100
+ neighbor 2.2.2.2 remote-as 100
+bgp [parameter1]
+ neighbor 2.2.2.2 update-source none
+ peer none connect-interface LoopBack0
+ vrf [parameter1]
+  address-family ipv4
+network 1.1.1.1 255.255.255.255 area none
+pseudowire-class [parameter1]
+ peer 2.2.2.2
+ address-family [parameter1] vpn-instance [parameter2]
+  redistribute none route-policy policy1
+router ospf 1
+ area 0.0.0.0
+network 1.1.1.1 0.0.0.0 area none
+network 10.1.1.0 0.0.0.255 area none
+route-policy policy1 permit node 1
+route-policy [parameter1]
+ apply mpls-label
+end

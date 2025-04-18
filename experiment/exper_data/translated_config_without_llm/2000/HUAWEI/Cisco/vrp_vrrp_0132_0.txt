@@ -1,0 +1,14 @@
+hostname DeviceA
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 192.168.1.1 255.255.255.0
+interface GigabitEthernet2/0/0
+ ip address 10.1.1.1 255.255.255.0
+ vrrp none ip 10.1.1.111
+ vrrp none priority 120
+ vrrp none ip 10.1.1.112
+router ospf 1
+ area 0.0.0.0
+network 192.168.1.0 0.0.0.255 area none
+network 10.1.1.0 0.0.0.255 area none
+end

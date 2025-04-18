@@ -1,0 +1,28 @@
+sysname name PE1
+mpls ldp remote-peer 1.1.1.9
+mpls
+mpls l2vpn
+mpls ldp
+mpls ldp remote-peer 3.3.3.9
+bfd atob bind peer-ip default-ip interface ge-0/0/0
+ospf 0
+interface lo0.0
+interface ge-0/0/1.0
+ipv6 route-static none none 0 none
+ipv6 address-policy :: 0 none none
+interface ge-0/0/0
+interface 0 ip address none none
+mac-address static none none 10
+interface ge-0/0/0.10
+ccc none interface 0 out-interface none
+interface none ip address none vlan-ccc
+interface ge-0/0/0.10 ip address none none
+bridge none route 101
+arp static none none vid none interface 0
+ ip address 10.1.1.1 24
+ ip address 1.1.1.9 32
+bfd none bind peer-ip 3.3.3.9 interface 101 source-ip none auto
+interface ge-0/0/1
+interface lo0
+ip route-static none none 0.0.0.0
+ipv6 route-static none 32 none

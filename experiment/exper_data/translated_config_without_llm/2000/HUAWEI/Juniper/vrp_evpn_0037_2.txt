@@ -1,0 +1,22 @@
+set system host-name ASBR2
+set protocols mpls
+set protocols mpls ldp
+set protocols mpls l2vpn martini
+set interfaces GigabitEthernet1/0/0 unit none family inet address none/none
+set interfaces none unit none family inet address 172.22.1.1/255.255.255.0
+set interfaces GigabitEthernet2/0/0 unit none family inet address none/none
+set interfaces none unit none family inet address 192.168.1.2/255.255.255.0
+set interfaces LoopBack1 unit none family inet address none/none
+set interfaces none unit none family inet address 3.3.3.9/255.255.255.255
+set protocols bgp 200 neighbor none remote-as none
+set protocols bgp none neighbor 192.168.1.1 remote-as 100
+set protocols bgp none neighbor 4.4.4.9 remote-as 200
+set protocols mpls traffic-engineering interface LoopBack1
+set protocols ptp synchronization enable
+set protocols bgp none neighbor 192.168.1.1 remote-as none
+set protocols bgp none neighbor 4.4.4.9 remote-as none
+set protocols ptp peer 4.4.4.9
+set protocols ptp peer 192.168.1.1
+set protocols ospf router-id 1
+set protocols ospf area 0.0.0.0 range none
+set protocols ospf area none interface none

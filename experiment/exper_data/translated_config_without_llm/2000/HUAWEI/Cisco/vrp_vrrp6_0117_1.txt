@@ -1,0 +1,21 @@
+hostname DeviceB
+bfd
+ospfv3 1
+router-id 2.2.2.2
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ vrrp none ip 1
+ vrrp none ipv6 FE80::1
+ vrrp none ipv6 2001:DB8::100
+ ospfv3 1 area 0.0.0.0
+interface GigabitEthernet2/0/0
+ipv6 bfd btoa bind peer-ipv6 2001:DB8::1 source-ipv6 none
+bfd none bind peer-ip none interface gigabitethernet
+discriminator local 2
+discriminator remote 1
+bfd all-interfaces
+ min-tx-interval 50
+ min-rx-interval 50
+commit
+end

@@ -1,0 +1,23 @@
+set system host-name ASBR2
+set protocols mpls interface none
+set interfaces GigabitEthernet1/0/0 unit none family inet address none/none
+set interfaces none unit none family inet address 172.22.1.1/255.255.255.0
+set protocols mpls ldp
+set interfaces GigabitEthernet2/0/0 unit none family inet address none/none
+set interfaces none unit none family inet address 192.168.1.2/255.255.255.0
+set interfaces Loopback1 unit none family inet address none/none
+set interfaces none unit none family inet address 3.3.3.9/255.255.255.255
+set protocols bgp local-as 200
+set protocols bgp group none neighbor 192.168.1.1
+set protocols bgp group none peer-as 100
+set protocols bgp group none neighbor 4.4.4.9
+set protocols bgp group none peer-as 200
+set protocols bgp group none local-address Loopback1
+set protocols isis level none address-family ipv4
+set protocols bgp group none neighbor 192.168.1.1 family inet unicast
+set protocols bgp group none neighbor 4.4.4.9 family inet unicast
+set protocols isis level none address-family l2vpn
+set protocols ldp targeted-neighbor 4.4.4.9
+set protocols ldp targeted-neighbor 192.168.1.1
+set protocols ospf area 1 interface none
+set protocols ospf area 0 interface none

@@ -1,0 +1,23 @@
+hostname PE1
+mpls ldp router-id 1.1.1.9 none
+mpls ip
+mpls l2vpn
+mpls ldp remote-peer 3.3.3.9
+bfd
+ remote-ip 3.3.3.9
+interface GigabitEthernet1/0/0
+ no ip address
+interface GigabitEthernet1/0/0.1
+ link-protocol cdp
+ mpls l2transport vc none 101
+vlan 10
+interface GigabitEthernet2/0/0
+ ip address 10.1.1.1 255.255.255.0
+interface LoopBack1
+ ip address 1.1.1.9 255.255.255.255
+router ospf 1
+ area 0.0.0.0
+network 1.1.1.9 0.0.0.0 area none
+network 10.1.1.0 0.0.0.255 area none
+end
+mpls l2vpn default martini

@@ -1,0 +1,25 @@
+set system host-name Device
+set system aaa radius-server-group rd1
+set radius-server host 10.6.55.55 secret none
+set access profile 0 radius-server none
+set access radius-server 10.6.55.55 accounting-port 0
+set system login radius-server none secret %^%#vS%796FO7%C~pB%CR=q;j}gSCqR-X6+P!.DYI@)%^%#
+set interfaces Virtual-Template1 unit none family inet address none/none
+set ppp authentication-chap pap
+set address-assignment pool none family inet6 prefix pre1
+set protocols isis interface none prefix-sid pre2
+set access address-assignment pool none family inet6 prefix 2001:DB8::/62 prefix-length 63
+set address-assignment pool pool1 family inet6 prefix none
+set address-assignment pool pool2 family inet6 prefix none
+set interfaces none unit none family inet6 dhcpv6 duid 006735f300188253a56a
+set aaa new-model
+set system aaa authentication-scheme auth1
+set system authentication-order radius input
+set accounting-options radius
+set interfaces GigabitEthernet1/0/1.1 unit none family inet address none/none
+set vlans none vlan-id 20
+commit
+set interfaces GigabitEthernet1/0/2 unit none family inet address none/none
+set interfaces vt-5 unit 0 family inet negotiate-address
+set protocols bfd ipv6 all-interfaces
+set interfaces interface-name unit 0 family inet accounting-profile isp1

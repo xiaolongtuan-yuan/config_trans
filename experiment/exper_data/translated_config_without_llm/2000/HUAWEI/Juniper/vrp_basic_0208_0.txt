@@ -1,0 +1,18 @@
+set chassis network-clock synchronization
+set system host-name SSH_Server
+set interfaces GigabitEthernet0/0/0 unit none family inet address none/none
+set interfaces none unit none family inet address 10.1.1.1/255.255.0.0
+set system services ssh source-interface GigabitEthernet0/0/0
+set system ptp unicast-negotiation
+set security pki generate-key-pair key-name 2048 key-size none
+set aaa new-model
+set system login user none authentication plain-text-password @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
+set system login user client001 class ssh
+set system login user none authentication plain-text-password <password_for_client002>
+set system login user client002 class ssh
+set system login user client001 authentication ssh-rsa none
+set system login user none authentication password
+set system login user client002 authentication ssh-rsa none
+set interfaces 4 unnumbered-address none
+set system authentication-order aaa input
+set system authorization class 3 allow-commands none

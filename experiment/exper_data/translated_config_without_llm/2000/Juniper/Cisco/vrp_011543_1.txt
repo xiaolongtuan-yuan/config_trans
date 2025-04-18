@@ -1,0 +1,17 @@
+sysname CE2
+vlan 2-none
+ccm-protocol version standard
+cfm domain none level 3
+cfm ma 2 none mpls vlan none
+cfm ma down none mep none interface ge-1/0/1 direction none
+cfm ma enable none mep none ccm-send none
+cfm ma ma3 none remote-mep none
+ethernet cfm remote-mep domain none md none ma none mep-id 3
+cfm ma 3 none remote-mep none ccm-receive enable
+cfm ma ma3 none mep none ccm-send none
+ethernet cfm remote-mep domain none md none ma none mep-id 1
+ethernet cfm delay-measure domain ma3 md none ma none mep mep-id none remote-mep mep-id 1000 test-id 2
+interface none mode trunk
+interface ge-1/0/1
+ switchport access vlan vlan2
+ip local interface ge-1/0/1

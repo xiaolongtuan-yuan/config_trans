@@ -1,0 +1,25 @@
+sysname name DeviceA
+mpls label protocol ldp
+mpls
+traffic-eng 1
+is-level 1
+interface none ge-1/0/0
+ssh user none level 1
+interface ge-1/0/0
+interface none lo0.1
+ssh server-source -i lo0.1
+interface lo0.1
+telnet server-source -i lo0.1
+bfd btoa bind peer-ip none interface lo0.1
+nqa-server udpecho 10 none
+local-aaa-server
+ptp-adaptive atr unicast-negotiate enable
+network-entity 49.0001.0000.0000.0000.00
+mpls l2vpn
+segment-routing
+mpls te auto-primary-tunnel ip-prefix 23999 p2p-template none
+arp static none none vid none interface 0
+ ip address 10.1.1.1 24
+interface lo0
+arp static none none vid none interface 1
+ ip address 1.1.1.9 32

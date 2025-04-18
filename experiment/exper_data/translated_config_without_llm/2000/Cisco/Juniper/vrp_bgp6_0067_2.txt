@@ -1,0 +1,19 @@
+set system host-name DeviceC
+set interfaces GigabitEthernet1/0/0 unit none family inet address none/none
+set interfaces GigabitEthernet2/0/0 unit none family inet address none/none
+set protocols bgp local-as 200
+set routing-options router-id 3.3.3.3
+set protocols bgp group none neighbor 2001:db8:9::1:1
+set protocols bgp group none peer-as 200
+set protocols bgp group none neighbor 2001:db8:10::1
+set protocols bgp group none peer-as 100
+set protocols bgp group EXPORT neighbor 2001:db8:10::1
+set protocols bgp group none neighbor out remote-as none
+set routing-options dynamic-tunnels segment-routing mpls
+set protocols bgp group none neighbor 2001:db8:9::1:1 family inet unicast
+set protocols bgp group none neighbor 2001:db8:10::1 family inet unicast
+set routing-options static route none/10 next-hop none
+set protocols pim join-filter none prefix-list PREFIX
+set protocols isis metric 150
+set policy-options prefix-list PREFIX 10.0.0.0/8/permit
+set protocols bgp family inet6 unicast

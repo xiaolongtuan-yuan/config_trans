@@ -1,0 +1,16 @@
+hostname SSH_Server
+crypto key generate rsa
+aaa new-model
+username none privilege 3
+username client001 service-type ssh
+username client002 service-type ssh
+aaa authentication login local default
+aaa authorization network local group none
+interface GigabitEthernet0/0/0
+ ip address x.x.x.x y.y.y.y
+ isis authentication mode aaa
+ link-protocol ssh
+telnet server enable
+line vty 0 4
+privilege level 3
+end

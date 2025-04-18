@@ -1,0 +1,16 @@
+set system host-name routerB
+set access radius-server 2.2.2.2 primary secret 2001
+set class-of-service forwarding-classes class a
+set access-group 2001 authorization-order none
+set policy-options policy-statement e then none
+set class-of-service forwarding-classes class class-default
+set protocols mpls traffic-engineering frr remote-lfa
+set policy-options policy-statement 1 then none
+set policy-options policy-statement e term none from tag none
+set interfaces GigabitEthernet1/0/1 unit none family inet address none/none
+set interfaces none unit none family inet address 7.1.1.2/255.255.255.0
+set policy-options policy-statement 1 term none from protocol none
+set interfaces GigabitEthernet1/0/2 unit none family inet address none/none
+set interfaces none unit none family inet address 8.1.1.2/255.255.255.0
+set interfaces GigabitEthernet1/0/3 unit none family inet address none/none
+set system ptp mode 3

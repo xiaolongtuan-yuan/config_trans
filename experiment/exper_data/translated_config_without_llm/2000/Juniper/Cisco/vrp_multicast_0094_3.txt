@@ -1,0 +1,23 @@
+sysname DeviceD
+multicast routing-enable
+ip pim bsr-candidate ge-2/0/0.0 none
+interface none mode sparse
+track 3 interface ge-2/0/0.0 line-protocol
+ip pim rp-candidate ge-2/0/0.0 group-list none
+ip pim bsr-candidate none group-list 224.0.0.1
+ip pim bsr-candidate ge-3/0/0.0 none
+interface ge-2/0/0
+ ip address 10.6.1.1 24
+interface ge-3/0/0
+ ip address 10.1.1.1 24
+mpls traffic-eng level 2
+mep interface all mep-id none mep-remote-mep-id none
+ipv6 route 1 none none
+ip prefix-list none disable none
+mep interface enable mep-id none mep-remote-mep-id none
+ipv6 route 2 none none
+mep interface passive mep-id none mep-remote-mep-id none
+mpls ldp router-id none 4.0.0.0
+mpls ldp router-id none 0000.0000.0004
+mep interface disable mep-id none mep-remote-mep-id none
+mep mep-id disable interface ge-3/0/0 direction none

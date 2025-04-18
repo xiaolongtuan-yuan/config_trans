@@ -1,0 +1,17 @@
+sysname DeviceA
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 192.168.1.1 255.255.255.0
+interface GigabitEthernet2/0/0
+ ip address 10.1.1.1 255.255.255.0
+ ip address 1/none
+ vrrp vrid none virtual-ip 10.1.1.111
+ vrrp6 vrid none priority 1
+ mpls te priority none 120
+ ip address 2/none
+ vrrp vrid none virtual-ip 10.1.1.112
+ospf 1
+ network 192.168.1.0 0.0.0.255
+ area 0
+ network 10.1.1.0 0.0.0.255
+return

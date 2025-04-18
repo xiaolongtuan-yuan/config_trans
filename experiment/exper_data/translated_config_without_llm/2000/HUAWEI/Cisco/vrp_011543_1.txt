@@ -1,0 +1,33 @@
+cfm enable
+interface [parameter1]
+ switchport
+ no shutdown
+end
+sysname none
+vlan none
+cfm version none
+interface none
+ port trunk allow-pass vlan none
+cfm md none
+system
+ interface ma3
+ eth cfm ma [parameter1]
+  mep domain vlan none
+ service ma [parameter1]
+  mep id none interface none direction none
+ethernet cfm mep domain [parameter1] md [parameter2] ma [parameter3] mep-id [parameter4]
+ ccm-send mep-id none
+ service ma [parameter1]
+  remote-mep id none
+ service ma [parameter1]
+  remote-mep id none ccm-receive
+ ma [parameter1]
+  test-id none mep none
+ mep ma [parameter1] vlan [parameter2]
+  delay-measure two-way receive test-id none
+ cfm ma [parameter1]
+  cfm mep mep-id none test-id none remote-mep none
+ ma [parameter1]
+ delay-measure one-way continual send test-id none interval none
+  loss-measure single-ended continual send test-id none interval none
+ethernet cfm delay-measure domain [parameter1] md [parameter2] ma [parameter3] mep mep-id [parameter4] remote-mep mep-id [parameter5] test-id [parameter6]

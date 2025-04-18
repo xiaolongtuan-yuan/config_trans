@@ -1,0 +1,23 @@
+sysname PE1
+mpls
+ mpls ldp router-id Loopback1
+mpls l2vpn
+mpls ldp
+mpls ldp remote-peer 3.3.3.9
+interface GigabitEthernet1/0/0
+ undo ip address
+interface GigabitEthernet1/0/0.1
+vsi 101 static
+ipv6 host none 3.3.3.9
+ospf none router-id 101
+interface GigabitEthernet2/0/0
+ ip address 10.1.1.1 255.255.255.0
+interface Loopback1
+ ip address 1.1.1.9 255.255.255.255
+ospf 1
+ network 1.1.1.9 0.0.0.0
+ area 0
+ network 10.1.1.0 0.0.0.255
+Return
+interface [parameter1] mode l2
+ encapsulation dot1q vid 10

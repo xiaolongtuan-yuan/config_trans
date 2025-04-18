@@ -1,0 +1,16 @@
+sysname name CE1
+interface ge-2/0/0
+arp static none none vid none interface 0
+ ip address 10.4.1.1 24
+ ip address 10.1.1.1 24
+interface ge-1/0/0
+ip route-static none none 10.1.1.2
+ipv6 route-static none 0 none
+bgp IBGP
+ peer 10.1.1.2 as-number none
+bgp 100 instance none
+bgp unicast instance none
+bgp BGP-NETWORKS instance none
+ip route-static none none none none track nqa user exact
+ip route-static none 10.1.1.0 none none track efm-state none
+route-policy 1 accept node none

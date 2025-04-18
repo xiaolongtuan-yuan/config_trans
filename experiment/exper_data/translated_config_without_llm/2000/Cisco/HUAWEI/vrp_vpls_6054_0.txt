@@ -1,0 +1,26 @@
+sysname CE1
+vlan batch 10
+cfm enable
+interface Vlan10
+ ip address 10.10.1.1 255.255.255.0
+interface GigabitEthernet1/0/0
+ portswitch
+ undo shutdown
+ port trunk allow-pass vlan 10
+interface GigabitEthernet2/0/0
+dns domain md1
+ma ma1
+ mep ccm-send mep-id 1 enable
+ ma ma1
+  test-id none mep none remote-mep 2
+ remote-mep ccm-receive mep-id 2 enable
+vlan 10
+ ma ma1
+  mep mep-id 1 interface GigabitEthernet1/0/0 vlan none transmit
+ma ma2
+ ma ma2
+  mep mep-id 3 interface GigabitEthernet2/0/0 vlan none transmit
+  test-id none mep none remote-mep 4
+ mep ccm-send mep-id 3 enable
+ remote-mep ccm-receive mep-id 4 enable
+return

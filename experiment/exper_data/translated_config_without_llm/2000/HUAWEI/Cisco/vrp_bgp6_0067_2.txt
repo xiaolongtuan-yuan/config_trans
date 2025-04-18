@@ -1,0 +1,25 @@
+hostname DeviceC
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:9::1:2/64
+interface GigabitEthernet2/0/0
+ ipv6 address 2001:db8:10::2/64
+router bgp 200
+ neighbor 2001:db8:9::1:1 remote-as 200
+ neighbor 2001:db8:10::1 remote-as 100
+ vrf [parameter1]
+  address-family ipv4
+ no synchronization
+router-id 3.3.3.3
+bgp [parameter1]
+ ipv4-family unicast
+pseudowire-class [parameter1]
+ peer 2001:db8:9::1:1
+ peer 2001:db8:10::1
+ address-family [parameter1] vpn-instance [parameter2]
+  redistribute none route-policy 10
+route-map [parameter1] [parameter2] [parameter3]
+ set metric 150
+end
+route-policy 10 permit node 10

@@ -1,0 +1,23 @@
+set system host-name PE2
+set protocols bfd
+set protocols mpls
+set protocols mpls l2vpn
+set protocols l2circuit pw-template 2to1
+set protocols ptp local-address 1.1.1.1
+set system ptp unicast-negotiation
+set protocols mpls ldp
+set protocols mpls ldp remote-peer 1.1.1.1
+set protocols ptp adaptive remote-server1-ip 1.1.1.1
+set interfaces GigabitEthernet1/0/0 unit none family inet address none/none
+set interfaces none mpls l2vc pw-template 2to1 100
+set interfaces GigabitEthernet1/0/1 unit none family inet address none/none
+set interfaces none unit none family inet address 10.3.1.2/255.255.255.252
+set interfaces LoopBack1 unit none family inet address none/none
+set interfaces none unit none family inet address 4.4.4.4/255.255.255.255
+set protocols ospf router-id 1
+set protocols ospf area 0.0.0.0 range none
+set protocols ospf area none interface none
+set protocols ospf3 area 2to1 interface GigabitEthernet1/0/0
+set protocols isis area-address 21
+set protocols cfm remote-mep 12
+commit

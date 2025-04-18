@@ -1,0 +1,18 @@
+set system host-name DeviceB
+set security ipsec vpn vpn1 ipsec-policy none
+set routing-instances none route-distinguisher 100:3
+set routing-instances none route-target export 100:1
+set routing-instances none route-target import 100:1
+set interfaces GigabitEthernet0/1/0 unit none family inet address none/none
+set interfaces none unit none family inet address 10.1.1.2/255.255.255.0
+set interfaces GigabitEthernet2/0/0 unit none family inet address none/none
+set interfaces none unit none family inet address 10.1.2.2/255.255.255.0
+set protocols bgp local-as 100
+set protocols bgp group none neighbor 10.1.1.1
+set protocols bgp group none peer-as 200
+set routing-options dynamic-tunnels segment-routing mpls
+set protocols bgp group none neighbor 10.1.1.1 family inet unicast
+set protocols bgp local-as 200
+set routing-options nat64 vrf vpn1 prefix none
+set protocols bgp group none neighbor 10.1.2.3
+set protocols bgp group none peer-as 100

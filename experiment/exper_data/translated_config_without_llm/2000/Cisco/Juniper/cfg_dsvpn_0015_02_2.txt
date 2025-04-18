@@ -1,0 +1,17 @@
+set system host-name Spoke2
+set interfaces GigabitEthernet1/0/0 unit none family inet address none/none
+set interfaces none unit none family inet address 10.1.3.10/255.255.255.0
+set interfaces Loopback0 tunnel multipoint
+set protocols mpls traffic-eng tunnels gre metric none
+set security ipsec vpn IPSEC_PROFILE establish-tunnels none
+set interfaces Loopback0 unit none family inet address none/none
+set interfaces none unit none family inet address 192.168.2.1/255.255.255.255
+set interfaces Tunnel0 unit none family inet address none/none
+set interfaces none unit none family inet address 172.16.1.3/255.255.255.0
+set interfaces GigabitEthernet1/0/0 tunnel multipoint
+set services l2tp tunnel destination 10.1.1.10
+set protocols ospf area 1 interface none
+set routing-options router-id 172.16.1.3
+set protocols ospf area 0 interface none
+set protocols ospf area 2 interface none
+set routing-options router-id 10.1.3.10

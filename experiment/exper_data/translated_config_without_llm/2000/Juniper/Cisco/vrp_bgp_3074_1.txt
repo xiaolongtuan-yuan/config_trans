@@ -1,0 +1,20 @@
+sysname DeviceB
+interface ge-1/0/0
+ ip address 172.16.1.1 24
+mep mep-id none interface "GigabitEthernet1/0/0" direction none
+interface ge-2/0/0
+ ip address 10.1.1.1 24
+mep mep-id none interface "GigabitEthernet2/0/0" direction none
+router 65009
+aaa group server internal internal
+ipv6 pim rp-candidate none group-list internal
+ip route-static bfd none local-address 2.2.2.2
+neighbor 172.16.1.2
+aaa group server external external
+ip msdp peer 65008 mesh-group external
+ipv6 pim rp-candidate none group-list external
+neighbor 10.1.1.2
+aaa group server none external
+mpls traffic-eng tunnel-select none 10
+multicast bas-policy 1 out bandwidth none level-1 none
+username none secret 100 none

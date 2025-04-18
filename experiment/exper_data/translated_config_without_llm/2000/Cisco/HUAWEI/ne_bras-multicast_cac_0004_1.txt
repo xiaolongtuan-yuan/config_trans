@@ -1,0 +1,33 @@
+sysname BRAS
+multicast routing-enable
+dhcp server pool huawei_bas_local
+ gateway-list 10.0.0.1
+nqa-server tcpconnect 10.0.0.0 none
+nqa-server udpecho none 255.255.0.0
+nqa-server udpecho 10.0.255.255 none
+aaa
+xpl ip-prefix-list list1
+ip pool [parameter1] [parameter2] [parameter3]
+ excluded-ip-address 225.1.1.1
+ excluded-ip-address 227.1.1.1
+ipsec profile profile1
+interface [parameter1]
+ multicast boundary 225.1.1.1 none
+ multicast boundary 227.1.1.1 none
+aaa authentication-scheme none
+ssh user none authentication-type none
+accounting-scheme none
+dns domain ipv4
+interface Virtual-Template100
+ authentication-method chap
+interface GigabitEthernet1/0/0
+ ptp announce-drop enable
+ pppoe-server bind Virtual-Template100 none
+ pim sparse-mode
+ igmp static-group 225.1.1.1
+ igmp static-group 227.1.1.1
+interface GigabitEthernet1/0/1
+ ip address 10.1.1.1 255.255.255.0
+interface GigabitEthernet1/0/2
+ ip address 10.1.2.1 255.255.255.0
+return

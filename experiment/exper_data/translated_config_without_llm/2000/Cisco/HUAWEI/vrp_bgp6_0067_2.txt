@@ -1,0 +1,26 @@
+sysname DeviceC
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:9::1:2/64
+interface GigabitEthernet2/0/0
+ ipv6 address 2001:db8:10::2/64
+bgp 200
+ peer 2001:db8:9::1:1 as-number 200
+ peer 2001:db8:10::1 as-number 100
+ peer EXPORT listen-net 2001:db8:10::1 none
+ peer none ebgp-max-hop out
+ peer 2001:db8:9::1:1 enable
+ peer 2001:db8:10::1 enable
+router-id 3.3.3.3
+ipv4-family unicast
+ undo synchronization
+policy-based-route EXPORT permit node 10 map-instance permit
+route-policy [parameter1] [parameter2] node [parameter3]
+ if-match ip-prefix PREFIX
+ apply cost 150
+ip rpf-route-static none 10.0.0.0/8 none
+ip route-static none permit none bfd enable
+return
+ ipv6-family [parameter1]
+  segment-routing ipv6 best-effort

@@ -1,0 +1,29 @@
+sysname BRAS
+ip local pool huawei_bas_local 10.0.0.0 none
+network 16 none area none
+ip dhcp pool 10.0.0.1
+ip dhcp excluded-address 10.0.0.1 10.0.255.255
+aaa authentication login none [radius
+username none service none
+username none service-type none
+multicast routing-enable
+access-list none permit ip 225.1.1.1 none
+access-list none permit ip 227.1.1.1 none
+ip local interface all
+ip pim register-source all
+ip multicast-group 225.1.1.1
+ip multicast-group 227.1.1.1
+ip pim rp-candidate 0 interval none
+mep interface ge-0/0/0 mep-id none mep-remote-mep-id none
+ip igmp ssm-map 225.1.1.1 none none
+ip igmp ssm-map 227.1.1.1 none none
+interface none type 100
+interface ge-0/0/0
+ ip address 10.1.1.1 24
+interface ge-0/0/1
+ ip address 10.1.1.1 24
+interface ge-0/0/2
+ ip address 10.1.2.1 24
+mep mep-id chap interface 0 direction none
+ip pim ssm range none 1
+ip pim ssm range none 2

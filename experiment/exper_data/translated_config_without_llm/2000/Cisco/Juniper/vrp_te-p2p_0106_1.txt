@@ -1,0 +1,21 @@
+set system host-name LSRB
+set protocols mpls ldp
+set routing-options router-id 2.2.2.2
+set routing-options dynamic-tunnels segment-routing mpls
+set forwarding-options multicast no-tunnel
+set protocols ospf area 1 interface none
+set protocols mpls traffic-engineering interface Loopback0
+set protocols ospf area 0 interface none
+set protocols mpls traffic-engineering passive-interface default
+set interfaces GigabitEthernet0/0/0/0 unit none family inet address none/none
+commit
+set interfaces none local-address 3.2.1.1
+set interfaces none remote-address 255.255.255.0
+set interfaces GigabitEthernet0/0/0/1 unit none family inet address none/none
+set interfaces none local-address 3.1.1.1
+set interfaces GigabitEthernet0/0/0/2 unit none family inet address none/none
+set interfaces none local-address 2.1.1.2
+set interfaces Loopback0 unit none family inet address none/none
+set interfaces none local-address 2.2.2.2
+set interfaces none remote-address 255.255.255.255
+set protocols mpls traffic-eng fast-rsvp

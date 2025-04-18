@@ -1,0 +1,22 @@
+sysname name CSG
+bfd
+mpls
+bfd atob bind peer-ip default-ip interface ge-1/0/0
+bgp ibgp
+l2protocol-tunnel none group-mac 1.1.1.1
+bfd ibgp bind peer-ip 100 source-ip none
+bgp 2.2.2.2 instance none
+ip rpf-route-static 2.2.2.2 none policy1
+ospf 0.0.0.0
+interface lo0.0
+interface ge-1/0/0.0
+l2protocol-tunnel 10.1.1.0/24 group-mac none
+interface ge-1/0/0
+arp static none none vid none interface 0
+ ip address 10.1.1.1 24
+ ip address 1.1.1.1 32
+interface lo0
+bfd ibgp bind peer-ipv6 none source-ipv6 none
+ip route-static none none 300 bfd enable
+ipsec policy policy1 none
+tunnel-policy 10

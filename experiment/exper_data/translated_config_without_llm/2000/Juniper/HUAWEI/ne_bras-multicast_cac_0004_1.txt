@@ -1,0 +1,32 @@
+sysname name BRAS
+dhcp server pool 16
+dhcp server pool 10.0.0.1
+nqa-server udpecho 10.0.255.255 none
+ssh authentication-type default [radius
+local-user none service-type none
+ssh user none service-type none
+multicast routing-enable
+ip extcommunity-filter none index none permit rt 1
+ip route-static 225.1.1.1 none none
+ip extcommunity-filter none index none permit rt 2
+ip route-static 227.1.1.1 none none
+ssh server-source -i all
+interface all
+dhcp-server group 225.1.1.1
+dhcp-server group 227.1.1.1
+interface none 0
+mep mep-id none interface 0 none
+interface none ip address 225.1.1.1 none
+interface none ip address 227.1.1.1 none
+interface ge-0/0/0 ip address none none
+static-lsp egress none incoming-interface 0 in-label 100
+interface ge-0/0/0
+arp static none none vid none interface 0
+ ip address 10.1.1.1 24
+ ip address 10.1.2.1 24
+interface ge-0/0/1
+interface ge-0/0/2
+mep mep-id chap interface virtual-template100 none
+static-lsp egress none incoming-interface 0 in-label none
+ip as-path-filter 1 deny none
+ip as-path-filter 2 deny none

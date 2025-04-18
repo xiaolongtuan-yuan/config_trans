@@ -1,0 +1,17 @@
+set system host-name SSH
+set interfaces GigabitEthernet0/0/0 unit none family inet address none/none
+set interfaces none unit none family inet address 10.1.1.1/255.255.0.0
+commit
+set system login user none authentication public-keys generate rsa modulus 2048
+set system login user 3 full-name "client001"
+set system login user 3 full-name "client002"
+set system services ssh protocol-version 2
+set system services ssh source-interface GigabitEthernet0/0/0
+set interfaces 4 unit none point-to-point
+set system services ssh
+set protocols isis level 3 disable-level-2
+set system root-authentication plain-text-password
+set security authentication login user client001 password encryptednone
+set system login user none authentication plain-text-password @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
+set security authentication login user client002 password encryptednone
+set system login user none authentication plain-text-password <password_for_client002>

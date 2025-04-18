@@ -1,0 +1,21 @@
+sysname DeviceA
+mpls label protocol ldp
+interface all
+router isis 1
+router ospf [parameter1]
+mpls label protocol 1 advertise-router-id none force
+ interface ge-1/0/0.none
+ interface lo0.1.none
+interface ge-1/0/0
+ ip address 10.1.1.1 24
+ip local interface lo0.1
+interface lo0.1
+ip pim bsr-candidate lo0.1 none
+mpls label protocol 10 advertise-router-id none force
+router isis
+net 49.0001.0000.0000.0000.00
+mpls traffic-eng segment-routing mpls
+mpls traffic-eng tunnel mpls traffic-eng autoroute announce
+mpls traffic-eng segment-routing global-block 23999 none
+interface lo0
+ ip address 1.1.1.9 32

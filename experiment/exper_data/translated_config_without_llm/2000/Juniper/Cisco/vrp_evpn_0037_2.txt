@@ -1,0 +1,32 @@
+sysname ASBR2
+interface all
+mpls ldp router-id all
+mpls ldp router-id ge-1/0/0
+aaa group server external EBGP-100
+ip msdp peer 100 mesh-group EBGP-100
+ipv6 pim rp-candidate none group-list EBGP-100
+neighbor 192.168.1.1
+aaa group server internal IBGP-200
+ipv6 pim rp-candidate none group-list IBGP-200
+ip route-static bfd none local-address 3.3.3.9
+ip msdp peer 200 mesh-group IBGP-200
+neighbor 4.4.4.9
+ip pim bsr-candidate IBGP-200 group-list none
+ipv6 pim rp-candidate none group-list unicast
+interface lo0.1
+ ospf none area 0
+interface ge-1/0/0.0
+ ospf none area 0
+interface ge-1/0/0
+ ip address 172.22.1.1 24
+ interface ge-1/0/0.none
+ interface none 0
+router ospf [parameter1]
+interface ge-2/0/0
+ ip address 192.168.1.2 24
+ interface ge-2/0/0.none
+ interface none 0
+interface lo0
+ ip address 3.3.3.9 32
+router 200
+mpls traffic-eng tunnel-select none signaling

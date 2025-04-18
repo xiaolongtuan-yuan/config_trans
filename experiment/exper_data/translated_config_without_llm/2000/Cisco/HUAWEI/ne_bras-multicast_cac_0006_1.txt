@@ -1,0 +1,38 @@
+sysname BRAS
+multicast routing-enable
+nqa-server tcpconnect 10.0.0.0 none
+nqa-server udpecho none 255.255.0.0
+dhcp server pool [parameter1]
+ gateway-list 10.0.0.1
+xpl ip-prefix-list list1
+ip pool [parameter1] [parameter2] [parameter3]
+ excluded-ip-address 225.1.1.1
+ excluded-ip-address 227.1.1.1
+ipsec profile profile1
+dot1x-template [parameter1]
+ multicast-list name list1 cir none pir none
+aaa
+aaa authentication-scheme none
+ssh user none authentication-type none
+authentication-scheme none
+accounting-scheme 0
+cfm md none level none
+dns domain ipv4
+ntp-service authentication-keyid none authentication-mode group cipher none
+radius-server none auth-port radius acct-port none
+interface GigabitEthernet1/0/1
+ ip address 10.1.1.1 255.255.255.0
+ pim sm
+interface GigabitEthernet1/0/2
+ ip address 10.1.2.1 255.255.255.0
+interface GigabitEthernet1/0/0
+ igmp version 3
+ access-type ipv4 default-domain authentication none
+ authentication-method bind
+ bas
+  multicast copy by-session
+vlan bas
+return
+accounting-scheme none
+radius-server none auth-port none acct-port default
+radius-server group radius

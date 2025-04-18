@@ -1,0 +1,20 @@
+sysname name PE1
+ospf none router-id 1.1.1.9
+interface lo0
+arp static none none vid none interface 0
+ ip address 1.1.1.9 32
+flow-route vpn1 vpn-instance vfi
+flow-route route-target:100:1 vpn-instance none
+bgp route-target:100:1 instance vpn1
+commit
+mpls ldp remote-peer 100
+bfd test bind peer-ip 100 interface none
+bgp lo0.0 instance none
+l2protocol-tunnel 1.1.1.9/32 group-mac none
+l2protocol-tunnel 10.10.1.0/24 group-mac none
+arp static 24 none vid none interface ge-0/0/0
+ipv6 route-static none none 0 none
+interface none 0
+ip vpn-instance 100
+evpn vpn-instance vpn1 none
+interface none ge-0/0/0.0

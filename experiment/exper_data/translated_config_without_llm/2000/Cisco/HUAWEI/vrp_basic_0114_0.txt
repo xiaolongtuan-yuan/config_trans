@@ -1,0 +1,18 @@
+sysname SSH_Server
+ip domain-name example.com
+rsa local-key-pair create 1024
+ssh server version 2
+interface Loopback0
+ ip address 10.1.1.1 255.255.255.255
+ssh user none publickey aes256-ctr none
+aaa
+ local-user 0 service-type ssh
+ local-user none level @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
+bfd none bind mpls-te interface client001 reverse-te lsr-id none tunnel-id 15 auto
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 10.1.1.2 255.255.0.0
+user-interface vty 0 4
+ protocol inbound ssh
+ authentication-mode default
+return

@@ -1,0 +1,22 @@
+sysname DeviceC
+bfd bind bundle peer-ip none source-ip none interface 0 template none
+ipv6 local pool none 2001:db8:9::1:2 64 prefix-length none
+ipv6 local pool none 2001:db8:10::2 64 prefix-length none
+router 200
+router id 3.3.3.3
+aaa group server internal IBGP
+ip msdp peer 200 mesh-group IBGP
+ipv6 pim rp-candidate none group-list IBGP
+neighbor 2001:db8:9::1:1
+aaa group server external EBGP
+ip msdp peer 100 mesh-group EBGP
+ipv6 pim rp-candidate none group-list EBGP
+neighbor 2001:db8:10::1
+aaa group server none EBGP
+mpls traffic-eng tunnel-select none EXPORT
+ip prefix-list PREFIX none 8
+interface none mode 0
+ip prefix-list PREFIX none none
+multicast bas-policy 10 out bandwidth none level-1 none
+username none secret 150 none
+tunnel-te policy 10

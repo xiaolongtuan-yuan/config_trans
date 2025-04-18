@@ -1,0 +1,24 @@
+sysname UPE1
+interface lo0.0
+ ospf none area 0
+mpls ldp router-id lo0.0
+mpls ldp traffic-eng router-id 4.4.4.9
+mpls
+interface ge-0/0/0.0
+ ospf none area 0
+mep interface 1.1.1.9 mep-id none mep-remote-mep-id none
+mep mep-id 100 interface ge-0/0/1.0 direction none
+interface ge-0/0/0
+ ip address 10.10.3.2 24
+interface none mode 0
+ interface none ge-0/0/0
+ interface ge-0/0/1.none
+router ospf [parameter1]
+mep mep-id none interface ge-0/0/1 direction none
+ethernet cfm mep none interface 0 vlan 1 crosscheck
+interface vlan-ccc encapsulation dot1q none
+ interface ge-0/0/1.none
+interface lo0
+ ip address 4.4.4.9 32
+mep mep-id none interface 0 direction none
+mpls label protocol mpls advertise-router-id none force

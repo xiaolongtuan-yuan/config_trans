@@ -1,0 +1,25 @@
+sysname PE2
+mpls
+mpls l2vpn
+vsi ldp1 static
+evpn vpn-instance 2
+ipv6 host none 1.1.1.9
+ospf none router-id 2
+ipv6 host none 3.3.3.9
+interface GigabitEthernet1/0/1
+ undo shutdown
+interface GigabitEthernet1/0/1.10
+interface [parameter1] mode l2
+ encapsulation dot1q vid 10
+ encapsulation dot1q vid 20
+interface GigabitEthernet1/0/2
+ ip address 192.168.2.2 255.255.255.252
+interface GigabitEthernet1/0/3
+ ip address 192.168.3.2 255.255.255.252
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255
+ospf 1
+ network 2.2.2.9 0.0.0.0
+ area 0
+ network 192.168.2.0 0.0.0.3
+ network 192.168.3.0 0.0.0.3

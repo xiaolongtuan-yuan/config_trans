@@ -1,0 +1,30 @@
+sysname name BRAS
+ssh authentication-type default radius
+radius-server authentication 10.0.0.1 "radius-secret"
+authentication-scheme none
+multicast routing-enable
+nqa-server udpecho 10.0.0.1 none
+ip extcommunity-filter none index none permit rt permit1
+ip route-static 225.1.1.1/32 none none
+ip extcommunity-filter none index none permit rt accept
+ip extcommunity-filter none index none permit rt permit2
+ip route-static 227.1.1.1/32 none none
+interface ge-0/0/1
+arp static none none vid none interface 0
+ ip address 10.1.1.1 24
+ ip address 10.1.2.1 24
+ ip address 10.0.0.1 24
+ipv6 route-static none none 0 none
+ipv6 address-policy 2001:DB8::1 64 none none
+interface ge-0/0/1 ip address none sparse-mode
+interface ge-0/0/2
+interface ge-0/0/2 ip address none sparse-mode
+interface ge-0/0/0 ip address none sparse-mode
+mep mep-id 3 interface ge-0/0/0 0
+vlan batch bas to none
+interface none vlan-bas
+interface vlan-bas
+vlan bas
+vlan layer2
+vlan 3
+ip route-static none none 10.0.0.1

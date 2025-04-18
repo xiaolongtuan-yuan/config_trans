@@ -1,0 +1,39 @@
+sysname PE1
+mpls
+bfd atob bind peer-ip default-ip interface Loopback1
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.10.1.1 255.255.255.0
+ mpls ldp transport-address interface
+interface Loopback1
+ ip address 1.1.1.9 255.255.255.255
+mpls ldp vpn-instance 100
+bridge vpn1 route none
+bridge-domain vpn1
+interface GigabitEthernet1/0/0
+evpn vpn-instance [parameter1] bd-mode
+ route-distinguisher 100:1
+evpn vpn-instance 1
+ evpn instance [parameter1]
+  rd 100:1
+ipv6-family vpn-instance [parameter1]
+ import-route direct
+dhcpv6 export pd-route
+bgp 100
+ peer 2.2.2.9 as-number 100
+ peer 2.2.2.9 connect-interface Loopback1
+ peer 2.2.2.9 enable
+ ipv4-family unicast
+  peer 2.2.2.9 advertise-community
+ipv4-family unicast
+ undo synchronization
+ ipv4-family vpn-instance [parameter1]
+  advertise l2vpn evpn
+ospf 1
+ area 0
+router-id 1.1.1.9
+nqa-server tcpconnect 1.1.1.9 none
+nqa-server udpecho none 0.0.0.0
+nqa-server tcpconnect 10.10.1.0 none
+nqa-server udpecho none 0.0.0.255
+Return

@@ -1,0 +1,25 @@
+sysname LSRA
+mpls
+ mpls traffic-eng enable
+mpls te
+interface [parameter1]
+ isis enable none
+ isis metric wide
+is-level level-2-only
+traffic-eng level-2
+network-entity 49.0005.0000.0000.0001.00
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ isis network-type point-to-point
+clock bits-type none 100000
+interface Loopback1
+ ip address 1.1.1.9 255.255.255.255
+interface Tunnel1
+ ip address unnumbered interface Loopback1
+ tunnel-protocol mpls
+ destination 4.4.4.9
+ mpls te bandwidth ct0 20000
+ mpls te tunnel-id 1
+ mpls te bandwidth max-reservable-bandwidth 100000
+return

@@ -1,0 +1,21 @@
+sysname DeviceC
+ip vpn-instance vpn1
+ evpn instance [parameter1]
+  rd 100:3
+import-route 100:1
+ evpn instance [parameter1]
+  route-target both 100:1
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.1.2.3 255.255.255.0
+bgp 100
+ none unicast
+  quit
+ peer 10.1.2.2 as-number 200
+ipv4-family unicast
+ undo synchronization
+ipv4-family vpn1
+xpl route-filter static
+return
+ip route-static 192.168.3.3 vpn1 none Null0
+ip route-static none 255.255.255.255 none preference none

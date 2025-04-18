@@ -1,0 +1,25 @@
+set system host-name PE4
+set protocols mpls
+set protocols mpls l2vpn
+set protocols l2circuit vfi vsi1 interface none
+set routing-options dynamic-tunnels segment-routing mpls
+set protocols mpls lsr-id 2:2
+set routing-instances none vpn-target 2:2 import-extcommunity
+set routing-instances none vpn-target 2:2 export-extcommunity
+set forwarding-options multicast no-tunnel
+commit
+set protocols mpls ldp
+set protocols mpls l2vpn martini
+set interfaces GigabitEthernet1/0/1 unit none family inet address none/none
+set interfaces none unit none family inet address 10.1.5.2/255.255.255.0
+set interfaces GigabitEthernet1/0/3.1 unit none family inet address none/none
+set vlans none vlan-id 10
+set interfaces LoopBack1 unit none family inet address none/none
+set interfaces none unit none family inet address 4.4.4.4/255.255.255.255
+set protocols bgp 100 neighbor none remote-as none
+set protocols bgp none neighbor 1.1.1.1 remote-as 100
+set protocols mpls traffic-engineering interface LoopBack1
+set protocols bgp none neighbor 1.1.1.1 remote-as none
+set protocols ospf router-id 100
+set protocols ospf area 0.0.0.0 range none
+set protocols ospf area none interface none

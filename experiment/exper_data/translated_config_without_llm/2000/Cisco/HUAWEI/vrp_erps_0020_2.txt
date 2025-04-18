@@ -1,0 +1,20 @@
+sysname DeviceC
+vlan 20
+vlan 300-400
+vlan 20,300-400
+erps ring 2
+ control-vlan 20
+ protected-instance 2
+ wtr-timer 6
+ guard-timer 100
+ sub-ring
+rip [parameter1]
+ version 2
+interface GigabitEthernet1/0/1
+ port link-type trunk
+ port trunk allow-pass vlan 20,300-400
+ undo shutdown
+ evpl instance 2
+lldp fast-count trunk
+interface GigabitEthernet1/0/2
+return

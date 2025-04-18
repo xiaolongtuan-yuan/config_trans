@@ -1,0 +1,18 @@
+set system host-name DeviceB
+set security ipsec vpn vpn1 ipsec-policy none
+set protocols mpls l2vpn martini
+set routing-instances none route-distinguisher 100:3
+set protocols dmvpn multicast-enable
+set routing-instances none vpn-target 100:1 export-extcommunity
+set routing-instances none vpn-target 100:1 import-extcommunity
+set interfaces GigabitEthernet0/1/0 unit none family inet address none/none
+set interfaces none unit none family inet address 10.1.1.2/255.255.255.0
+set interfaces GigabitEthernet2/0/0 unit none family inet address none/none
+set interfaces none unit none family inet address 10.1.2.2/255.255.255.0
+set protocols bgp 100 neighbor none remote-as none
+set protocols bgp none neighbor 10.1.1.1 remote-as 200
+set protocols ptp synchronization enable
+set protocols bgp none neighbor 10.1.1.1 remote-as none
+set protocols bgp group none type 200
+set protocols bgp group aa local-as none
+set protocols bgp none neighbor 10.1.2.3 remote-as 100

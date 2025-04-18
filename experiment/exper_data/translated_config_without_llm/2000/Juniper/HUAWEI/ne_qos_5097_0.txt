@@ -1,0 +1,23 @@
+sysname name DeviceA
+ip extcommunity-filter af11 index none permit rt ac
+ip extcommunity-filter none index none permit rt accept
+interface ge-1/0/0
+arp static none none vid none interface 0
+ ip address 10.10.1.1 24
+ ip address 192.0.2.1 32
+ccc none interface ac out-interface none
+interface lo0 ip address none 10.0000.0000.0001.00
+interface lo0
+traffic-eng 1
+is-level 1
+router id lo0.0
+ssh server-source -i lo0
+bgp <AS instance EBGP
+bgp EBGP
+bgp unicast instance none
+bgp ac instance none
+route-policy isis none node none
+route-policy 1 none node none
+route-policy 123 none node none
+route-policy 10 accept node none
+route-policy none none node none

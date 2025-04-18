@@ -1,0 +1,18 @@
+hostname PE2
+vlan 100
+vlan none-200
+l2protocol-tunnel stp group-mac 00e0-fc12-3456
+stp enable
+interface GigabitEthernet1/0/1
+ no shutdown
+ switchport
+ port default vlan 200
+ no spanning-tree
+interface GigabitEthernet1/0/2
+ switchport trunk allowed vlan 100
+ port trunk allow-pass vlan none to 200
+interface GigabitEthernet1/0/3
+ port default vlan 100
+end
+bfd all-interfaces
+ process-pst

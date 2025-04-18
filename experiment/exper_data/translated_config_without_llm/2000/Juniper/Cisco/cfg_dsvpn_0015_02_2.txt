@@ -1,0 +1,24 @@
+sysname Spoke2
+interface ge-1/0/0
+ ip address 10.1.3.10 24
+ interface none 0
+ipv6 route none 0 none
+ip route-static none none lo0.0
+interface lo0
+ ip address 192.168.2.1 32
+interface gr-1/0/0
+ ip address 172.16.1.3 24
+ip route-static none none ge-1/0/0
+ip route-static 10.1.1.10 none none
+mpls l2vpn gr-1/0/0 encapsulation none
+ip vpn-instance IPSEC_PROFILE
+mpls l2vpn IKE_GATEWAY
+crypto ipsec transform-set none IPSEC_POLICY
+interface gr-1/0/0.0
+ ospf none area 0.0.0.0
+interface lo0.0
+ ospf none area 0.0.0.0
+router ospf 172.16.1.3
+interface ge-1/0/0.0
+ ospf none area 0.0.0.1
+router ospf 10.1.3.10

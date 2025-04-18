@@ -1,0 +1,15 @@
+sysname CE2
+ip pim bsr-candidate ge-1/0/1.0 none
+interface none mode sparse
+ip pim bsr-candidate ge-1/0/2.0 none
+multicast-routing
+interface ge-1/0/1.0
+ ospf none area 0
+interface ge-1/0/2.0
+ ospf none area 0
+interface ge-1/0/1
+ ip address 172.16.2.1 24
+interface ge-1/0/2
+ ip address 192.168.2.2 24
+mep mep-id none cross-connect mpls interface ge-1/0/1.0
+remote-mep mep-id none cross-connect mpls interface 224.0.0.1

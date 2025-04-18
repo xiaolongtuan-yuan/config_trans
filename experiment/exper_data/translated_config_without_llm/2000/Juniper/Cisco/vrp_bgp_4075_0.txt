@@ -1,0 +1,21 @@
+sysname DeviceA
+interface ge-1/0/0
+ ip address 10.1.1.2 24
+mep mep-id none interface "GigabitEthernet1/0/0" direction none
+interface ge-2/0/0
+ ip address 10.1.3.2 24
+mep mep-id none interface "GigabitEthernet2/0/0" direction none
+interface ge-3/0/0
+ ip address 172.16.1.1 24
+mep mep-id none interface "GigabitEthernet3/0/0" direction none
+router 65010
+aaa group server internal internal
+ipv6 pim rp-candidate none group-list internal
+ip route-static bfd none local-address 1.1.1.1
+neighbor 10.1.1.1
+neighbor 10.1.3.1
+aaa group server none internal
+mpls traffic-eng tunnel-select none export-bgp
+vpdn-group internal
+route-policy direct
+route-policy accept

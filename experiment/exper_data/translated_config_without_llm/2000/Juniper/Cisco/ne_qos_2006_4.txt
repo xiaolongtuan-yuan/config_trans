@@ -1,0 +1,13 @@
+sysname CE2
+interface ge-0/0/0
+ ip address 10.2.1.1 24
+interface none mode 0
+aaa group server external BGP-PEER
+ip msdp peer 100 mesh-group BGP-PEER
+ipv6 pim rp-candidate none group-list BGP-PEER
+neighbor 10.2.1.2
+aaa group server none BGP-PEER
+mpls traffic-eng tunnel-select none bgp-export
+vpdn-group BGP-PEER
+ip route-static none 24 none preference 10.2.1.0
+service-policy none 1

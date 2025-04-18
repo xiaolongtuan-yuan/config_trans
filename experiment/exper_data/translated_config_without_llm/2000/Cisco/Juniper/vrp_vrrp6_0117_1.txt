@@ -1,0 +1,15 @@
+set system host-name DeviceB
+set protocols bfd
+set protocols ospf3 router-id 1
+set routing-options router-id 2.2.2.2
+set interfaces GigabitEthernet1/0/0 unit none family inet address none/none
+set protocols cfm version 2
+set interfaces none unit none family inet6 address FE80::1 link-local
+set interfaces none unit none family inet6 address 2001:DB8::100 link-local
+set protocols ospf area 0.0.0.0 interface none none
+set protocols isis spf-interval level none 3 none
+set protocols bgp group none local-as 2
+set protocols bgp group 1 neighbor 2001:DB8::1
+set interfaces GigabitEthernet2/0/0 unit none family inet address none/none
+commit
+set chassis cluster redundancy-group 1 interface-monitor bfd all-interfaces

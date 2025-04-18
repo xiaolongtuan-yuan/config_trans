@@ -1,0 +1,26 @@
+set system host-name PE1
+set protocols cfm version standard
+set protocols cfm cfm-enable
+set protocols mpls interface none
+set interfaces Loopback0 unit force family inet mpls ldp sync
+set protocols mpls l2vpn
+set protocols mpls l2vpn martini
+set interfaces GigabitEthernet1/0/1.1 unit none family inet address none/none
+set system access-address none
+set interfaces none encapsulation none vlan-id 2
+set protocols l2circuit vfi ldp1 interface none
+set interfaces GigabitEthernet1/0/2 unit none family inet address none/none
+set interfaces none unit none family inet address 10.1.1.1/255.255.255.0
+set interfaces Loopback0 unit none family inet address none/none
+set interfaces none unit none family inet address 2.2.2.2/255.255.255.0
+set protocols ospf area 1 interface none
+set protocols ospf area 0 interface none
+set protocols cfm domain md1 level none
+set system services ma1
+set protocols cfm mep 1 ccm-send
+set protocols cfm mep interface inward direction none
+set protocols ptp announce-interval 3
+set arp force-enable
+set protocols cfm remote-mep 2 mep-id none
+set protocols cfm domain none service none continuity-check mep none remote-mep 2 peer-ip 1.1.1.1
+set protocols cfm ma none loss-measurement dual-ended test-id 1

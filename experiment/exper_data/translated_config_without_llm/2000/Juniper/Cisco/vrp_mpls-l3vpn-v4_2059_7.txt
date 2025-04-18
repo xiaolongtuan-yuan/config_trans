@@ -1,0 +1,13 @@
+sysname CE4
+interface ge-0/0/0
+ ip address 172.16.2.1 24
+aaa group server external neighbor-172.16.2.2
+ip msdp peer 300 mesh-group neighbor-172.16.2.2
+ipv6 pim rp-candidate none group-list neighbor-172.16.2.2
+neighbor 172.16.2.2
+route-policy direct
+route-policy accept
+router bgp 65420
+vpdn-group neighbor-172.16.2.2
+ip prefix-list none none 172.16.2.0
+ip route none 24 Null0 track none

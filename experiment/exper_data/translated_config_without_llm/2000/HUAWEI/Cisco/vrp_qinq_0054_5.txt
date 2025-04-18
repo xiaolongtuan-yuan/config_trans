@@ -1,0 +1,14 @@
+hostname CE3
+interface GigabitEthernet1/0/1.1
+ no shutdown
+ ip address 172.17.1.2 255.255.255.0
+router bgp 65421
+ neighbor 172.17.1.1 remote-as 100
+ vrf [parameter1]
+  address-family ipv4
+ no synchronization
+ address-family ipv6 vrf [parameter1]
+  import-route direct
+pseudowire-class [parameter1]
+ peer 172.17.1.1
+end

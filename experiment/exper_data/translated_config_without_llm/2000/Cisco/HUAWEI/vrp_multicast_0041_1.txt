@@ -1,0 +1,17 @@
+sysname DeviceB
+multicast routing-enable
+ip extcommunity-filter none index 0.0.0.255 permit rt none
+interface none ip address 232.1.1.0 none
+interface [parameter1]
+ isis enable none
+network-entity 10.0000.0000.0002.00
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 192.168.2.2 255.255.255.0
+ pim sm
+interface GigabitEthernet2/0/0
+ ip address 192.168.4.1 255.255.255.0
+pim
+nqa-server udpecho none 0.0.0.255
+ipv6-family vpn-instance [parameter1]
+ import-route direct

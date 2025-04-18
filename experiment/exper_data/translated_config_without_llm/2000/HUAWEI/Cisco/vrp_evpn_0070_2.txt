@@ -1,0 +1,43 @@
+hostname NPE2
+ip vrf vpn1
+ipv4 fast-detect
+route-distinguisher 10:2
+ vrf [parameter1]
+  address-family ipv4
+route-target export evpn
+route-target import evpn
+evpn
+ evpn ethernet-segment
+mpls ldp router-id 3.3.3.3 none
+mpls ip
+router isis 1
+net 10.0000.0000.0003.00
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.2.1.2 255.255.255.0
+ ip router isis
+interface GigabitEthernet2/0/0
+ ip address 192.168.30.1 255.255.255.0
+bridge-domain [parameter1]
+ evpn binding vpn-instance vpn1
+interface LoopBack1
+ ip address 3.3.3.3 255.255.255.255
+router bgp 100
+ neighbor 2.2.2.2 remote-as 100
+ no synchronization
+ address-family ipv4 vrf vpn1
+ address-family ipv6 vrf [parameter1]
+  import-route direct
+ address-family l2vpn evpn
+bgp [parameter1]
+ neighbor 2.2.2.2 update-source none
+ peer none connect-interface LoopBack1
+ vrf [parameter1]
+  address-family ipv4
+ ipv4-family vpnv4
+  undo policy vpn-target
+pseudowire-class [parameter1]
+ peer 2.2.2.2
+ds-lite instance [parameter1] id [parameter2]
+ remote-ipv6 2.2.2.2
+end

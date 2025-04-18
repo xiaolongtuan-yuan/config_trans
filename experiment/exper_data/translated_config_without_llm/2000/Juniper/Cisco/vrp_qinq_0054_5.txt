@@ -1,0 +1,13 @@
+sysname CE3
+interface ge-1/0/1
+ ip address 172.17.1.2 24
+aaa group server external external
+ipv6 pim rp-candidate none group-list external
+ip route-static bfd none local-address 172.17.1.2
+router bgp external
+ neighbor 172.17.1.1 remote-as 100
+ip pim bsr-candidate external group-list none
+ipv6 pim rp-candidate none group-list unicast
+mpls ldp neighbor none external
+neighbor 172.17.1.1
+ip prefix-list none none direct

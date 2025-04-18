@@ -1,0 +1,25 @@
+sysname name ASBR2
+mpls
+bfd atob bind peer-ip default-ip interface all
+bfd atob bind peer-ip default-ip interface ge-1/0/0
+bgp EBGP-100
+ peer 192.168.1.1 as-number none
+bgp 100 instance none
+bgp IBGP-200
+ peer 4.4.4.9 as-number none
+l2protocol-tunnel none group-mac 3.3.3.9
+bgp 200 instance none
+bgp unicast instance none
+ospf 0
+interface lo0.1
+interface ge-1/0/0.0
+interface ge-1/0/0
+arp static none none vid none interface 0
+ ip address 172.22.1.1 24
+ ip address 192.168.1.2 24
+interface ge-2/0/0
+interface lo0
+arp static none none vid none interface 1
+ ip address 3.3.3.9 32
+bgp 200
+bfd IBGP-200 bind peer-ip signaling vpn-instance none

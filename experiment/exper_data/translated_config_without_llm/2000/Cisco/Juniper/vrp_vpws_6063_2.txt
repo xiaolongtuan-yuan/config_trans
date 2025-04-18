@@ -1,0 +1,29 @@
+set system host-name PE1
+set protocols mpls interface none
+set protocols mpls ldp interface Loopback1
+set interfaces GigabitEthernet2/0/0 unit none family inet address none/none
+set interfaces none unit none family inet address 10.10.1.1/255.255.255.0
+set protocols mpls ldp
+set interfaces Loopback1 unit none family inet address none/none
+set interfaces none unit none family inet address 1.1.1.9/255.255.255.255
+set security ipsec vpn 100 ipsec-policy none
+set interfaces l2tp-group vpn1 tunnel-name none
+set interfaces GigabitEthernet1/0/0 unit none family inet address none/none
+set routing-instances none route-distinguisher 100:1
+set protocols l2circuit vfi vpn1 interface none
+set security ipsec vpn 1 ipsec-policy none
+set protocols mpls traffic-eng area 100:1
+set interfaces GigabitEthernet1/0/0 pppoe enable
+set protocols bgp local-as 100
+set protocols bgp group none neighbor 2.2.2.9
+set protocols bgp group none peer-as 100
+set protocols bgp group none local-address Loopback1
+set interfaces none unit none vlan-id none family inet address none/none
+set protocols bgp group none neighbor 2.2.2.9 family inet unicast
+set protocols ospf area 1 interface none
+set routing-options router-id 1.1.1.9
+set protocols ospf area 0 interface none
+set access address-assignment pool 0.0.0.0 family inet router 1.1.1.9
+set access address-assignment pool 0.0.0.255 family inet router 10.10.1.0
+commit
+set routing-options bgp自主路由管理进程

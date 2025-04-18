@@ -1,0 +1,13 @@
+set system host-name CE1
+set interfaces GigabitEthernet2/0/0 unit none family inet address none/none
+set interfaces none unit none family inet address 10.4.1.1/255.255.255.0
+set interfaces GigabitEthernet1/0/0 unit none family inet address none/none
+set interfaces none unit none family inet address 10.1.1.1/255.255.255.0
+set protocols bgp local-as 600
+set protocols bgp group none neighbor 10.1.1.2
+set protocols bgp group none peer-as 100
+set routing-options dynamic-tunnels segment-routing mpls
+set protocols bgp group none export none
+set protocols bgp group none neighbor 10.1.1.2 family inet unicast
+set routing-options static route 0.0.0.0/none next-hop 10.1.1.2
+set protocols isis interface none family inet address none/0.0.0.0

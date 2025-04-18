@@ -1,0 +1,17 @@
+sysname CE1
+vlan 2
+bridge-domain 2
+interface GigabitEthernet1/0/1
+cfm md default level 2
+cfm md md1
+ma ma1
+ remote-mep ccm-receive mep-id 1 enable
+ mep ccm-send mep-id 1 enable
+ ma ma1
+  delay-measure one-way receive test-id 1
+domain 2
+mpls-tp meg [parameter1]
+ me te interface none mep-id 2 remote-mep-id none
+ ma ma1
+  mep mep-id none interface none vlan none down
+remote-mep mep-id 1
