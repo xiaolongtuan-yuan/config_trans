@@ -1,0 +1,93 @@
+hostname PE2
+
+ip multicast-routing
+
+ip vrf vpn1
+
+ rd 200:1
+
+ route-target export 100:100
+
+ route-target import 100:100
+
+ address-family ipv4
+
+  multicast-routing
+
+  mvpn
+
+   signaling bgp
+
+mpls ldp router-id 3.3.3.3
+
+mpls ldp
+
+ mldp p2mp
+
+interface GigabitEthernet1/0/1
+
+ no shutdown
+
+ ip vrf forwarding vpn1
+
+ ip address 192.168.2.1 255.255.255.0
+
+ ip pim sparse-mode
+
+ ip igmp version 3
+
+interface GigabitEthernet1/0/2
+
+ no shutdown
+
+ ip address 10.2.1.2 255.255.255.0
+
+ mpls ip
+
+ mpls ldp
+
+interface Loopback1
+
+ ip address 3.3.3.3 255.255.255.255
+
+router bgp 100
+
+ neighbor 2.2.2.2 remote-as 100
+
+ neighbor 2.2.2.2 update-source Loopback1
+
+ address-family ipv4 unicast
+
+  no synchronization
+
+  neighbor 2.2.2.2 activate
+
+ address-family ipv4 mvpn
+
+  neighbor 2.2.2.2 activate
+
+ address-family ipv6 unicast
+
+  no synchronization
+
+ address-family vpnv4
+
+  neighbor 2.2.2.2 activate
+
+ address-family vpnv4 vrf vpn1
+
+  import-route ospf 2
+
+router ospf 10
+
+ network 3.3.3.3 0.0.0.0 area 0
+
+ network 10.2.1.0 0.0.0.255 area 0
+
+router ospf 2 vrf vpn1
+
+ import-route bgp
+
+ network 192.168.2.0 0.0.0.255 area 0
+
+end

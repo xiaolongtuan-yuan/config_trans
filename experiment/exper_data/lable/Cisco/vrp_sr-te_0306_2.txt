@@ -1,0 +1,41 @@
+hostname PE2
+!
+bfd
+!
+mpls ldp router-id Loopback0 force
+!
+mpls ldp
+!
+mpls traffic-eng tunnels
+!
+router isis 1
+ net 49.0000.0000.0000.0002.00
+ is-type level-2-only
+ mpls traffic-eng level-2
+ segment-routing mpls
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.20.34.4 255.255.255.0
+ isis enable 1
+ mpls ip
+ mpls traffic-eng tunnels
+!
+interface Loopback0 
+ ip address 10.41.2.9 255.255.255.255
+ isis enable 1
+!
+interface Tunnel10
+ ip unnumbered Loopback0
+ tunnel mode mpls traffic-eng
+ tunnel destination 10.21.2.9
+ tunnel mpls traffic-eng autoroute announce
+ tunnel mpls traffic-eng priority 2 2
+ tunnel mpls traffic-eng path-option 2 explicit name SR-Path
+!
+bfd discriminator local 21
+bfd discriminator remote 12
+bfd min-tx-interval 100
+bfd min-rx-interval 100
+!
+end

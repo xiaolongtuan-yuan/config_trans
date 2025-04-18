@@ -1,0 +1,71 @@
+hostname DeviceA
+
+mpls ip
+
+mpls ldp router-id Loopback0 force
+
+mpls ldp label
+
+mpls ldp discovery targeted-hello accept
+
+mpls ldp discovery targeted-hello all
+
+mpls ldp discovery targeted-hello accept 10.0.0.2
+
+mpls ldp discovery targeted-hello 10.0.0.2
+
+mpls ldp holdtime 45
+
+mpls ldp keepalive 45
+
+router ospf 1
+
+router-id 10.0.0.1
+
+network 3.0.0.0 0.0.0.3 area 0.0.0.1
+
+network 10.0.0.1 0.0.0.0 area 0.0.0.1
+
+interface Loopback0
+
+ip address 10.0.0.1 255.255.255.255
+
+interface GigabitEthernet1/0/1.31
+
+encapsulation dot1Q 31
+
+mtu 9500
+
+ip address 3.0.0.1 255.255.255.252
+
+mpls ip
+
+mpls ldp
+
+interface GigabitEthernet1/0/0.1
+
+encapsulation dot1Q 1
+
+mtu 9500
+
+mpls l2transport
+
+mpls l2transport vc 26
+
+neighbor 10.0.0.2 pw-class raw
+
+nqa responder
+
+twamp test-session 1
+
+ip local interface GigabitEthernet1/0/0.1
+
+ip local address 192.168.1.1
+
+ip remote address 192.168.2.2
+
+ip local port 6000
+
+ip remote port 6000
+
+return

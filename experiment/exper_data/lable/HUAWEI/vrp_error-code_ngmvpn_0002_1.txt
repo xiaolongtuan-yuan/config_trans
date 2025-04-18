@@ -1,0 +1,71 @@
+#
+sysname P1
+#
+ip topology advancedtop
+#
+mpls lsr-id 2.2.2.2
+#
+mpls
+#
+mpls l2vpn
+#               
+vsi vsi1 static
+ pwsignal ldp
+  vsi-id 1112
+  peer 4.4.4.4 
+#
+mpls ldp
+ mldp p2mp
+ #
+ ipv4-family
+  mldp p2mp topo advancedtop
+#
+mpls ldp remote-peer 4.4.4.4
+#
+mpls ldp remote-peer 1.1.1.1
+#
+isis 1
+ cost-style wide
+ network-entity 10.0000.0000.0001.00
+ #
+ topology advancedtop topology-id 10
+#
+interface Eth-Trunk1
+ ip address 10.1.1.2 255.255.255.0
+ ip topology advancedtop enable
+ isis enable 1
+ isis bfd enable
+ isis bfd bit-error enable
+ isis topology advancedtop
+ isis link-quality low incr-cost max-reachable
+ mpls
+ mpls ldp
+#
+interface Eth-Trunk1.1
+ vlan-type dot1q 100
+ l2 binding vsi vsi1
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ eth-trunk 1
+#
+interface GigabitEthernet1/0/1
+ undo shutdown  
+ ip address 10.1.5.1 255.255.255.0
+ ip topology advancedtop enable
+ isis enable 1
+ isis topology advancedtop
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ eth-trunk 1
+#
+interface LoopBack0
+ ip address 2.2.2.2 255.255.255.255
+ ip topology advancedtop enable
+ isis enable 1
+ isis topology advancedtop
+#
+return

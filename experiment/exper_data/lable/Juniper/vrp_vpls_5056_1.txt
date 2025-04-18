@@ -1,0 +1,30 @@
+set system host-name SPE1
+set protocols bd all-interfaces
+
+set forwarding-options label mpls-ldp route-id loopback1
+set forwarding-options forwarding-ldp remote-peer 1.1.1.1 discovery-address loopback1 force
+set forwarding-options forwarding-ldp remote-peer 4.4.4.4 discovery-address loopback1
+set forwarding-options forwarding-ldp remote-peer 5.5.5.5 discovery-address loopback1
+
+set interfaces gigabit-ethernet0/0 unit 0 family mpls
+set interfaces gigabit-ethernet0/0 unit 0 family inet address 192.168.10.2/24
+set protocols ospf 1 area 0 network 192.168.10.0/24
+set interfaces gigabit-ethernet0/1 unit 0 family mpls
+set interfaces gigabit-ethernet0/1 unit 0 family inet address 192.168.30.1/24
+set protocols ospf 1 area 0 network 192.168.30.0/24
+
+set interfaces loopback1 unit 0 family inet address 2.2.2.2/32
+set protocols ospf 1 area 0 network 2.2.2.2/32
+
+set forwarding-options mpls-l2v pn context vpls-pw1 remote-ldp-peer 1.1.1.1 pw-id 1 pw-class vsi1
+
+set interfaces gigabit-ethernet0/0 unit 0 family mpls mpls-ip
+set interfaces gigabit-ethernet0/0 unit 0 family mpls ldp discovery-address loopback1
+set interfaces gigabit-ethernet0/0 unit 0 family mpls l2transport
+set interfaces psuedo-wire-class vsi1 encapsulation l2tpv3 local-interface_loopback1
+
+set forwarding-options mpls-l2v pn context vpls-pw1 remote-ldp-peer 4.4.4.4 pw-id 1 pw-class vsi1
+set forwarding-options mpls-l2v pn context vpls-pw1 remote-ldp-peer 5.5.5.5 pw-id 1 pw-class vsi1
+
+set forwarding-options mpls-ip
+set forwarding-options mpls ldp

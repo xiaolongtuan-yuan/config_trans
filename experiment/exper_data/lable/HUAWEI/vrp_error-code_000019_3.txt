@@ -1,0 +1,64 @@
+#
+sysname NPE
+#
+ip vpn-instance vpna
+ ipv4-family
+  route-distinguisher 20:1
+  vpn-target 1:1 export-extcommunity
+  vpn-target 1:1 import-extcommunity
+#
+mpls lsr-id 4.4.4.4
+#
+mpls
+#
+mpls ldp        
+ #              
+ ipv4-family    
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.1.5.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip address 10.1.4.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/3
+ undo shutdown
+ ip binding vpn-instance vpna
+ ip address 10.2.1.1 255.255.255.0
+#
+interface LoopBack0
+ ip address 4.4.4.4 255.255.255.255
+#
+bgp 20
+ router-id 4.4.4.4
+ peer 2.2.2.2 as-number 20
+ peer 2.2.2.2 connect-interface LoopBack0
+ peer 3.3.3.3 as-number 20
+ peer 3.3.3.3 connect-interface LoopBack0
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 2.2.2.2 enable
+  peer 3.3.3.3 enable
+ #
+ ipv4-family vpnv4
+  policy vpn-target
+  peer 2.2.2.2 enable
+  peer 3.3.3.3 enable
+ #
+ ipv4-family vpn-instance vpna
+  import-route direct
+#
+ospf 1
+ area 0.0.0.0
+  network 4.4.4.4 0.0.0.0
+  network 10.1.4.0 0.0.0.255
+  network 10.1.5.0 0.0.0.255
+#
+return

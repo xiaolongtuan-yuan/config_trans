@@ -1,0 +1,25 @@
+hostname P
+!
+mpls label protocol ldp
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.1.2 255.255.255.0
+ mpls ip
+ mpls label protocol ldp
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.2.1 255.255.255.0
+ mpls ip
+ mpls label protocol ldp
+!
+interface Loopback1
+ ip address 10.35.5.9 255.255.255.255
+!
+router ospf 1
+ network 10.35.5.9 0.0.0.0 area 0
+ network 192.168.1.0 0.0.0.255 area 0
+ network 192.168.2.0 0.0.0.255 area 0
+!
+end

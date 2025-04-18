@@ -1,0 +1,40 @@
+hostname DeviceA
+!
+ip multicast-routing
+!
+interface Port-channel1
+ description e-trunk 1
+ ip address 10.0.15.1 255.255.255.0
+ pim sparse-mode
+ ip pim sparse-mode
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 10.0.13.1 255.255.255.0
+ pim sparse-mode
+ ip pim sparse-mode
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+ channel-group 1 mode desirable
+!
+interface GigabitEthernet1/0/3
+ no shutdown
+ ip address 10.0.12.1 255.255.255.0
+ pim sparse-mode
+ ip pim sparse-mode
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+!
+interface Null0
+!
+router ospf 1
+ network 1.1.1.1 0.0.0.0 area 0
+ network 10.0.12.0 0.0.0.255 area 0
+ network 10.0.13.0 0.0.0.255 area 0
+ network 10.0.15.0 0.0.0.255 area 0
+!
+ip pim rp-address 2.2.2.2
+!
+end

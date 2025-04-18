@@ -1,0 +1,17 @@
+hostname CE1  
+! 
+interface GigabitEthernet1/0/0
+ no shutdown  
+ ipv6 enable
+ ipv6 address 2001:db8:1::1/64
+! 
+router bgp 100         
+ neighbor 2001:db8:1::2 remote-as 200
+ !
+ address-family ipv4 unicast
+  no synchronization
+ !
+ address-family ipv6 flow
+  neighbor 2001:db8:1::2 activate
+! 
+end

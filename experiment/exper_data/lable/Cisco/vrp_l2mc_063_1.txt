@@ -1,0 +1,92 @@
+sysname PE2
+#
+vlan batch 11
+#
+igmp-snooping enable
+#
+mpls lsr-id 2.2.2.2
+#
+mpls
+#
+mpls l2vpn
+#
+vsi vsi1
+ pwsignal ldp
+  vsi-id 100
+  peer 1.1.1.1
+ igmp-snooping enable
+ igmp-snooping static-router-port remote-peer 1.1.1.1
+#
+mpls ldp
+#  
+interface Eth-Trunk1  
+# 
+interface Eth-Trunk1.1        
+ encapsulation dot1q-termination   
+ dot1q termination vid 11 
+ l2 binding vsi vsi1 
+ l2 bing vis iptv
+ l2-multicast limit channel tv1 bandwidth 2500 dot1q vid 11                     
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack0
+ ip address 2.2.2.2 255.255.255.255
+#
+ospf 1
+ area 0.0.0.0
+  network 2.2.2.2 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+#
+l2-multicast-channel vsi vsi1
+ channel tv1 type asm
+  group 225.0.0.0 255.255.255.0 per-bandwidth 10
+#
+return
+
+
+!
+hostname PE2
+!
+vlan 11
+!
+ip igmp snooping
+!
+mpls label protocol ldp
+!
+mpls l2transport vc vsi1 100
+ neighbor 1.1.1.1 pw-id 100
+!
+mpls ldp
+!
+interface Port-channel1  
+!
+interface Port-channel1.11        
+ encapsulation dot1Q 11   
+ vfi vsi1
+  bridge-domain 100
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.255
+!
+router ospf 1
+ network 2.2.2.2 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+!
+ip multicast-routing
+ip igmp snooping vlan 11
+!
+ip pim rp-address 2.2.2.2 group-list 225.0.0.0/24
+!
+end
+

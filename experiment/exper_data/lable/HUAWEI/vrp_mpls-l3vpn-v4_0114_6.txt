@@ -1,0 +1,51 @@
+#
+ sysname PE2
+#
+ip vpn-instance vpna
+ ipv4-family
+  route-distinguisher 200:2
+  apply-label per-instance
+  vpn-target 111:1 export-extcommunity
+  vpn-target 111:1 import-extcommunity
+#
+mpls lsr-id 2.2.2.2
+#
+mpls
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.162.1.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip binding vpn-instance vpna
+ ip address 10.2.1.2 255.255.255.0
+#
+interface LoopBack1
+ ip address 2.2.2.2 255.255.255.255
+#
+bgp 200
+ peer 6.6.6.6 as-number 100
+ peer 6.6.6.6 connect-interface LoopBack1
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 6.6.6.6 enable
+ #
+ ipv4-family vpnv4
+  policy vpn-target
+  peer 6.6.6.6 enable
+#
+ ipv4-family vpn-instance vpna
+  peer 10.2.1.1 as-number 65002
+#
+ospf 1
+ area 0.0.0.0
+  network 10.162.1.0 0.0.0.255
+  network 2.2.2.2 0.0.0.0
+#
+return

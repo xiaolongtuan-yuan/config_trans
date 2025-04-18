@@ -1,0 +1,59 @@
+hostname PE1
+
+spanning-tree mode rapid-pvst
+
+spanning-tree vlan 1-10 root primary
+
+spanning-tree vlan 11-20 root secondary
+
+spanning-tree pathcost method long
+
+spanning-tree mode rapid-pvst
+
+!
+
+spanning-tree vlan 1-10 root primary
+
+spanning-tree vlan 11-20 root secondary
+
+!
+
+interface GigabitEthernet1/0/1
+
+no shutdown
+
+switchport
+
+spanning-tree portfast
+
+spanning-tree guard root
+
+!
+
+interface GigabitEthernet1/0/1.1
+
+encapsulation dot1q 1-20
+
+bridge-domain 10
+
+!
+
+interface GigabitEthernet1/0/2
+
+no shutdown
+
+switchport
+
+spanning-tree portfast
+
+!
+
+interface GigabitEthernet1/0/2.1
+
+encapsulation dot1q 1-20
+
+bridge-domain 10
+
+!
+
+end

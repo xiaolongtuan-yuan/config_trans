@@ -1,0 +1,66 @@
+#
+ sysname PE3
+#
+ip vpn-instance vpn1
+ ipv4-family
+  route-distinguisher 100:2
+  apply-label per-instance
+  vpn-target 111:1 export-extcommunity
+  vpn-target 111:1 import-extcommunity
+#
+mpls lsr-id 3.3.3.3
+#
+mpls
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.20.1.2 255.255.255.252
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip binding vpn-instance vpn1
+ ip address 192.168.2.1 255.255.255.252
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ip address 10.11.1.2 255.255.255.252
+ mpls
+ mpls ldp
+#
+interface LoopBack1
+ ip address 3.3.3.3 255.255.255.255
+#
+bgp 100
+ peer 1.1.1.1 as-number 100 
+ peer 1.1.1.1 connect-interface LoopBack1
+ peer 2.2.2.2 as-number 100 
+ peer 2.2.2.2 connect-interface LoopBack1
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 1.1.1.1 enable
+  peer 2.2.2.2 enable
+#
+ ipv4-family vpnv4
+  policy vpn-target
+  peer 1.1.1.1 enable
+  peer 2.2.2.2 enable
+#
+ ipv4-family vpn-instance vpn1
+  bestroute as-path-ignore
+  auto-frr
+  route-select delay 300
+  peer 192.168.2.2 as-number 65410
+  peer 192.168.2.2 preferred-value 600
+#
+ospf 1
+ area 0.0.0.0
+  network 10.20.1.0 0.0.0.3
+  network 10.11.1.0 0.0.0.3
+  network 3.3.3.3 0.0.0.0
+#
+return

@@ -1,0 +1,61 @@
+hostname PE2
+!
+ip vrf vpna
+ rd 100:2
+ route-target export 100:100
+ route-target import 100:100
+!
+mpls ldp router-id Loopback1 force
+!
+mpls ip
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip vrf forwarding vpna
+ ip address 192.168.2.1 255.255.255.252
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip vrf forwarding vpna
+ ip address 192.168.3.1 255.255.255.252
+!
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 192.168.5.2 255.255.255.252
+ mpls ip
+ mpls ldp autoconfig
+!
+interface Loopback1
+ ip address 2.2.2.2 255.255.255.255
+!
+router bgp 100
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 update-source Loopback1
+ !
+ address-family ipv4 unicast
+  neighbor 1.1.1.1 activate
+  no synchronization
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 1.1.1.1 activate
+  neighbor 1.1.1.1 send-community extended
+ exit-address-family
+ !
+ address-family ipv4 vrf vpna
+  import ipv4 unicast map direct
+  neighbor 192.168.2.2 remote-as 65410
+  neighbor 192.168.2.2 replace-as
+  neighbor 192.168.2.2 send-label
+  neighbor 192.168.2.2 soo 100:101
+  neighbor 192.168.3.2 remote-as 65410
+  neighbor 192.168.3.2 replace-as
+  neighbor 192.168.3.2 send-label
+  neighbor 192.168.3.2 soo 100:102
+ exit-address-family
+!
+router ospf 1
+ router-id 2.2.2.2
+ network 2.2.2.2 0.0.0.0 area 0
+ network 192.168.5.0 0.0.0.3 area 0
+!

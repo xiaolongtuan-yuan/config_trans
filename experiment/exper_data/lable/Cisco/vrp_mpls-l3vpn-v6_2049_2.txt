@@ -1,0 +1,59 @@
+hostname ASBR1
+!
+ip vrf vpn1
+ rd 100:2
+ route-target export 1:1
+ route-target import 1:1
+!
+mpls label protocol ldp
+!
+mpls ldp router-id Loopback0
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.10.1.1 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ vrf forwarding vpn1
+ ipv6 enable
+ ipv6 address 2001:db8:3::1/64
+!
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255
+!
+router bgp 100
+ neighbor 1.1.1.9 remote-as 100
+ neighbor 1.1.1.9 update-source Loopback1
+ !
+ address-family ipv4
+  neighbor 1.1.1.9 activate
+  neighbor 1.1.1.9 next-hop-self
+  network 10.10.1.0 mask 255.255.255.0
+  no synchronization
+  exit-address-family
+ !
+ address-family vpnv4
+  neighbor 1.1.1.9 activate
+  neighbor 1.1.1.9 next-hop-self
+  exit-address-family
+ !
+ address-family vpnv6
+  neighbor 1.1.1.9 activate
+  neighbor 1.1.1.9 next-hop-self
+  exit-address-family
+ !
+ address-family ipv6 vrf vpn1
+  neighbor 2001:db8:3::2 remote-as 200
+  network 2001:db8:3::/64
+  exit-address-family
+ !
+ exit
+!
+router ospf 1
+ network 2.2.2.9 0.0.0.0 area 0
+ network 10.10.1.0 0.0.0.255 area 0
+!
+end

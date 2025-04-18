@@ -1,0 +1,23 @@
+#
+ sysname PE2
+#
+ vlan batch 10
+#
+ igmp-snooping enable
+#
+vlan 10
+ igmp-snooping enable  igmp-snooping report-suppress
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ portswitch
+ port default vlan 10
+ igmp-snooping static-router-port vlan 10
+#   
+interface GigabitEthernet1/0/1
+ undo shutdown
+ portswitch
+ port trunk allow-pass vlan 10
+ l2-multicast static-group group-address 224.1.1.1 vlan 10
+#
+return

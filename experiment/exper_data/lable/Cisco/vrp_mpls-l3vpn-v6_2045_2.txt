@@ -1,0 +1,55 @@
+hostname PE3
+
+ip vrf vpn1
+ rd 100:3
+ label per-instance
+ route-target export 111:1
+ route-target import 111:1
+
+mpls label protocol ldp
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.20.1.2 255.255.255.252
+ mpls ip
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ vrf forwarding vpn1
+ ipv6 address 2001:db8:3::2/64
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 10.11.1.2 255.255.255.252
+ mpls ip
+
+interface Loopback1
+ ip address 3.3.3.3 255.255.255.255
+
+router bgp 100
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 update-source Loopback1
+ neighbor 2.2.2.2 remote-as 100
+ neighbor 2.2.2.2 update-source Loopback1
+
+ address-family ipv4
+  neighbor 1.1.1.1 activate
+  neighbor 2.2.2.2 activate
+  no synchronization
+
+ address-family vpnv4
+  neighbor 1.1.1.1 activate
+  neighbor 2.2.2.2 activate
+
+ address-family vpnv6
+  neighbor 2001:db8:3::1 activate
+  neighbor 2001:db8:3::1 remote-as 65410
+  next-hop-self
+
+router ospf 1
+ router-id 3.3.3.3
+ network 10.20.1.0 0.0.0.3 area 0
+ network 10.11.1.0 0.0.0.3 area 0
+ network 3.3.3.3 0.0.0.0 area 0
+

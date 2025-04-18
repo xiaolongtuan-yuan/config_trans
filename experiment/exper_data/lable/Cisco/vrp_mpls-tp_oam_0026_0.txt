@@ -1,0 +1,48 @@
+hostname LSRA
+
+mpls label protocol ldp
+
+interface GigabitEthernet1/0/0
+no shutdown
+ip address 2.1.1.1 255.255.255.0
+mpls ip
+
+interface Loopback1
+ip address 1.1.1.1 255.255.255.255
+
+interface Tunnel10
+ip unnumbered Loopback1
+tunnel mode mpls traffic-eng
+tunnel destination 3.3.3.3
+tunnel mpls traffic-eng autoroute announce
+tunnel mpls traffic-eng priority 2 2
+tunnel mpls traffic-eng bandwidth 1000
+tunnel mpls traffic-eng record route
+tunnel mpls traffic-eng path-option 1 explicit name PATH1
+tunnel mpls traffic-eng path-option 2 dynamic
+
+ip route 2.2.2.2 255.255.255.255 Tunnel10
+ip route 3.3.3.3 255.255.255.255 Tunnel10
+
+mpls traffic-eng auto-bw collection-interval 300
+
+mpls traffic-eng auto-bw min-bandwidth 500
+mpls traffic-eng auto-bw max-bandwidth 1000
+
+mpls oam
+mpls oam ldp lsp-ping
+mpls oam ldp lsp-ping interval 1
+mpls oam ldp lsp-ping timeout 1000
+mpls oam ldp lsp-ping reply 1000
+
+mpls tp
+mpls tp oam
+mpls tp oam meg test
+mpls tp oam meg test ccm
+mpls tp oam meg test ccm interval 1
+mpls tp oam meg test ccm timeout 3000
+mpls tp oam meg test ccm reply 3000
+mpls tp oam meg test ccm eth
+mpls tp oam meg test ccm eth enable
+
+end

@@ -1,0 +1,33 @@
+hostname MASG
+
+bfd all-interfaces
+mpls ldp router-id Loopback0 force
+mpls label protocol ldp
+mpls ip
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.4.1.2 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+
+interface Loopback0
+ ip address 5.5.5.5 255.255.255.255
+
+router bgp 200
+ neighbor 4.4.4.4 remote-as 200
+ neighbor 4.4.4.4 update-source Loopback0
+ !
+ address-family ipv4
+  network 5.5.5.5 mask 255.255.255.255
+  neighbor 4.4.4.4 activate
+  neighbor 4.4.4.4 route-map policy1 out
+  neighbor 4.4.4.4 advertise-labels
+
+router ospf 2
+ network 5.5.5.5 0.0.0.0 area 0
+ network 10.4.1.0 0.0.0.255 area 0
+
+route-map policy1 permit 10
+ set mpls label
+

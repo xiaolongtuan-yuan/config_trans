@@ -1,0 +1,32 @@
+hostname DeviceC
+
+vlan 14
+vlan 18
+
+router ospf 1
+ router-id 3.3.3.3
+ redistribute static subnets
+ network 2001:DB8:3::/64 area 0.0.0.0
+ network 2001:DB8:1::/64 area 0.0.0.0
+
+interface Vlan14
+ ipv6 address 2001:DB8:3::2/64
+ ipv6 ospf 1 area 0.0.0.0
+
+interface Vlan18
+ ipv6 address 2001:DB8:1::1/64
+ ipv6 ospf 1 area 0.0.0.0
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ switchport mode access
+ switchport access vlan 18
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ switchport mode access
+ switchport access vlan 14
+
+ipv6 route 2001:DB8:7::1/128 Null0
+
+end

@@ -1,0 +1,25 @@
+#
+sysname DeviceC
+#
+multicast routing-enable
+#
+isis 1
+ network-entity 10.0000.0000.0003.00
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.2.1.2 255.255.255.0
+ pim sm
+ isis enable 1
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ip address 10.3.1.2 255.255.255.0
+ pim sm
+ isis enable 1
+#
+pim
+ c-bsr GigabitEthernet3/0/0
+ c-rp GigabitEthernet3/0/0
+#
+return

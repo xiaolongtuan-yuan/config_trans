@@ -1,0 +1,52 @@
+#
+ sysname UPE2
+#
+vlan batch 10
+#
+ igmp-snooping enable
+#
+mpls lsr-id 4.4.4.4
+ mpls
+#
+ mpls l2vpn
+#
+vsi btv static
+ pwsignal ldp
+  vsi-id 1
+  peer 2.2.2.2 upe
+  peer 6.6.6.6 upe
+ igmp-snooping enable
+ igmp-snooping proxy
+ igmp-snooping proxy router-protocol-pass
+
+#
+mpls ldp
+#
+isis 1
+ is-level level-1
+ network-entity 49.0040.0400.4004.00
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.11.13.1 255.255.255.252
+ isis enable 1
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.11.12.2 255.255.255.252
+ isis enable 1
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/2.1
+ vlan-type dot1q 10
+ l2 binding vsi btv
+ l2-multicast static-group group-address 225.0.0.1 vsi btv
+#
+interface LoopBack0
+ ip address 4.4.4.4 255.255.255.255
+ isis enable 1
+#
+return

@@ -1,0 +1,68 @@
+#
+sysname NPE1
+#
+evpn vpn-instance evpna
+ route-distinguisher 1.1.1.100:10
+ vpn-target 10:10 export-extcommunity
+ vpn-target 10:10 import-extcommunity
+#
+mpls lsr-id 1.1.1.1
+#
+mpls
+#
+mpls l2vpn      
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls 
+ mpls ldp
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip address 192.168.14.1 255.255.255.0
+ mpls 
+ mpls ldp
+#
+interface LoopBack0
+ ip address 1.1.1.1 255.255.255.255
+#
+interface LoopBack100
+ ip address 1.1.1.100 255.255.255.255
+#
+interface PW-VE1
+ mpls l2vc 2.2.2.2 1 
+#
+interface PW-VE1.1
+ encapsulation qinq-termination
+ qinq termination pe-vid 100 ce-vid 1 to 2
+ evpn binding vpn-instance evpna
+#
+bgp 100
+ peer 2.2.2.100 as-number 65001
+ peer 2.2.2.100 ebgp-max-hop 255
+ peer 2.2.2.100 connect-interface LoopBack100
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 2.2.2.100 enable
+ #
+ l2vpn-family evpn
+  undo policy vpn-target
+  peer 2.2.2.100 enable
+#
+ospf 1
+ area 0.0.0.0
+  network 1.1.1.1  0.0.0.0
+  network 10.1.1.0 0.0.0.255
+#
+ospf 100
+ area 0.0.0.1
+  network 1.1.1.100 0.0.0.0
+  network 192.168.14.0 0.0.0.255
+#
+evpn source-address 1.1.1.100
+#
+return

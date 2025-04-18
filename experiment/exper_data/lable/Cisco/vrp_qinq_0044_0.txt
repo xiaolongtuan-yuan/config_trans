@@ -1,0 +1,41 @@
+hostname PE1
+!
+vlan 20
+!
+ip igmp snooping
+ip igmp snooping querier
+!
+mpls label protocol ldp
+mpls ldp router-id Loopback1
+!
+mpls l2vpn
+!
+bridge-domain 123
+  mtu 1500
+  ip igmp snooping
+  ip igmp snooping version 3
+  ip igmp snooping static-router-port remote-peer 3.3.3.3
+!
+mpls ldp neighbor 3.3.3.3
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+!
+interface GigabitEthernet1/0/2.1
+ encapsulation dot1Q 20
+ bridge-domain 123
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 192.168.12.1 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+!
+router ospf 1
+ network 1.1.1.1 0.0.0.0 area 0
+ network 192.168.12.0 0.0.0.255 area 0
+!
+end

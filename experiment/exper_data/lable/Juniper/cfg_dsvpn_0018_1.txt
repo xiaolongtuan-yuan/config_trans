@@ -1,0 +1,44 @@
+set system host-name Hub2
+
+set firewall family inet filter ACL-2000 term 1 from source-address 192.168.0.0/24
+set firewall family inet filter ACL-2000 term 1 then accept
+
+set firewall family inet filter ACL-2001 term 1 from source-address 192.168.1.0/24
+set firewall family inet filter ACL-2001 term 2 from source-address 192.168.2.0/24
+set firewall family inet filter ACL-2001 term 1 then accept
+set firewall family inet filter ACL-2001 term 2 then accept
+
+set policy-options policy-statement Route-Policy-1 term 1 from filter ACL-2000
+set policy-options policy-statement Route-Policy-1 term 1 then accept
+
+set policy-options policy-statement Route-Policy-2 term 1 from filter ACL-2001
+set policy-options policy-statement Route-Policy-2 term 1 then accept
+
+set interfaces gr-0/0/0 unit 0 tunnel source 10.1.254.10
+set interfaces gr-0/0/0 unit 0 tunnel destination dynamic
+set interfaces gr-0/0/0 unit 0 key 100
+set interfaces gr-0/0/0 unit 0 family inet address 172.16.1.254/24
+
+set security ipsec vpn VPN-Profile bind-interface gr-0/0/0.0
+set security ipsec vpn VPN-Profile ike gateway IPSEC-Gateway
+set security ipsec vpn VPN-Profile ike ipsec-policy IPSEC-Policy
+set security ike policy IPSEC-Policy mode main
+set security ike policy IPSEC-Policy proposal-set standard
+set security ike gateway IPSEC-Gateway address 10.1.254.10
+set security ike gateway IPSEC-Gateway ike-policy IPSEC-Policy
+
+set protocols ospf area 0.0.0.0 interface gr-0/0/0.0 authentication md5 key 1 password PASSWORD
+set protocols ospf area 0.0.0.0 interface gr-0/0/0.0 hello-interval 1
+set protocols ospf area 0.0.0.0 interface gr-0/0/0.0 dead-interval 4
+set protocols ospf area 0.0.0.0 network 172.16.1.0/24
+
+set protocols ospf area 0.0.0.1 interface lo0.0
+set protocols ospf area 0.0.0.1 network 10.1.254.0/24
+
+set protocols ospf3 area 0.0.0.0 interface lo0.0
+set protocols ospf3 area 0.0.0.0 network 192.168.0.0/24
+
+set security ipsec proposal IPSEC-Profile protocol esp
+set security ipsec proposal IPSEC-Profile authentication-algorithm hmac-sha1-96
+set security ipsec proposal IPSEC-Profile encryption-algorithm aes-128-cbc
+set security ipsec policy IPSEC-Policy proposals IPSEC-Profile

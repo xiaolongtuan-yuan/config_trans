@@ -1,0 +1,19 @@
+hostname CE3
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.3.1.1 255.255.255.0
+!
+interface Loopback1
+ ip address 33.33.33.33 255.255.255.255
+!
+router bgp 65430
+ neighbor 10.3.1.2 remote-as 100
+ network 33.33.33.33 mask 255.255.255.255
+ !
+ address-family ipv4 unicast
+  synchronization
+  neighbor 10.3.1.2 activate
+ exit-address-family
+!
+end

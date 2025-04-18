@@ -1,0 +1,32 @@
+set system host-name PE2
+
+set protocols mpls interface ge-1/0/2.0
+set protocols mpls interface lo0.0
+set protocols ldp interface ge-1/0/2.0
+set protocols ldp router-id 1.1.1.1 force
+
+set routing-options router-id 1.1.1.1
+
+set protocols l2circuit neighbor 2.2.2.2 interface ge-1/0/1.0 encapsulation-type ethernet
+set protocols l2circuit neighbor 2.2.2.2 vfi vfi-name ldp1
+set protocols l2circuit neighbor 2.2.2.2 vfi vpn-id 1 signaling ldp
+
+set interfaces ge-1/0/1 unit 1 vlan-id 2
+set interfaces ge-1/0/1 unit 1 encapsulation vlan-ccc
+set interfaces ge-1/0/1 unit 1 family bridge interface-mode trunk
+
+set interfaces ge-1/0/2 unit 0 family inet address 10.1.1.2/24
+set protocols ospf area 0 interface ge-1/0/2.0
+set protocols ospf area 0 interface lo0.0
+
+set ethernet-oam connectivity-fault-management domain md1 level 1
+set ethernet-oam connectivity-fault-management domain md1 service md service-name md1
+set ethernet-oam connectivity-fault-management domain md1 service md maintenance-association ma1
+set ethernet-oam connectivity-fault-management domain md1 service md maintenance-association ma1 mep 2 interface ge-1/0/1.1
+set ethernet-oam connectivity-fault-management domain md1 service md maintenance-association ma1 mep 2 ccm-interval 3
+set ethernet-oam connectivity-fault-management domain md1 service md maintenance-association ma1 mep 2 remote-mep 1 ccm-interval 3
+set ethernet-oam connectivity-fault-management domain md1 service md maintenance-association ma1 mep 2 ccm-loss-threshold 3
+set ethernet-oam connectivity-fault-management domain md1 service md maintenance-association ma1 mep 2 loss-measurement test-id 1 peer-ip 2.2.2.2
+set ethernet-oam connectivity-fault-management domain md1 service md maintenance-association ma1 mep 2 loss-measurement test-id 1 receive enable
+
+set interfaces lo0 unit 0 family inet address 1.1.1.1/24

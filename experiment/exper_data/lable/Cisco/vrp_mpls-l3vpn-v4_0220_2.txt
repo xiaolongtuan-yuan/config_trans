@@ -1,0 +1,43 @@
+hostname Spoke-PE2
+!
+ip vrf vpna
+ rd 100:3
+ route-target export 100:1
+ route-target import 200:1
+!
+mpls label protocol ldp
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip vrf forwarding vpna
+ ip address 10.4.1.2 255.255.255.0
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 11.1.1.1 255.255.255.0
+ mpls ip
+ mpls ldp discovery hello accept
+!
+interface Loopback1
+ ip address 3.3.3.9 255.255.255.255
+!
+router bgp 100
+ neighbor 2.2.2.9 remote-as 100
+ neighbor 2.2.2.9 update-source Loopback1
+ !
+ address-family ipv4
+  no synchronization
+  neighbor 2.2.2.9 activate
+ !
+ address-family vpnv4
+  neighbor 2.2.2.9 activate
+  neighbor 2.2.2.9 send-community extended
+ !
+ address-family ipv4 vrf vpna
+  neighbor 10.4.1.1 remote-as 65420
+!
+router ospf 1
+ network 3.3.3.9 0.0.0.0 area 0
+ network 11.1.1.0 0.0.0.255 area 0
+!
+end

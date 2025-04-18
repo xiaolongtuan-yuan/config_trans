@@ -1,0 +1,41 @@
+# 设置主机名
+set system host-name CE2
+
+# 设置MPLS标签协议为LDP
+set protocols ldp
+
+# 配置接口GigabitEthernet1/0/0
+set interfaces ge-1/0/0 unit 0 family inet address 21.1.1.2/24
+set interfaces ge-1/0/0 unit 0 family mpls
+
+# 配置接口GigabitEthernet2/0/0
+set interfaces ge-2/0/0 unit 0 family inet address 20.1.1.1/24
+set interfaces ge-2/0/0 unit 0 family mpls
+
+# 配置环回接口Loopback1
+set interfaces lo0 unit 1 family inet address 5.5.5.9/32
+
+# 配置OSPF路由协议
+set protocols ospf area 0 interface lo0.1
+set protocols ospf area 0 interface ge-2/0/0.0
+set protocols ospf area 0 interface ge-1/0/0.0
+set protocols ospf export bgp-to-ospf
+
+# 配置BGP路由协议
+set protocols bgp group to-AS300 neighbor 21.1.1.1 peer-as 300
+set protocols bgp group to-AS300 neighbor 21.1.1.1 local-address 21.1.1.2
+set policy-options policy-statement policy1 term 1 then community set mpls-topmost 1
+set protocols bgp group to-AS300 export policy1
+
+# 配置MPLS LDP
+set protocols ldp router-id 5.5.5.9
+set protocols ldp interface lo0.1
+set protocols ldp interface ge-1/0/0.0
+set protocols ldp interface ge-2/0/0.0
+
+# 配置MPLS流量工程隧道
+set protocols mpls label-switched-path to-RSVP-TE as-path path-name
+set protocols mpls label-switched-path to-RSVP-TE metric absolute 1
+
+# 开启MPLS BGP转发
+set forwarding-options mpls-forwarding

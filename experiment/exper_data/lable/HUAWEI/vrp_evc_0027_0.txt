@@ -1,0 +1,55 @@
+#
+sysname PE1
+#
+vlan batch 10
+vlan batch 20
+vlan batch 30
+#
+mpls lsr-id 1.1.1.9
+#
+mpls
+#
+mpls l2vpn
+#
+vsi ldp1 bd-mode
+ pwsignal ldp
+  vsi-id 2
+  peer 2.2.2.9
+ encapsulation vlan
+#
+bridge-domain 10
+ l2 binding vsi ldp1 pw-tag 10
+#
+bridge-domain 20
+ l2 binding vsi ldp1 pw-tag 20
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+#
+interface GigabitEthernet1/0/1.1 mode l2
+ encapsulation dot1q vid 10
+ rewrite pop single
+ bridge-domain 10
+#
+interface GigabitEthernet1/0/1.2 mode l2
+ encapsulation dot1q vid 20
+ rewrite pop single
+ bridge-domain 20
+#
+interface GigabitEthernet1/0/1.3 mode l2
+ encapsulation dot1q vid 30
+ rewrite pop single
+ bridge-domain 20
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+ospf 1
+ area 0.0.0.0
+  network 1.1.1.9 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+#
+return

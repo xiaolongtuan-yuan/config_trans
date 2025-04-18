@@ -1,0 +1,24 @@
+set system host-name PE2
+
+set protocols mpls interface ge-1/0/0
+set protocols mpls interface ge-2/0/0
+set protocols ldp transport-address 3.3.3.9
+set protocols ldp interface ge-2/0/0
+set protocols ldp interface lo0.1
+set protocols ldp targeted-session 1.1.1.9
+set protocols ldp targeted-hello accept
+
+set protocols l2circuit neighbor 1.1.1.9 interface ge-1/0/0.0 virtual-circuit-id 101 encapsulation-type mpls
+
+set interfaces ge-1/0/0 unit 0 family ethernet-switching port-mode trunk
+set interfaces ge-1/0/0 unit 1 encapsulation vlan-ccc vlan-id 20
+set interfaces ge-2/0/0 unit 0 family inet address 10.2.2.1/24
+set interfaces ge-2/0/0 unit 0 family mpls
+set interfaces lo0 unit 1 family inet address 3.3.3.9/32
+
+set protocols ospf area 0.0.0.0 interface lo0.1
+set protocols ospf area 0.0.0.0 interface ge-2/0/0.0
+
+set interfaces ge-1/0/0 unit 0 family mpls
+set interfaces ge-1/0/0 enable
+set interfaces ge-2/0/0 enable

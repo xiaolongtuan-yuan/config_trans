@@ -1,0 +1,40 @@
+set system host-name LSRA
+
+set protocols mpls interface all
+set protocols ldp interface all
+
+set interfaces ge-1/0/0 unit 0 family inet address 2.1.1.1/24
+set interfaces ge-1/0/0 unit 0 family mpls
+
+set interfaces lo0 unit 1 family inet address 1.1.1.1/32
+
+set interfaces lt-1/0/0 unit 10 tunnel source 1.1.1.1
+set interfaces lt-1/0/0 unit 10 family inet address 0.0.0.0/0
+set protocols mpls explicit-null
+set protocols rsvp interface all
+set protocols rsvp interface lt-1/0/0.10
+set protocols rsvp bandwidth interface lt-1/0/0.10 priority 2 2
+set protocols rsvp bandwidth interface lt-1/0/0.10 bandwidth 1000
+set protocols rsvp interface lt-1/0/0.10 record-route
+set protocols mpls label-switched-path TUNNEL10 to 3.3.3.3
+set protocols mpls label-switched-path TUNNEL10 secondary-path PATH1
+set protocols mpls label-switched-path TUNNEL10 secondary-path dynamic
+
+set routing-options static route 2.2.2.2/32 next-hop lt-1/0/0.10
+set routing-options static route 3.3.3.3/32 next-hop lt-1/0/0.10
+
+set protocols mpls traffic-engineering auto-bandwidth interface lt-1/0/0.10 adjustment-interval 300
+set protocols mpls traffic-engineering auto-bandwidth interface lt-1/0/0.10 minimum-bandwidth 500
+set protocols mpls traffic-engineering auto-bandwidth interface lt-1/0/0.10 maximum-bandwidth 1000
+
+set services oam
+set services oam chassis lsp-ping
+set services oam lsp-ping interval 1
+set services oam lsp-ping timeout 1000
+
+set protocols mpls-tp oam meg test
+set protocols mpls-tp oam meg test ccm
+set protocols mpls-tp oam meg test ccm interval 1
+set protocols mpls-tp oam meg test ccm timeout 3000
+set protocols mpls-tp oam meg test ccm ethernet
+set protocols mpls-tp oam meg test ccm ethernet enable

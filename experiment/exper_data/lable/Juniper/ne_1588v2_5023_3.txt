@@ -1,0 +1,20 @@
+set system host-name PE2
+
+set protocols ptp interface all
+set protocols ptp clock-source bits1 input-type 1pps
+set protocols ptp clock-source bits1 priority 1
+set protocols ptp domain 1
+set protocols ptp device-type boundary-clock
+
+set interfaces ge-1/0/0 unit 0 family inet address 192.168.0.1/24
+set interfaces ge-1/0/0 unit 0 ptp enable
+set interfaces ge-1/0/0 unit 0 ptp delay-mechanism pdelay
+set interfaces ge-1/0/0 unit 0 disable false
+
+set interfaces ge-2/0/0 unit 0 family inet address 10.0.0.1/24
+set interfaces ge-2/0/0 unit 0 ptp enable
+set interfaces ge-2/0/0 unit 0 ptp delay-mechanism pdelay
+set interfaces ge-2/0/0 unit 0 disable false
+
+set protocols ospf area 0.0.0.0 interface ge-1/0/0.0
+set protocols ospf area 0.0.0.0 interface ge-2/0/0.0

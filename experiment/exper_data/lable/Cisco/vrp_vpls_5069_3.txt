@@ -1,0 +1,53 @@
+hostname PE4
+
+mpls label protocol ldp
+
+mpls ldp router-id Loopback0
+
+mpls ldp advertise-labels
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.5.2 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 192.168.4.2 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet1/0/2
+ no shutdown
+
+interface GigabitEthernet1/0/2.1
+ encapsulation dot1Q 10
+ xconnect vfi vsi1
+
+interface Loopback0
+ ip address 4.4.4.4 255.255.255.255
+
+router bgp 100
+ bgp log-neighbor-changes
+ neighbor 2.2.2.2 remote-as 100
+ neighbor 2.2.2.2 update-source Loopback0
+ neighbor 3.3.3.3 remote-as 100
+ neighbor 3.3.3.3 update-source Loopback0
+ address-family ipv4 unicast
+  neighbor 2.2.2.2 activate
+  neighbor 3.3.3.3 activate
+ exit-address-family
+
+router ospf 1
+ network 4.4.4.4 0.0.0.0 area 0
+ network 192.168.4.0 0.0.0.255 area 0
+ network 192.168.5.0 0.0.0.255 area 0
+ network 192.168.6.0 0.0.0.255 area 0
+
+vfi vsi1
+ vpn id 1
+ autodiscovery bgp signaling bgp
+  bgp ve-id 1
+  neighbor 2.2.2.2 ve-id 1
+  neighbor 3.3.3.3 ve-id 1
+
+end

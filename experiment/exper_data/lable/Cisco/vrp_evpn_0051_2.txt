@@ -1,0 +1,42 @@
+hostname NPE2
+!
+l2vpn vfi context evpna
+  vpn id 10
+  rd 2.2.2.100:10
+  route-target export 10:10
+  route-target import 10:10
+!
+mpls ldp router-id 2.2.2.100
+!
+interface GigabitEthernet1/0/0
+  no shutdown
+  service instance 10 ethernet
+    encapsulation untagged
+    bridge-domain 10
+!
+interface GigabitEthernet1/0/1
+  no switchport
+  ip address 192.168.14.4 255.255.255.0
+  mpls ip
+  mpls ldp enable
+!
+interface Loopback100
+  ip address 2.2.2.100 255.255.255.255
+!
+router bgp 65001
+  neighbor 1.1.1.100 remote-as 100
+  neighbor 1.1.1.100 ebgp-multihop 255
+  neighbor 1.1.1.100 update-source Loopback100
+  address-family ipv4 unicast
+    neighbor 1.1.1.100 activate
+  address-family l2vpn evpn
+    neighbor 1.1.1.100 activate
+!
+router ospf 100
+  network 2.2.2.100 0.0.0.0 area 0.0.0.1
+  network 192.168.14.0 0.0.0.255 area 0.0.0.1
+!
+evpn
+  source-interface Loopback100
+!
+end

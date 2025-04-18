@@ -1,0 +1,55 @@
+hostname PE2
+!
+ip vrf VPNA
+ rd 300:1
+ route-target export 3:3
+ route-target import 3:3
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip vrf forwarding VPNA
+ ip address 192.168.2.1 255.255.255.0
+ ip pim sparse-mode
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls ip
+!
+interface Loopback1
+ ip address 3.3.3.3 255.255.255.255
+!
+router bgp 100
+ neighbor 2.2.2.2 remote-as 100
+ neighbor 2.2.2.2 update-source Loopback1
+ !
+ address-family ipv4
+  neighbor 2.2.2.2 activate
+  no synchronization
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 2.2.2.2 activate
+ exit-address-family
+ !
+ address-family ipv4 vrf VPNA
+  redistribute ospf 2
+ exit-address-family
+!
+router ospf 1
+ network 3.3.3.3 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+!
+router ospf 2 vrf VPNA
+ redistribute bgp subnets
+ network 192.168.2.0 0.0.0.255 area 0
+!
+ip pim rp-address 1.1.1.1 group-list RP
+!
+mpls label protocol ldp
+!
+mpls ldp mldp p2mp
+!
+mpls ldp router-id 3.3.3.3
+!
+return

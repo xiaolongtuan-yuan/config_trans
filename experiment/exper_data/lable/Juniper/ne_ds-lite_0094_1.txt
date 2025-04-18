@@ -1,0 +1,25 @@
+set system host-name DS-Lite
+
+set firewall family inet6 filter 3500 term 1 from source-address 2001:DB8:2::/64
+set firewall family inet6 filter 3500 term 1 then accept
+
+set routing-instances DS-Lite instance-type virtual-router
+set routing-instances DS-Lite routing-options router-id 1.1.1.1
+
+set routing-options rib inet6.0
+
+set interfaces ge-0/0/2 unit 0 family inet6 address 2001:DB8:1::2:1/64
+set interfaces ge-0/0/2 unit 0 family inet6 filter input p1
+
+set routing-instances DS-Lite routing-options static route 2001:DB8::1/128 next-hop 2001:DB8:2::1
+
+set firewall family inet6 filter p1 term 1 from source-address 2001:DB8:2::/64
+set firewall family inet6 filter p1 term 1 then next-hop 2001:DB8:2::1
+
+set protocols isis level 1 interface ge-0/0/2
+set protocols isis level 1 net 49.0001.0000.0002.00
+set protocols isis level 1 metric-style wide
+set protocols isis level 1 redistribute connected
+set protocols isis level 1 redistribute static
+
+set routing-instances DS-Lite routing-options static route 2001:DB8:2::/64 next-hop ge-0/0/2

@@ -1,0 +1,31 @@
+#
+sysname CE1
+#
+multicast routing-enable
+#
+interface GigabitEthernet1/0/0
+ undo portswitch
+ undo shutdown
+ ip address 10.1.2.1 255.255.255.0
+ pim sm
+#
+interface GigabitEthernet2/0/0
+ undo portswitch
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ pim sm
+#
+interface LoopBack1
+ ip address 4.4.4.4 255.255.255.255
+ pim sm
+#
+ospf 3
+ area 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+  network 10.1.2.0 0.0.0.255
+  network 4.4.4.4 0.0.0.0
+#
+pim
+ static-rp 4.4.4.4
+#
+return

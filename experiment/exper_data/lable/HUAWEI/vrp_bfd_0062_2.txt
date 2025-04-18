@@ -1,0 +1,29 @@
+#
+sysname P
+#
+ mpls lsr-id 2.2.2.2
+ mpls
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 172.16.1.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 172.16.2.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack1
+  ip address 2.2.2.2 255.255.255.255
+#
+ospf 100
+ area 0.0.0.0
+  network 172.16.1.0 0.0.0.255
+  network 172.16.2.0 0.0.0.255
+  network 2.2.2.2 0.0.0.0
+return

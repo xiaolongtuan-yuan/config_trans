@@ -1,0 +1,48 @@
+#
+sysname PE1        
+# 
+segment-routing ipv6
+ encapsulation source-address 2001:DB8:1::1
+ locator aa ipv6-prefix 2001:DB8:100:: 64 static 32
+#
+isis 1
+ is-level level-1
+ cost-style wide
+ network-entity 10.0000.0000.0001.00
+ #
+ ipv6 enable topology ipv6
+ segment-routing ipv6 locator aa
+ #
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:10::1/64
+ isis ipv6 enable 1
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ipv6 enable
+ ip address 2001:DB8:11::2/64
+#
+interface LoopBack1
+ ipv6 enable
+ ipv6 address 2001:DB8:1::1/128
+ isis ipv6 enable 1
+#
+bgp 100
+ router-id 1.1.1.1
+ peer 2001:DB8:11::1 as-number 200
+ peer 2001:DB8:3::3 as-number 100
+ peer 2001:DB8:3::3 connect-interface LoopBack1
+ #
+ ipv6-family unicast
+  undo synchronization
+  network 1:: 96
+  segment-routing ipv6 locator aa
+  segment-routing ipv6 best-effort
+  peer 2001:DB8:11::1 enable
+  peer 2001:DB8:3::3 enable
+  peer 2001:DB8:3::3 prefix-sid
+#
+return

@@ -1,0 +1,18 @@
+set system host-name PE1 
+set protocols ldp
+setprotocols mpls
+set protocols mpls traffic-eng tunnel path-option 1 explicit host-name path2pe2 next-address strict 3.3.3.9
+set system login router-id loopback0 force
+set interfaces ge-1/0/0 unit 0 family inet地址配置10.10.1.1/24
+set interfaces ge-1/0/0 unit 0 family ethernet-switching vfi a2
+set interfaces ge-1/0/0.1 encapsulation dot1q 10
+set interfaces ge-1/0/0.1 unit 0 family vfi a2
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+set protocols ospf area 0 route-id loopback0
+set protocols ospf area 0 network 10.10.1.0/24
+set protocols ospf area 0 network 1.1.1.9/32
+set routing-options traffic-eng tunnels path-option 1 explicit host-name path2pe2 next-address strict source 3.3.3.9
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+set interfaces ge-1/0/0 unit 0 family inet address 10.10.1.1/24
+set interfaces ge-1/0/0 unit 0 family ethernet-switching vfi a2
+set protocols mpls traffic-eng tunnels tunnel-id 100 destination 3.3.3.9 interface ge-1/0/0.1

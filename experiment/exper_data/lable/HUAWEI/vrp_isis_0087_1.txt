@@ -1,0 +1,29 @@
+#
+sysname DeviceB
+#
+bfd
+#
+isis 1
+ is-level level-2
+ bfd all-interfaces enable
+ network-entity 10.0000.0000.0002.00
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 2.2.2.2 255.255.255.0
+ isis enable 1
+#
+interface GigabitEthernet2/0/0
+undo shutdown
+ ip address 3.3.3.2 255.255.255.0
+ isis enable 1
+ isis cost 5
+ isis bfd enable
+ isis bfd min-tx-interval 100 min-rx-interval 100 detect-multiplier 4
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ip address 172.16.1.1 255.255.255.0
+ isis enable 1
+#
+return

@@ -1,0 +1,27 @@
+hostname CE6
+
+ip multicast-routing
+
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 10.3.4.1 255.255.255.0
+ ip pim sparse-mode
+
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 10.3.13.2 255.255.255.0
+ ip pim sparse-mode
+
+interface GigabitEthernet1/0/3
+ no shutdown
+ ip address 10.3.6.1 255.255.255.0
+ ip pim sparse-mode
+
+router ospf 1
+ network 10.3.13.0 0.0.0.255 area 0
+ network 10.3.4.0 0.0.0.255 area 0
+ network 10.3.6.0 0.0.0.255 area 0
+
+ip pim rp-address 10.1.11.1
+
+end

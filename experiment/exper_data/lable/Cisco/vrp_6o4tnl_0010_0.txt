@@ -1,0 +1,20 @@
+hostname DeviceA
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 1.1.1.1 255.0.0.0
+
+interface GigabitEthernet 1/0/1
+ no shutdown
+ ipv6 enable
+ ipv6 address 2002:101:101:1::1/64
+
+interface Tunnel 10
+ ipv6 enable
+ ipv6 address 2002:101:101::1/64
+ tunnel mode ipv6ip 6to4
+ tunnel source GigabitEthernet1/0/0
+
+ipv6 route 2002::/16 Tunnel 10
+
+end

@@ -1,0 +1,26 @@
+hostname LSRC
+!
+mpls label protocol ldp
+!
+mpls traffic-eng tunnels
+!
+router ospf 1
+ opaque-lsa-capability
+ network 3.3.3.3 0.0.0.0 area 0
+ network 192.168.2.0 0.0.0.255 area 0
+ network 192.168.3.0 0.0.0.255 area 0
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.2.2 255.255.255.0
+ mpls ip
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.3.2 255.255.255.0
+ mpls ip
+!
+interface Loopback1
+ ip address 3.3.3.3 255.255.255.255
+!
+end

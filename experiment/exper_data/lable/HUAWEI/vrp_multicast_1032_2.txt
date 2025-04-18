@@ -1,0 +1,47 @@
+#
+ sysname DeviceC
+#
+multicast routing-enable
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 192.168.4.1 255.255.255.0
+ pim sm
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ip address 10.22.22.1 255.255.255.0
+ pim sm
+ igmp enable
+#
+interface GigabitEthernet 3/0/0
+ undo shutdown
+ ip address 192.168.3.2 255.255.255.0
+ pim sm
+ # 
+interface loopback 0
+ ip address 3.3.3.3 255.255.255.255
+ pim sm
+#
+bgp 200
+ peer 192.168.3.1 as-number 200
+ peer 192.168.4.2 as-number 200
+#
+ ipv4-family unicast
+  undo synchronization
+  peer 192.168.3.1 enable
+  peer 192.168.4.2 enable
+#
+ ipv4-family multicast
+  undo synchronization
+  peer 192.168.3.1 enable
+  peer 192.168.4.2 enable
+#
+ospf 1 
+ area 0.0.0.0
+  network 192.168.3.0 0.0.0.255
+  network 192.168.4.0 0.0.0.255
+  network 10.22.22.0 0.0.0.255
+  network 3.3.3.3 0.0.0.0
+#
+return

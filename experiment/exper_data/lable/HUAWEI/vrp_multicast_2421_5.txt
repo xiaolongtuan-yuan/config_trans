@@ -1,0 +1,30 @@
+#
+sysname CE6
+#
+multicast routing-enable
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.3.4.1 255.255.255.0
+ pim sm
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip address 10.3.13.2 255.255.255.0
+ pim sm
+#
+interface GigabitEthernet1/0/3
+ undo shutdown
+ ip address 10.3.6.1 255.255.255.0
+ pim sm
+#
+ospf 1 
+ area 0.0.0.0
+  network 10.3.13.0 0.0.0.255
+  network 10.3.4.0 0.0.0.255
+  network 10.3.6.0 0.0.0.255
+#
+pim
+ static-rp 10.1.11.1
+#
+return

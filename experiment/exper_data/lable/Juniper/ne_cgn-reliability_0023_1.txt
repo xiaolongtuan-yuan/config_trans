@@ -1,0 +1,43 @@
+set system host-name CGN2
+
+set security flow session-limit 6
+
+set firewall family inet filter acl3001 term allow term1 from source-address 192.168.10.0/24
+set firewall family inet filter acl3001 term allow then accept
+
+set firewall family inet filter classifier1 term match-from match source-address 192.168.10.0/24
+set firewall family inet filter classifier1 term match-from then accept
+
+set policy-options policy-statement policy1 term classifier1 from firewall-filter classifier1
+set policy-options policy-statement policy1 term classifier1 then next-hop self
+
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.1.2/24 vrrp-group 1 virtual-address 10.1.1.3
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.1.2/24 vrrp-group 1 priority 150
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.1.2/24 vrrp-group 1 authentication-type md5
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.1.2/24 vrrp-group 1 authentication-key YourKeyHere
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.1.2/24 vrrp-group 1 track ge-0/0/1
+
+set routing-instances service-group1 instance-type vrf
+set routing-instances service-group1 route-distinguisher 1:1
+set routing-instances service-group1 vrf-target target:1:1
+set routing-instances service-group1 interface ge-0/0/1.0
+
+set security nat source pool address-group1 address 11.11.11.100/32 to 11.11.11.105/32
+
+set security nat source rule-set nat1 from zone trust
+set security nat source rule-set nat1 to zone untrust
+set security nat source rule-set nat1 rule rule1 match source-address 0.0.0.0/0
+set security nat source rule-set nat1 rule rule1 then source-nat pool address-group1
+
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.1.2/24
+set interfaces ge-0/0/1 unit 0 family inet filter input acl3001
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.1.2/24 vrrp-group 1 virtual-address 10.1.1.3
+set interfaces ge-0/0/2 unit 0 family inet address 192.168.20.1/24
+
+set security zones security-zone trust interfaces ge-0/0/1.0
+set security zones security-zone trust host-inbound-traffic system-services all
+set security zones security-zone trust host-inbound-traffic protocols all
+
+set security zones security-zone untrust interfaces ge-0/0/2.0
+set security zones security-zone untrust host-inbound-traffic system-services all
+set security zones security-zone untrust host-inbound-traffic protocols all

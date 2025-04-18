@@ -1,0 +1,21 @@
+set system host-name CGN2
+
+set firewall family inet filter ACL-3001 term 1 from source-address 192.168.10.0/24
+set firewall family inet filter ACL-3001 term 1 then accept
+
+set firewall family inet filter POLICY-1 term CLASSIFIER-1 from filter ACL-3001
+set firewall family inet filter POLICY-1 term CLASSIFIER-1 then nat destination pool pool1
+
+set nat source pool pool1 address 11.11.11.106 to 11.11.11.110
+set nat source pool pool1 port-range 1024-65535
+set nat source rule-set NAT-RULE-SET from zone trust
+set nat source rule-set NAT-RULE-SET to zone untrust
+set nat source rule-set NAT-RULE-SET rule 1 match source-address 192.168.10.0/24
+set nat source rule-set NAT-RULE-SET rule 1 then source-nat pool pool1
+
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.10.1/24
+set interfaces ge-2/0/0 unit 0 family inet filter input POLICY-1
+
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.2/24
+
+set routing-options static route 0.0.0.0/0 next-hop ge-0/0/0.0

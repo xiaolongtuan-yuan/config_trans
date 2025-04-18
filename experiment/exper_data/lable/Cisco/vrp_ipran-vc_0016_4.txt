@@ -1,0 +1,61 @@
+hostname RSG
+
+ip vrf a
+ rd 1:1
+ route-target export 1:1
+ route-target import 1:1
+
+mpls ldp router-id Loopback0
+
+mpls ldp advertise-labels for vrf a
+
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 10.7.0.2 255.255.255.252
+ mpls ip
+ mpls ldp discovery transport-address Loopback0
+
+interface GigabitEthernet1/0/4
+ no shutdown
+ ip address 10.8.0.2 255.255.255.252
+ mpls ip
+ mpls ldp discovery transport-address Loopback0
+
+interface GigabitEthernet1/0/5
+ no shutdown
+ ip vrf forwarding a
+ ip address 10.20.0.2 255.255.255.252
+
+interface Loopback0
+ ip address 10.5.2.9 255.255.255.255
+
+router bgp 100
+ bgp router-id 10.5.2.9
+ neighbor 10.3.2.9 remote-as 100
+ neighbor 10.3.2.9 update-source Loopback0
+ neighbor 10.4.2.9 remote-as 100
+ neighbor 10.4.2.9 update-source Loopback0
+
+ address-family ipv4
+  neighbor 10.3.2.9 activate
+  neighbor 10.4.2.9 activate
+  network 10.5.2.9 mask 255.255.255.255
+  network 10.7.0.0 mask 255.255.255.0
+  network 10.8.0.0 mask 255.255.255.0
+
+ address-family vpnv4
+  neighbor 10.3.2.9 activate
+  neighbor 10.4.2.9 activate
+
+ address-family ipv4 vrf a
+  neighbor 10.20.0.1 remote-as 500
+  neighbor 10.20.0.1 activate
+
+router ospf 1
+ router-id 10.5.2.9
+ capability opaque-lsa
+ mpls ldp autoconfig area 0
+ network 10.5.2.9 0.0.0.0 area 0
+ network 10.7.0.0 0.0.0.255 area 0
+ network 10.8.0.0 0.0.0.255 area 0
+

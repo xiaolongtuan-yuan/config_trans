@@ -1,0 +1,60 @@
+#
+sysname NPE
+#
+ip vpn-instance vpna
+ ipv4-family
+  route-distinguisher 300:1
+  vpn-target 111:1 export-extcommunity
+  vpn-target 111:1 import-extcommunity
+#
+segment-routing ipv6
+ encapsulation source-address 2001:DB8:3::3
+ locator as1 ipv6-prefix 2001:DB8:300:: 64 static 32
+#
+isis 1
+ is-level level-1
+ cost-style wide
+ network-entity 10.0000.0000.0003.00
+ #
+ ipv6 enable topology ipv6
+ segment-routing ipv6 locator as1
+ #
+#
+interface GigabitEthernet 1/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:2002::2/96
+ isis ipv6 enable 1
+ dcn
+#
+interface GigabitEthernet 2/0/0
+ undo shutdown
+ ip binding vpn-instance vpna
+ ip address 10.2.1.1 255.255.255.0
+ dcn
+#
+interface loopback1
+ ipv6 enable
+ ipv6 address 2001:DB8:3::3/128
+ isis ipv6 enable 1
+#
+bgp 100
+ router-id 3.3.3.3
+ peer 2001:DB8:2::2 as-number 100
+ peer 2001:DB8:2::2 connect-interface loopback1
+ #
+ ipv4-family unicast
+  undo synchronization
+ #
+ ipv4-family vpnv4
+  policy vpn-target
+  peer 2001:db8:2::2 enable
+  peer 2001:db8:2::2 prefix-sid
+ #
+ ipv4-family vpn-instance vpna
+  import-route direct
+  segment-routing ipv6 locator as1
+  segment-routing ipv6 best-effort
+  peer 10.2.1.2 as-number 65420
+#
+return

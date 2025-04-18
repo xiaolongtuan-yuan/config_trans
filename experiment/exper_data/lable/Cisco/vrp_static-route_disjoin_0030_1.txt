@@ -1,0 +1,27 @@
+hostname DeviceB
+!
+ipv6 unicast-routing
+!
+bfd all-interfaces
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:1::2/64
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:2::1/64
+!
+bfd template single-hop BFD-TPL
+ interval 500 min_rx 500 multiplier 3
+!
+bfd discriminator local 20
+bfd discriminator remote 10
+!
+interface GigabitEthernet1/0/0
+ bfd template BFD-TPL
+ bfd neighbors 2001:db8:1::1 multi-hop
+!
+end

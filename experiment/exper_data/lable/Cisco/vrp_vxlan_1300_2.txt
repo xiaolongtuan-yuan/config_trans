@@ -1,0 +1,65 @@
+hostname Device3
+!
+router isis
+ net-entity 10.0000.0000.0003.00
+!
+ip vrf vpn1
+ rd 22:22
+ export extcommunity evpn target 11:1
+ import extcommunity evpn target 11:1
+!
+interface Vlan20
+ ip vrf forwarding vpn1
+ ip address 10.2.1.1 255.255.255.0
+ arp collect host enable
+ arp distribute-gateway enable
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.3.1 255.255.255.0
+ isis enable 1
+!
+interface GigabitEthernet1/0/1.1
+ encapsulation dot1q 20
+ bridge-domain 20
+!
+interface Loopback0
+ ip address 3.3.3.3 255.255.255.255
+ isis enable 1
+!
+interface nve1
+ source-interface Loopback0
+ member vni 20
+  head-end peer-list protocol bgp
+!
+router bgp 100
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 update-source Loopback0
+ !
+ address-family l2vpn evpn
+  advertise evpn
+   neighbor 1.1.1.1 activate
+   neighbor 1.1.1.1 send-community extended
+   neighbor 1.1.1.1 send-label
+  exit-address-family
+ exit-router
+!
+bridge-domain 20
+ vxlan vni 20
+  evpn
+   binding vpn-instance evrf3
+!
+evpn vpn-instance evrf3
+ bd-mode
+ rd 20:1
+ export extcommunity
+ import extcommunity
+!
+ip vpn-instance vpn1
+ ipv4-family
+  route-distinguisher 22:22
+  import-extcommunity evpn target 11:1
+  export-extcommunity evpn target 11:1
+  vxlan vni 5010
+!
+return

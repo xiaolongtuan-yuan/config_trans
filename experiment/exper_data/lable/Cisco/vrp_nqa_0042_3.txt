@@ -1,0 +1,39 @@
+hostname S-PE
+!
+mpls label protocol ldp
+!
+mpls l2vpn
+!
+mpls l2vc 200
+ neighbor 1.1.1.9 pw-id 100
+ encapsulation mpls
+!
+mpls ldp
+!
+mpls ldp neighbor 1.1.1.9 targeted
+!
+mpls ldp neighbor 5.5.5.9 targeted
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.2.1.2 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.3.1.1 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+!
+interface Loopback0
+ no shutdown
+ ip address 3.3.3.9 255.255.255.255
+!
+router ospf 1
+ area 0.0.0.0
+ network 3.3.3.9 0.0.0.0 area 0.0.0.0
+ network 10.2.1.0 0.0.0.255 area 0.0.0.0
+ network 10.3.1.0 0.0.0.255 area 0.0.0.0
+!
+end

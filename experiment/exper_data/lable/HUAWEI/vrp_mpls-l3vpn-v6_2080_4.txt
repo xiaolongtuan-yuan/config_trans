@@ -1,0 +1,29 @@
+#
+sysname Hub-CE
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:3::1/64
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:4::1/64
+#
+interface LoopBack1
+ ipv6 enable
+ ipv6 address 2001:db8:13::3/128
+#
+bgp 65430
+ router-id 2.2.2.2
+ peer 2001:db8:3::2 as-number 100
+ peer 2001:db8:4::2 as-number 100
+ #
+ ipv6-family unicast
+  undo synchronization
+  network 2001:db8:13::3 128
+  peer 2001:db8:3::2 enable
+  peer 2001:db8:4::2 enable
+#
+return

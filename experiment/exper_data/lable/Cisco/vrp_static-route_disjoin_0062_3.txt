@@ -1,0 +1,38 @@
+hostname LSRD
+
+mpls label protocol ldp
+
+interface GigabitEthernet1/0/0
+ no switchport
+ ip address 10.3.1.2 255.255.255.252
+ mpls ip
+ mpls ldp autoconfig
+ ip route 1.1.1.1 255.255.255.255 GigabitEthernet1/0/0 10.3.1.1 40 name LDP_SYNC
+
+interface GigabitEthernet2/0/0
+ no switchport
+ ip address 10.4.1.2 255.255.255.252
+ mpls ip
+ mpls ldp autoconfig
+ ip route 1.1.1.1 255.255.255.255 GigabitEthernet2/0/0 10.4.1.1
+ ip route 2.2.2.2 255.255.255.255 GigabitEthernet1/0/0 10.3.1.1
+ ip route 3.3.3.3 255.255.255.255 GigabitEthernet2/0/0 10.4.1.1
+ ip route 10.1.1.0 255.255.255.252 GigabitEthernet1/0/0
+ ip route 10.2.1.0 255.255.255.252 GigabitEthernet2/0/0
+
+interface Loopback0
+ ip address 4.4.4.4 255.255.255.255
+
+mpls ldp router-id Loopback0
+
+mpls ldp discovery transport-address loopback0
+
+mpls ldp advertise-labels loopback0 32
+
+mpls ldp label
+
+mpls ldp session protection
+
+mpls ldp neighbor 10.3.1.1 targeted
+mpls ldp neighbor 10.4.1.1 targeted
+

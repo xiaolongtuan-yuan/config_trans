@@ -1,0 +1,24 @@
+hostname P1
+
+mpls label protocol ldp
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.10.1.2 255.255.255.252
+ mpls ip
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.30.1.1 255.255.255.252
+ mpls ip
+
+interface Loopback1
+ ip address 5.5.5.5 255.255.255.255
+
+router isis
+ net 49.0000.0000.0005.00
+ is-type level-2-only
+ mpls ldp autoconfig
+ isis enable P1
+
+mpls ldp router-id Loopback1 force

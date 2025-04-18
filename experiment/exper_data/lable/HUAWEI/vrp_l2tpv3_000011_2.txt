@@ -1,0 +1,32 @@
+#
+sysname PE2
+#
+isis 1
+ cost-style wide
+ network-entity 10.0000.0000.0003.00
+ #
+ ipv6 enable topology compatible
+ #
+interface LoopBack4
+ ipv6 enable    
+ ipv6 address 2001:DB08:4::1 128
+ isis ipv6 enable 1
+#
+interface GigabitEthernet2/0/1
+ ipv6 enable    
+ ipv6 address 2001:DB08:3::1 64
+ isis ipv6 enable 1
+#
+l2tpv3 enable
+l2tpv3 pw huawei
+ source interface LoopBack 4 ipv6 2001:db08:4::1
+ destination 2001:DB08:1::1
+ l2tpv3 local cookie key cipher %#%#M;2^%B|jX,Ss!DM\]dc:Y45_!URg>4M2/058ub+=%#%#
+ l2tpv3 remote cookie key cipher %#%#8u.iEnZN^1Xj`ZS@S|@55%.3LN3=r)I_o{W~R8V"%#%#
+#
+interface GigabitEthernet1/0/1.4 mode l2
+ encapsulation qinq vid 2 ce-vid 2
+ rewrite pop double
+ l2tpv3 instance a234
+  l2tpv3 static binding pw huawei
+#

@@ -1,0 +1,55 @@
+set system host-name Device3
+
+# VRF and route-distinguisher configuration
+set routing-instances evrf1 instance-type vrf
+set routing-instances evrf1 route-distinguisher 20:1
+set routing-instances evrf1 vrf-target export target:11:1
+set routing-instances evrf1 vrf-target import target:11:1
+
+set routing-instances vpn1 instance-type vrf
+set routing-instances vpn1 route-distinguisher 22:22
+set routing-instances vpn1 vrf-target export target:11:1
+set routing-instances vpn1 vrf-target import target:11:1
+
+# Bridge domain configuration
+set bridge-domains bd-20 routing-instances vpn1
+set bridge-domains bd-20 vlan-id 20
+
+# OSPFv3 configuration
+set protocols ospf3 area 0.0.0.0 interface lo0.0
+set protocols ospf3 area 0.0.0.0 interface ge-0/0/0.0
+
+# Interface configuration
+set interfaces vlan unit 20 family inet address 10.2.1.1/24
+set interfaces vlan unit 20 family inet-vrf route-instance vpn1
+set interfaces vlan unit 20 proxy-arp
+
+set interfaces ge-0/0/0 unit 0 family inet6 address 2001:DB8:3::1/64
+set interfaces ge-0/0/0 unit 0 family inet6
+set protocols ospf3 area 0.0.0.0 interface ge-0/0/0.0
+
+set interfaces ge-0/0/1 encapsulation flexible-vlan-tagging
+set interfaces ge-0/0/1 unit 0 vlan-id 20 input-vlan-map pop-single-tag
+set interfaces ge-0/0/1 unit 0 encapsulate bridge
+set bridge-domains bd-20 interface ge-0/0/1.0
+
+set interfaces lo0 unit 0 family inet6 address 2001:DB8:33::3/128
+set protocols ospf3 area 0.0.0.0 interface lo0.0
+
+# VXLAN configuration
+set interfaces vtep source-interface lo0.0
+set interfaces vtep encapsulation vxlan
+set interfaces vtep unit 0 tunnel source 2001:DB8:33::3
+set interfaces vtep unit 0 vxlan vni 20
+
+# BGP EVPN configuration
+set protocols bgp group evpn-family type internal
+set protocols bgp group evpn-family local-address 2001:DB8:33::3
+set protocols bgp group evpn-family export EXPORT-TO-NNI
+set protocols bgp group evpn-family family evpn signaling
+set protocols bgp group evpn-family family inet-vpn unicast
+
+set protocols bgp group evpn-family neighbor 2001:DB8:11::1 peer-as 100
+set protocols bgp group evpn-family neighbor 2001:DB8:11::1 local-address 2001:DB8:33::3
+set protocols bgp group evpn-family neighbor 2001:DB8:11::1 family evpn signaling
+set protocols bgp group evpn-family neighbor 2001:DB8:11::1 family inet-vpn unicast

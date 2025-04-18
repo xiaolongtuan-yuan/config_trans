@@ -1,0 +1,38 @@
+set system host-name ASBR2
+
+set protocols ldp interface lo0.0
+set protocols ldp
+
+set interfaces ge-1/0/1 unit 0 family inet address 10.0.10.4/24
+set interfaces ge-1/0/1 unit 0 family mpls
+set interfaces ge-1/0/1 unit 0 disable
+
+set interfaces ge-1/0/3 unit 0 family inet address 10.0.16.2/24
+set interfaces ge-1/0/3 unit 0 family mpls
+set interfaces ge-1/0/3 unit 0 disable
+
+set interfaces lt-0/0/0 unit 0 encapsulation ppp
+set interfaces lt-0/0/0 unit 0 ppp-options chap
+
+set interfaces lo0 unit 0 family inet address 1.1.1.4/32
+
+set interfaces lo0 unit 1 family inet
+
+set protocols isis level 2 disable
+set protocols isis net 49.0001.0000.0000.000b.00
+set protocols isis interface all
+
+set protocols bgp group bgp-group type external
+set protocols bgp group bgp-group local-address 1.1.1.4
+set protocols bgp group bgp-group neighbor 10.0.16.1 peer-as 1
+set protocols bgp group bgp-group neighbor 1.1.1.5 peer-as 65535
+set protocols bgp group bgp-group export [policy1 policy2]
+set protocols bgp group bgp-group family inet unicast
+set protocols bgp group bgp-group family inet mpls
+
+set policy-options policy-statement policy1 term 10 then accept
+set policy-options policy-statement policy1 then mpls-label
+set policy-options policy-statement policy2 term 10 from mpls-label
+set policy-options policy-statement policy2 then mpls-label
+
+set routing-options static route 1.1.1.3/32 next-hop 10.0.16.1

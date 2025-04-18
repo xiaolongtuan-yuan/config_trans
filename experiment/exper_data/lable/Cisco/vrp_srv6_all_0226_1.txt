@@ -1,0 +1,36 @@
+hostname SFF1
+!
+ipv6 unicast-routing
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:1::2/96
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:2::1/96
+!
+interface GigabitEthernet3/0/0
+ no shutdown
+!
+interface GigabitEthernet3/0/0.1
+ encapsulation dot1q 1
+!
+interface Loopback1
+ ipv6 enable
+ ipv6 address 2::2/128
+!
+router isis
+ net 10.0000.0000.0002.00
+ isis ipv6 enable
+ isis circuit-type level-1
+ isis segment-routing mpls
+!
+ipv6 route 2001:db8:12::/64 GigabitEthernet3/0/0.1
+!
+ipv6 route 2001:db8:15::100 2001:db8:15::1 GigabitEthernet3/0/0.1
+ipv6 route 2001:db8:13::100 2001:db8:12::100 GigabitEthernet3/0/0.1
+!
+end

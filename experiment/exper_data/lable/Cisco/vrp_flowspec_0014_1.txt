@@ -1,0 +1,33 @@
+hostname DeviceB
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.10.1.2 255.255.255.0
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.2.1.1 255.255.255.0
+!
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+!
+interface Loopback1
+ ip address 2.2.2.2 255.255.255.255
+!
+router bgp 200
+ neighbor 10.2.1.2 remote-as 200
+ neighbor 10.10.1.1 remote-as 100
+ !
+ address-family ipv4
+  no synchronization
+  neighbor 10.2.1.2 activate
+  neighbor 10.10.1.1 activate
+ exit-address-family
+ !
+ address-family ipv6
+  neighbor 10.2.1.2 activate
+  neighbor 10.2.1.2 suppress-validation
+ exit-address-family
+!
+end

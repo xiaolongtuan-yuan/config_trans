@@ -1,0 +1,37 @@
+hostname DeviceC
+
+ip prefix-list prefix1 seq 10 permit 10.1.1.4/32
+ip prefix-list prefix2 seq 10 deny 10.1.1.0/24
+ip prefix-list prefix2 seq 20 permit 0.0.0.0/0 le 32
+
+route-map policy1 permit 10
+ match ip address prefix1
+
+route-map policy2 permit 10
+ match ip address prefix2
+
+interface Vlan10
+ ip address 10.1.1.1 255.255.255.0
+
+interface GigabitEthernet1/0/0
+ switchport mode access
+ switchport access vlan 10
+ no shutdown
+
+interface GigabitEthernet2/0/0
+ ip address 10.2.1.1 255.255.255.0
+ no shutdown
+
+router bgp 100
+ bgp router-id 3.3.3.3
+ neighbor 10.2.1.2 remote-as 100
+ neighbor 10.2.1.2 send-community
+
+ address-family ipv4
+  no synchronization
+  redistribute connected
+  neighbor 10.2.1.2 activate
+  neighbor 10.2.1.2 route-map policy2 out
+ exit-address-family
+
+end

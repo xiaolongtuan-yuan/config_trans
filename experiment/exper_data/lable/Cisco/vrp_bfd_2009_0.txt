@@ -1,0 +1,32 @@
+hostname DeviceA
+
+ip routing
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.2.1 255.255.255.0
+
+interface GigabitEthernet2/0/0.1
+ no shutdown
+ encapsulation dot1q 100
+ ip address 10.1.1.1 255.255.255.0
+ standby version 2
+ standby 1 ip 10.1.1.100
+ standby 1 preempt
+ standby 1 priority 160
+ standby 1 track bfd
+ arp broadcast
+
+bfd all-interfaces
+ interval 100 min_rx 100 min_tx 100 multiplier 3
+
+interface GigabitEthernet2/0/0.1
+ bfd all-interfaces
+ bfd address-family ipv4 fast-detect
+ bfd fast-detect
+
+router ospf 1
+ network 192.168.2.0 0.0.0.255 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+
+end

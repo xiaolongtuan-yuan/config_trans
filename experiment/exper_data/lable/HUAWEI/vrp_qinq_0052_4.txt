@@ -1,0 +1,56 @@
+#
+ sysname PE-AGG
+#
+ igmp-snooping enable
+ igmp-snooping send-query enable
+#
+ mpls lsr-id 2.2.2.9
+ mpls
+#
+ mpls l2vpn
+#
+ vsi ldp1 static
+  pwsignal ldp
+   vsi-id 1
+   peer 1.1.1.9
+#
+ vsi ldp2 static
+  pwsignal ldp
+   vsi-id 2
+   peer 1.1.1.9
+   igmp-snooping enable
+   igmp-snooping version 3
+   igmp-snooping querier enable
+#
+ mpls ldp
+#
+ isis 1
+  is-level level-2
+  network-entity 49.0020.0200.1009.00
+#
+ interface GigabitEthernet1/0/1
+  undo shutdown
+  ip address 10.1.1.2 255.255.255.252
+  isis enable 1
+  mpls
+  mpls ldp
+#
+ interface GigabitEthernet1/0/2
+  undo shutdown
+#
+ interface GigabitEthernet1/0/2.1
+  encapsulation qinq-termination
+  qinq termination l2 symmetry
+  qinq termination pe-vid 7 ce-vid 1 to 1000
+  l2 binding vsi ldp1
+#
+ interface GigabitEthernet1/0/2.2
+  encapsulation qinq-termination
+  qinq termination pe-vid 8 ce-vid 1 to 1000
+  l2 binding vsi ldp2
+#
+ interface LoopBack1
+  ip address 2.2.2.9 255.255.255.255
+  isis enable 1
+#
+ return

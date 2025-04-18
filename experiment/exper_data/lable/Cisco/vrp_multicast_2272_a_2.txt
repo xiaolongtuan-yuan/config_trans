@@ -1,0 +1,21 @@
+hostname DeviceC
+
+ip multicast-routing
+
+interface GigabitEthernet1/0/0
+ no switchport
+ no shutdown
+ ip address 10.1.5.1 255.255.255.0
+ ip pim dense-mode
+ ip igmp join-group 225.1.1.1
+
+interface GigabitEthernet1/0/1
+ no switchport
+ no shutdown
+ ip address 10.1.2.2 255.255.255.0
+ ip pim dense-mode
+
+router ospf 1
+ network 10.1.2.0 0.0.0.255 area 0
+ network 10.1.5.0 0.0.0.255 area 0
+

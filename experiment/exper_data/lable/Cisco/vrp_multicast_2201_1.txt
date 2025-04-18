@@ -1,0 +1,68 @@
+hostname PE1
+!
+ip multicast-routing
+!
+mpls label protocol ldp
+!
+mpls ldp router-id Loopback0 force
+!
+mpls traffic-eng area 0
+!
+ip explicit-path name tope3
+ next-address 10.1.1.2
+ next-address 10.2.1.2
+ next-address 10.5.1.2
+!
+ip explicit-path name tope2
+ next-address 10.1.1.2
+ next-address 10.2.1.2
+ next-address 10.4.1.2
+!
+mpls traffic-eng multicast-intact
+!
+mpls traffic-eng auto-bw
+!
+mpls traffic-eng tunnels
+!
+mpls traffic-eng autoroute announce
+!
+mpls traffic-eng multicast-intact
+!
+router isis
+ net 49.0001.0000.0000.0001.00
+ is-type level-2-only
+ metric-style wide
+ mpls traffic-eng level-2
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls ip
+ isis network point-to-point
+ mpls traffic-eng tunnels
+ mpls traffic-eng bandwidth 10000
+ mpls traffic-eng bandwidth bc0 10000
+ mpls traffic-eng rsvp-integrity
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.7.1.1 255.255.255.0
+ ip pim sparse-mode
+ isis network point-to-point
+!
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+ isis network point-to-point
+!
+interface Tunnel10
+ no shutdown
+ unnumbered Loopback1
+ tunnel mode mpls traffic-eng
+ ip pim sparse-mode
+ ip igmp static-group 226.1.1.1 source 8.8.8.8
+ mpls traffic-eng multicast-intact
+ mpls traffic-eng bandwidth ct0 1000
+ mpls traffic-eng leaf-list iptv1
+ mpls traffic-eng tunnel-id 100
+!
+end

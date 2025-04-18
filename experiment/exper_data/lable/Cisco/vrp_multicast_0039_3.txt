@@ -1,0 +1,37 @@
+hostname DeviceD
+!
+ip multicast-routing
+!
+access-list 2000 permit ip 10.110.5.0 0.0.0.255
+!
+access-list 2001 permit ip 192.168.2.0 0.0.0.255
+!
+router isis
+ net 10.0000.0000.0004.00
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.4.2 255.255.255.0
+ ip pim sparse-mode
+ isis enable 1
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.1.2 255.255.255.0
+ ip pim sparse-mode
+ isis enable 1
+!
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 10.110.5.1 255.255.255.0
+ ip pim sparse-mode
+ isis enable 1
+!
+ip pim bsr-candidate GigabitEthernet1/0/0
+ ip pim bsr-candidate GigabitEthernet2/0/0
+ ip pim bsr-candidate GigabitEthernet3/0/0
+ ip pim rp-candidate GigabitEthernet1/0/0
+ ip pim rp-candidate GigabitEthernet2/0/0
+ ip pim rp-candidate GigabitEthernet3/0/0
+!
+end

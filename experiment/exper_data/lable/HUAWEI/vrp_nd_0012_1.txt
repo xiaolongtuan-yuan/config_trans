@@ -1,0 +1,25 @@
+#
+sysname Device
+#
+vlan batch 2 to 3 
+#
+vlan 3
+ aggregate-vlan
+ access-vlan 2
+#
+interface Vlanif3
+ ipv6 enable
+ ipv6 address 2001:DB8:300:400::4/64
+ ipv6 nd proxy inner-access-vlan enable
+#
+interface GigabitEthernet1/0/1
+ portswitch
+ port default vlan 2
+ port isolate-state enable vlan 2
+#
+interface GigabitEthernet1/0/2
+ portswitch
+ port default vlan 2
+ port isolate-state enable vlan 2
+#
+return

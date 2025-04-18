@@ -1,0 +1,22 @@
+#
+ sysname DeviceB
+#
+interface Eth-Trunk1
+ ipv6 enable
+ ipv6 address 2001:DB8:1::2 64
+#
+interface Gigabitethernet3/0/0
+ undo shutdown
+ eth-trunk 1
+#
+interface Gigabitethernet3/0/1
+ undo shutdown
+ eth-trunk 1
+#
+bfd
+#
+bfd btoa bind link-bundle peer-ipv6 2001:DB8:1::1 interface Eth-Trunk1 source-ipv6 2001:DB8:1::2
+ min-tx-interval 10
+ min-rx-interval 10
+#
+return

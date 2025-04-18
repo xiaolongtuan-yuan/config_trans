@@ -1,0 +1,43 @@
+set system host-name PE3
+
+# EVPN Configuration
+set routing-instances evrf1 vpws
+set routing-instances evrf1 route-distinguisher 100:3
+set routing-instances evrf1 vpn-target 1:1 export-extcommunity
+set routing-instances evrf1 vpn-target 1:1 import-extcommunity
+
+# MPLS Configuration
+set mpls lsr-id 4.4.4.4
+set mpls ldp router-id Loopback1 force
+
+# Interface Configuration
+set interfaces ge-0/0/0 unit 0 family inet address 10.3.1.2/24
+set interfaces ge-0/0/0 unit 0 family mpls
+set interfaces ge-0/0/0 unit 0 family ethernet-switching interface-mode access
+
+set interfaces ge-0/0/1 unit 0 family ethernet-switching vlan members vlan10
+set interfaces ge-0/0/1 unit 0 family ethernet-switching interface-mode access
+set interfaces ge-0/0/1 unit 0 family ethernet-switching interface-oper-status up
+
+set interfaces lo0 unit 0 family inet address 4.4.4.4/32
+
+# BGP Configuration
+set protocols bgp 100 neighbor 3.3.3.3 remote-as 100
+set protocols bgp 100 neighbor 3.3.3.3 update-source lo0
+set protocols bgp 100 neighbor 3.3.3.3 next-hop-self
+
+# BGP Address Family IPv4
+set protocols bgp 100 address-family inet unicast neighbor 3.3.3.3 activate
+
+# BGP Address Family L2VPN EVPN
+set protocols bgp 100 address-family l2vpn evpn neighbor 3.3.3.3 activate
+
+# OSPF Configuration
+set protocols ospf area 0.0.0.0 network 4.4.4.4/32
+set protocols ospf area 0.0.0.0 network 10.3.1.0/24
+
+# EVPN Configuration
+set evpn source-interface lo0
+set evpn redundancy-mode single-active
+
+# Return

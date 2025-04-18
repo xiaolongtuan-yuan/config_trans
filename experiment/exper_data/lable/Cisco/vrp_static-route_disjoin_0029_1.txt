@@ -1,0 +1,21 @@
+hostname DeviceB
+!
+bfd
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 1.1.1.2 255.255.255.0
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 2.2.2.2 255.255.255.0
+!
+bfd all-interfaces
+!
+interface GigabitEthernet1/0/0
+ bfd all-interfaces
+ bfd neighbor 1.1.1.1
+ bfd neighbor 1.1.1.1 remote-discriminator 10
+ bfd neighbor 1.1.1.1 local-discriminator 20
+!
+return

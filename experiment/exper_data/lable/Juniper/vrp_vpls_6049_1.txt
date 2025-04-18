@@ -1,0 +1,24 @@
+set system host-name PE2
+
+set protocols ldp enable
+
+set protocols ldp router-id loopback0
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.2.2/30
+set interfaces ge-0/0/0 unit 0 family mpls ip
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.5.1/30
+set interfaces ge-0/0/1 unit 0 family mpls ip
+set interfaces ge-0/0/3.1 encapsulation dot1q 10
+set protocols vxlan vfi vfi1
+set interfaces lo0 unit 0 family inet address 2.2.2.2/32
+set protocols bgp neighbor 1.1.1.1 remote-as 100
+set protocols bgp neighbor 1.1.1.1 update-source lo0
+set routing-instances vfi1 vpni-id 2:2
+
+setprotocols ospf instance-test-name vfi1 area 0.0.0.0 interface ge-0/0/3.1.0
+set protocols ospf network 10.1.2.0/24 area 0.0.0.0
+set protocols ospf network 10.1.5.0/24 area 0.0.0.0
+
+set protocols ldp tunnels interface ge-0/0/0 unit 0
+set protocols mpls label protocol rsvp-te
+setprotocols mpls traffic-eng tunnel-interfaces lo0.0
+

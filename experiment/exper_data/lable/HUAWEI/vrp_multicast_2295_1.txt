@@ -1,0 +1,40 @@
+#
+sysname DeviceB
+#
+multicast routing-enable
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.1.1.19 255.255.255.0
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip address 10.1.5.1 255.255.255.0
+ pim sm 
+#
+interface LoopBack1
+ ip address 192.168.1.2 255.255.255.255
+ binding tunnel gre
+#
+interface Tunnel1
+ ip address 10.0.1.2 255.255.255.0
+ tunnel-protocol gre
+ source 192.168.1.2
+ destination 192.168.1.1
+ pim sm
+#
+interface NULL0
+#
+ospf 1
+ area 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+  network 192.168.1.2 0.0.0.0
+#
+pim
+ static-rp 10.0.1.1
+#
+ip route-static 10.1.6.0 255.255.255.0 Tunnel1 10.0.1.1
+ip route-static 10.1.7.0 255.255.255.0 Tunnel1 10.0.1.1
+ip route-static 10.1.8.0 255.255.255.0 Tunnel1 10.0.1.1
+#
+return

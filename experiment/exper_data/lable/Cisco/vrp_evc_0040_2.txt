@@ -1,0 +1,44 @@
+hostname RSG
+
+ip vrf vpna
+ rd 100:100
+ route-target export 100:100
+ route-target import 100:100
+
+mpls label protocol ldp
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.3.3.2 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip vrf forwarding vpna
+ ip address 10.4.4.1 255.255.255.0
+
+interface Loopback1
+ ip address 3.3.3.9 255.255.255.0
+
+router bgp 100
+ neighbor 2.2.2.9 remote-as 100
+ neighbor 2.2.2.9 update-source Loopback1
+ !
+ address-family ipv4 unicast
+  neighbor 2.2.2.9 activate
+  neighbor 2.2.2.9 next-hop-self
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 2.2.2.9 activate
+  neighbor 2.2.2.9 send-community both
+ exit-address-family
+ !
+ address-family ipv4 vrf vpna
+  redistribute connected
+ exit-address-family
+
+router ospf 1
+ network 3.3.3.9 0.0.0.0 area 0
+ network 10.3.3.0 0.0.0.255 area 0
+

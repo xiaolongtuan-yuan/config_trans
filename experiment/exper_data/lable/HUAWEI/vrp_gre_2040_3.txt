@@ -1,0 +1,67 @@
+#
+sysname PE2
+#
+vlan batch 10 20
+#
+ip vpn-instance vpn1
+ ipv4-family
+  route-distinguisher 200:1
+  apply-label per-instance
+  vpn-target 111:1 export-extcommunity
+  vpn-target 111:1 import-extcommunity
+#
+mpls lsr-id 3.3.3.9
+#
+mpls
+ lsp-trigger all
+#
+mpls ldp
+#
+isis 50 vpn-instance vpn1
+ network-entity 50.0000.0000.0003.00
+ import-route bgp
+#
+interface Vlanif10
+ ip binding vpn-instance vpn1
+ ip address 10.1.1.2 255.255.255.0
+ isis enable 50
+#
+interface Vlanif20
+ ip address 10.11.1.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/0
+ portswitch
+ undo shutdown
+ port default vlan 20
+#
+interface GigabitEthernet2/0/0
+ portswitch
+ undo shutdown
+ port default vlan 10
+#
+interface LoopBack1
+ ip address 3.3.3.9 255.255.255.255
+#
+bgp 100
+ peer 1.1.1.9 as-number 100
+ peer 1.1.1.9 connect-interface LoopBack1
+ #
+ ipv4-family unicast
+  undo synchronization 
+  peer 1.1.1.9 enable
+ #
+ ipv4-family vpnv4
+  policy vpn-target
+  peer 1.1.1.9 enable
+ #
+ ipv4-family vpn-instance vpn1
+  import-route isis 50
+#
+ospf 10
+ area 0.0.0.0
+  network 3.3.3.9 0.0.0.0
+  network 10.11.1.0 0.0.0.255
+#
+return

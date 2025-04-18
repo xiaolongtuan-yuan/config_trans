@@ -1,0 +1,34 @@
+hostname CE2
+!
+ptp clock-domain 1
+ptp clock-domain 1 device-type boundary-clock
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.0.2 255.255.255.0
+ ptp
+ ptp domain 1
+ ptp transport udp-ipv4
+ ptp transport udp-ipv4 destination-ip 192.168.0.1
+ ptp transport udp-ipv4 source-ip 192.168.0.2
+ ptp transport udp-ipv4 destination-mac 00e0.fc11.2222
+ ptp delay-mechanism pdelay
+ ptp announce receipt-timeout 10
+ ptp min-delay-request-interval 10
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 172.16.1.1 255.255.255.0
+ ptp
+ ptp domain 1
+ ptp transport udp-ipv4
+ ptp transport udp-ipv4 destination-ip 172.16.1.2
+ ptp transport udp-ipv4 source-ip 172.16.1.1
+ ptp transport udp-ipv4 destination-mac 00e0.fc33.2222
+ ptp delay-mechanism pdelay
+ ptp announce drop
+!
+router ospf 1
+ network 192.168.0.0 0.0.0.255 area 0
+ network 172.16.1.0 0.0.0.255 area 0
+!

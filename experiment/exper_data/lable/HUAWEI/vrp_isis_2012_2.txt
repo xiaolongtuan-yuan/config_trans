@@ -1,0 +1,39 @@
+#
+sysname DeviceC
+#
+ ip topology red
+#
+ ipv6 topology blue
+#
+isis 1
+ cost-style wide
+ network-entity 86.0000.0000.0003.00
+ ipv6 enable topology ipv6 
+ #
+ topology red topology-id 10 
+ #
+ ipv6 topology blue topology-id 20
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:2::2/64
+ isis ipv6 enable 1
+ ip topology red enable 
+ isis topology red
+ ipv6 topology blue enable 
+ isis ipv6 topology blue
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 192.168.2.2 255.255.255.0
+ isis enable 1
+ ip topology red enable 
+ isis topology red
+#
+interface LoopBack1
+ ipv6 enable
+ ipv6 address 2001:db8:3::1/64
+ isis ipv6 enable 1
+#
+return

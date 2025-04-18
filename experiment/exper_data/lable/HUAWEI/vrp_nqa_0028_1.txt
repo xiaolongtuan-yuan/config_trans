@@ -1,0 +1,21 @@
+#
+sysname DeviceD
+#
+nqa-jitter tag-version 2
+#
+isis 1
+ network-entity 00.0000.0000.0002.00  
+#
+ interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.2.2.1 255.255.255.0
+ isis enable 1 
+#
+nqa test-instance admin udpjitter
+ test-type jitter
+ destination-address ipv4 10.1.1.1
+ destination-port 4000
+ jitter-codec g711a
+ start now      
+#
+return

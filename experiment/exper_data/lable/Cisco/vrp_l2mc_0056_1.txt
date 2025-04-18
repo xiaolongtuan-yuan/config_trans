@@ -1,0 +1,29 @@
+hostname PE3
+!
+vlan 11
+!
+mpls label protocol ldp
+!
+mpls l2vpn
+!
+pseudowire-class pwclass1
+ encapsulation ldp
+!
+mpls ldp
+!
+router isis
+ net 49.0030.0300.3003.00
+ is-type level-1
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.0.2 255.255.255.0
+ mpls ip
+!
+interface GigabitEthernet1/0/1.1
+ encapsulation dot1q 11
+ xconnect vfi vsi1
+!
+interface Loopback0
+ ip address 3.3.3.3 255.255.255.255
+!

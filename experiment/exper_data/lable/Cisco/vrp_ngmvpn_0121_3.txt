@@ -1,0 +1,45 @@
+sysname CE1
+
+multicast routing-enable
+
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ pim sm
+
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.1.2.1 255.255.255.0
+ pim sm
+
+ospf 2
+ area 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+  network 10.1.2.0 0.0.0.255
+
+pim
+ static-rp 10.1.4.1
+
+return
+
+
+hostname CE1
+
+ip multicast-routing
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ ip pim sparse-mode
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.1.2.1 255.255.255.0
+ ip pim sparse-mode
+
+router ospf 2
+ network 10.1.1.0 0.0.0.255 area 0
+ network 10.1.2.0 0.0.0.255 area 0
+
+ip pim rp-address 10.1.4.1
+

@@ -1,0 +1,43 @@
+#
+sysname DeviceA
+#
+ipsec proposal aaa
+ encapsulation-mode transport
+ transform ah
+#
+ipsec sa sa1
+ proposal aaa
+ sa spi inbound ah 300
+ sa string-key inbound ah cipher @%@%QV3G<F;#>(tQfj-P_31%&R.v@%@%
+ sa spi outbound ah 300
+ sa string-key outbound ah cipher @%@%StJa=GZQXOj#,G.F9n^,&R/S@%@%
+#
+multicast routing-enable
+#
+isis 1
+ network-entity 10.0000.0000.0001.00  
+#
+interface Gigabitethernet1/0/0
+ undo shutdown
+ ip address 192.168.1.1 255.255.255.0
+ pim sm
+ isis enable 1
+#
+interface Gigabitethernet1/0/1
+ undo shutdown
+ ip address 192.168.2.1 255.255.255.0
+ pim sm
+ pim ipsec sa sa1
+ isis enable 1  
+#
+interface LoopBack0
+ ip address 1.1.1.1 255.255.255.255
+ pim sm
+ isis enable 1 
+#
+pim
+ c-bsr LoopBack0
+ c-rp LoopBack0
+ ipsec unicast-message sa sa1
+#
+return

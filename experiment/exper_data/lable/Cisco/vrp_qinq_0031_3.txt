@@ -1,0 +1,17 @@
+hostname CE4
+
+interface GigabitEthernet1/0/1
+ no shutdown
+
+interface GigabitEthernet1/0/1.20
+ encapsulation dot1q 20
+ ip address 10.4.1.2 255.255.255.0
+
+router bgp 65421
+ neighbor 10.4.1.1 remote-as 100
+
+ address-family ipv4 unicast
+  synchronization
+  no import-route direct
+  neighbor 10.4.1.1 activate
+

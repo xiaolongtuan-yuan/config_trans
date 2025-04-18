@@ -1,0 +1,21 @@
+set system host-name Device
+
+set security radius-server 10.6.55.55 address 10.6.55.55
+set security radius-server 10.6.55.55 secret vS796FO7CpBCRqjgSCqRX6P-DYI
+set security radius-server 10.6.55.55 authentication-port 1812
+set security radius-server 10.6.55.55 accounting-port 1813
+
+set protocols ipv6 unicast-routing
+
+set dhcp ipv6-pools pool1 dns-server 2001:DB82::2:2
+
+set routing-options rib inet6.0 static route ::/0 next-hop 2001:DB82::2:2
+
+set interfaces ge-0/0/1 unit 1 encapsulation vlan-bridge
+set interfaces ge-0/0/1 unit 1 vlan-id 1
+set interfaces ge-0/0/1 unit 1 family inet6 autoconf
+
+set interfaces ge-0/0/3 unit 0 family inet6 address 2001:DB82::2:1/64
+
+set security radius-server 10.6.55.55 attributes attribute-32 include-in-access-request format "%h"
+set security radius-server 10.6.55.55 vsa accounting

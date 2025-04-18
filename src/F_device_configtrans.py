@@ -463,7 +463,7 @@ class Config_Translater:
                                                       'param_signature': {},
                                                       'context_topology': {'parent_command': 'system'}}}
 
-                self.config_matchers[target_vendor].templates[matched_result] = result_node
+                # self.config_matchers[target_vendor].templates[matched_result] = result_node
                 template = feature['semantic_feature']['template']
                 config_match[command] = {'template': template, 'match': matched_result}
 

@@ -1,0 +1,53 @@
+hostname AGG
+
+mpls ip
+
+mpls ldp
+
+router isis
+ net 49.0000.0000.0000.0010.00
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls ip
+ mpls ldp
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.2.1.1 255.255.255.0
+ mpls ip
+ mpls ldp
+ router isis
+
+interface Loopback1
+ ip address 2.2.2.2 255.255.255.255
+ router isis
+
+router bgp 100
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 update-source Loopback1
+ neighbor 3.3.3.3 remote-as 100
+ neighbor 3.3.3.3 update-source Loopback1
+
+ address-family ipv4 unicast
+  neighbor 1.1.1.1 activate
+  neighbor 1.1.1.1 route-policy policy1 out
+  neighbor 1.1.1.1 reflect-client
+  neighbor 1.1.1.1 next-hop-self
+  neighbor 1.1.1.1 send-label
+  neighbor 3.3.3.3 activate
+  neighbor 3.3.3.3 route-policy policy1 out
+  neighbor 3.3.3.3 reflect-client
+  neighbor 3.3.3.3 next-hop-self
+  neighbor 3.3.3.3 send-label
+
+router ospf 1
+ network 2.2.2.2 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+
+route-map policy1 permit 10
+ match mpls label
+ set mpls label
+
+end

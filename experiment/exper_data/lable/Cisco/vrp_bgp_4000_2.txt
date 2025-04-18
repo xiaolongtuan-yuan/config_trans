@@ -1,0 +1,21 @@
+hostname DeviceC
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.2.2 255.255.255.0
+
+router bgp 200
+ bgp router-id 3.3.3.3
+ neighbor 192.168.2.1 remote-as 200
+
+ address-family ipv4 unicast
+  no synchronization
+  neighbor 192.168.2.1 activate
+  neighbor 192.168.2.1 prefix-list import in
+
+router ospf 1
+ network 192.168.2.0 0.0.0.255 area 0
+
+ip prefix-list import seq 10 permit 172.16.18.0/24
+
+end

@@ -1,0 +1,53 @@
+#
+ sysname PE2
+#
+ip vpn-instance vpn1
+ ipv6-family
+  route-distinguisher 100:2
+  apply-label per-instance
+  vpn-target 111:1 export-extcommunity
+  vpn-target 111:1 import-extcommunity
+#
+mpls lsr-id 2.2.2.2
+#
+mpls
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.10.1.2 255.255.255.252
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ipv6 enable 
+ ip binding vpn-instance vpn1
+ ipv6 address 2001:db8:1::2/64
+#
+interface LoopBack1
+ ip address 2.2.2.2 255.255.255.255
+#
+bgp 100
+ peer 1.1.1.1 as-number 100
+ peer 1.1.1.1 connect-interface LoopBack1
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 1.1.1.1 enable
+#
+ ipv6-family vpnv6
+  policy vpn-target
+  peer 1.1.1.1 enable
+#
+ ipv6-family vpn-instance vpn1
+  peer 2001:db8:1::1 as-number 65410
+  import-route direct
+#
+ospf 1
+ area 0.0.0.0
+  network 10.10.1.0 0.0.0.3
+  network 2.2.2.2 0.0.0.0
+#
+return

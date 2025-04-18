@@ -1,0 +1,21 @@
+#
+sysname DeviceA
+#
+multicast routing-enable
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.5.1 255.255.255.0
+ pim sm
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ip address 10.1.4.2 255.255.255.0
+ pim sm
+#
+ospf 1
+ area 0.0.0.0
+  network 10.1.5.0 0.0.0.255
+   network 10.1.4.0 0.0.0.255
+#
+return

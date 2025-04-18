@@ -1,0 +1,19 @@
+hostname DeviceA
+
+interface GigabitEthernet1/0/0
+no shutdown
+ip address 1.1.1.1 255.255.255.0
+
+ip route 0.0.0.0 0.0.0.0 1.1.1.2
+
+track 1 bfd
+interface GigabitEthernet1/0/0
+ip address 1.1.1.1 255.255.255.0
+bfd interval 100 min_rx 100 multiplier 3
+
+ip route 0.0.0.0 0.0.0.0 1.1.1.2 track 1
+
+bfd all-interfaces
+neighbor 1.1.1.2
+interval 100 min_rx 100 multiplier 3
+

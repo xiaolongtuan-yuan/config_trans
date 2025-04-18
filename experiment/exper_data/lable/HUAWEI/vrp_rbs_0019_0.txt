@@ -1,0 +1,51 @@
+#
+sysname DeviceA
+#
+lacp e-trunk system-id 00e0-fc12-7890
+#
+igmp-snooping enable
+#
+bfd
+#
+e-trunk 1
+ peer-address 2.2.2.2 source-address 1.1.1.1
+ e-trunk track bfd-session session-name bfd2
+#
+remote-backup-service service1
+ peer 2.2.2.2 source 1.1.1.1 port 1025
+#
+remote-backup-profile profile1
+ service-type igmp-snooping  
+ backup-id 10 remote-backup-service service1
+ peer-backup hot
+ e-trunk 1 eth-trunk 1
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ eth-trunk 1
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.0.0.1 255.255.255.0
+#
+ ip address 10.0.0.1 255.255.255.0
+ mode lacp-static
+ e-trunk 1
+ igmp-snooping backup-report forward
+ remote-backup-profile profile1
+#
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+#
+bfd bfd1 bind peer-ip default-ip interface Eth-Trunk 1
+#
+bfd bfd2 bind peer-ip 2.2.2.2
+ discriminator local 10
+ discriminator remote 80
+#
+ospf 1
+ area 0.0.0.0 
+  network 1.1.1.1 0.0.0.0
+  network 10.0.0.0 0.0.0.255
+#
+return

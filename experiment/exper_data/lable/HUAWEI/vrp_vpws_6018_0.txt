@@ -1,0 +1,26 @@
+#
+ sysname CE1
+#
+bfd
+#
+interface Vlanif2
+ ip address 10.1.1.3 255.255.255.0
+#
+interface GigabitEthernet1/0/0
+ portswitch
+ undo shutdown
+ port trunk allow-pass vlan 2
+#
+interface GigabitEthernet1/0/1
+ portswitch
+ undo shutdown
+ port trunk allow-pass vlan 2
+#
+bfd link1 bind peer-ip 10.1.1.1 interface Vlanif2
+ discriminator local 51
+ discriminator remote 15
+bfd link2 bind peer-ip 10.1.1.2 interface Vlanif2
+ discriminator local 52
+ discriminator remote 25
+#
+return

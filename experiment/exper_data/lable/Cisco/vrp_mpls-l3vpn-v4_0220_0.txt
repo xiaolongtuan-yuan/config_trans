@@ -1,0 +1,18 @@
+hostname Spoke-CE1
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+
+interface Loopback1
+ ip address 11.11.11.11 255.255.255.255
+
+router bgp 65410
+ neighbor 10.1.1.2 remote-as 100
+ neighbor 10.1.1.2 update-source GigabitEthernet1/0/0
+
+ address-family ipv4
+  neighbor 10.1.1.2 activate
+  network 11.11.11.11 mask 255.255.255.255
+
+end

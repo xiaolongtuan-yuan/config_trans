@@ -1,0 +1,38 @@
+set system host-name PE2
+
+set routing-instances VPNB instance-type vrf
+set routing-instances VPNB route-distinguisher 200:1
+set routing-instances VPNB vrf-import PER_INSTANCE
+set routing-instances VPNB vrf-export PER_INSTANCE
+set routing-instances VPNB interface ge-2/0/0.0
+
+set policy-options community vpn-target-111-1 members target:111:1
+set policy-options policy-statement PER_INSTANCE term 10 from community vpn-target-111-1
+set policy-options policy-statement PER_INSTANCE term 10 then accept
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.4.1.1/24
+set interfaces ge-1/0/0 unit 0 family mpls
+set interfaces ge-2/0/0 unit 0 family inet address 10.11.1.1/24
+set interfaces ge-2/0/0 unit 0 family mpls
+set interfaces lo0 unit 0 family inet address 5.5.5.5/32
+
+set protocols ldp interface all
+set protocols ldp router-id lo0.0
+set protocols mpls label-switched-paths all label-mode ldp
+
+set protocols ospf area 0 interface lo0.0
+set protocols ospf area 0 interface ge-1/0/0.0
+set protocols ospf router-id 5.5.5.5
+
+set protocols bgp group internal type internal
+set protocols bgp group internal local-as 100
+set protocols bgp group internal neighbor 1.1.1.1 peer-as 100
+set protocols bgp group internal neighbor 1.1.1.1 update-source lo0.0
+set protocols bgp group internal family inet unicast send-community extended
+set protocols bgp group internal family inet-vpn unicast send-community extended
+
+set routing-instances VPNB protocols bgp group external-peers type external
+set routing-instances VPNB protocols bgp group external-peers peer-as 65420
+set routing-instances VPNB protocols bgp group external-peers neighbor 10.11.1.2 description "BGP neighbor for VPNB"
+
+commit

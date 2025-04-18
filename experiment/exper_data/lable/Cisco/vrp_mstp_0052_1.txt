@@ -1,0 +1,41 @@
+hostname UPE2
+!
+mpls ldp router-id Loopback0
+!
+mpls label protocol ldp
+!
+mpls l2vpn
+!
+vfi s1 manual
+ vpn id 100
+!
+mpls ldp
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.5.1.2 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.5.2.2 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface GigabitEthernet3/0/0
+ no shutdown
+!
+interface GigabitEthernet3/0/0.1
+ encapsulation dot1Q 10
+ xconnect vfi s1
+!
+interface Loopback1
+ ip address 6.6.6.6 255.255.255.255
+!
+router ospf 1
+ network 6.6.6.6 0.0.0.0 area 0
+ network 10.5.1.0 0.0.0.255 area 0
+ network 10.5.2.0 0.0.0.255 area 0
+!
+end

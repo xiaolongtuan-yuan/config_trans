@@ -1,0 +1,39 @@
+#
+sysname DeviceB
+#
+vlan batch 11 14 16
+#               
+ospfv3 1        
+ router-id 2.2.2.2
+ area 0.0.0.0   
+ area 0.0.0.1   
+  nssa            
+#               
+interface Vlanif11
+ ipv6 enable    
+ ipv6 address 2001:DB8:5::2/64
+ ospfv3 1 area 0.0.0.1
+#               
+interface Vlanif14
+ ipv6 enable    
+ ipv6 address 2001:DB8:3::1/64
+ ospfv3 1 area 0.0.0.0
+#               
+interface Vlanif16
+ ipv6 enable    
+ ipv6 address 2001:DB8:2::2/64
+ ospfv3 1 area 0.0.0.1
+#
+interface GigabitEthernet1/0/0
+ undo shutdown  
+ port default vlan 16
+#
+interface GigabitEthernet2/0/0
+ undo shutdown  
+ port default vlan 14
+#
+interface GigabitEthernet3/0/0
+ undo shutdown  
+ port default vlan 11
+#
+return

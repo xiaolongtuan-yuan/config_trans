@@ -1,0 +1,23 @@
+
+ipv6 multicast-routing
+
+interface GigabitEthernet1/0/0
+  no shutdown
+
+interface GigabitEthernet1/0/0.1
+  ipv6 enable
+  ipv6 address 2001:db8:7::2/64
+  encapsulation dot1q 1 native
+  encapsulation dot1q 1 4
+  pim ipv6 sparse-mode
+  ipv6 mld join-group FF02::1
+
+interface GigabitEthernet1/0/1
+  no shutdown
+  ipv6 enable
+  ipv6 address 2001:db8:6::1/64
+  pim ipv6 sparse-mode
+
+ipv6 route 2001:db8:5::/64 GigabitEthernet1/0/1 2001:db8:6::2
+
+end

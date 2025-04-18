@@ -1,0 +1,53 @@
+hostname DeviceB
+
+ip multicast-routing
+
+access-list 2000 permit ip 10.110.5.0 0.0.0.255
+
+access-list 2001 permit ip 192.168.2.0 0.0.0.255
+
+router isis
+
+net 10.0000.0000.0002.00
+
+interface GigabitEthernet1/0/0
+
+ip address 192.168.2.1 255.255.255.0
+
+isis network point-to-point
+
+ip pim sparse-mode
+
+interface GigabitEthernet2/0/0
+
+no shutdown
+
+ip address 10.110.2.1 255.255.255.0
+
+isis network point-to-point
+
+ip pim sparse-mode
+
+ip igmp version 3
+
+ip igmp join-group 224.0.0.1
+
+ip pim bsr-candidate GigabitEthernet1/0/0
+
+ip pim rp-address 192.168.2.1
+
+ip pim rp-candidate GigabitEthernet1/0/0
+
+ip pim spt-threshold infinity
+
+ip pim ssm range 232.0.0.0/8
+
+ip pim ssm range 233.0.0.0/8
+
+ip pim ssm range 234.0.0.0/8
+
+ip pim ssm range 239.0.0.0/8
+
+ip pim accept-register
+
+return

@@ -1,0 +1,42 @@
+set system host-name PE1
+
+set routing-instances vpn1 instance-type vrf
+set routing-instances vpn1 route-distinguisher 100:1
+set routing-instances vpn1 vrf-target target:111:1
+set routing-instances vpn1 vrf-target import target:111:1
+set routing-instances vpn1 vrf-target export target:111:1
+
+set protocols mpls interface lo0.0
+set protocols mpls interface ge-1/0/1
+set protocols mpls interface ge-2/0/1
+set protocols ldp interface lo0.0
+set protocols ldp interface ge-1/0/1
+set protocols ldp interface ge-2/0/1
+set protocols ldp transport-address 1.1.1.9
+
+set interfaces ge-1/0/1 unit 0 family inet address 10.2.1.1/24
+set interfaces ge-1/0/1 unit 0 family mpls
+set interfaces ge-1/0/1 unit 0 disable
+
+set interfaces ge-2/0/1 unit 0 family inet address 10.1.1.2/24
+set routing-instances vpn1 interface ge-2/0/1.0
+
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+
+set protocols bgp group EBGP type external
+set protocols bgp group EBGP local-address 1.1.1.9
+set protocols bgp group EBGP neighbor 3.3.3.9 peer-as 100
+set protocols bgp group EBGP family inet unicast
+set protocols bgp group EBGP family inet-vpn
+set protocols bgp group EBGP family inet unicast advertise-peer-as
+set protocols bgp group EBGP family inet-vpn unicast
+
+set protocols bgp group VPN1 type external
+set protocols bgp group VPN1 family inet unicast
+set protocols bgp group VPN1 local-address 1.1.1.9
+set protocols bgp group VPN1 neighbor 10.3.3.3 peer-as 65410
+set routing-instances vpn1 protocols bgp group VPN1 neighbor 10.3.3.3
+set routing-instances vpn1 import direct
+
+set system services ssh protocol-version v2
+set security generate-key-pair size 2048

@@ -1,0 +1,43 @@
+hostname PE1
+!
+mpls ldp router-id Loopback0
+!
+mpls label protocol ldp
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.2.1 255.255.255.0
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+!
+interface Tunnel1
+ ip unnumbered Loopback0
+ tunnel mode mpls traffic-eng
+ tunnel destination 3.3.3.3
+ tunnel mpls traffic-eng autoroute announce
+ tunnel mpls traffic-eng path-option 1 explicit name PCE-DELEGATE
+ tunnel mpls traffic-eng segment-routing
+!
+router isis
+ net 49.0000.0000.0001.00
+ metric-style wide
+ is-type level-2-only
+ isis metric-style wide level-2
+ isis explicit-path name PCE-DELEGATE enable
+ mpls traffic-eng level-2
+ segment-routing mpls
+!
+mpls traffic-eng router-id Loopback0
+!
+mpls traffic-eng logging
+mpls traffic-eng auto-bw
+mpls traffic-eng area 0
+mpls traffic-eng affinity-map
+!
+pce client
+ pce ipv4 10.2.1.2
+ pce segment-routing
+ pce segment-routing sr-mpls
+!
+end

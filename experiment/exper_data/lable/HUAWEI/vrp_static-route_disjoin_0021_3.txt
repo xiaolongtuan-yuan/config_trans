@@ -1,0 +1,27 @@
+#
+sysname DeviceC
+#
+bfd
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 172.17.1.0 255.255.255.0
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 192.168.11.1 255.255.255.0
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ip address 192.168.21.1 255.255.255.0
+#
+bfd ab bind peer-ip 192.168.10.1 source-ip 192.168.11.1
+ discriminator local 20
+ discriminator remote 10
+#
+ip route-static 172.16.1.0 24 GigabitEthernet2/0/0 192.168.11.2
+ip route-static 172.16.1.0 24 GigabitEthernet3/0/0 192.168.21.2
+ip route-static 192.168.10.0 255.255.255.0 GigabitEthernet2/0/0 192.168.11.2
+ip route-static 192.168.20.0 255.255.255.0 GigabitEthernet3/0/0 192.168.21.2 
+#
+return

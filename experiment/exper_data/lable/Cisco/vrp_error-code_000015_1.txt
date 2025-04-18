@@ -1,0 +1,26 @@
+hostname PE2
+!
+bfd
+!
+router isis 1
+ net 10.0000.0000.0002.00
+!
+interface Eth-Trunk1
+ ip address 10.1.1.2 255.255.255.0
+ bfd
+ isis circuit-type level-1-2
+ isis cost max-reachable
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ channel-group 1 mode on
+ isis circuit-type level-1-2
+ isis link-quality low bit-error-threshold error-ratio 3 4 resume-ratio 2 5
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ channel-group 1 mode on
+ isis circuit-type level-1-2
+ isis link-quality low bit-error-threshold error-ratio 3 4 resume-ratio 2 5
+!
+end

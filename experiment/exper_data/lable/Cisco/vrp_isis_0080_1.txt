@@ -1,0 +1,33 @@
+hostname DeviceB
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ isis network point-to-point
+ isis cost 5
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.0.1 255.255.255.0
+ isis network point-to-point
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 192.168.1.1 255.255.255.0
+ isis network point-to-point
+ isis cost 15
+
+router isis
+ net 00.2222.2222.2222.00
+ is-type level-1-2
+ isis multi-topology
+ metric-style wide
+
+router isis
+ net 00.2222.2222.2223.00
+ is-type level-1-2
+ isis multi-topology
+ metric-style wide
+
+end
+

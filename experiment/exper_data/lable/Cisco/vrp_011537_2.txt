@@ -1,0 +1,41 @@
+hostname PE2
+
+cfm version standard
+cfm
+
+mpls ip
+mpls ldp router-id Loopback0 force
+mpls l2vpn
+
+vfi ldp1 manual
+ vpn id 1
+ neighbor 2.2.2.2 pw-id 1
+
+interface GigabitEthernet1/0/1.1
+ encapsulation dot1Q 2
+ xconnect vfi ldp1
+
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls ip
+
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.0
+
+router ospf 1
+ network 1.1.1.1 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+
+cfm domain md1
+ service ma1
+  mep 2
+   mep interface GigabitEthernet1/0/1.1
+   mep ccm-send interval 3
+   mep ccm-send enable
+   remote-mep 1
+   remote-mep ccm-receive enable
+   continuity-check interval 3 mep 2 remote-mep 1 peer-ip 2.2.2.2
+   loss-measurement dual-ended test-id 1
+
+end

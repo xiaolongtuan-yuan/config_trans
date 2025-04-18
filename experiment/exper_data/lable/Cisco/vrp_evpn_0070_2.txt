@@ -1,0 +1,63 @@
+hostname NPE2
+
+ip vrf vpn1
+ rd 10:2
+ route-target export 2:2
+ route-target import 2:2
+
+mpls label protocol ldp
+
+mpls ldp router-id Loopback0
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.2.1.2 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip vrf forwarding vpn1
+ ip address 192.168.30.1 255.255.255.0
+
+interface Loopback1
+ ip address 3.3.3.3 255.255.255.255
+
+router isis
+ net 49.0000.0000.0000.0003.00
+ is-type level-2-only
+
+router bgp 100
+ neighbor 2.2.2.2 remote-as 100
+ neighbor 2.2.2.2 update-source Loopback1
+
+ address-family ipv4
+  neighbor 2.2.2.2 activate
+  no synchronization
+
+ address-family vpnv4
+  neighbor 2.2.2.2 activate
+  neighbor 2.2.2.2 send-community both
+
+ address-family l2vpn evpn
+  neighbor 2.2.2.2 activate
+  neighbor 2.2.2.2 advertise ipv4 unicast
+
+mpls ldp router-id Loopback0
+
+mpls ldp label space-id 0
+
+mpls ldp advertise-labels for 10.2.1.2/32
+
+mpls ldp router-id Loopback0
+
+mpls ldp label space-id 0
+
+mpls ldp advertise-labels for 192.168.30.1/32
+
+mpls ldp router-id Loopback0
+
+mpls ldp label space-id 0
+
+mpls ldp advertise-labels for 3.3.3.3/32
+
+end

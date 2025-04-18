@@ -1,0 +1,49 @@
+#
+sysname DeviceA
+#
+multicast ipv6 routing-enable
+#
+acl ipv6 number 2000
+ rule 5 permit source 2001:db8:5::5 64
+#
+acl ipv6 number 2001
+ rule 5 permit source 2001:db8:3::2 64
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:5::1/64
+ pim ipv6 sm
+ ospfv3 1 area 0.0.0.0
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:1::1/64
+ pim ipv6 sm
+ ospfv3 1 area 0.0.0.0
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:2::1/64
+ pim ipv6 sm
+ ospfv3 1 area 0.0.0.0
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:6::1/64
+ pim ipv6 bsr-boundary 
+ pim ipv6 sm
+ ospfv3 1 area 0.0.0.0
+#
+ospfv3 1
+ router-id 1.1.1.1
+ area 0.0.0.0
+#
+pim-ipv6
+ bsr-policy 2001
+ source-policy 2000
+#
+return

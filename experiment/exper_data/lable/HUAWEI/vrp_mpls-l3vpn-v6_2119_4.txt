@@ -1,0 +1,42 @@
+#
+sysname CE2
+#
+mpls lsr-id 5.5.5.9
+#
+mpls
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/0
+ undo shutdown  
+ ip address 10.2.1.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack0
+ ipv6 enable
+ ipv6 address 2001:DB8:9::1/64
+#
+interface LoopBack1
+ ip address 5.5.5.9 255.255.255.255
+#
+bgp 100
+ peer 3.3.3.3 as-number 100
+ peer 3.3.3.3 connect-interface LoopBack1
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 3.3.3.3 enable
+ #
+ ipv6-family unicast
+  undo synchronization
+  network 2001:DB8:9:: 64
+  peer 3.3.3.3 enable
+  peer 3.3.3.3 label-route-capability
+#
+ospf 1
+ area 0.0.0.0
+  network 5.5.5.9 0.0.0.0
+  network 10.2.1.0 0.0.0.255
+#
+return

@@ -1,0 +1,64 @@
+#
+sysname ASBR2
+#
+tunnel-selector bindTE permit node 10
+ apply tunnel-policy bindTE
+#
+mpls lsr-id 3.3.3.9
+#
+mpls
+ mpls te
+ mpls rsvp-te
+ mpls te cspf
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.3.1.1 255.255.255.0
+ mpls
+ mpls te
+ mpls te bandwidth max-reservable-bandwidth 20000
+ mpls te bandwidth bc0 15000
+ mpls rsvp-te
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 192.168.1.2 255.255.255.0
+#
+interface LoopBack1
+ ip address 3.3.3.9 255.255.255.255
+#
+interface Tunnel10
+ ip address unnumbered interface LoopBack1
+ tunnel-protocol mpls te
+ destination 4.4.4.9
+ mpls te tunnel-id 300
+ mpls te bandwidth ct0 5000
+ mpls te reserved-for-binding
+#
+bgp 200
+ peer 4.4.4.9 as-number 200
+ peer 4.4.4.9 connect-interface LoopBack1
+ peer 192.168.1.1 as-number 100
+ #
+ ipv4-family unicast
+  undo synchronization 
+  peer 4.4.4.9 enable
+  peer 192.168.1.1 enable
+ #
+ ipv4-family vpnv4
+  undo policy vpn-target
+  tunnel-selector bindTE
+  peer 4.4.4.9 enable
+  peer 192.168.1.1 enable
+#
+ospf 1
+ opaque-capability enable
+ area 0.0.0.0
+  mpls-te enable
+  network 3.3.3.9 0.0.0.0
+  network 10.3.1.0 0.0.0.255
+#
+tunnel-policy bindTE
+ tunnel binding destination 4.4.4.9 te Tunnel10 down-switch
+#
+return

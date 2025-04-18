@@ -1,0 +1,33 @@
+hostname DeviceA
+!
+ipv6 unicast-routing
+!
+ipv6 access-list 2000
+ permit ipv6 ff31::/32 any
+!
+router isis
+ isis enable ipv6
+ isis network-entity 10.0000.0000.0001.00
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 address 2001:db8:5::2/64
+ ipv6 pim sparse-mode
+ ipv6 isis enable
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 address 2001:db8:1::1/64
+ ipv6 pim sparse-mode
+ ipv6 isis enable
+!
+interface GigabitEthernet3/0/0
+ no shutdown
+ ipv6 address 2001:db8:3::1/64
+ ipv6 pim sparse-mode
+ ipv6 isis enable
+!
+ipv6 pim ssm default
+ ipv6 pim ssm range 2000
+!
+end

@@ -1,0 +1,29 @@
+hostname LSRD
+!
+mpls label protocol ldp
+!
+mpls ldp router-id Loopback1 force
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.2.1.2 255.255.255.0
+ mpls ip
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 10.4.1.1 255.255.255.0
+ mpls ip
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 10.5.1.1 255.255.255.0
+ mpls ip
+!
+interface Loopback1
+ ip address 4.4.4.4 255.255.255.255
+!
+router isis
+ net 00.0005.0000.0000.0004.00
+ is-type level-2-only
+!
+end

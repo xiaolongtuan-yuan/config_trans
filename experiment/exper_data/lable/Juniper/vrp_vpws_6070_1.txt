@@ -1,0 +1,24 @@
+set system host-name CE2
+set interfaces vlan10 unit 0 family inet address 10.1.1.2/24
+
+set interfaces gigabitethernet1_0_0 link-mode trunk
+set interfaces gigabitethernet1_0_0 unit 0 family ethernet-switching vlan members vlan-10
+set interfaces gigabitethernet1_0_0 shutdown disable
+
+set interfaces gigabitethernet2_0_0 link-mode trunk
+set interfaces gigabitethernet2_0_0 unit 0 family ethernet-switching vlan members vlan-10
+set interfaces gigabitethernet2_0_0 shutdown disable
+
+set security monitor cfm md md1
+set security monitor cfm domain ma1 id 2 interface-gigabitethernet1_0_0 direction outward
+set security monitor cfm domain ma1 id 2 ccm-send
+set security monitor cfm domain ma1 id 1 remote-mep
+set security monitor cfm domain ma1 id 1 ccm-receive
+
+set security monitor cfm md md2
+set security monitor cfm domain ma2 id 4 interface-gigabitethernet2_0_0 direction outward
+set security monitor cfm domain ma2 id 4 ccm-send
+set security monitor cfm domain ma2 id 3 remote-mep
+set security monitor cfm domain ma2 id 3 ccm-receive
+
+commit

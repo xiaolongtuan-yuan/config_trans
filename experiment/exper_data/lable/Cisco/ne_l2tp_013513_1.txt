@@ -1,0 +1,32 @@
+hostname DeviceB
+
+l2tp enable
+
+l2tp-class lns1
+ authentication chap
+ tunnel password cipher %@%##!!!!!!!!!"!!!!"!!!!(!!!!1];16qfZ81fv"uMoKKZ.1k"`AO!X2K2N.b~'NB^V!!!!!!!!!!1!!!!o/4J(q"J1F.!K9%M!6x8%@%
+ tunnel name lns1
+
+interface Virtual-Template1
+ ip unnumbered Loopback0
+ peer default ip address pool pool1
+ ppp authentication chap
+
+interface Loopback0
+ ip address 3.3.3.3 255.255.255.255
+
+ip local pool pool1 10.10.0.2 10.10.0.100
+
+aaa new-model
+aaa authentication ppp default1 local
+aaa accounting network default1 start-stop group isp1
+aaa session-id common
+
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 11.11.11.2 255.255.255.0
+
+ip route 1.1.1.1 255.255.255.255 11.11.11.1
+
+vpdn-group group1
+ bind interface Loopback1

@@ -1,0 +1,68 @@
+#
+sysname ABR
+#
+mpls lsr-id 2.2.2.2
+#
+mpls
+#
+mpls ldp
+ mldp p2mp
+ mldp recursive-fec
+#
+isis 1
+ is-level level-2
+ cost-style wide
+ network-entity 10.0000.0000.000c.00
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.0.2.5 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip address 10.0.16.1 255.255.255.0
+ isis enable 1
+ mpls
+ mpls ldp
+#
+interface LoopBack0
+ ip address 2.2.2.2 255.255.255.255
+ isis enable 1
+#
+bgp 100
+ peer 1.1.1.1 as-number 100
+ peer 1.1.1.1 connect-interface LoopBack0
+ peer 3.3.3.3 as-number 100
+ peer 3.3.3.3 connect-interface LoopBack0
+ #  
+ ipv4-family unicast
+  undo synchronization
+  peer 1.1.1.1 enable
+  peer 1.1.1.1 reflect-client
+  peer 3.3.3.3 enable
+  peer 3.3.3.3 reflect-client
+ #
+ ipv4-family mvpn
+  undo policy vpn-target
+  peer 1.1.1.1 enable
+  peer 1.1.1.1 reflect-client
+  peer 3.3.3.3 enable
+  peer 3.3.3.3 reflect-client
+ #
+ ipv4-family vpnv4
+  undo policy vpn-target
+  peer 1.1.1.1 enable
+  peer 1.1.1.1 reflect-client
+  peer 1.1.1.1 next-hop-local
+  peer 3.3.3.3 enable
+  peer 3.3.3.3 reflect-client
+  peer 3.3.3.3 next-hop-local
+#
+ospf 1
+ area 0.0.0.0
+  network 10.0.2.0 0.0.0.255
+  network 2.2.2.2 0.0.0.0
+#
+return

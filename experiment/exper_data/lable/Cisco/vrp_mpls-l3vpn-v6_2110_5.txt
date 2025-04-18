@@ -1,0 +1,25 @@
+hostname CE2
+!
+mpls label protocol ldp
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 21.1.1.2 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 20.1.1.1 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+!
+interface Loopback1
+ ip address 5.5.5.9 255.255.255.255
+!
+router ospf 1
+ network 5.5.5.9 0.0.0.0 area 0
+ network 20.1.1.0 0.0.0.255 area 0
+ network 21.1.1.0 0.0.0.255 area 0
+!
+end

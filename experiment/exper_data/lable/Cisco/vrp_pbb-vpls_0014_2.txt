@@ -1,0 +1,39 @@
+hostname PE2
+
+mpls ldp router-id Loopback0
+mpls ldp
+
+mpls label protocol ldp
+
+interface GigabitEthernet1/0/0
+ no shutdown
+
+interface GigabitEthernet1/0/0.1
+ encapsulation dot1q 10
+ xconnect vsi ivsi1
+
+interface GigabitEthernet1/0/0.2
+ encapsulation dot1q 20
+ xconnect vsi ivsi2
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 10.3.1.1 255.255.255.0
+ mpls ip
+
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.255
+
+router ospf 1
+ router-id 2.2.2.2
+ area 0
+  network 2.2.2.2 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+  network 10.3.1.0 0.0.0.255
+
+end

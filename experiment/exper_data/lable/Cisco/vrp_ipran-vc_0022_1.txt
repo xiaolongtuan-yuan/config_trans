@@ -1,0 +1,60 @@
+hostname Master1
+
+bfd
+
+mpls ldp router-id Loopback0
+
+mpls label protocol ldp
+
+mpls l2vpn
+
+mpls ldp
+
+ipv4 unicast-routing
+
+interface GigabitEthernet1/0/0
+no shutdown
+ip address 10.1.1.2 255.255.255.0
+mpls ip
+
+interface GigabitEthernet2/0/0
+no shutdown
+ip address 10.20.1.1 255.255.255.0
+mpls ip
+mpls ldp discovery targeted-hello accept
+
+interface GigabitEthernet1/0/1
+no shutdown
+ip address 10.70.1.1 255.255.255.0
+
+interface Loopback0
+ip address 2.2.2.2 255.255.255.255
+
+interface Serial1/0/1:1
+mpls ip
+
+router isis
+net 49.0001.0000.0000.0002.00
+is-type level-2-only
+mpls ldp autoconfig
+mpls traffic-eng router-id Loopback0
+
+interface Loopback0
+ip router isis
+
+interface Remote-Ap2
+mpls ip
+mpls label protocol ldp
+mpls l2transport vc 4
+neighbor 4.4.4.4 encapsulation mpls
+neighbor 4.4.4.4 intf-type tdm
+neighbor 4.4.4.4 jitter-buffer 32
+neighbor 4.4.4.4 idle-code fa
+
+router ospf 1
+mpls traffic-eng area
+area 0
+network 10.20.1.0 0.0.0.255 area 0
+network 10.70.1.0 0.0.0.255 area 0
+network 2.2.2.2 0.0.0.0 area 0
+

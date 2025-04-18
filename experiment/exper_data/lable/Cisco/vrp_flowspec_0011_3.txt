@@ -1,0 +1,44 @@
+hostname DeviceD
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+
+interface Loopback1
+ ip address 4.4.4.4 255.255.255.255
+
+router bgp 200
+ bgp router-id 4.4.4.4
+ neighbor 2.2.2.2 remote-as 200
+ neighbor 2.2.2.2 update-source Loopback1
+
+ address-family ipv4 unicast
+  no synchronization 
+  neighbor 2.2.2.2 activate
+
+ address-family ipv4 flow
+  neighbor 2.2.2.2 activate
+
+router ospf 1
+ area 0
+  network 4.4.4.4 0.0.0.0 area 0
+  network 10.1.1.0 0.0.0.255 area 0
+
+flow record FlowSpec2
+ match transport source-port 170
+ collect counter bytes long
+ collect counter packets long
+
+flow exporter FlowSpec2
+ destination 10.1.1.1
+ transport udp 2055
+ export-protocol netflow-v9
+
+flow monitor FlowSpec2
+ record FlowSpec2
+ exporter FlowSpec2
+
+interface GigabitEthernet1/0/0
+ ip flow monitor FlowSpec2 input
+
+end

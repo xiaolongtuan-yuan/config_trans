@@ -1,0 +1,34 @@
+#
+sysname CE1
+#
+bridge-domain 10
+#
+bridge-domain 20
+#
+interface Vbdif10
+ ip address 192.168.1.11 255.255.255.0
+#
+interface Vbdif20
+ ip address 192.168.2.11 255.255.255.0
+#
+interface Eth-Trunk20
+#
+interface Eth-Trunk20.1 mode l2
+ encapsulation dot1q vid 100
+ rewrite pop single
+ bridge-domain 10
+#               
+interface Eth-Trunk20.2 mode l2
+ encapsulation dot1q vid 200
+ rewrite pop single
+ bridge-domain 20
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ eth-trunk 20
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ eth-trunk 20
+#
+return

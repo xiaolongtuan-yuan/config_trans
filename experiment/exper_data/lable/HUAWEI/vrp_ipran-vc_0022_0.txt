@@ -1,0 +1,43 @@
+#
+sysname AP1
+#
+bfd
+#
+virtual-cluster-access
+ role ap
+ admin 1.1.1.1
+ master primary 2.2.2.2
+ master secondary 3.3.3.3
+#
+isis 65534
+ description auto-generated for virtual-cluster-access
+ is-level level-2
+ cost-style wide
+ virtual-cluster-access enable
+ network-entity 00.38ba.103a.2c01.00
+#
+controller E1 1/0/1
+ channel-set 1 timeslot-list 1-31
+ undo shutdown
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ virtual-cluster-access enable
+ isis enable 65534
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.10.1.1 255.255.255.0
+ virtual-cluster-access enable
+ isis enable 65534
+#
+interface LoopBack0
+ ip address 1.1.1.1 255.255.255.255
+ isis enable 65534
+#
+interface Serial1/0/1:1
+ undo shutdown
+ link-protocol tdm
+#
+return

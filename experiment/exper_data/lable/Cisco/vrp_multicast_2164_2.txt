@@ -1,0 +1,32 @@
+hostname DeviceC
+!
+ipv6 unicast-routing
+!
+ipv6 multicast-routing
+!
+bfd
+!
+router ospfv3 1
+ router-id 10.4.4.4
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:3::2/64
+ ipv6 address FE80::8 link-local
+ ipv6 ospfv3 1 area 0.0.0.0
+ ipv6 pim sparse-mode
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:4::2/64
+ ipv6 address FE80::7 link-local
+ ipv6 ospfv3 1 area 0.0.0.0
+ ipv6 pim sparse-mode
+ ipv6 pim dr-priority 20
+ ipv6 pim bfd enable
+ ipv6 pim bfd tx-interval 200 rx-interval 200 multiplier 4
+ ipv6 mld join-group FF02::1
+!
+end

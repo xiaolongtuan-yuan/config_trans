@@ -1,0 +1,27 @@
+#
+ sysname PE1
+#
+ vlan batch 100 200
+#
+ bpdu-tunnel stp bridge role provider
+#
+stp enable
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ portswitch
+ port default vlan 200
+ stp disable
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ portswitch
+ port trunk allow-pass vlan 100 200
+#
+interface GigabitEthernet1/0/3
+ undo shutdown
+ portswitch
+ port default vlan 100
+ stp disable
+#
+return

@@ -1,0 +1,19 @@
+#
+ sysname CE1
+#
+interface GigabitEthernet0/1/0
+ undo shutdown
+ ip address 192.168.2.2 255.255.255.252
+#
+interface LoopBack1
+ ip address 11.11.11.11 255.255.255.255
+#
+bgp 65420
+ peer 192.168.2.1 as-number 100
+ #
+ ipv4-family unicast
+  undo synchronization
+  network 11.11.11.11 32
+  peer 192.168.2.1 enable
+#
+return

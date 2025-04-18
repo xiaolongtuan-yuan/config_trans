@@ -1,0 +1,16 @@
+hostname CE3
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 172.16.1.1 255.255.255.0
+!
+router bgp 65410
+ neighbor 172.16.1.2 remote-as 200
+ !
+ address-family ipv4
+  no synchronization
+  neighbor 172.16.1.2 activate
+  neighbor 172.16.1.2 route-map direct in
+ exit-address-family
+!
+end

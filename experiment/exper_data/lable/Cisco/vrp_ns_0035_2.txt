@@ -1,0 +1,139 @@
+interface GigabitEthernet1/0/0
+ ip address 10.3.1.2 255.255.255.0
+ ip vrf forwarding vpna
+!
+interface GigabitEthernet3/0/0
+ ip address 172.16.3.2 255.255.255.0
+ mpls ip
+ mpls ldp discovery
+!
+interface Loopback1
+ ip address 3.3.3.9 255.255.255.255
+!
+router ospf 1
+ network 172.17.1.0 0.0.0.255 area 0
+ network 3.3.3.9 0.0.0.0 area 0
+!
+router bgp 100
+ neighbor 1.1.1.9 remote-as 100
+ neighbor 1.1.1.9 update-source Loopback1
+ !
+ address-family ipv4
+  neighbor 1.1.1.9 activate
+ !
+ address-family vpnv4
+  neighbor 1.1.1.9 activate
+  neighbor 1.1.1.9 send-community extended
+ !
+ address-family ipv4 vrf vpna
+  redistribute connected
+  neighbor 10.4.1.1 remote-as 65440
+!
+ip netstream export source 192.168.2.1
+ip netstream export destination 192.168.2.2 9000 version 9 template data record application-label
+!
+mpls ldp router-id Loopback1 force
+!
+mpls label protocol ldp
+!
+mpls ldp discovery targeted-hello accept
+!
+mpls ldp discovery targeted-hello send
+!
+mpls ldp igp sync
+!
+mpls traffic-eng tunnels
+!
+mpls traffic-eng router-id Loopback1
+!
+mpls traffic-eng area 0
+!
+mpls traffic-eng multicast-intact
+!
+mpls traffic-eng auto-bw
+!
+mpls traffic-eng load-share min-fill
+!
+mpls traffic-eng load-share max-load
+!
+mpls traffic-eng load-share path-selection
+!
+mpls traffic-eng load-share path-selection delay
+!
+mpls traffic-eng load-share path-selection metric
+!
+mpls traffic-eng load-share path-selection metric threshold
+!
+mpls traffic-eng load-share path-selection metric threshold limits
+!
+mpls traffic-eng load-share path-selection metric threshold limits te
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric min
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric max
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric min max
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail min
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max min
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max max
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail min
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail max
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail min
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail max
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail min
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail max
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail min
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail max
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail fail
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail fail min
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail fail max
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail fail fail
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail fail fail min
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail fail fail max
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail fail fail fail
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail fail fail fail min
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail fail fail fail max
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail fail fail fail fail
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail fail fail fail fail min
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail fail fail fail fail max
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail fail fail fail fail fail
+!
+mpls traffic-eng load-share path-selection metric threshold limits te metric fail max fail fail fail fail fail fail fail

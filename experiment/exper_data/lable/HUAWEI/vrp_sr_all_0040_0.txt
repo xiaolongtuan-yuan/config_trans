@@ -1,0 +1,55 @@
+#
+sysname PE1
+#
+mpls lsr-id 1.1.1.1
+#
+mpls
+ mpls te
+#
+explicit-path path2asbr1
+ next sid label 330102 type adjacency
+#
+explicit-path path2pe2
+ next sid label 1000 type binding-sid
+ next sid label 32770 type adjacency
+ next sid label 2000 type binding-sid
+#               
+segment-routing 
+#
+isis 1
+ is-level level-2
+ cost-style wide
+ network-entity 10.0000.0000.0001.00
+ traffic-eng level-2
+ segment-routing mpls
+#
+interface GigabitEthernet1/0/0
+ undo shutdown  
+ ip address 10.0.1.1 255.255.255.0
+ isis enable 1  
+ mpls
+ mpls te
+#
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+ isis enable 1
+ isis prefix-sid absolute 16100
+#
+interface Tunnel1
+ ip address unnumbered interface LoopBack1
+ tunnel-protocol mpls te
+ destination 2.2.2.2
+ mpls te signal-protocol segment-routing
+ mpls te tunnel-id 1
+ mpls te path explicit-path path2asbr1
+ mpls te binding-sid label 1000
+#
+interface Tunnel3
+ ip address unnumbered interface LoopBack1
+ tunnel-protocol mpls te
+ destination 4.4.4.4
+ mpls te signal-protocol segment-routing
+ mpls te tunnel-id 100
+ mpls te path explicit-path path2pe2
+#
+return

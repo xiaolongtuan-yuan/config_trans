@@ -1,0 +1,29 @@
+#
+sysname ASBR1
+#
+mpls lsr-id 2.2.2.2
+mpls
+#
+mpls l2vpn
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.10.1.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ mpls l2vc 1.1.1.1 100
+#
+interface LoopBack1
+ ip address 2.2.2.2 255.255.255.255
+#
+ospf 1
+ area 0.0.0.0
+  network 2.2.2.2 0.0.0.0
+  network 10.10.1.0 0.0.0.255
+#
+return

@@ -1,0 +1,37 @@
+hostname PE3
+!
+mpls ldp router-id Loopback1 force
+!
+mpls ip
+!
+mpls l2vpn
+!
+pseudowire-class ldp
+ encapsulation ldp
+!
+vfi s1 manual
+ vpn id 10
+ neighbor 1.1.1.1 pw-id 10
+ neighbor 2.2.2.2 pw-id 10
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls ip
+!
+interface GigabitEthernet2/0/0
+ ip address 10.2.1.2 255.255.255.0
+ mpls ip
+!
+interface Loopback1
+ ip address 3.3.3.3 255.255.255.255
+!
+router ospf 1
+ router-id 3.3.3.3
+ passive-interface default
+ no passive-interface Loopback1
+ network 3.3.3.3 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+ network 10.2.1.0 0.0.0.255 area 0
+!
+end

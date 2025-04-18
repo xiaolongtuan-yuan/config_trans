@@ -1,0 +1,59 @@
+#
+sysname RR
+#
+mpls lsr-id 2.2.2.2
+#
+mpls
+#
+mpls ldp
+ #
+ ipv4-family
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.3.1.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack1
+ ip address 2.2.2.2 255.255.255.255
+#
+bgp 100
+ peer 1.1.1.1 as-number 100
+ peer 1.1.1.1 connect-interface LoopBack1
+ peer 3.3.3.3 as-number 100
+ peer 3.3.3.3 connect-interface LoopBack1
+ #
+ ipv4-family unicast
+  undo synchronization
+  undo synchronization
+  peer 1.1.1.1 enable
+  undo synchronization
+  peer 3.3.3.3 enable
+ #
+ ipv4-family vpnv4
+  undo policy vpn-target
+  peer 1.1.1.1 enable
+  peer 1.1.1.1 reflect-client
+  peer 3.3.3.3 enable
+  peer 3.3.3.3 reflect-client
+ #
+ ipv4-family vpn-target
+  peer 1.1.1.1 enable
+  peer 1.1.1.1 reflect-client
+  peer 3.3.3.3 enable
+  peer 3.3.3.3 reflect-client
+#
+ospf 1
+ area 0.0.0.0
+  network 2.2.2.2 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+  network 10.3.1.0 0.0.0.255
+#
+return

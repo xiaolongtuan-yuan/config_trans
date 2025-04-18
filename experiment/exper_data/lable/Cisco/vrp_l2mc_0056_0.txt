@@ -1,0 +1,41 @@
+hostname PE1
+!
+vlan 11
+!
+ip igmp snooping
+!
+mpls ldp router-id Loopback0 force
+mpls label protocol ldp
+!
+mpls l2vpn
+!
+vsi vsi1 static
+  pwsignal ldp
+  vsi-id 123
+  peer 3.3.3.3
+  ip igmp snooping
+  l2 multicast max-entries 10
+!
+mpls ldp
+!
+router isis 1
+ net 49.0010.0100.1001.00
+ is-type level-1
+!
+interface GigabitEthernet1/0/0.1
+ encapsulation dot1q 11
+ xconnect vsi vsi1
+ ip igmp snooping static-router-port
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 192.168.0.1 255.255.255.252
+ isis enable 1
+ mpls ip
+ mpls ldp
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+ isis enable 1
+!
+end

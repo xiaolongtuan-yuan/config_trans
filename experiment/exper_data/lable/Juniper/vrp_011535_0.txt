@@ -1,0 +1,31 @@
+set system host-name PE1
+
+set protocols ethernet-oam maintenance-domain md1
+set protocols ethernet-oam maintenance-domain md1 maintenance-association ma1
+set protocols ethernet-oam maintenance-domain md1 maintenance-association ma1 ccm-interval 1
+set protocols ethernet-oam maintenance-domain md1 maintenance-association ma1 mep 1 interface ge-1/0/1.1
+set protocols ethernet-oam maintenance-domain md1 maintenance-association ma1 mep 1 cross-check-mep-id 2
+set protocols ethernet-oam maintenance-domain md1 maintenance-association ma1 mep 1 ccm-send mep-id 1
+set protocols ethernet-oam maintenance-domain md1 maintenance-association ma1 mep 2 cross-check-mep-id 1
+set protocols ethernet-oam maintenance-domain md1 maintenance-association ma1 mep 2 ccm-receive mep-id 2
+set protocols ethernet-oam maintenance-domain md1 maintenance-association ma1 test test-id 1 remote-mep 2
+set protocols ethernet-oam maintenance-domain md1 maintenance-association ma1 test test-id 2 delay-measure two-way
+set protocols ethernet-oam maintenance-domain md1 maintenance-association ma1 test test-id 2 receive-test-id 2
+
+set protocols mpls label-mode ldp
+set protocols mpls l2vpn
+set protocols ldp router-id lo0.0
+
+set interfaces ge-1/0/1 unit 1 vlan-id 1
+set protocols l2circuit neighbor 2.2.2.2 interface ge-1/0/1.1
+set protocols l2circuit neighbor 2.2.2.2 vc-id 1001
+set protocols l2circuit neighbor 2.2.2.2 encapsulation mpls
+
+set interfaces ge-1/0/2 unit 0 family inet address 192.168.1.1/24
+set interfaces ge-1/0/2 unit 0 family mpls
+set interfaces ge-1/0/2 enable
+
+set interfaces lo0 unit 0 family inet address 1.1.1.1/24
+
+set protocols ospf area 0.0.0.0 interface lo0.0
+set protocols ospf area 0.0.0.0 interface ge-1/0/2.0

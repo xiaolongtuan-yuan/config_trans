@@ -1,0 +1,71 @@
+#
+sysname PE2
+#
+multicast mvpn 5.5.5.5
+#
+ip vpn-instance ng
+ ipv4-family
+ route-distinguisher 2.3:1
+ apply-label per-instance
+ vpn-target 1:1 export-extcommunity
+ vpn-target 1:1 import-extcommunity
+ multicast routing-enable
+ mvpn
+  sender-enable
+  c-multicast signaling bgp
+  auto-discovery inter-as
+  ipmsi-tunnel
+   mldp
+#
+mpls lsr-id 5.5.5.5
+#
+mpls
+#
+mpls ldp
+ mldp p2mp
+#
+ mldp recursive-fec
+ #
+ ipv4-family
+#
+isis 1
+ is-level level-2
+ cost-style wide
+ network-entity 10.0000.0000.000d.00
+#  
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.1.4.2 255.255.255.0
+ isis enable 1
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip binding vpn-instance ng
+ ip address 192.168.2.1 255.255.255.0
+#
+interface LoopBack0
+ ip address 5.5.5.5 255.255.255.255
+ isis enable 1
+#
+bgp 65535.65535
+ peer 4.4.4.4 as-number 65535.65535
+ peer 4.4.4.4 connect-interface LoopBack0
+ # 
+ ipv4-family unicast
+  undo synchronization
+  peer 4.4.4.4 enable
+ # 
+ ipv4-family mvpn
+  policy vpn-target
+  peer 4.4.4.4 enable
+ # 
+ ipv4-family vpnv4
+  policy vpn-target
+  peer 4.4.4.4 enable
+ # 
+ ipv4-family vpn-instance ng
+  import-route direct
+#  
+return

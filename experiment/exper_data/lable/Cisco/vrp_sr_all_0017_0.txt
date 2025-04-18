@@ -1,0 +1,21 @@
+hostname PE1
+!
+mpls ldp router-id Loopback1 force
+!
+mpls label protocol ldp
+!
+router isis
+ net 49.0000.0000.0000.0009.00
+ is-type level-2-only
+ segment-routing mpls
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 172.16.1.1 255.255.255.0
+ isis network point-to-point
+!
+interface Loopback1
+ ip address 1.1.1.9 255.255.255.255
+ isis network point-to-point
+!
+end

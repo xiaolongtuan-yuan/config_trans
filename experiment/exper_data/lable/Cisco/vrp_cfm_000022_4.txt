@@ -1,0 +1,27 @@
+hostname DeviceE
+
+vlan 2
+
+cfm
+
+interface GigabitEthernet1/0/0
+ switchport mode trunk
+ switchport trunk allowed vlan 2
+
+interface GigabitEthernet1/0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 2
+
+cfm mep domain md1 level 6
+ cfm mep service ma1 md md1
+  cfm mep service vlan 2
+   cfm mep mep-id 3 interface gigabitethernet 1/0/1 inward
+    cfm mep mep-id 3 ccm-send
+   cfm mep remote-mep mep-id 1
+    cfm mep remote-mep mep-id 1 ccm-receive
+   cfm mep remote-mep mep-id 2
+    cfm mep remote-mep mep-id 2 ccm-receive
+
+exit
+
+exit

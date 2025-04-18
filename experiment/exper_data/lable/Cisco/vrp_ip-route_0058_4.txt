@@ -1,0 +1,21 @@
+hostname DeviceD
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:2001::2/64
+
+router bgp 100
+ bgp router-id 2.2.2.2
+ neighbor 2001:db8:2001::1 remote-as 100
+
+ address-family ipv4 unicast
+  no synchronization
+ exit-address-family
+
+ address-family ipv6 unicast
+  no synchronization
+  neighbor 2001:db8:2001::1 activate
+ exit-address-family
+
+end

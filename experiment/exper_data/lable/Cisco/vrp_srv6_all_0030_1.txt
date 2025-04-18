@@ -1,0 +1,29 @@
+hostname P1
+!
+bfd
+!
+router isis 1
+ is-type level-2-only
+ wide-metrics-only
+ net 10.0000.0000.0002.00
+!
+ipv6 unicast-routing
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:1::2/96
+ ipv6 router isis 1
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:2::1/96
+ ipv6 router isis 1
+!
+interface Loopback1
+ ipv6 enable
+ ipv6 address 2::2/128
+ ipv6 router isis 1
+!
+end

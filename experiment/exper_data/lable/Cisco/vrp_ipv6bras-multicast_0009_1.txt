@@ -1,0 +1,45 @@
+hostname BRAS
+!
+ipv6 unicast-routing
+!
+aaa new-model
+!
+aaa authentication login none none
+!
+aaa accounting none none
+!
+aaa group server radius rad1
+!
+aaa group server tacacs+ tac1
+!
+aaa authentication login default group rad1 local
+!
+aaa accounting update newinfo
+!
+aaa session-id common
+!
+ipv6 unicast-routing
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:1::1/64
+ ipv6 pim sparse-mode
+!
+interface GigabitEthernet1/0/1.1
+ ipv6 enable
+ ipv6 address autoconfig
+ ipv6 nd raguard
+ encapsulation dot1q 133
+ ipv6 pim sparse-mode
+ ipv6 mld join-group FF02::1:FF00:0000/104
+!
+ipv6 route ::/0 GigabitEthernet1/0/0 2001::db8:1::2
+!
+ipv6 dhcp pool bas
+ prefix-delegation pool bas-pd
+ dns-server 2001:db8:1::2
+!
+ipv6 local pool bas-pd 2001:db8:2::/64
+!
+end

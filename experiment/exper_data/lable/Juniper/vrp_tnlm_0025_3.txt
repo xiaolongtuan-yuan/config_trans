@@ -1,0 +1,41 @@
+set system host-name ASBR2
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.3.1.1/24
+set interfaces ge-1/0/0 unit 0 family mpls
+
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.1.2/24
+
+set interfaces lo0 unit 1 family inet address 3.3.3.9/32
+
+set interfaces gr-0/0/10 unit 0 tunnel source lo0.1
+set interfaces gr-0/0/10 unit 0 tunnel destination 4.4.4.9
+set interfaces gr-0/0/10 unit 0 family inet unnumbered-address lo0.1
+set protocols mpls interface gr-0/0/10
+set protocols mpls traffic-engineering bgp-tunneling enable
+set protocols mpls traffic-engineering interface gr-0/0/10
+set protocols mpls traffic-engineering tunnel tunnel-id 300 bandwidth 5000
+set protocols mpls traffic-engineering tunnel tunnel-id 300 record-route
+
+set protocols ospf traffic-engineering
+set protocols ospf area 0 interface lo0.1
+set protocols ospf area 0 interface ge-1/0/0.0
+set protocols ospf router-id 3.3.3.9
+
+set protocols bgp group IBGP type internal
+set protocols bgp group IBGP local-address lo0.1
+set protocols bgp group IBGP neighbor 4.4.4.9 peer-as 200
+set protocols bgp group EBGP type external
+set protocols bgp group EBGP neighbor 192.168.1.1 peer-as 100
+set protocols bgp group IBGP family inet unicast
+set protocols bgp group IBGP family inet-vpn unicast
+set protocols bgp group EBGP family inet unicast
+set protocols bgp group EBGP family inet-vpn unicast
+
+set protocols mpls label-distribution ldp
+set protocols mpls traffic-engineering
+set protocols rsvp interface all
+
+set policy-options policy-statement bindTE term 1 from destination-address 4.4.4.9
+set policy-options policy-statement bindTE term 1 then bind-tunnel tunnel-id 300
+set policy-options policy-statement bindTE term 1 then accept
+set policy-options policy-statement bindTE then reject

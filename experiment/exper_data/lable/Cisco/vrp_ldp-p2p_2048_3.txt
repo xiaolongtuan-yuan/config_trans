@@ -1,0 +1,22 @@
+hostname LSRD
+
+mpls label protocol ldp
+
+mpls ip
+
+interface Pos1/0/0
+ ip address 10.1.3.1 255.255.255.0
+ mpls ip
+
+interface Null0
+
+interface Loopback1
+ ip address 4.4.4.9 255.255.255.255
+
+router ospf 1
+ network 10.1.3.0 0.0.0.255 area 0
+ network 4.4.4.9 0.0.0.0 area 0
+
+ip prefix-list prefix1 seq 10 permit 3.3.3.9/32
+
+end

@@ -1,0 +1,70 @@
+#
+ sysname PE1
+#
+ip vpn-instance vpn1
+ ipv6-family
+  route-distinguisher 100:1
+  apply-label per-instance
+  vpn-target 111:1 export-extcommunity
+  vpn-target 111:1 import-extcommunity
+#
+bfd
+#
+mpls lsr-id 1.1.1.1
+#
+mpls
+#
+mpls ldp
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.10.1.1 255.255.255.252
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ip address 10.20.1.1 255.255.255.252
+ mpls
+ mpls ldp
+#
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+#
+interface LoopBack2
+ ip binding vpn-instance vpn1
+ipv6 enable
+ipv6 address 2001:DB8:8::1/64
+#
+bgp 100
+ peer 2.2.2.2 as-number 100
+ peer 2.2.2.2 connect-interface LoopBack1
+ peer 3.3.3.3 as-number 100
+ peer 3.3.3.3 connect-interface LoopBack1
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 2.2.2.2 enable
+  peer 3.3.3.3 enable
+#
+ ipv6-family vpnv6
+  policy vpn-target
+  peer 2.2.2.2 enable
+  peer 3.3.3.3 enable
+#
+ ipv6-family vpn-instance vpn1
+ auto-frr
+ route-select delay 300
+#
+ospf 1
+ area 0.0.0.0
+  network 10.10.1.0 0.0.0.3
+  network 10.20.1.0 0.0.0.3
+  network 1.1.1.1 0.0.0.0
+#
+bfd for_ldp_lsp bind ldp-lsp peer-ip 2.2.2.2 nexthop 10.10.1.2 interface gigabitethernet2/0/0
+ discriminator local 10
+ discriminator remote 20
+ process-pst
+#
+return

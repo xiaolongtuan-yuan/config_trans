@@ -1,0 +1,24 @@
+#
+ sysname DeviceA
+#
+ router id 1.1.1.1
+#
+ bfd
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 1.1.1.1 255.255.255.0
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 3.3.3.1 255.255.255.0
+ ospf bfd enable
+ ospf bfd min-tx-interval 500 min-rx-interval 500 detect-multiplier 4
+#
+ospf 1
+ bfd all-interfaces enable
+ area 0.0.0.0
+  network 3.3.3.0 0.0.0.255
+  network 1.1.1.0 0.0.0.255
+#
+return

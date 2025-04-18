@@ -1,0 +1,35 @@
+set system host-name PE2
+
+set interfaces ge-1/0/1 unit 1 encapsulation vlan-bridge
+set interfaces ge-1/0/1 unit 1 vlan-id 2
+set interfaces ge-1/0/1 unit 1 family bridge interface-mode trunk
+set interfaces ge-1/0/1 unit 1 family bridge pseudowire neighbor 2.2.2.2 pw-id 1
+
+set interfaces ge-1/0/2 unit 0 family inet address 10.1.1.2/24
+set interfaces ge-1/0/2 unit 0 family mpls
+
+set interfaces lo0 unit 0 family inet address 1.1.1.1/24
+
+set protocols ospf area 0.0.0.0 interface lo0.0
+set protocols ospf area 0.0.0.0 interface ge-1/0/2.0
+
+set protocols mpls interface ge-1/0/2.0
+set protocols ldp interface ge-1/0/2.0
+set protocols ldp interface lo0.0
+
+set routing-instances vfi-ldp1 instance-type vpls
+set routing-instances vfi-ldp1 route-distinguisher 1:1
+set routing-instances vfi-ldp1 vrf-target target:1:1
+set routing-instances vfi-ldp1 protocols vpls no-tunnel-services
+set routing-instances vfi-ldp1 protocols vpls neighbor 2.2.2.2 pw-id 1
+
+set ethernet-switching-options cfm domain md1 level 0
+set ethernet-switching-options cfm domain md1 service ma1 continuity-check interval 1s
+set ethernet-switching-options cfm domain md1 service ma1 mep-id 2 interface ge-1/0/1.1 direction inward
+set ethernet-switching-options cfm domain md1 service ma1 remote-mep 1 mep-address 2.2.2.2
+set ethernet-switching-options cfm domain md1 service ma1 loss-measurement test 1 mep-id 2 remote-mep-id 1 direction receive
+
+set protocols l2circuit neighbor 2.2.2.2 interface ge-1/0/1.1 virtual-circuit-id 1
+
+set interfaces ge-1/0/1.1 encapsulation vlan
+set interfaces ge-1/0/1.1 vlan-id 2

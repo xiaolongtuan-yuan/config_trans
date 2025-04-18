@@ -1,0 +1,45 @@
+#
+sysname PE3
+#
+multicast routing-enable
+#
+mpls lsr-id 6.6.6.6
+#
+mpls
+ mpls te
+ mpls te p2mp-te
+ mpls rsvp-te
+ mpls te cspf
+#
+isis 1
+ is-level level-2
+ cost-style wide
+ network-entity 00.0005.0000.0000.0006.00
+ traffic-eng level-2
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.5.1.2 255.255.255.0
+ isis enable 1
+ mpls
+ mpls te
+ mpls te bandwidth max-reservable-bandwidth 10000
+ mpls te bandwidth bc0 10000
+ mpls rsvp-te
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.10.1.1 255.255.255.0
+ pim sm
+ igmp enable
+ isis enable 1
+#
+interface LoopBack1
+ ip address 6.6.6.6 255.255.255.255
+ isis enable 1
+#
+pim
+ rpf disable all
+ traffic select p2mp-te root-ip 1.1.1.1 tunnel-id 100
+#
+return

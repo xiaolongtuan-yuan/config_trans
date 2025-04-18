@@ -1,0 +1,49 @@
+#
+ sysname PE3
+#
+ mpls lsr-id 3.3.3.9
+#
+ mpls
+#
+ mpls l2vpn
+#
+vsi vsi1
+ pwsignal ldp
+  vsi-id 2 
+  peer 1.1.1.9
+  peer 1.1.1.9 pw pw1
+   loop-detect eth-loop priority 4
+  peer 2.2.2.9
+  peer 2.2.2.9 pw pw2
+   loop-detect eth-loop priority 2
+ loop-detect eth-loop loop-times 5 detect-cycle 5 cycles 5
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/1.1
+ undo shutdown
+ vlan-type dot1q 10
+ l2 binding vsi vsi1
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip address 192.168.1.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/3
+ undo shutdown
+ ip address 192.168.100.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack1
+ ip address 3.3.3.9 255.255.255.255
+#
+ospf 1
+ area 0.0.0.0
+  network 3.3.3.9 0.0.0.0
+  network 192.168.1.0 0.0.0.255
+  network 192.168.100.0 0.0.0.255
+#
+return

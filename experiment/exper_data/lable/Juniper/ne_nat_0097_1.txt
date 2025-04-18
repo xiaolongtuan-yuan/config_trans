@@ -1,0 +1,32 @@
+set system host-name NATA
+
+set security nat source pool address-groupa address 11.1.1.1/32 to 11.1.1.10/32
+set security nat source pool address-groupa host-address-base 11.1.1.1
+set security nat source pool address-groupa address-persistent
+set security nat source pool address-groupb address 11.1.1.11/32 to 11.1.1.20/32
+set security nat source pool address-groupb host-address-base 11.1.1.11
+set security nat source pool address-groupb address-persistent
+
+set security nat source rule-set source-nat-groupa from zone trust
+set security nat source rule-set source-nat-groupa to zone untrust
+set security nat source rule-set source-nat-groupa rule use-pool-groupa match source-address 10.78.1.0/24
+set security nat source rule-set source-nat-groupa rule use-pool-groupa then source-nat pool address-groupa
+
+set security nat source rule-set source-nat-groupb from zone trust
+set security nat source rule-set source-nat-groupb to zone untrust
+set security nat source rule-set source-nat-groupb rule use-pool-groupb match source-address 10.67.1.0/24
+set security nat source rule-set source-nat-groupb rule use-pool-groupb then source-nat pool address-groupb
+
+set security nat static rule-set static-nat-group from zone trust
+set security nat static rule-set static-nat-group rule static-udp-1 match destination-address 11.11.11.2/32
+set security nat static rule-set static-nat-group rule static-udp-1 then static-nat prefix 10.78.1.2
+set security nat static rule-set static-nat-group rule static-udp-2 match destination-address 11.11.11.1/32
+set security nat static rule-set static-nat-group rule static-udp-2 then static-nat prefix 10.67.1.2
+
+set interfaces ge-0/0/1 unit 0 family inet address 10.78.1.1/24
+set security zones security-zone trust interfaces ge-0/0/1.0 host-inbound-traffic system-services all
+set security zones security-zone trust interfaces ge-0/0/1.0 host-inbound-traffic protocols all
+
+set interfaces ge-0/0/0 unit 0 family inet address 10.67.1.1/24
+set security zones security-zone trust interfaces ge-0/0/0.0 host-inbound-traffic system-services all
+set security zones security-zone trust interfaces ge-0/0/0.0 host-inbound-traffic protocols all

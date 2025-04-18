@@ -1,0 +1,55 @@
+hostname PE1
+
+mpls label protocol ldp
+
+mpls ldp router-id Loopback1
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 172.21.1.2 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet2/0/0
+ no shutdown
+
+interface GigabitEthernet2/0/0.1
+ encapsulation dot1Q 10
+ bridge-domain 10
+
+interface Loopback1
+ ip address 1.1.1.9 255.255.255.255
+
+router ospf 1
+ network 1.1.1.9 0.0.0.0 area 0
+ network 172.21.1.0 0.0.0.255 area 0
+
+router bgp 100
+ neighbor 2.2.2.9 remote-as 100
+ neighbor 2.2.2.9 update-source Loopback1
+ neighbor 2.2.2.9 ebgp-multihop 2
+ !
+ address-family ipv4
+  neighbor 2.2.2.9 activate
+  neighbor 2.2.2.9 next-hop-self
+ exit-address-family
+ !
+ address-family l2vpn evpn
+  neighbor 2.2.2.9 activate
+ exit-address-family
+
+evpn
+
+evpn vrf evrf_1
+ rd 100:1
+ route-target export 1:1
+ route-target import 1:1
+
+mpls ldp advertise-labels for 1.1.1.9/32
+
+router-id 1.1.1.9
+
+bridge-domain 10
+
+evpn source-interface Loopback1
+
+end

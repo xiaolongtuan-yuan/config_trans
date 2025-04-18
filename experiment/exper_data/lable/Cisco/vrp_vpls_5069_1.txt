@@ -1,0 +1,78 @@
+hostname PE2
+!
+bfd
+!
+mpls label protocol ldp
+!
+mpls l2vpn
+!
+vfi vsi1 manual
+ vpn id 1
+ neighbor 1.1.1.1 pw-id 1
+!
+mpls ldp
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.1.2 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 192.168.4.1 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 192.168.3.2 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.255
+!
+router bgp 100
+ neighbor 3.3.3.3 remote-as 100
+ neighbor 3.3.3.3 update-source Loopback0
+ neighbor 4.4.4.4 remote-as 100
+ neighbor 4.4.4.4 update-source Loopback0
+ !
+ address-family ipv4
+  neighbor 3.3.3.3 activate
+  neighbor 4.4.4.4 activate
+ exit-address-family
+ !
+ address-family l2vpn vpls
+  neighbor 3.3.3.3 activate
+  neighbor 4.4.4.4 activate
+  advertise vpnv4 unicast
+ exit-address-family
+!
+router ospf 1
+ network 2.2.2.2 0.0.0.0 area 0
+ network 192.168.1.0 0.0.0.255 area 0
+ network 192.168.3.0 0.0.0.255 area 0
+ network 192.168.4.0 0.0.0.255 area 0
+!
+mpls ldp interface GigabitEthernet1/0/0
+!
+mpls ldp interface GigabitEthernet1/0/1
+!
+mpls ldp interface GigabitEthernet1/0/2
+!
+bfd template single-hop p1
+ interval min-tx 100 min-rx 100 multiplier 3
+!
+mpls l2vpn pw-class vsi1
+ encapsulation mpls
+ signaling ldp
+!
+mpls l2vpn xconnect group vsi1
+ p2p vsi1
+ interface GigabitEthernet1/0/0
+  neighbor ipv4 1.1.1.1 pw-id 1
+ !
+!
+end

@@ -1,0 +1,38 @@
+hostname DS-Lite
+#
+license boot level ds-lite
+#
+ipv6 access-list 3500
+ permit ipv6 2001:DB8:2::/64 any
+#
+ip vrf forwarding DS-Lite
+ rd 1:1
+!
+ipv6 unicast-routing
+!
+interface GigabitEthernet2/0/2
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:1::2:1/64
+ ipv6 traffic-policy p1 inbound
+!
+ipv6 route 2001:DB8::1/128 GigabitEthernet2/0/2 2001:DB8:2::1
+!
+class-map match-all c1
+ match access-group 3500
+!
+policy-map p1
+ class c1
+  set ip next-hop 2001:DB8:2::1
+!
+ipv6 router isis
+ isis enable 1000
+ ipv6 router isis 1000
+ net 10.0000.0000.0002.00
+ isis metric-style wide
+ redistribute connected
+ redistribute static
+!
+ip route 2001:DB8:2::/64 GigabitEthernet2/0/2
+!
+end

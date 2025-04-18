@@ -1,0 +1,37 @@
+#
+sysname LSRA
+#
+mpls lsr-id 1.1.1.9
+#
+mpls
+#
+mpls ldp
+ #
+ ipv4-family
+  auto-frr lsp-trigger all
+#
+isis 1
+ frr
+  loop-free-alternate level-1
+  loop-free-alternate level-2
+ network-entity 10.0000.0000.0001.00
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ isis enable 1
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.1.2.1 255.255.255.0
+ isis enable 1
+ mpls
+ mpls ldp
+#
+interface LoopBack0
+ ip address 1.1.1.9 255.255.255.255
+ isis enable 1
+#
+return

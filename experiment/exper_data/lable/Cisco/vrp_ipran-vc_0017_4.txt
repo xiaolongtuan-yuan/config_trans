@@ -1,0 +1,48 @@
+hostname RSG
+ip vrf a
+ rd 1:1
+ route-target export 1:1
+ route-target import 1:1
+mpls label protocol ldp
+mpls ldp graceful-restart
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 10.7.0.2 255.255.255.252
+ mpls ip
+
+interface GigabitEthernet1/0/4
+ no shutdown
+ ip address 10.8.0.2 255.255.255.252
+ mpls ip
+
+interface GigabitEthernet1/0/5
+ no shutdown
+ ip address 10.20.0.2 255.255.255.252
+interface Loopback0
+ ip address 10.5.2.9 255.255.255.255
+router bgp 100
+ neighbor 10.3.2.9 remote-as 100
+ neighbor 10.3.2.9 update-source Loopback0
+ neighbor 10.4.2.9 remote-as 100
+ neighbor 10.4.2.9 update-source Loopback0
+
+ address-family ipv4
+  redistribute connected
+  neighbor 10.3.2.9 activate
+  neighbor 10.4.2.9 activate
+
+ address-family vpnv4
+  redistribute connected
+  neighbor 10.3.2.9 activate
+  neighbor 10.4.2.9 activate
+
+ address-family ipv4 vrf a
+  redistribute connected
+  neighbor 10.20.0.1 remote-as 500
+router ospf 1
+ router-id 10.5.2.9
+ opaque-lsa enable
+ mpls ldp autoconfig
+ network 10.5.2.9 0.0.0.0 area 0
+ network 10.7.0.0 0.0.0.255 area 0
+ network 10.8.0.0 0.0.0.255 area 0

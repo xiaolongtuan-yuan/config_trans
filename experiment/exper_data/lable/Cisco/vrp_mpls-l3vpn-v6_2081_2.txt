@@ -1,0 +1,68 @@
+hostname PE1
+!
+vrf definition vpna
+ rd 100:1
+ route-target export 111:1
+ route-target import 111:1
+!
+vrf definition vpnb
+ rd 100:2
+ route-target export 222:2
+ route-target import 222:2
+!
+mpls ldp router-id Loopback1 force
+!
+mpls ip
+!
+mpls ldp
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ vrf forwarding vpna
+ ipv6 enable
+ ipv6 address 2001:db8:1::2/64
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ vrf forwarding vpnb
+ ipv6 enable
+ ipv6 address 2001:db8:2::2/64
+!
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 172.16.1.1 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+!
+router bgp 100
+ neighbor 2.2.2.2 remote-as 100
+ neighbor 2.2.2.2 update-source Loopback1
+ !
+ address-family ipv4
+  no synchronization
+  neighbor 2.2.2.2 activate
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 2.2.2.2 activate
+ exit-address-family
+ !
+ address-family ipv6
+  neighbor 2001:db8:1::1 remote-as 65410
+ exit-address-family
+ !
+ address-family vpnv6
+  neighbor 2001:db8:2::1 remote-as 65420
+ exit-address-family
+!
+router ospf 1
+ router-id 1.1.1.1
+ passive-interface default
+ no passive-interface Loopback1
+ network 1.1.1.1 0.0.0.0 area 0
+ network 172.16.1.0 0.0.0.255 area 0
+!
+end

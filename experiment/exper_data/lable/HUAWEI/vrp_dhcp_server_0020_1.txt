@@ -1,0 +1,29 @@
+#
+sysname DHCP Server
+#
+dhcp enable
+#
+ip pool pool1 server
+ gateway 10.10.10.1 255.255.255.0  section 0 10.10.10.20 10.10.10.30
+#
+ip pool pool2 server
+ gateway 10.10.20.1 255.255.255.0  section 0 10.10.20.20 10.10.20.30
+#
+interface GigabitEthernet1/0/1
+ 
+ ip address 10.1.1.1 255.255.255.0
+ dhcp server enable
+#
+interface GigabitEthernet1/0/1.1
+ ip address 10.10.10.1 255.255.255.0
+ encapsulation dot1q-termination
+ dot1q termination vid 100
+ dhcp server enable
+#
+interface GigabitEthernet1/0/1.2
+ ip address 10.10.20.1 255.255.255.0
+ encapsulation dot1q-termination
+ dot1q termination vid 200
+ dhcp server enable
+#
+return

@@ -1,0 +1,34 @@
+#
+sysname DeviceB
+#
+router id 2.2.2.2
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 172.16.3.2 255.255.255.0
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 172.16.1.1 255.255.255.0
+#
+interface GigabitEthernet1/0/3
+ undo shutdown
+ ip address 172.16.5.1 255.255.255.0
+#
+ospf 1
+ import-route static cost 10
+ area 0.0.0.0
+  network 172.16.3.0 0.0.0.255
+#
+ip route-static 172.16.7.0 255.255.255.0 GigabitEthernet1/0/1 172.16.1.2 track nqa user test
+#
+nqa test-instance user test
+ test-type icmp
+ destination-address ipv4 172.16.1.2
+ interval seconds 5
+ timeout 4
+ probe-count 2
+ frequency 10
+ start now
+#
+return

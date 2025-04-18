@@ -1,0 +1,32 @@
+hostname U-PE1
+
+mpls ip
+
+mpls label protocol ldp
+
+interface GigabitEthernet1/0/0
+no shutdown
+mpls l2transport vc 100 remote-peer 3.3.3.9 pw-class wwt
+
+interface GigabitEthernet2/0/0
+no shutdown
+ip address 10.1.1.1 255.255.255.0
+mpls ip
+
+interface Loopback0
+ip address 1.1.1.9 255.255.255.255
+
+mpls ldp router-id Loopback0 force
+
+interface GigabitEthernet1/0/0
+mpls ldp discovery targeted-hello accept
+
+nqa test-instance test pwe3ping
+test-type pw-echo
+local-pw-id 100
+remote-pw-id 200
+
+router ospf 1
+network 10.1.1.0 0.0.0.255 area 0
+network 1.1.1.9 0.0.0.0 area 0
+

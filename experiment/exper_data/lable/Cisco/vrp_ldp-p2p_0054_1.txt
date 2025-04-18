@@ -1,0 +1,87 @@
+hostname LSRB
+
+mpls label protocol ldp
+
+mpls ldp router-id Loopback0 force
+
+mpls ldp discovery targeted-hello accept
+
+mpls ldp discovery targeted-hello peer LSRB 2.2.2.9
+
+mpls ldp discovery targeted-hello holdtime 30
+
+mpls ldp discovery targeted-hello interval 5
+
+mpls ldp discovery targeted-hello vrf default
+
+mpls ldp discovery targeted-hello vrf management
+
+mpls ldp discovery targeted-hello vrf VRF1
+
+mpls ldp discovery targeted-hello vrf VRF2
+
+interface GigabitEthernet1/0/0
+
+no shutdown
+
+ip address 10.1.1.2 255.255.255.0
+
+mpls ip
+
+mpls ldp autoconfig
+
+mpls ldp sync
+
+mpls ip propagate-ttl forwarded
+
+mpls ip propagate-ttl local
+
+mpls ldp discovery targeted-hello vrf management
+
+mpls ldp discovery targeted-hello vrf default
+
+mpls ldp discovery targeted-hello vrf VRF1
+
+mpls ldp discovery targeted-hello vrf VRF2
+
+interface GigabitEthernet1/0/1
+
+no shutdown
+
+ip address 10.1.3.1 255.255.255.0
+
+mpls ip
+
+mpls ldp autoconfig
+
+mpls ldp sync
+
+mpls ip propagate-ttl forwarded
+
+mpls ip propagate-ttl local
+
+mpls ldp discovery targeted-hello vrf management
+
+mpls ldp discovery targeted-hello vrf default
+
+mpls ldp discovery targeted-hello vrf VRF1
+
+mpls ldp discovery targeted-hello vrf VRF2
+
+interface Loopback0
+
+ip address 2.2.2.9 255.255.255.255
+
+interface GigabitEthernet1/0/0
+
+isis enable
+
+interface GigabitEthernet1/0/1
+
+isis enable
+
+interface Loopback0
+
+isis enable
+
+end

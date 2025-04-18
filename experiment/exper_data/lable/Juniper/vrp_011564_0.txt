@@ -1,0 +1,19 @@
+set system host-name CE1
+!
+set vlans vlan2 vlan-id 2
+!
+set protocols cfm version standard
+set protocols cfm
+!
+set interfaces ge-0/0/1 unit 0 family ethernet-switching interface-mode trunk
+set interfaces ge-0/0/1 unit 0 family ethernet-switching vlan members vlan2
+set interfaces ge-0/0/1 disable
+!
+set protocols cfm ethernet-switching domain md1 level 0
+set protocols cfm ethernet-switching service ma1 vlan 2
+set protocols cfm ethernet-switching continuity-check enable
+set protocols cfm ethernet-switching continuity-check mep-id 2 interface ge-0/0/1 direction outward
+set protocols cfm ethernet-switching continuity-check remote-mep 1
+set protocols cfm ethernet-switching continuity-check receive enable remote-mep 1
+set protocols cfm ethernet-switching continuity-check loss-measurement single-ended enable
+!

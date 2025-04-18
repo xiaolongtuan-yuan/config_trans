@@ -1,0 +1,46 @@
+set system host-name PE1
+
+set protocols mpls label-protocol ldp
+
+set protocols mpls traffic-eng tunnels
+
+set interfaces ge-0/0/0 unit 0 family inet address 10.0.1.1/24
+set interfaces ge-0/0/0 unit 0 family mpls
+set interfaces ge-0/0/0 unit 0 family mpls traffic-eng tunnels
+
+set interfaces lo0 unit 1 family inet address 1.1.1.1/32
+
+set interfaces tunnel.1 unit 0 family inet address 0.0.0.0/32
+set interfaces tunnel.1 unit 0 tunnel mpls traffic-eng destination 2.2.2.2
+set interfaces tunnel.1 unit 0 tunnel mpls traffic-eng autoroute announce
+set interfaces tunnel.1 unit 0 tunnel mpls traffic-eng path-option 10 explicit name path2asbr1
+set interfaces tunnel.1 unit 0 tunnel mpls traffic-eng binding-sid 1000
+
+set interfaces tunnel.3 unit 0 family inet address 0.0.0.0/32
+set interfaces tunnel.3 unit 0 tunnel mpls traffic-eng destination 4.4.4.4
+set interfaces tunnel.3 unit 0 tunnel mpls traffic-eng autoroute announce
+set interfaces tunnel.3 unit 0 tunnel mpls traffic-eng path-option 10 explicit name path2pe2
+
+set protocols mpls lsr-id 1.1.1.1
+set protocols mpls traffic-eng
+set protocols mpls explicit-path path2asbr1 next-sid label 330102 type adjacency
+set protocols mpls explicit-path path2pe2 next-sid label 1000 type binding-sid
+set protocols mpls explicit-path path2pe2 next-sid label 32770 type adjacency
+set protocols mpls explicit-path path2pe2 next-sid label 2000 type binding-sid
+
+set protocols isis level 2
+set protocols isis net 49.0001.0000.0000.0001.00
+set protocols isis traffic-eng level 2
+set protocols isis segment-routing mpls
+
+set interfaces ge-0/0/0 unit 0 family mpls
+set interfaces ge-0/0/0 unit 0 family inet address 10.0.1.1/24
+set interfaces ge-0/0/0 unit 0 family mpls traffic-eng tunnels
+set interfaces ge-0/0/0 unit 0 family inet isis enable
+set interfaces ge-0/0/0 unit 0 family mpls isis enable
+
+set interfaces lo0 unit 1 family inet address 1.1.1.1/32
+set interfaces lo0 unit 1 family inet isis enable
+set interfaces lo0 unit 1 family inet isis prefix-sid absolute 16100
+
+commit

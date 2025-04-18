@@ -1,0 +1,29 @@
+hostname BRAS
+!
+ip multicast-routing
+!
+ip dhcp pool local
+ network 172.16.0.0 255.255.0.0
+ default-router 172.16.0.1
+!
+aaa new-model
+!
+aaa authentication login none none
+!
+aaa accounting none
+!
+aaa authorization network default local
+!
+ip local pool ipv4 10.0.0.1 10.0.0.254
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ ip pim sparse-mode
+!
+interface GigabitEthernet1/0/1.1
+ encapsulation dot1Q 2
+ ip pim sparse-mode
+ ip igmp join-group 239.0.0.1
+!
+end

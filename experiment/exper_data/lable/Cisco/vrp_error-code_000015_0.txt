@@ -1,0 +1,25 @@
+hostname PE1
+
+bfd
+
+router isis 1
+ net 10.0000.0000.0001.00
+
+interface Port-channel1
+ description Eth-Trunk1
+ ip address 10.1.1.1 255.255.255.0
+ isis enable 1
+ isis cost max-reachable
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ channel-group 1 mode on
+ no cdp enable
+ link-quality low error-ratio 3/4 resume-ratio 2/5
+
+interface GigabitEthernet1/0/1
+ no shutdown
+ channel-group 1 mode on
+ no cdp enable
+ link-quality low error-ratio 3/4 resume-ratio 2/5
+

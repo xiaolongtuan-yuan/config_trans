@@ -1,0 +1,41 @@
+#
+sysname DeviceC
+#
+ip ip-prefix prefix1 index 10 permit 10.1.1.4 32
+ip ip-prefix prefix2 index 10 deny 10.1.1.0 24
+ip ip-prefix prefix2 index 20 permit 0.0.0.0 0 less-equal 32
+#
+route-policy policy1 permit node 10
+ if-match ip-prefix prefix1
+#
+route-policy policy2 permit node 10
+ if-match ip-prefix prefix2
+#
+arp vlink-direct-route advertise route-policy policy1
+#
+vlan batch 10
+#
+interface Vlanif10
+ ip address 10.1.1.1 255.255.255.0
+#
+interface GigabitEthernet1/0/0
+ portswitch
+ undo shutdown
+ port link-type access
+ port default vlan 10
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.2.1.1 255.255.255.0
+#
+bgp 100
+ router-id 3.3.3.3
+ peer 10.2.1.2 as-number 100
+ #
+ ipv4-family unicast
+  undo synchronization 
+  import-route direct
+  peer 10.2.1.2 enable
+  peer 10.2.1.2 route-policy policy2 export
+#
+return

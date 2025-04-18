@@ -1,0 +1,57 @@
+sysname PE1
+#
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+#
+spanning-tree vlan 0 root primary
+#
+mpls ldp router-id Loopback1 force
+#
+mpls label protocol ldp
+#
+mpls l2vpn
+#
+l2vpn vsi m1 static
+ pwsignal ldp
+  vsi-id 100
+  neighbor 2.2.2.2
+  pw-id pw1
+    spanning-tree enable
+    spanning-tree cost 2
+#
+l2vpn vsi s1 static
+ pwsignal ldp
+  vsi-id 10
+  neighbor 3.3.3.3
+#
+mpls ldp
+#
+mpls ldp remote-peer 2.2.2.2
+ remote-ip 2.2.2.2
+ undo remote-ip pwe3
+#
+interface GigabitEthernet1/0/0
+ no shutdown
+ switchport
+ spanning-tree enable
+ spanning-tree vlan 0 cost 2
+#
+interface GigabitEthernet1/0/0.10
+ encapsulation dot1q 10
+ xconnect vfi s1
+#
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls ip
+ mpls ldp
+#
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+#
+router ospf 1
+ router-id 1.1.1.1
+ network 1.1.1.1 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+#
+end

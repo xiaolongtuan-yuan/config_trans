@@ -1,0 +1,28 @@
+#
+sysname DeviceB
+#
+keychain Huawei mode absolute
+ receive-tolerance 100
+ tcp-kind 179
+ tcp-algorithm-id hmac-sha-256 17
+ #
+ key-id 1
+  algorithm hmac-sha-256
+  key-string cipher %#%#ub(70WJ"^=i(kxPK@*fK,)}t%#%#
+  send-time 11:00 2009-12-24 to 12:00 2009-12-24
+  receive-time 11:00 2009-12-24 to 12:00 2009-12-24
+#
+interface GigabitEthernet1/0/0
+ undo shutdown  
+ ip address 10.20.1.2 255.255.255.0
+#
+bgp 200
+ router-id 2.2.2.2
+ peer 10.20.1.1 as-number 100
+ peer 10.20.1.1 keychain Huawei
+ #              
+ ipv4-family unicast
+  undo synchronization
+  peer 10.20.1.1 enable
+#
+return

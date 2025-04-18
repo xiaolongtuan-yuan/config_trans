@@ -1,0 +1,39 @@
+router isis
+ is-type level-1
+ net 49.4444.4444.4444.4444.00
+ metric-style wide
+ spf-interval 1 1 50
+ traffic-eng level-1-2
+ traffic-eng router-id Loopback0
+ address-family ipv4 unicast
+ passive-interface default
+ no passive-interface GigabitEthernet2/0/1
+ no passive-interface GigabitEthernet2/0/2
+
+interface GigabitEthernet2/0/1
+ ip router isis 1
+
+interface GigabitEthernet2/0/2
+ ip router isis 1
+
+interface Loopback0
+ ip address 4.4.4.4 255.255.255.255
+
+interface Multilink24
+ ip address 172.16.1.2 255.255.255.0
+ mpls ip
+
+controller T1 2/0/3
+ no shutdown
+ aps working 4.4.4.4 5.5.5.5
+ aps authentication hmac-sha1 cipher %^%#'d`;Ykv]v5U4q.%+'D`8m{YlN#D&uX:CS](*\.b$%^%#
+
+interface Serial24/24:0
+ encapsulation ppp
+ multilink group 24
+
+interface Loopback24
+ ip address 4.4.4.4 255.255.255.255
+
+mpls traffic-eng tunnels
+ mpls traffic-eng router-id Loopback0

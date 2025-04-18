@@ -1,0 +1,22 @@
+#
+sysname CE2
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8::2:1/96
+#
+interface LoopBack1
+ ipv6 enable
+ ipv6 address 2001:DB8::22:2/128
+#
+bgp 65420
+ router-id 10.20.20.20
+ peer 2001:DB8::2:2 as-number 100
+ #
+ ipv6-family unicast
+  undo synchronization
+  network 2001:DB8::22:2 128
+  peer 2001:DB8::2:2 enable
+#
+return

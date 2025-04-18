@@ -1,0 +1,17 @@
+set system host-name DeviceA
+
+set interfaces lmp-0/0/0 unit 0 family inet address 10.110.0.1/24
+set interfaces lmp-0/0/0 encapsulation ppp
+set interfaces lmp-0/0/0 ppp-options authentication chap
+set interfaces lmp-0/0/0 ppp-options chap username rta password "@%@%EDF~DAdfFD934J3<DAF#*<!@%@%"
+
+set access radius-server 127.0.0.1 secret password # Placeholder for local AAA
+set system login user rtb class super-user
+set system login user rtb authentication plain-text-password "@%@%j]v~7%f[#S'W>j9zzM)3,*!u@%@%"
+
+set interfaces lmp-0/0/0 pppoe-options client dial-pool-number 1
+
+set access profile pool1 family inet address-range low 10.110.0.2 high 10.110.0.254
+
+set firewall family inet filter dialer-allow term 1 from protocol ip
+set firewall family inet filter dialer-allow term 1 then accept

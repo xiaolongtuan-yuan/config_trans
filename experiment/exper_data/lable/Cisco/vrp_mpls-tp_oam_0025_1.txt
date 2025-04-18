@@ -1,0 +1,50 @@
+hostname LSRB
+
+mpls label protocol ldp
+mpls ip
+
+ip cef
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 2.1.1.2 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 3.2.1.1 255.255.255.0
+ mpls ip
+
+interface Loopback1
+ ip address 2.2.2.2 255.255.255.255
+
+ip route 1.1.1.1 255.255.255.255 2.1.1.1
+ip route 3.3.3.3 255.255.255.255 3.2.1.2
+
+mpls traffic-eng tunnels
+mpls traffic-eng router-id Loopback1
+mpls traffic-eng area 0
+
+interface GigabitEthernet1/0/0
+ mpls traffic-eng tunnels
+
+interface GigabitEthernet2/0/0
+ mpls traffic-eng tunnels
+
+mpls traffic-eng autoroute announce
+
+mpls traffic-eng tunnel-path-mtu-discovery
+
+interface Loopback1
+ mpls traffic-eng tunnel destination 3.2.1.2
+ mpls traffic-eng tunnel mpls-labels
+  in 20
+  out 40
+
+interface GigabitEthernet1/0/0
+ mpls traffic-eng tunnel destination 2.1.1.1
+ mpls traffic-eng tunnel mpls-labels
+  in 16
+  out 20
+
+end

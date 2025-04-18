@@ -1,0 +1,21 @@
+hostname DeviceB
+
+key chain Huawei
+ key 1
+  key-string 7 150D0F00001F480B5F5058171A1A1A
+  key-string encryption-type 7
+  lifetime 00:00:00 00:30:00
+
+interface GigabitEthernet1/0/0
+ no shutdown  
+ ip address 10.20.1.2 255.255.255.0
+
+router bgp 200
+ bgp router-id 2.2.2.2
+ neighbor 10.20.1.1 remote-as 100
+ neighbor 10.20.1.1 password 7 150D0F00001F480B5F5058171A1A1A
+ neighbor 10.20.1.1 timers 11 12
+ no synchronization
+ address-family ipv4 unicast
+  neighbor 10.20.1.1 activate
+  exit-address-family

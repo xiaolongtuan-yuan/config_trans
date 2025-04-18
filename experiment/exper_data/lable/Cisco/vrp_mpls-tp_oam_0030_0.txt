@@ -1,0 +1,48 @@
+hostname LSRA
+
+mpls label protocol ldp
+mpls ip
+
+interface GigabitEthernet1/0/0
+no shutdown
+ip address 2.1.1.1 255.255.255.0
+mpls ip
+mpls traffic-eng
+
+interface GigabitEthernet1/0/0.1
+encapsulation dot1Q 1
+mpls ip
+mpls l2transport static 30000
+mpls l2transport forward label 101
+mpls l2transport backward label 101
+
+interface Loopback1
+ip address 1.1.1.1 255.255.255.255
+
+interface Tunnel10
+ip unnumbered Loopback1
+tunnel mode mpls traffic-eng
+tunnel destination 2.2.2.2
+tunnel mpls traffic-eng path-option 1 explicit name Tunnel10
+tunnel mpls traffic-eng path-option 1 dynamic
+tunnel mpls traffic-eng autoroute announce
+tunnel mpls traffic-eng bidirectional
+tunnel mpls traffic-eng reserved-labels
+tunnel mpls traffic-eng record-route
+
+ip route 2.2.2.2 255.255.255.255 2.1.1.2
+ip route 3.3.3.3 255.255.255.255 2.1.1.2
+
+mpls traffic-eng tunnel-path-option 1 explicit name Tunnel10
+mpls traffic-eng tunnel-path-option 1 dynamic
+
+mpls tp maintenance-points
+maintenance-point test
+type meg
+meg-id 1
+meg-direction both
+maintenance-point mep 1
+remote-mep-id 2
+remote-mep-domain ccm
+
+end

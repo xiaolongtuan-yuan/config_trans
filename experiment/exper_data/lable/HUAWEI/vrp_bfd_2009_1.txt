@@ -1,0 +1,31 @@
+#
+ sysname DeviceB
+#
+bfd
+#
+interface GigabitEthernet 1/0/0
+ undo shutdown
+ ip address 192.168.1.1 24
+#
+interface GigabitEthernet2/0/0.1
+ undo shutdown
+ encapsulation qinq-termination
+ qinq termination pe-vid 100 ce-vid 10
+ qinq vrrp pe-vid 100 ce-vid 10
+ ip address 10.1.1.2 24
+ vrrp vrid 1 virtual-ip 10.1.1.100
+ vrrp vrid 1 track bfd-session 2
+ arp broadcast enable
+#
+bfd atob bind peer-ip default-ip interface gigabitethernet 2/0/0.1
+ discriminator local 2
+ discriminator remote 1
+ qinq pe-vid 100 ce-vid 10
+ commit
+#
+ospf 1
+ area 0.0.0.0
+ network 192.168.1.0 0.0.0.255
+ network 10.1.1.0 0.0.0.255
+#
+return

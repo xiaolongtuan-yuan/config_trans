@@ -1,0 +1,31 @@
+hostname NPE2
+
+mpls label protocol ldp
+mpls ldp router-id Loopback1 force
+
+interface GigabitEthernet1/0/0
+ no shutdown
+
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 192.168.50.2 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet1/0/3
+ no shutdown
+ ip address 192.168.60.2 255.255.255.0
+ mpls ip
+
+interface Loopback1
+ ip address 5.5.5.5 255.255.255.255
+
+router ospf 1
+ network 5.5.5.5 0.0.0.0 area 0
+ network 192.168.50.0 0.0.0.255 area 0
+ network 192.168.60.0 0.0.0.255 area 0
+
+mpls l2vpn
+vfi vsi1 manual
+ vpn id 1
+ neighbor 2.2.2.2 pw-id 1
+ neighbor 3.3.3.3 pw-id 1

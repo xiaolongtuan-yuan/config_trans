@@ -1,0 +1,43 @@
+hostname DeviceE
+!
+ip multicast-routing
+!
+access-list 2000 permit ip 225.1.1.0 0.0.0.255 any
+!
+access-list 2001 permit ip 232.1.1.0 0.0.0.255 any
+!
+router isis
+ net 10.0000.0000.0005.00
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.3.2 255.255.255.0
+ ip pim sparse-mode
+ isis enable
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.2.2 255.255.255.0
+ ip pim sparse-mode
+ isis enable
+!
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 192.168.9.2 255.255.255.0
+ ip pim sparse-mode
+ isis enable
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 192.168.4.1 255.255.255.0
+ ip pim sparse-mode
+ isis enable
+!
+ip pim
+ ssm default
+ ssm range 232.1.1.0 0.0.0.255
+ static-rp 192.168.4.1
+ bsr-candidate GigabitEthernet2/0/0
+ rp-candidate GigabitEthernet2/0/0 group-list 2000
+!
+end

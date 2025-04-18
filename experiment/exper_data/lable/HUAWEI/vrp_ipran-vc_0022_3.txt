@@ -1,0 +1,48 @@
+#
+sysname RSG1
+#
+mpls lsr-id 4.4.4.4
+#
+mpls
+#
+mpls l2vpn
+#
+mpls ldp
+ #
+ ipv4-family
+#
+controller CPOS1/0/1
+ undo shutdown
+ cpos-trunk 1
+#
+controller CPOS-Trunk1
+ undo shutdown
+ e1 2 channel-set 1 timeslot-list 1-31
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.40.1.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.20.1.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface Trunk-Serial1/2:1
+ link-protocol tdm
+ mpls l2vc 2.2.2.2 4 tdm-encapsulation-number 16 jitter-buffer 32 idle-code fa
+ mpls l2vc 5.5.5.5 3 tdm-encapsulation-number 16 jitter-buffer 32 idle-code fa bypass
+#
+interface LoopBack0
+ ip address 3.3.3.3 255.255.255.255
+#
+ospf 1
+ area 0.0.0.0
+  network 4.4.4.4 0.0.0.0
+  network 10.20.1.0 0.0.0.255
+  network 10.40.2.0 0.0.0.255
+#
+return

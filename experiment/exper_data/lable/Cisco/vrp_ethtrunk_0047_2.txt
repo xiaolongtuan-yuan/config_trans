@@ -1,0 +1,46 @@
+hostname PE2
+!
+interface Eth-Trunk10
+  description PE2_to_PE1
+  switchport trunk encapsulation dot1q
+  switchport mode trunk
+  channel-group 1 mode active
+!
+interface Eth-Trunk10.1
+  encapsulation dot1q 1
+  xconnect vsi ldp1
+!
+interface GigabitEthernet1/0/1
+  no shutdown
+  channel-group 1 mode active
+!
+interface GigabitEthernet2/0/1
+  no shutdown
+  ip address 192.168.1.1 255.255.255.0
+  mpls ip
+  mpls ldp
+!
+interface Loopback1
+  ip address 2.2.2.9 255.255.255.255
+!
+bfd
+  discriminator local 2
+  discriminator remote 1
+  interface GigabitEthernet2/0/1
+  echo interface GigabitEthernet2/0/1
+  multiplier 30
+  minimum-interval 9
+  remote-ip 1.1.1.9
+  source-ip 2.2.2.9
+!
+mpls ip
+!
+mpls ldp router-id Loopback1 force
+!
+mpls ldp neighbor 1.1.1.9 targeted
+!
+router ospf 1
+  network 2.2.2.9 0.0.0.0 area 0
+  network 192.168.1.0 0.0.0.255 area 0
+!
+end

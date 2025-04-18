@@ -1,0 +1,19 @@
+set system host-name CE2
+set routing-options multicast inet6
+set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:2::2/64
+set protocols isis interface ge-1/0/0 family inet6
+set protocols pim interface ge-1/0/0 mode sparse
+set interfaces ge-1/0/1 unit 0 family inet6 address 2001:db8:4::1/64
+set protocols isis interface ge-1/0/1 family inet6
+set protocols pim interface ge-1/0/1 mode sparse
+set protocols pim interface ge-1/0/1 version 6 join-group FF3E::1 source 2001:DB8:3::2
+set interfaces lo0 unit 0 family inet address 4.4.4.4/32
+set protocols isis level 2 wide-metrics-only
+set protocols isis interface all
+set protocols isis level 2 generate-lsp-lifetime 65535
+set protocols isis level 2 authentication-type simple
+set protocols isis level 2 lsp-metric 10
+set protocols isis level 2 metric 10
+set protocols isis interface lo0 passive
+set protocols isis net 10.0000.0000.0004.00
+set protocols pim ipv6

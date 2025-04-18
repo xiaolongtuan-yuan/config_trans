@@ -1,0 +1,77 @@
+hostname DeviceB
+!
+router ospfv3 1
+ router-id 2.2.2.2
+ import-route static cost 10
+ area 0.0.0.0
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:1::2/64
+ ospfv3 1 area 0.0.0.0
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:3::1/64
+!
+interface GigabitEthernet1/0/3
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:5::1/64
+!
+ipv6 route 2001:db8:7::/64 GigabitEthernet1/0/1 2001:db8:3::2
+!
+track 1 nqa
+!
+ip sla 1
+ icmp-echo 2001:db8:3::2 source-interface GigabitEthernet1/0/1
+ frequency 9
+ timeout 3000
+ threshold 2
+ history hours-of-statistics-kept 2
+ history distributions-of-statistics-kept 2
+ history enhanced
+ history filter average 1000
+ history filter enhanced
+ history filter maximum 5000
+ history filter minimum 200
+ history statistics distribution-interval 30
+ history statistics hours-of-statistics-kept 2
+ history statistics samples-of-statistics-kept 2
+ history statistics statistics-interval 30
+ history timeout 1800
+ history timeout distributions-of-statistics-kept 2
+ history timeout enhanced
+ history timeout filter maximum 5000
+ history timeout filter minimum 200
+ history timeout filter nominal 1000
+ history timeout filter weights 75 25
+ history timeout maximum 5000
+ history timeout minimum 200
+ history timeout nominal 1000
+ history timeout statistics-interval 30
+ history timeout weights 75 25
+ history tos 160
+ history tos filter average 1000
+ history tos filter enhanced
+ history tos filter maximum 5000
+ history tos filter minimum 200
+ history tos statistics-interval 30
+ history tos timeout 1800
+ history tos timeout distributions-of-statistics-kept 2
+ history tos timeout enhanced
+ history tos timeout filter maximum 5000
+ history tos timeout filter minimum 200
+ history tos timeout filter nominal 1000
+ history tos timeout filter weights 75 25
+ history tos timeout maximum 5000
+ history tos timeout minimum 200
+ history tos timeout nominal 1000
+ history tos timeout statistics-interval 30
+ history tos timeout weights 75 25
+!
+ipv6 sla schedule 1 life forever start-time now
+!
+end

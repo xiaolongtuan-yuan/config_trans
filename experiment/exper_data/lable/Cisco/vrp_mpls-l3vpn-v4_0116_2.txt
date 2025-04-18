@@ -1,0 +1,50 @@
+hostname ASBR1
+
+ip vrf vpna
+ rd 100:3
+ route-target export 1:1
+ route-target import 1:1
+
+mpls label protocol ldp
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.10.1.1 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.12.12.1 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 10.3.1.2 255.255.255.0
+ vrf forwarding vpna
+
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255
+
+router bgp 100
+ neighbor 10.12.12.2 remote-as 200
+ neighbor 1.1.1.9 remote-as 100
+ neighbor 1.1.1.9 update-source Loopback1
+
+ address-family ipv4
+  neighbor 10.12.12.2 activate
+  neighbor 1.1.1.9 activate
+  no synchronization
+
+ address-family vpnv4
+  neighbor 1.1.1.9 activate
+  neighbor 10.12.12.2 activate
+  no auto-summary
+
+ address-family ipv4 vrf vpna
+  neighbor 10.3.1.1 remote-as 65003
+
+router ospf 1
+ router-id 2.2.2.9
+ network 2.2.2.9 0.0.0.0 area 0
+ network 10.10.1.0 0.0.0.255 area 0
+

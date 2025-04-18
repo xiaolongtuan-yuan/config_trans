@@ -1,0 +1,25 @@
+hostname DeviceC
+
+router isis
+ net 49.0000.0000.0003.00
+ is-type level-1
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 172.17.1.1 255.255.255.0
+ isis network point-to-point
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.11.1 255.255.255.0
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 192.168.21.1 255.255.255.0
+ isis network point-to-point
+
+router ospf 1
+ network 192.168.11.0 0.0.0.255 area 0
+ network 192.168.21.0 0.0.0.255 area 0
+ network 172.17.1.0 0.0.0.255 area 2
+

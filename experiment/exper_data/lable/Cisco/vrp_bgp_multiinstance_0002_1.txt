@@ -1,0 +1,21 @@
+hostname DeviceB
+ip vpn-instance vpn1
+ route-distinguisher 100:3
+ route-target export 100:1
+ route-target import 100:1
+interface GigabitEthernet0/1/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.1.2.2 255.255.255.0
+router bgp 100
+ neighbor 10.1.1.1 remote-as 200
+
+ address-family ipv4 unicast
+  neighbor 10.1.1.1 activate
+  no synchronization
+router bgp 200
+ address-family ipv4 vrf vpn1
+  neighbor 10.1.2.3 remote-as 100

@@ -1,0 +1,25 @@
+set routing-instances vpna instance-type virtual-router
+set routing-instances vpna route-distinguisher 100:1
+set routing-instances vpna vrf-import target:111:1
+set routing-instances vpna vrf-export target:111:1
+set routing-instances vpna interface ge-1/0/0
+set routing-instances vpna interface ge-2/0/0
+
+set protocols mpls interface ge-1/0/0
+set protocols mpls ldp router-id 1.1.1.1
+set protocols mpls label-switched-path per-interface
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.10.1.2/24
+set interfaces ge-2/0/0 unit 0 family inet address 10.1.1.2/24
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+
+set protocols bgp group external type external
+set protocols bgp group external neighbor 4.4.4.4 remote-as 100
+set protocols bgp group external neighbor 4.4.4.4 update-source lo0
+set protocols bgp group external family inet unicast
+set protocols bgp group external family inet-vpn
+set protocols bgp group external family vpnv4
+set protocols bgp group external local-address 1.1.1.1
+
+set protocols ospf area 0.0.0.0 interface ge-1/0/0
+set protocols ospf area 0.0.0.0 interface lo0

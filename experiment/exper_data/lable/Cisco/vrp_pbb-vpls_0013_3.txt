@@ -1,0 +1,43 @@
+hostname SPE2
+
+mpls label protocol ldp
+
+mpls ldp router-id Loopback0 force
+
+mpls ldp discovery transport-address Loopback0
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.4.1.1 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.5.1.1 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 10.3.1.2 255.255.255.0
+ mpls ip
+
+interface Loopback0
+ ip address 3.3.3.3 255.255.255.255
+
+router ospf 1
+ router-id 4.4.4.4
+ passive-interface default
+ no passive-interface Loopback0
+ network 4.4.4.4 0.0.0.0 area 0
+ network 10.3.1.0 0.0.0.255 area 0
+ network 10.4.1.0 0.0.0.255 area 0
+ network 10.5.1.0 0.0.0.255 area 0
+
+mpls l2vpn
+ bridge-domain 100
+  mac
+   address-withdraw
+   peer 1.1.1.1
+   peer 3.3.3.3
+   peer 5.5.5.5
+

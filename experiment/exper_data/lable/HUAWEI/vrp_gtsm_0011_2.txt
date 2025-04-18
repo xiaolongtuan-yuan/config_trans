@@ -1,0 +1,33 @@
+#
+ sysname DeviceC
+#
+interface GigabitEthernet1/0/0
+ ip address 10.2.1.2 255.255.255.0
+#
+interface GigabitEthernet2/0/0
+ ip address 10.2.2.1 255.255.255.0
+#
+interface LoopBack0
+ ip address 10.3.3.9 255.255.255.255
+#
+bgp 20
+ router-id 10.3.3.9
+ peer 10.2.2.9 as-number 20
+ peer 10.2.2.9 valid-ttl-hops 1
+ peer 10.2.2.9 connect-interface LoopBack0
+ peer 10.4.4.9 as-number 20
+ peer 10.4.4.9 valid-ttl-hops 1
+ peer 10.4.4.9 connect-interface LoopBack0
+#
+ ipv4-family unicast
+  undo synchronization
+  peer 10.2.2.9 enable
+  peer 10.4.4.9 enable
+#
+ospf 1
+ area 0.0.0.0
+  network 10.2.1.0 0.0.0.255
+  network 10.2.2.0 0.0.0.255
+  network 10.3.3.9 0.0.0.0
+#
+return

@@ -1,0 +1,40 @@
+hostname PE1
+
+ip vrf vpna
+ rd 1:100
+ route-target export 1:100
+ route-target import 1:100
+
+ip vrf vpnb
+ rd 2:100
+ route-target export 2:100
+ route-target import 2:100
+
+mpls label protocol ldp
+mpls ip
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls ip
+
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+
+router bgp 100
+ neighbor 2.2.2.2 remote-as 100
+ neighbor 2.2.2.2 update-source Loopback1
+ no synchronization
+ address-family ipv4 unicast
+  neighbor 2.2.2.2 activate
+ exit-address-family
+ address-family vpnv4
+  neighbor 2.2.2.2 activate
+  neighbor 2.2.2.2 send-community extended
+ exit-address-family
+
+ip route 2.2.2.2 255.255.255.255 GigabitEthernet1/0/0 10.1.1.2
+ip route vrf vpna 3.3.3.3 255.255.255.255 Null0
+ip route vrf vpnb 4.4.4.4 255.255.255.255 Null0
+
+end

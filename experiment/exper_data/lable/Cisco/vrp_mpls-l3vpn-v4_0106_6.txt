@@ -1,0 +1,47 @@
+hostname PE4
+!
+ip vrf vpn1
+ rd 100:4
+ route-target export 1:1
+ route-target import 1:1
+!
+mpls label protocol ldp
+!
+mpls
+!
+mpls ldp
+!
+router isis
+ net 10.0000.0000.0004.00
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.40.1.2 255.255.255.252
+ mpls ip
+ mpls ldp auto-config
+ isis network point-to-point
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip vrf forwarding vpn1
+ ip address 10.4.1.1 255.255.255.252
+!
+interface Loopback1
+ ip address 4.4.4.4 255.255.255.255
+ isis network point-to-point
+!
+router bgp 100
+ neighbor 2.2.2.2 remote-as 100
+ neighbor 2.2.2.2 update-source Loopback1
+ !
+ address-family ipv4 unicast
+  no synchronization
+  neighbor 2.2.2.2 activate
+ !
+ address-family vpnv4
+  neighbor 2.2.2.2 activate
+ !
+ address-family ipv4 vrf vpn1
+  neighbor 10.4.1.2 remote-as 65420
+!
+end

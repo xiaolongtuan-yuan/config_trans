@@ -1,0 +1,55 @@
+#
+sysname Device2
+#
+evpn vpn-instance evrf1 bd-mode
+ route-distinguisher 20:1
+ vpn-target 11:1 export-extcommunity
+ vpn-target 11:1 import-extcommunity
+#
+bridge-domain 10
+ vxlan vni 10 split-horizon-mode
+ evpn binding vpn-instance evrf1
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+#
+interface GigabitEthernet1/0/0.1 mode l2
+ encapsulation dot1q vid 10
+ rewrite pop single
+ bridge-domain 10
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 192.168.50.2 255.255.255.0
+#
+interface LoopBack1
+ ip address 6.6.6.6 255.255.255.255
+#
+interface Nve1
+ source 6.6.6.6
+ vni 10 head-end peer-list protocol bgp
+#
+bgp 65420
+ peer 5.5.5.5 as-number 65410
+ peer 5.5.5.5 ebgp-max-hop 255
+ peer 5.5.5.5 connect-interface LoopBack1
+ peer 7.7.7.7 as-number 65420
+ peer 7.7.7.7 connect-interface LoopBack1
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 5.5.5.5 enable
+  peer 7.7.7.7 enable
+ #
+ l2vpn-family evpn
+  policy vpn-target
+  peer 5.5.5.5 enable
+  peer 5.5.5.5 next-hop-invariable
+  peer 5.5.5.5 advertise encap-type vxlan
+#
+ospf 1
+ area 0.0.0.0
+  network 6.6.6.6 0.0.0.0
+  network 192.168.50.0 0.0.0.255
+#
+return

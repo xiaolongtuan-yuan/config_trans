@@ -1,0 +1,62 @@
+hostname LSRA
+
+mpls label protocol ldp
+mpls ip
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.252
+ ip router isis 1
+ mpls ip
+
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+
+interface Tunnel10
+ ip unnumbered Loopback1
+ tunnel destination 3.3.3.3
+ tunnel mpls traffic-eng autoroute announce
+ tunnel mpls traffic-eng priority 5
+ tunnel mpls traffic-eng path-option 1 dynamic
+ tunnel mpls traffic-eng record-route
+ tunnel mpls traffic-eng bandwidth 1000
+ tunnel mpls traffic-eng fast-reroute
+
+mpls traffic-eng auto-bw collection interval 60
+mpls traffic-eng auto-bw class class-default
+
+mpls oam
+ mpls oam discovery
+ mpls oam discovery echo
+  interface Tunnel10
+ !
+  interface Tunnel10
+
+ip explicit-path name Tunnel20
+ next-address 10.1.1.2
+ next-address 3.3.3.3
+
+mpls static
+ lsp-name Tunnel20
+  in-label 130
+  path-option 1 explicit name Tunnel20
+
+mpls static
+ lsp-name Tunnel10
+  destination 3.3.3.3
+  next-hop 10.1.1.2
+  out-label 20
+
+mpls oam
+ mpls oam lsp-ping
+  lsp-name Tunnel10
+  interval 3000
+  timeout 500
+ !
+ mpls oam
+ mpls oam lsp-ping
+  lsp-name Tunnel20
+  interval 3000
+  timeout 500
+
+end

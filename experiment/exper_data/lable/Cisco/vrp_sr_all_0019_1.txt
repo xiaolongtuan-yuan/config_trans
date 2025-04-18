@@ -1,0 +1,35 @@
+hostname PE2
+!
+mpls ldp router-id Loopback0
+!
+mpls label protocol ldp
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 172.16.1.2 255.255.255.0
+ mpls ip
+!
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255
+!
+router isis
+ net 49.0002.0000.0000.0002.00
+!
+mpls traffic-eng router-id Loopback0
+!
+mpls traffic-eng tunnels
+ tunnel mpls traffic-eng path-option 1 explicit name SegmentRouting
+!
+mpls traffic-eng autoroute announce
+!
+mpls traffic-eng area 0
+!
+mpls traffic-eng segment-routing mpls
+!
+mpls traffic-eng segment-routing global-block 160000 161000
+!
+mpls traffic-eng segment-routing tunnel-preference segment-routing
+!
+mpls traffic-eng segment-routing prefix-sid index 20
+!
+end

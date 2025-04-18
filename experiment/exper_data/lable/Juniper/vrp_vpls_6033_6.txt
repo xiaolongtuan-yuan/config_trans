@@ -1,0 +1,17 @@
+set system host-name UPE2
+
+set protocols ldp
+set protocols ldp interface ge-0/0/0
+set protocols ldp interface ge-1/0/0
+set protocols ldp interface ge-1/0/0.1 encapsulation dot1q 1
+
+set interfaces ge-0/0/0 unit 0 family ip address 10.10.4.2/24
+setinterfaces ge-0/0/0 unit 0 family mpls
+
+set interfaces ge-1/0/0 unit 0 family ip address 5.5.5.9/32
+set interfaces ge-1/0/0 unit 0 family ethernet-switching port-mode dot1q-tunnel
+set interfaces ge-1/0/0 unit 0 encapsulation mpls
+
+set protocols ospf domain 0 area 0 interface ge-0/0/0.0
+set protocols ospf domain 0 area 0 interface ge-0/0/0.0 vlink-id 10.10.4.2
+set protocols ospf interface loopback.1 vlink-id 5.5.5.9

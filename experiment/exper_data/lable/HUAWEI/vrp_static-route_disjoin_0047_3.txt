@@ -1,0 +1,30 @@
+#
+sysname DeviceC
+#
+bfd
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:6::1/64
+#
+interface GigabitEthernet2/0/3
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:3::2/64
+#
+interface GigabitEthernet3/0/3
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:4::2/64
+#
+bfd ab bind peer-ipv6 2001:db8:1::1 source-ipv6 2001:db8:3::2
+ discriminator local 20
+ discriminator remote 10
+#
+ipv6 route-static 2001:db8:5:: 64 GigabitEthernet2/0/3 2001:db8:3::1
+ipv6 route-static 2001:db8:5:: 64 GigabitEthernet3/0/3 2001:db8:4::1
+ipv6 route-static 2001:db8:1:: 64 GigabitEthernet2/0/3 2001:db8:3::1
+ipv6 route-static 2001:db8:2:: 64 GigabitEthernet3/0/3 2001:db8:4::1
+#
+return

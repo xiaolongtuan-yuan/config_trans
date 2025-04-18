@@ -1,0 +1,25 @@
+hostname DeviceC
+!
+ipv6 multicast-routing
+!
+router isis
+ is-type level-1
+ ipv6 unicast-routing
+ isis ipv6 enable
+ net 47.0000.0000.0000.0003.00
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 address 2001:db8:7::1/64
+ ipv6 pim sparse-mode
+ ipv6 mld join-group FF02::1
+ ipv6 isis 1 enable
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ipv6 address 2001:db8:3::1/64
+ ipv6 pim sparse-mode
+ ipv6 mld join-group FF02::1
+ ipv6 isis 1 enable
+!
+end

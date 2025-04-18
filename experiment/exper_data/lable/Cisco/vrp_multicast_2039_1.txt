@@ -1,0 +1,40 @@
+hostname DeviceB
+!
+ipv6 multicast-routing
+!
+ipv6 access-list 2000
+ permit ipv6 2001:db8:5::5/64 any
+!
+ipv6 access-list 2001
+ permit ipv6 2001:db8:3::2/64 any
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:1::2/64
+ ipv6 pim sparse-mode
+ ipv6 ospfv3 1 area 0.0.0.0
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:7::1/64
+ ipv6 pim sparse-mode
+ ipv6 mld join-group FF02::1
+ ipv6 ospfv3 1 area 0.0.0.0
+!
+interface GigabitEthernet3/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:3::1/64
+ ipv6 pim sparse-mode
+ ipv6 ospfv3 1 area 0.0.0.0
+!
+ipv6 router ospf 1
+ router-id 2.2.2.2
+ area 0.0.0.0
+!
+ipv6 pim bsr candidate-policy 2001
+ ipv6 pim rp-address 2001:db8:3::2
+!
+end

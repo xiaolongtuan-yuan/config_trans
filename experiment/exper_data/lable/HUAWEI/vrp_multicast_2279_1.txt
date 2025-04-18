@@ -1,0 +1,36 @@
+#
+sysname Device B
+#
+acl name frracl
+ rule permit ip source 10.0.5.100 0 destination 225.1.0.0 0
+#
+isis 1
+ network-entity 10.0000.0000.0002.00
+ frr
+  loop-free-alternate level-1
+#
+multicast routing-enable
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 192.168.8.2 255.255.255.0
+ pim sm
+ isis enable 1
+#
+interface Gigabitethernet1/0/2
+ undo shutdown
+ ip address 192.168.10.2 255.255.255.0
+ pim sm
+ isis enable 1
+#
+interface GigabitEthernet1/0/3
+ undo shutdown
+ ip address 192.168.11.1 255.255.255.0
+ pim sm
+ isis enable 1
+ igmp static-group 225.1.0.0 source 10.0.5.100
+#
+pim
+ rpf-frr policy acl-name frracl
+#
+return

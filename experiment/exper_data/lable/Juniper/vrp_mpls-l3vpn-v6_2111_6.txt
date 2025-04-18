@@ -1,0 +1,40 @@
+set system host-name PE4
+
+set routing-instances vpn1 instance-type vrf
+set routing-instances vpn1 route-distinguisher 100:2
+set routing-instances vpn1 vrf-target target:1:1
+set routing-instances vpn1 vrf-import vpn1-import
+set routing-instances vpn1 vrf-export vpn1-export
+
+set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:2::2/64
+set interfaces ge-1/0/0 unit 0 family inet6 mtu 1500
+set interfaces ge-1/0/0 unit 0 family inet6 no-rpf-check
+set interfaces ge-1/0/0 unit 0 disable false
+set routing-instances vpn1 interface ge-1/0/0.0
+
+set interfaces ge-2/0/0 unit 0 family inet address 10.2.1.2/24
+set interfaces ge-2/0/0 unit 0 disable false
+set protocols mpls interface ge-2/0/0.0
+
+set interfaces lo0 unit 1 family inet address 6.6.6.9/32
+
+set protocols bgp group internal type internal
+set protocols bgp group internal neighbor 5.5.5.9 peer-as 300
+set protocols bgp group internal neighbor 5.5.5.9 local-address 6.6.6.9
+set protocols bgp group external type external
+set protocols bgp group external neighbor 1.1.1.9 peer-as 200
+set protocols bgp group external neighbor 1.1.1.9 local-address 6.6.6.9
+set protocols bgp group external neighbor 1.1.1.9 multihop ttl 10
+set protocols bgp group internal family inet unicast
+set protocols bgp group internal neighbor 5.5.5.9 family inet unicast
+set protocols bgp group internal family inet unicast nexthop self
+set protocols bgp group internal family inet-vpns
+set protocols bgp group external neighbor 1.1.1.9 family inet-vpns
+set protocols bgp group external neighbor 1.1.1.9 family inet-vpns advertise-peer-as
+set protocols bgp group external neighbor 1.1.1.9 family inet-vpns extended-nexthops
+
+set protocols ospf area 0.0.0.0 interface lo0.1
+set protocols ospf area 0.0.0.0 interface ge-2/0/0.0
+
+set routing-instances vpn1 protocols ospf area 0.0.0.0 interface all
+set routing-instances vpn1 protocols ospf export export-connected

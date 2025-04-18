@@ -1,0 +1,40 @@
+#
+l2tp enable
+#
+radius-server group radius1
+ radius-server authentication 10.0.0.249 1812 
+ radius-server accounting 10.0.0.249 1813 
+ radius-server shared-key %^%#vS%796FO7%C~pB%CR=q;j}gSCqR-X6+P!.DYI@)%^% 
+#
+interface Virtual-Template1
+ ppp authentication-mode chap
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+#
+interface GigabitEthernet1/0/0.1
+ pppoe-server bind Virtual-Template 1
+ undo shutdown
+ user-vlan 1 100
+#
+interface GigabitEthernet2/0/0
+undo shutdown
+ ip address 10.100.100.1 255.255.255.0
+#
+l2tp-group lac1
+ tunnel password cipher %@%##!!!!!!!!!"!!!!"!!!!(!!!!1];16qfZ81fv"uMoKKZ.1k"`AO!X2K2N.b~'NB^V!!!!!!!!!!1!!!!o/4J(q"J1F.!K9%M!6x8%@%#
+ tunnel name LAC1
+ start l2tp ip 1.1.1.1
+ tunnel mtu-discovery
+ tunnel mtu-discovery ipv4
+#
+aaa
+ domain domain1
+  authentication-scheme default1
+  accounting-scheme default1
+  radius-server group radius1
+  l2tp-group lac1
+#
+ip route-static 1.1.1.1 255.255.255.255 10.100.100.2
+#
+return

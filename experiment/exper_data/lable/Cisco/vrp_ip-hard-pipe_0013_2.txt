@@ -1,0 +1,76 @@
+hostname P
+!
+mpls ldp router-id Loopback1 force
+mpls ldp
+ mpls traffic-eng
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.2.2.2 255.255.255.0
+ mpls ip
+ mpls traffic-eng
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls ip
+ mpls traffic-eng
+!
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255
+!
+router ospf 1
+ area 0
+  network 2.2.2.9 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+  network 10.2.2.0 0.0.0.255
+!
+mpls traffic-eng router-id Loopback1
+mpls traffic-eng area 0
+!
+mpls traffic-eng bidirectional
+ tunnel mpls traffic-eng 1
+  destination 10.2.2.1
+  record-route
+  bandwidth 500
+  autoroute announce
+  autoroute destination
+  autoroute metric absolute 1
+  autoroute metric relative 1
+  path-option 1 explicit name lsp1
+   next-address loose
+   next-address 10.2.2.1
+   record-route
+   in-label 20 out-label 40
+  path-option 1 explicit name reverse-lsp1
+   next-address loose
+   next-address 10.1.1.1
+   record-route
+   in-label 16 out-label 20
+!
+mpls traffic-eng autoroute announce
+mpls traffic-eng autoroute destination
+mpls traffic-eng autoroute metric relative 1
+mpls traffic-eng timer lsp-refresh 300
+mpls traffic-eng timer hello 5
+mpls traffic-eng timer hello-hold 15
+mpls traffic-eng timer hello-multiplier 3
+mpls traffic-eng timer retransmit 5
+mpls traffic-eng timer refresh 12
+mpls traffic-eng timer refresh-max 120
+mpls traffic-eng timer refresh-max-missed 10
+mpls traffic-eng timer refresh-multiplier 3
+!
+mpls traffic-eng auto-bw
+ mpls traffic-eng auto-bw discovery
+!
+mpls traffic-eng hard-pipe
+!
+mpls traffic-eng hard-pipe autoroute announce
+mpls traffic-eng hard-pipe autoroute destination
+mpls traffic-eng hard-pipe autoroute metric relative 1
+mpls traffic-eng hard-pipe share-mode bandwidth 500 outbound
+!
+mpls traffic-eng hard-pipe enable
+!
+return

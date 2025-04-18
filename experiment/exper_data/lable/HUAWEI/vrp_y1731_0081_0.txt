@@ -1,0 +1,16 @@
+#                                                                               
+sysname CE1                                                                      
+#                                                                               
+cfm enable                                                                      
+#
+interface gigabitEthernet1/0/0.1
+ vlan-type dot1q 1
+ qos profile 1 outbound
+#
+cfm md md1                                                                      
+ ma ma1                                                                         
+  mep mep-id 1 interface GigabitEthernet1/0/0.1 outward                         
+  mep mep-id 1 eth-bn receive enable mode port-vlan   
+#
+qos-profile 1
+ car cir 10000 pir 12000 cbs 1870000 pbs 2244000 green pass yellow pass red discard

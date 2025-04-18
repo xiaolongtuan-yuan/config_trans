@@ -1,0 +1,37 @@
+#
+sysname DeviceB
+#
+multicast ipv6 routing-enable
+#
+acl ipv6 number 2000
+ rule permit source ff31::/32
+#
+isis 1
+ ipv6 enable topology ipv6
+ network-entity 10.0000.0000.0002.00
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:6::2/64
+ pim ipv6 sm
+ isis ipv6 enable 1
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:1::2
+ pim ipv6 sm
+ isis ipv6 enable 1
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:2::1/64
+ pim ipv6 sm
+ isis ipv6 enable 1
+#
+pim-ipv6
+ ssm-policy 2000
+#
+return

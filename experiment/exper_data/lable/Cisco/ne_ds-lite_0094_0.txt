@@ -1,0 +1,47 @@
+hostname DS-Lite
+
+license boot module c7600-ds-lite-pk9.SPA.152-4.S2.bin slot 1
+license boot module c7600-nat-pk9.SPA.152-4.S2.bin slot 1
+
+ipv6 access-list 3500
+ permit ipv6 2001:DB8:2::/64 any
+
+ipv6 local pool DS-Lite1 2001:DB8::1 2001:DB8::1 prefix-length 128
+
+ipv6 vrf DS-Lite1
+ rd 100:1
+ route-target export 100:1
+ route-target import 100:1
+
+interface GigabitEthernet2/0/1
+ no shutdown
+ service-policy input DS-Lite-Policy
+ ipv6 enable
+ ipv6 address 2001:DB8::1/64
+ ipv6 traffic-filter 3500 inbound
+ ipv6 vrf DS-Lite1
+  ipv6 enable
+  tunnel source GigabitEthernet2/0/1
+  tunnel mode ipv6ip DS-Lite
+  tunnel destination 2001:DB8:2::1
+  tunnel ttl 255
+  tunnel vrf DS-Lite1
+
+class-map match-all DS-Lite-Policy
+ match access-group 3500
+policy-map DS-Lite-Policy
+ class DS-Lite-Policy
+  police 1000000
+
+router isis
+ net 49.0001.0000.0000.0000.00
+ is-type level-1
+ metric-style wide
+ address-family ipv6 unicast
+  redistribute connected
+  redistribute static
+  exit-address-family
+
+ip route vrf DS-Lite1 2001:DB8:2::/64 Tunnel2/0/1
+
+end

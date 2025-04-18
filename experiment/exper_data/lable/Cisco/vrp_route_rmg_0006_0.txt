@@ -1,0 +1,38 @@
+hostname BRAS1
+!
+bfd all-interfaces
+!
+bfd template single-hop ATOB
+ discriminator local 2
+ discriminator remote 3
+!
+ip sla 1
+ icmp-echo 10.10.10.10 source-ip 10.10.10.1
+ frequency 5
+!
+track 1 ip sla 1 reachability
+ delay down 20
+!
+ip sla schedule 1 life forever start-time now
+!
+ip route 10.1.2.0 255.255.255.0 Null0 track 1
+!
+interface GigabitEthernet2/0/0
+ ip address 10.1.2.1 255.255.255.0
+!
+interface GigabitEthernet3/0/0.100
+ encapsulation dot1Q 600
+ ip address 10.10.10.1 255.255.255.0
+ standby 3 ip 10.10.10.2
+ standby 3 preempt delay minimum 1200
+ standby 3 priority 120
+ standby 3 track bfd session 2
+!
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+!
+router ospf 1
+ network 10.1.2.0 0.0.0.255 area 0
+ network 1.1.1.1 0.0.0.0 area 0
+!
+end

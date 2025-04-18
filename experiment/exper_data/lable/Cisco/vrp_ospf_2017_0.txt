@@ -1,0 +1,21 @@
+hostname DeviceA
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.0.0.1 255.255.255.0
+ ip pim sparse-mode
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 172.16.1.1 255.255.255.0
+ ip pim sparse-mode
+ ip igmp version 3
+
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+
+router ospf 1
+ network 172.16.1.0 0.0.0.255 area 0
+ network 10.0.0.0 0.0.0.255 area 0
+ network 1.1.1.1 0.0.0.0 area 0
+

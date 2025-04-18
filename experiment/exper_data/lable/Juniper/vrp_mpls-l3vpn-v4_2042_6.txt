@@ -1,0 +1,31 @@
+set system host-name PE4
+
+set routing-instances vpn1 instance-type virtual-router
+set routing-instances vpn1 route-distinguisher 100:2
+set routing-instances vpn1 vrf-import 1:1
+set routing-instances vpn1 vrf-export 1:1
+
+set protocols mpls label-protocol ldp
+
+set interfaces ge-0/0/0 unit 0 family inet address 172.16.2.2/24
+set interfaces ge-0/0/0 unit 0 vrf vpn1
+
+set interfaces ge-0/0/1 unit 0 family inet address 20.1.1.2/24
+set interfaces ge-0/0/1 unit 0 family inet mpls
+
+set interfaces lo0 unit 0 family inet address 6.6.6.9/32
+
+set protocols bgp group neighbor-1.1.1.9 type external
+set protocols bgp group neighbor-1.1.1.9 local-address 6.6.6.9
+set protocols bgp group neighbor-1.1.1.9 peer-as 100
+set protocols bgp group neighbor-1.1.1.9 family inet unicast
+set protocols bgp group neighbor-1.1.1.9 family inet vpnv4
+set protocols bgp group neighbor-1.1.1.9 send-community
+
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.0 interface lo0.0
+
+set routing-options static route 172.16.2.0/24 next-hop 20.1.1.1
+
+set routing-instances vpn1 protocols bgp group neighbor-172.16.2.1 peer-as 65420

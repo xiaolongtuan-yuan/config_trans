@@ -1,0 +1,26 @@
+#
+sysname P
+#
+multicast routing-enable
+#
+interface gigabitethernet1/0/0
+ undo portswitch
+ undo shutdown
+ ip address 192.168.1.2 255.255.255.0
+ pim sm
+#
+interface gigabitethernet2/0/0
+ undo portswitch
+ undo shutdown
+ ip address 192.168.2.1 255.255.255.0
+ pim sm
+#
+ospf 1
+ area 0.0.0.0
+  network 192.168.1.0 0.0.0.255
+  network 192.168.2.0 0.0.0.255
+#
+pim
+ static-rp 1.1.1.1
+#
+return

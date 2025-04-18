@@ -1,0 +1,25 @@
+#
+sysname DeviceB
+#
+multicast ipv6 routing-enable
+#
+isis 1
+ ipv6 enable topology ipv6
+ network-entity 10.0000.0000.0002.00
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:6::1/64
+ pim ipv6 sm
+ mld enable
+ isis ipv6 enable 1
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:2::1/64
+ pim ipv6 sm
+ isis ipv6 enable 1
+#
+return

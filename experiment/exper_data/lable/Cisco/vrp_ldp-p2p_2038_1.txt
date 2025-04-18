@@ -1,0 +1,32 @@
+hostname PE2
+!
+bfd
+!
+mpls lsr-id 4.4.4.4
+!
+mpls label protocol ldp
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.5.1 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 10.1.4.1 255.255.255.0
+!
+interface Loopback1
+ ip address 4.4.4.4 255.255.255.255
+!
+router ospf 1
+ area 0
+  network 10.1.5.0 0.0.0.255 area 0
+  network 10.1.4.0 0.0.0.255 area 0
+  network 4.4.4.4 0.0.0.0 area 0
+!
+bfd all-interfaces bind peer-ip 1.1.1.1
+ bfd discriminator local 2
+ bfd discriminator remote 1
+!
+end

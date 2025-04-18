@@ -1,0 +1,20 @@
+set system host-name HUAWEI
+
+set routing-options ipv6-unicast-routing
+
+set interfaces ge-2/0/1 disable
+set interfaces ge-2/0/1 family inet6 address 2001:db8::1:110e/126
+set firewall family inet6 filter input-filter term traffic-policy-input then policer p1
+
+set firewall family inet6 filter access-list-3003 term 1 from source-address 2001:db8::1:1112/126
+set firewall family inet6 filter access-list-3003 term 1 from destination-address 64:FF9B::/96
+set firewall family inet6 filter access-list-3003 term 1 then accept
+
+set firewall family inet6 filter class-map-c1 term 1 from filter access-list-3003
+set firewall family inet6 filter class-map-c1 term 1 then accept
+
+set applications application-set policy-map-p1 term c1 then source-nat pool nat1
+
+set routing-options nat64 vrf default prefix 64:FF9B::/96
+set routing-options nat64 address-pool address-group1 address-range low 11.11.11.100 high 11.11.11.105
+set routing-options nat64 instance nat1 outbound address-pool address-group1

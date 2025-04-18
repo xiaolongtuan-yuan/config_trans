@@ -1,0 +1,49 @@
+#
+ sysname PE1
+#
+ mpls lsr-id 1.1.1.9
+#
+ mpls
+#
+ mpls l2vpn
+#
+vsi ldp1 static
+ pwsignal ldp
+  vsi-id 2
+  peer 3.3.3.9
+  peer 2.2.2.9
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+#
+interface GigabitEthernet1/0/1.1
+ encapsulation qinq-termination
+ qinq termination l2 symmetry
+ qinq termination pe-vid 100 ce-vid 10
+ qinq termination pe-vid 100 ce-vid 20
+ l2 binding vsi ldp1
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip address 192.168.1.1 255.255.255.252
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/3
+ undo shutdown
+ ip address 192.168.3.1 255.255.255.252
+ mpls
+ mpls ldp
+#
+interface LoopBack1
+ ip address 1.1.1.9 255.255.255.255
+#
+ospf 1
+ area 0.0.0.0
+  network 1.1.1.9 0.0.0.0
+  network 192.168.1.0 0.0.0.3
+  network 192.168.3.0 0.0.0.3
+#
+return

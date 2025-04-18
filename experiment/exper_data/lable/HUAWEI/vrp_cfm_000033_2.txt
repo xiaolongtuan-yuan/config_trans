@@ -1,0 +1,57 @@
+#
+sysname PE1
+#
+mpls lsr-id 1.1.1.9
+#
+mpls
+#
+mpls l2vpn
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/0
+ undo shutdown  
+#               
+interface GigabitEthernet2/0/0
+ undo shutdown  
+ ip address 192.168.1.1 255.255.255.0
+ mpls           
+ mpls ldp       
+#               
+interface LoopBack1
+ ip address 1.1.1.9 255.255.255.255
+#               
+mpls l2vpn vpn1 encapsulation ethernet
+ route-distinguisher 100:1
+ vpn-target 200:1 import-extcommunity
+ vpn-target 200:1 export-extcommunity
+ ce ce1 id 1 range 10 default-offset 0
+  connection ce-offset 2 interface GigabitEthernet1/0/0
+#               
+bgp 100         
+ peer 3.3.3.9 as-number 100
+ peer 3.3.3.9 connect-interface LoopBack1
+ #              
+ ipv4-family unicast
+  undo synchronization
+  peer 3.3.3.9 enable
+ #              
+ l2vpn-ad-family
+  policy vpn-target
+  peer 3.3.3.9 enable
+  peer 3.3.3.9 signaling vpws
+#               
+ospf 1          
+ area 0.0.0.0   
+  network 1.1.1.9 0.0.0.0
+  network 192.168.1.0 0.0.0.255
+#
+ma ma1
+ map mpls l2vpn vpn1 ce 1 ce-offset 2
+ ccm-interval 100
+ mep mep-id 1 interface GigabitEthernet1/0/0 inward 
+ mep ccm-send mep-id 1 enable
+ remote-mep mep-id 2
+ remote-mep ccm-receive mep-id 2 enable
+#
+return

@@ -1,0 +1,55 @@
+#
+sysname PE2
+#
+evpn vpn-instance evpna bd-mode
+ route-distinguisher 3:3
+ vpn-target 1:1 export-extcommunity
+ vpn-target 1:1 import-extcommunity
+#
+mpls lsr-id 2.2.2.2
+#
+mpls
+#
+bridge-domain 10
+ evpn binding vpn-instance evpna
+ ipv6 nd multicast-suppress proxy-reply enable
+ ipv6 nd collect host enable
+#
+mpls ldp
+ #
+ ipv4-family
+#
+interface GigabitEthernet2/0/0.1 mode l2
+ encapsulation dot1q vid 1
+ bridge-domain 10
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.0.0.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack0
+ ip address 2.2.2.2 255.255.255.255
+#
+bgp 100
+ peer 1.1.1.1 as-number 100
+ peer 1.1.1.1 connect-interface LoopBack0
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 1.1.1.1 enable
+ #
+ l2vpn-family evpn
+  undo policy vpn-target
+  peer 1.1.1.1 enable
+  peer 1.1.1.1 advertise nd
+#
+ospf 1
+ area 0.0.0.0
+  network 2.2.2.2 0.0.0.0
+  network 10.0.0.0 0.0.0.255
+#
+evpn source-address 2.2.2.2
+#
+return

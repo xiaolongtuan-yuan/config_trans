@@ -1,0 +1,42 @@
+hostname PE2
+!
+cfm version standard
+cfm
+!
+mpls ip
+mpls l2vpn
+mpls label protocol ldp
+mpls ldp router-id Loopback1 force
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+!
+interface GigabitEthernet1/0/1.1
+ encapsulation dot1Q 10
+ xconnect 1.1.1.1 100 encapsulation mpls
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 10.2.1.2 255.255.255.252
+ mpls ip
+ mpls ldp
+!
+interface Loopback1
+ ip address 3.3.3.3 255.255.255.255
+!
+router ospf 1
+ network 5.5.5.5 0.0.0.0 area 0
+ network 10.2.1.0 0.0.0.3 area 0
+!
+cfm ma ma1
+ mep mep-id 32 interface GigabitEthernet1/0/1.1 inward
+ mep ccm-send
+ remote-mep mep-id 31
+ remote-mep ccm-receive
+ ais enable
+ ais link-status interface GigabitEthernet1/0/2
+ ais level 6
+ ais interval 60
+ ais vlan vid 10 mep 32
+!
+end

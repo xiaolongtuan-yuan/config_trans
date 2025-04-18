@@ -1,0 +1,36 @@
+set system host-name PE2
+
+set protocols mpls label-switched-path-protocol ldp
+set protocols ldp interface all
+set protocols ldp router-id 4.4.4.4
+set protocols ldp transport-preference mpls-direct-next-hop
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.30.1.2/24
+set interfaces ge-1/0/0 family mpls
+
+set interfaces ge-2/0/0 unit 0 family ethernet-switching interface-mode trunk
+
+set interfaces ge-2/0/0 unit 1 encapsulation vlan-ccc
+set interfaces ge-2/0/0 unit 1 vlan-id 10
+set protocols l2circuit vplsad1 interface ge-2/0/0.1 peer 10.10.10.2 virtual-circuit-id 100
+
+set interfaces lo0 unit 1 family inet address 4.4.4.4/32
+
+set protocols bgp group EBGP neighbor 1.1.1.1 peer-as 100
+set protocols bgp group EBGP neighbor 1.1.1.1 multihop ttl 255
+set protocols bgp group EBGP neighbor 1.1.1.1 local-address 4.4.4.4
+
+set protocols bgp group IBGP neighbor 3.3.3.3 peer-as 200
+set protocols bgp group IBGP neighbor 3.3.3.3 local-address 4.4.4.4
+set protocols bgp group IBGP neighbor 3.3.3.3 next-hop self
+
+set policy-options policy-statement OSPF_to_BGP term 1 from protocol ospf
+set policy-options policy-statement OSPF_to_BGP term 1 then accept
+
+set protocols ospf area 0.0.0.0 interface lo0.1
+set protocols ospf area 0.0.0.0 interface ge-1/0/0.0
+
+set routing-options autonomous-system 200
+set routing-options router-id 4.4.4.4
+set protocols bgp group EBGP family inet unicast export OSPF_to_BGP
+set protocols bgp group IBGP family inet unicast export OSPF_to_BGP

@@ -1,0 +1,30 @@
+#
+sysname CE1
+#
+multicast routing-enable
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.1.4.1 255.255.255.0
+ pim sm
+#
+interface GigabitEthernet1/0/3
+ undo shutdown
+ ip address 192.168.1.1 255.255.255.0
+ pim sm
+#
+bgp 65003
+ peer 192.168.1.2 as-number 100
+ #
+ ipv4-family unicast
+  undo synchronization
+  import-route direct
+  peer 192.168.1.2 enable
+#
+pim
+ static-rp 192.168.1.1
+#
+msdp
+ peer 192.168.1.2 connect-interface GigabitEthernet1/0/3
+#
+return

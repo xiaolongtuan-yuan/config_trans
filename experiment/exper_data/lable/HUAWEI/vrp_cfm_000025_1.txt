@@ -1,0 +1,48 @@
+#
+ sysname PE2
+#
+cfm version standard
+cfm enable
+#
+ mpls lsr-id 3.3.3.9
+ mpls
+#
+ mpls l2vpn
+#
+mpls ldp remote-peer 1.1.1.9
+ remote-ip 1.1.1.9
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+#
+interface GigabitEthernet2/0/0.1
+ undo shutdown
+ control-vid 1 qinq-termination
+ qinq termination l2 symmetry
+ qinq termination pe-vid 100 ce-vid 10
+ mpls l2vc 1.1.1.9 101
+#
+interface Gigabitethernet1/0/0
+ undo shutdown
+ ip address 10.1.2.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack1
+ ip address 3.3.3.9 255.255.255.255
+#
+cfm md md1
+  ma ma1
+   map mpls l2vc 101 tagged
+   ccm-interval 30
+   mep mep-id 1 interface gigabitethernet 2/0/0.1 pe-vid 100 ce-vid 10 inward
+   mep ccm-send mep-id 2 enable
+   remote-mep mep-id 1
+   remote-mep ccm-receive mep-id 1 enable
+#
+ospf 1
+ area 0.0.0.0
+  network 3.3.3.9 0.0.0.0
+  network 10.1.2.0 0.0.0.255
+#
+return

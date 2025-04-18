@@ -1,0 +1,62 @@
+#
+sysname NPE
+#
+ip vpn-instance vpn1
+ ipv6-family
+  route-distinguisher 100:1
+  apply-label per-instance
+  import route-policy SPE evpn
+  vpn-target 2:2 export-extcommunity evpn
+  vpn-target 2:2 import-extcommunity evpn
+  evpn mpls routing-enable
+#               
+mpls lsr-id 3.3.3.3
+#
+mpls
+#
+mpls ldp
+#
+isis 1
+ network-entity 10.0000.0000.0003.00
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.2.1.2 255.255.255.0
+ isis enable 1
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip binding vpn-instance vpn1
+ ipv6 enable
+ ipv6 address 2001:DB8:30::1/64
+#
+interface LoopBack1
+ ip address 3.3.3.3 255.255.255.255
+ isis enable 1
+#
+bgp 100
+ peer 2.2.2.2 as-number 100
+ peer 2.2.2.2 connect-interface LoopBack1
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 2.2.2.2 enable
+ #
+ ipv6-family vpn-instance vpn1
+  import-route direct
+  advertise l2vpn evpn
+ #
+ l2vpn-family evpn
+  undo policy vpn-target
+  peer 2.2.2.2 enable
+#
+route-policy SPE deny node 10
+ if-match ipv6 address prefix-list default
+#
+route-policy SPE permit node 20
+#
+ip ipv6-prefix default index 10 permit :: 0
+#
+return

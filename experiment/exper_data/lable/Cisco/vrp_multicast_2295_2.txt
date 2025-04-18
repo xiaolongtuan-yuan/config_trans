@@ -1,0 +1,33 @@
+hostname CE
+
+ip multicast-routing
+
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 10.1.6.2 255.255.255.0
+ ip pim sparse-mode
+
+interface GigabitEthernet1/0/3
+ no shutdown
+ ip address 10.1.7.1 255.255.255.0
+ ip pim sparse-mode
+ ip igmp version 3
+ ip igmp static-group 232.1.1.1 source 10.1.5.10
+
+interface GigabitEthernet1/0/4
+ no shutdown
+ ip address 10.1.8.1 255.255.255.0
+ ip pim sparse-mode
+ ip igmp version 3
+
+interface Null0
+
+router ospf 1
+ router-id 10.1.6.2
+ network 10.1.6.0 0.0.0.255 area 0.0.0.1
+ network 10.1.7.0 0.0.0.255 area 0.0.0.1
+ network 10.1.8.0 0.0.0.255 area 0.0.0.1
+
+ip pim rp-address 10.0.1.1
+
+ip route 0.0.0.0 0.0.0.0 10.1.6.1

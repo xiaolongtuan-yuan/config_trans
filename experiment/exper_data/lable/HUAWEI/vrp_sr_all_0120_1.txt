@@ -1,0 +1,45 @@
+#
+sysname DeviceB
+#
+mpls lsr-id 2.2.2.9
+#               
+mpls  
+ mpls te          
+#               
+segment-routing 
+#               
+isis 1          
+ is-level level-1
+ cost-style wide
+ network-entity 10.0000.0000.0002.00
+ avoid-microloop frr-protected
+ avoid-microloop frr-protected rib-update-delay 5000
+ segment-routing mpls
+ segment-routing global-block 16000 23999
+ avoid-microloop segment-routing
+ avoid-microloop segment-routing rib-update-delay 10000
+ frr
+  loop-free-alternate level-1
+  ti-lfa level-1
+#               
+interface GigabitEthernet1/0/0
+ undo shutdown  
+ ip address 10.1.1.2 255.255.255.0
+ isis enable 1  
+#               
+interface GigabitEthernet2/0/0
+ undo shutdown  
+ ip address 10.2.1.1 255.255.255.0
+ isis enable 1  
+#               
+interface GigabitEthernet3/0/0
+ undo shutdown  
+ ip address 10.5.1.1 255.255.255.0
+ isis enable 1 
+#               
+interface LoopBack1
+ ip address 2.2.2.9 255.255.255.255
+ isis enable 1  
+ isis prefix-sid index 20
+#
+return

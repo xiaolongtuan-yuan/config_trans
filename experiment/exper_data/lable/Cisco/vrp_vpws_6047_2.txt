@@ -1,0 +1,36 @@
+hostname ASBR1
+
+mpls label protocol ldp
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.10.1.2 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.20.1.1 255.255.255.0
+ mpls ip
+
+interface Loopback1
+ ip address 2.2.2.2 255.255.255.255
+
+router bgp 100
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 update-source Loopback1
+ neighbor 10.20.1.2 remote-as 200
+ neighbor 10.20.1.2 update-source GigabitEthernet2/0/0
+
+ip route 1.1.1.1 255.255.255.255 Null0
+
+route-map policy1 permit 10
+ match mpls experimental topmost 1
+ set mpls experimental topmost 1
+
+route-map policy2 permit 10
+ set mpls experimental topmost 1
+
+router ospf 1
+ network 2.2.2.2 0.0.0.0 area 0
+ network 10.10.1.0 0.0.0.255 area 0
+

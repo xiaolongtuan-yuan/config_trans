@@ -1,0 +1,55 @@
+#
+ sysname DeviceA
+#
+ vlan batch 10 20 100 to 200 300 to 400
+#
+stp region-configuration
+ instance 1 vlan 10 100 to 200
+ instance 2 vlan 20 300 to 400
+#
+erps ring 1
+ control-vlan 10
+ protected-instance 1
+ version v2
+ wtr-timer 6
+ guard-timer 100
+ tc-notify erps ring 2
+ tc-protection interval 200
+ tc-protection threshold 60
+#
+erps ring 2
+ control-vlan 20
+ protected-instance 2
+ wtr-timer 6
+ guard-timer 100
+ version v2
+ sub-ring
+ tc-notify erps ring 1
+ tc-protection interval 200
+ tc-protection threshold 60
+#
+interface GigabitEthernet1/0/1
+ portswitch
+ undo shutdown
+ port link-type trunk
+ port trunk allow-pass vlan 10 100 to 200
+ stp disable
+ erps ring 1
+#
+interface GigabitEthernet1/0/2
+ portswitch
+ undo shutdown
+ port link-type trunk
+ port trunk allow-pass vlan 10 100 to 200 300 to 400
+ stp disable
+ erps ring 1
+#
+interface GigabitEthernet1/0/3
+ portswitch
+ undo shutdown
+ port link-type trunk
+ port trunk allow-pass vlan 20 300 to 400
+ stp disable
+ erps ring 2
+#
+return
