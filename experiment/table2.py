@@ -13,7 +13,8 @@ from experiment.tree_match import cul_command_accuracy, cul_grammatical_accuracy
 
 if __name__ == '__main__':
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
-    scales = [100,500,1000,2000]
+    # scales = [100,500,1000,2000]
+    scales = [2000]
 
     translated_config_base = './exper_data/translated_config'
     vendor_config_models = {}

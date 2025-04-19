@@ -110,13 +110,15 @@ def main():
             for target_vendor in vendors:
                 if source_vendor == target_vendor:
                     continue
+                if target_vendor != 'Juniper':
+                    continue
                 # if (not source_vendor == 'Juniper') and (not target_vendor == 'Juniper'): # 只翻译Juniper到其他供应商
                 # if (source_vendor == 'Juniper') or (target_vendor == 'Juniper'): # 不考虑juniper
                 #     continue
                 source_config_dir = f'./exper_data/{source_vendor}'
                 output_save_dir = os.path.join(output_dir, str(scale), source_vendor)  # 当前处理的是哪个scale的哪个源供应商
                 os.makedirs(output_save_dir, exist_ok=True)
-                delete_outdate_files(os.path.join(output_dir, str(scale), source_vendor, target_vendor))
+                # delete_outdate_files(os.path.join(output_dir, str(scale), source_vendor, target_vendor))
 
                 print(f"exper for {scale}, {source_vendor} to {target_vendor} translation")
                 mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/different_scale/{{}}_{{}}_{scale}.json'

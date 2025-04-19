@@ -3,10 +3,10 @@
         [
             0,
             0,
-            "set host-name [parameter1]"
+            "set system host-name [parameter1]"
         ]
     ],
-    "no shutdown": "enable",
+    "no shutdown": "no shutdown",
     "ip address [parameter1] [parameter2]": [
         [
             0,
@@ -23,19 +23,19 @@
         [
             0,
             0,
-            "vrrp-group [parameter5]"
+            "vrrp-group [parameter4]"
         ],
         [
             1,
             0,
-            "virtual-address [parameter6]"
+            "virtual-address [parameter4]"
         ]
     ],
     "vrrp [parameter1] priority [parameter2]": [
         [
             0,
             0,
-            "vrrp group [parameter3]"
+            "vrrp-group [parameter5]"
         ],
         [
             1,
@@ -47,19 +47,19 @@
         [
             0,
             0,
-            "vrrp group [parameter3]"
+            "vrrp-group [parameter5]"
         ],
         [
             1,
             0,
-            "track interface [parameter2]"
+            "track [parameter4]"
         ]
     ],
     "ethernet cfm mode [parameter1]": [
         [
             0,
-            0,
-            "family ethernet-switching cfm [parameter3]"
+            1,
+            "set protocols cfm loss-measure [parameter1] [parameter2]"
         ]
     ],
     "ethernet cfm error-threshold [parameter1] [parameter2] [parameter3]": [
@@ -82,8 +82,8 @@
     "ethernet cfm notification [parameter1]": [
         [
             0,
-            0,
-            "family ethernet-switching no-notification [parameter3]"
+            1,
+            "set protocols cfm loss-measure [parameter1] [parameter2]"
         ]
     ],
     "ethernet cfm interval [parameter1]": [
@@ -97,29 +97,29 @@
         [
             0,
             0,
-            "bfd interval [parameter2]"
+            "min-receive-interval [parameter3]"
         ],
         [
             1,
             0,
-            "min-rx [parameter4]"
+            "min-receive-interval [parameter3]"
         ],
         [
             2,
             0,
-            "mul [parameter3]"
+            "multiplier [parameter2]"
         ]
     ],
     "bfd neighbor [parameter1]": [
         [
             0,
             0,
-            "bind peer-ip [parameter2]"
+            "family inet6 bfd-liveness-detection neighbor [parameter3]"
         ]
     ],
-    "mpls ip": "set forwarding-lsp mpls enable",
-    "mpls traffic-eng tunnels": "set protocols mpls traffic-eng tunnels",
-    "mpls traffic-eng bandwidth": "mpls traffic-eng destination [parameter2]",
+    "mpls ip": "set protocols mpls ip",
+    "mpls traffic-eng tunnels": "family mpls traffic-eng tunnels",
+    "mpls traffic-eng bandwidth": "family mpls traffic-eng",
     "mpls traffic-eng bandwidth [parameter1]": [
         [
             0,
@@ -140,7 +140,7 @@
         ]
     ],
     "mpls rsvp-te": "set protocols mpls traffic-eng rsvp-te",
-    "mpls traffic-eng rsvp-te": "mpls traffic-eng destination [parameter2]",
+    "mpls traffic-eng rsvp-te": "family mpls traffic-engineering rsvp-te",
     "ip unnumbered [parameter1]": [
         [
             0,
@@ -148,7 +148,7 @@
             "set interfaces [parameter1]"
         ]
     ],
-    "tunnel mode mpls traffic-eng": "mpls traffic-eng destination [parameter2]",
+    "tunnel mode mpls traffic-eng": "set protocols mpls traffic-eng tunnels",
     "tunnel destination [parameter1]": [
         [
             0,
@@ -167,30 +167,30 @@
         [
             0,
             0,
-            "disable [parameter2]"
+            "set protocols ptp interface [parameter1]"
         ]
     ],
-    "clock synchronization enable": "clocking [parameter2]",
+    "clock synchronization enable": "set system clock source [parameter1]",
     "clock priority [parameter1]": [
         [
             0,
             0,
-            "clock-priority [parameter2]"
+            "set system clock priority [parameter1]"
         ]
     ],
     "ptp enable": "set protocols ptp enable",
     "encapsulation dot1q [parameter1]": [
         [
             0,
-            1,
-            "encapsulation [parameter3] [parameter4]"
+            0,
+            "encapsulation dot1q [parameter3]"
         ]
     ],
     "bridge-group [parameter1]": [
         [
             0,
             0,
-            "bridge-domains bridge-domain [parameter2]"
+            "ppp multilink-group [parameter2]"
         ]
     ],
     "encapsulation dot1q [parameter1] second-dot1q [parameter2]": [
@@ -210,15 +210,15 @@
         [
             0,
             0,
-            "set interfaces [parameter1]"
+            "set protocols mpls traffic-eng tunnels [parameter1]"
         ]
     ],
-    "tunnel mpls traffic-eng autoroute announce": "set protocols mpls traffic-eng tunnels",
+    "tunnel mpls traffic-eng autoroute announce": "mpls traffic-eng autoroute announce",
     "tunnel mpls traffic-eng priority [parameter1]": [
         [
             0,
             0,
-            "set forwarding-options mpls traffic-eng priority [parameter1]"
+            "set protocols mpls traffic-eng priority [parameter1]"
         ]
     ],
     "tunnel mpls traffic-eng bandwidth [parameter1]": [
@@ -237,7 +237,7 @@
         [
             1,
             0,
-            "set protocols mpls label-switched-path name [parameter1]"
+            "set protocols mpls traffic-engineering tunnel-options path [parameter1]"
         ]
     ],
     "mpls ldp autoconfig": "mpls ldp autoconfig",
@@ -245,10 +245,10 @@
         [
             0,
             0,
-            "encap-type dot1q [parameter2]"
+            "encapsulation dot1q [parameter3]"
         ]
     ],
-    "ipv6 enable": "enable",
+    "ipv6 enable": "family inet6 enable",
     "ipv6 address [parameter1]": [
         [
             0,
@@ -272,7 +272,7 @@
         [
             0,
             0,
-            "set failover sync-group [parameter1]"
+            "vrrp group [parameter3]"
         ],
         [
             1,
@@ -284,12 +284,12 @@
         [
             0,
             0,
-            "set system services ospf area [parameter1]"
+            "family inet6 ospf area [parameter3]"
         ],
         [
             1,
             0,
-            "set system services ospf area [parameter1]"
+            "family inet6 ospf area [parameter3]"
         ]
     ],
     "bfd bind peer-ip [parameter1] interface [parameter2] one-arm-echo": [
@@ -329,7 +329,7 @@
         [
             0,
             0,
-            "tunnel source [parameter3]"
+            "family inet source-address [parameter3]"
         ]
     ],
     "tunnel key [parameter1]": [
@@ -346,12 +346,12 @@
             "set security ipsec vpn ipsec-profile-name [parameter1]"
         ]
     ],
-    "no switchport": "enable",
+    "no switchport": "family ethernet-switching port-mode [parameter3]",
     "ip pim [parameter1]": [
         [
             0,
             0,
-            "family inet pim [parameter3]"
+            "mode [parameter2]"
         ]
     ],
     "standby version [parameter1]": [
@@ -365,36 +365,36 @@
         [
             0,
             0,
-            "vrrp group [parameter3]"
+            "vrrp-group [parameter4]"
         ],
         [
             1,
             0,
-            "virtual-address [parameter4]"
+            "family inet address [parameter3]"
         ]
     ],
     "standby [parameter1] track [parameter2] [parameter3]": [
         [
             0,
             0,
-            "vrrp group [parameter3]"
+            "standby version [parameter5]"
         ],
         [
             1,
             0,
-            "track [parameter4]"
+            "track interface [parameter2]"
         ],
         [
             2,
             0,
-            "unit [parameter2]"
+            "priority [parameter5]"
         ]
     ],
     "ip router isis [parameter1]": [
         [
             0,
             0,
-            "set routing-options router isis net [parameter1]"
+            "set protocols isis system-id [parameter1]"
         ]
     ],
     "ip router isis [parameter1] prefix-sid index [parameter2]": [
@@ -417,13 +417,13 @@
             "pppoe-options encapsulation [parameter3]"
         ]
     ],
-    "multilink": "tunnel multipoint",
-    "ppp multilink": "ppp multilink",
+    "multilink": "ppp multilink",
+    "ppp multilink": "pppoe-options multilink",
     "ppp multilink group [parameter1]": [
         [
             0,
             0,
-            "ppp-options multilink group [parameter3]"
+            "ppp multilink group [parameter3]"
         ]
     ],
     "ospfv3 cost [parameter1]": [
@@ -444,22 +444,22 @@
         [
             0,
             0,
-            "set forwarding-vrf [parameter1]"
+            "set routing-options instance vrf [parameter1]"
         ]
     ],
-    "mpls ldp discovery targeted-hello accept": "set protocols mpls ldp targeted-hello accept",
+    "mpls ldp discovery targeted-hello accept": "family mpls ldp discovery target-hello-accept",
     "crypto map [parameter1]": [
         [
             0,
             0,
-            "set policy-map [parameter1]"
+            "family dot1q vlan-map [parameter3]"
         ]
     ],
     "bridge-domain [parameter1]": [
         [
             0,
             0,
-            "bridge-domains bridge-domain [parameter2]"
+            "bridge-domain [parameter2]"
         ]
     ],
     "source-interface [parameter1]": [
@@ -473,7 +473,7 @@
         [
             0,
             0,
-            "set forwarding-options tunnel-options vxlan vni [parameter1]"
+            "set forwarding-options vxlan vni [parameter1]"
         ],
         [
             1,
@@ -485,17 +485,17 @@
         [
             0,
             0,
-            "family inet address [parameter3]/[parameter4]"
+            "encapsulation mpls connect-ce [parameter3] [parameter4]"
         ],
         [
             1,
             0,
-            "unit [parameter2]"
+            "set protocols mpls l2transport vc-id [parameter1]"
         ],
         [
             2,
             0,
-            "encapsulation [parameter2]"
+            "encapsulation [parameter3] [parameter4]"
         ]
     ],
     "mpls ldp": "set protocols mpls ldp",
@@ -517,40 +517,40 @@
         [
             0,
             0,
-            "description [parameter2]"
+            "set protocols isis interface [parameter1]"
         ]
     ],
     "channel-group [parameter1] mode [parameter2]": [
         [
             0,
             0,
-            "_unit_[parameter2]"
+            "family iso channel-group [parameter3]"
         ],
         [
             1,
             0,
-            "_unit_[parameter2]"
+            "family iso channel-group [parameter3]"
         ]
     ],
-    "no cdp enable": "enable",
+    "no cdp enable": "set protocols ldp enable",
     "link-quality [parameter1] error-ratio [parameter2] resume-ratio [parameter3]": [
         [
             0,
             0,
-            "description [parameter3]"
+            "MEP [parameter2]"
         ],
         [
             1,
-            2,
-            "family ethernet-switching error-threshold [parameter3] [parameter4] [parameter5]"
+            0,
+            "set protocols cfm loss-measure [parameter1] [parameter2]"
         ],
         [
             2,
             0,
-            "family ethernet-switching analyzer-input [parameter3]"
+            "loss-measure [parameter3]"
         ]
     ],
-    "switchport": "enable",
+    "switchport": "family ethernet-switching",
     "switchport mode [parameter1]": [
         [
             0,
@@ -562,7 +562,7 @@
         [
             0,
             0,
-            "vlan-id [parameter2]"
+            "family ethernet-trunk switchport trunk allowed-vlans [parameter3]"
         ]
     ],
     "mpls traffic-eng router-id [parameter1]": [
@@ -582,8 +582,8 @@
     "mpls traffic-eng segment-routing prefix-sid absolute [parameter1]": [
         [
             0,
-            1,
-            "mpls-traffic-engineering segment-routing global-block [parameter2] [parameter3]"
+            0,
+            "prefix-sid index [parameter2]"
         ]
     ],
     "ethernet-segment identifier [parameter1]": [
@@ -604,7 +604,7 @@
         [
             0,
             0,
-            "family mpls l2circuit neighbor [parameter3]"
+            "set protocols mpls l2circuit neighbor [parameter1]"
         ],
         [
             1,
@@ -626,31 +626,31 @@
             "set protocols l2vpn pw-class [parameter1]"
         ]
     ],
-    "cfm": "set protocols cfm domain [parameter1]",
+    "cfm": "cfm enable",
     "cfm md [parameter1]": [
         [
             0,
             0,
-            "set protocols cfm domain [parameter1]"
+            "cfm md [parameter2]"
         ]
     ],
     "cfm ma [parameter1] md [parameter2]": [
         [
             0,
             0,
-            "set protocols cfm ma [parameter1]"
+            "cfm ma [parameter2]"
         ],
         [
             1,
             0,
-            "set protocols cfm domain [parameter1]"
+            "cfm md [parameter2]"
         ]
     ],
     "cfm ma [parameter1] mep [parameter2]": [
         [
             0,
             0,
-            "set protocols cfm maintenance-association [parameter1]"
+            "set protocols cfm ma [parameter1]"
         ],
         [
             1,
@@ -667,19 +667,19 @@
         [
             1,
             0,
-            "ccm-send mep-id [parameter2]"
+            "set protocols cfm ccm-receive mep-id [parameter1]"
         ]
     ],
     "cfm ma [parameter1] remote-mep [parameter2]": [
         [
             0,
             0,
-            "set protocols cfm mep interface [parameter1]"
+            "set protocols cfm interface [parameter1]"
         ],
         [
             1,
             0,
-            "remote-mep [parameter2]"
+            "cfm remote-mep mep-id [parameter2]"
         ]
     ],
     "cfm ma [parameter1] remote-mep [parameter2] ccm-receive": [
@@ -698,12 +698,12 @@
         [
             0,
             0,
-            "set protocols cfm mep interface [parameter1]"
+            "set protocols cfm interface [parameter1]"
         ],
         [
             1,
             0,
-            "set protocols cfm test-id [parameter1]"
+            "cfm test-id [parameter2]"
         ],
         [
             2,
@@ -713,7 +713,7 @@
         [
             3,
             0,
-            "remote-mep [parameter2]"
+            "cfm remote-mep mep-id [parameter2]"
         ]
     ],
     "ip route [parameter1] [parameter2] [parameter3]": [
@@ -730,7 +730,7 @@
         [
             2,
             0,
-            "next-hop [parameter2]"
+            "next-hop [parameter4]"
         ]
     ],
     "ip flow monitor [parameter1] [parameter2]": [
@@ -742,14 +742,14 @@
         [
             1,
             0,
-            "set access-listinet [parameter1]"
+            "family inet output source-address [parameter2]"
         ]
     ],
     "isis metric-style [parameter1]": [
         [
             0,
             0,
-            "set link-state-routing isis metric-style [parameter1]"
+            "metric-style [parameter3]"
         ]
     ],
     "isis prefix-sid-index [parameter1]": [
@@ -763,14 +763,14 @@
         [
             0,
             0,
-            "bridge-domains bridge-domain [parameter2]"
+            "ppp multilink-group [parameter2]"
         ]
     ],
     "bfd interval [parameter1] min_rx [parameter2]": [
         [
             0,
             0,
-            "bfd interval [parameter2]"
+            "minimum-interval [parameter2]"
         ],
         [
             1,
@@ -778,33 +778,33 @@
             "minimum-receive-interval [parameter2]"
         ]
     ],
-    "mpls": "set protocols mpls",
+    "mpls": "mpls",
     "mpls traffic-eng bandwidth control [parameter1] [parameter2]": [
         [
             0,
             0,
-            "set unit [parameter1]"
+            "unit [parameter2]"
         ],
         [
             1,
             0,
-            "tunnel-type mpls traffic-eng bandwidth [parameter2] [parameter3]"
+            "tunnel-type mpls traffic-eng bandwidth [parameter2]"
         ]
     ],
     "mpls rsvp": "set protocols mpls rsvp interface [parameter1]",
     "tunnel mpls traffic-eng bandwidth [parameter1] [parameter2]": [
         [
             0,
-            1,
-            "set protocols mpls traffic-eng bandwidth max-reservable-bandwidth [parameter1] [parameter2]"
+            0,
+            "protocol mpls traffic-eng bandwidth [parameter3] [parameter4]"
         ],
         [
             1,
             0,
-            "tunnel-type mpls traffic-eng bandwidth [parameter2] [parameter3]"
+            "tunnel-type mpls traffic-eng bandwidth [parameter2]"
         ]
     ],
-    "tunnel mpls traffic-eng shortcut": "mpls traffic-eng destination [parameter2]",
+    "tunnel mpls traffic-eng shortcut": "set protocols mpls traffic-eng tunnels",
     "tunnel mpls traffic-eng metric absolute [parameter1]": [
         [
             0,
@@ -829,8 +829,8 @@
     "isis metric [parameter1]": [
         [
             0,
-            1,
-            "set protocols isis level [parameter1] [parameter2]"
+            0,
+            "metric [parameter3]"
         ]
     ],
     "isis prefix-sid [parameter1]": [
@@ -840,7 +840,7 @@
             "prefix-sid [parameter2]"
         ]
     ],
-    "isis enable": "enable",
+    "isis enable": "set protocols isis interface [parameter1]",
     "isis segment-routing prefix-sid index [parameter1]": [
         [
             0,
@@ -848,19 +848,19 @@
             "segment-routing prefix-sid index [parameter3]"
         ]
     ],
-    "undo shutdown": "disable",
+    "undo shutdown": "no shutdown",
     "vlan-type dot1q [parameter1]": [
         [
             0,
             0,
-            "encap-type dot1q [parameter2]"
+            "encapsulation dot1q [parameter2]"
         ]
     ],
     "switchport access vlan [parameter1]": [
         [
             0,
             0,
-            "encap-type dot1q [parameter2]"
+            "vlan-id [parameter2]"
         ]
     ],
     "spanning-tree bpdufilter [parameter1]": [
@@ -874,14 +874,14 @@
         [
             0,
             0,
-            "family ethernet-switching port-mode [parameter3]"
+            "set protocols stp interface [parameter1]"
         ]
     ],
     "encapsulation dot1q [parameter1] native": [
         [
             0,
             0,
-            "encap-type dot1q [parameter2]"
+            "encapsulation dot1q [parameter3]"
         ]
     ],
     "mpls ldp discovery transport-address [parameter1]": [
@@ -907,7 +907,7 @@
         [
             0,
             0,
-            "standby version [parameter5]"
+            "set protocols vrrp group [parameter1]"
         ],
         [
             1,
@@ -919,15 +919,15 @@
         [
             0,
             0,
-            "delay-down [parameter2]"
+            "time [parameter2]"
         ]
     ],
-    "dcn": "enable",
+    "dcn": "set protocols l2vpn",
     "ppp authentication [parameter1]": [
         [
             0,
             0,
-            "ppp authentication [parameter3]"
+            "ppp-authentication [parameter3]"
         ]
     ],
     "pppoe enable group [parameter1]": [
@@ -948,10 +948,10 @@
         [
             0,
             0,
-            "join-group [parameter2]"
+            "igmp join-group [parameter3]"
         ]
     ],
-    "bas": "enable",
+    "bas": "set subscriber-template bas authentication bind",
     "access-type [parameter1] default-domain authentication [parameter2]": [
         [
             0,
@@ -961,7 +961,7 @@
         [
             1,
             0,
-            "set access profile [parameter1]"
+            "set system login user [parameter1]"
         ],
         [
             2,
@@ -973,14 +973,14 @@
         [
             0,
             0,
-            "set aaa multicast-group [parameter1]"
+            "set aaa multicast-source [parameter1]"
         ]
     ],
     "mpls l2vpn xconnect group [parameter1] p2p vc-id [parameter2]": [
         [
             0,
             0,
-            "encapsulation mpls connect-ce [parameter3] [parameter4]"
+            "set interfaces [parameter1]"
         ],
         [
             1,
@@ -1023,12 +1023,12 @@
             "set protocols erps ring [parameter1]"
         ]
     ],
-    "ip ospf bfd": "no-passive-interface [parameter2]",
+    "ip ospf bfd": "set protocols bfd all-interfaces frr-binding",
     "switchport trunk native vlan [parameter1]": [
         [
             0,
             0,
-            "encap-type dot1q [parameter2]"
+            "vlan-id [parameter2]"
         ]
     ],
     "ptp atr enable": "set protocols ptp interface all enable",
@@ -1036,17 +1036,17 @@
         [
             0,
             0,
-            "set protocols cfm mep interface [parameter1]"
+            "set protocols cfm domain [parameter1]"
         ],
         [
             1,
             0,
-            "set protocols cfm mep interface [parameter1]"
+            "set protocols cfm ma [parameter1]"
         ],
         [
             2,
             0,
-            "mep-id [parameter2]"
+            "cfm mep mep-id [parameter2]"
         ]
     ],
     "ethernet cfm mep receive md [parameter1] ma [parameter2] mep [parameter3]": [
@@ -1075,12 +1075,12 @@
         [
             1,
             0,
-            "track interface [parameter2]"
+            "track [parameter6]"
         ],
         [
             2,
             0,
-            "track [parameter6]"
+            "unit [parameter7]"
         ],
         [
             3,
@@ -1099,12 +1099,12 @@
         [
             0,
             0,
-            "set policy-options prefix-list [parameter1]"
+            "from interface [parameter3]"
         ],
         [
             1,
             0,
-            "set policy-map [parameter1]"
+            "set policy-map global out put [parameter1]"
         ]
     ],
     "mpls ldp auto-config": "mpls ldp autoconfig",
@@ -1112,7 +1112,7 @@
         [
             0,
             0,
-            "set interfaces [parameter1]"
+            "vlan-interfaces interface [parameter2]"
         ]
     ],
     "monitor session [parameter1]": [
@@ -1134,7 +1134,7 @@
         [
             0,
             0,
-            "aps group [parameter3]"
+            "ppp-options multilink group [parameter3]"
         ]
     ],
     "aps protect": "aps protect aps mode [parameter4] [parameter5]",
@@ -1147,7 +1147,7 @@
         [
             1,
             1,
-            "aps protect aps mode [parameter4] [parameter5]"
+            "interface [parameter3] [parameter4]"
         ]
     ],
     "xconnect [parameter1] [parameter2] pw-class [parameter3]": [
@@ -1158,13 +1158,13 @@
         ],
         [
             1,
-            1,
-            "mpls l2vc pw-template [parameter2] [parameter3]"
+            0,
+            "unit [parameter2]"
         ],
         [
             2,
             0,
-            "mpls l2vc pw-template [parameter2] [parameter3]"
+            "family ethernet-switching pw-id [parameter3]"
         ]
     ],
     "pppoe enable": "pppoe enable",
@@ -1184,12 +1184,12 @@
         [
             0,
             0,
-            "bind peer-ip [parameter2]"
+            "set protocols bfd peer-group [parameter1]"
         ],
         [
             1,
             0,
-            "discriminator remote [parameter2]"
+            "discriminator-remote [parameter3]"
         ]
     ],
     "bfd neighbor [parameter1] local-as [parameter2]": [
@@ -1245,19 +1245,19 @@
             "protected-instance [parameter2]"
         ]
     ],
-    "shutdown": "disable",
+    "shutdown": "no shutdown",
     "mpls ldp neighbor [parameter1] targeted": [
         [
             0,
             0,
-            "set protocols ldp targeted-neighbor [parameter1]"
+            "set protocols mpls l2circuit neighbor [parameter1]"
         ]
     ],
     "switchport vlan mapping [parameter1] [parameter2]": [
         [
             0,
             0,
-            "vlan-id [parameter2]"
+            "-[parameter4]"
         ],
         [
             1,
@@ -1265,14 +1265,14 @@
             "-[parameter4]"
         ]
     ],
-    "ipv6 pim sparse-mode": "sparse-mode",
-    "ipv6 pim boundary": "set protocols pim6 interface [parameter1]",
-    "arp proxy disable": "arp-options proxy-arp enable",
+    "ipv6 pim sparse-mode": "pim sparse-mode",
+    "ipv6 pim boundary": "family inet6 pim [parameter3]",
+    "arp proxy disable": "no-arp-proxy",
     "bridge-domain [parameter1] mtu [parameter2]": [
         [
             0,
             0,
-            "bridge-domains bridge-domain [parameter2]"
+            "family bridge bridge-domain [parameter3]"
         ],
         [
             1,
@@ -1295,22 +1295,22 @@
     "ipv6 router isis [parameter1]": [
         [
             0,
-            1,
-            "family inet6 address [parameter2]/[parameter3]"
+            0,
+            "set routing-options router-is [parameter1]"
         ]
     ],
     "switchport default vlan [parameter1]": [
         [
             0,
             0,
-            "vlan-id [parameter2]"
+            "vlan-id [parameter3]"
         ]
     ],
     "spanning-tree link-type [parameter1]": [
         [
             0,
             0,
-            "interface-type [parameter3]"
+            "family mpls traffic-eng tunnels network [parameter2]"
         ]
     ],
     "mpls traffic-eng tunnel destination [parameter1]": [
@@ -1320,18 +1320,18 @@
             "mpls traffic-eng destination [parameter2]"
         ]
     ],
-    "mpls ldp discovery": "set protocols mpls ldp_interface [parameter1]",
+    "mpls ldp discovery": "family mpls ldp enable",
     "xconnect vsi [parameter1]": [
         [
             0,
             0,
-            "vfi [parameter2]"
+            "l2circuit vsi [parameter3]"
         ]
     ],
     "ip proxy-arp": "proxy-arp [parameter3]",
-    "isis bfd enable": "set protocols bfd [parameter1]",
-    "isis bfd point-to-point": "bfd local-discriminator [parameter2]",
-    "isis bfd fast-detect": "bfd-liveness-detection",
+    "isis bfd enable": "set protocols bfd all-interfaces enable",
+    "isis bfd point-to-point": "family isis point-to-point",
+    "isis bfd fast-detect": "family inet6 bfd-liveness-detection minimum-interval [parameter3]",
     "clock rate [parameter1]": [
         [
             0,
@@ -1369,12 +1369,12 @@
         [
             0,
             0,
-            "neighbor [parameter4]"
+            "family inet6 bfd-liveness-detection neighbor [parameter3]"
         ],
         [
             1,
             0,
-            "bfd local-discriminator [parameter2]"
+            "discriminator-local [parameter2]"
         ]
     ],
     "helper-address [parameter1]": [
@@ -1388,7 +1388,7 @@
         [
             0,
             0,
-            "encap-type dot1q [parameter2]"
+            "vlan-id [parameter2]"
         ]
     ],
     "arp inspection trust": "family ethernet-switching arp-inspection [parameter3]",
@@ -1399,43 +1399,43 @@
             "family ethernet-switching arp-rate-limit [parameter3]"
         ]
     ],
-    "arp broadcast enable": "arp-options proxy-arp enable",
+    "arp broadcast enable": "set dhcp-relay arp-broadcast enable",
     "ip dhcp server": "family inet dhcp-relay server [parameter3]",
     "exit": "commit and-quit",
-    "spanning-tree portfast": "input [parameter2]",
+    "spanning-tree portfast": "family ethernet-switching port-mode [parameter3]",
     "ip nat inside": "address-netmask [parameter2]",
     "ip nat outside": "match-direction [parameter2]",
-    "isis ipv6 enable": "family inet6 address [parameter2]/[parameter3]",
+    "isis ipv6 enable": "family inet6 enable",
     "rewrite ingress tag pop [parameter1] symmetric": [
         [
             0,
             0,
-            "inner [parameter4]"
+            "vlan-tags outer [parameter3]"
         ]
     ],
-    "ethernet cfm": "cfm loss-measurement dual-ended continual test-id [parameter2]",
+    "ethernet cfm": "cfm etherenet domain [parameter3]",
     "md [parameter1]": [
         [
             0,
             0,
-            "set ethernet-switching-options cfm maintenance-domain [parameter1]"
+            "set protocols oam ethernet connectivity-fault-management maintenance-domain [parameter1]"
         ]
     ],
     "ma [parameter1]": [
         [
             0,
             0,
-            "set protocols cfm maintenance-association [parameter1]"
+            "maintenance-association [parameter2]"
         ]
     ],
     "mep [parameter1]": [
         [
             0,
             0,
-            "cfm mep mep-id [parameter2]"
+            "cfm remote-mep mep-id [parameter2]"
         ]
     ],
-    "loss-measurement enable": "loss-measure [parameter3]",
+    "loss-measurement enable": "loss-measure [parameter2] [parameter3]",
     "loss-measurement frame-period [parameter1]": [
         [
             0,
@@ -1447,14 +1447,14 @@
         [
             0,
             0,
-            "test-id [parameter3]"
+            "count [parameter5]"
         ]
     ],
     "bfd neighbor [parameter1] interface [parameter2]": [
         [
             0,
             0,
-            "bind peer-ip [parameter2]"
+            "destination [parameter2]"
         ],
         [
             1,
@@ -1466,7 +1466,7 @@
         [
             0,
             0,
-            "source [parameter2]"
+            "source [parameter3]"
         ]
     ],
     "sync ethernet": "family ethernet-switching",
@@ -1507,7 +1507,7 @@
         [
             0,
             0,
-            "set failover sync-group [parameter1]"
+            "standby version [parameter5]"
         ],
         [
             1,
@@ -1519,24 +1519,24 @@
         [
             0,
             0,
-            "set protocols ospfv3 area [parameter1]"
+            "family inet6 ospfv3 area [parameter3]"
         ],
         [
             1,
             0,
-            "set protocols ospf area [parameter1]"
+            "family inet6 ospfv3 area [parameter3]"
         ]
     ],
     "ipv6 ospfv3 [parameter1] area [parameter2]": [
         [
             0,
             0,
-            "set protocols ospfv3 area [parameter1]"
+            "family inet6 ospf area [parameter3]"
         ],
         [
             1,
             0,
-            "set protocols ospfv3 area [parameter1]"
+            "family inet6 ospfv3 area [parameter3]"
         ]
     ],
     "ip igmp join-group [parameter1] source [parameter2]": [
@@ -1591,12 +1591,12 @@
         [
             0,
             0,
-            "set protocols oam ethernet connectivity-fault-management maintenance-domain [parameter1]"
+            "set protocols cfm domain [parameter1]"
         ],
         [
             1,
             0,
-            "up-mep mep-id [parameter3]"
+            "MEP [parameter2]"
         ],
         [
             2,
@@ -1606,12 +1606,12 @@
         [
             3,
             0,
-            "up-mep mep-id [parameter3]"
+            "mep-id [parameter2]"
         ],
         [
             4,
-            1,
-            "interface [parameter3] [parameter4]"
+            0,
+            "direction [parameter2]"
         ]
     ],
     "cfm mep domain [parameter1] mep [parameter2] interface [parameter3] mep id [parameter4] [parameter5] [parameter6]": [
@@ -1623,7 +1623,7 @@
         [
             1,
             0,
-            "ccm-send mep-id [parameter2]"
+            "ccm-receive mep-id [parameter3]"
         ],
         [
             2,
@@ -1633,7 +1633,7 @@
         [
             3,
             0,
-            "ccm-send mep-id [parameter2]"
+            "ccm-receive mep-id [parameter3]"
         ],
         [
             4,
@@ -1643,19 +1643,19 @@
         [
             5,
             0,
-            "set protocols cfm interface [parameter1]"
+            "set protocols cfm mep interface [parameter1]"
         ]
     ],
     "cfm mep domain [parameter1] mep [parameter2] interface [parameter3] mep id [parameter4] test-id [parameter5]": [
         [
             0,
             0,
-            "set protocols cfm mep interface [parameter1]"
+            "set protocols cfm domain [parameter1]"
         ],
         [
             1,
             0,
-            "mep-id [parameter2]"
+            "MEP [parameter2]"
         ],
         [
             2,
@@ -1677,12 +1677,12 @@
         [
             0,
             0,
-            "set protocols cfm mep interface [parameter1]"
+            "set protocols cfm domain [parameter1]"
         ],
         [
             1,
             0,
-            "set protocols cfm mep interface [parameter1]"
+            "MEP [parameter2]"
         ],
         [
             2,
@@ -1692,12 +1692,12 @@
         [
             3,
             0,
-            "cfm loss-measurement dual-ended continual test-id [parameter2]"
+            "MEP [parameter2]"
         ],
         [
             4,
             0,
-            "set protocols cfm loss-measure [parameter1] [parameter2]"
+            "loss-measure [parameter2] [parameter3]"
         ],
         [
             5,
@@ -1721,14 +1721,14 @@
         [
             0,
             0,
-            "family ipv4 address [parameter5]/[parameter6]"
+            "-[parameter3]"
         ]
     ],
     "monitor session [parameter1] source interface [parameter2]": [
         [
             0,
             0,
-            "external-interface [parameter2]"
+            "set ethernet-switching-options analyzer [parameter1]"
         ],
         [
             1,
@@ -1740,17 +1740,17 @@
         [
             0,
             0,
-            "encap-type dot1q [parameter2]"
+            "output interface [parameter2]"
         ],
         [
             1,
             0,
-            "set interfaces [parameter1]"
+            "track interface [parameter2]"
         ],
         [
             2,
             0,
-            "encap-type dot1q [parameter2]"
+            "track interface [parameter2]"
         ]
     ],
     "port monitor [parameter1]": [
@@ -1764,24 +1764,24 @@
         [
             0,
             0,
-            "set protocols ospfv3 area [parameter1]"
+            "family inet6 ospf area [parameter3]"
         ],
         [
             1,
             0,
-            "set protocols ospf area [parameter1]"
+            "family inet6 ospfv3 area [parameter3]"
         ]
     ],
     "ospfv3 [parameter1] priority [parameter2]": [
         [
             0,
             0,
-            "set protocols ospf [parameter1]"
+            "family inet6 ospfv3 cost [parameter3]"
         ],
         [
             1,
             0,
-            "set protocols ospf [parameter1]"
+            "family inet6 ospf3 priority [parameter3]"
         ]
     ],
     "bridge-domain [parameter1] member [parameter2]": [
@@ -1807,12 +1807,12 @@
         [
             0,
             0,
-            "vpn-id [parameter2]"
+            "set protocols l2circuit bgp-signaling vfi [parameter1]"
         ],
         [
             1,
             0,
-            "vpn-id [parameter2]"
+            "from protocol [parameter2]"
         ]
     ],
     "arp proxy local": "proxy-arp [parameter3]",
@@ -1820,10 +1820,10 @@
         [
             0,
             0,
-            "family ethernet-switching ptp domain [parameter3]"
+            "set protocols ptp domain [parameter1]"
         ]
     ],
-    "ptp": "set protocols ptp interface [parameter1]",
+    "ptp": "set protocols ptp enable",
     "ptp delay-mechanism [parameter1]": [
         [
             0,
@@ -1839,8 +1839,8 @@
         ],
         [
             1,
-            1,
-            "mpls l2vc pw-template [parameter2] [parameter3]"
+            0,
+            "set protocols mpls l2transport vc-id [parameter1]"
         ]
     ],
     "encapsulation mpls": "family mpls encapsulation mpls",
@@ -1848,24 +1848,24 @@
         [
             0,
             0,
-            "xconnect peer-address [parameter3]"
+            "family mpls encap-type pw-class connection [parameter3] [parameter4]"
         ],
         [
             1,
-            0,
-            "set protocols mpls l2transport vc-id [parameter1]"
+            1,
+            "family mpls encap-type pw-class connection [parameter3] [parameter4]"
         ],
         [
             2,
             0,
-            "set interfaces [parameter1]"
+            "family mpls encap-type pw-class connection [parameter3] [parameter4]"
         ]
     ],
     "tunnel mpls traffic-eng affinity mask [parameter1]": [
         [
             0,
             0,
-            "mpls traffic-eng tunnel-id [parameter2]"
+            "set protocols mpls traffic-eng tunnels [parameter1]"
         ]
     ],
     "ptp mode [parameter1]": [
@@ -1900,7 +1900,7 @@
         [
             0,
             0,
-            "set routing-options router bgp [parameter1]"
+            "as [parameter2]"
         ]
     ],
     "bgp router-id [parameter1]": [
@@ -1914,33 +1914,33 @@
         [
             0,
             0,
-            "neighbor-address [parameter2]"
+            "neighbor [parameter3]"
         ],
         [
             1,
             0,
-            "neighbor [parameter2]"
+            "remote-as [parameter3]"
         ]
     ],
-    "address-family ipv4 unicast": "address-family ipv4 unicast",
+    "address-family ipv4 unicast": "family inet address [parameter3]/[parameter4]",
     "no synchronization": "sync",
     "summary-address [parameter1] [parameter2]": [
         [
             0,
             0,
-            "family ipv4 address [parameter3]/[parameter4]"
+            "ip address [parameter2]/[parameter3]"
         ],
         [
             1,
             1,
-            "family inet address [parameter3] [parameter4]"
+            "ip address [parameter2]/[parameter3]"
         ]
     ],
     "redistribute [parameter1] [parameter2]": [
         [
             0,
             0,
-            "set protocols ospf traffic-engineering router-id [parameter1]"
+            "set protocols ospf router-id [parameter1]"
         ],
         [
             1,
@@ -1952,48 +1952,48 @@
         [
             0,
             0,
-            "neighbor-address [parameter2]"
+            "neighbor [parameter3]"
         ]
     ],
-    "exit-address-family": "address-family [parameter3]",
+    "exit-address-family": "family inet [parameter2]",
     "neighbor [parameter1] update-source [parameter2]": [
         [
             0,
             0,
-            "neighbor [parameter2]"
+            "neighbor [parameter3]"
         ],
         [
             1,
             0,
-            "update-source [parameter2]"
+            "update-source [parameter5]"
         ]
     ],
     "address-family ipv6 mvpn": "address-family ipv6 mvpn neighbor [parameter2]",
-    "address-family vpnv6": "address-family vpnv6 neighbor [parameter2]",
+    "address-family vpnv6": "family inet6 address autoconfig link-local",
     "address-family [parameter1]": [
         [
             0,
             0,
-            "family inet [parameter2]"
+            "family ip address [parameter3]/[parameter4]"
         ]
     ],
     "network [parameter1] mask [parameter2]": [
         [
             0,
             0,
-            "family inet unicast network [parameter2]/[parameter3]"
+            "set protocols bgp network [parameter1]"
         ],
         [
             1,
             1,
-            "family inet unicast network [parameter2]/[parameter3]"
+            "from route-filter [parameter3]/[parameter4] [parameter5]"
         ]
     ],
     "redistribute [parameter1]": [
         [
             0,
             0,
-            "set routing-instances [parameter1]"
+            "set protocols ospf traffic-engineering options [parameter1]"
         ]
     ],
     "maximum-paths [parameter1]": [
@@ -2007,7 +2007,7 @@
         [
             0,
             0,
-            "set routing-table route [parameter1]/[parameter2]"
+            "neighbor [parameter2]/[parameter3]"
         ]
     ],
     "neighbor [parameter1] send-community": [
@@ -2021,7 +2021,7 @@
         [
             0,
             0,
-            "neighbor [parameter4]"
+            "set routing-options rib all neighbors [parameter1]"
         ],
         [
             1,
@@ -2045,19 +2045,19 @@
         [
             0,
             0,
-            "neighbor [parameter3]"
+            "neighbor-address [parameter2]"
         ],
         [
             1,
             0,
-            "family inet [parameter2]"
+            "send-community [parameter2]"
         ]
     ],
     "neighbor [parameter1] route-reflector-client": [
         [
             0,
             0,
-            "neighbor [parameter4]"
+            "neighbors [parameter2]"
         ]
     ],
     "send-community": "send-community",
@@ -2066,12 +2066,12 @@
         [
             0,
             0,
-            "neighbor [parameter3]"
+            "set routing-options rib all neighbors [parameter1]"
         ],
         [
             1,
             0,
-            "route-map [parameter3]"
+            "export [parameter2]"
         ]
     ],
     "neighbor [parameter1] es-evpn-compatible": [
@@ -2088,26 +2088,26 @@
             "neighbor [parameter3]"
         ]
     ],
-    "address-family ipv6 unicast": "address-family ipv6 mvpn neighbor [parameter2]",
-    "synchronization none": "address-family ipv4-unicast synchronization disable",
+    "address-family ipv6 unicast": "family inet6",
+    "synchronization none": "disable synchronized",
     "address-family [parameter1] [parameter2]": [
         [
             0,
             0,
-            "family inet [parameter2]"
+            "family inet address [parameter2]/[parameter3]"
         ],
         [
             1,
-            1,
-            "family [parameter2] [parameter3]"
+            0,
+            "set interfaces [parameter1]"
         ]
     ],
-    "synchronization": "address-family ipv4-unicast synchronization disable",
+    "synchronization": "sync",
     "advertise encap-type [parameter1]": [
         [
             0,
             0,
-            "encapsulation [parameter3] [parameter4]"
+            "encapsulation [parameter2]"
         ]
     ],
     "redistribute connected": "family inet unicast redistribute connected",
@@ -2115,45 +2115,65 @@
         [
             0,
             0,
-            "neighbor [parameter2]"
+            "neighbor [parameter3]"
         ]
     ],
     "import [parameter1]": [
         [
             0,
             0,
-            "import [parameter3]"
+            "type [parameter2]"
         ]
     ],
     "neighbor [parameter1] default-originate": [
         [
             0,
             0,
-            "neighbor [parameter2]"
+            "set routing-options rib all neighbors [parameter1]"
         ]
     ],
     "neighbor [parameter1] capability add-path receive": [
         [
             0,
             0,
-            "neighbor [parameter2]"
+            "set routing-options rib all neighbors [parameter1]"
         ]
     ],
     "neighbor [parameter1] signaling-protocol ldp": [
         [
             0,
             0,
-            "neighbor-address [parameter2]"
+            "neighbor [parameter3]"
         ]
     ],
     "neighbor [parameter1] advertise l2vpn": [
         [
             0,
             0,
-            "family mpls l2circuit neighbor [parameter3]"
+            "set protocols l2circuit neighbor [parameter1]"
         ]
     ],
     "neighbor [parameter1] signaling protocol [parameter2]": [
+        [
+            0,
+            0,
+            "neighbor [parameter3]"
+        ],
+        [
+            1,
+            0,
+            "set protocols bgp group [parameter1]"
+        ]
+    ],
+    "address-family vpnv4 vrf [parameter1]": [
+        [
+            0,
+            0,
+            "family inet6 vrf [parameter3]"
+        ]
+    ],
+    "import route direct": "route-target import [parameter2]",
+    "neighbor [parameter1] password [parameter2] [parameter3]": [
         [
             0,
             0,
@@ -2162,39 +2182,19 @@
         [
             1,
             0,
-            "set protocols bgp peer-group [parameter1]"
-        ]
-    ],
-    "address-family vpnv4 vrf [parameter1]": [
-        [
-            0,
-            0,
-            "set protocols bgp vrf [parameter1]"
-        ]
-    ],
-    "import route direct": "vrf-import target [parameter2]",
-    "neighbor [parameter1] password [parameter2] [parameter3]": [
-        [
-            0,
-            0,
-            "address-family vpnv6 neighbor [parameter2]"
-        ],
-        [
-            1,
-            0,
-            "set protocols bgp [parameter1]"
+            "set routing-instances [parameter1]"
         ],
         [
             2,
             0,
-            "address-family ipv4-unicast neighbor [parameter2]"
+            "neighbor-address [parameter2]"
         ]
     ],
     "address-family [parameter1] vrf [parameter2]": [
         [
             0,
             0,
-            "address-family [parameter3]"
+            "virtual-address [parameter2]"
         ],
         [
             1,
@@ -2206,7 +2206,7 @@
         [
             0,
             0,
-            "neighbor [parameter2]"
+            "neighbor [parameter3]"
         ],
         [
             1,
@@ -2225,29 +2225,29 @@
         [
             0,
             0,
-            "set protocols bfd interface [parameter1]"
+            "unit [parameter2]"
         ],
         [
             1,
             0,
-            "bfd-liveness-detection minimum-interval [parameter2]"
+            "min-transmit-interval [parameter2]"
         ],
         [
             2,
             0,
-            "bfd-liveness-detection minimum-interval [parameter2]"
+            "min-receive-interval [parameter3]"
         ],
         [
             3,
             0,
-            "bfd-liveness-detection multiplier [parameter2]"
+            "bfd-liveness-detection minimum-interval [parameter2]"
         ]
     ],
     "neighbor [parameter1] bfd": [
         [
             0,
             0,
-            "neighbor [parameter4]"
+            "address-family vpnv6 neighbor [parameter2]"
         ]
     ],
     "router ospf [parameter1]": [
@@ -2261,12 +2261,12 @@
         [
             0,
             0,
-            "set routing-instances [parameter1]"
+            "type [parameter2]"
         ],
         [
             1,
             0,
-            "set protocols ospf [parameter1]"
+            "as [parameter2]"
         ]
     ],
     "network [parameter1] [parameter2] area [parameter3]": [
@@ -2286,12 +2286,12 @@
             "set router ospf area [parameter1]"
         ]
     ],
-    "mpls traffic-eng area": "set protocols ospf mpls traffic-eng area [parameter1]",
+    "mpls traffic-eng area": "family mpls traffic-eng area [parameter3]",
     "area [parameter1]": [
         [
             0,
             0,
-            "set router ospf area [parameter1]"
+            "family inet6 ospf area [parameter3]"
         ]
     ],
     "mpls traffic-eng area [parameter1]": [
@@ -2301,13 +2301,13 @@
             "set protocols mpls traffic-eng tunnels segment-routing area [parameter1]"
         ]
     ],
-    "opaque-lsa-capability": "set protocols ospf traffic-engineering options [parameter1]",
-    "traffic-adjustment advertise": "set protocols ospf traffic-engineering options [parameter1]",
+    "opaque-lsa-capability": "passive-interface default",
+    "traffic-adjustment advertise": "set protocols ospf traffic-engineering",
     "opaque-area [parameter1]": [
         [
             0,
             0,
-            "set protocols ospf area [parameter1]"
+            "family inet6 ospfv3 area [parameter3]"
         ]
     ],
     "passive-interface default": "passive-interface default",
@@ -2322,8 +2322,8 @@
     "mpls traffic-eng router-address [parameter1]": [
         [
             0,
-            1,
-            "set forwarding-options mpls ldp router-id [parameter1] [parameter2]"
+            0,
+            "set protocols mpls traffic-eng router-id [parameter1]"
         ]
     ],
     "segment-routing mpls": "set protocols segment-routing mpls",
@@ -2331,7 +2331,7 @@
         [
             0,
             0,
-            "set protocols segment-routing global-block [parameter1] [parameter2]"
+            "set protocols mpls segment-routing global-block [parameter1] [parameter2]"
         ],
         [
             1,
@@ -2344,10 +2344,10 @@
         [
             0,
             0,
-            "set routing-instances [parameter1]"
+            "from protocol [parameter2]"
         ]
     ],
-    "mep crosscheck": "direction [parameter2]",
+    "mep crosscheck": "MEP [parameter2]",
     "discriminator local [parameter1]": [
         [
             0,
@@ -2359,7 +2359,7 @@
         [
             0,
             0,
-            "remote-discriminator [parameter2]"
+            "discriminator-remote [parameter3]"
         ]
     ],
     "bind peer-ip [parameter1] source-interface [parameter2]": [
@@ -2378,17 +2378,17 @@
         [
             0,
             0,
-            "bfd interval [parameter2]"
+            "minimum-interval [parameter2]"
         ]
     ],
     "min-rx-interval [parameter1]": [
         [
             0,
             0,
-            "bfd interval [parameter2]"
+            "family inet echo-function bfd interval [parameter3]"
         ]
     ],
-    "bfd fast-detect": "bfd-liveness-detection",
+    "bfd fast-detect": "family inet6 bfd-liveness-detection minimum-interval [parameter3]",
     "bind peer-ip [parameter1] interface [parameter2]": [
         [
             0,
@@ -2408,7 +2408,7 @@
         [
             0,
             0,
-            "set protocols isis net-entity [parameter1]"
+            "wide-metrics-only net [parameter2]"
         ]
     ],
     "is-type [parameter1]": [
@@ -2422,7 +2422,7 @@
         [
             0,
             0,
-            "set link-state-routing isis metric-style [parameter1]"
+            "metric-style [parameter3]"
         ]
     ],
     "mpls traffic-eng segment-routing global-block [parameter1] [parameter2]": [
@@ -2444,17 +2444,17 @@
             "set protocols isis network-entity [parameter1]"
         ]
     ],
-    "isis segment-routing mpls": "set protocols segment-routing mpls",
+    "isis segment-routing mpls": "segment-routing mpls",
     "isis segment-routing global-block [parameter1] [parameter2]": [
         [
             0,
             0,
-            "set protocols segment-routing global-block [parameter1] [parameter2]"
+            "set protocols isis segment-routing global-block minimum-label [parameter1]"
         ],
         [
             1,
-            1,
-            "set protocols segment-routing global-block [parameter1] [parameter2]"
+            0,
+            "set protocols isis segment-routing global-block maximum-label [parameter1]"
         ]
     ],
     "isis mpls traffic-eng level-2-only": "set routing-options isis mpls traffic-eng [parameter1]",
@@ -2469,7 +2469,7 @@
         [
             0,
             0,
-            "set routing-options isis mpls traffic-eng [parameter1]"
+            "set protocols isis traffic-engineering [parameter1]"
         ]
     ],
     "mpls traffic-eng router-id [parameter1] force": [
@@ -2491,7 +2491,7 @@
         [
             0,
             0,
-            "protocols isis [parameter2]"
+            "set protocols isis interface [parameter1]"
         ]
     ],
     "isis wide-metric-style": "set routing-options isis metric-style [parameter1]",
@@ -2520,7 +2520,7 @@
         [
             0,
             0,
-            "set protocols isis router-id [parameter1]"
+            "set protocols isis traffic-engineering router-id [parameter1]"
         ]
     ],
     "segment-routing [parameter1]": [
@@ -2563,19 +2563,19 @@
         [
             2,
             0,
-            "mpls traffic-eng tunnel-id [parameter2]"
+            "reverse-lsp-id [parameter3]"
         ],
         [
             3,
             0,
-            "mpls traffic-eng tunnel-id [parameter2]"
+            "lsp-id [parameter4]"
         ]
     ],
     "ptp profile [parameter1] enable": [
         [
             0,
             0,
-            "set access profile [parameter1]"
+            "set protocols ptp interface all profile [parameter1]"
         ]
     ],
     "ptp device-type [parameter1]": [
@@ -2590,7 +2590,7 @@
         [
             0,
             0,
-            "set access radius-server dynamic-author [parameter1]"
+            "port [parameter2]"
         ],
         [
             1,
@@ -2614,19 +2614,19 @@
         [
             0,
             0,
-            "ip address [parameter3]/[parameter4]"
+            "ip address [parameter2]/[parameter3]"
         ],
         [
             1,
             1,
-            "ip address [parameter3]/[parameter4]"
+            "ip address [parameter2]/[parameter3]"
         ]
     ],
     "default-router [parameter1]": [
         [
             0,
             0,
-            "delete routing-options static route [parameter1]"
+            "set system services dhcp default-router [parameter1]"
         ]
     ],
     "dns-server [parameter1]": [
@@ -2653,19 +2653,19 @@
         [
             0,
             0,
-            "set system login user [parameter1]"
+            "authentication-order [parameter2]"
         ]
     ],
     "aaa accounting exec [parameter1] start-stop group [parameter2]": [
         [
             0,
             0,
-            "set system aaa accounting network default start-stop [parameter1]"
+            "set access profile [parameter1]"
         ],
         [
             1,
             0,
-            "set accounting-options [parameter1]"
+            "set access profile [parameter1]"
         ]
     ],
     "aaa accounting exec [parameter1] none": [
@@ -2680,26 +2680,26 @@
         [
             0,
             0,
-            "client radius-server [parameter2]"
+            "set system radius-server [parameter1]"
         ],
         [
             1,
             0,
-            "secret [parameter2]"
+            "client radius-server [parameter2]"
         ]
     ],
     "subscriber template [parameter1]": [
         [
             0,
             0,
-            "set telemetry ietf subscriptions [parameter1]"
+            "set services analytics subscriptions subscription-name [parameter1]"
         ]
     ],
     "default domain authentication [parameter1]": [
         [
             0,
             0,
-            "authentication [parameter2]"
+            "authentication-method [parameter2]"
         ]
     ],
     "authentication bind": "set subscriber-template bas authentication bind",
@@ -2721,50 +2721,50 @@
         [
             0,
             0,
-            "set routing-options routers ospf [parameter1]"
+            "set routing-options router ospf [parameter1]"
         ]
     ],
     "ip multicast-routing": "set routing-options multicast-routing",
-    "emdi enable": "set system license security-services [parameter1]",
+    "emdi enable": "enable",
     "emdi channel-group [parameter1]": [
         [
             0,
             0,
-            "channel-group [parameter4]"
+            "family iso channel-group [parameter3]"
         ]
     ],
     "emdi channel [parameter1] source [parameter2] group [parameter3] pt [parameter4] clock-rate [parameter5]": [
         [
             0,
             0,
-            "channel-group [parameter4]"
+            "family iso channel-group [parameter3]"
         ],
         [
             1,
             0,
-            "clock-source [parameter2]"
+            "set interfaces [parameter1]"
         ],
         [
             2,
             0,
-            "channel-group [parameter4]"
+            "timeslot-group [parameter2]"
         ],
         [
             3,
             0,
-            "set interfaces [parameter1]"
+            "set chassis t3 e1 [parameter1]"
         ],
         [
             4,
             0,
-            "clock-rate [parameter2]"
+            "set chassis fpc [parameter1]"
         ]
     ],
     "emdi lpu-group [parameter1]": [
         [
             0,
             0,
-            "set telemetry ietf sensors destination-group [parameter1]"
+            "ppp multilink group [parameter2]"
         ]
     ],
     "emdi bind slot [parameter1]": [
@@ -2778,19 +2778,19 @@
         [
             0,
             0,
-            "channel-group [parameter4]"
+            "family iso channel-group [parameter3]"
         ],
         [
             1,
             0,
-            "set aaa multicast-group [parameter1]"
+            "family iso channel-group [parameter3]"
         ]
     ],
     "emdi bind channel-group [parameter1] lpu-group [parameter2] outbound": [
         [
             0,
             0,
-            "channel-group [parameter4]"
+            "family iso channel-group [parameter3]"
         ],
         [
             1,
@@ -2832,7 +2832,7 @@
         [
             2,
             0,
-            "transport [parameter3]"
+            "set protocols ptp peer [parameter1]"
         ],
         [
             3,
@@ -2842,7 +2842,7 @@
         [
             4,
             0,
-            "authentication-key [parameter2]"
+            "set protocols ptp peer [parameter1]"
         ]
     ],
     "subscription [parameter1]": [
@@ -2882,7 +2882,7 @@
         [
             0,
             0,
-            "set routing-options router ospf [parameter1]"
+            "set protocols ospf3 router-id [parameter1]"
         ]
     ],
     "bfd all-interfaces enable": "set protocols bfd all-interfaces enable",
@@ -2915,7 +2915,7 @@
         [
             0,
             0,
-            "set routing-instances [parameter1]"
+            ":[parameter3]"
         ]
     ],
     "route-target export [parameter1]": [
@@ -2948,34 +2948,34 @@
         ],
         [
             1,
-            1,
-            "family inet6 address [parameter2]/[parameter3]"
+            0,
+            "generate-crypto-key rsa modulus [parameter2]"
         ]
     ],
     "authentication [parameter1]": [
         [
             0,
             0,
-            "authentication [parameter2]"
+            "authentication [parameter2] [parameter3]"
         ]
     ],
     "group [parameter1]": [
         [
             0,
             0,
-            "aps group [parameter3]"
+            "ppp multilink-group [parameter2]"
         ]
     ],
     "crypto isakmp key [parameter1] address [parameter2]": [
         [
             0,
             0,
-            "family inet peer [parameter2]"
+            "set protocols ptp peer [parameter1]"
         ],
         [
             1,
             0,
-            "family inet peer [parameter2]"
+            "set protocols ptp peer [parameter1]"
         ]
     ],
     "crypto ipsec transform-set [parameter1] [parameter2]": [
@@ -2987,38 +2987,38 @@
         [
             1,
             0,
-            "ike ipsec-policy [parameter2]"
+            "set security ipsec policy [parameter1]"
         ]
     ],
     "crypto map [parameter1] [parameter2] [parameter3]": [
         [
             0,
             0,
-            "set security ipsec vpn ipsec-profile-name [parameter1]"
+            "set snmp v3 usm local-engine user [parameter1]"
         ],
         [
             1,
             0,
-            "unit [parameter2]"
+            "generate-crypto-key rsa modulus [parameter2]"
         ],
         [
             2,
             0,
-            "set security ipsec vpn [parameter1]"
+            "set security ipsec policy [parameter1]"
         ]
     ],
     "set peer [parameter1]": [
         [
             0,
             0,
-            "family inet peer [parameter2]"
+            "set protocols ptp peer [parameter1]"
         ]
     ],
     "set transform-set [parameter1]": [
         [
             0,
             0,
-            "set bridges [parameter1]"
+            "set system name-identifier [parameter1]"
         ]
     ],
     "match address [parameter1]": [
@@ -3046,14 +3046,14 @@
         [
             0,
             0,
-            "-[parameter4]"
+            "vlan-id [parameter2]"
         ]
     ],
     "mep [parameter1] interface [parameter2] direction [parameter3]": [
         [
             0,
             0,
-            "up-mep mep-id [parameter3]"
+            "cfm mep mep-id [parameter2]"
         ],
         [
             1,
@@ -3070,14 +3070,14 @@
         [
             0,
             0,
-            "ccm-receive mep-id [parameter3]"
+            "ccm-send mep-id [parameter2]"
         ]
     ],
     "remote-mep [parameter1]": [
         [
             0,
             0,
-            "remote-mep [parameter4]"
+            "cfm remote-mep mep-id [parameter2]"
         ]
     ],
     "remote-mep [parameter1] ccm-receive enable": [
@@ -3091,7 +3091,7 @@
         [
             0,
             0,
-            "cfm test-id [parameter2]"
+            "test-id [parameter2]"
         ],
         [
             1,
@@ -3101,7 +3101,7 @@
         [
             2,
             0,
-            "remote-mep mep-id [parameter3]"
+            "remote-mep [parameter2]"
         ]
     ],
     "loss-measurement dual-ended continual test-id [parameter1]": [
@@ -3117,7 +3117,7 @@
         [
             0,
             0,
-            "set protocols l2circuit neighbor [parameter1]"
+            "set routing-options rib all neighbors [parameter1]"
         ]
     ],
     "cfm domain [parameter1]": [
@@ -3131,7 +3131,7 @@
         [
             0,
             0,
-            "cfm mep mep-id [parameter2]"
+            "mep-id [parameter2]"
         ],
         [
             1,
@@ -3153,14 +3153,14 @@
         [
             1,
             0,
-            "remote-mep mep-id [parameter3]"
+            "mep-id [parameter2]"
         ]
     ],
     "mep [parameter1] ccm send": [
         [
             0,
             0,
-            "set protocols cfm ccm-send mep-id [parameter1]"
+            "ccm-send mep-id [parameter2]"
         ]
     ],
     "mep [parameter1] ccm receive": [
@@ -3202,27 +3202,27 @@
             "cfm loss-measurement dual-ended continual test-id [parameter2]"
         ]
     ],
-    "bfd": "set protocols bfd",
+    "bfd": "bfd interval [parameter2]",
     "router isis [parameter1]": [
         [
             0,
             0,
-            "set routing-options router-is [parameter1]"
+            "set protocols isis system-id [parameter1]"
         ]
     ],
     "vlan [parameter1]": [
         [
             0,
             0,
-            "set protocols rstp vlan [parameter1]"
+            "vlan-id [parameter2]"
         ]
     ],
-    "private-vlan primary": "primary",
+    "private-vlan primary": "vlan [parameter4]",
     "private-vlan association [parameter1]": [
         [
             0,
             0,
-            "vlan-id [parameter3]"
+            "vlan-id [parameter2]"
         ]
     ],
     "evpn": "set evpn redundancy-mode [parameter1]",
@@ -3237,7 +3237,7 @@
         [
             0,
             0,
-            "vpn-id [parameter2]"
+            "vfi-id [parameter2]"
         ]
     ],
     "vpn id [parameter1]": [
@@ -3251,10 +3251,10 @@
         [
             0,
             0,
-            "set protocols l2vpn [parameter1]"
+            "set protocols l2vpn vpns [parameter1]"
         ]
     ],
-    "autodiscovery bgp signaling bgp": "set protocols l2circuit bgp-signaling vfi [parameter1]",
+    "autodiscovery bgp signaling bgp": "from protocol [parameter2]",
     "ve id [parameter1]": [
         [
             0,
@@ -3266,12 +3266,12 @@
         [
             0,
             0,
-            "protocols l2vpn neighbor [parameter2]"
+            "set protocols l2circuit neighbor [parameter1]"
         ],
         [
             1,
             0,
-            "set protocols l2vpn pw pw-id [parameter1]"
+            "family ethernet-switching pw-id [parameter3]"
         ]
     ],
     "vfi [parameter1]": [
@@ -3292,14 +3292,14 @@
         [
             0,
             0,
-            "l2vpn vpls-id [parameter3]"
+            "vpls-id [parameter2]"
         ]
     ],
     "export vpls-id [parameter1]": [
         [
             0,
             0,
-            "l2vpn vpls-id [parameter3]"
+            "vpls-id [parameter2]"
         ]
     ],
     "signaling forward [parameter1]": [
@@ -3320,12 +3320,12 @@
         [
             0,
             0,
-            "family inet output flow-server [parameter2]"
+            "family inet output source-address [parameter2]"
         ],
         [
             1,
             0,
-            "outgoing-interface [parameter2]"
+            "family inet output flow-server [parameter2]"
         ]
     ],
     "ip flow-export source [parameter1]": [
@@ -3360,14 +3360,14 @@
         [
             0,
             0,
-            "set forwarding-plane traffic-eng tunnels tunnel-id [parameter1]"
+            "family ethernet-switching vlan-access [parameter3]"
         ]
     ],
     "access-list [parameter1] permit ip [parameter2] [parameter3]": [
         [
             0,
             0,
-            "set security ipv6 access-list [parameter1]"
+            "permit ip [parameter2]"
         ],
         [
             1,
@@ -3389,31 +3389,31 @@
         [
             1,
             0,
-            "set system name-identifier [parameter1]"
+            "family inet output flow-server [parameter2]"
         ]
     ],
     "match ipv4 [parameter1] [parameter2]": [
         [
             0,
-            2,
-            "from route-filter [parameter3]/[parameter4] [parameter5]"
+            0,
+            "match source-address [parameter3]/[parameter4]"
         ],
         [
             1,
-            2,
-            "from route-filter [parameter3]/[parameter4] [parameter5]"
+            0,
+            "match source-address [parameter3]/[parameter4]"
         ]
     ],
     "collect [parameter1] [parameter2]": [
         [
             0,
             0,
-            "set routing-instances [parameter1]"
+            "set interfaces [parameter1]"
         ],
         [
             1,
             0,
-            "family inet filter [parameter2]"
+            "input rate [parameter2]"
         ]
     ],
     "return": "commit and-quit",
@@ -3433,7 +3433,7 @@
         [
             1,
             0,
-            "min-transmit-interval [parameter2]"
+            "min-receive-interval [parameter3]"
         ]
     ],
     "interval min-tx [parameter1] min-rx [parameter2] multiplier [parameter3]": [
@@ -3445,55 +3445,55 @@
         [
             1,
             0,
-            "min-rx [parameter4]"
+            "min-receive-interval [parameter3]"
         ],
         [
             2,
             0,
-            "unit [parameter2]"
+            "minimum-interval [parameter2]"
         ]
     ],
     "mpls l2vpn [parameter1]": [
         [
             0,
             0,
-            "set protocols l2vpn [parameter1]"
+            "set protocols mpls l2vpn [parameter1]"
         ]
     ],
     "route-distinguisher [parameter1]": [
         [
             0,
             0,
-            "route-distinguisher [parameter2]"
+            ":[parameter3]"
         ]
     ],
-    "rd auto": "routing-distinguisher auto",
+    "rd auto": "rd [parameter2]",
     "vrf [parameter1]": [
         [
             0,
             0,
-            "set protocols mpls l2vpn [parameter1]"
+            "vrf [parameter3]"
         ]
     ],
     "export route-target both [parameter1]": [
         [
             0,
             0,
-            "route-target-export [parameter2]"
+            "export-route-target [parameter3]"
         ]
     ],
     "import route-target both [parameter1]": [
         [
             0,
             0,
-            "set routing-options route-targets [parameter1]"
+            "route-target import [parameter2]"
         ]
     ],
     "bgp [parameter1]": [
         [
             0,
             0,
-            "set protocols bgp [parameter1]"
+            "as [parameter4]"
         ]
     ],
     "peer [parameter1] as-number [parameter2]": [
@@ -3508,7 +3508,7 @@
             "set protocols bgp [parameter1]"
         ]
     ],
-    "ipv4-family unicast": "address-family ipv4 unicast",
+    "ipv4-family unicast": "family inet unicast",
     "peer [parameter1] enable": [
         [
             0,
@@ -3520,7 +3520,7 @@
         [
             0,
             0,
-            "family inet peer [parameter2]"
+            "set protocols ptp peer [parameter1]"
         ]
     ],
     "mpls traffic-eng lsp-trigger [parameter1]": [
@@ -3530,12 +3530,12 @@
             "set interfaces [parameter1]"
         ]
     ],
-    "router mpls ldp": "set protocols mpls ldp_interface [parameter1]",
+    "router mpls ldp": "set protocols mpls ldp",
     "neighbor [parameter1]": [
         [
             0,
             0,
-            "set protocols mpls l2circuit neighbor [parameter1]"
+            "set protocols ldp targeted-neighbor [parameter1]"
         ]
     ],
     "vfi [parameter1] manual": [
@@ -3546,14 +3546,14 @@
         ]
     ],
     "ip igmp snooping": "set protocols igmp-snooping",
-    "backup-query forward": "set forwarding-options l2转发 forwarding-table [parameter1]",
-    "backup-report forward": "set forwarding-options l2转发 forwarding-table [parameter1]",
+    "backup-query forward": "set forwarding-options flow inactive-timeout [parameter1]",
+    "backup-report forward": "standby-address [parameter2]",
     "mac-withdraw": "mac-withdraw",
     "neighbor [parameter1] encapsulation mpls [parameter2]": [
         [
             0,
             0,
-            "family inet address [parameter3]/[parameter4]"
+            "set protocols mpls l2circuit neighbor [parameter1]"
         ],
         [
             1,
@@ -3565,7 +3565,7 @@
         [
             0,
             0,
-            "set protocols bfd interface [parameter1]"
+            "set routing-options multicast inet6-routing [parameter1]"
         ],
         [
             1,
@@ -3573,7 +3573,7 @@
             "set protocols mpls ldp remote-peer [parameter1]"
         ]
     ],
-    "admin-vsi": "vfi [parameter2]",
+    "admin-vsi": "l2circuit vsi [parameter3]",
     "ip igmp snooping version [parameter1]": [
         [
             0,
@@ -3585,21 +3585,21 @@
         [
             0,
             0,
-            "set protocols l2circuit neighbor [parameter1]"
+            "set protocols mpls ldp remote-peer [parameter1]"
         ]
     ],
     "cfm ethernet cfm md [parameter1]": [
         [
             0,
             0,
-            "set ethernet-switching-options cfm maintenance-domain [parameter1]"
+            "set protocols oam ethernet connectivity-fault-management maintenance-domain [parameter1]"
         ]
     ],
     "mep domain [parameter1]": [
         [
             0,
             0,
-            "set protocols cfm maintenance-association [parameter1]"
+            "maintenance-association [parameter2]"
         ]
     ],
     "ccm-management interval [parameter1]": [
@@ -3609,14 +3609,14 @@
             "ccm-management interval [parameter3]"
         ]
     ],
-    "ccm-management transmit": "ccm-management transmit",
-    "ccm-management receive": "ccm-send enable",
+    "ccm-management transmit": "ccms-send",
+    "ccm-management receive": "ccm-management receive",
     "snmp-server enable traps": "set snmp v3 target-address [parameter1]",
     "access-list [parameter1] permit ip host [parameter2] any": [
         [
             0,
             0,
-            "set security ipv6 access-list [parameter1]"
+            "set system access list [parameter1]"
         ],
         [
             1,
@@ -3628,7 +3628,7 @@
         [
             0,
             0,
-            "set security ipv6 access-list [parameter1]"
+            "set system access list [parameter1]"
         ],
         [
             1,
@@ -3652,7 +3652,7 @@
         [
             0,
             0,
-            "set snmp location [parameter1]"
+            "set snmp v3 notifications targets [parameter1]"
         ]
     ],
     "snmp-server contact [parameter1]": [
@@ -3671,7 +3671,7 @@
         [
             1,
             0,
-            "user [parameter2]"
+            "version [parameter3]"
         ],
         [
             2,
@@ -3715,7 +3715,7 @@
         [
             0,
             0,
-            "set routing-options static route [parameter1]/[parameter2]"
+            "set routing-options static route [parameter1]/[parameter2] [parameter3]"
         ],
         [
             1,
@@ -3725,12 +3725,12 @@
         [
             2,
             0,
-            "next-hop [parameter2]"
+            "next-hop [parameter4]"
         ],
         [
             3,
-            2,
-            "set routing-options static route [parameter1]/[parameter2] [parameter3]"
+            0,
+            "destination [parameter2]"
         ]
     ],
     "ip dhcp relay information option": "set system services dhcp-relay information option",
@@ -3745,7 +3745,7 @@
         [
             0,
             0,
-            "set protocols mpls label-switched-path name [parameter1]"
+            "family dot1q vlan-map [parameter3]"
         ]
     ],
     "key [parameter1]": [
@@ -3759,24 +3759,24 @@
         [
             0,
             0,
-            "id [parameter3]"
+            "privacy-aes128-key [parameter2]"
         ],
         [
             1,
             0,
-            "authentication ssh-key rsa-key [parameter2]"
+            "authentication ssh-key [parameter2]"
         ]
     ],
     "send-lifetime [parameter1] [parameter2] [parameter3] [parameter4]": [
         [
             0,
             0,
-            "receive [parameter4]"
+            "start-time [parameter2]"
         ],
         [
             1,
             0,
-            "receive [parameter4]"
+            "start-time [parameter2]"
         ],
         [
             2,
@@ -3788,17 +3788,17 @@
         [
             0,
             0,
-            "ccm-management interval [parameter3]"
+            "start-time [parameter2]"
         ],
         [
             1,
             0,
-            "ccm-management interval [parameter3]"
+            "start-time [parameter2]"
         ],
         [
             2,
             0,
-            "ccm-management interval [parameter3]"
+            "continuity-check interval [parameter3]"
         ]
     ],
     "sysname [parameter1]": [
@@ -3819,19 +3819,19 @@
         [
             0,
             0,
-            "family bridge vlan-id-list [parameter3]"
+            "encapsulation vlan-bridge vlan-id [parameter3]"
         ]
     ],
     "aaa authentication login [parameter1] [parameter2]": [
         [
             0,
-            1,
-            "set system authentication-order [parameter1] [parameter2]"
+            0,
+            "authentication [parameter2] [parameter3]"
         ],
         [
             1,
             0,
-            "set system authentication-order [parameter1] [parameter2]"
+            "authentication [parameter2] [parameter3]"
         ]
     ],
     "aaa accounting exec [parameter1] [parameter2] group [parameter3]": [
@@ -3856,7 +3856,7 @@
         [
             0,
             0,
-            "set access address-assignment pool [parameter1]"
+            "address-assignment pool [parameter2]"
         ],
         [
             1,
@@ -3865,8 +3865,8 @@
         ],
         [
             2,
-            1,
-            "range [parameter2] [parameter3]"
+            0,
+            "-[parameter3]"
         ]
     ],
     "ip ssh version [parameter1]": [
@@ -3883,12 +3883,12 @@
             "set inet-vm vrf-definition [parameter1]"
         ]
     ],
-    "bridge irb": "set routing-options forwarder add-interface [parameter1]",
+    "bridge irb": "set forwarding-options bridge domain [parameter1] [parameter2]",
     "ip sla [parameter1]": [
         [
             0,
             0,
-            "set security ipsec vpn [parameter1]"
+            "unit [parameter2] [parameter3]/[parameter4]"
         ]
     ],
     "icmp-echo [parameter1] source-interface [parameter2]": [
@@ -3900,35 +3900,35 @@
         [
             1,
             0,
-            "source-interface [parameter2]"
+            "family inet source-address [parameter3]"
         ]
     ],
     "frequency [parameter1]": [
         [
             0,
             0,
-            "receive [parameter4]"
+            "clock-rate [parameter2]"
         ]
     ],
     "timeout [parameter1]": [
         [
             0,
             0,
-            "delay-down [parameter2]"
+            "set forwarding-options flow active-timeout [parameter1]"
         ]
     ],
     "threshold [parameter1]": [
         [
             0,
-            0,
-            "switchover-status priority [parameter2]"
+            2,
+            "then damping [parameter3] [parameter4] [parameter5] [parameter6]"
         ]
     ],
     "ip sla schedule [parameter1] start-time [parameter2] life [parameter3]": [
         [
             0,
             0,
-            "default-lease-time [parameter2]"
+            "family inet range [parameter2]"
         ],
         [
             1,
@@ -3950,7 +3950,7 @@
         [
             1,
             0,
-            "ccm-management interval [parameter3]"
+            "time [parameter2]"
         ]
     ],
     "aaa authorization network [parameter1] [parameter2]": [
@@ -3986,7 +3986,7 @@
         [
             1,
             0,
-            "set access-protocol radius-server [parameter1]"
+            "set access profile [parameter1]"
         ],
         [
             2,
@@ -3998,7 +3998,7 @@
         [
             0,
             0,
-            "set system aaa accounting network default start-stop [parameter1]"
+            "set access profile [parameter1]"
         ],
         [
             1,
@@ -4025,7 +4025,7 @@
             "set system domain-name [parameter1]"
         ]
     ],
-    "mpls traffic-eng autoroute announce": "set protocols mpls traffic-engineering autoroute-announce",
+    "mpls traffic-eng autoroute announce": "mpls traffic-eng autoroute announce",
     "mpls traffic-eng backup-path [parameter1]": [
         [
             0,
@@ -4037,46 +4037,46 @@
         [
             0,
             0,
-            "remote-mep mep-id [parameter3]"
+            "family mpls traffic-engineering tunnel-id [parameter3]"
         ],
         [
             1,
             0,
-            "remote-mep mep-id [parameter3]"
+            "set interfaces [parameter1]"
         ],
         [
             2,
             0,
-            "remote-mep mep-id [parameter3]"
+            "virtual-circuit-id [parameter4]"
         ],
         [
             3,
             0,
-            "set protocols mpls traffic-eng router-id [parameter1]"
+            "family mpls l2circuit neighbor [parameter3]"
         ],
         [
             4,
             0,
-            "remote-mep mep-id [parameter3]"
+            "family mpls traffic-engineering tunnel-id [parameter3]"
         ]
     ],
     "bfd all-interfaces destination [parameter1] source [parameter2]": [
         [
             0,
             0,
-            "destination [parameter2]"
+            "source [parameter3]"
         ],
         [
             1,
             0,
-            "source [parameter2]"
+            "source [parameter3]"
         ]
     ],
     "control-vlan [parameter1]": [
         [
             0,
             0,
-            "family ethernet-switching vlan-id [parameter3]"
+            "id [parameter2]"
         ]
     ],
     "protected instance [parameter1]": [
@@ -4090,7 +4090,7 @@
         [
             0,
             0,
-            "version [parameter2]"
+            "igmp-snooping version [parameter2]"
         ]
     ],
     "sub-ring": "sub-ring",
@@ -4105,7 +4105,7 @@
         [
             0,
             0,
-            "set interfaces [parameter1]"
+            "family mpls traffic-eng bandwidth max-reservable-bandwidth [parameter3]"
         ]
     ],
     "tdm encapsulation-number [parameter1]": [
@@ -4119,12 +4119,12 @@
         [
             0,
             0,
-            "export route-map [parameter2]"
+            "set routing-instances [parameter1]"
         ],
         [
             1,
             0,
-            "export route-map [parameter2]"
+            "route-target export [parameter2]"
         ],
         [
             2,
@@ -4136,16 +4136,16 @@
         [
             0,
             0,
-            "route-map [parameter3]"
+            "set system access list [parameter1]"
         ]
     ],
-    "match mpls-label": "set routing-options mpls label-range [parameter1] [parameter2]",
+    "match mpls-label": "from [parameter3]",
     "set mpls-label": "set routing-options mpls label-range [parameter1] [parameter2]",
     "match community [parameter1]": [
         [
             0,
             0,
-            "set protocols bgp peer-group [parameter1]"
+            "then community set [parameter3]"
         ]
     ],
     "set community [parameter1]": [
@@ -4166,24 +4166,24 @@
         [
             0,
             0,
-            "metric [parameter3]"
+            "then metric [parameter3]"
         ]
     ],
     "access-list [parameter1] [parameter2] [parameter3] [parameter4] [parameter5]": [
         [
             0,
             0,
-            "set policy-options prefix-list [parameter1] [parameter2]/[parameter3]"
+            "set interfaces [parameter1]"
         ],
         [
             1,
             0,
-            "set access-listinet [parameter1]"
+            "set interfaces [parameter1]"
         ],
         [
             2,
             0,
-            "set protocols direct routed-host [parameter1]/[parameter2]"
+            "ip address [parameter2]/[parameter3]"
         ],
         [
             3,
@@ -4193,10 +4193,10 @@
         [
             4,
             1,
-            "set protocols direct routed-host [parameter1]/[parameter2]"
+            "ip address [parameter2]/[parameter3]"
         ]
     ],
-    "ip pim": "set protocols pim static-rp [parameter1]",
+    "ip pim": "mode [parameter2]",
     "ssm-policy [parameter1]": [
         [
             0,
@@ -4208,7 +4208,7 @@
         [
             0,
             0,
-            "set protocols pim rp local address [parameter1]"
+            "ip address [parameter2]/[parameter3]"
         ]
     ],
     "ptp local-ip [parameter1]": [
@@ -4230,26 +4230,26 @@
         [
             0,
             0,
-            "set policy-map [parameter1]"
+            "set policy-map global out put [parameter1]"
         ]
     ],
     "class [parameter1]": [
         [
             0,
             0,
-            "set interfaces [parameter1]"
+            "set system login class [parameter1]"
         ]
     ],
     "police cir [parameter1] pir [parameter2] conform-action [parameter3] exceed-action [parameter4]": [
         [
             0,
             0,
-            ") family mpls traffic-eng bandwidth-max-reservable-bandwidth [parameter3]"
+            "set protocols mpls traffic-eng bandwidth max-reservable-bandwidth [parameter1] [parameter2]"
         ],
         [
             1,
             0,
-            ") family mpls traffic-eng bandwidth-max-reservable-bandwidth [parameter3]"
+            "set protocols mpls traffic-eng bandwidth max-reservable-bandwidth [parameter1] [parameter2]"
         ],
         [
             2,
@@ -4266,7 +4266,7 @@
         [
             0,
             0,
-            "family mpls traffic-eng bandwidth max-reservable-bandwidth [parameter3]"
+            "family mpls traffic-eng bandwidth max-reservable-bandwidth [parameter2]"
         ]
     ],
     "set ip dscp [parameter1]": [
@@ -4280,12 +4280,12 @@
         [
             0,
             0,
-            ") family mpls traffic-eng bandwidth-max-reservable-bandwidth [parameter3]"
+            "family mpls traffic-eng bandwidth max-reservable-bandwidth [parameter2]"
         ],
         [
             1,
             0,
-            ") family mpls traffic-eng bandwidth-max-reservable-bandwidth [parameter3]"
+            "family mpls traffic-eng bandwidth max-reservable-bandwidth [parameter2]"
         ],
         [
             2,
@@ -4298,7 +4298,7 @@
             "family mpls traffic-eng bandwidth max-reservable-bandwidth [parameter3]"
         ]
     ],
-    "nat": "then source-nat pool [parameter3]",
+    "nat": "match-direction [parameter2]",
     "cfm ma [parameter1]": [
         [
             0,
@@ -4310,19 +4310,19 @@
         [
             0,
             0,
-            "set protocols cfm ma [parameter1]"
+            "set protocols cfm maintenance-association [parameter1]"
         ],
         [
             1,
             0,
-            "family vlan members [parameter3]"
+            "set protocols cfm interface [parameter1]"
         ]
     ],
     "cfm mep mep-id [parameter1] interface [parameter2] direction [parameter3]": [
         [
             0,
             0,
-            "cfm mep mep-id [parameter2]"
+            "mep-id [parameter2]"
         ],
         [
             1,
@@ -4331,27 +4331,27 @@
         ],
         [
             2,
-            1,
-            "interface [parameter3] [parameter4]"
+            0,
+            "direction [parameter2]"
         ]
     ],
     "cfm mep mep-id [parameter1] ccm-send [parameter2]": [
         [
             0,
             0,
-            "ccm-receive mep-id [parameter3]"
+            "ccm-send mep-id [parameter2]"
         ],
         [
             1,
             0,
-            "ccm-receive mep-id [parameter3]"
+            "ccm-send mep-id [parameter2]"
         ]
     ],
     "cfm mep mep-id [parameter1] remote-mep": [
         [
             0,
             0,
-            "ccm-receive mep-id [parameter3]"
+            "mep-id [parameter2]"
         ]
     ],
     "cfm mep mep-id [parameter1] ccm-receive [parameter2]": [
@@ -4370,12 +4370,12 @@
         [
             0,
             0,
-            "ccm-receive mep-id [parameter3]"
+            "mep-id [parameter2]"
         ],
         [
             1,
             0,
-            "ccm-receive mep-id [parameter3]"
+            "mep-id [parameter2]"
         ],
         [
             2,
@@ -4387,14 +4387,14 @@
         [
             0,
             0,
-            "set route-object create [parameter1]"
+            "set protocols ldp route-policies [parameter1] [parameter2]"
         ]
     ],
     "class-map match-any [parameter1]": [
         [
             0,
             0,
-            "set policy-map [parameter1]"
+            "family dot1q vlan-map [parameter3]"
         ]
     ],
     "match dscp [parameter1]": [
@@ -4415,15 +4415,15 @@
         [
             0,
             0,
-            "vxlan vlan-id [parameter2]"
+            "set forwarding-options tunnel-options vxlan vni [parameter1]"
         ]
     ],
-    "split-horizon": "bridge-domains bridge-domain [parameter2]",
+    "split-horizon": "multiplier [parameter5]",
     "mpls ldp discovery hello holdtime [parameter1]": [
         [
             0,
             0,
-            "set protocols mpls ldp hello hold-time [parameter1]"
+            "set protocols mpls ldp targeted-hello hold-time [parameter1]"
         ]
     ],
     "mpls ldp discovery hello interval [parameter1]": [
@@ -4487,12 +4487,12 @@
         [
             0,
             0,
-            "set ethernet-switching-options analyzer [parameter1]"
+            "discriminator local [parameter2]"
         ],
         [
             1,
             0,
-            "set protocols stp interface [parameter1]"
+            "track interface [parameter2]"
         ]
     ],
     "ipv6 dhcp client duid [parameter1]": [
@@ -4506,19 +4506,19 @@
         [
             0,
             0,
-            "set routing-options static route [parameter1]/[parameter2]"
+            "static route [parameter2]"
         ],
         [
             1,
             0,
-            "next-hop [parameter2]"
+            "next-hop [parameter4]"
         ]
     ],
     "radius-server host [parameter1] auth-port [parameter2] acct-port [parameter3] key [parameter4] [parameter5]": [
         [
             0,
             0,
-            "set access radius-server dynamic-author [parameter1]"
+            "port [parameter2]"
         ],
         [
             1,
@@ -4538,7 +4538,7 @@
         [
             4,
             0,
-            "secret [parameter3]"
+            "set access profile [parameter1]"
         ]
     ],
     "ipv6 dhcp pool [parameter1]": [
@@ -4552,36 +4552,36 @@
         [
             0,
             0,
-            "set access address-assignment pool [parameter1]"
+            "set policy-options policy-statement [parameter1]"
         ],
         [
             1,
-            0,
-            "set access address-assignment pool [parameter1]"
+            1,
+            "set policy-options prefix-list [parameter1] [parameter2]"
         ],
         [
             2,
-            0,
-            "family inet dhcp-attributes name-server [parameter2]"
+            1,
+            "set policy-options prefix-list [parameter1] [parameter2]"
         ]
     ],
     "aaa accounting network [parameter1] start-stop group [parameter2]": [
         [
             0,
             0,
-            "set system aaa accounting network default start-stop [parameter1]"
+            "accounting-port [parameter2]"
         ],
         [
             1,
             0,
-            "set accounting-options [parameter1]"
+            "set access profile [parameter1]"
         ]
     ],
     "telemetry [parameter1]": [
         [
             0,
             0,
-            "set telemetry ietf sensors sensor-group [parameter1]"
+            "remote-as [parameter2]"
         ]
     ],
     "ipv6 access-list [parameter1]": [
@@ -4595,7 +4595,7 @@
         [
             0,
             1,
-            "family inet6 address [parameter3]/[parameter4]"
+            "family inet6 address [parameter2]/[parameter3]"
         ],
         [
             1,
@@ -4644,7 +4644,7 @@
             "authentication plain-text-password [parameter2]"
         ]
     ],
-    "ipv6 ssh server enable": "set protocols pim [parameter1]",
+    "ipv6 ssh server enable": "family inet6 enable",
     "ipv6 ssh source-interface [parameter1]": [
         [
             0,
@@ -4656,15 +4656,15 @@
         [
             0,
             0,
-            "rd [parameter2]"
+            "vfi-id [parameter2]"
         ],
         [
             1,
             0,
-            "rd [parameter2]"
+            "vfi-id [parameter2]"
         ]
     ],
-    "transport input ssh": "set system services ssh protocol-version [parameter1]",
+    "transport input ssh": "set system services ssh source-address [parameter1]",
     "privilege level [parameter1]": [
         [
             0,
@@ -4672,7 +4672,7 @@
             "level [parameter2]"
         ]
     ],
-    "login local": "authentication plain-text-password [parameter2]",
+    "login local": "authentication [parameter2] [parameter3]",
     "login authentication [parameter1]": [
         [
             0,
@@ -4698,10 +4698,10 @@
         [
             0,
             0,
-            "from protocol [parameter3]"
+            "set protocols [parameter1]"
         ]
     ],
-    "login": "authentication plain-text-password [parameter2]",
+    "login": "authentication [parameter2] [parameter3]",
     "password [parameter1] [parameter2]": [
         [
             0,
@@ -4725,17 +4725,17 @@
         [
             0,
             0,
-            "set interfaces [parameter1]"
+            "set protocols bfd interface [parameter1]"
         ]
     ],
     "bind pw-id [parameter1]": [
         [
             0,
-            1,
-            "mpls l2vc pw-template [parameter2] [parameter3]"
+            0,
+            "discriminator remote [parameter2]"
         ]
     ],
-    "auto-tunnel bfd": "set protocols bfd template [parameter1]",
+    "auto-tunnel bfd": "set protocols bfd",
     "commit": "commit",
     "interval min-tx [parameter1]": [
         [
@@ -4748,27 +4748,27 @@
         [
             0,
             0,
-            "min-transmit-interval [parameter2]"
+            "min-receive-interval [parameter3]"
         ]
     ],
     "l2tp enable": "set services l2tp enable",
-    "aaa session-id common": "set protocols bfd session [parameter1]",
+    "aaa session-id common": "router-id [parameter2]",
     "radius-server key [parameter1]": [
         [
             0,
             0,
-            "secret [parameter3]"
+            "primary secret [parameter2]"
         ]
     ],
-    "vpdn enable": "set protocols mpls l2vpn [parameter1]",
+    "vpdn enable": "set protocols l2vpn",
     "vpdn-group [parameter1]": [
         [
             0,
             0,
-            "set protocols rsvp group-group-id [parameter1]"
+            "ppp multilink group [parameter3]"
         ]
     ],
-    "accept-dialin": "ppp multilink-group [parameter2]",
+    "accept-dialin": "pppoe-options ppp-options [parameter3]",
     "protocol [parameter1]": [
         [
             0,
@@ -4801,7 +4801,7 @@
         [
             0,
             0,
-            "set system accounting radius source-address [parameter1]"
+            "set interfaces [parameter1]"
         ]
     ],
     "crypto key generate rsa": "generate-crypto-key rsa modulus [parameter2]",
@@ -4824,12 +4824,12 @@
         [
             0,
             0,
-            "client user [parameter2]"
+            "set system login user [parameter1]"
         ],
         [
             1,
-            0,
-            "authentication plain-text-password [parameter2]"
+            1,
+            "authentication [parameter2] [parameter3]"
         ]
     ],
     "username [parameter1] privilege [parameter2]": [
@@ -4841,7 +4841,7 @@
         [
             1,
             0,
-            "permissions [parameter2]"
+            "acl-name [parameter2]"
         ]
     ],
     "username [parameter1] service-type [parameter2]": [
@@ -4865,7 +4865,7 @@
         [
             1,
             0,
-            "from protocol [parameter3]"
+            "family mpls traffic-eng tunnels network [parameter2]"
         ]
     ],
     "username [parameter1] sshkey [parameter2]": [
@@ -4913,12 +4913,12 @@
         [
             0,
             0,
-            "set access radius-server dynamic-author [parameter1]"
+            "authentication [parameter2]"
         ],
         [
             1,
             0,
-            "set access radius-server [parameter1]"
+            "set access profile [parameter1]"
         ]
     ],
     "ip multicast-group [parameter1]": [
@@ -4939,19 +4939,19 @@
         [
             0,
             0,
-            "encapsulation mpls ttl-sec [parameter3]"
+            "ttl [parameter3]"
         ],
         [
             1,
             0,
-            "encapsulation mpls ttl-sec [parameter3]"
+            "ttl [parameter3]"
         ]
     ],
     "radius server [parameter1]": [
         [
             0,
             0,
-            "set access radius-server [parameter1]"
+            "radius-server [parameter2]"
         ]
     ],
     "address ipv4 [parameter1]": [
@@ -4986,19 +4986,19 @@
         [
             0,
             0,
-            "source [parameter3]"
+            "set protocols direct routed-host [parameter1]/[parameter2]"
         ],
         [
             1,
             0,
-            "source [parameter3]"
+            "set protocols direct routed-host [parameter1]/[parameter2]"
         ]
     ],
     "permit [parameter1] [parameter2] [parameter3] [parameter4]": [
         [
             0,
             0,
-            "ip address [parameter2]/[parameter3]"
+            "unit [parameter2]"
         ],
         [
             1,
@@ -5020,7 +5020,7 @@
         [
             0,
             0,
-            "source [parameter3]"
+            "set protocols ptp peer [parameter1]"
         ]
     ],
     "ptp server [parameter1]": [
@@ -5056,21 +5056,21 @@
         [
             0,
             0,
-            "set protocols ptp priority [parameter1]"
+            "set system clock priority [parameter1]"
         ]
     ],
     "clock source ptp ssm [parameter1]": [
         [
             0,
             0,
-            "set protocols ptp mode [parameter1]"
+            "clock-source [parameter2]"
         ]
     ],
     "spanning-tree vlan [parameter1]": [
         [
             0,
             0,
-            "set protocols rstp vlan [parameter1]"
+            "set protocols spanning-tree vlan [parameter1]"
         ]
     ],
     "instance [parameter1]": [
@@ -5091,7 +5091,7 @@
         [
             0,
             0,
-            "mpls l2vc pw-template [parameter2] [parameter3]"
+            "family mpls encap-type pw-class [parameter3]"
         ]
     ],
     "cablelength [parameter1] [parameter2]": [
@@ -5103,11 +5103,11 @@
         [
             1,
             0,
-            "description [parameter2]"
+            "set interfaces [parameter1]"
         ]
     ],
-    "enable": "set system license security-services [parameter1]",
-    "configure terminal": "commit and-quit",
+    "enable": "enable",
+    "configure terminal": "family inet pppoe-options server bind [parameter3]",
     "ip ftp username [parameter1]": [
         [
             0,
@@ -5134,12 +5134,12 @@
         [
             0,
             0,
-            "e1 [parameter3]"
+            "description [parameter3]"
         ],
         [
             1,
             0,
-            "set chassis slot [parameter1]"
+            "set interfaces [parameter1]"
         ]
     ],
     "framing c-bit": "framing [parameter2]",
@@ -5163,36 +5163,36 @@
         [
             0,
             0,
-            "source [parameter2]"
+            "source [parameter3]"
         ]
     ],
     "ipv6 route [parameter1] [parameter2] [parameter3]": [
         [
             0,
             0,
-            "set routing-options static route [parameter1]/[parameter2]"
+            "static route [parameter2]"
         ],
         [
             1,
             0,
-            "next-hop interface [parameter3]"
+            "routes static route [parameter2]/[parameter3]"
         ],
         [
             2,
             0,
-            "next-hop [parameter2]"
+            "next-hop [parameter3]"
         ]
     ],
     "aaa accounting [parameter1] [parameter2] group [parameter3]": [
         [
             0,
             0,
-            "set system aaa accounting network default start-stop [parameter1]"
+            "accounting-port [parameter2]"
         ],
         [
             1,
             0,
-            "set system aaa accounting network default start-stop [parameter1]"
+            "accounting-port [parameter2]"
         ],
         [
             2,
@@ -5204,31 +5204,31 @@
         [
             0,
             0,
-            "set protocols rsvp group-group-id [parameter1]"
+            "set access profile [parameter1]"
         ]
     ],
     "server [parameter1] auth-port [parameter2] acct-port [parameter3]": [
         [
             0,
             0,
-            "set access radius-server [parameter1]"
+            "client radius-server [parameter2]"
         ],
         [
             1,
             0,
-            "set access-protocol radius-server [parameter1]"
+            "port [parameter2]"
         ],
         [
             2,
             0,
-            "set access radius-server [parameter1]"
+            "port [parameter2]"
         ]
     ],
     "radius-server host [parameter1] auth-port [parameter2] acct-port [parameter3] key [parameter4]": [
         [
             0,
             0,
-            "set access radius-server dynamic-author [parameter1]"
+            "radius-server [parameter2]"
         ],
         [
             1,
@@ -5250,7 +5250,7 @@
         [
             0,
             0,
-            "set unit [parameter1]"
+            "set interfaces [parameter1]"
         ],
         [
             1,
@@ -5262,17 +5262,17 @@
         [
             0,
             0,
-            "set security ipv6 access-list [parameter1]"
+            "permit ip [parameter2]"
         ],
         [
             1,
             0,
-            "set protocols direct routed-host [parameter1]/[parameter2]"
+            "permit ip [parameter2]"
         ],
         [
             2,
-            1,
-            "set protocols direct routed-host [parameter1]/[parameter2]"
+            0,
+            "permit ip [parameter2]"
         ]
     ],
     "ip pim ssm default": "set protocols pim ssm default-group-range [parameter1]",
@@ -5280,14 +5280,14 @@
         [
             0,
             0,
-            "set protocols pim static-rp [parameter1]"
+            "set protocols pim rp local address [parameter1]"
         ]
     ],
     "l2protocol-tunnel [parameter1] group-mac [parameter2]": [
         [
             0,
             0,
-            "set protocols igmp interface [parameter1]"
+            "set interfaces l2tp-group [parameter1]"
         ],
         [
             1,
@@ -5299,7 +5299,7 @@
         [
             0,
             0,
-            "set forwarding-options l2转发 vsi [parameter1]"
+            "l2circuit vsi [parameter3]"
         ]
     ],
     "pwsignal [parameter1]": [
@@ -5320,12 +5320,12 @@
         [
             0,
             0,
-            "tunnel source [parameter2]"
+            "set protocols ptp peer [parameter1]"
         ],
         [
             1,
             0,
-            "set tunnels ipv4 [parameter1]"
+            "tunnels [parameter2]"
         ]
     ],
     "ip explicit-path name [parameter1]": [
@@ -5339,14 +5339,14 @@
         [
             0,
             0,
-            "family mpls label-switched-path [parameter2]"
+            "set inet label [parameter1]"
         ]
     ],
     "tunnel-te policy [parameter1]": [
         [
             0,
             0,
-            "set policy-options policy-statement [parameter1]"
+            "ike-policy [parameter2]"
         ]
     ],
     "destination [parameter1]": [
@@ -5360,7 +5360,7 @@
         [
             0,
             0,
-            "set forwarding-options l2转发 vlan-ids [parameter1]"
+            "id [parameter2]"
         ]
     ],
     "mpls traffic-eng level [parameter1]": [
@@ -5377,12 +5377,12 @@
             "unit [parameter2]"
         ]
     ],
-    "wr": "commit and-quit",
+    "wr": "interface [parameter4]",
     "bridge [parameter1] protocol [parameter2]": [
         [
             0,
             0,
-            "family ethernet-switching bridge-domain [parameter3]"
+            "protocol mpls traffic-eng tunnels id [parameter3]"
         ],
         [
             1,
@@ -5394,14 +5394,14 @@
         [
             0,
             0,
-            "set routing-options instance vrf [parameter1]"
+            "set inet-vm vrf-definition [parameter1]"
         ]
     ],
     "access-list [parameter1] permit ip host [parameter2] [parameter3] any": [
         [
             0,
             0,
-            "set security ipv6 access-list [parameter1]"
+            "permit ip [parameter2]"
         ],
         [
             1,
@@ -5410,15 +5410,15 @@
         ],
         [
             2,
-            1,
-            "set protocols direct routed-host [parameter1]/[parameter2]"
+            0,
+            "permit ip [parameter2]"
         ]
     ],
     "ip pim rp-candidate [parameter1]": [
         [
             0,
             0,
-            "set protocols pim interface [parameter1]"
+            "set protocols mpls rsvp interface [parameter1]"
         ]
     ],
     "logging source-interface [parameter1] channel [parameter2]": [
@@ -5442,12 +5442,12 @@
         [
             1,
             0,
-            "set security nat source pool [parameter1]"
+            "range [parameter2] [parameter3]"
         ],
         [
             2,
-            0,
-            "address-netmask [parameter2]"
+            1,
+            "range [parameter2] [parameter3]"
         ],
         [
             3,
@@ -5485,12 +5485,12 @@
         [
             0,
             0,
-            "set policy-options prefix-list [parameter1]"
+            "set policy-options prefix-list [parameter1] [parameter2]/[parameter3]"
         ],
         [
             1,
-            1,
-            "set policy-options prefix-list [parameter1] [parameter2]"
+            0,
+            "set policy-options prefix-list [parameter1] [parameter2]/[parameter3]"
         ],
         [
             2,
@@ -5507,12 +5507,12 @@
         [
             1,
             0,
-            "set security ipsec vpn [parameter1]"
+            "set protocols mpls l2transport vc-id [parameter1]"
         ],
         [
             2,
             0,
-            "set security ipsec vpn [parameter1]"
+            "set protocols mpls l2transport vc-id [parameter1]"
         ]
     ],
     "aaa authentication login [parameter1] group [parameter2] [parameter3]": [
@@ -5553,32 +5553,32 @@
         [
             0,
             0,
-            "set protocols bfd template [parameter1]"
+            "family ethernet-switching virtual-template [parameter3]"
         ]
     ],
     "spanning-tree vlan [parameter1] pathcost method [parameter2]": [
         [
             0,
             0,
-            "family ethernet-switching vlan members [parameter3]"
+            "set protocols spanning-tree vlan [parameter1]"
         ],
         [
             1,
             0,
-            "family ethernet-switching vlan members [parameter3]"
+            "set protocols spanning-tree mode [parameter1]"
         ]
     ],
-    "ip nat enable": "set security nat static rule-set [parameter1]",
+    "ip nat enable": "address-netmask [parameter2]",
     "ip nat inside source static [parameter1] [parameter2]": [
         [
             0,
             0,
-            "to zone [parameter2]"
+            "match source-address [parameter3]/[parameter4]"
         ],
         [
             1,
             0,
-            "to zone [parameter2]"
+            "match source-address [parameter3]/[parameter4]"
         ]
     ],
     "ipv6 pim rp static [parameter1]": [
@@ -5592,7 +5592,7 @@
         [
             0,
             0,
-            "instance-type [parameter2]"
+            "set routing-instances [parameter1]"
         ]
     ],
     "ip route vrf [parameter1] [parameter2] [parameter3] [parameter4]": [
@@ -5613,12 +5613,12 @@
         ],
         [
             3,
-            0,
-            "next-hop [parameter2]"
+            2,
+            "set routing-options static route [parameter1]/[parameter2] [parameter3]"
         ]
     ],
     "l2vpn": "set protocols l2vpn",
-    "bd-mode": "family l2vpn-vpls",
+    "bd-mode": "bfd",
     "mpls ldp neighbor [parameter1] targeted hello accept": [
         [
             0,
@@ -5630,7 +5630,7 @@
         [
             0,
             0,
-            "set policy-options policy-statement [parameter1]"
+            "ike-policy [parameter2]"
         ]
     ],
     "ip pim bsr-candidate [parameter1]": [
@@ -5652,7 +5652,7 @@
         [
             0,
             0,
-            "set arp static [parameter1] [parameter2]"
+            "ip address [parameter2]/[parameter3]"
         ],
         [
             1,
@@ -5662,7 +5662,7 @@
         [
             2,
             0,
-            "proxy-arp [parameter3]"
+            "set arp static [parameter1] [parameter2]"
         ]
     ],
     "ip pim anycast-rp [parameter1]": [
@@ -5681,7 +5681,7 @@
         [
             1,
             0,
-            "family inet peer [parameter2]"
+            "source [parameter3]"
         ],
         [
             2,
@@ -5705,7 +5705,7 @@
         [
             0,
             0,
-            "import [parameter3]"
+            "set policy-options policy-statement [parameter1]"
         ]
     ],
     "if-match [parameter1]": [
@@ -5736,29 +5736,29 @@
             "discriminator-remote [parameter3]"
         ]
     ],
-    "vsm on-board-mode enable": "set forwarding-options l2-switch virtual-switch vsi [parameter1]",
+    "vsm on-board-mode enable": "interface-switching vsi-id [parameter2]",
     "ip nat inside source list [parameter1] pool [parameter2] overload": [
         [
             0,
             0,
-            "then source-nat pool [parameter3]"
+            "address-assignment pool [parameter2]"
         ],
         [
             1,
             0,
-            "set services nat pool [parameter1]"
+            "address-assignment pool [parameter2]"
         ]
     ],
     "ip nat inside source static udp [parameter1] [parameter2]": [
         [
             0,
             0,
-            "to zone [parameter2]"
+            "match source-address [parameter3]/[parameter4]"
         ],
         [
             1,
             0,
-            "to zone [parameter2]"
+            "match source-address [parameter3]/[parameter4]"
         ]
     ],
     "evpn vpn-instance [parameter1]": [
@@ -5772,7 +5772,7 @@
         [
             0,
             0,
-            "set protocols mpls ldp_interface [parameter1]"
+            "set protocols mpls ldp interface [parameter1]"
         ],
         [
             1,
@@ -5790,14 +5790,14 @@
         [
             1,
             0,
-            "set protocols cfm md [parameter1]"
+            "unit [parameter2]"
         ]
     ],
     "ccm-send mep-id [parameter1] enable": [
         [
             0,
             0,
-            "ccm-receive mep-id [parameter3]"
+            "ccm-send mep-id [parameter2]"
         ]
     ],
     "mep mep-id [parameter1] interface [parameter2] [parameter3]": [
@@ -5813,8 +5813,8 @@
         ],
         [
             2,
-            1,
-            "interface [parameter3] [parameter4]"
+            0,
+            "MEP [parameter2]"
         ]
     ],
     "remote-mep mep-id [parameter1]": [
@@ -5854,7 +5854,7 @@
         [
             0,
             0,
-            "set protocols cfm mep interface [parameter1]"
+            "set protocols cfm domain [parameter1]"
         ],
         [
             1,
@@ -5888,7 +5888,7 @@
         [
             1,
             0,
-            "ccm-send mep-id [parameter2]"
+            "mep-id [parameter2]"
         ]
     ],
     "ethernet cfm ma [parameter1] remote-mep mep-id [parameter2] ccm-receive": [
@@ -5900,21 +5900,21 @@
         [
             1,
             0,
-            "ccm-send mep-id [parameter2]"
+            "ccm-receive mep-id [parameter3]"
         ]
     ],
     "cfm mode [parameter1]": [
         [
             0,
             0,
-            "family ethernet-switching cfm [parameter3]"
+            "mode [parameter4]"
         ]
     ],
     "interface [parameter1] point-to-point": [
         [
             0,
             0,
-            "from interface [parameter3]"
+            "interface [parameter2]"
         ]
     ],
     "ip ftp server enable": "set system services ftp server [parameter1]",
@@ -5922,19 +5922,19 @@
         [
             0,
             0,
-            "set forwarding-options l2转发 vsi [parameter1]"
+            "l2circuit vsi [parameter3]"
         ],
         [
             1,
             0,
-            "set forwarding-options l2转发 vsi [parameter1]"
+            "l2circuit vsi [parameter3]"
         ]
     ],
     "remote peer [parameter1] pw-id [parameter2]": [
         [
             0,
             0,
-            "family inet peer [parameter2]"
+            "peer-ip [parameter4]"
         ],
         [
             1,
@@ -5942,19 +5942,19 @@
             "family ethernet-switching pw-id [parameter3]"
         ]
     ],
-    "write memory": "commit",
+    "write memory": "maintenance-association [parameter2]",
     "ip scp source-interface [parameter1]": [
         [
             0,
             0,
-            "set system services ssh source-interface [parameter1]"
+            "set interfaces [parameter1]"
         ]
     ],
     "ethernet cfm md [parameter1]": [
         [
             0,
             0,
-            "set ethernet-switching-options cfm maintenance-domain [parameter1]"
+            "cfm md [parameter2]"
         ]
     ],
     "vfi [parameter1] autodiscovery [parameter2]": [
@@ -5969,38 +5969,38 @@
             "set protocols bgp vrf [parameter1]"
         ]
     ],
-    "ptp clock": "set protocols ptp clock-domain [parameter1]",
+    "ptp clock": "clock-source [parameter2]",
     "mpls label range [parameter1] [parameter2]": [
         [
             0,
             0,
-            "set routing-options mpls label-range [parameter1] [parameter2]"
+            "set protocols mpls segment-routing global-block [parameter1] [parameter2]"
         ],
         [
             1,
             1,
-            "set routing-options mpls label-range [parameter1] [parameter2]"
+            "set protocols mpls segment-routing global-block [parameter1] [parameter2]"
         ]
     ],
     "mpls traffic-eng load-balance number-of-paths [parameter1]": [
         [
             0,
             0,
-            "set protocols mpls traffic-eng path-option [parameter1]"
+            "family mpls traffic-eng administrative-weight [parameter3]"
         ]
     ],
     "enable password [parameter1]": [
         [
             0,
-            0,
-            "authentication plain-text-password [parameter2]"
+            1,
+            "authentication [parameter2] [parameter3]"
         ]
     ],
     "line console [parameter1]": [
         [
             0,
             0,
-            "set system ports console speed [parameter1]"
+            "set system ports console data-bits [parameter1]"
         ]
     ],
     "exec-timeout [parameter1] [parameter2]": [
@@ -6012,7 +6012,7 @@
         [
             1,
             0,
-            "set system ports console session length [parameter1]"
+            "time [parameter2]"
         ]
     ],
     "data-bits [parameter1]": [
@@ -6026,7 +6026,7 @@
         [
             0,
             0,
-            "set system ports console parity [parameter1]"
+            "is-type [parameter2]"
         ]
     ],
     "stop-bits [parameter1]": [
@@ -6054,12 +6054,12 @@
         [
             0,
             0,
-            "set protocols cfm domain [parameter1]"
+            "cfm md [parameter2]"
         ],
         [
             1,
             0,
-            "set protocols cfm interface [parameter1]"
+            "unit [parameter2]"
         ]
     ],
     "mep mep-id [parameter1]": [
@@ -6080,14 +6080,14 @@
         [
             0,
             0,
-            "ccm-receive mep-id [parameter3]"
+            "ccm-send mep-id [parameter2]"
         ]
     ],
     "remote-mep ccm-receive mep-id [parameter1] enable": [
         [
             0,
             0,
-            "remote-mep mep-id [parameter3]"
+            "ccm-receive mep-id [parameter3]"
         ]
     ],
     "ptp clock priority [parameter1]": [
@@ -6101,7 +6101,7 @@
         [
             0,
             0,
-            "set system clock source [parameter1]"
+            "clock-source [parameter2]"
         ]
     ]
 }

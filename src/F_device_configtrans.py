@@ -204,7 +204,10 @@ class ConfigMatcher:
             all_similarities = []
             # 对比每一个命令中的参数语义
             for candidate_command in candidate:
-                candidate_paras = self.templates[candidate_command]['parameter_features']  # list
+                try:
+                    candidate_paras = self.templates[candidate_command]['parameter_features']  # list
+                except KeyError:
+                    continue
                 similarities = []
                 for index, candidate_para_embedding in enumerate(candidate_paras):
                     candidate_para_embedding = np.array(candidate_para_embedding).reshape(1, -1)
@@ -338,7 +341,7 @@ class Config_Translater:
         # print(json.dumps(target_config, indent=4, ensure_ascii=False))
 
         # 阶段六：输出并保存翻译的配置命令
-        trans_res, trans_mapping_info = self.print_and_save_translation_config(target_config)
+        trans_res, trans_mapping_info = self.print_and_save_translation_config(target_config, target_vendor)
 
         return trans_res, trans_mapping_info
 
@@ -371,7 +374,7 @@ class Config_Translater:
         # print(json.dumps(target_config, indent=4, ensure_ascii=False))
 
         # 阶段六：输出并保存翻译的配置命令
-        trans_res, trans_mapping_info = self.print_and_save_translation_config(target_config)
+        trans_res, trans_mapping_info = self.print_and_save_translation_config(target_config, target_vendor)
 
         return trans_res, trans_mapping_info
 
@@ -402,7 +405,7 @@ class Config_Translater:
             target_config = self.parameter_mapping(arranged_config, vendor, target_vendor)
 
             # 阶段六：输出并保存翻译的配置命令
-            trans_res, trans_mapping_info = self.print_and_save_translation_config(target_config)
+            trans_res, trans_mapping_info = self.print_and_save_translation_config(target_config, target_vendor)
 
             return trans_res, trans_mapping_info
         else:
@@ -463,7 +466,7 @@ class Config_Translater:
                                                       'param_signature': {},
                                                       'context_topology': {'parent_command': 'system'}}}
 
-                # self.config_matchers[target_vendor].templates[matched_result] = result_node
+                self.config_matchers[target_vendor].templates[matched_result] = result_node
                 template = feature['semantic_feature']['template']
                 config_match[command] = {'template': template, 'match': matched_result}
 
@@ -526,7 +529,7 @@ class Config_Translater:
                         print(f"KeyError: {translated_command}")
                         continue
                     # 命令视图层级
-                    depth = command_node['structural_features']['command_depth'] if target_vendor != 'Juniper' else 0
+                    depth = command_node['structural_features']['command_depth']
                     # 参数数量
                     para_num = command_node['structural_features']['param_signature']['count']
                     parent_command = command_node['structural_features']['context_topology']['parent_command']
@@ -553,7 +556,8 @@ class Config_Translater:
                     # 如果该层级中不包含这一配置命令
                     elif translated_command not in arranged_command[item_k][depth].keys():
                         # 参数填充占位符
-                        para_placeholders = [0] * para_num
+                        para_placeholders = [0] if para_num == 0 else [
+                                                                          0] * para_num
                         if isinstance(para_match, list):
                             if not -1 in para_match:
                                 try:
@@ -593,11 +597,12 @@ class Config_Translater:
                     print(f"KeyError: {translated_command}")
                     continue
                 # 命令视图层级
-                depth = command_node['structural_features']['command_depth'] if target_vendor != 'Juniper' else 0
+                depth = command_node['structural_features']['command_depth']
                 # 参数数量
                 para_num = command_node['structural_features']['param_signature'].get('count', 0)
                 # 参数填充占位符
-                para_placeholders = [0] * para_num
+                para_placeholders = [0] if para_num == 0 else [
+                                                                  0] * para_num
                 parent_command = command_node['structural_features']['context_topology']['parent_command']
                 arranged_command[item_k][depth] = {translated_command:
                                                        {'para_num': para_num,
@@ -665,8 +670,9 @@ class Config_Translater:
                 # 基于配置参数合并配置命令模板
                 for command, command_v in translation_commands.items():
                     parent_command = command_v['parent_node']
-                    self.insert_parent_command(target_commands, src_command, int(depth), parent_command,
-                                               all_params)  # 补充父节点
+                    if not parent_command == 'system':
+                        self.insert_parent_command(target_commands, src_command, int(depth), parent_command,
+                                               all_params, target_vendor)  # 补充父节点
                     target_commands = self.command_param_merge(target_commands, src_command,
                                                                int(depth), command, command_v)
 
@@ -682,12 +688,13 @@ class Config_Translater:
                     # 基于配置参数插入配置命令模板
                     for command, command_v in translation_commands.items():
                         # 使用llm进行参数映射修复
-                        future = executor.submit(
-                            self.translation_llm.param_map_repair,
-                            target_vendor,
-                            command_v
-                        )
-                        futures.append((command_v, future))
+                        if command_v['para_num'] > 0:
+                            future = executor.submit(
+                                self.translation_llm.param_map_repair,
+                                target_vendor,
+                                command_v
+                            )
+                            futures.append((command_v, future))
             # 获取结果并更新
             for command_v, future in futures:
                 llm_target_command = future.result()
@@ -710,8 +717,9 @@ class Config_Translater:
                 # 基于配置参数合并配置命令模板
                 for command, command_v in translation_commands.items():
                     parent_command = command_v['parent_node']
-                    self.insert_parent_command(target_commands, src_command, int(depth), parent_command,
-                                               all_params)  # 补充父节点
+                    if not parent_command == 'system':
+                        self.insert_parent_command(target_commands, src_command, int(depth), parent_command,
+                                                   all_params, target_vendor)  # 补充父节点
                     target_commands = self.command_param_merge(target_commands, src_command,
                                                                int(depth), command, command_v)
 
@@ -738,14 +746,17 @@ class Config_Translater:
                     # 若有相同的配置命令模板
                     if command_k == command:
                         # 可合并-->[1, 1, 0, 0] + [0, 0, 1, 1] = [1,1,1,1]
-                        if np.any(np.array(command_v['para_placeholders'] +
-                                           command_info['para_placeholders']) >= 2):
+                        try:
+                            merged_placeholders = np.array(command_v['para_placeholders']) | np.array(
+                            command_info['para_placeholders'])
+                        except Exception as e:
+                            continue
+                        if not np.array_equal(merged_placeholders, np.array(command_v['para_placeholders'])):
                             # 将参数填补到可合并配置命令中
                             # 使用列表推导式，优先选择非空元素
-                            merged_paras = [x if x else y for x, y in
+                            merged_paras = [x if x != 'none' else y for x, y in
                                             zip(command_info['para_match'], command_v['para_match'])]
-                            command_v['para_placeholders'] = command_v['para_placeholders'] + \
-                                                             command_info['para_placeholders']
+                            command_v['para_placeholders'] = merged_placeholders.tolist()
                             command_v['para_match'] = merged_paras
                             merged_flag = 1
         if merged_flag == 0:
@@ -809,7 +820,7 @@ class Config_Translater:
             dest_template = dest_template.replace(f"[parameter{index + 1}]", param)
         return dest_template
 
-    def merge_config_nodes(self, root):
+    def merge_config_nodes(self, root, target_vendor):
         merged_root = ConfigNode("system")
         node_map = {}
 
@@ -824,7 +835,7 @@ class Config_Translater:
         return merged_root
 
     # 输出对应视图的配置命令
-    def print_and_save_translation_config(self, target_config):
+    def print_and_save_translation_config(self, target_config, target_vendor):
         trans_pairs = []
         root = ConfigNode("system")
         stack = [(root, -1)]
@@ -837,8 +848,6 @@ class Config_Translater:
                     continue
                 # 输出该层级下所有的配置命令
                 for target_temp, command_info in target_command.items():
-                    # print(depth, int(depth))
-                    # print(' '*int(depth) + command_info['target_command'])
                     line = command_info['target_command']
                     node = ConfigNode(line)
                     while stack and stack[-1][1] >= depth:
@@ -849,12 +858,38 @@ class Config_Translater:
 
                     trans_pairs.append(f"{command} -- {command_info['target_command']}")
 
-        merged_config_tree = self.merge_config_nodes(root)
-        trans_res = "\n".join(merged_config_tree.to_lines()[1:])
+        merged_config_tree = self.merge_config_nodes(root, target_vendor)
+
+        if target_vendor == 'Juniper':
+            trans_res = self.juniper_combine(merged_config_tree)
+        else:
+            trans_res = "\n".join(merged_config_tree.to_lines()[1:])
         trans_mapping_info = '\n'.join(trans_pairs)
         return trans_res, trans_mapping_info
 
-    def insert_parent_command(self, target_commands, src_command, src_depth, parent_command, all_params):
+    def juniper_combine(self, root):
+        # 去除根节点，将树拆分为n个子树，深度遍历每个子树至根节点，将其line值用' '拼接为一条命令
+        if root.line == "system":
+            subtrees = root.children
+        else:
+            subtrees = [root]
+        commands = []
+        def dfs(node, current_command):
+            current_command.append(node.line)
+            for child in node.children:
+                dfs(child, current_command)
+
+        for subtree in subtrees:
+            current_command = []
+            dfs(subtree, current_command)
+            # 用空格拼接为一条命令
+            commands.append(" ".join(current_command))
+
+        trans_res = '\n'.join(commands)
+        return trans_res
+
+
+    def insert_parent_command(self, target_commands, src_command, src_depth, parent_command, all_params, target_vendor):
         newest_parent = None
         # 遍历是否存在与command相同的命令
         for pre_src_command, translation in target_commands.items():
@@ -865,9 +900,11 @@ class Config_Translater:
                         newest_parent = deepcopy(command_v)
 
         if not newest_parent:  # 前面配置过父视图节点，直接复制
-            newest_parent = {'para_num': -1,
-                             'para_placeholders': [],
-                             'para_match': list[all_params],
+            parent_node = self.config_matchers[target_vendor].templates[parent_command]
+            parent_para_num = parent_node['structural_features']['param_signature']['count']
+            newest_parent = {'para_num': parent_para_num,
+                             'para_placeholders': [0] if parent_para_num == 0 else [0] * parent_para_num,
+                             'para_match': list(all_params),
                              'target_command': parent_command,
                              'parent_node': 'system'}
         target_commands.setdefault(src_command, {}).setdefault(src_depth - 1, {})[parent_command] = newest_parent
@@ -911,6 +948,9 @@ class Translation_Model:
                  endpoint_url: str = 'https://api.deepseek.com/v1'):
         if 'gpt' in model_name:
             api_key = os.getenv("OPENAI_KEY")
+        elif 'aliyun' in model_name:
+            api_key = os.getenv("ALIYUN_API_KEY")
+            model_name = model_name.replace('aliyun_', '')
         elif 'deepseek' in model_name:
             api_key = os.getenv("DEEPSEEK_API_KEY")
         else:
@@ -985,12 +1025,12 @@ class Translation_Model:
             'para_num': len(command_template_info['parameters'])
         }
 
-        param_info = {
-            'command template': command_template_info['template'],
-            'parameters': command_template_info['parameters']
-        }
+        param_info = []
+        for index, parameter in enumerate(command_template_info['parameters']):
+            param_info.append(f"parameter{index}: " + ','.join([f"{k}:{v}" for k, v in parameter.items()]))
+        param_info_str = '\n'.join(param_info)
 
-        prompt = prompt.replace("{param_info}", str(param_info))
+        prompt = prompt.replace("{param_info}", str(param_info_str))
         prompt = prompt.replace("{target_vendor}", target_vendor)
         prompt = prompt.replace("{command_object}", str(command_object))
         messages = [
@@ -1007,7 +1047,10 @@ class Translation_Model:
                 )
                 json_response = response.choices[0].message.content
                 json_response = json.loads(json_response)
-                return json_response
+                if isinstance(json_response, dict):
+                    if 'para_match' not in json_response and 'target_command' not in json_response:
+                        raise ValueError(f"未找到命令模板: {command_v['target_command']}")
+                    return json_response
             except Exception as e:
                 print(f"第 {i + 1} 次尝试失败，错误信息: {str(e)}")
         return ''
@@ -1087,10 +1130,10 @@ if __name__ == "__main__":
     vendors = ["Cisco", "HUAWEI", "Juniper"]
     # mapping_library_path = str(project_root / 'dataset_multi_vendor_config/mapping_template_library_examined/{}_{}.json')
     mapping_library_path = str(
-        project_root / 'dataset_multi_vendor_config/mapping_template_library/different_scale/{}_{}_100.json')
+        project_root / 'dataset_multi_vendor_config/mapping_template_library/scale388en/{}_{}_388.json')
 
-    templates_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/different_scale/{}_100.json')
-    config_model_dir = str(project_root / 'dataset_multi_vendor_config/config_model/different_scale/{}_100.json')
+    templates_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/scale388en/{}_388.json')
+    config_model_dir = str(project_root / 'dataset_multi_vendor_config/config_model/scale388en/{}_388.json')
 
     # 加载规则映射库
     print('Mapping library loading.')
@@ -1101,16 +1144,14 @@ if __name__ == "__main__":
     # 文本嵌入模型加载
     print('Embedding model loading.')
     local_EMmodel_path = str(project_root / 'EmbeddingModel/MiniLM-L6-v2')
-    # embedding_model = SentenceTransformer(local_EMmodel_path)
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})
 
     # 加载用于配置翻译的语言模型
-    print('Translation model based on llm loading.')
-    translation_llm = Translation_Model('deepseek-chat', config_model_dir=config_model_dir, vendors=vendors)
+    translation_llm = Translation_Model('aliyun_deepseek-v3', config_model_dir=config_model_dir, vendors=vendors,
+                                        endpoint_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
 
     # 创建翻译器
-    print('Config translater loading.')
     config_translater = Config_Translater(mapping_libraries, config_matchers,
                                           translation_llm, embedding_model)
 
@@ -1119,7 +1160,7 @@ if __name__ == "__main__":
     config_path = str(project_root / f'dataset_multi_vendor_config/test/{file_name}.json')
 
     source_vendor = 'Cisco'
-    target_vendor = 'HUAWEI'
+    target_vendor = 'Juniper'
     json_config = load_json_file(config_path)
     if source_vendor == 'Juniper':
         json_config = process_juniper_json(json_config)
