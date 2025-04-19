@@ -1,0 +1,224 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name DeviceE",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces ge-0/0/1 unit 0 family inet address 1.1.2.1/24",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        }
+    },
+    "set protocols bgp instance-external": {
+        "template": "set protocols bgp instance-external",
+        "set protocols bgp instance-external instance-name [parameter1] neighbor [parameter2] remote-as [parameter3]": {
+            "template": "set protocols bgp instance-external instance-name [parameter1] neighbor [parameter2] remote-as [parameter3]",
+            "command": "set protocols bgp instance-external instance-name default neighbor 1.1.1.2 remote-as 200",
+            "explanation": "配置BGP实例的外部邻居及其远程AS号。",
+            "parameters": [
+                {
+                    "name": "instance-name",
+                    "type": "string",
+                    "explanation": "BGP实例的名称。"
+                },
+                {
+                    "name": "neighbor-ip",
+                    "type": "string",
+                    "explanation": "邻居的IP地址。"
+                },
+                {
+                    "name": "remote-as",
+                    "type": "integer",
+                    "explanation": "邻居的远程AS号。"
+                }
+            ]
+        },
+        "set protocols bgp instance-external instance-name [parameter1] address-family inet unicast": {
+            "template": "set protocols bgp instance-external instance-name [parameter1] address-family inet unicast",
+            "command": "set protocols bgp instance-external instance-name default address-family inet unicast",
+            "explanation": "配置BGP实例的地址族为IPv4单播。",
+            "parameters": [
+                {
+                    "name": "instance-name",
+                    "type": "string",
+                    "explanation": "BGP实例的名称。"
+                }
+            ]
+        },
+        "set protocols bgp instance-external instance-name [parameter1] neighbor [parameter2] activate": {
+            "template": "set protocols bgp instance-external instance-name [parameter1] neighbor [parameter2] activate",
+            "command": "set protocols bgp instance-external instance-name default neighbor 1.1.1.2 activate",
+            "explanation": "激活BGP实例的特定邻居。",
+            "parameters": [
+                {
+                    "name": "instance-name",
+                    "type": "string",
+                    "explanation": "BGP实例的名称。"
+                },
+                {
+                    "name": "neighbor-ip",
+                    "type": "string",
+                    "explanation": "邻居的IP地址。"
+                }
+            ]
+        },
+        "set protocols bgp instance-external instance-name [parameter1] neighbor [parameter2] route-map [parameter3] in": {
+            "template": "set protocols bgp instance-external instance-name [parameter1] neighbor [parameter2] route-map [parameter3] in",
+            "command": "set protocols bgp instance-external instance-name default neighbor 1.1.1.2 route-map r3 in",
+            "explanation": "为BGP实例的特定邻居配置入站路由映射。",
+            "parameters": [
+                {
+                    "name": "instance-name",
+                    "type": "string",
+                    "explanation": "BGP实例的名称。"
+                },
+                {
+                    "name": "neighbor-ip",
+                    "type": "string",
+                    "explanation": "邻居的IP地址。"
+                },
+                {
+                    "name": "route-map",
+                    "type": "string",
+                    "explanation": "路由映射的名称。"
+                }
+            ]
+        }
+    },
+    "delete protocols bgp": {
+        "template": "delete protocols bgp",
+        "delete protocols bgp synchronization": {
+            "template": "delete protocols bgp synchronization",
+            "command": "delete protocols bgp synchronization",
+            "explanation": "删除BGP同步配置。",
+            "parameters": []
+        }
+    },
+    "set routing-options": {
+        "template": "set routing-options",
+        "set routing-options static route [parameter1] next-hop [parameter2] metric [parameter3] distance-med": {
+            "template": "set routing-options static route [parameter1] next-hop [parameter2] metric [parameter3] distance-med",
+            "command": "set routing-options static route 0.0.0.0/0 next-hop 1.1.1.2 metric 10 distance-med",
+            "explanation": "配置静态路由，指定下一跳、度量和距离。",
+            "parameters": [
+                {
+                    "name": "route",
+                    "type": "string",
+                    "explanation": "目标网络地址。"
+                },
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "下一跳地址。"
+                },
+                {
+                    "name": "metric",
+                    "type": "integer",
+                    "explanation": "路由的度量值。"
+                },
+                {
+                    "name": "distance-med",
+                    "type": "string",
+                    "explanation": "距离和MED值。"
+                }
+            ]
+        },
+        "set routing-options static route [parameter1] next-hop [parameter2] metric [parameter3]": {
+            "template": "set routing-options static route [parameter1] next-hop [parameter2] metric [parameter3]",
+            "command": "set routing-options static route 0.0.0.0/0 next-hop 1.1.2.2 metric 20",
+            "explanation": "配置静态路由，指定下一跳和度量。",
+            "parameters": [
+                {
+                    "name": "route",
+                    "type": "string",
+                    "explanation": "目标网络地址。"
+                },
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "下一跳地址。"
+                },
+                {
+                    "name": "metric",
+                    "type": "integer",
+                    "explanation": "路由的度量值。"
+                }
+            ]
+        }
+    },
+    "delete routing-options": {
+        "template": "delete routing-options",
+        "delete routing-options static route [parameter1] next-hop [parameter2]": {
+            "template": "delete routing-options static route [parameter1] next-hop [parameter2]",
+            "command": "delete routing-options static route 10.0.0.0/8 next-hop 1.1.2.2",
+            "explanation": "删除静态路由配置。",
+            "parameters": [
+                {
+                    "name": "route",
+                    "type": "string",
+                    "explanation": "目标网络地址。"
+                },
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "下一跳地址。"
+                }
+            ]
+        }
+    },
+    "set access-listinet": {
+        "template": "set access-listinet",
+        "set access-listinet [parameter1] permit ip [parameter2] any": {
+            "template": "set access-listinet [parameter1] permit ip [parameter2] any",
+            "command": "set access-listinet out permit ip 2.2.2.0/24 any",
+            "explanation": "配置访问控制列表，允许特定IP地址范围的流量。",
+            "parameters": [
+                {
+                    "name": "direction",
+                    "type": "string",
+                    "explanation": "流量的方向，例如out。"
+                },
+                {
+                    "name": "source-ip",
+                    "type": "string",
+                    "explanation": "源IP地址范围。"
+                }
+            ]
+        }
+    }
+}

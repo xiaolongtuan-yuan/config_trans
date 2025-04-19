@@ -1,0 +1,338 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name PE2",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols ldp peer [parameter1] advertise-labels for [parameter2]": {
+            "template": "set protocols ldp peer [parameter1] advertise-labels for [parameter2]",
+            "command": "set protocols ldp peer 1.1.1.9 advertise-labels for 10.2.2.9",
+            "explanation": "配置LDP协议，指定对等体并为其通告标签。",
+            "parameters": [
+                {
+                    "name": "peer-address",
+                    "type": "string",
+                    "explanation": "LDP对等体的IP地址。"
+                },
+                {
+                    "name": "prefix",
+                    "type": "string",
+                    "explanation": "需要通告标签的IP前缀。"
+                }
+            ]
+        },
+        "set protocols ldp authenticate area [parameter1]": {
+            "template": "set protocols ldp authenticate area [parameter1]",
+            "command": "set protocols ldp authenticate area 0",
+            "explanation": "配置LDP协议在指定区域进行认证。",
+            "parameters": [
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "进行LDP认证的区域号。"
+                }
+            ]
+        },
+        "set protocols ospf interface [parameter1]": {
+            "template": "set protocols ospf interface [parameter1]",
+            "command": "set protocols ospf interface ge-0/0/0.0",
+            "explanation": "配置OSPF协议在指定接口上运行。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "运行OSPF协议的接口名称。"
+                }
+            ]
+        },
+        "set protocols ospf area [parameter1] network [parameter2]": {
+            "template": "set protocols ospf area [parameter1] network [parameter2]",
+            "command": "set protocols ospf area 0 network 3.3.3.9/32",
+            "explanation": "在OSPF指定区域中通告网络。",
+            "parameters": [
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "OSPF区域号。"
+                },
+                {
+                    "name": "network",
+                    "type": "string",
+                    "explanation": "需要通告的网络地址及掩码。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family ipv4 address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family ipv4 address [parameter3]/[parameter4]",
+            "command": "set interfaces ge-0/0/0 unit 0 family ipv4 address 10.2.2.1/24",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family mpls traffic-eng peer-address [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family mpls traffic-eng peer-address [parameter3]",
+            "command": "set interfaces ge-0/0/0 unit 0 family mpls traffic-eng peer-address 1.1.1.9",
+            "explanation": "配置接口的MPLS流量工程对等体地址。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "peer-address",
+                    "type": "string",
+                    "explanation": "MPLS流量工程对等体的IP地址。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family ethernet-switching vlan members [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching vlan members [parameter3]",
+            "command": "set interfaces xe-1/0/0 unit 0 family ethernet-switching vlan members default",
+            "explanation": "配置接口的以太网交换VLAN成员。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如xe-1/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "vlan-members",
+                    "type": "string",
+                    "explanation": "VLAN成员，例如default。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family encapsulation dot1q [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family encapsulation dot1q [parameter3]",
+            "command": "set interfaces xe-2/0/0 unit 1 family encapsulation dot1q 20",
+            "explanation": "配置接口的封装类型为dot1q，并指定VLAN ID。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如xe-2/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN ID。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family mpls traffic-eng peer [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family mpls traffic-eng peer [parameter3]",
+            "command": "set interfaces xe-2/0/0 unit 1 family mpls traffic-eng peer 1.1.1.9",
+            "explanation": "配置接口的MPLS流量工程对等体。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如xe-2/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "peer-address",
+                    "type": "string",
+                    "explanation": "MPLS流量工程对等体的IP地址。"
+                }
+            ]
+        }
+    },
+    "set routing-options": {
+        "template": "set routing-options",
+        "set routing-options router-id [parameter1] [parameter2]": {
+            "template": "set routing-options router-id [parameter1] [parameter2]",
+            "command": "set routing-options router-id loopback0 3.3.3.9",
+            "explanation": "配置路由器的ID，通常使用环回接口的IP地址。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如loopback0。"
+                },
+                {
+                    "name": "router-id",
+                    "type": "string",
+                    "explanation": "路由器的ID，通常为IP地址。"
+                }
+            ]
+        },
+        "set routing-options autonomous-system [parameter1]": {
+            "template": "set routing-options autonomous-system [parameter1]",
+            "command": "set routing-options autonomous-system 65000",
+            "explanation": "配置路由器的自治系统号。",
+            "parameters": [
+                {
+                    "name": "as-number",
+                    "type": "integer",
+                    "explanation": "自治系统号。"
+                }
+            ]
+        }
+    },
+    "set forwarding-plane": {
+        "template": "set forwarding-plane",
+        "set forwarding-plane l2vpn pw-class pw-policy [parameter1]": {
+            "template": "set forwarding-plane l2vpn pw-class pw-policy [parameter1]",
+            "command": "set forwarding-plane l2vpn pw-class pw-policy 1",
+            "explanation": "配置转发平面的L2VPN伪线类策略。",
+            "parameters": [
+                {
+                    "name": "policy-id",
+                    "type": "integer",
+                    "explanation": "伪线策略的ID。"
+                }
+            ]
+        },
+        "set forwarding-plane l2vpn xconnect-context pw-policy [parameter1]": {
+            "template": "set forwarding-plane l2vpn xconnect-context pw-policy [parameter1]",
+            "command": "set forwarding-plane l2vpn xconnect-context pw-policy 1",
+            "explanation": "配置转发平面的L2VPN交叉连接上下文伪线策略。",
+            "parameters": [
+                {
+                    "name": "policy-id",
+                    "type": "integer",
+                    "explanation": "伪线策略的ID。"
+                }
+            ]
+        }
+    },
+    "set forwarding-options": {
+        "template": "set forwarding-options",
+        "set forwarding-options dlb xconnect context pw-policy [parameter1]": {
+            "template": "set forwarding-options dlb xconnect context pw-policy [parameter1]",
+            "command": "set forwarding-options dlb xconnect context pw-policy 1",
+            "explanation": "配置转发选项的DLB交叉连接上下文伪线策略。",
+            "parameters": [
+                {
+                    "name": "policy-id",
+                    "type": "integer",
+                    "explanation": "伪线策略的ID。"
+                }
+            ]
+        },
+        "set forwarding-options dlbf tunnel mode [parameter1]": {
+            "template": "set forwarding-options dlbf tunnel mode [parameter1]",
+            "command": "set forwarding-options dlbf tunnel mode mpls traffic-eng",
+            "explanation": "配置转发选项的DLBF隧道模式为MPLS流量工程。",
+            "parameters": [
+                {
+                    "name": "mode",
+                    "type": "string",
+                    "explanation": "隧道模式，例如mpls traffic-eng。"
+                }
+            ]
+        },
+        "set forwarding-options dlbf tunnel destination [parameter1]": {
+            "template": "set forwarding-options dlbf tunnel destination [parameter1]",
+            "command": "set forwarding-options dlbf tunnel destination 1.1.1.9",
+            "explanation": "配置转发选项的DLBF隧道目的地地址。",
+            "parameters": [
+                {
+                    "name": "destination",
+                    "type": "string",
+                    "explanation": "隧道目的地的IP地址。"
+                }
+            ]
+        },
+        "set forwarding-options dlbf tunnel id [parameter1]": {
+            "template": "set forwarding-options dlbf tunnel id [parameter1]",
+            "command": "set forwarding-options dlbf tunnel id 101",
+            "explanation": "配置转发选项的DLBF隧道ID。",
+            "parameters": [
+                {
+                    "name": "tunnel-id",
+                    "type": "integer",
+                    "explanation": "隧道的ID。"
+                }
+            ]
+        },
+        "set forwarding-options dlbf tunnel bandwidth [parameter1]": {
+            "template": "set forwarding-options dlbf tunnel bandwidth [parameter1]",
+            "command": "set forwarding-options dlbf tunnel bandwidth 2000",
+            "explanation": "配置转发选项的DLBF隧道带宽。",
+            "parameters": [
+                {
+                    "name": "bandwidth",
+                    "type": "integer",
+                    "explanation": "隧道的带宽，单位为kbps。"
+                }
+            ]
+        }
+    },
+    "set firewall": {
+        "template": "set firewall",
+        "set firewall family inet filter [parameter1] apply [parameter2]": {
+            "template": "set firewall family inet filter [parameter1] apply [parameter2]",
+            "command": "set firewall family inet filter allow-mpls-trf-ing apply To next layer in incoming packet",
+            "explanation": "配置防火墙的IPv4过滤器，允许MPLS流量进入并应用到下一层。",
+            "parameters": [
+                {
+                    "name": "filter-name",
+                    "type": "string",
+                    "explanation": "过滤器的名称。"
+                },
+                {
+                    "name": "apply-to",
+                    "type": "string",
+                    "explanation": "过滤器应用的位置，例如To next layer in incoming packet。"
+                }
+            ]
+        }
+    }
+}

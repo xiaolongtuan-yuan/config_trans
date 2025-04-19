@@ -1,0 +1,191 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name SPE1",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols ldp interface [parameter1]": {
+            "template": "set protocols ldp interface [parameter1]",
+            "command": "set protocols ldp interface all",
+            "explanation": "在所有接口上启用LDP协议。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，'all'表示所有接口。"
+                }
+            ]
+        },
+        "set protocols ldp router-id [parameter1]": {
+            "template": "set protocols ldp router-id [parameter1]",
+            "command": "set protocols ldp router-id 1.1.1.9",
+            "explanation": "配置LDP协议的Router ID。",
+            "parameters": [
+                {
+                    "name": "router-id",
+                    "type": "string",
+                    "explanation": "LDP协议的Router ID，用于标识LDP路由器。"
+                }
+            ]
+        },
+        "set protocols mpls interface [parameter1]": {
+            "template": "set protocols mpls interface [parameter1]",
+            "command": "set protocols mpls interface all",
+            "explanation": "在所有接口上启用MPLS协议。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，'all'表示所有接口。"
+                }
+            ]
+        },
+        "set protocols ospf area [parameter1] interface [parameter2]": {
+            "template": "set protocols ospf area [parameter1] interface [parameter2]",
+            "command": "set protocols ospf area 0 interface lo0.1",
+            "explanation": "在OSPF区域0中启用接口lo0.1。",
+            "parameters": [
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "OSPF区域号。"
+                },
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如lo0.1。"
+                }
+            ]
+        }
+    },
+    "set routing-instances": {
+        "template": "set routing-instances",
+        "set routing-instances [parameter1] instance-type [parameter2]": {
+            "template": "set routing-instances [parameter1] instance-type [parameter2]",
+            "command": "set routing-instances vfi-v100 instance-type vpls",
+            "explanation": "配置路由实例的类型为VPLS。",
+            "parameters": [
+                {
+                    "name": "instance-name",
+                    "type": "string",
+                    "explanation": "路由实例的名称。"
+                },
+                {
+                    "name": "instance-type",
+                    "type": "string",
+                    "explanation": "路由实例的类型，例如vpls。"
+                }
+            ]
+        },
+        "set routing-instances [parameter1] vpls vfi-id [parameter2]": {
+            "template": "set routing-instances [parameter1] vpls vfi-id [parameter2]",
+            "command": "set routing-instances vfi-v100 vpls vfi-id 100",
+            "explanation": "配置VPLS实例的VFI ID。",
+            "parameters": [
+                {
+                    "name": "instance-name",
+                    "type": "string",
+                    "explanation": "路由实例的名称。"
+                },
+                {
+                    "name": "vfi-id",
+                    "type": "integer",
+                    "explanation": "VPLS实例的VFI ID。"
+                }
+            ]
+        },
+        "set routing-instances [parameter1] protocols vpls neighbor [parameter2] pw-id [parameter3]": {
+            "template": "set routing-instances [parameter1] protocols vpls neighbor [parameter2] pw-id [parameter3]",
+            "command": "set routing-instances vfi-v100 protocols vpls neighbor 3.3.3.9 pw-id 300",
+            "explanation": "配置VPLS实例的邻居及其PW ID。",
+            "parameters": [
+                {
+                    "name": "instance-name",
+                    "type": "string",
+                    "explanation": "路由实例的名称。"
+                },
+                {
+                    "name": "neighbor-ip",
+                    "type": "string",
+                    "explanation": "邻居的IP地址。"
+                },
+                {
+                    "name": "pw-id",
+                    "type": "integer",
+                    "explanation": "伪线ID，用于标识VPLS实例中的伪线。"
+                }
+            ]
+        },
+        "set routing-instances [parameter1] protocols vpls mac-withdraw": {
+            "template": "set routing-instances [parameter1] protocols vpls mac-withdraw",
+            "command": "set routing-instances vfi-v100 protocols vpls mac-withdraw",
+            "explanation": "在VPLS实例中启用MAC地址撤回功能。",
+            "parameters": [
+                {
+                    "name": "instance-name",
+                    "type": "string",
+                    "explanation": "路由实例的名称。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces ge-0/0/0 unit 0 family inet address 10.10.1.1/24",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family mpls": {
+            "template": "set interfaces [parameter1] unit [parameter2] family mpls",
+            "command": "set interfaces ge-0/0/0 unit 0 family mpls",
+            "explanation": "在接口上启用MPLS协议。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                }
+            ]
+        }
+    }
+}
