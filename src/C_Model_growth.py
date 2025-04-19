@@ -5,9 +5,19 @@ from pathlib import Path
 import os
 from tqdm import tqdm
 import re
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# from src.F_device_configtrans import process_juniper_json
 
-from src.F_device_configtrans import process_juniper_json
-
+def process_juniper_json(json_config):
+    processed_json = {}
+    for k, v in json_config.items():
+        if 'template' in v:
+            del v['template']
+        if isinstance(v, dict):
+            for command, info in v.items():
+                processed_json[command] = info
+    return processed_json
 
 def merge_nodes(existing_node: dict, new_node: dict):
     """
@@ -193,28 +203,33 @@ if __name__ == "__main__":
             # save_json_file(template_used_statistic, str(project_root / f'statistic/statistic_res/{vendor}_template_used_statistic.json')) # 统计模版使用次数
     '''
 
-    # 只处理前400条juniper数据
+    # 只处理前400条juniper数据-388条
+    vendors = ['Cisco', "HUAWEI", "Juniper"]
     project_root = Path(__file__).parent.parent
-    template_used_statistic = {}
-    vendor_model = {}
-    vendor_command_re = {}
-    folder_path = str(project_root / f'dataset_multi_vendor_config/Json_config/juniper_pre_400')
-    vendor_model_path = str(
-        project_root / f'dataset_multi_vendor_config/config_model/different_scale/juniper_pre_400.json')
+    folder_path = str(project_root / f'dataset_multi_vendor_config/Json_config/Juniper_simplified')
 
     json_files = get_json_filenames(folder_path)
-    merge_count = 0
-    for json_file in tqdm(json_files, desc="Merged config num"):
-        json_config_path = folder_path + '/' + json_file
-        # 加载设备配置模型
-        try:
-            json_config = load_json_file(json_config_path)
-            json_config = process_juniper_json(json_config)
-        except:
-            continue
-        # 对vendor_model中的模版进行去重，主要问题是同样的conmand，llm在解析时可能出现不同的模版（配置参数缺失了），建议均采用最大的配置参数，我们需要一个字典来记录是否去重
-        vendor_model = merge_models(vendor_model, json_config, vendor_command_re, template_used_statistic)
-    save_json_file(vendor_model, vendor_model_path)
+
+    for vendor in vendors:
+        template_used_statistic = {}
+        vendor_model = {}
+        vendor_command_re = {}
+        merge_count = 0
+        # print(vendor)
+        for json_file in tqdm(json_files[:388], desc="Merged config num"):
+            vendor_folder_path = str(project_root / f'dataset_multi_vendor_config/Json_config/{vendor}_simplified')
+            json_config_path = vendor_folder_path + '/' + json_file
+            # 加载设备配置模型
+            try:
+                json_config = load_json_file(json_config_path)
+                if vendor == 'Juniper':
+                    json_config = process_juniper_json(json_config)
+            except:
+                continue
+            # 对vendor_model中的模版进行去重，主要问题是同样的conmand，llm在解析时可能出现不同的模版（配置参数缺失了），建议均采用最大的配置参数，我们需要一个字典来记录是否去重
+            vendor_model = merge_models(vendor_model, json_config, vendor_command_re, template_used_statistic)
+        vendor_model_path = str(project_root / f'dataset_multi_vendor_config/config_model/scale388en/{vendor}_zh.json')
+        save_json_file(vendor_model, vendor_model_path)
 
 
 

@@ -16,13 +16,15 @@ def count_rules(obj):
 
 result = {}
 # 遍历different_scale目录下的json文件，统计每个文件中的规则数量
-directory = "./different_scale"
+# directory = "./different_scale"
+directory = "./scale388en"
 for filename in os.listdir(directory):
     if filename.endswith(".json"):
         file_path = os.path.join(directory, filename)
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
-            total_rules = count_rules(data)
+            # total_rules = count_rules(data)
+            total_rules = len(data.keys())
             result[filename] = total_rules
             print(f"{filename}: {total_rules} rules")
 with open("statistic_rule_account.json", "w", encoding="utf-8") as f:

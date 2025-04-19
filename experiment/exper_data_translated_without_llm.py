@@ -91,6 +91,7 @@ def main():
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
     config_num = [2000]
+    # config_num = [388]
     local_EMmodel_path = '../EmbeddingModel/MiniLM-L6-v2'
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})
