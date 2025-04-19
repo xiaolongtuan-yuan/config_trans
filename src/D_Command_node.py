@@ -155,7 +155,7 @@ class CommandNode:
         param_embedding = self._get_param_embedding(embedding_model, param_text)
 
         # 融合特征
-        self.semantic_features = function_embedding.tolist()
+        self.semantic_features = self._get_base_embedding(embedding_model, function_text + param_text).tolist()
         '''self.semantic_features = self._fuse_embeddings(
             structural_embedding, function_embedding, param_embedding
         )'''
