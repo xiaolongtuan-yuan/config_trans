@@ -135,7 +135,7 @@ class CommandNode:
 class ConfigMatcher:
     def __init__(self, target_command_templates, semantic_topk=3):
         self.templates = target_command_templates  # 预加载的配置(节点)模板库
-        self.semantic_topk = 3  # 语义匹配top k纳入候选集
+        self.semantic_topk = semantic_topk  # 语义匹配top k纳入候选集
 
     def find_best_match(self, command_node):
         """执行多级匹配流程"""

@@ -120,6 +120,8 @@ def grammatical_match(device_name, match_rule, real_dir, config_model:{}):
                     error_mapping_rules[match_rule[0]].add(target_match[2])
                     error_mapping_rules_count[match_rule[0]] += 1
         else:
+            if target_template_matchs == '':
+                continue
             if target_template_matchs not in expected_templates+expected_extra_command:
                 error_mapping_rules[match_rule[0]].add(target_template_matchs)
                 error_mapping_rules_count[match_rule[0]] += 1

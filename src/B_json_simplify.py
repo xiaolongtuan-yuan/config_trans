@@ -203,6 +203,7 @@ if __name__ == "__main__":
                     continue
                 # Juniper配置层级多, 与huawei, cisco一致的化简流程会出错, 插入template保持一致
                 json_config = insert_template(json_config)
+
             json_config_simplified = simplify_json(json_config)
             json_name, _ = os.path.splitext(json_file)
             save_file_path = save_path + '/' + json_name + '.json'

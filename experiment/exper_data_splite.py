@@ -81,6 +81,26 @@ def delete_outdate_files(file_dir):
             print(f"Error deleting {file_path}: {e}")
 
 
+def find_lable_path(device_name, vendor):
+    lable_base_dirs = ["config_data_1-400",
+                       "config_data_401-800",
+                       "config_data_801-1200",
+                       "config_data_1600_1999",
+                       "config_data_2400-2889"]
+    VALID_FIRST_WORDS = ['set', 'delete', 'rename', 'deactivate', 'activate','replace','commit']
+    for lable_base_dir in lable_base_dirs:
+        file_path = os.path.join("../dataset_multi_vendor_config",lable_base_dir, vendor, f"{device_name}.txt")
+        if os.path.exists(file_path):
+            if vendor == 'Juniper':
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = [line for line in f.read().splitlines()
+                                   if line.strip() and not line.strip().startswith(('#', '!', '*', '/*', '*/'))]
+                    first_word = content[0].split()[0] if content else ''
+                    if first_word not in VALID_FIRST_WORDS:
+                        continue
+            return file_path
+    return None
+
 def main():
     # 创建输出目录
     output_base = 'exper_data'
@@ -88,6 +108,9 @@ def main():
     for vendor in vendors:
         os.makedirs(os.path.join(output_base, vendor), exist_ok=True)
         delete_outdate_files(os.path.join(output_base, vendor))
+
+        os.makedirs(os.path.join(output_base, 'lable', vendor), exist_ok=True)
+        delete_outdate_files(os.path.join(output_base, 'lable', vendor))
 
     # 获取Cisco目录下的所有json文件
     cisco_path = '../dataset_multi_vendor_config/Json_config/Cisco'
@@ -99,19 +122,31 @@ def main():
         device_name = Path(file).stem
         if validate_json_files(device_name):
             valid_devices.append(device_name)
-            if len(valid_devices) >= 600:
+            if len(valid_devices) >= 800:
                 break
 
     print(len(valid_devices))
-    # 复制有效文件到实验数据集目录
+    exper_data = 0
     for device in valid_devices:
+        has_lable = True
         for vendor in vendors:
-            src = os.path.join('../dataset_multi_vendor_config/Json_config', vendor, f"{device}.json")
-            dst = os.path.join(output_base, vendor, f"{device}.json")
-            shutil.copy(src, dst)
+            lable_path = find_lable_path(device, vendor)
+            if lable_path:
+                shutil.copy(lable_path, os.path.join(output_base, 'lable', vendor, f"{device}.txt"))
+            else:
+                has_lable = False
+                break
 
-    print(f"成功筛选并复制了{len(valid_devices)}个设备的配置文件到实验数据集目录")
+        if has_lable:
+            for vendor in vendors:
+                src = os.path.join('../dataset_multi_vendor_config/Json_config', vendor, f"{device}.json")
+                dst = os.path.join(output_base, vendor, f"{device}.json")
+                shutil.copy(src, dst)
+            exper_data += 1
+            if exper_data == 600:
+                break
 
+    print(f"成功筛选并复制了{exper_data}个设备的配置文件到实验数据集目录")
 
 if __name__ == '__main__':
     main()
