@@ -1,0 +1,305 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name PE2",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces gigabit-ethernet1/0/0 unit 0 family inet address 10.2.1.2/29",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如gigabit-ethernet1/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet echo-function bfd interval [parameter3] min-rx [parameter4] multiplier [parameter5]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet echo-function bfd interval [parameter3] min-rx [parameter4] multiplier [parameter5]",
+            "command": "set interfaces lo0 unit 0 family inet echo-function bfd interval 100 min-rx 100 multiplier 3",
+            "explanation": "配置接口的BFD（双向转发检测）参数。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如lo0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "interval",
+                    "type": "integer",
+                    "explanation": "BFD检测间隔时间，单位为毫秒。"
+                },
+                {
+                    "name": "min-rx",
+                    "type": "integer",
+                    "explanation": "BFD最小接收间隔时间，单位为毫秒。"
+                },
+                {
+                    "name": "multiplier",
+                    "type": "integer",
+                    "explanation": "BFD检测失败前的最大尝试次数。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet bfd-options address [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet bfd-options address [parameter3]",
+            "command": "set interfaces lo0 unit 0 family inet bfd-options address 3.3.3.3",
+            "explanation": "配置BFD选项中的地址。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如lo0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "address",
+                    "type": "string",
+                    "explanation": "BFD选项中的地址。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet bfd-options disable-echo": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet bfd-options disable-echo",
+            "command": "set interfaces lo0 unit 0 family inet bfd-options disable-echo",
+            "explanation": "禁用BFD的echo功能。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如lo0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                }
+            ]
+        }
+    },
+    "set tunnels": {
+        "template": "set tunnels",
+        "set tunnels ipv4 [parameter1] mode [parameter2]": {
+            "template": "set tunnels ipv4 [parameter1] mode [parameter2]",
+            "command": "set tunnels ipv4 tunnel-tun2 mode mpls traffic-eng",
+            "explanation": "配置IPv4隧道的模式为MPLS流量工程。",
+            "parameters": [
+                {
+                    "name": "tunnel-name",
+                    "type": "string",
+                    "explanation": "隧道名称，例如tunnel-tun2。"
+                },
+                {
+                    "name": "mode",
+                    "type": "string",
+                    "explanation": "隧道模式，例如mpls traffic-eng。"
+                }
+            ]
+        },
+        "set tunnels ipv4 [parameter1] destination [parameter2]": {
+            "template": "set tunnels ipv4 [parameter1] destination [parameter2]",
+            "command": "set tunnels ipv4 tunnel-tun2 destination 4.4.4.4",
+            "explanation": "配置IPv4隧道的目的地址。",
+            "parameters": [
+                {
+                    "name": "tunnel-name",
+                    "type": "string",
+                    "explanation": "隧道名称，例如tunnel-tun2。"
+                },
+                {
+                    "name": "destination",
+                    "type": "string",
+                    "explanation": "隧道的目的地址。"
+                }
+            ]
+        },
+        "set tunnels ipv4 [parameter1] traffic-eng record-route": {
+            "template": "set tunnels ipv4 [parameter1] traffic-eng record-route",
+            "command": "set tunnels ipv4 tunnel-tun2 traffic-eng record-route",
+            "explanation": "启用IPv4隧道的流量工程记录路由功能。",
+            "parameters": [
+                {
+                    "name": "tunnel-name",
+                    "type": "string",
+                    "explanation": "隧道名称，例如tunnel-tun2。"
+                }
+            ]
+        },
+        "set tunnels ipv4 [parameter1] traffic-eng backup-path [parameter2]": {
+            "template": "set tunnels ipv4 [parameter1] traffic-eng backup-path [parameter2]",
+            "command": "set tunnels ipv4 tunnel-tun2 traffic-eng backup-path ordinary-best-effort",
+            "explanation": "配置IPv4隧道的流量工程备份路径为普通尽力而为。",
+            "parameters": [
+                {
+                    "name": "tunnel-name",
+                    "type": "string",
+                    "explanation": "隧道名称，例如tunnel-tun2。"
+                },
+                {
+                    "name": "backup-path-type",
+                    "type": "string",
+                    "explanation": "备份路径类型，例如ordinary-best-effort。"
+                }
+            ]
+        },
+        "set tunnels ipv4 [parameter1] traffic-eng tunnel-id [parameter2]": {
+            "template": "set tunnels ipv4 [parameter1] traffic-eng tunnel-id [parameter2]",
+            "command": "set tunnels ipv4 tunnel-tun2 traffic-eng tunnel-id 502",
+            "explanation": "配置IPv4隧道的流量工程隧道ID。",
+            "parameters": [
+                {
+                    "name": "tunnel-name",
+                    "type": "string",
+                    "explanation": "隧道名称，例如tunnel-tun2。"
+                },
+                {
+                    "name": "tunnel-id",
+                    "type": "integer",
+                    "explanation": "隧道的唯一标识符。"
+                }
+            ]
+        }
+    },
+    "set routing-instances": {
+        "template": "set routing-instances",
+        "set routing-instances [parameter1] instance-type [parameter2]": {
+            "template": "set routing-instances [parameter1] instance-type [parameter2]",
+            "command": "set routing-instances default instance-type vlan",
+            "explanation": "配置路由实例的类型为VLAN。",
+            "parameters": [
+                {
+                    "name": "instance-name",
+                    "type": "string",
+                    "explanation": "路由实例名称，例如default。"
+                },
+                {
+                    "name": "instance-type",
+                    "type": "string",
+                    "explanation": "路由实例的类型，例如vlan。"
+                }
+            ]
+        },
+        "set routing-instances [parameter1] vrf-table-label [parameter2]": {
+            "template": "set routing-instances [parameter1] vrf-table-label [parameter2]",
+            "command": "set routing-instances default vrf-table-label yes",
+            "explanation": "启用路由实例的VRF表标签。",
+            "parameters": [
+                {
+                    "name": "instance-name",
+                    "type": "string",
+                    "explanation": "路由实例名称，例如default。"
+                },
+                {
+                    "name": "vrf-table-label",
+                    "type": "string",
+                    "explanation": "是否启用VRF表标签，例如yes或no。"
+                }
+            ]
+        },
+        "set routing-instances [parameter1] protocols bgp peer-group [parameter2]": {
+            "template": "set routing-instances [parameter1] protocols bgp peer-group [parameter2]",
+            "command": "set routing-instances default protocols bgp peer-group default",
+            "explanation": "配置路由实例的BGP对等组。",
+            "parameters": [
+                {
+                    "name": "instance-name",
+                    "type": "string",
+                    "explanation": "路由实例名称，例如default。"
+                },
+                {
+                    "name": "peer-group",
+                    "type": "string",
+                    "explanation": "BGP对等组名称，例如default。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols direct routed-host [parameter1]/[parameter2] next-hop [parameter3]": {
+            "template": "set protocols direct routed-host [parameter1]/[parameter2] next-hop [parameter3]",
+            "command": "set protocols direct routed-host 10.0.0.3/32 next-hop 10.2.1.1",
+            "explanation": "配置直接路由的主机地址及下一跳地址。",
+            "parameters": [
+                {
+                    "name": "host-address",
+                    "type": "string",
+                    "explanation": "主机地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "子网掩码的位数。"
+                },
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "下一跳地址。"
+                }
+            ]
+        }
+    },
+    "set routing-options": {
+        "template": "set routing-options",
+        "set routing-options static route [parameter1]/[parameter2] next-hop [parameter3]": {
+            "template": "set routing-options static route [parameter1]/[parameter2] next-hop [parameter3]",
+            "command": "set routing-options static route 0.0.0.0/0 next-hop 10.5.1.1",
+            "explanation": "配置静态路由的默认路由及下一跳地址。",
+            "parameters": [
+                {
+                    "name": "route",
+                    "type": "string",
+                    "explanation": "路由地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "子网掩码的位数。"
+                },
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "下一跳地址。"
+                }
+            ]
+        }
+    }
+}

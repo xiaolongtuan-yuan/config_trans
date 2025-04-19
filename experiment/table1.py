@@ -7,6 +7,14 @@
 import json
 import os
 
+import sys
+# 获取当前脚本的绝对路径
+current_script_path = os.path.abspath(__file__)
+# 获取项目根目录（假设 config_trans 是项目根目录）
+project_root = os.path.dirname(os.path.dirname(current_script_path))  # 上两级目录
+# 添加到 Python 模块搜索路径
+sys.path.append(project_root)
+
 from experiment.compute_bleu import compute_embded_similarity
 from experiment.syntax_correctness import load_config_model, cul_view_accuracy
 from experiment.tree_match import cul_command_accuracy, cul_grammatical_accuracy, cul_param_accuracy

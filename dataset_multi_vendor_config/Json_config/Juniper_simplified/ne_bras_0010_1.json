@@ -1,0 +1,191 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system radius-server [parameter1] secret [parameter2]": {
+            "template": "set system radius-server [parameter1] secret [parameter2]",
+            "command": "set system radius-server 10.1.123.151 secret \"%^%#}v{/ZA}>yTiC'[0bvy'X\"N[+,uj*U)L0^5;4Jtf6%^%#\"",
+            "explanation": "配置RADIUS服务器的IP地址和共享密钥。",
+            "parameters": [
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "RADIUS服务器的IP地址。"
+                },
+                {
+                    "name": "secret",
+                    "type": "string",
+                    "explanation": "与RADIUS服务器通信的共享密钥。"
+                }
+            ]
+        },
+        "set system authentication-order [parameter1]": {
+            "template": "set system authentication-order [parameter1]",
+            "command": "set system authentication-order radius",
+            "explanation": "设置认证顺序为RADIUS。",
+            "parameters": [
+                {
+                    "name": "authentication-method",
+                    "type": "string",
+                    "explanation": "认证方法，例如radius。"
+                }
+            ]
+        },
+        "set system services dhcp pool [parameter1] range [parameter2] to [parameter3]": {
+            "template": "set system services dhcp pool [parameter1] range [parameter2] to [parameter3]",
+            "command": "set system services dhcp pool a range 172.30.0.2 to 172.30.0.254",
+            "explanation": "配置DHCP服务的地址池范围。",
+            "parameters": [
+                {
+                    "name": "pool-name",
+                    "type": "string",
+                    "explanation": "DHCP地址池的名称。"
+                },
+                {
+                    "name": "start-ip",
+                    "type": "string",
+                    "explanation": "DHCP地址池的起始IP地址。"
+                },
+                {
+                    "name": "end-ip",
+                    "type": "string",
+                    "explanation": "DHCP地址池的结束IP地址。"
+                }
+            ]
+        },
+        "set system services dhcp default-router [parameter1]": {
+            "template": "set system services dhcp default-router [parameter1]",
+            "command": "set system services dhcp default-router 172.30.0.1",
+            "explanation": "配置DHCP服务的默认网关。",
+            "parameters": [
+                {
+                    "name": "default-router",
+                    "type": "string",
+                    "explanation": "DHCP服务的默认网关IP地址。"
+                }
+            ]
+        },
+        "set system services dhcp network [parameter1]": {
+            "template": "set system services dhcp network [parameter1]",
+            "command": "set system services dhcp network 172.30.0.0/24",
+            "explanation": "配置DHCP服务的网络地址和子网掩码。",
+            "parameters": [
+                {
+                    "name": "network",
+                    "type": "string",
+                    "explanation": "DHCP服务的网络地址和子网掩码。"
+                }
+            ]
+        },
+        "set system license security-services [parameter1]": {
+            "template": "set system license security-services [parameter1]",
+            "command": "set system license security-services enable",
+            "explanation": "启用安全服务许可证。",
+            "parameters": [
+                {
+                    "name": "action",
+                    "type": "string",
+                    "explanation": "启用或禁用安全服务许可证，例如enable。"
+                }
+            ]
+        }
+    },
+    "set access": {
+        "template": "set access",
+        "set access profile [parameter1] authentication [parameter2]": {
+            "template": "set access profile [parameter1] authentication [parameter2]",
+            "command": "set access profile rdp authentication radius",
+            "explanation": "配置访问控制列表的认证方法为RADIUS。",
+            "parameters": [
+                {
+                    "name": "profile-name",
+                    "type": "string",
+                    "explanation": "访问控制列表的名称。"
+                },
+                {
+                    "name": "authentication-method",
+                    "type": "string",
+                    "explanation": "认证方法，例如radius。"
+                }
+            ]
+        }
+    },
+    "set accounting-options": {
+        "template": "set accounting-options",
+        "set accounting-options [parameter1]": {
+            "template": "set accounting-options [parameter1]",
+            "command": "set accounting-options start-stop",
+            "explanation": "配置计费选项为开始-停止模式。",
+            "parameters": [
+                {
+                    "name": "mode",
+                    "type": "string",
+                    "explanation": "计费模式，例如start-stop。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces ge-0/0/1 unit 0 family inet address 10.1.0.197/8",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet mtu [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet mtu [parameter3]",
+            "command": "set interfaces ge-0/0/1 unit 0 family inet mtu 1500",
+            "explanation": "配置接口的MTU大小。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "mtu",
+                    "type": "integer",
+                    "explanation": "接口的最大传输单元大小。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] disable": {
+            "template": "set interfaces [parameter1] disable",
+            "command": "set interfaces ge-0/0/1 disable",
+            "explanation": "禁用指定接口。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                }
+            ]
+        }
+    }
+}

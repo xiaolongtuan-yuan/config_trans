@@ -1,0 +1,281 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name PE1",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols ldp router-id [parameter1]": {
+            "template": "set protocols ldp router-id [parameter1]",
+            "command": "set protocols ldp router-id loopback0",
+            "explanation": "配置LDP协议的Router ID。",
+            "parameters": [
+                {
+                    "name": "router-id",
+                    "type": "string",
+                    "explanation": "LDP协议的Router ID，通常为环回接口地址。"
+                }
+            ]
+        },
+        "set protocols ldp interface [parameter1] label protocol ldp": {
+            "template": "set protocols ldp interface [parameter1] label protocol ldp",
+            "command": "set protocols ldp interface GigabitEthernet1/0/0 label protocol ldp",
+            "explanation": "在指定接口上启用LDP标签分发协议。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如GigabitEthernet1/0/0。"
+                }
+            ]
+        },
+        "set protocols ospf [parameter1] area [parameter2] network [parameter3]/[parameter4]": {
+            "template": "set protocols ospf [parameter1] area [parameter2] network [parameter3]/[parameter4]",
+            "command": "set protocols ospf 1 area 0 network 1.1.1.1/32",
+            "explanation": "配置OSPF协议的网络区域。",
+            "parameters": [
+                {
+                    "name": "ospf-process-id",
+                    "type": "integer",
+                    "explanation": "OSPF进程ID。"
+                },
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "OSPF区域号。"
+                },
+                {
+                    "name": "network-address",
+                    "type": "string",
+                    "explanation": "网络地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "子网掩码的位数。"
+                }
+            ]
+        }
+    },
+    "set vlans": {
+        "template": "set vlans",
+        "set vlans [parameter1] vntag [parameter2]": {
+            "template": "set vlans [parameter1] vntag [parameter2]",
+            "command": "set vlans v1 vntag 10",
+            "explanation": "配置VLAN的VNTAG。",
+            "parameters": [
+                {
+                    "name": "vlan-name",
+                    "type": "string",
+                    "explanation": "VLAN名称。"
+                },
+                {
+                    "name": "vntag",
+                    "type": "integer",
+                    "explanation": "VNTAG值。"
+                }
+            ]
+        },
+        "set vlans [parameter1] l2transport vc [parameter2] oam-aggregated ethtype-cm mpp-map md-level [parameter3] md-name [parameter4] ma-name [parameter5]": {
+            "template": "set vlans [parameter1] l2transport vc [parameter2] oam-aggregated ethtype-cm mpp-map md-level [parameter3] md-name [parameter4] ma-name [parameter5]",
+            "command": "set vlans v1 l2transport vc 20 oam-aggregated ethtype-cm mpp-map md-level 1 md-name md1 ma-name ma1",
+            "explanation": "配置VLAN的L2传输VC及相关OAM参数。",
+            "parameters": [
+                {
+                    "name": "vlan-name",
+                    "type": "string",
+                    "explanation": "VLAN名称。"
+                },
+                {
+                    "name": "vc-id",
+                    "type": "integer",
+                    "explanation": "VC ID。"
+                },
+                {
+                    "name": "md-level",
+                    "type": "integer",
+                    "explanation": "MD级别。"
+                },
+                {
+                    "name": "md-name",
+                    "type": "string",
+                    "explanation": "MD名称。"
+                },
+                {
+                    "name": "ma-name",
+                    "type": "string",
+                    "explanation": "MA名称。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family ethernet-switching vlan members [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching vlan members [parameter3]",
+            "command": "set interfaces ge-1/0/0 unit 1 family ethernet-switching vlan members v1",
+            "explanation": "配置接口的以太网交换VLAN成员。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "vlan-name",
+                    "type": "string",
+                    "explanation": "VLAN名称。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] encapsulation dot1q [parameter3] xconnect vsi [parameter4] group [parameter5] pw-id [parameter6]": {
+            "template": "set interfaces [parameter1] unit [parameter2] encapsulation dot1q [parameter3] xconnect vsi [parameter4] group [parameter5] pw-id [parameter6]",
+            "command": "set interfaces ge-1/0/0.1 unit encapsulation dot1q 10 xconnect vsi v1 group 20 pw-id 20",
+            "explanation": "配置接口的Dot1Q封装及跨接VSI。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0.1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "Dot1Q VLAN ID。"
+                },
+                {
+                    "name": "vsi-name",
+                    "type": "string",
+                    "explanation": "VSI名称。"
+                },
+                {
+                    "name": "group-id",
+                    "type": "integer",
+                    "explanation": "组ID。"
+                },
+                {
+                    "name": "pw-id",
+                    "type": "integer",
+                    "explanation": "PW ID。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces ge-2/0/0 unit 0 family inet address 192.168.1.1/24",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-2/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family mpls ip": {
+            "template": "set interfaces [parameter1] unit [parameter2] family mpls ip",
+            "command": "set interfaces ge-2/0/0 unit 0 family mpls ip",
+            "explanation": "在接口上启用MPLS IP功能。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-2/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family mpls ldp": {
+            "template": "set interfaces [parameter1] unit [parameter2] family mpls ldp",
+            "command": "set interfaces ge-2/0/0 unit 0 family mpls ldp",
+            "explanation": "在接口上启用MPLS LDP功能。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-2/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                }
+            ]
+        }
+    },
+    "set forwarders": {
+        "template": "set forwarders",
+        "set forwarders ethernet cfm md [parameter1] ma [parameter2] service [parameter3] mep [parameter4] direction [parameter5] ccm-send": {
+            "template": "set forwarders ethernet cfm md [parameter1] ma [parameter2] service [parameter3] mep [parameter4] direction [parameter5] ccm-send",
+            "command": "set forwarders ethernet cfm md md1 ma ma1 service vsi1 mep 2 direction outbound ccm-send",
+            "explanation": "配置以太网CFM的MD、MA、服务、MEP方向及CCM发送。",
+            "parameters": [
+                {
+                    "name": "md-name",
+                    "type": "string",
+                    "explanation": "MD名称。"
+                },
+                {
+                    "name": "ma-name",
+                    "type": "string",
+                    "explanation": "MA名称。"
+                },
+                {
+                    "name": "service-name",
+                    "type": "string",
+                    "explanation": "服务名称。"
+                },
+                {
+                    "name": "mep-id",
+                    "type": "integer",
+                    "explanation": "MEP ID。"
+                },
+                {
+                    "name": "direction",
+                    "type": "string",
+                    "explanation": "MEP方向，例如outbound。"
+                }
+            ]
+        }
+    }
+}

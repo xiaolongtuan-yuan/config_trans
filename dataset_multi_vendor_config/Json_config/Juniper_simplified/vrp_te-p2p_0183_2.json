@@ -1,0 +1,295 @@
+{
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family ethernet-switching port-mode [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching port-mode [parameter3]",
+            "command": "set interfaces eth0 unit 0 family ethernet-switching port-mode trunk",
+            "explanation": "配置以太网接口的交换模式为trunk。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如eth0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "port-mode",
+                    "type": "string",
+                    "explanation": "接口的交换模式，例如trunk。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces lo0 unit 0 family inet address 192.168.1.2/32",
+            "explanation": "配置环回接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如lo0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols lldp run": {
+            "template": "set protocols lldp run",
+            "command": "set protocols lldp run",
+            "explanation": "启用LLDP协议。",
+            "parameters": []
+        },
+        "set protocols lldp enable interface [parameter1]": {
+            "template": "set protocols lldp enable interface [parameter1]",
+            "command": "set protocols lldp enable interface all",
+            "explanation": "在所有接口上启用LLDP协议。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，all表示所有接口。"
+                }
+            ]
+        }
+    },
+    "set failover": {
+        "template": "set failover",
+        "set failover group [parameter1] primary-interface [parameter2]": {
+            "template": "set failover group [parameter1] primary-interface [parameter2]",
+            "command": "set failover group mgmt primary-interface ge-0/0/0",
+            "explanation": "配置故障转移组的主接口。",
+            "parameters": [
+                {
+                    "name": "group",
+                    "type": "string",
+                    "explanation": "故障转移组的名称。"
+                },
+                {
+                    "name": "primary-interface",
+                    "type": "string",
+                    "explanation": "主接口的名称。"
+                }
+            ]
+        }
+    },
+    "set routing-options": {
+        "template": "set routing-options",
+        "set routing-options static route [parameter1]/[parameter2] next-hop [parameter3]": {
+            "template": "set routing-options static route [parameter1]/[parameter2] next-hop [parameter3]",
+            "command": "set routing-options static route 0.0.0.0/0 next-hop 192.168.1.1",
+            "explanation": "配置静态路由。",
+            "parameters": [
+                {
+                    "name": "destination",
+                    "type": "string",
+                    "explanation": "目标网络地址。"
+                },
+                {
+                    "name": "prefix-length",
+                    "type": "integer",
+                    "explanation": "目标网络的子网掩码长度。"
+                },
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "下一跳地址。"
+                }
+            ]
+        }
+    },
+    "set system": {
+        "template": "set system",
+        "set system services ssh host-key algorithm [parameter1]": {
+            "template": "set system services ssh host-key algorithm [parameter1]",
+            "command": "set system services ssh host-key algorithm all",
+            "explanation": "配置SSH服务的主机密钥算法。",
+            "parameters": [
+                {
+                    "name": "algorithm",
+                    "type": "string",
+                    "explanation": "主机密钥算法，all表示支持所有算法。"
+                }
+            ]
+        },
+        "set system services api key-management keys [parameter1] key [parameter2]": {
+            "template": "set system services api key-management keys [parameter1] key [parameter2]",
+            "command": "set system services api key-management keys admin key 加密后的密钥",
+            "explanation": "配置API服务的密钥管理。",
+            "parameters": [
+                {
+                    "name": "user",
+                    "type": "string",
+                    "explanation": "用户名。"
+                },
+                {
+                    "name": "key",
+                    "type": "string",
+                    "explanation": "加密后的密钥。"
+                }
+            ]
+        }
+    },
+    "set security": {
+        "template": "set security",
+        "set security policies from-zone [parameter1] to-zone [parameter2] policy [parameter3] match destination-address [parameter4]": {
+            "template": "set security policies from-zone [parameter1] to-zone [parameter2] policy [parameter3] match destination-address [parameter4]",
+            "command": "set security policies from-zone Trust to-zone Untrust policy Allow-All match destination-address Any",
+            "explanation": "配置安全策略的匹配条件。",
+            "parameters": [
+                {
+                    "name": "from-zone",
+                    "type": "string",
+                    "explanation": "源安全区域。"
+                },
+                {
+                    "name": "to-zone",
+                    "type": "string",
+                    "explanation": "目标安全区域。"
+                },
+                {
+                    "name": "policy",
+                    "type": "string",
+                    "explanation": "策略名称。"
+                },
+                {
+                    "name": "destination-address",
+                    "type": "string",
+                    "explanation": "目标地址，Any表示任意地址。"
+                }
+            ]
+        },
+        "set security policies from-zone [parameter1] to-zone [parameter2] policy [parameter3] then [parameter4]": {
+            "template": "set security policies from-zone [parameter1] to-zone [parameter2] policy [parameter3] then [parameter4]",
+            "command": "set security policies from-zone Trust to-zone Untrust policy Allow-All then permit",
+            "explanation": "配置安全策略的动作。",
+            "parameters": [
+                {
+                    "name": "from-zone",
+                    "type": "string",
+                    "explanation": "源安全区域。"
+                },
+                {
+                    "name": "to-zone",
+                    "type": "string",
+                    "explanation": "目标安全区域。"
+                },
+                {
+                    "name": "policy",
+                    "type": "string",
+                    "explanation": "策略名称。"
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "explanation": "动作，permit表示允许。"
+                }
+            ]
+        },
+        "set security zones security-zone [parameter1] interface [parameter2]": {
+            "template": "set security zones security-zone [parameter1] interface [parameter2]",
+            "command": "set security zones security-zone Trust interface lo0.0",
+            "explanation": "配置安全区域的接口。",
+            "parameters": [
+                {
+                    "name": "security-zone",
+                    "type": "string",
+                    "explanation": "安全区域名称。"
+                },
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称。"
+                }
+            ]
+        },
+        "set security authentication login user [parameter1] password encrypted[parameter2]": {
+            "template": "set security authentication login user [parameter1] password encrypted[parameter2]",
+            "command": "set security authentication login user admin password encrypted密码123456",
+            "explanation": "配置用户登录的加密密码。",
+            "parameters": [
+                {
+                    "name": "user",
+                    "type": "string",
+                    "explanation": "用户名。"
+                },
+                {
+                    "name": "password",
+                    "type": "string",
+                    "explanation": "加密后的密码。"
+                }
+            ]
+        }
+    },
+    "set vlans": {
+        "template": "set vlans",
+        "set vlans [parameter1] vrrp-group [parameter2] virtual-router-id [parameter3] primary-vrf [parameter4]": {
+            "template": "set vlans [parameter1] vrrp-group [parameter2] virtual-router-id [parameter3] primary-vrf [parameter4]",
+            "command": "set vlans Management vrrp-group 1 virtual-router-id 1 primary-vrf Vlan1",
+            "explanation": "配置VLAN的VRRP组。",
+            "parameters": [
+                {
+                    "name": "vlan",
+                    "type": "string",
+                    "explanation": "VLAN名称。"
+                },
+                {
+                    "name": "vrrp-group",
+                    "type": "integer",
+                    "explanation": "VRRP组号。"
+                },
+                {
+                    "name": "virtual-router-id",
+                    "type": "integer",
+                    "explanation": "虚拟路由器ID。"
+                },
+                {
+                    "name": "primary-vrf",
+                    "type": "string",
+                    "explanation": "主VRF名称。"
+                }
+            ]
+        },
+        "set vlans [parameter1] vrrp-group [parameter2] priority [parameter3]": {
+            "template": "set vlans [parameter1] vrrp-group [parameter2] priority [parameter3]",
+            "command": "set vlans Management vrrp-group 1 priority 150",
+            "explanation": "配置VRRP组的优先级。",
+            "parameters": [
+                {
+                    "name": "vlan",
+                    "type": "string",
+                    "explanation": "VLAN名称。"
+                },
+                {
+                    "name": "vrrp-group",
+                    "type": "integer",
+                    "explanation": "VRRP组号。"
+                },
+                {
+                    "name": "priority",
+                    "type": "integer",
+                    "explanation": "优先级。"
+                }
+            ]
+        }
+    }
+}

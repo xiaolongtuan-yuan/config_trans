@@ -1,0 +1,213 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name DeviceA",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        },
+        "set system authentication-order [parameter1]": {
+            "template": "set system authentication-order [parameter1]",
+            "command": "set system authentication-order tacplus",
+            "explanation": "配置系统的认证顺序为TACACS+。",
+            "parameters": [
+                {
+                    "name": "authentication-method",
+                    "type": "string",
+                    "explanation": "认证方法，例如tacplus。"
+                }
+            ]
+        },
+        "set system login user [parameter1] authentication encrypted-password [parameter2]": {
+            "template": "set system login user [parameter1] authentication encrypted-password [parameter2]",
+            "command": "set system login user nms2-admin authentication encrypted-password \"$1$gXnG$Oa1s4f1Sx6lQ4z1mGAb7Q1\"",
+            "explanation": "为用户配置加密的认证密码。",
+            "parameters": [
+                {
+                    "name": "username",
+                    "type": "string",
+                    "explanation": "用户名。"
+                },
+                {
+                    "name": "encrypted-password",
+                    "type": "string",
+                    "explanation": "加密后的密码。"
+                }
+            ]
+        }
+    },
+    "set snmp": {
+        "template": "set snmp",
+        "set snmp v3 usm local-engine user [parameter1] authentication-sha [parameter2] privacy-aes128 [parameter3]": {
+            "template": "set snmp v3 usm local-engine user [parameter1] authentication-sha [parameter2] privacy-aes128 [parameter3]",
+            "command": "set snmp v3 usm local-engine user nms2-admin authentication-sha \"%$%$n}=%C*UimYlx9-:$>T=*_y4PX*e~u6I_Aa9s=I1$%$%\" privacy-aes128 \"%$%$at{pQGh!uMyq..8WSJ(<bU`~K_)[f-}s&*Gmw!iE%$%$\"",
+            "explanation": "配置SNMPv3用户的安全认证和加密参数。",
+            "parameters": [
+                {
+                    "name": "username",
+                    "type": "string",
+                    "explanation": "SNMPv3用户名。"
+                },
+                {
+                    "name": "authentication-sha",
+                    "type": "string",
+                    "explanation": "SHA认证密钥。"
+                },
+                {
+                    "name": "privacy-aes128",
+                    "type": "string",
+                    "explanation": "AES128加密密钥。"
+                }
+            ]
+        },
+        "set snmp community [parameter1] authorization [parameter2]": {
+            "template": "set snmp community [parameter1] authorization [parameter2]",
+            "command": "set snmp community public authorization read-only",
+            "explanation": "配置SNMP社区字符串及其权限。",
+            "parameters": [
+                {
+                    "name": "community",
+                    "type": "string",
+                    "explanation": "SNMP社区字符串。"
+                },
+                {
+                    "name": "authorization",
+                    "type": "string",
+                    "explanation": "授权类型，例如read-only。"
+                }
+            ]
+        },
+        "set snmp trap-options [parameter1]": {
+            "template": "set snmp trap-options [parameter1]",
+            "command": "set snmp trap-options link-down",
+            "explanation": "配置SNMP陷阱选项为链路断开。",
+            "parameters": [
+                {
+                    "name": "trap-option",
+                    "type": "string",
+                    "explanation": "SNMP陷阱选项，例如link-down。"
+                }
+            ]
+        },
+        "set snmp trap-group [parameter1] targets [parameter2]": {
+            "template": "set snmp trap-group [parameter1] targets [parameter2]",
+            "command": "set snmp trap-group default targets 1.1.2.1",
+            "explanation": "配置SNMP陷阱组的目标地址。",
+            "parameters": [
+                {
+                    "name": "trap-group",
+                    "type": "string",
+                    "explanation": "陷阱组名称。"
+                },
+                {
+                    "name": "target-address",
+                    "type": "string",
+                    "explanation": "目标IP地址。"
+                }
+            ]
+        },
+        "set snmp contact [parameter1]": {
+            "template": "set snmp contact [parameter1]",
+            "command": "set snmp contact \"Operator at 010-12345678\"",
+            "explanation": "配置SNMP联系信息。",
+            "parameters": [
+                {
+                    "name": "contact-info",
+                    "type": "string",
+                    "explanation": "联系信息。"
+                }
+            ]
+        },
+        "set snmp trap-group [parameter1] version [parameter2]": {
+            "template": "set snmp trap-group [parameter1] version [parameter2]",
+            "command": "set snmp trap-group default version v3",
+            "explanation": "配置SNMP陷阱组的版本。",
+            "parameters": [
+                {
+                    "name": "trap-group",
+                    "type": "string",
+                    "explanation": "陷阱组名称。"
+                },
+                {
+                    "name": "version",
+                    "type": "string",
+                    "explanation": "SNMP版本，例如v3。"
+                }
+            ]
+        },
+        "set snmp trap-group [parameter1] categories [parameter2]": {
+            "template": "set snmp trap-group [parameter1] categories [parameter2]",
+            "command": "set snmp trap-group default categories authentication",
+            "explanation": "配置SNMP陷阱组的认证类别。",
+            "parameters": [
+                {
+                    "name": "trap-group",
+                    "type": "string",
+                    "explanation": "陷阱组名称。"
+                },
+                {
+                    "name": "category",
+                    "type": "string",
+                    "explanation": "陷阱类别，例如authentication。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces ge-0/0/0 unit 0 family inet address 1.1.2.1/24",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols ospf area [parameter1] interface [parameter2]": {
+            "template": "set protocols ospf area [parameter1] interface [parameter2]",
+            "command": "set protocols ospf area 0.0.0.0 interface ge-0/0/0",
+            "explanation": "配置OSPF协议的接口。",
+            "parameters": [
+                {
+                    "name": "area",
+                    "type": "string",
+                    "explanation": "OSPF区域ID。"
+                },
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称。"
+                }
+            ]
+        }
+    }
+}

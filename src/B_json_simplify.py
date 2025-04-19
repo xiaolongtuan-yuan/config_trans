@@ -190,12 +190,16 @@ if __name__ == "__main__":
         save_path = str(project_root / 'dataset_multi_vendor_config/Json_config/{}'.format(vendor+'_simplified'))
         json_files = get_json_filenames(folder_path)
         i = 0
+        index = 0
         for json_file in json_files:
+            index += 1
+            if index >= 400:
+                break
             json_config_path = folder_path + '/' + json_file
             json_config = load_json_file(json_config_path)
             if vendor == 'Juniper':
                 if not check_juniper_config(json_config):
-                    print(json_file)
+                    print(json_file, index)
                     continue
                 # Juniper配置层级多, 与huawei, cisco一致的化简流程会出错, 插入template保持一致
                 json_config = insert_template(json_config)
@@ -204,6 +208,6 @@ if __name__ == "__main__":
             save_file_path = save_path + '/' + json_name + '.json'
             save_json_file(json_config_simplified, save_file_path)
             i += 1
-        print("finished" + str(i))
+        print("finished: " + str(i))
 
 
