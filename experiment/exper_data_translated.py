@@ -99,8 +99,8 @@ def main():
     output_dir = './exper_data/translated_config'
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
-    config_num = [100, 500, 1000, 2000]
-    # config_num = [2000]
+    # config_num = [100, 500, 1000, 2000]
+    config_num = [2000]
     local_EMmodel_path = '../EmbeddingModel/MiniLM-L6-v2'
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})
@@ -110,9 +110,9 @@ def main():
             for target_vendor in vendors:
                 if source_vendor == target_vendor:
                     continue
-                if (not source_vendor == 'Juniper') and (not target_vendor == 'Juniper'): # 只翻译Juniper到其他供应商
+                # if (not source_vendor == 'Juniper') and (not target_vendor == 'Juniper'): # 只翻译Juniper到其他供应商
                 # if (source_vendor == 'Juniper') or (target_vendor == 'Juniper'): # 不考虑juniper
-                    continue
+                #     continue
                 source_config_dir = f'./exper_data/{source_vendor}'
                 output_save_dir = os.path.join(output_dir, str(scale), source_vendor)  # 当前处理的是哪个scale的哪个源供应商
                 os.makedirs(output_save_dir, exist_ok=True)
