@@ -15,6 +15,7 @@ import json
 import shutil
 from pathlib import Path
 
+VALID_FIRST_WORDS = ['set', 'delete', 'rename', 'deactivate', 'activate','replace','commit']
 
 def process_juniper_json(json_config):
     processed_json = {}
@@ -35,6 +36,9 @@ def juniper_config_filter(config):
         return False
     for command in config.keys():
         if command in juniper_error_commands:
+            return False
+        first_word = command.split()[0] if command else ''
+        if first_word not in VALID_FIRST_WORDS:
             return False
 
     return True
@@ -87,7 +91,6 @@ def find_lable_path(device_name, vendor):
                        "config_data_801-1200",
                        "config_data_1600_1999",
                        "config_data_2400-2889"]
-    VALID_FIRST_WORDS = ['set', 'delete', 'rename', 'deactivate', 'activate','replace','commit']
     for lable_base_dir in lable_base_dirs:
         file_path = os.path.join("../dataset_multi_vendor_config",lable_base_dir, vendor, f"{device_name}.txt")
         if os.path.exists(file_path):

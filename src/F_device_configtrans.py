@@ -395,7 +395,7 @@ class Config_Translater:
 
         if not istatistics:
             # 阶段二：模糊映射fuzzy_mapping-->针对规则映射库未覆盖的配置命令
-            config_match = self.fuzzy_mapping(rest_commands_feature, config_match, vendor, target_vendor,  tau=0.65)
+            config_match = self.fuzzy_mapping(rest_commands_feature, config_match, vendor, target_vendor,  tau=0)
 
             # 阶段四：配置命令编排，配置参数直接填充
             arranged_config = self.config_arranging(config_match, target_vendor)
@@ -1156,7 +1156,7 @@ if __name__ == "__main__":
                                           translation_llm, embedding_model)
 
     # translation test
-    file_name = 'ne_1588v2_5025_1'
+    file_name = 'ne_mpls-l3vpn-v4_0016_0'
     config_path = str(project_root / f'dataset_multi_vendor_config/test/{file_name}.json')
 
     source_vendor = 'Cisco'
@@ -1166,7 +1166,7 @@ if __name__ == "__main__":
         json_config = process_juniper_json(json_config)
     # 翻译Cisco配置到HUAWEI配置
 
-    translation_result, _ = config_translater.translation(json_config, source_vendor, target_vendor)
+    translation_result, _ = config_translater.translation_without_llm(json_config, source_vendor, target_vendor)
     print(f'Translation result of {target_vendor} is: \n{translation_result}')
 
     # save_path = str(

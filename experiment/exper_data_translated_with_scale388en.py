@@ -60,8 +60,6 @@ def translate_single_file(config_translater, input_dir, output_dir,
     # 加载配置
     config_path = os.path.join(input_dir, config_file)
     json_config = load_json_file(config_path)
-    if source_vendor == 'Juniper':
-        json_config = process_juniper_json(json_config)
     file_name = os.path.splitext(config_file)[0]
 
     # 翻译到目标供应商
@@ -100,7 +98,10 @@ def main():
             for target_vendor in vendors:
                 if source_vendor == target_vendor:
                     continue
-                source_config_dir = f'./exper_data/{source_vendor}'
+                # if not source_vendor == 'Juniper':
+                #     continue
+                source_config_dir = f'./exper_data/{source_vendor}' if source_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
+
                 output_save_dir = os.path.join(output_dir, str(scale), source_vendor)  # 当前处理的是哪个scale的哪个源供应商
                 os.makedirs(output_save_dir, exist_ok=True)
                 delete_outdate_files(os.path.join(output_dir, str(scale), source_vendor, target_vendor))
