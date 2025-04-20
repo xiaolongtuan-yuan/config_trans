@@ -515,7 +515,8 @@ class Config_Translater:
             paras = self.para_extract(item_k, config_matches[item_k]['template'])
             arranged_command[item_k] = {'para': paras}
             # 如果是list需要遍历整合信息
-            if isinstance(item_v['match'], list):
+            # if isinstance(item_v['match'], list):
+            if len(item_v['match']) == 4:
                 for para_match in item_v['match']:  # 遍历每一个参数映射信息
                     # 查找翻译命令的视图层级
                     if isinstance(para_match, list):
@@ -584,7 +585,7 @@ class Config_Translater:
                                         para_match[1]] = 1
                                 except IndexError:
                                     print(f"IndexError: para_placeholders index out of range: {para_match}")
-            # 不是list，没有参数
+            # 旧：不是list，没有参数， 新：都是list，没参数的只有两项，命令和父命令
             else:
                 # 查找翻译命令的视图层级
                 translated_command = item_v['match']  # 纠正错误

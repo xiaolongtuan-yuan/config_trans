@@ -17,7 +17,8 @@ warnings.filterwarnings("ignore", category=UserWarning, module="torch")
 # depth_commmand-->配置命令层级
 # 输出---
 # Command_Nodes
-def parse_command_node(Command_nodes: dict, config_model: dict, embedding_model, parent_command='system', depth=0):
+def parse_command_node(Command_nodes: dict, config_model: dict, embedding_model, parent_command=[], depth=0):
+    # print(parent_command)
     for k, sub_dict in config_model.items():
         if not isinstance(sub_dict, dict):
             continue
@@ -66,7 +67,7 @@ def parse_command_node(Command_nodes: dict, config_model: dict, embedding_model,
         '''for child_k, child_v in sub_dict.items():
             if not isinstance(child_v, dict):
                 continue'''
-        parse_command_node(Command_nodes, sub_dict, embedding_model, k, depth + 1)
+        parse_command_node(Command_nodes, sub_dict, embedding_model, parent_command + [str(k)], depth + 1)
 
     return Command_nodes
 
@@ -136,7 +137,8 @@ class CommandNode:
            参数合集特征T_{P}，汇总了所有配置参数的名称、类型与解释'''
         structural_text = str(structural_features['depth']) + \
                           str(len(structural_features['params'])) + \
-                          structural_features['parent_command']
+                          ' '.join(structural_features['parent_command'])
+                          # structural_features['parent_command']
 
         function_text = semantic_features['template'] + \
                        semantic_features['command'] +\
