@@ -18,7 +18,7 @@ if __name__ == '__main__':
     translated_config_base = './exper_data/translated_config_with_scale388en'
     vendor_config_models = {}
     for vendor in vendors:
-        config_model_path = f'../dataset_multi_vendor_config/config_model/different_scale/{vendor}_2000.json'
+        config_model_path = f'../dataset_multi_vendor_config/config_model/scale388en/{vendor}_388.json'
         config_model = load_config_model(config_model_path)
         vendor_config_models[vendor] = config_model
 

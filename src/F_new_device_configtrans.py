@@ -1,7 +1,6 @@
 # 从json解析配置到目标供应商配置
 import os
 import types
-from collections import OrderedDict
 from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
 from pathlib import Path
@@ -15,7 +14,6 @@ import torch
 import warnings
 import re
 
-from torch.nn.functional import selu_
 
 warnings.filterwarnings("ignore", category=UserWarning, module="torch")
 
@@ -130,7 +128,6 @@ class CommandNode:
         attention_weights = torch.softmax(torch.cat([structure, function, param]), dim=0)
         return (structure * attention_weights[0] + function * attention_weights[1] + param * attention_weights[2]).tolist()
 
-
 # 同阶段5--ConfigMatcher
 class ConfigMatcher:
     def __init__(self, target_command_templates, semantic_topk=3):
@@ -236,7 +233,6 @@ class ConfigMatcher:
             # print('corespond command {}'.format(ranked_candidates[0][0]))
             return ranked_candidates[0][0]
 
-
 # 同阶段3的insert_template
 # insert 'template' item into juniper config model
 def insert_template(config_model: dict) -> dict:
@@ -255,7 +251,6 @@ def insert_template(config_model: dict) -> dict:
             insert_template({child_k: child_v})
 
     return config_model
-
 
 # 拆分出配置命令节点（不同于阶段4中，未做文本嵌入）
 def parse_command_node(Command_nodes: dict, config_model: dict, parent_command='system', depth=0):
@@ -503,34 +498,46 @@ class Config_Translater:
     def LLMmodel_mapping(self, rest_commands_feature, config_match, vendor, target_vendor):
         raise NotImplementedError
 
+    # 阶段四进行配置编排，对应正确的视图
     def config_arranging(self, config_matches, target_vendor):
         arranged_command = {}
+        # Juniper没有视图层级, 按顺序输出配置命令即可
         for item_k, item_v in config_matches.items():
+            # 依据翻译命令的视图深度实现编排{0:{c0:[4,[0,0,1,1]]}}
+            # paras-->具体配置参数值, depth-->第零层, translated_command-->命令模板, 
+            # para_num-->参数数量, para_placeholders-->[0,0,1,1]参数填充占位标识,
+            # para_match --> 参数映射,  target_command--> 最终翻译命令
             paras = self.para_extract(item_k, config_matches[item_k]['template'])
             arranged_command[item_k] = {'para': paras}
             # 如果是list需要遍历整合信息
-            if isinstance(item_v['match'], list):
+            if isinstance(item_v['match'][0], list):
                 for para_match in item_v['match']:  # 遍历每一个参数映射信息
                     # 查找翻译命令的视图层级
-                    if isinstance(para_match, list):
-                        translated_command = para_match[-1]  # 翻译的配置命令
+                    if len(para_match) == 4:
+                        translated_command = para_match[2]  # 翻译的配置命令
+                    elif len(para_match) == 2:
+                        translated_command = para_match[0]
                     else:
-                        translated_command = para_match
+                        raise ValueError("para_match length error")
                     # 配置命令节点
                     try:
-                        command_node = self.config_matchers[target_vendor].templates[translated_command]
+                        command_node = self.config_matchers[target_vendor].templates[translated_command]  # 至少这这前面的不能随便改
                     except KeyError:
                         print(f"KeyError: {translated_command}")
                         continue
+                    # 命令视图层级
                     depth = command_node['structural_features']['command_depth']
+                    # 参数数量
                     para_num = command_node['structural_features']['param_signature']['count']
-                    parent_command = command_node['structural_features']['context_topology']['parent_command']
+                    parent_commands = para_match[-1]
+                    # 如果不包含该层级
                     if depth not in arranged_command[item_k].keys():
-                        para_placeholders = [0] if para_num == 0 else [0] * para_num
-                        if isinstance(para_match, list):
+                        para_placeholders = [0] if para_num == 0 else [
+                                                                          0] * para_num  # 为什么每一个参数映射信息都要有一个站位符呢？而且站位符的长度是目标命令的参数数量？
+                        if len(para_match) == 4:
                             if not -1 in para_match:
                                 try:
-                                    para_placeholders[para_match[1]] = 1
+                                    para_placeholders[para_match[1]] = 1  # ==1表示目标命令的该位置被映射到了
                                 except IndexError:
                                     print(f"IndexError: para_placeholders index out of range: {para_match}")
                         arranged_command[item_k][depth] = {translated_command:
@@ -540,14 +547,14 @@ class Config_Translater:
                                                                                                      item_v['match'],
                                                                                                      translated_command),
                                                                 'target_command': translated_command,
-                                                                'parent_node': parent_command}
+                                                                'parent_node': parent_commands}
                                                            }
                     # 如果该层级中不包含这一配置命令
                     elif translated_command not in arranged_command[item_k][depth].keys():
                         # 参数填充占位符
                         para_placeholders = [0] if para_num == 0 else [
                                                                           0] * para_num
-                        if isinstance(para_match, list):
+                        if len(para_match) == 4:
                             if not -1 in para_match:
                                 try:
                                     para_placeholders[para_match[1]] = 1
@@ -562,29 +569,36 @@ class Config_Translater:
                                                                                                               'match'],
                                                                                                           translated_command),
                                                                      'target_command': translated_command,
-                                                                     'parent_node': parent_command}
+                                                                     'parent_node': parent_commands}
                                                                 })
+                    # 如果该层级包含这一配置命令
                     else:
-                        if isinstance(para_match, list):
+                        if len(para_match) == 4:
                             if not -1 in para_match:
                                 try:
                                     arranged_command[item_k][depth][translated_command]['para_placeholders'][
                                         para_match[1]] = 1
                                 except IndexError:
                                     print(f"IndexError: para_placeholders index out of range: {para_match}")
+            # 都是list，没参数的只有两项，命令和父命令
             else:
-                translated_command = item_v['match']  # 纠正错误
+                # 查找翻译命令的视图层级
+                translated_command = item_v['match'][0]  # 纠正错误
                 if not translated_command: # 空字符
                     continue
+                # 配置命令节点
                 try:
                     command_node = self.config_matchers[target_vendor].templates[translated_command]  # 至少这这前面的不能随便改
                 except KeyError:
                     print(f"KeyError: {translated_command}")
                     continue
+                # 命令视图层级
                 depth = command_node['structural_features']['command_depth']
+                # 参数数量
                 para_num = command_node['structural_features']['param_signature'].get('count', 0)
+                # 参数填充占位符
                 para_placeholders = [0] if para_num == 0 else [0] * para_num
-                parent_command = command_node['structural_features']['context_topology']['parent_command']
+                parent_commands = item_v['match'][-1]
                 arranged_command[item_k][depth] = {translated_command:
                                                        {'para_num': para_num,
                                                         'para_placeholders': para_placeholders,
@@ -592,51 +606,9 @@ class Config_Translater:
                                                                                              item_v['match'],
                                                                                              translated_command),
                                                         'target_command': translated_command,
-                                                        'parent_node': parent_command}
+                                                        'parent_node': parent_commands}
                                                    }
         return arranged_command
-
-    # 阶段五参数映射（直接使用大模型的能力）
-    def parameter_mapping_with_LLM_rewrite(self, arranged_config: dict, vendor, target_vendor) -> dict:
-        target_commands = {}  # 最终配置命令
-        # 遍历每一个需要翻译的配置命令
-        for src_command, translation in arranged_config.items():
-            # 遍历该需要翻译配置命令中每一层级的配置命令
-            for depth, translation_commands in translation.items():
-                # 不是字典跳过，包含非翻译命令的信息
-                if not isinstance(translation_commands, dict):
-                    continue
-                # 基于配置参数合并配置命令模板
-                for command, command_v in translation_commands.items():
-                    target_commands = self.command_param_merge(target_commands, src_command,
-                                                               int(depth), command, command_v)
-        # 参数插入配置命令模板
-        # 创建一个线程池，将llm映射的任务提交给线程池
-        with ThreadPoolExecutor() as executor:
-            futures = []
-            for src_command, translation in target_commands.items():
-                # 遍历该需要翻译配置命令中每一层级的配置命令
-                for depth, translation_commands in translation.items():
-                    # 基于配置参数插入配置命令模板
-                    for command, command_v in translation_commands.items():
-                        command_v['target_command'] = self.para_fill(command_v['para_match'],
-                                                                     command_v['target_command'])
-                        # 使用llm进行参数映射修复
-                        future = executor.submit(
-                            self.translation_llm.param_map_rewrite,
-                            vendor,
-                            src_command,
-                            target_vendor,
-                            command_v['target_command']
-                        )
-                        futures.append((command_v, future))
-            # 获取结果并更新
-            for command_v, future in futures:
-                llm_target_command = future.result()
-                if llm_target_command != '':
-                    command_v['target_command'] = llm_target_command
-
-        return target_commands
 
     def parameter_mapping_with_LLM_remapping(self, arranged_config: dict, vendor, target_vendor) -> dict:
         target_commands = {}  # 最终配置命令
@@ -650,10 +622,10 @@ class Config_Translater:
                     continue
                 # 基于配置参数合并配置命令模板
                 for command, command_v in translation_commands.items():
-                    parent_command = command_v['parent_node']
-                    if not parent_command == 'system':
-                        self.insert_parent_command(target_commands, src_command, int(depth), parent_command,
-                                               all_params, target_vendor)  # 补充父节点
+                    parent_commands = command_v['parent_node']
+                    if len(parent_commands) > 0:  # 不是根节点
+                        self.insert_parent_command(target_commands, src_command, int(depth), parent_commands,
+                                                   all_params, target_vendor)  # 补充父节点
                     target_commands = self.command_param_merge(target_commands, src_command,
                                                                int(depth), command, command_v)
 
@@ -697,9 +669,9 @@ class Config_Translater:
                     continue
                 # 基于配置参数合并配置命令模板
                 for command, command_v in translation_commands.items():
-                    parent_command = command_v['parent_node']
-                    if not parent_command == 'system':
-                        self.insert_parent_command(target_commands, src_command, int(depth), parent_command,
+                    parent_commands = command_v['parent_node']
+                    if len(parent_commands) > 0: # 不是根节点
+                        self.insert_parent_command(target_commands, src_command, int(depth), parent_commands,
                                                    all_params, target_vendor)  # 补充父节点
                     target_commands = self.command_param_merge(target_commands, src_command,
                                                                int(depth), command, command_v)
@@ -870,25 +842,25 @@ class Config_Translater:
         return trans_res
 
 
-    def insert_parent_command(self, target_commands, src_command, src_depth, parent_command, all_params, target_vendor):
-        newest_parent = None
-        # 遍历是否存在与command相同的命令
-        for pre_src_command, translation in target_commands.items():
-            for depth, translation_commands in translation.items():
-                for command_k, command_v in translation_commands.items():
-                    # 若有相同的配置命令模板
-                    if command_k == parent_command:
-                        newest_parent = deepcopy(command_v)
+    def insert_parent_command(self, target_commands, src_command, src_depth, parent_commands:[], all_params, target_vendor):
+        for index, parent_command in enumerate(parent_commands):
+            newest_parent = None
+            # 遍历是否存在与command相同的命令
+            for pre_src_command, translation in target_commands.items():
+                for depth, translation_commands in translation.items():
+                    for command_k, command_v in translation_commands.items():
+                        if command_k == parent_command:
+                            newest_parent = deepcopy(command_v)
 
-        if not newest_parent:  # 前面配置过父视图节点，直接复制
-            parent_node = self.config_matchers[target_vendor].templates[parent_command]
-            parent_para_num = parent_node['structural_features']['param_signature']['count']
-            newest_parent = {'para_num': parent_para_num,
-                             'para_placeholders': [0] if parent_para_num == 0 else [0] * parent_para_num,
-                             'para_match': list(all_params),
-                             'target_command': parent_command,
-                             'parent_node': 'system'}
-        target_commands.setdefault(src_command, {}).setdefault(src_depth - 1, {})[parent_command] = newest_parent
+            if not newest_parent:
+                parent_node = self.config_matchers[target_vendor].templates[parent_command]
+                parent_para_num = parent_node['structural_features']['param_signature']['count']
+                newest_parent = {'para_num': parent_para_num,
+                                 'para_placeholders': [0] if parent_para_num == 0 else [0] * parent_para_num,
+                                 'para_match': list(all_params),
+                                 'target_command': parent_command,
+                                 'parent_node': parent_commands[0:index]}
+            target_commands.setdefault(src_command, {}).setdefault(index, {})[parent_command] = newest_parent
 
         return target_commands
 
