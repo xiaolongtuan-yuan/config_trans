@@ -254,7 +254,7 @@ def main_en_388():
     for vendor in vendors:
         for num in config_num:
             Command_nodes = {}  # 'command_template': CommandNode_Object
-            config_model_path = str(project_root / f'dataset_multi_vendor_config/config_model/scale388en/{vendor}_en.json')
+            config_model_path = str(project_root / f'dataset_multi_vendor_config/config_model/scale388en/{vendor}_{num}.json')
 
             # 加载供应商配置模型
             config_model = load_json_file(config_model_path)
@@ -265,9 +265,6 @@ def main_en_388():
             save_json_file(Command_nodes, save_path)
             node_num = len(Command_nodes.keys())
             print(f"finished {vendor} with en{num} scales, total {node_num} command nodes")
-
-            # save_path = str(project_root / 'dataset_multi_vendor_config/config_command_node_debug/{}.json'.format(vendor))
-            # save_json_file(Command_nodes, save_path)
 
 
 def juniper_pre_400():
