@@ -1,0 +1,29 @@
+hostname routerB
+mpls ldp discovery targeted-hello accept acl 2001
+access-list 5 permit ip host none 0
+access-list none permit ip host 2.2.2.2 none any
+crypto map none 2001 none
+policy-map e
+ class a
+  police none none conform-action e exceed-action none
+tunnel-policy 1
+route-policy a
+ apply e
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 7.1.1.2 255.255.255.0
+ interface GigabitEthernet1/0/2
+interface GigabitEthernet1/0/2
+ ip address 8.1.1.2 255.255.255.0
+ interface GigabitEthernet1/0/3
+interface GigabitEthernet1/0/3
+ ip router isis none prefix-sid index 3
+emdi lpu-group 1
+ emdi bind slot 1
+return
+interface a
+ interface a
+ tunnel mpls traffic-eng bandwidth none or
+router ospf [parameter1]
+ traffic-adjustment advertise
+crypto isakmp policy inbound

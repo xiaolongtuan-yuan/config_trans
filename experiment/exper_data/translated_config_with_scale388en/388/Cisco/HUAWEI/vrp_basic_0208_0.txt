@@ -1,0 +1,20 @@
+sysname SSH
+interface GigabitEthernet0/0/0
+ undo shutdown
+ip pool 10.1.1.1 server
+ ip address 10.1.1.1 none
+ gateway none 255.255.0.0 section none none none
+rsa local-key-pair create
+ modulus 2048
+aaa
+ local-user @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@% password cipher none
+ local-user <password_for_client002> password cipher none
+user-interface vty 0 4
+ local-user client001 level none
+ user privilege level 3
+ local-user client002 level none
+ protocol inbound ssh
+ssh server version 2
+ssh server-source -i GigabitEthernet0/0/0
+aaa authentication-scheme [parameter1]
+ authentication-mode local

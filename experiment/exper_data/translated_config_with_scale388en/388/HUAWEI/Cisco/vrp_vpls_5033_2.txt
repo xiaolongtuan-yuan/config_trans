@@ -1,0 +1,26 @@
+hostname UPE1
+mpls traffic-eng bfd none bind interface none reverse-lsp-id 4.4.4.9 lsp-id none
+mpls
+mpls l2vpn
+mpls ldp
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.10.3.2 255.255.255.0
+ interface GigabitEthernet2/0/0
+interface GigabitEthernet2/0/0
+ interface GigabitEthernet2/0/0.1
+interface GigabitEthernet2/0/0.1
+ vlan-type dot1q 1
+ mpls l2transport vc 1.1.1.9 100
+ interface LoopBack1
+interface LoopBack1
+ ip address 4.4.4.9 255.255.255.255
+ipv6 router ospf 1
+router ospf 0.0.0.0
+ opaque-area 0.0.0.0
+router bgp 4.4.4.9
+access-list none none none none 0.0.0.0
+ network 4.4.4.9 mask none
+access-list none none none none 0.0.0.255
+ network 10.10.3.0 mask none
+return

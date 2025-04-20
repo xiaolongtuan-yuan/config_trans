@@ -1,0 +1,32 @@
+hostname BRAS
+ip dhcp pool huawei_bas_local
+default-router 10.0.0.1
+crypto isakmp policy [radius
+ authentication [radius
+enable password none
+policy-map 1
+ class none
+ip multicast-routing
+interface all
+ tunnel destination 225.1.1.1
+ tunnel destination 227.1.1.1
+ interface ge-0/0/0
+ip pim rp-candidate all
+interface 0 point-to-point
+interface ge-0/0/0
+ ipv4 address 10.1.1.1 24
+ interface ge-0/0/1
+interface ge-0/0/1
+ interface ge-0/0/2
+interface ge-0/0/2
+ ipv4 address 10.1.2.1 24
+ helper-address 10.0.255.255
+ igmp join-group 225.1.1.1
+ igmp join-group 227.1.1.1
+ ip igmp join-group 0
+ pppoe-server bind chap
+policy-map 2
+ip pim rp-candidate 0
+bba-group pppoe ge-0/0/0
+ pppoe-server bind ge-0/0/0
+ virtual-template 100

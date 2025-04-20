@@ -1,0 +1,30 @@
+sysname PE4
+mpls ldp
+bfd none bind peer-ip none interface ge-1/0/1 one-arm-echo
+bfd none bind peer-ip none interface ge-1/0/3.0 one-arm-echo
+bgp external
+ group external internal
+ group internal internal
+isis lo0.0
+ bgp-ls enable lo0.0
+ospf 0
+ area 0
+interface lo0.0
+interface ge-1/0/1
+ e1 0 none
+mpls
+interface ge-1/0/3
+ e1 1 none
+ mpls
+  ldp
+interface lo0
+ ip address 4.4.4.4 32
+ port default vlan 1,2
+ mpls static-l2vc destination none transmit-vpn-label vfi1 receive-vpn-label none
+ arp-proxy local enable
+ vrrp vrid 2 virtual-ip none
+bridge-domain 2
+ vxlan vni vlan1
+ip route-static vpn-instance vfi1 none none none
+ip route-static none none 4.4.4.1 none
+ip route-static none none ge-1/0/3.1 none

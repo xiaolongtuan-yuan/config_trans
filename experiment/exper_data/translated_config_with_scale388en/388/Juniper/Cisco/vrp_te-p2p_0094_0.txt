@@ -1,0 +1,30 @@
+hostname LSR-A
+router mpls ldp
+ neighbor 49.0005.0000.0000.0100
+interface ge-0/0/0
+ isis network point-to-point
+ isis metric-style wide
+ interface ge-0/0/0
+ interface ge-0/0/0(unit
+router isis
+ isis segment-routing global-block none 49.0005.0000.0000.0100
+ isis mpls traffic-eng level-2-only
+router none
+interface 0 point-to-point
+mpls traffic-eng tunnels
+interface ge-0/0/0(unit
+ interface none
+interface none
+ mpls traffic-eng bandwidth control none none
+ interface lo0
+interface lo0
+ isis network none
+ interface tun0
+interface tun0
+ tunnel mpls traffic-eng tunnel-id 1
+ interface shared
+interface shared
+ tunnel mode mpls traffic-eng
+ mpls traffic-eng tunnel destination 4.4.4.9
+ tunnel mpls traffic-eng priority 1
+ tunnel mpls traffic-eng bandwidth 20000

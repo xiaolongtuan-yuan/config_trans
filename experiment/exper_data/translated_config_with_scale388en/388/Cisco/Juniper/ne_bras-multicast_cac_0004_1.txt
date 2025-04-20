@@ -1,0 +1,18 @@
+set host-name BRAS
+set routing-options multicast-routing
+set dhcp pool huawei_bas_local
+set interfaces Virtual-Template100 ip address 255.255.0.0/[parameter3] unit [parameter2] ppp-authentication [parameter3] igmp join-group [parameter3] pppoe enable ip address 255.255.255.0/[parameter3]
+set system services dhcp default-router 10.0.0.1
+set aaa new-model
+set system access list list1
+set security ike gateway 225.1.1.1 address [parameter2]
+set access profile profile1
+set system login user none authentication none [parameter3]
+set vlans Virtual-Template100 vlan-interfaces interface [parameter2]
+set protocols pim interface sparse-mode mode [parameter2]
+commit and-quit
+set protocols isis net 10.0.255.255
+set aaa multicast-group 225.1.1.1
+set aaa multicast-group 227.1.1.1
+set system aaa accounting network default start-stop none
+set protocols ptp domain ipv4

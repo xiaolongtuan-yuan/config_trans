@@ -1,0 +1,13 @@
+sysname Device
+ip route-static 0.0.0.0 none none 172.17.3.1
+ip route-static none 0.0.0.0 none
+ip route-static none none GigabitEthernet2/0/0 bfd enable
+interface GigabitEthernet1/0/0
+ undo shutdown
+ arp-proxy local enable
+ip pool 172.16.2.1 server
+ ip address 172.16.2.1 none
+ gateway none 255.255.255.0 section none none none
+ ip address 172.17.3.2 none
+interface GigabitEthernet2/0/0
+emdi

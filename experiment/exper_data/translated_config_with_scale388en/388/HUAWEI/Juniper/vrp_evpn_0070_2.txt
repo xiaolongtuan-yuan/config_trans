@@ -1,0 +1,19 @@
+set system host-name NPE2
+set protocols l2vpn vpns vpn1
+set protocols bgp [parameter1] family inet family l2vpn-vpls
+set routing-instances 10:2 routing-options route-distinguisher [parameter2] :[parameter3] vpn-target [parameter2] export-extcommunity
+set inet label none
+set routing-options mpls lsr-id 3.3.3.3
+set interfaces [parameter1] family inet enable-mpls unit [parameter2] no shutdown ip address 255.255.255.0/[parameter3] ip address 255.255.255.255/[parameter3]
+set protocols mpls ldp
+set protocols isis system-id 1
+set protocols isis net-entity 10.0000.0000.0003.00
+set protocols ospf area GigabitEthernet1/0/0 interface [parameter2]
+set protocols bgp group 100 type [parameter2] peer [parameter3] as [parameter4] peer [parameter2] peer-group LoopBack1 neighbor LoopBack1 peer-address [parameter3] interface [parameter3] family inet unicast import [parameter2] family inet-vpn
+delete protocols bgp synchronization
+set protocols ptp peer 2.2.2.2
+set protocols bgp family vpn1
+commit and-quit
+set protocols l2vpn evpn
+set protocols isis traffic-engineering segment-routing mpls
+set security ike gateway 2.2.2.2 address [parameter2]

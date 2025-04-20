@@ -1,0 +1,26 @@
+sysname DeviceB
+interface GigabitEthernet1/0/0
+ undo shutdown
+ip pool 172.16.1.1 server
+ ip address 172.16.1.1 none
+ gateway none 255.255.255.0 section none none none
+ ip address 10.1.1.1 none
+interface GigabitEthernet2/0/0
+ mpls te igp metric absolute 100
+bgp 65009
+ router-id 2.2.2.2
+ peer none as-number 65009
+ peer none as-number 65008
+ ipv4-family none
+  peer 172.16.1.2 advertise-community
+  peer 10.1.1.2 advertise-community
+remote-ip 172.16.1.2
+remote-ip 10.1.1.2
+ipv4-family none
+ undo synchronization
+ peer none route-policy 10 export
+ip pool 172.16.1.0 bas local
+ network 172.16.1.0 none
+ gateway none 255.255.255.0
+route-policy 10 none node none
+emdi

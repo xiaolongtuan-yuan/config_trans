@@ -1,0 +1,48 @@
+sysname PE1
+mpls ldp remote-peer ldp
+interface Loopback1
+interface GigabitEthernet2/0/0
+ undo shutdown
+ mpls
+  ldp
+ip pool 10.10.1.1 server
+ ip address 10.10.1.1 none
+ gateway none 255.255.255.0 section none none none
+ ip address 1.1.1.9 none
+ gateway none 255.255.255.255 section none none none
+mpls ldp remote-peer none
+cfm md vpn1
+ ma vpn1
+  map bridge-domain vpn1
+interface GigabitEthernet1/0/0
+ subscription 2.2.2.9
+ source Loopback1
+  local-source-address ipv4 2.2.2.9 port none
+ip vpn-instance 100:1
+ route-distinguisher 100:1
+vsi vpn1
+ vpls-id 1
+ vpls-id 100
+bgp 100
+ peer none as-number 100
+ ipv4-family [parameter1]
+  peer 2.2.2.9 advertise-community
+  peer none advertise-community
+ ipv4-family unicast
+  import-route ospf 1
+ router-id 1.1.1.9
+ ipv6-family vpnv6
+  policy vpn-target
+remote-ip 2.2.2.9
+telemetry
+ipv4-family [parameter1]
+ undo synchronization
+ospf 0
+ area 0
+ip pool 1.1.1.9 bas local
+ ip address 1.1.1.9 none
+ gateway none 0.0.0.0
+ ip address 10.10.1.0 none
+ gateway none 0.0.0.255
+return
+l2tp-group vpn1

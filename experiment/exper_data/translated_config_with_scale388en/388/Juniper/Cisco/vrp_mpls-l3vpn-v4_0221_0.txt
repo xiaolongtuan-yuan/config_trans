@@ -1,0 +1,17 @@
+hostname Spoke-CE1
+interface ge-0/0/0
+ ipv4 address 10.1.1.1 24
+ interface lo0
+interface 0 point-to-point
+interface 1 point-to-point
+interface lo0
+ ipv4 address 11.11.11.11 32
+bgp external-peers
+ peer none as-number external-peers
+router bgp export-loopback
+ address-family export-loopback
+  neighbor none route-policy export-loopback export
+tunnel-te policy export-loopback
+tunnel-policy 1
+aaa authorization exec none none accept
+route-policy exact

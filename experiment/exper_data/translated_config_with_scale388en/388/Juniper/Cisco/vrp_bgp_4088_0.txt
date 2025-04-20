@@ -1,0 +1,17 @@
+hostname DeviceA
+interface ge-1/0/0
+ description "GigabitEthernet1/0/0"
+ interface ge-2/0/0
+interface 0 point-to-point
+interface ge-2/0/0
+ description "GigabitEthernet2/0/0"
+router bgp 10
+ neighbor 10.1.2.2 activate
+router isis
+ isis router-id 1.1.1.1
+ip vrf REDISTRIBUTE_CONNECTED
+bgp EBGP_AS20
+ peer none as-number EBGP_AS20
+tunnel-te policy REDISTRIBUTE_CONNECTED
+tunnel-policy 1
+aaa authorization exec none none accept

@@ -1,0 +1,24 @@
+hostname PE1
+router bgp 1.1.1.9
+ router-id 1.1.1.9
+ network none mask 10.10.1.0/24
+ address-family 2.2.2.9 100
+  neighbor 2.2.2.9 signaling protocol 100
+interface ge-0/0/0
+ ospfv3 none area 0
+ interface lo0
+interface 0 point-to-point
+mpls ip
+interface lo0
+ ipv4 address 1.1.1.9 32
+mpls l2vpn vpn1
+vrf definition route-target:100:1
+commit
+bgp test
+ peer 100 as-number none
+bba-group pppoe lo0.0
+vfi 100
+ vpn-id 100
+router isis
+ isis network-entity vpn1
+ isis segment-routing global-block none ge-0/0/0.0

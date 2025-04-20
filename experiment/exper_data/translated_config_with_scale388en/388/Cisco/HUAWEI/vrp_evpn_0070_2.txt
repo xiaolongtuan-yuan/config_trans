@@ -1,0 +1,50 @@
+sysname NPE2
+bridge-domain vpn1
+ evpn binding vpn-instance vpn1
+ip vpn-instance 10:2
+ route-distinguisher 10:2
+isis 2:2
+ import-route isis none into 2:2
+ospf 2:2
+ import-route 2:2
+mpls ldp remote-peer ldp
+interface Loopback0
+interface GigabitEthernet1/0/0
+ undo shutdown
+ip pool 10.2.1.2 server
+ ip address 10.2.1.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 192.168.30.1 none
+ ip address 3.3.3.3 none
+ gateway none 255.255.255.255 section none none none
+mpls ldp remote-peer none
+interface GigabitEthernet2/0/0
+interface Loopback1
+ subscription 2.2.2.2
+ source Loopback1
+  local-source-address ipv4 2.2.2.2 port none
+isis none
+network-entity 49.0000.0000.0000.0003.00
+nqa test-instance level-2-only [parameter2]
+ test-type level-2-only
+bgp 100
+ peer none as-number 100
+ ipv4-family ipv4
+  peer 2.2.2.2 advertise-community
+  peer 192.168.30.1/32 advertise-community
+remote-ip 2.2.2.2
+telemetry
+ipv4-family ipv4
+ undo synchronization
+ipv4-family vpnv4
+route-policy 2.2.2.2 both node [parameter3]
+ ipv4-family vpnv4
+ apply community both
+  peer 2.2.2.2 advertise-community
+ipv4-family l2vpn
+emdi
+ptp-adaptive local-ip 2.2.2.2
+mpls
+ mpls ldp router-id 0
+interface 10.2.1.2/32
+interface 3.3.3.3/32

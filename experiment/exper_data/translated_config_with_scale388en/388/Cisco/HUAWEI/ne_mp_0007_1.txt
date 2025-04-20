@@ -1,0 +1,20 @@
+sysname DeviceB
+controller E1 2/0/0
+ e1 none channel-set 1 timeslot-list none
+ mp-group none timeslot 1-15
+controller 1
+interface Serial2/0/0:1
+ undo shutdown
+ ppp multilink group 1
+controller E1 2/0/1
+ e1 none channel-set 1 timeslot-list none
+ mp-group none timeslot 16-31
+interface Serial2/0/1:1
+interface Multilink1
+ip pool 10.1.1.2 server
+ ip address 10.1.1.2 none
+ gateway none 255.255.255.0 section none none none
+emdi
+bgp [parameter1]
+ l2vpn-family evpn
+  peer none advertise encap-type none

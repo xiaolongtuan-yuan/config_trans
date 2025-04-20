@@ -1,0 +1,36 @@
+hostname CE1
+cfm
+ domain 10
+  ma 10
+   map vlan 10
+   mep 1 ccm-send enable
+   mep 3 ccm-send enable
+cfm enable
+interface Vlanif10
+ ip address 10.10.1.1 255.255.255.0
+ interface GigabitEthernet1/0/0
+interface GigabitEthernet1/0/0
+ no switchport
+ undo shutdown
+ switchport trunk allowed vlan add 10
+ interface GigabitEthernet2/0/0
+ethernet cfm md md1
+cfm ethernet cfm md ma1
+ mep domain ma1
+ mep domain ma2
+cfm md 1
+ domain 10
+ cfm ma 1
+  ma 10
+  cfm mep mep-id none interface none direction outward
+   mep 1 interface GigabitEthernet1/0/0 direction none
+   mep 3 interface GigabitEthernet2/0/0 direction none
+cfm domain 2
+ remote-mep none mep 2
+ remote-mep none mep 4
+ma 10
+ remote-mep mep-id 2
+  remote-mep ccm-receive mep-id 2 enable
+  remote-mep ccm-receive mep-id 4 enable
+return
+vlan 10

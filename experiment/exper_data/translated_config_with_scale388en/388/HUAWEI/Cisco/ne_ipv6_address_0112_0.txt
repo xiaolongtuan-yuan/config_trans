@@ -1,0 +1,41 @@
+hostname Device
+aaa group server radius rd1
+server 10.6.55.55 auth-port 1550 acct-port 1551
+radius-server host none auth-port none acct-port none key 0 none
+interface Virtual-Template1
+ ppp authentication pap
+ interface GigabitEthernet1/0/1.1
+ip dhcp pool 2001:DB8::2:2
+ dns-server 2001:DB8::2:2
+ipv6 dhcp client duid 006735f300188253a56a
+aaa new-model
+aaa authentication login auth1 group none
+aaa authorization network none radius
+aaa accounting none acct1 group none
+aaa accounting network none radius
+ip domain-name isp1
+interface GigabitEthernet1/0/1.1
+ ipv6 enable
+ bas
+  access-type none default-domain authentication isp1
+ interface GigabitEthernet1/0/2
+interface GigabitEthernet1/0/2
+ ipv6 address 2001::DB8/64
+ interface eui-64
+aaa server radius dynamic-author
+ client none server-key %^%#vS%796FO7%C~pB%CR=q;j}gSCqR-X6+P!.DYI@)%^%#
+interface eui-64
+ ipv6 address pre1 none
+ ipv6 address autoconfig link-local
+ vlan-type dot1q 20
+ipv6 access-list 2001:DB8::/64
+ permit ipv6 2001:DB8::/64 any
+ permit ipv6 pre2 any
+ip prefix-list 63 none none
+ permit ipv6 2001:DB8::/62 any
+ip local pool pool1 none none
+ip prefix-list pre1 none none
+ip local pool pool2 none none
+ip prefix-list pre2 none none
+bba-group pppoe 5
+ virtual-template 5

@@ -1,0 +1,13 @@
+set host-name DeviceB
+set protocols bfd all-interfaces enable
+set routing-options router ospf 1
+set protocols ospf router-id 2.2.2.2
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface [parameter2]
+set interfaces [parameter1] unit [parameter2] no shutdown family inet6 enable family inet address [parameter3]/[parameter4] standby version [parameter5] priority [parameter5] track [parameter6] unit [parameter7] family inet6 ospf area [parameter3]
+set protocols isis interface 2001:DB8::2/64 family inet6 address none/[parameter3]
+set failover group 1 unit [parameter2] standby-address family inet6 [parameter2] family inet address [parameter3]/[parameter4] standby version [parameter5]
+set protocols bfd template 50
+set protocols bfd interface 50 min-transmit-interval 50 multiplier [parameter2] min-receive-interval [parameter3] local-discriminator [parameter2]
+set protocols bfd peer-group 2001:DB8::1 unit [parameter2] discriminator-local [parameter2] family inet6 bfd-liveness-detection neighbor [parameter3]
+commit
+commit and-quit

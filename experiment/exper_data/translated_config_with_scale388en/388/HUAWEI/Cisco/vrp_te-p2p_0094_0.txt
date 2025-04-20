@@ -1,0 +1,27 @@
+hostname LSRA
+mpls traffic-eng bfd none bind interface none reverse-lsp-id 1.1.1.9 lsp-id none
+mpls
+mpls rsvp-te
+mpls traffic-eng none
+interface GigabitEthernet1/0/0
+ ip router isis 1
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ interface LoopBack1
+router isis
+ redistribute isis level-2 into none
+ metric-style wide
+ traffic-eng level-2
+ net 00.0005.0000.0000.0001.00
+mpls traffic-eng bandwidth none 100000
+mpls traffic-eng bandwidth 100000
+interface LoopBack1
+ ip address 1.1.1.9 255.255.255.255
+ interface Tunnel1
+interface Tunnel1
+ ip unnumbered LoopBack1
+ tunnel mode mpls traffic-eng
+ tunnel destination 4.4.4.9
+ tunnel mpls traffic-eng tunnel-id 1
+ tunnel mpls traffic-eng bandwidth none 20000
+return

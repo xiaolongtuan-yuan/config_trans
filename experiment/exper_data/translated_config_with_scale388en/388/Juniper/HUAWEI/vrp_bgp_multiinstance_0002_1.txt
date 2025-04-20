@@ -1,0 +1,15 @@
+sysname DeviceB
+ip route-static vpn-instance vpn1 none none none
+remote-backup-profile target:100:1
+ vrrp-id target:100:1 interface none
+interface ge-0/1/0
+ e1 0 none
+ ip address 10.1.1.2 24
+interface ge-2/0/0
+ ip address 10.1.2.2 24
+bgp 100
+ group EBGP_AS200 internal
+ ipv4-family vpn1
+  peer 100 advertise-community
+ group EBGP_AS100 internal
+ipv4-family

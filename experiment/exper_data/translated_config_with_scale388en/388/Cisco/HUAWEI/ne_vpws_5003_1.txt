@@ -1,0 +1,27 @@
+sysname PE1
+interface Loopback1
+mpls ldp remote-peer 3.3.3.9
+mpls l2vpn
+mpls ldp
+interface GigabitEthernet1/0/0
+ ip address unnumbered interface none
+interface GigabitEthernet1/0/0.1
+ vlan-type dot1q 10
+ vlan-type dot1q 101
+segment-routing
+mep mep-id 101 interface none none
+ ipv4 adjacency local-ip-addr none remote-ip-addr 3.3.3.9 sid none
+interface GigabitEthernet2/0/0
+ip pool 10.1.1.1 server
+ ip address 10.1.1.1 none
+ gateway none 255.255.255.0 section none none none
+ ip address 1.1.1.9 none
+ gateway none 255.255.255.255 section none none none
+bgp 1
+ ipv4-family unicast
+  import-route ospf 1
+ospf 1.1.1.9
+ network 1.1.1.9 0.0.0.0
+ area 0
+ network 10.1.1.0 0.0.0.255
+return

@@ -1,0 +1,22 @@
+sysname DeviceA
+interface GigabitEthernet1/0/1
+ undo shutdown
+ip pool 192.168.1.1 server
+ ip address 192.168.1.1 none
+ gateway none 255.255.255.0 section none none none
+ ip address 10.1.1.1 none
+interface GigabitEthernet2/0/0
+ l2-multicast static-group source-address none group-address 1 dot1q vid none
+ vrrp vrid none virtual 10.1.1.111
+ l2-multicast static-group source-address none group-address 2 dot1q vid none
+ vrrp vrid none virtual 10.1.1.112
+interface 1 mode 10.1.1.111
+clock source ptp priority 120
+bgp 1
+ ipv4-family unicast
+  import-route ospf 1
+ospf 192.168.1.0
+ network 192.168.1.0 0.0.0.255
+ area 0
+ network 10.1.1.0 0.0.0.255
+emdi

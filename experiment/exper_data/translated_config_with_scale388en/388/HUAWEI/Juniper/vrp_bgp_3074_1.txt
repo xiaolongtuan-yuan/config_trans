@@ -1,0 +1,15 @@
+set system host-name DeviceB
+set protocols ospf area GigabitEthernet1/0/0 interface [parameter2]
+set interfaces [parameter1] unit [parameter2] no shutdown ip address 255.255.255.0/[parameter3]
+set protocols bgp group 65009 type [parameter2] peer [parameter3] as [parameter4] family inet unicast neighbor [parameter2] export [parameter2]
+set routing-options router-id 2.2.2.2
+set protocols bgp 65009 peer [parameter2]
+set protocols bgp 65008 peer [parameter2]
+delete protocols bgp synchronization
+set protocols bgp network 172.16.1.0
+set policy-options policy-statement 172.16.1.0 term 255.255.255.0 from route-filter none/[parameter4] [parameter5]
+set protocols ptp peer 172.16.1.2
+set protocols ptp peer 10.1.1.2
+set routing-instance 10
+set routing-table static route none/100
+commit and-quit

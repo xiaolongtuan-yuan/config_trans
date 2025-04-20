@@ -1,0 +1,19 @@
+hostname DeviceC
+interface ge-1/0/0
+ ipv6 enable
+ interface ge-2/0/0
+interface 0 point-to-point
+router bgp 200
+ neighbor 2001:db8:9::1:1 activate
+ address-family EXPORT
+  neighbor none route-policy EXPORT export
+router isis
+ isis router-id 3.3.3.3
+bgp IBGP
+ peer none as-number IBGP
+ peer none as-number EBGP
+tunnel-te policy EXPORT
+tunnel-policy 10
+crypto isakmp policy none
+ip prefix-list PREFIX none 10.0.0.0
+route-map none none 8

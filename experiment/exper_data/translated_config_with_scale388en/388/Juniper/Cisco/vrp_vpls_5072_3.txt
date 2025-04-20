@@ -1,0 +1,32 @@
+hostname PE4
+interface [parameter1]
+ mpls ldp discovery
+ ospfv3 none area 0
+ interface ge-1/0/1
+mpls ldp discovery targeted-hello accept-from ge-1/0/1
+mpls ldp discovery targeted-hello accept-from ge-1/0/3.0
+bgp external
+ peer none as-number external
+ peer none as-number internal
+ptp clock-domain lo0.0
+ local-ip lo0.0
+interface 0 point-to-point
+mpls ip
+interface ge-1/0/1
+ interface ge-1/0/3
+interface 1 point-to-point
+mpls ldp discovery targeted-hello accept-from none
+interface ge-1/0/3
+ interface lo0
+interface lo0
+ ipv4 address 4.4.4.4 32
+ bridge-domain 2 member none
+ arp proxy local
+ xconnect vfi 2
+erps ethernet-ring vlan1
+ control-vlan vlan1
+vlan 1,2
+vfi vfi1 manual
+mpls l2vpn vfi1
+ip route none none 4.4.4.1
+ip route none none ge-1/0/3.1

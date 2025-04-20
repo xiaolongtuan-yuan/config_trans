@@ -1,0 +1,27 @@
+sysname routerB
+ip ip-prefix acl-2001 index none none none none
+traffic policy default
+route-policy none discard node none
+interface ge-1/0/1
+ ip netstream sampler fix-packets capture-instance none
+ ip netstream sampler fix-packets 1 none
+ mld enable
+interface ge-1/0/2
+interface ge-1/0/3
+ e1 0 none
+ mpls
+ mpls te bandwidth max-reservable-bandwidth 100g
+  mpls te bandwidth bc0 port-mirror
+ nat bind acl none instance acl-2001
+ipv4-family
+mirror instance mirror-instance location
+xpl route-filter mirror-instance
+ nat bind acl none instance mirror-instance
+ if ip route-destination in {mirror-instance} then
+  call route-filter acl-2001
+nat instance mirror-instance id none
+bidirectional static-cr-lsp ingress ge-1/0/3
+interface acl-2001
+mpls l2vpn mirror-instance encapsulation ge-1/0/3
+ ce mirror-instance id ge-1/0/3 range [parameter3] default-offset [parameter4]
+  connection ce-offset none interface ge-1/0/3

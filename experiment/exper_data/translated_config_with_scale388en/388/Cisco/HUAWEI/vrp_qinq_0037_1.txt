@@ -1,0 +1,34 @@
+sysname PE2
+mpls ldp remote-peer ldp
+mpls l2vpn
+vsi ldp1
+ vpls-id 2
+segment-routing
+mep mep-id 2 interface none none
+ ipv4 adjacency local-ip-addr none remote-ip-addr 1.1.1.9 sid none
+ ipv4 adjacency local-ip-addr none remote-ip-addr 3.3.3.9 sid none
+interface GigabitEthernet1/0/1
+ undo shutdown
+interface GigabitEthernet1/0/1.10
+ vlan-type dot1q ldp1
+interface 10 mode [parameter2]
+ encapsulation dot1q vid none to 10
+ encapsulation dot1q vid none to 20
+interface GigabitEthernet1/0/2
+ip pool 192.168.2.2 server
+ ip address 192.168.2.2 none
+ gateway none 255.255.255.252 section none none none
+ ip address 192.168.3.2 none
+ ip address 2.2.2.9 none
+ gateway none 255.255.255.255 section none none none
+mpls ldp remote-peer none
+interface GigabitEthernet1/0/3
+interface Loopback1
+bgp 1
+ ipv4-family unicast
+  import-route ospf 1
+ospf 2.2.2.9
+ network 2.2.2.9 0.0.0.0
+ area 0
+ network 192.168.2.0 0.0.0.3
+ network 192.168.3.0 0.0.0.3

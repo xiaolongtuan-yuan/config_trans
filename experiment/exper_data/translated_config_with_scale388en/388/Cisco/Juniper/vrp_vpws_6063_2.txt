@@ -1,0 +1,15 @@
+set host-name PE1
+set protocols mpls label protocol ldp
+set forwarding-options mpls ldp router-id Loopback1 none
+set vlans GigabitEthernet2/0/0 vlan-interfaces interface [parameter2] bridge-domain [parameter2]
+set interfaces [parameter1] unit [parameter2] no shutdown mpls ldp autoconfig family inet6 ospf area [parameter3] l2vpn vpls-id [parameter3] ip address 255.255.255.0/[parameter3] ip address 255.255.255.255/[parameter3] encapsulation dot1q [parameter2] connect vfi [parameter3] ip address 0.0.0.0/[parameter3] ip address 0.0.0.255/[parameter3] ppp multilink-group [parameter2]
+set protocols mpls ip
+set routing-instances 100:1 routing-options route-distinguisher [parameter2] :[parameter3] protocols bgp group 100 neighbor [parameter3] vpn-target [parameter2] import-extcommunity export-extcommunity
+set protocols l2vpn vfi 1 vpn-id [parameter2]
+set protocols bgp peer 100 as [parameter2]
+set protocols bgp group 2.2.2.9 protocols bgp group 100 neighbor 100 neighbor [parameter3] remote-as [parameter3] as [parameter3] ebgp-multihop [parameter4] update-source [parameter5] activate family inet-vpn
+set protocols bgp neighbor [parameter1] sync
+set routing-options router ospf 1
+set protocols ospf router-id 1.1.1.9
+commit and-quit
+set protocols bgp instance-external instance-name [parameter1] address-family inet unicast

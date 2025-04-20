@@ -1,0 +1,16 @@
+hostname CE2
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.2.1.1 255.255.255.0
+ interface LoopBack1
+interface LoopBack1
+ ip address 6.6.6.6 255.255.255.255
+bgp 65002
+ peer 10.2.1.2 as-number 200
+ ipv4-family unicast
+  peer 10.2.1.2 enable
+router bgp [parameter1]
+ no synchronization
+access-list none none none none 255.255.255.255
+ network 6.6.6.6 mask none
+return

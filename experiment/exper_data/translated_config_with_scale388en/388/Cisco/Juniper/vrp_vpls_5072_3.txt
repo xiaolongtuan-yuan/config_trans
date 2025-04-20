@@ -1,0 +1,14 @@
+set host-name PE4
+set protocols mpls label protocol ldp
+set protocols mpls l2vpn
+set interfaces vsi1 encapsulation dot1q [parameter2] connect vfi [parameter3] unit [parameter2] no shutdown family mpls ldp discovery target-hello-accept encapsulation dot1q [parameter3] ip address 255.255.255.0/[parameter3] ip address 255.255.255.255/[parameter3]
+set protocols l2vpn vfi 2:2 vpn-id [parameter2]
+set vlans 2 bridge-domain [parameter2] vlan-interfaces interface [parameter2]
+set protocols mpls ldp
+set mpls ldp mldp p2mp
+set protocols mpls ip
+set routing-instances vsi1 vfi-id [parameter2] protocols bgp group 100 neighbor [parameter3]
+set protocols bgp peer 100 as [parameter2]
+set protocols bgp group 1.1.1.1 protocols bgp group 100 neighbor 100 neighbor [parameter3] remote-as [parameter3] as [parameter3] ebgp-multihop [parameter4] update-source [parameter5] family inet-vpn
+set routing-options router ospf 100
+set router ospf area 0 network 0.0.0.0/none [parameter4] network 0.0.0.255/none [parameter4]

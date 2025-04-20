@@ -1,0 +1,11 @@
+set host-name DeviceA
+set vlans GigabitEthernet0/1/0 vlan-interfaces interface [parameter2]
+set interfaces [parameter1] unit [parameter2] no shutdown ip address 255.255.255.0/[parameter3] family inet address none/[parameter3]
+set protocols bgp peer 200 as [parameter2]
+set routing-instances 10.1.1.2 protocols bgp group 100 neighbor [parameter3] routes static route 255.255.255.255/Null0 next-hop [parameter4]
+set protocols bgp group 10.1.1.2 protocols bgp group 100 neighbor 100 neighbor [parameter3] remote-as [parameter3]
+set protocols bgp neighbor [parameter1] sync
+set protocols ospf traffic-engineering options static
+set routing-options static route 192.168.1.1/255.255.255.255 none
+commit and-quit
+set protocols oam ethernet connectivity-fault-management maintenance-domain [parameter1] maintenance-association [parameter2] up-mep mep-id [parameter3] interface [parameter4]

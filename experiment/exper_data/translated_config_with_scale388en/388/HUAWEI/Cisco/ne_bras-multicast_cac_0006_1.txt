@@ -1,0 +1,30 @@
+hostname BRAS
+ip multicast-routing
+ip local pool huawei 10.0.0.1 10.0.255.255
+interface GigabitEthernet1/0/1
+ ip address 10.0.0.1 255.255.0.0
+ ip address 10.1.1.1 255.255.255.0
+ ip pim none
+ interface GigabitEthernet1/0/2
+aaa new-model
+aaa authentication login none group none
+aaa accounting none none group none
+ip domain-name ipv4
+ip local pool ipv4 none none
+interface GigabitEthernet1/0/2
+ ip address 10.1.2.1 255.255.255.0
+ interface GigabitEthernet1/0/0
+interface GigabitEthernet1/0/0
+ ip igmp version none
+ bas
+  multicast copy none
+  access-type none default-domain authentication none
+ isis segment-routing prefix-sid index 1
+ isis prefix-sid-index none
+ip multicast-group 225.1.1.1
+ip multicast-group 227.1.1.1
+ptp profile profile1 enable
+aaa authentication login none none
+aaa accounting exec none none
+subscriber template [parameter1]
+ authentication bind

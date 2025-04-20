@@ -1,0 +1,15 @@
+sysname CE1
+interface gigabit-ethernet1/0/1
+ port trunk allow-pass vlan gigabit-ethernet1/0/1 2
+mpls l2vpn gigabit-ethernet1/0/1 encapsulation 2
+ ce gigabit-ethernet1/0/1 id 2 range [parameter3] default-offset [parameter4]
+  connection ce-offset none interface 2
+mep mep-id 2 interface none none
+ma 2
+ mep ccm-send mep-id gi1/0/1 enable
+ remote-mep ccm-receive mep-id 2 enable
+ remote-mep ccm-receive mep-id 1 enable
+mep mep-id 1 interface none none
+cfm md md1
+ ma 2
+  test-id 1 mep none

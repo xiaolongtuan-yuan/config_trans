@@ -1,0 +1,20 @@
+hostname Spoke2
+interface ge-1/0/0
+ tunnel mode none
+ interface lo0
+interface 0 point-to-point
+interface lo0
+ ipv4 address 192.168.2.1 32
+ interface gr-1/0/0
+interface gr-1/0/0
+ tunnel destination 10.1.1.10
+ tunnel protection ipsec profile IPSEC_PROFILE
+ tunnel protection ipsec profile IPSEC_POLICY
+ ospfv3 none area 0.0.0.0
+ interface lo0.0
+router bgp 172.16.1.3
+ router-id 172.16.1.3
+ router-id 10.1.3.10
+interface lo0.0
+ ospfv3 none area 0.0.0.1
+ interface ge-1/0/0.0

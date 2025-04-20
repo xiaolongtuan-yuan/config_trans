@@ -1,0 +1,30 @@
+sysname PE1
+interface ge-1/0/2
+ mpls
+  ldp
+ e1 0 none
+mpls
+ mpls ldp router-id 2.2.2.2
+ospf 0
+ area 0
+interface ge-1/0/2.0
+pw-template 1.1.1.1
+ peer-address 1.1.1.1
+interface ge-1/0/1.1
+interface ge-1/0/1
+ e1 1 none
+cfm md 2
+ ma 2
+  mep mep-id none interface none vlan 2 none
+interface lo0
+ ip address 2.2.2.2 24
+ vrrp vrid ldp1 virtual none
+cfm version standard
+cfm enable
+cfm md none level 3
+ccc inward interface ge-1/0/1.1 in-label none out-label none nexthop none
+ma 2
+ mep ccm-send mep-id ma1 enable
+ remote-mep ccm-receive mep-id 1.1.1.1 enable
+ mep ccm-send mep-id 1 enable
+remote-mep ccm-receive mep-id 2 none

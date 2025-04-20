@@ -1,0 +1,19 @@
+sysname CSG
+bfd none bind peer-ip none interface none source-ip none auto
+interface all
+interface ge-1/0/0
+ e1 0 none
+bgp ibgp
+ group ibgp internal
+ ipv4-family 2.2.2.2
+  peer 2.2.2.2 advertise-community
+ network 10.1.1.0/24 none
+ peer 2.2.2.2 bfd min-tx-interval 300 min-rx-interval none detect-multiplier none
+ipv4-family 2.2.2.2
+ peer none route-policy policy1 export
+ospf 0.0.0.0
+ area 0.0.0.0
+mpls
+interface lo0
+ ip address 1.1.1.1 32
+traffic policy 10

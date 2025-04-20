@@ -1,0 +1,10 @@
+set host-name CE2
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface [parameter2]
+set interfaces [parameter1] unit [parameter2] no shutdown family ip address [parameter3]/[parameter4] ip address 255.255.255.0/[parameter3]
+set protocols bgp peer 65420 as [parameter2]
+set routing-instances 10.2.1.2 protocols bgp group 100 neighbor [parameter3]
+set protocols bgp group 10.2.1.2 protocols bgp group 100 neighbor 100 neighbor [parameter3] remote-as [parameter3]
+set protocols bgp neighbor [parameter1] sync
+set protocols bgp network 10.2.1.0
+set policy-options policy-statement 10.2.1.0 term 255.255.255.0 from route-filter none/[parameter4] [parameter5]
+commit and-quit

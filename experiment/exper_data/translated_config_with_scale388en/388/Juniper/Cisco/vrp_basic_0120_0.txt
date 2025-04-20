@@ -1,0 +1,18 @@
+hostname SSH_Server
+enable password client001
+policy-map read-only
+ class read-only
+username client001 sshkey ssh
+enable password client002
+username client002 sshkey ssh
+username deny service-type none
+crypto isakmp policy password
+ authentication password
+line vty client001 "$encrypted-password"
+ password none "$encrypted-password"
+ login authorization exec view
+ip ssh version v2
+interface ge-0/0/0
+ ipv4 address x.x.x.x y
+interface 0 point-to-point
+aaa authentication login none group none configure

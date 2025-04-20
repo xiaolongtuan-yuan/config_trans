@@ -1,0 +1,29 @@
+sysname LSRB
+mpls ldp
+bgp 2.2.2.2
+ router-id 2.2.2.2
+ ipv4-family unicast
+  import-route ospf 1
+mpls
+ mpls traffic-eng enable
+isis Loopback0
+ mpls traffic-eng router-id Loopback0
+ mpls traffic-eng router-id default
+ospf 0
+ area 0
+ network 3.1.1.0 0.0.0.255
+ network 3.2.1.0 0.0.0.255
+ network 2.1.1.0 0.0.0.255
+ network 2.2.2.2 0.0.0.0
+ enable traffic-adjustment advertise
+interface GigabitEthernet0/0/0/0
+ shutdown
+ ip address 3.2.1.1 255.255.255.0
+interface GigabitEthernet0/0/0/1
+ ip address 3.1.1.1 255.255.255.0
+interface GigabitEthernet0/0/0/2
+ ip address 2.1.1.2 255.255.255.0
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.255
+ mpls te bandwidth max-reservable-bandwidth none
+emdi

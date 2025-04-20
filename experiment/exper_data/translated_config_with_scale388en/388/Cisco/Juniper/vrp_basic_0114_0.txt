@@ -1,0 +1,12 @@
+set host-name SSH_Server
+set system domain-name example.com
+set system services ssh protocol-version 2
+set vlans Loopback0 vlan-interfaces interface [parameter2]
+set interfaces 10.1.1.1 ip address 255.255.255.255/[parameter3] unit [parameter2] no shutdown ip address 255.255.0.0/[parameter3]
+set aaa new-model
+set system login user client001 authentication 15 [parameter3] authentication plain-text-password [parameter2] authentication-order [parameter2]
+set routing-instances 0 vfi-id [parameter2]
+set protocols ssh
+commit and-quit
+set security forwarding-options family 1024 generate-crypto-key rsa modulus [parameter2]
+set snmp v3 usm local-engine user aes128-ctr privacy-aes128-key [parameter2]

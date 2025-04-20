@@ -1,0 +1,19 @@
+set system host-name PE1
+set ethernet-switching-options cfm version standard
+set protocols cfm interface [parameter1] cfm enable cfm md [parameter2] maintenance-association 1 cfm test-id 1 remote-mep mep-id [parameter3] mep [parameter3]
+set routing-options mpls lsr-id 2.2.2.2
+set interfaces [parameter1] family inet enable-mpls unit [parameter2] l2circuit vsi [parameter3] no shutdown family inet6 ospfv3 area [parameter3] ip address 255.255.255.0/[parameter3] ip address 255.255.255.255/[parameter3] encapsulation dot1q [parameter2]
+set protocols mpls l2vpn
+set protocols mpls ldp
+set vlans 1 vfi [parameter2] id [parameter3]
+set protocols bfd interface 1.1.1.1 family inet peer [parameter2]
+set protocols ospf area GigabitEthernet1/0/1.1 interface [parameter2]
+set routing-options router ospf 1
+set protocols bgp network 2.2.2.2
+set policy-options policy-statement 2.2.2.2 term 0.0.0.0 from route-filter none/[parameter4] [parameter5]
+set protocols bgp network 10.1.1.0
+set protocols cfm maintenance-association ma1
+set protocols cfm mep interface GigabitEthernet1/0/1.1 ccm-send mep-id [parameter2] mep-id [parameter2] remote-mep [parameter2] ccm-receive mep-id [parameter3]
+set protocols cfm domain 1 mep-id [parameter2] MEP [parameter2]
+set protocols ldp transport-address ldp
+set protocols oam ethernet connectivity-fault-management maintenance-domain 1

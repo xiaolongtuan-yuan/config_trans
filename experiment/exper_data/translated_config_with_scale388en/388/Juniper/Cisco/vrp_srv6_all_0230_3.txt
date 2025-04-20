@@ -1,0 +1,16 @@
+hostname CE1
+interface ge-1/0/0
+ ipv4 address 10.1.1.2 24
+ interface lo0
+interface 0 point-to-point
+interface 1 point-to-point
+interface lo0
+ ipv4 address 11.11.11.11 32
+bgp external-peers
+ peer none as-number external-peers
+router bgp 65410
+ address-family announce-lo0
+  neighbor none route-policy announce-lo0 export
+tunnel-te policy announce-lo0
+tunnel-policy 1
+aaa authorization exec none none accept

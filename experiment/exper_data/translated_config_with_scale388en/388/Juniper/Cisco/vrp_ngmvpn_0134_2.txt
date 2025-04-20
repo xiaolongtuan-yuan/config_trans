@@ -1,0 +1,16 @@
+hostname CE2
+ip pim rp-candidate ge-1/0/1.0
+interface ge-1/0/2.0
+ ip pim sparse
+ ospfv3 none area 0
+ interface ge-1/0/1
+ip pim rp-candidate ge-1/0/2.0
+ip multicast-routing
+interface 0 point-to-point
+interface ge-1/0/1
+ ipv4 address 172.16.2.1 24
+ interface ge-1/0/2
+interface ge-1/0/2
+ ipv4 address 192.168.2.2 24
+ ip igmp version ge-1/0/1.0
+ ip igmp join-group 224.0.0.1

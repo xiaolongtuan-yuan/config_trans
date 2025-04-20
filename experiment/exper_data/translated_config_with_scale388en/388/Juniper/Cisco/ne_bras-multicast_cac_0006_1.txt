@@ -1,0 +1,35 @@
+hostname BRAS
+crypto isakmp policy radius
+ authentication radius
+radius-server host 10.0.0.1 auth-port none acct-port none
+radius-server host "radius-secret" auth-port none acct-port none key none none
+ip multicast-routing
+ip access-list extended list1
+tunnel-policy permit2
+aaa authorization exec none none accept
+interface ge-0/0/1
+ ipv6 address 64
+ interface ge-0/0/2
+interface 0 point-to-point
+interface ge-0/0/2
+ ipv4 address 10.1.2.1 24
+ interface ge-0/0/0
+interface ge-0/0/0
+ ip igmp version 3
+ interface vlan-bas
+interface vlan-bas
+ ipv4 address 10.0.0.1 24
+ tunnel destination 225.1.1.1/32
+ tunnel destination 227.1.1.1/32
+ ip pim sparse-mode
+ ip igmp version 3
+aaa authentication login none group none none
+ip route none none 10.0.0.1
+bgp 10.0.0.0/16
+ peer 10.0.0.1 as-number none
+ip pim rp-candidate 0
+erps ethernet-ring bas
+ control-vlan vlan-bas
+ control-vlan layer2
+bridge-domain bas
+ vxlan vni bas

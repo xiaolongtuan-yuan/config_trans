@@ -1,0 +1,38 @@
+hostname Spoke-PE1
+vpn instance vpna
+router bgp [parameter1]
+ address-family none
+ no synchronization
+ address-family vpnv4 vrf none
+mpls l2vpn 100:1
+ route-distinguisher 100:1
+evpn vpn-instance none
+mpls l2vpn 200:1
+mpls traffic-eng bfd none bind interface none reverse-lsp-id 1.1.1.9 lsp-id none
+mpls
+mpls ldp
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 100.1.1.2 255.255.255.0
+ interface GigabitEthernet2/0/0
+interface GigabitEthernet2/0/0
+ ip address 20.1.1.1 255.255.255.0
+ interface LoopBack1
+interface LoopBack1
+ ip address 1.1.1.9 255.255.255.255
+bgp 100
+ peer 2.2.2.9 as-number 100
+ ipv4-family unicast
+  peer 2.2.2.9 enable
+bfd all-interfaces
+ peer 100.1.1.1 as-number 65410
+ bind peer-ip none interface LoopBack1
+tunnel-policy none
+ipv6 router ospf 1
+router ospf 0.0.0.0
+ opaque-area 0.0.0.0
+access-list none none none none 0.0.0.255
+ network 20.1.1.0 mask none
+access-list none none none none 0.0.0.0
+ network 1.1.1.9 mask none
+return

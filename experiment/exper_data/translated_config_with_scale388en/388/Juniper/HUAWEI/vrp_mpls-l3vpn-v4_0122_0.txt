@@ -1,0 +1,19 @@
+sysname CE1
+interface ge-1/0/0
+ e1 0 none
+ undo shutdown
+interface lo0
+ e1 1 none
+ ip address 11.11.11.11 32
+ traffic-policy export-lo0 inbound
+bgp 65410
+ group external-peers internal
+ ipv6-family vpnv6
+  policy vpn-target
+ ipv4-family export-lo0
+  peer 1000 advertise-community
+  peer 10.1.1.2 advertise-community
+ peer none group external-peers
+ipv4-family export-lo0
+ peer none route-policy export-lo0 export
+traffic policy 1

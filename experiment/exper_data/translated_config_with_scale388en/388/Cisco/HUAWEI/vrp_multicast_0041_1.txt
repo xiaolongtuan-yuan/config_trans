@@ -1,0 +1,19 @@
+sysname DeviceB
+multicast routing-enable
+acl number 2000
+acl ipv6 number 2000
+ rule none permit source 232.1.1.0 none
+ rule none permit source none destination 0.0.0.255
+isis none
+network-entity 10.0000.0000.0002.00
+interface GigabitEthernet1/0/0
+ undo shutdown
+ pim none
+ip pool 192.168.2.2 server
+ ip address 192.168.2.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 192.168.4.1 none
+interface GigabitEthernet2/0/0
+ isis link-quality none incr-cost none
+pim
+clock source ptp ssm 0.0.0.255

@@ -1,0 +1,20 @@
+sysname CE1
+interface GigabitEthernet1/0/0
+ undo shutdown
+ip pool 10.1.1.2 server
+ ip address 10.1.1.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 11.11.11.11 none
+ gateway none 255.255.255.255 section none none none
+interface Loopback1
+bgp 65410
+ peer none as-number 100
+ ipv4-family none
+  peer 10.1.1.1 advertise-community
+remote-ip 10.1.1.1
+ipv4-family none
+ undo synchronization
+ip pool 11.11.11.11 bas local
+ network 11.11.11.11 none
+ gateway none 255.255.255.255
+emdi
