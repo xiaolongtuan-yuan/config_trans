@@ -63,10 +63,13 @@ def translate_single_file(config_translater, input_dir, output_dir,
     file_name = os.path.splitext(config_file)[0]
 
     # 翻译到目标供应商
-    output_path = os.path.join(output_dir, target_vendor, f"{file_name}.txt")
-    trans_res, _ = config_translater.translation_without_llm(json_config, source_vendor, target_vendor)
-    with open(output_path, 'w', encoding='utf-8') as f:
+    tran_res_output_path = os.path.join(output_dir, target_vendor, f"{file_name}.txt")
+    tran_temp_output_path = os.path.join(output_dir, target_vendor, f"{file_name}_temp.json")
+    trans_res, _, trans_templates = config_translater.translation_without_llm(json_config, source_vendor, target_vendor)
+    with open(tran_res_output_path, 'w', encoding='utf-8') as f:
         f.write(trans_res)
+    with open(tran_temp_output_path, 'w', encoding='utf-8') as f:
+        json.dump(trans_templates, f, ensure_ascii=False, indent=4)
     return True
 
 
@@ -98,8 +101,8 @@ def main():
             for target_vendor in vendors:
                 if source_vendor == target_vendor:
                     continue
-                if not source_vendor == 'Juniper':
-                    continue
+                # if not source_vendor == 'Juniper':
+                #     continue
                 source_config_dir = f'./exper_data/{source_vendor}' if source_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
 
                 output_save_dir = os.path.join(output_dir, str(scale), source_vendor)
