@@ -1,0 +1,208 @@
+{
+    "set system host-name RouterA": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name RouterA",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces ge-0/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 172.16.3.1/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 172.16.3.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-0/0/1": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 172.16.2.1/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 172.16.2.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-0/0/3": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/3",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 172.16.1.1/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 172.16.1.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols bgp 65008": {
+        "template": "set protocols bgp [parameter1]",
+        "command": "set protocols bgp 65008",
+        "explanation": "Configure BGP instance.",
+        "parameters": [
+            {
+                "name": "as-number",
+                "type": "integer",
+                "explanation": "BGP Autonomous System No."
+            }
+        ],
+        "address-family ipv4-unicast neighbor 172.16.2.2": {
+            "template": "address-family ipv4-unicast neighbor [parameter2]",
+            "command": "address-family ipv4-unicast neighbor 172.16.2.2",
+            "explanation": "This command configures BGP to enable IPv4 unicast address family for a specific neighbor (parameter2) within the BGP protocol instance (parameter1).",
+            "parameters": [
+                {
+                    "name": "neighbor-ip",
+                    "type": "string",
+                    "explanation": "BGP neighbor's IP address."
+                }
+            ],
+            "route-map direct-import": {
+                "template": "route-map [parameter3]",
+                "command": "route-map direct-import",
+                "explanation": "This command configures BGP to apply a route-map for IPv4 unicast routes to a specified neighbor, controlling route advertisement or modification.",
+                "parameters": [
+                    {
+                        "name": "route-map",
+                        "type": "string",
+                        "explanation": "The route-map name applied to the entry route."
+                    }
+                ],
+                "in": {
+                    "template": "in",
+                    "command": "in",
+                    "explanation": "Set up route-map for BGP neighbours.",
+                    "parameters": []
+                }
+            }
+        }
+    },
+    "set routing-options static route 0.0.0.0/0": {
+        "template": "set routing-options static route [parameter1]/[parameter2]",
+        "command": "set routing-options static route 0.0.0.0/0",
+        "explanation": "This command configures a static route in Junos, where `[parameter1]` is the destination network and `[parameter2]` is the subnet mask.",
+        "parameters": [
+            {
+                "name": "destination",
+                "type": "string",
+                "explanation": "Target network address."
+            },
+            {
+                "name": "prefix-length",
+                "type": "integer",
+                "explanation": "Prefix length of target network."
+            }
+        ],
+        "next-hop <next-hop>": {
+            "template": "next-hop [parameter3]",
+            "command": "next-hop <next-hop>",
+            "explanation": "Configures static routers.",
+            "parameters": [
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "Next jump address."
+                }
+            ]
+        }
+    }
+}

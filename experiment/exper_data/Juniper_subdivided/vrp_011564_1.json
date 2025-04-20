@@ -1,0 +1,152 @@
+{
+    "set system host-name PE1": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name PE1",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set protocols cfm global enable": {
+        "template": "set protocols cfm global enable",
+        "command": "set protocols cfm global enable",
+        "explanation": "The CFM protocol is enabled globally.",
+        "parameters": []
+    },
+    "set protocols cfm md md1": {
+        "template": "set protocols cfm md [parameter1]",
+        "command": "set protocols cfm md md1",
+        "explanation": "Configure the maintenance domain of CFM.",
+        "parameters": [
+            {
+                "name": "md",
+                "type": "string",
+                "explanation": "Maintains the name of the domain."
+            }
+        ],
+        "ma ma1": {
+            "template": "ma [parameter2]",
+            "command": "ma ma1",
+            "explanation": "Configure maintenance association (Maintenance Association) in the specified maintenance domain.",
+            "parameters": [
+                {
+                    "name": "ma",
+                    "type": "string",
+                    "explanation": "Maintains the name of the association."
+                }
+            ],
+            "loss-measure send test-id 1": {
+                "template": "loss-measure send test-id [parameter3]",
+                "command": "loss-measure send test-id 1",
+                "explanation": "This command configures Connectivity Fault Management (CFM) to send loss measurement frames for a specific maintenance association (MA) using a defined test ID.",
+                "parameters": [
+                    {
+                        "name": "test-id",
+                        "type": "integer",
+                        "explanation": "Testing ID."
+                    }
+                ],
+                "interval 1000": {
+                    "template": "interval [parameter4]",
+                    "command": "interval 1000",
+                    "explanation": "This command configures Connectivity Fault Management (CFM) to send loss measurement frames with a specified test ID and interval for a given maintenance domain (MD) and association (MA).",
+                    "parameters": [
+                        {
+                            "name": "interval",
+                            "type": "integer",
+                            "explanation": "The measurement interval, in milliseconds."
+                        }
+                    ],
+                    "count 20": {
+                        "template": "count [parameter5]",
+                        "command": "count 20",
+                        "explanation": "Configure the drop-out measurement, specify the test ID, the interval and the count.",
+                        "parameters": [
+                            {
+                                "name": "count",
+                                "type": "integer",
+                                "explanation": "Number of measurements."
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "set routing-instances evpna": {
+        "template": "set routing-instances [parameter1]",
+        "command": "set routing-instances evpna",
+        "explanation": "This command fragment configures a routing instance named `[parameter1]` in Junos, allowing for separate routing tables and protocols within that instance.",
+        "parameters": [
+            {
+                "name": "routing-instance",
+                "type": "string",
+                "explanation": "Name of route example, e.g. net."
+            }
+        ],
+        "vpn-target 1:1": {
+            "template": "vpn-target [parameter2]",
+            "command": "vpn-target 1:1",
+            "explanation": "This command configures a VPN target (route distinguisher) for a specific routing instance, enabling route exchange within a VPN.",
+            "parameters": [
+                {
+                    "name": "vpn-target",
+                    "type": "string",
+                    "explanation": "VPN target, to control the import and export of route."
+                }
+            ],
+            "import-extcommunity": {
+                "template": "import-extcommunity",
+                "command": "import-extcommunity",
+                "explanation": "Configures the VPN target for the route example to import.",
+                "parameters": []
+            }
+        }
+    },
+    "set bridge-domains 10": {
+        "template": "set bridge-domains [parameter1]",
+        "command": "set bridge-domains 10",
+        "explanation": "Create a bridge field.",
+        "parameters": [
+            {
+                "name": "bridge-domain",
+                "type": "string",
+                "explanation": "Bridge domain names, such as vlan10."
+            }
+        ],
+        "vlan-id 2": {
+            "template": "vlan-id [parameter2]",
+            "command": "vlan-id 2",
+            "explanation": "Configure the VLAN ID of the bridge domain.",
+            "parameters": [
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN ID, used to identify VLAN."
+                }
+            ]
+        }
+    },
+    "set interfaces ge-0/0/1.1": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/1.1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "pppoe enable": {
+            "template": "pppoe enable",
+            "command": "pppoe enable",
+            "explanation": "Enable PPPE on interface (Point-to-Point Production over Ethernet).",
+            "parameters": []
+        }
+    }
+}

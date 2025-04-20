@@ -1,0 +1,304 @@
+{
+    "set system host-name PE1": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name PE1",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set protocols ldp router-id loopback0": {
+        "template": "set protocols ldp router-id [parameter1]",
+        "command": "set protocols ldp router-id loopback0",
+        "explanation": "Configure the LDP protocol router ID.",
+        "parameters": [
+            {
+                "name": "router-id",
+                "type": "string",
+                "explanation": "Router ID for LDP protocol."
+            }
+        ]
+    },
+    "set protocols ldp interface GigabitEthernet1/0/0 label protocol ldp": {
+        "template": "set protocols ldp interface [parameter1] label protocol ldp",
+        "command": "set protocols ldp interface GigabitEthernet1/0/0 label protocol ldp",
+        "explanation": "在指定接口上启用LDP标签分发协议。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如GigabitEthernet1/0/0。"
+            }
+        ]
+    },
+    "set protocols ospf 1": {
+        "template": "set protocols ospf [parameter1]",
+        "command": "set protocols ospf 1",
+        "explanation": "This command configures OSPF (Open Shortest Path First) protocol settings in Junos, where `[parameter1]` specifies the specific OSPF parameter to be defined or modified.",
+        "parameters": [
+            {
+                "name": "ospf-instance",
+                "type": "integer",
+                "explanation": "OSF Example Number."
+            }
+        ],
+        "area 0": {
+            "template": "area [parameter2]",
+            "command": "area 0",
+            "explanation": "Configure examples and areas of the OSPF protocol.",
+            "parameters": [
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "OSPF area number."
+                }
+            ],
+            "network 192.168.1.0/24": {
+                "template": "network [parameter3]/[parameter4]",
+                "command": "network 192.168.1.0/24",
+                "explanation": "Configure the network within the OSPF area.",
+                "parameters": [
+                    {
+                        "name": "network",
+                        "type": "string",
+                        "explanation": "The address of the network belongs to the OSPF area."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "_Other Organiser"
+                    }
+                ]
+            }
+        }
+    },
+    "set vlans v1 vntag 10": {
+        "template": "set vlans [parameter1] vntag [parameter2]",
+        "command": "set vlans v1 vntag 10",
+        "explanation": "配置VLAN的VNTAG。",
+        "parameters": [
+            {
+                "name": "vlan-name",
+                "type": "string",
+                "explanation": "VLAN名称。"
+            },
+            {
+                "name": "vntag",
+                "type": "integer",
+                "explanation": "VNTAG值。"
+            }
+        ]
+    },
+    "set vlans v1 l2transport vc 20 oam-aggregated ethtype-cm mpp-map md-level 1 md-name md1 ma-name ma1": {
+        "template": "set vlans [parameter1] l2transport vc [parameter2] oam-aggregated ethtype-cm mpp-map md-level [parameter3] md-name [parameter4] ma-name [parameter5]",
+        "command": "set vlans v1 l2transport vc 20 oam-aggregated ethtype-cm mpp-map md-level 1 md-name md1 ma-name ma1",
+        "explanation": "配置VLAN的L2传输VC及相关OAM参数。",
+        "parameters": [
+            {
+                "name": "vlan-name",
+                "type": "string",
+                "explanation": "VLAN名称。"
+            },
+            {
+                "name": "vc-id",
+                "type": "integer",
+                "explanation": "VC ID。"
+            },
+            {
+                "name": "md-level",
+                "type": "integer",
+                "explanation": "MD级别。"
+            },
+            {
+                "name": "md-name",
+                "type": "string",
+                "explanation": "MD名称。"
+            },
+            {
+                "name": "ma-name",
+                "type": "string",
+                "explanation": "MA名称。"
+            }
+        ]
+    },
+    "set interfaces ge-1/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 1": {
+            "template": "unit [parameter2]",
+            "command": "unit 1",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family ethernet-switching vlan members v1": {
+                "template": "family ethernet-switching vlan members [parameter3]",
+                "command": "family ethernet-switching vlan members v1",
+                "explanation": "Configure the VLAN members of the interface.",
+                "parameters": [
+                    {
+                        "name": "vlan-members",
+                        "type": "string",
+                        "explanation": "VLAN members, e.g. vlan 100."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-1/0/0.1 unit encapsulation dot1q 10 xconnect vsi v1 group 20 pw-id 20": {
+        "template": "set interfaces [parameter1] unit [parameter2] encapsulation dot1q [parameter3] xconnect vsi [parameter4] group [parameter5] pw-id [parameter6]",
+        "command": "set interfaces ge-1/0/0.1 unit encapsulation dot1q 10 xconnect vsi v1 group 20 pw-id 20",
+        "explanation": "配置接口的Dot1Q封装及跨接VSI。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-1/0/0.1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "vlan-id",
+                "type": "integer",
+                "explanation": "Dot1Q VLAN ID。"
+            },
+            {
+                "name": "vsi-name",
+                "type": "string",
+                "explanation": "VSI名称。"
+            },
+            {
+                "name": "group-id",
+                "type": "integer",
+                "explanation": "组ID。"
+            },
+            {
+                "name": "pw-id",
+                "type": "integer",
+                "explanation": "PW ID。"
+            }
+        ]
+    },
+    "set interfaces ge-2/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-2/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family mpls ldp": {
+                "template": "family mpls ldp",
+                "command": "family mpls ldp",
+                "explanation": "Configure the MPLS LDP protocol for the interface.",
+                "parameters": []
+            }
+        }
+    },
+    "set interfaces lo0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces lo0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 1.1.1.1/32": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 1.1.1.1/32",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set forwarders ethernet cfm md md1 ma ma1 service vsi1 mep 2 direction outbound ccm-send": {
+        "template": "set forwarders ethernet cfm md [parameter1] ma [parameter2] service [parameter3] mep [parameter4] direction [parameter5] ccm-send",
+        "command": "set forwarders ethernet cfm md md1 ma ma1 service vsi1 mep 2 direction outbound ccm-send",
+        "explanation": "配置以太网CFM的MD、MA、服务、MEP方向及CCM发送。",
+        "parameters": [
+            {
+                "name": "md-name",
+                "type": "string",
+                "explanation": "MD名称。"
+            },
+            {
+                "name": "ma-name",
+                "type": "string",
+                "explanation": "MA名称。"
+            },
+            {
+                "name": "service-name",
+                "type": "string",
+                "explanation": "服务名称。"
+            },
+            {
+                "name": "mep-id",
+                "type": "integer",
+                "explanation": "MEP ID。"
+            },
+            {
+                "name": "direction",
+                "type": "string",
+                "explanation": "MEP方向，例如outbound。"
+            }
+        ]
+    }
+}

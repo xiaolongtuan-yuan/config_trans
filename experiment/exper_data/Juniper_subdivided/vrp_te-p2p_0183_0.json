@@ -1,0 +1,221 @@
+{
+    "set system host-name LSRA": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name LSRA",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set protocols mpls lsr-id 1.1.1.1": {
+        "template": "set protocols mpls lsr-id [parameter1]",
+        "command": "set protocols mpls lsr-id 1.1.1.1",
+        "explanation": "Configures the MPLS LSR ID.",
+        "parameters": [
+            {
+                "name": "lsr-id",
+                "type": "string",
+                "explanation": "LSR ID, usually the ring address of the device."
+            }
+        ]
+    },
+    "set protocols mpls traffic-engineering": {
+        "template": "set protocols mpls traffic-engineering",
+        "command": "set protocols mpls traffic-engineering",
+        "explanation": "Enables MPLS traffic engineering.",
+        "parameters": []
+    },
+    "set protocols mpls static-lsp ingress Tunnel10 to 3.3.3.3 next-hop 2.1.1.2 push 20": {
+        "template": "set protocols mpls static-lsp ingress [parameter1] to [parameter2] next-hop [parameter3] push [parameter4]",
+        "command": "set protocols mpls static-lsp ingress Tunnel10 to 3.3.3.3 next-hop 2.1.1.2 push 20",
+        "explanation": "配置MPLS静态LSP的入口。",
+        "parameters": [
+            {
+                "name": "lsp-name",
+                "type": "string",
+                "explanation": "LSP的名称。"
+            },
+            {
+                "name": "destination",
+                "type": "string",
+                "explanation": "LSP的目的地地址。"
+            },
+            {
+                "name": "next-hop",
+                "type": "string",
+                "explanation": "下一跳地址。"
+            },
+            {
+                "name": "label",
+                "type": "integer",
+                "explanation": "推入的MPLS标签。"
+            }
+        ]
+    },
+    "set protocols mpls static-lsp egress Tunnel20 ingress GigabitEthernet1/0/0 pop 130": {
+        "template": "set protocols mpls static-lsp egress [parameter1] ingress [parameter2] pop [parameter3]",
+        "command": "set protocols mpls static-lsp egress Tunnel20 ingress GigabitEthernet1/0/0 pop 130",
+        "explanation": "配置MPLS静态LSP的出口。",
+        "parameters": [
+            {
+                "name": "lsp-name",
+                "type": "string",
+                "explanation": "LSP的名称。"
+            },
+            {
+                "name": "ingress-interface",
+                "type": "string",
+                "explanation": "入口接口名称。"
+            },
+            {
+                "name": "label",
+                "type": "integer",
+                "explanation": "弹出的MPLS标签。"
+            }
+        ]
+    },
+    "set protocols mpls traffic-engineering static-lsp ingress Tunnel10 lsp-id 100": {
+        "template": "set protocols mpls traffic-engineering static-lsp ingress [parameter1] lsp-id [parameter2]",
+        "command": "set protocols mpls traffic-engineering static-lsp ingress Tunnel10 lsp-id 100",
+        "explanation": "配置MPLS流量工程静态LSP的入口及LSP ID。",
+        "parameters": [
+            {
+                "name": "lsp-name",
+                "type": "string",
+                "explanation": "LSP的名称。"
+            },
+            {
+                "name": "lsp-id",
+                "type": "integer",
+                "explanation": "LSP的ID。"
+            }
+        ]
+    },
+    "set interfaces ge-1/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "disable false": {
+            "template": "disable [parameter2]",
+            "command": "disable false",
+            "explanation": "Enable interfaces.",
+            "parameters": [
+                {
+                    "name": "disable",
+                    "type": "boolean",
+                    "explanation": "Disables the interface, false means enabled."
+                }
+            ]
+        }
+    },
+    "set interfaces lo0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces lo0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 1": {
+            "template": "unit [parameter2]",
+            "command": "unit 1",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 1.1.1.1/32": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 1.1.1.1/32",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces gr-0/0/10 unit 0 family inet address 0.0.0.0": {
+        "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]",
+        "command": "set interfaces gr-0/0/10 unit 0 family inet address 0.0.0.0",
+        "explanation": "配置接口的IPv4地址。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如gr-0/0/10。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "ip-address",
+                "type": "string",
+                "explanation": "分配给接口的IPv4地址。"
+            }
+        ]
+    },
+    "set interfaces gr-0/0/10": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces gr-0/0/10",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "tunnel destination 3.3.3.3": {
+                "template": "tunnel destination [parameter3]",
+                "command": "tunnel destination 3.3.3.3",
+                "explanation": "Configure the tunnel destination address.",
+                "parameters": [
+                    {
+                        "name": "destination-address",
+                        "type": "string",
+                        "explanation": "Tunnel destination address."
+                    }
+                ]
+            }
+        }
+    }
+}

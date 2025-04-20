@@ -1,0 +1,220 @@
+{
+    "set system host-name PE2": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name PE2",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set class-of-service forwarding-classes class af1": {
+        "template": "set class-of-service forwarding-classes class [parameter1]",
+        "command": "set class-of-service forwarding-classes class af1",
+        "explanation": "配置转发类。",
+        "parameters": [
+            {
+                "name": "class-name",
+                "type": "string",
+                "explanation": "转发类的名称。"
+            }
+        ]
+    },
+    "set class-of-service classifiers dot1p af1-classifier forwarding-class af1 2": {
+        "template": "set class-of-service classifiers dot1p [parameter1] forwarding-class [parameter2] [parameter3]",
+        "command": "set class-of-service classifiers dot1p af1-classifier forwarding-class af1 2",
+        "explanation": "配置基于802.1p的分类器。",
+        "parameters": [
+            {
+                "name": "classifier-name",
+                "type": "string",
+                "explanation": "分类器的名称。"
+            },
+            {
+                "name": "forwarding-class",
+                "type": "string",
+                "explanation": "转发类的名称。"
+            },
+            {
+                "name": "priority",
+                "type": "integer",
+                "explanation": "优先级。"
+            }
+        ]
+    },
+    "set class-of-service rewrite-rules dscp gina forwarding-class af1 loss-priority low code-point af11": {
+        "template": "set class-of-service rewrite-rules dscp [parameter1] forwarding-class [parameter2] loss-priority [parameter3] code-point [parameter4]",
+        "command": "set class-of-service rewrite-rules dscp gina forwarding-class af1 loss-priority low code-point af11",
+        "explanation": "配置DSCP重写规则。",
+        "parameters": [
+            {
+                "name": "rule-name",
+                "type": "string",
+                "explanation": "重写规则的名称。"
+            },
+            {
+                "name": "forwarding-class",
+                "type": "string",
+                "explanation": "转发类的名称。"
+            },
+            {
+                "name": "loss-priority",
+                "type": "string",
+                "explanation": "丢包优先级。"
+            },
+            {
+                "name": "code-point",
+                "type": "string",
+                "explanation": "代码点。"
+            }
+        ]
+    },
+    "set vlans BD10": {
+        "template": "set vlans [parameter1]",
+        "command": "set vlans BD10",
+        "explanation": "Configure VLAN.",
+        "parameters": [
+            {
+                "name": "vlan-name",
+                "type": "string",
+                "explanation": "VLAN's name, like Vlan100."
+            }
+        ],
+        "vlan-id 10": {
+            "template": "vlan-id [parameter2]",
+            "command": "vlan-id 10",
+            "explanation": "Configure VLAN's ID.",
+            "parameters": [
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN ID for the only identification of a VLAN."
+                }
+            ]
+        }
+    },
+    "set bridge-domains BD10": {
+        "template": "set bridge-domains [parameter1]",
+        "command": "set bridge-domains BD10",
+        "explanation": "Create a bridge field.",
+        "parameters": [
+            {
+                "name": "bridge-domain",
+                "type": "string",
+                "explanation": "Bridge domain names, such as vlan10."
+            }
+        ],
+        "domain-type bridge": {
+            "template": "domain-type [parameter2]",
+            "command": "domain-type bridge",
+            "explanation": "Configure the type of bridge area.",
+            "parameters": [
+                {
+                    "name": "domain-type",
+                    "type": "string",
+                    "explanation": "The type of bridge area, like 'bridge'."
+                }
+            ]
+        }
+    },
+    "set bridge-domains BD10 vlan vlan-id 10": {
+        "template": "set bridge-domains [parameter1] vlan vlan-id [parameter2]",
+        "command": "set bridge-domains BD10 vlan vlan-id 10",
+        "explanation": "配置桥接域的VLAN ID。",
+        "parameters": [
+            {
+                "name": "domain-name",
+                "type": "string",
+                "explanation": "桥接域的名称。"
+            },
+            {
+                "name": "vlan-id",
+                "type": "integer",
+                "explanation": "VLAN的ID。"
+            }
+        ]
+    },
+    "set interfaces ge-0/0/1": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family ethernet-switching vlan members BD10": {
+                "template": "family ethernet-switching vlan members [parameter3]",
+                "command": "family ethernet-switching vlan members BD10",
+                "explanation": "Configure the VLAN members of the interface.",
+                "parameters": [
+                    {
+                        "name": "vlan-members",
+                        "type": "string",
+                        "explanation": "VLAN members, e.g. vlan 100."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-0/0/1 unit 0 family ethernet-switching input classifier dot1p af1-classifier": {
+        "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching input classifier dot1p [parameter3]",
+        "command": "set interfaces ge-0/0/1 unit 0 family ethernet-switching input classifier dot1p af1-classifier",
+        "explanation": "配置接口的以太网交换输入分类器。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "classifier-name",
+                "type": "string",
+                "explanation": "分类器的名称。"
+            }
+        ]
+    },
+    "set interfaces ge-0/0/1 unit 0 family ethernet-switching rewrite-rules dscp gina": {
+        "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching rewrite-rules dscp [parameter3]",
+        "command": "set interfaces ge-0/0/1 unit 0 family ethernet-switching rewrite-rules dscp gina",
+        "explanation": "配置接口的以太网交换DSCP重写规则。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "rule-name",
+                "type": "string",
+                "explanation": "重写规则的名称。"
+            }
+        ]
+    }
+}

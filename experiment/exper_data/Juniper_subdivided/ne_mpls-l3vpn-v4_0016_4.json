@@ -1,0 +1,104 @@
+{
+    "set system host-name CE3": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name CE3",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces ge-1/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "disable": {
+                "template": "disable",
+                "command": "disable",
+                "explanation": "Disables the specified interface unit.",
+                "parameters": []
+            }
+        }
+    },
+    "set routing-options autonomous-system 800": {
+        "template": "set routing-options autonomous-system [parameter1]",
+        "command": "set routing-options autonomous-system 800",
+        "explanation": "Autonomy system number with equipment.",
+        "parameters": [
+            {
+                "name": "autonomous-system",
+                "type": "integer",
+                "explanation": "Autonomy system number for equipment, used for route agreements such as BGP."
+            }
+        ]
+    },
+    "set protocols bgp group BGP_GROUP": {
+        "template": "set protocols bgp group [parameter1]",
+        "command": "set protocols bgp group BGP_GROUP",
+        "explanation": "This command configures a BGP group named [parameter1], defining a set of BGP peers with shared session parameters.",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP Group name."
+            }
+        ],
+        "export ADVERTISE_NETWORK": {
+            "template": "export [parameter2]",
+            "command": "export ADVERTISE_NETWORK",
+            "explanation": "Configure the strategy for BGP to guide the route.",
+            "parameters": [
+                {
+                    "name": "export-policy",
+                    "type": "string",
+                    "explanation": "The policy name for the route."
+                }
+            ]
+        }
+    },
+    "set policy-options policy-statement ADVERTISE_NETWORK": {
+        "template": "set policy-options policy-statement [parameter1]",
+        "command": "set policy-options policy-statement ADVERTISE_NETWORK",
+        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "name of the policy statement."
+            }
+        ],
+        "then reject": {
+            "template": "then [parameter2]",
+            "command": "then reject",
+            "explanation": "Configure the actions of the policy statement.",
+            "parameters": [
+                {
+                    "name": "action",
+                    "type": "string",
+                    "explanation": "Strategy statement actions, for example."
+                }
+            ]
+        }
+    }
+}

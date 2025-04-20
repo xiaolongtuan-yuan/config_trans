@@ -1,0 +1,128 @@
+{
+    "set system host-name DeviceC": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DeviceC",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set routing-options rib inet6.0": {
+        "template": "set routing-options rib [parameter1]",
+        "command": "set routing-options rib inet6.0",
+        "explanation": "This command fragment creates or modifies a custom Routing Information Base (RIB) named `[parameter1]` within the routing options, allowing for separate routing tables.",
+        "parameters": [
+            {
+                "name": "rib",
+                "type": "string",
+                "explanation": "RIB name, e.g. not."
+            }
+        ],
+        "static": {
+            "template": "static",
+            "command": "static",
+            "explanation": "Configure IPv6 routers (RIBs) as static routers.",
+            "parameters": []
+        }
+    },
+    "set interfaces ge-2/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-2/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet6 ospfv3 area 0.0.0.0": {
+                "template": "family inet6 ospfv3 area [parameter3]",
+                "command": "family inet6 ospfv3 area 0.0.0.0",
+                "explanation": "Configure the OSPFv3 area of the interface.",
+                "parameters": [
+                    {
+                        "name": "area",
+                        "type": "string",
+                        "explanation": "OSPFv3 Area ID, e.g. 0.0.0.0."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols ospfv3 area 0.0.0.0": {
+        "template": "set protocols ospfv3 area [parameter1]",
+        "command": "set protocols ospfv3 area 0.0.0.0",
+        "explanation": "This command configures an OSPFv3 area with the specified `[parameter1]` as the area identifier, enabling OSPFv3 routing within that area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPFv3 Area ID, e.g. 0.0.0.0."
+            }
+        ],
+        "interface ge-2/0/0.0": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-2/0/0.0",
+            "explanation": "Configure the interface under the OSPFv3 area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g. g-2/0/0.0."
+                }
+            ]
+        }
+    },
+    "set protocols ospfv3 router-id 3.3.3.3": {
+        "template": "set protocols ospfv3 router-id [parameter1]",
+        "command": "set protocols ospfv3 router-id 3.3.3.3",
+        "explanation": "Configure OSPFv3 router ID.",
+        "parameters": [
+            {
+                "name": "router-id",
+                "type": "string",
+                "explanation": "OSPFv3 router ID, e.g. 3.3.3.3."
+            }
+        ]
+    },
+    "set protocols bfd session ipv6session": {
+        "template": "set protocols bfd session [parameter1]",
+        "command": "set protocols bfd session ipv6session",
+        "explanation": "This command configures a BFD session with specific parameters (e.g., IP address, interface) to enable fast failure detection between network devices.",
+        "parameters": [
+            {
+                "name": "session",
+                "type": "string",
+                "explanation": "BFD session name, e.g. ipv6session."
+            }
+        ],
+        "remote-discriminator 1": {
+            "template": "remote-discriminator [parameter2]",
+            "command": "remote-discriminator 1",
+            "explanation": "Configures the remote identifier for BFD sessions.",
+            "parameters": [
+                {
+                    "name": "remote-discriminator",
+                    "type": "integer",
+                    "explanation": "A remote identifier for a BFD session."
+                }
+            ]
+        }
+    }
+}

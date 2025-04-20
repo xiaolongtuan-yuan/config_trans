@@ -9,7 +9,8 @@ import os
 
 from experiment.compute_bleu import compute_embded_similarity
 from experiment.syntax_correctness import load_config_model, cul_view_accuracy
-from experiment.tree_match import cul_command_accuracy, cul_grammatical_accuracy, cul_param_accuracy
+from experiment.tree_match import cul_command_accuracy, cul_grammatical_accuracy, cul_param_accuracy, \
+    cul_grammatical_accuracy_with_json
 
 if __name__ == '__main__':
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
@@ -67,9 +68,10 @@ if __name__ == '__main__':
                                                     vendor_config_models[target_vendor])
                 exper_data['param_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', param_accuracy))
 
-                grammatical_accuracy = cul_grammatical_accuracy(translated_config_dir, real_config_dir,
-                                                                trannlated_config_files,
-                                                                vendor_config_models[target_vendor])
+                real_target_config_json_dir = f'./exper_data/{target_vendor}' if target_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
+                grammatical_accuracy = cul_grammatical_accuracy_with_json(translated_config_dir, real_target_config_json_dir,
+                                                                trannlated_config_files)
+
                 exper_data['grammatical_accuracy']['vendors'].append(
                     (f'{source_vendor}_{target_vendor}', grammatical_accuracy))
 

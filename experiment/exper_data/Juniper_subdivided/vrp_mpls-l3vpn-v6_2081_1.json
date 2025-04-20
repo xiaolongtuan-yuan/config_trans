@@ -1,0 +1,161 @@
+{
+    "set system host-name CE2": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name CE2",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces ge-0/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet6 address 2001:db8:2::1/64": {
+                "template": "family inet6 address [parameter3]/[parameter4]",
+                "command": "family inet6 address 2001:db8:2::1/64",
+                "explanation": "Configure the IPv6 address of the interface and the length of the subnet prefix.",
+                "parameters": [
+                    {
+                        "name": "ipv6-address",
+                        "type": "string",
+                        "explanation": "The IPv6 address assigned to the interface."
+                    },
+                    {
+                        "name": "prefix-length",
+                        "type": "integer",
+                        "explanation": "Subnet prefix length for IPv6."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces lo0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces lo0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 1": {
+            "template": "unit [parameter2]",
+            "command": "unit 1",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet6 address 2001:db8:12::2/128": {
+                "template": "family inet6 address [parameter3]/[parameter4]",
+                "command": "family inet6 address 2001:db8:12::2/128",
+                "explanation": "Configure the IPv6 address of the interface and the length of the subnet prefix.",
+                "parameters": [
+                    {
+                        "name": "ipv6-address",
+                        "type": "string",
+                        "explanation": "The IPv6 address assigned to the interface."
+                    },
+                    {
+                        "name": "prefix-length",
+                        "type": "integer",
+                        "explanation": "Subnet prefix length for IPv6."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols bgp group external-peers": {
+        "template": "set protocols bgp group [parameter1]",
+        "command": "set protocols bgp group external-peers",
+        "explanation": "This command configures a BGP group named [parameter1], defining a set of BGP peers with shared session parameters.",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP Group name."
+            }
+        ],
+        "family inet6 unicast": {
+            "template": "family [parameter2] [parameter3]",
+            "command": "family inet6 unicast",
+            "explanation": "Configure BGP teams to support the IPv6 solo community.",
+            "parameters": [
+                {
+                    "name": "family",
+                    "type": "string",
+                    "explanation": "Address community type, e.g., inert6."
+                },
+                {
+                    "name": "unicast",
+                    "type": "string",
+                    "explanation": "Address family subtype, e.g., unicast."
+                }
+            ]
+        }
+    },
+    "set routing-options rib inet6.0": {
+        "template": "set routing-options rib [parameter1]",
+        "command": "set routing-options rib inet6.0",
+        "explanation": "This command fragment creates or modifies a custom Routing Information Base (RIB) named `[parameter1]` within the routing options, allowing for separate routing tables.",
+        "parameters": [
+            {
+                "name": "rib",
+                "type": "string",
+                "explanation": "RIB name, e.g. not."
+            }
+        ],
+        "static route 2001:db8:2::/64": {
+            "template": "static route [parameter2]",
+            "command": "static route 2001:db8:2::/64",
+            "explanation": "This command adds a static route `[parameter2]` to the specified Routing Information Base (RIB) `[parameter1]` in Junos routing configuration.",
+            "parameters": [
+                {
+                    "name": "route",
+                    "type": "string",
+                    "explanation": "Target IPv6 network address and prefix length."
+                }
+            ],
+            "next-hop 2001:db8:2::2": {
+                "template": "next-hop [parameter3]",
+                "command": "next-hop 2001:db8:2::2",
+                "explanation": "Configure IPv6 static routers.",
+                "parameters": [
+                    {
+                        "name": "next-hop",
+                        "type": "string",
+                        "explanation": "Next jump IPv6 address."
+                    }
+                ]
+            }
+        }
+    }
+}
