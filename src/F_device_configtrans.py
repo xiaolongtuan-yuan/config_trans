@@ -468,7 +468,7 @@ class Config_Translater:
 
                 self.config_matchers[target_vendor].templates[matched_result] = result_node
                 template = feature['semantic_feature']['template']
-                config_match[command] = {'template': template, 'match': matched_result}
+                config_match[command] = {'template': template, 'match': [matched_result, []]}
 
         return config_match
 

@@ -175,20 +175,18 @@ class ConfigMatcher:
 
     def _get_parent_commands(self, ranked_candidates):
         # 按照配置视图层次，加入所有的父配置命令
-        candidate = [candidate_command[0] for candidate_command in ranked_candidates]  # 候选配置命令模板集合
+        ranked_candidates = [candidate_command[0] for candidate_command in ranked_candidates]  # 候选配置命令模板集合
 
-        # 递归获取所有的父配置命令
+        # 获取所有的父配置命令，不需要递归了
         def _parent_commands(candidate: list) -> list:
-            candidate_length = len(candidate)
             for command in candidate:
-                parent_command = self.templates[command]['structural_features']['context_topology']['parent_command']
-                if (parent_command != 'system' and parent_command not in candidate):
-                    candidate.append(parent_command)
-            if candidate_length < len(candidate):
-                candidate = _parent_commands(candidate)
+                parent_commands = self.templates[command]['structural_features']['context_topology']['parent_command']
+                for parent_command in parent_commands:
+                    if parent_command not in candidate:
+                        candidate.append(parent_command)
             return candidate
 
-        candidate = _parent_commands(candidate)  # 补全父配置命令之后候选集
+        candidate = _parent_commands(ranked_candidates)  # 补全父配置命令之后候选集
         return candidate
 
     def _param_semantic_match(self, command_node, ranked_candidates):
@@ -225,13 +223,13 @@ class ConfigMatcher:
             match_list = []
             for index, match_item in enumerate(para_match):
                 # print('[parameter{}]'.format(index+1), 'correspond [parameter{}] of command -- {}'.format(match_item[2]+1, match_item[0]))
-                match_list.append([index, match_item[2], match_item[0]])
+                match_list.append([index, match_item[2], match_item[0], self.templates[match_item[0]]['structural_features']['context_topology']['parent_command']])
             return match_list
         # 不带参数命令映射
         else:
             # print('command without parameters:')
             # print('corespond command {}'.format(ranked_candidates[0][0]))
-            return ranked_candidates[0][0]
+            return [ranked_candidates[0][0], self.templates[ranked_candidates[0][0]]['structural_features']['context_topology']['parent_command']]
 
 # 同阶段3的insert_template
 # insert 'template' item into juniper config model
@@ -459,7 +457,7 @@ class Config_Translater:
                                                                           target_vendor)  # matched_result = str
                 result_node = {"structural_features": {'command_depth': structural_feature['depth'],
                                                       'param_signature': {},
-                                                      'context_topology': {'parent_command': 'system'}}}
+                                                      'context_topology': {'parent_command': []}}}
 
                 self.config_matchers[target_vendor].templates[matched_result] = result_node
                 template = feature['semantic_feature']['template']
@@ -725,12 +723,12 @@ class Config_Translater:
     def match_and_extract(self, paras: list, para_num: int,
                           para_match: list, target_template: str) -> list:
         result = ['none'] * para_num
-        if isinstance(para_match, list) and para_num > 0:
+        if isinstance(para_match[0], list) and para_num > 0:
             for item in para_match:
                 if isinstance(item, str):
                     continue
                 # 检查最后一项是否匹配目标模板
-                if item[-1] == target_template and (not -1 in item):
+                if item[2] == target_template and (not -1 in item):
                     # paras的第item[0]个参数是result的item[1]个参数
                     try:
                         result[item[1]] = paras[item[0]]
@@ -756,7 +754,10 @@ class Config_Translater:
         else:
             src_regex = re.escape(src_template)
         # 匹配源命令并提取参数
-        match = re.match(src_regex, src_cmd)
+        try:
+            match = re.match(src_regex, src_cmd)
+        except re.error:
+            return []
         if not match:
             # raise ValueError(f"源命令 '{src_cmd}' 不匹配模板 '{src_template}'")
             return []

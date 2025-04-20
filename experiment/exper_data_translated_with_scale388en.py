@@ -6,11 +6,10 @@
 """
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from src.F_device_configtrans import Config_Translater, Translation_Model, mapping_library_load, config_matchers_load, \
-    process_juniper_json
+from src.F_new_device_configtrans import Config_Translater, Translation_Model, mapping_library_load, config_matchers_load
 import os
 import json
-from tqdm import tqdm  # 用于显示进度条
+from tqdm import tqdm
 
 
 def load_json_file(file_path):
@@ -35,20 +34,21 @@ def batch_translate(config_translater, input_dir, output_dir, source_vendor, tar
             i = 0
             while i < len(futures):
                 future = futures[i]
-                try:
-                    if future.result():
-                        successed_files += 1
-                        pbar.update(1)
-                except Exception as e:
-                    print(f"\nError: {str(e)}")
-                    if config_files:
-                        config_file = config_files.pop(0)
-                        futures.append(executor.submit(translate_single_file,
-                                                       config_translater, input_dir, output_dir,
-                                                       source_vendor, target_vendor, config_file))
-                # if future.result():
-                #     successed_files += 1
-                #     pbar.update(1)
+                # try:
+                #     if future.result():
+                #         successed_files += 1
+                #         pbar.update(1)
+                # except Exception as e:
+                #     print(f"\nError: {str(e)}")
+                #     if config_files:
+                #         config_file = config_files.pop(0)
+                #         futures.append(executor.submit(translate_single_file,
+                #                                        config_translater, input_dir, output_dir,
+                #                                        source_vendor, target_vendor, config_file))
+
+                if future.result():
+                    successed_files += 1
+                    pbar.update(1)
                 i += 1
 
         print(f"Translated {successed_files} configs")
@@ -98,11 +98,11 @@ def main():
             for target_vendor in vendors:
                 if source_vendor == target_vendor:
                     continue
-                # if not source_vendor == 'Juniper':
-                #     continue
+                if not source_vendor == 'Juniper':
+                    continue
                 source_config_dir = f'./exper_data/{source_vendor}' if source_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
 
-                output_save_dir = os.path.join(output_dir, str(scale), source_vendor)  # 当前处理的是哪个scale的哪个源供应商
+                output_save_dir = os.path.join(output_dir, str(scale), source_vendor)
                 os.makedirs(output_save_dir, exist_ok=True)
                 delete_outdate_files(os.path.join(output_dir, str(scale), source_vendor, target_vendor))
 
