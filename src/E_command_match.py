@@ -6,7 +6,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import json
 import numpy as np
 from tqdm import tqdm
-
+import copy
 '''
 配置匹配器运行逻辑：
 1、对比基础语义嵌入, 获取功能相似度(基础语义特征：模板、命令、解释+所有参数名与解释)
@@ -78,7 +78,7 @@ class ConfigMatcher:
         candidate = [candidate_command[0] for candidate_command in ranked_candidates]  # 候选配置命令模板集合
 
         # 递归获取所有的父配置命令
-        def _parent_commands(candidate: list) -> list:
+        '''def _parent_commands(candidate: list) -> list:
             candidate_length = len(candidate)
             for command in candidate:
                 parent_command = self.templates[command]['structural_features']['context_topology']['parent_command']
@@ -88,8 +88,14 @@ class ConfigMatcher:
                 candidate = _parent_commands(candidate)
             return candidate
 
-        candidate = _parent_commands(candidate)  # 补全父配置命令之后候选集
-        return candidate
+        candidate = _parent_commands(candidate)  # 补全父配置命令之后候选集'''
+        new_candidate = copy.deepcopy(candidate)
+        for command in candidate:
+            parent_commands = self.templates[command]['structural_features']['context_topology']['parent_command']
+            for parent_command in parent_commands:
+                if parent_command not in new_candidate:
+                    new_candidate.append(parent_command)
+        return new_candidate
 
     def _param_semantic_match(self, command_node, ranked_candidates):
         """参数语义匹配"""
@@ -122,13 +128,15 @@ class ConfigMatcher:
             match_list = []
             for index, match_item in enumerate(para_match):
                 # print('[parameter{}]'.format(index+1), 'correspond [parameter{}] of command -- {}'.format(match_item[2]+1, match_item[0]))
-                match_list.append([index, match_item[2], match_item[0]])
+                parent_commands = self.templates[match_item[0]]["structural_features"]['context_topology']["parent_command"]
+                match_list.append([index, match_item[2], match_item[0], parent_commands])
             return match_list
         # 不带参数命令映射
         else:
             # print('command without parameters:')
             # print('corespond command {}'.format(ranked_candidates[0][0]))
-            return ranked_candidates[0][0]
+            parent_commands = self.templates[ranked_candidates[0][0]]["structural_features"]['context_topology']["parent_command"]
+            return [ranked_candidates[0][0], parent_commands]
 
 
 def _build_mapping_template_library(vendors, template_path, save_path):
@@ -217,8 +225,8 @@ def _build_mapping_template_library_388en(vendors, template_path, save_path):
             for target_vendor in vendors:
                 if vendor == target_vendor:
                     continue
-                if (not vendor == 'Juniper') and (not target_vendor == 'Juniper'):
-                   continue
+                '''if (not vendor == 'Juniper') and (not target_vendor == 'Juniper'):
+                   continue'''
                 command_mapping = {}
                 # 映射每一条配置命令到目标供应商配置命令
                 description = "Match process from {} to {}".format(vendor, target_vendor)
