@@ -62,27 +62,27 @@ if __name__ == '__main__':
                 real_config_dir = f'./exper_data/lable/{target_vendor}'
 
                 semantic_similarity = compute_embded_similarity(translated_config_dir, real_config_dir,
-                                                                trannlated_config_files)
+                                                                trannlated_config_files)     # cul semantic_similarity
                 exper_data['semantic_similarity']['vendors'].append(
                     (f'{source_vendor}_{target_vendor}', semantic_similarity))
 
-                command_accuracy = cul_command_accuracy(translated_config_dir, real_config_dir, trannlated_config_files)
+                command_accuracy = cul_command_accuracy(translated_config_dir, real_config_dir, trannlated_config_files)    # cul command accuracy
                 exper_data['command_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', command_accuracy))
 
                 param_accuracy = cul_param_accuracy(translated_config_dir, real_config_dir, trannlated_config_files,
-                                                       vendor_config_models[target_vendor])
+                                                       vendor_config_models[target_vendor])                                 # cul param accuracy
                 exper_data['param_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', param_accuracy))
 
                 grammatical_accuracy = cul_grammatical_accuracy(translated_config_dir, real_config_dir,
                                                                 trannlated_config_files,
-                                                                vendor_config_models[target_vendor])
+                                                                vendor_config_models[target_vendor])                        # cul grammatical accuracy
                 exper_data['grammatical_accuracy']['vendors'].append(
                     (f'{source_vendor}_{target_vendor}', grammatical_accuracy))
 
 
 
                 view_accuracy = cul_view_accuracy(translated_config_dir, trannlated_config_files,
-                                                  vendor_config_models[target_vendor])
+                                                  vendor_config_models[target_vendor])                                      # cul view accuracy
                 exper_data['view_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', view_accuracy))
         # 计算平均值
         exper_data['semantic_similarity']['average'] = sum(
