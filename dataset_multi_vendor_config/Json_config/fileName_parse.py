@@ -1,4 +1,14 @@
 from pathlib import Path
+import json
+
+# 读取txt文件
+def txtTojson(file_name):
+    with open('{}.txt'.format(file_name), 'r', encoding='utf-8') as f:
+        data = json.load(f)  # 直接作为json加载
+
+    # 写入json文件
+    with open('{}.json'.format(file_name), 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
 
 
 def get_txt_filenames(folder_path):
