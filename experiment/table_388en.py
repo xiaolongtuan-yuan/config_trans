@@ -53,7 +53,7 @@ if __name__ == '__main__':
                     continue
 
                 translated_config_dir = os.path.join(translated_config_base, str(scale), source_vendor, target_vendor)
-                trannlated_config_files = [f for f in os.listdir(translated_config_dir) if f.endswith('.txt')]
+                trannlated_config_files = [f for f in os.listdir(translated_config_dir) if f.endswith('.txt') and not f.endswith('text.txt')]
                 real_config_dir = f'./exper_data/lable/{target_vendor}'
 
                 # semantic_similarity = compute_embded_similarity(translated_config_dir, real_config_dir,
@@ -68,9 +68,9 @@ if __name__ == '__main__':
                                                     vendor_config_models[target_vendor])
                 exper_data['param_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', param_accuracy))
 
-                # real_target_config_json_dir = f'./exper_data/{target_vendor}' if target_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
-                real_target_config_json_dir = f'./exper_data/lable/{target_vendor}'
-                grammatical_accuracy = cul_grammatical_accuracy(translated_config_dir, real_target_config_json_dir,
+                real_target_config_json_dir = f'./exper_data/{target_vendor}' if target_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
+                # real_target_config_json_dir = f'./exper_data/lable/{target_vendor}'
+                grammatical_accuracy = cul_grammatical_accuracy_with_json(translated_config_dir, real_target_config_json_dir,
                                                                 trannlated_config_files)
 
                 exper_data['grammatical_accuracy']['vendors'].append(
