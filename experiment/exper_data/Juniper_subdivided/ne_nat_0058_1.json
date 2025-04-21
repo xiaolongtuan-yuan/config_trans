@@ -33,6 +33,23 @@
                     "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
                 }
             ],
+            "family inet address 1.1.1.1/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 1.1.1.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
             "vlan-id 1": {
                 "template": "vlan-id [parameter3]",
                 "command": "vlan-id 1",
@@ -164,6 +181,30 @@
                 "explanation": "Name of the NAT rule book."
             }
         ],
+        "from zone trust": {
+            "template": "from zone [parameter2]",
+            "command": "from zone trust",
+            "explanation": "Configure the source safety area for the NAT ruleset application.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "Name of the source security area."
+                }
+            ]
+        },
+        "to zone untrust": {
+            "template": "to zone [parameter2]",
+            "command": "to zone untrust",
+            "explanation": "Configure the purpose safe area for the NAT ruleset application.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "The name of the destination security area."
+                }
+            ]
+        },
         "rule r1": {
             "template": "rule [parameter2]",
             "command": "rule r1",
@@ -219,12 +260,12 @@
     "set policy-options policy-statement ps1": {
         "template": "set policy-options policy-statement [parameter1]",
         "command": "set policy-options policy-statement ps1",
-        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+        "explanation": "创建策略声明。",
         "parameters": [
             {
                 "name": "policy-statement",
                 "type": "string",
-                "explanation": "name of the policy statement."
+                "explanation": "策略声明名称，例如ps1。"
             }
         ],
         "term 1": {
@@ -290,6 +331,18 @@
                 "explanation": "OSPF area ID."
             }
         ],
+        "interface ge-3/0/0.0": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-3/0/0.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        },
         "network 2.2.2.0/24": {
             "template": "network [parameter2]/[parameter3]",
             "command": "network 2.2.2.0/24",

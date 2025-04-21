@@ -70,6 +70,18 @@
                 "explanation": "BGP Group name."
             }
         ],
+        "type external": {
+            "template": "type [parameter2]",
+            "command": "type external",
+            "explanation": "Configure the type of BGP group to be external.",
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "explanation": "Type of BGP group, for example, external."
+                }
+            ]
+        },
         "neighbor 4.4.4.4": {
             "template": "neighbor [parameter2]",
             "command": "neighbor 4.4.4.4",
@@ -81,6 +93,47 @@
                     "explanation": "Neighbor's IP address."
                 }
             ],
+            "peer-as 200": {
+                "template": "peer-as [parameter3]",
+                "command": "peer-as 200",
+                "explanation": "Configure the BGP group's neighbours and their equivalents.",
+                "parameters": [
+                    {
+                        "name": "peer-as",
+                        "type": "integer",
+                        "explanation": "Peer AS."
+                    }
+                ]
+            },
+            "local-address 5.5.5.5": {
+                "template": "local-address [parameter3]",
+                "command": "local-address 5.5.5.5",
+                "explanation": "Configure the local address of the BGP peer group.",
+                "parameters": [
+                    {
+                        "name": "local-address",
+                        "type": "string",
+                        "explanation": "Local address, for BGP sessions."
+                    }
+                ]
+            },
+            "family inet unicast": {
+                "template": "family [parameter3] [parameter4]",
+                "command": "family inet unicast",
+                "explanation": "The address of the neighbours of the BGP group is IPv6.",
+                "parameters": [
+                    {
+                        "name": "address-family",
+                        "type": "string",
+                        "explanation": "Address community type, e.g., inert6."
+                    },
+                    {
+                        "name": "sub-address-family",
+                        "type": "string",
+                        "explanation": "Sub-address type, e.g., unicast."
+                    }
+                ]
+            },
             "export EXPORT-POLICY": {
                 "template": "export [parameter3]",
                 "command": "export EXPORT-POLICY",
@@ -106,6 +159,23 @@
                 "explanation": "OSPF area ID."
             }
         ],
+        "interface lo0.0 passive": {
+            "template": "interface [parameter2] [parameter3]",
+            "command": "interface lo0.0 passive",
+            "explanation": "Configure the OSPF protocol area and interface and set the interface to passive mode.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "interface name."
+                },
+                {
+                    "name": "passive",
+                    "type": "string",
+                    "explanation": "Sets the interface to passive mode and does not send the OSF Hello package."
+                }
+            ]
+        },
         "interface ge-2/0/0.0": {
             "template": "interface [parameter2]",
             "command": "interface ge-2/0/0.0",
@@ -141,6 +211,23 @@
                     "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
                 }
             ],
+            "family inet address 10.4.1.2/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.4.1.2/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
             "family mpls": {
                 "template": "family [parameter3]",
                 "command": "family mpls",
@@ -240,6 +327,40 @@
                     "explanation": "The term number of the policy statement."
                 }
             ],
+            "from protocol direct": {
+                "template": "from protocol [parameter3]",
+                "command": "from protocol direct",
+                "explanation": "Configure the matching condition for the policy statement from the OSF protocol.",
+                "parameters": [
+                    {
+                        "name": "protocol",
+                        "type": "string",
+                        "explanation": "Matches the protocol name, for example."
+                    }
+                ]
+            },
+            "from route-filter 5.5.5.5/32 exact": {
+                "template": "from route-filter [parameter3]/[parameter4] [parameter5]",
+                "command": "from route-filter 5.5.5.5/32 exact",
+                "explanation": "Declare the network in BGP.",
+                "parameters": [
+                    {
+                        "name": "route-filter",
+                        "type": "string",
+                        "explanation": "The IP address of the route filter."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    },
+                    {
+                        "name": "match-type",
+                        "type": "string",
+                        "explanation": "Match type, for example."
+                    }
+                ]
+            },
             "then accept": {
                 "template": "then [parameter3]",
                 "command": "then accept",

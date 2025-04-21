@@ -33,6 +33,23 @@
                     "explanation": "Filter term name."
                 }
             ],
+            "from source-address 192.168.10.0/24": {
+                "template": "from source-address [parameter3]/[parameter4]",
+                "command": "from source-address 192.168.10.0/24",
+                "explanation": "Configures the source address conditions for access to the control list.",
+                "parameters": [
+                    {
+                        "name": "source-address",
+                        "type": "string",
+                        "explanation": "Source IP address."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Number of subnet masks in source IP address."
+                    }
+                ]
+            },
             "then accept": {
                 "template": "then [parameter3]",
                 "command": "then accept",
@@ -102,6 +119,47 @@
                 "explanation": "Interface name, e.g., g-1/0/0."
             }
         ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 192.168.10.1/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 192.168.10.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "family inet filter input POLICY1": {
+                "template": "family inet filter input [parameter3]",
+                "command": "family inet filter input POLICY1",
+                "explanation": "Configure the input filter for the interface.",
+                "parameters": [
+                    {
+                        "name": "filter-name",
+                        "type": "string",
+                        "explanation": "Filter name."
+                    }
+                ]
+            }
+        },
         "disable false": {
             "template": "disable [parameter2]",
             "command": "disable false",
@@ -208,6 +266,30 @@
                 "explanation": "Name of the NAT rule book."
             }
         ],
+        "from zone trust": {
+            "template": "from zone [parameter2]",
+            "command": "from zone trust",
+            "explanation": "Configure the source safety area for the NAT ruleset application.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "Name of the source security area."
+                }
+            ]
+        },
+        "to zone untrust": {
+            "template": "to zone [parameter2]",
+            "command": "to zone untrust",
+            "explanation": "Configure the purpose safe area for the NAT ruleset application.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "The name of the destination security area."
+                }
+            ]
+        },
         "rule NAT1": {
             "template": "rule [parameter2]",
             "command": "rule NAT1",

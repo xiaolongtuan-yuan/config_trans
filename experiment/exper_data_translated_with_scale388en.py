@@ -34,21 +34,21 @@ def batch_translate(config_translater, input_dir, output_dir, source_vendor, tar
             i = 0
             while i < len(futures):
                 future = futures[i]
-                # try:
-                #     if future.result():
-                #         successed_files += 1
-                #         pbar.update(1)
-                # except Exception as e:
-                #     print(f"\nError: {str(e)}")
-                #     if config_files:
-                #         config_file = config_files.pop(0)
-                #         futures.append(executor.submit(translate_single_file,
-                #                                        config_translater, input_dir, output_dir,
-                #                                        source_vendor, target_vendor, config_file))
+                try:
+                    if future.result():
+                        successed_files += 1
+                        pbar.update(1)
+                except Exception as e:
+                    print(f"\nError: {str(e)}")
+                    if config_files:
+                        config_file = config_files.pop(0)
+                        futures.append(executor.submit(translate_single_file,
+                                                       config_translater, input_dir, output_dir,
+                                                       source_vendor, target_vendor, config_file))
 
-                if future.result():
-                    successed_files += 1
-                    pbar.update(1)
+                # if future.result():
+                #     successed_files += 1
+                #     pbar.update(1)
                 i += 1
 
         print(f"Translated {successed_files} configs")
@@ -65,7 +65,7 @@ def translate_single_file(config_translater, input_dir, output_dir,
     # 翻译到目标供应商
     tran_res_output_path = os.path.join(output_dir, target_vendor, f"{file_name}.txt")
     tran_temp_output_path = os.path.join(output_dir, target_vendor, f"{file_name}_temp.json")
-    trans_res, _, trans_templates = config_translater.translation_without_llm(json_config, source_vendor, target_vendor)
+    trans_res, _, trans_templates = config_translater.translation(json_config, source_vendor, target_vendor)
     with open(tran_res_output_path, 'w', encoding='utf-8') as f:
         f.write(trans_res)
     with open(tran_temp_output_path, 'w', encoding='utf-8') as f:

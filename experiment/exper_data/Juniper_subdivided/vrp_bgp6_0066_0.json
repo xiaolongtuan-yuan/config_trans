@@ -33,6 +33,23 @@
                     "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
                 }
             ],
+            "family inet6 address 2001:db8:1::1/64": {
+                "template": "family inet6 address [parameter3]/[parameter4]",
+                "command": "family inet6 address 2001:db8:1::1/64",
+                "explanation": "Configure the IPv6 address of the interface and the length of the subnet prefix.",
+                "parameters": [
+                    {
+                        "name": "ipv6-address",
+                        "type": "string",
+                        "explanation": "The IPv6 address assigned to the interface."
+                    },
+                    {
+                        "name": "prefix-length",
+                        "type": "integer",
+                        "explanation": "Subnet prefix length for IPv6."
+                    }
+                ]
+            },
             "family inet6": {
                 "template": "family inet6",
                 "command": "family inet6",
@@ -63,6 +80,23 @@
                     "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
                 }
             ],
+            "family inet6 address 2001:db8:100::1/96": {
+                "template": "family inet6 address [parameter3]/[parameter4]",
+                "command": "family inet6 address 2001:db8:100::1/96",
+                "explanation": "Configure the IPv6 address of the interface and the length of the subnet prefix.",
+                "parameters": [
+                    {
+                        "name": "ipv6-address",
+                        "type": "string",
+                        "explanation": "The IPv6 address assigned to the interface."
+                    },
+                    {
+                        "name": "prefix-length",
+                        "type": "integer",
+                        "explanation": "Subnet prefix length for IPv6."
+                    }
+                ]
+            },
             "family inet6": {
                 "template": "family inet6",
                 "command": "family inet6",
@@ -82,6 +116,66 @@
                 "explanation": "BGP Group name."
             }
         ],
+        "neighbors 2001:db8:100::2": {
+            "template": "neighbors [parameter2]",
+            "command": "neighbors 2001:db8:100::2",
+            "explanation": "This command configures BGP by defining a group (`[parameter1]`) and specifying a neighbor (`[parameter2]`) to establish a BGP peering session within that group.",
+            "parameters": [
+                {
+                    "name": "neighbor-ip",
+                    "type": "string",
+                    "explanation": "BGP neighbor's IPv6 address."
+                }
+            ],
+            "remote-as 200": {
+                "template": "remote-as [parameter3]",
+                "command": "remote-as 200",
+                "explanation": "Configure BGP neighbors and their remote AS.",
+                "parameters": [
+                    {
+                        "name": "remote-as",
+                        "type": "integer",
+                        "explanation": "Neighbor's remote AS."
+                    }
+                ]
+            }
+        },
+        "family inet6 unicast": {
+            "template": "family inet6 unicast",
+            "command": "family inet6 unicast",
+            "explanation": "Configure BGP teams to support the IPv6 solo community.",
+            "parameters": []
+        },
+        "family inet6 network 2001:db8:1::/64": {
+            "template": "family inet6 network [parameter2]",
+            "command": "family inet6 network 2001:db8:1::/64",
+            "explanation": "Notification of designated IPv6 network in BGP.",
+            "parameters": [
+                {
+                    "name": "network",
+                    "type": "string",
+                    "explanation": "The IPv6 web address and prefix length to be notified."
+                }
+            ]
+        },
+        "family inet6 neighbor 2001:db8:100::2": {
+            "template": "family inet6 neighbor [parameter2]",
+            "command": "family inet6 neighbor 2001:db8:100::2",
+            "explanation": "This command configures BGP group `[parameter1]` to enable IPv6 address family and specifies `[parameter2]` as the neighbor for IPv6 BGP peering.",
+            "parameters": [
+                {
+                    "name": "neighbor-ip",
+                    "type": "string",
+                    "explanation": "BGP neighbor's IPv6 address."
+                }
+            ],
+            "activate": {
+                "template": "activate",
+                "command": "activate",
+                "explanation": "Activate BGP neighbor's IPv6 line.",
+                "parameters": []
+            }
+        },
         "router-id 1.1.1.1": {
             "template": "router-id [parameter2]",
             "command": "router-id 1.1.1.1",

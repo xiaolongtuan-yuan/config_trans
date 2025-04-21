@@ -33,18 +33,13 @@ def subdivision_config(old_config_model:dict, decompose_commands:dict, juniper_m
                 segment_words = segment.split()
                 command_match = ' '.join(command_words[begin:begin+len(segment_words)])
                 command_node = command_node[segment]
-                if len(segments) == 1:
+                if command_match not in sub_model:
                     sub_model[command_match] = {"template": segment,
                                           "command": command_match,
                                           "explanation": command_node['explanation'],
                                           "parameters": command_node['parameters']}
-                else:
-                    sub_model[command_match] = {"template": segment,
-                                          "command": command_match,
-                                          "explanation": command_node['explanation'],
-                                          "parameters": command_node['parameters']}
-                    sub_model = sub_model[command_match]
-                    begin += len(segment_words)
+                sub_model = sub_model[command_match]
+                begin += len(segment_words)
         else:
             sub_model[command] = detail
     return new_config

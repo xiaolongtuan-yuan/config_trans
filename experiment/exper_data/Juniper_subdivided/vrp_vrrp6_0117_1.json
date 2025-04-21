@@ -58,6 +58,71 @@
                 "explanation": "Interface name, e.g., g-1/0/0."
             }
         ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet6 address 2001:DB8::2/64": {
+                "template": "family inet6 address [parameter3]/[parameter4]",
+                "command": "family inet6 address 2001:DB8::2/64",
+                "explanation": "Configure the IPv6 address of the interface and the length of the subnet prefix.",
+                "parameters": [
+                    {
+                        "name": "ipv6-address",
+                        "type": "string",
+                        "explanation": "The IPv6 address assigned to the interface."
+                    },
+                    {
+                        "name": "prefix-length",
+                        "type": "integer",
+                        "explanation": "Subnet prefix length for IPv6."
+                    }
+                ]
+            }
+        },
+        "bfd interval 50": {
+            "template": "bfd interval [parameter2]",
+            "command": "bfd interval 50",
+            "explanation": "This command sets the Bidirectional Forwarding Detection (BFD) interval on an interface to `parameter2` milliseconds for faster link failure detection.",
+            "parameters": [
+                {
+                    "name": "interval",
+                    "type": "integer",
+                    "explanation": "BFD send interval in milliseconds."
+                }
+            ],
+            "mul 3": {
+                "template": "mul [parameter3]",
+                "command": "mul 3",
+                "explanation": "Configures BFD (Bidirectional Forwarding Detection) on the specified interface with a transmit interval (`parameter2`) and detection multiplier (`parameter3`) for faster link failure detection.",
+                "parameters": [
+                    {
+                        "name": "multiplier",
+                        "type": "integer",
+                        "explanation": "BFD multiplier to calculate detection time."
+                    }
+                ],
+                "receive 50": {
+                    "template": "receive [parameter4]",
+                    "command": "receive 50",
+                    "explanation": "Configure the BFD parameters of the interface, including the interval between dispatch, multiplier and receipt.",
+                    "parameters": [
+                        {
+                            "name": "receive-interval",
+                            "type": "integer",
+                            "explanation": "BFD time interval in milliseconds."
+                        }
+                    ]
+                }
+            }
+        },
         "bfd local-discriminator 2": {
             "template": "bfd local-discriminator [parameter2]",
             "command": "bfd local-discriminator 2",
@@ -135,6 +200,18 @@
                 "explanation": "A separate group identifier."
             }
         ],
+        "failover-address inet6 FE80::1": {
+            "template": "failover-address inet6 [parameter2]",
+            "command": "failover-address inet6 FE80::1",
+            "explanation": "Configure a failed IPv6 address for an independent group.",
+            "parameters": [
+                {
+                    "name": "failover-address",
+                    "type": "string",
+                    "explanation": "The IPv6 address of the malfunction."
+                }
+            ]
+        },
         "failover-address inet6 2001:DB8:2::100": {
             "template": "failover-address inet6 [parameter2]",
             "command": "failover-address inet6 2001:DB8:2::100",

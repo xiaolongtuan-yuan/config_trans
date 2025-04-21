@@ -82,6 +82,59 @@
                 "explanation": "BGP Group name."
             }
         ],
+        "type external": {
+            "template": "type [parameter2]",
+            "command": "type external",
+            "explanation": "Configure the type of BGP group to be external.",
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "explanation": "Type of BGP group, for example, external."
+                }
+            ]
+        },
+        "neighbor 192.168.1.2": {
+            "template": "neighbor [parameter2]",
+            "command": "neighbor 192.168.1.2",
+            "explanation": "Configure the neighbors of the BGP team.",
+            "parameters": [
+                {
+                    "name": "neighbor",
+                    "type": "string",
+                    "explanation": "Neighbor's IP address."
+                }
+            ],
+            "remote-as 100": {
+                "template": "remote-as [parameter3]",
+                "command": "remote-as 100",
+                "explanation": "Configure BGP neighbors.",
+                "parameters": [
+                    {
+                        "name": "remote-as",
+                        "type": "integer",
+                        "explanation": "Neighbor's AS number."
+                    }
+                ]
+            }
+        },
+        "family inet unicast": {
+            "template": "family [parameter2] [parameter3]",
+            "command": "family inet unicast",
+            "explanation": "Configure BGP teams to support the IPv6 solo community.",
+            "parameters": [
+                {
+                    "name": "family",
+                    "type": "string",
+                    "explanation": "Address community type, e.g., inert6."
+                },
+                {
+                    "name": "unicast",
+                    "type": "string",
+                    "explanation": "Address family subtype, e.g., unicast."
+                }
+            ]
+        },
         "export advertise-routes": {
             "template": "export [parameter2]",
             "command": "export advertise-routes",
@@ -188,6 +241,40 @@
                 "explanation": "name of the policy statement."
             }
         ],
+        "term 1": {
+            "template": "term [parameter2]",
+            "command": "term 1",
+            "explanation": "This command fragment configures a routing policy by defining a term within a policy statement, where `[parameter1]` is the policy name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "The term number of the policy statement."
+                }
+            ],
+            "from route-filter 192.168.1.0/24 exact": {
+                "template": "from route-filter [parameter3]/[parameter4] [parameter5]",
+                "command": "from route-filter 192.168.1.0/24 exact",
+                "explanation": "Declare the network in BGP.",
+                "parameters": [
+                    {
+                        "name": "route-filter",
+                        "type": "string",
+                        "explanation": "The IP address of the route filter."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    },
+                    {
+                        "name": "match-type",
+                        "type": "string",
+                        "explanation": "Match type, for example."
+                    }
+                ]
+            }
+        },
         "then accept": {
             "template": "then [parameter2]",
             "command": "then accept",

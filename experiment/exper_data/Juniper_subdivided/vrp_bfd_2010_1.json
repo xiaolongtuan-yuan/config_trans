@@ -28,6 +28,30 @@
                 "explanation": "VRP team number."
             }
         ],
+        "interface ge-2/0/0.1": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-2/0/0.1",
+            "explanation": "Configure the interface for VRP Group 1.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g. g-2/0/0.1."
+                }
+            ]
+        },
+        "virtual-address 10.1.1.100": {
+            "template": "virtual-address [parameter2]",
+            "command": "virtual-address 10.1.1.100",
+            "explanation": "Configures the virtual address of VRP Group 1.",
+            "parameters": [
+                {
+                    "name": "virtual-address",
+                    "type": "string",
+                    "explanation": "VRRP virtual address."
+                }
+            ]
+        },
         "priority 100": {
             "template": "priority [parameter2]",
             "command": "priority 100",
@@ -85,14 +109,50 @@
     "set protocols bfd session atob": {
         "template": "set protocols bfd session [parameter1]",
         "command": "set protocols bfd session atob",
-        "explanation": "This command configures a BFD session with specific parameters (e.g., IP address, interface) to enable fast failure detection between network devices.",
+        "explanation": "配置BFD会话。",
         "parameters": [
             {
-                "name": "session",
+                "name": "session-name",
                 "type": "string",
-                "explanation": "BFD session name, e.g. ipv6session."
+                "explanation": "BFD会话名称。"
             }
         ],
+        "local-address 10.1.1.2": {
+            "template": "local-address [parameter2]",
+            "command": "local-address 10.1.1.2",
+            "explanation": "Configure local IPv6 addresses for BFD sessions.",
+            "parameters": [
+                {
+                    "name": "local-address",
+                    "type": "string",
+                    "explanation": "Local IPv6 address for BFD sessions."
+                }
+            ]
+        },
+        "neighbor 10.1.1.1": {
+            "template": "neighbor [parameter2]",
+            "command": "neighbor 10.1.1.1",
+            "explanation": "Configure the IPv6 address of the BFD session.",
+            "parameters": [
+                {
+                    "name": "neighbor",
+                    "type": "string",
+                    "explanation": "The IPv6 address of the BFD session."
+                }
+            ]
+        },
+        "local-discriminator 2": {
+            "template": "local-discriminator [parameter2]",
+            "command": "local-discriminator 2",
+            "explanation": "Configures local identifiers for BFD sessions.",
+            "parameters": [
+                {
+                    "name": "local-discriminator",
+                    "type": "integer",
+                    "explanation": "Local identifier for BFD sessions."
+                }
+            ]
+        },
         "remote-discriminator 1": {
             "template": "remote-discriminator [parameter2]",
             "command": "remote-discriminator 1",
@@ -134,6 +194,18 @@
                 "explanation": "OSPF area ID."
             }
         ],
+        "interface ge-1/0/0": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-1/0/0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        },
         "interface ge-2/0/0.1": {
             "template": "interface [parameter2]",
             "command": "interface ge-2/0/0.1",
@@ -199,6 +271,24 @@
                 "explanation": "Interface name, e.g., g-1/0/0."
             }
         ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet": {
+                "template": "family inet",
+                "command": "family inet",
+                "explanation": "Configure interfaces to support IPv4 protocol communities.",
+                "parameters": []
+            }
+        },
         "unit 1": {
             "template": "unit [parameter2]",
             "command": "unit 1",
@@ -210,6 +300,18 @@
                     "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
                 }
             ],
+            "vlan-id 10": {
+                "template": "vlan-id [parameter3]",
+                "command": "vlan-id 10",
+                "explanation": "Configure VLAN IDs for interface units.",
+                "parameters": [
+                    {
+                        "name": "vlan-id",
+                        "type": "integer",
+                        "explanation": "VLAN ID, used to identify VLAN."
+                    }
+                ]
+            },
             "family inet address 10.1.1.2/24": {
                 "template": "family inet address [parameter3]/[parameter4]",
                 "command": "family inet address 10.1.1.2/24",

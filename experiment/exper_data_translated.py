@@ -128,7 +128,8 @@ def main():
                 mapping_libraries = mapping_library_load(mapping_library_path, vendors)
                 config_matchers = config_matchers_load(templates_path, vendors)
 
-                translation_llm = Translation_Model('deepseek-chat', config_model_dir=config_model_dir, vendors=vendors)
+                # translation_llm = Translation_Model('deepseek-chat', config_model_dir=config_model_dir, vendors=vendors)
+                translation_llm = Translation_Model('aliyun_deepseek-v3', config_model_dir=config_model_dir, vendors=vendors, endpoint_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
 
                 config_translater = Config_Translater(mapping_libraries, config_matchers,
                                                       translation_llm, embedding_model)
