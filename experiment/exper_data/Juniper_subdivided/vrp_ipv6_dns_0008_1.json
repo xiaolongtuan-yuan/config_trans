@@ -1,0 +1,227 @@
+{
+    "set system host-name DeviceB": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DeviceB",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces ge-2/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-2/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet6 address 2001:db8:2::2/64": {
+                "template": "family inet6 address [parameter3]/[parameter4]",
+                "command": "family inet6 address 2001:db8:2::2/64",
+                "explanation": "Configure the IPv6 address of the interface and the length of the subnet prefix.",
+                "parameters": [
+                    {
+                        "name": "ipv6-address",
+                        "type": "string",
+                        "explanation": "The IPv6 address assigned to the interface."
+                    },
+                    {
+                        "name": "prefix-length",
+                        "type": "integer",
+                        "explanation": "Subnet prefix length for IPv6."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-1/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet6 address 2001:db8:1::2/64": {
+                "template": "family inet6 address [parameter3]/[parameter4]",
+                "command": "family inet6 address 2001:db8:1::2/64",
+                "explanation": "Configure the IPv6 address of the interface and the length of the subnet prefix.",
+                "parameters": [
+                    {
+                        "name": "ipv6-address",
+                        "type": "string",
+                        "explanation": "The IPv6 address assigned to the interface."
+                    },
+                    {
+                        "name": "prefix-length",
+                        "type": "integer",
+                        "explanation": "Subnet prefix length for IPv6."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols ripng group RIPNG interface ge-2/0/0": {
+        "template": "set protocols ripng group [parameter1] interface [parameter2]",
+        "command": "set protocols ripng group RIPNG interface ge-2/0/0",
+        "explanation": "配置RIPng协议组并指定接口。",
+        "parameters": [
+            {
+                "name": "group-name",
+                "type": "string",
+                "explanation": "RIPng协议组的名称。"
+            },
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-2/0/0。"
+            }
+        ]
+    },
+    "set protocols ripng group RIPNG interface ge-1/0/0": {
+        "template": "set protocols ripng group [parameter1] interface [parameter2]",
+        "command": "set protocols ripng group RIPNG interface ge-1/0/0",
+        "explanation": "配置RIPng协议组并指定接口。",
+        "parameters": [
+            {
+                "name": "group-name",
+                "type": "string",
+                "explanation": "RIPng协议组的名称。"
+            },
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-1/0/0。"
+            }
+        ]
+    },
+    "set protocols ripng group RIPNG export export-policy": {
+        "template": "set protocols ripng group [parameter1] export [parameter2]",
+        "command": "set protocols ripng group RIPNG export export-policy",
+        "explanation": "配置RIPng协议组使用指定的导出策略。",
+        "parameters": [
+            {
+                "name": "group-name",
+                "type": "string",
+                "explanation": "RIPng协议组的名称。"
+            },
+            {
+                "name": "export-policy",
+                "type": "string",
+                "explanation": "导出策略的名称。"
+            }
+        ]
+    },
+    "set policy-options policy-statement export-policy": {
+        "template": "set policy-options policy-statement [parameter1]",
+        "command": "set policy-options policy-statement export-policy",
+        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "name of the policy statement."
+            }
+        ],
+        "term 1": {
+            "template": "term [parameter2]",
+            "command": "term 1",
+            "explanation": "This command fragment configures a routing policy by defining a term within a policy statement, where `[parameter1]` is the policy name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "The term number of the policy statement."
+                }
+            ],
+            "then accept": {
+                "template": "then [parameter3]",
+                "command": "then accept",
+                "explanation": "Configure the action of the policy statement as accepted.",
+                "parameters": [
+                    {
+                        "name": "action",
+                        "type": "string",
+                        "explanation": "Execute actions such as accept."
+                    }
+                ]
+            }
+        }
+    },
+    "set policy-options policy-statement export-policy term 1 from route-filter 2001:db8:1::/64 exact": {
+        "template": "set policy-options policy-statement [parameter1] term [parameter2] from route-filter [parameter3] exact",
+        "command": "set policy-options policy-statement export-policy term 1 from route-filter 2001:db8:1::/64 exact",
+        "explanation": "配置策略语句的匹配条件，指定精确匹配的路由过滤器。",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "策略语句的名称。"
+            },
+            {
+                "name": "term",
+                "type": "integer",
+                "explanation": "策略语句的术语编号。"
+            },
+            {
+                "name": "route-filter",
+                "type": "string",
+                "explanation": "路由过滤器的前缀。"
+            }
+        ]
+    },
+    "set policy-options policy-statement export-policy term 1 from route-filter 2001:db8:2::/64 exact": {
+        "template": "set policy-options policy-statement [parameter1] term [parameter2] from route-filter [parameter3] exact",
+        "command": "set policy-options policy-statement export-policy term 1 from route-filter 2001:db8:2::/64 exact",
+        "explanation": "配置策略语句的匹配条件，指定精确匹配的路由过滤器。",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "策略语句的名称。"
+            },
+            {
+                "name": "term",
+                "type": "integer",
+                "explanation": "策略语句的术语编号。"
+            },
+            {
+                "name": "route-filter",
+                "type": "string",
+                "explanation": "路由过滤器的前缀。"
+            }
+        ]
+    }
+}

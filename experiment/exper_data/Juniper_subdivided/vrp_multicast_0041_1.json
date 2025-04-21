@@ -1,0 +1,280 @@
+{
+    "set system host-name DeviceB": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DeviceB",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set protocols pim interface all": {
+        "template": "set protocols pim interface [parameter1]",
+        "command": "set protocols pim interface all",
+        "explanation": "This command enables Protocol Independent Multicast (PIM) on a specified network interface (`[parameter1]`) for multicast routing in Junos OS.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "mode sparse": {
+            "template": "mode [parameter2]",
+            "command": "mode sparse",
+            "explanation": "Configure the mode of PIM protocol on the specified interface.",
+            "parameters": [
+                {
+                    "name": "mode",
+                    "type": "string",
+                    "explanation": "PIM models, for example, sparse-dense."
+                }
+            ]
+        }
+    },
+    "set protocols pim ssm default": {
+        "template": "set protocols pim ssm [parameter1]",
+        "command": "set protocols pim ssm default",
+        "explanation": "配置PIM SSM（源特定组播）为默认模式。",
+        "parameters": [
+            {
+                "name": "ssm",
+                "type": "string",
+                "explanation": "SSM模式，default表示默认模式。"
+            }
+        ]
+    },
+    "set protocols isis interface ge-1/0/0 point-to-point": {
+        "template": "set protocols isis interface [parameter1] [parameter2]",
+        "command": "set protocols isis interface ge-1/0/0 point-to-point",
+        "explanation": "Configures the loop back interface of the IS-IS protocol as passive mode.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g. lo0."
+            },
+            {
+                "name": "mode",
+                "type": "string",
+                "explanation": "Interface mode, passive means passive mode."
+            }
+        ]
+    },
+    "set protocols isis interface ge-2/0/0 point-to-point": {
+        "template": "set protocols isis interface [parameter1] [parameter2]",
+        "command": "set protocols isis interface ge-2/0/0 point-to-point",
+        "explanation": "Configures the loop back interface of the IS-IS protocol as passive mode.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g. lo0."
+            },
+            {
+                "name": "mode",
+                "type": "string",
+                "explanation": "Interface mode, passive means passive mode."
+            }
+        ]
+    },
+    "set protocols isis level 2 network-entity 10.0000.0000.0002.00": {
+        "template": "set protocols isis level [parameter1] network-entity [parameter2]",
+        "command": "set protocols isis level 2 network-entity 10.0000.0000.0002.00",
+        "explanation": "配置ISIS协议的级别2的网络实体标识符。",
+        "parameters": [
+            {
+                "name": "level",
+                "type": "integer",
+                "explanation": "ISIS级别，2表示级别2。"
+            },
+            {
+                "name": "network-entity",
+                "type": "string",
+                "explanation": "网络实体标识符，用于唯一标识网络中的ISIS实体。"
+            }
+        ]
+    },
+    "set policy-options policy-statement MULTICAST-SOURCES term 1 from destination-prefix-list SSM-RANGE": {
+        "template": "set policy-options policy-statement [parameter1] term [parameter2] from destination-prefix-list [parameter3]",
+        "command": "set policy-options policy-statement MULTICAST-SOURCES term 1 from destination-prefix-list SSM-RANGE",
+        "explanation": "配置策略语句，指定从特定目的前缀列表匹配的条件。",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "策略语句名称，例如MULTICAST-SOURCES。"
+            },
+            {
+                "name": "term",
+                "type": "integer",
+                "explanation": "策略项编号，用于区分同一策略下的多个条件。"
+            },
+            {
+                "name": "destination-prefix-list",
+                "type": "string",
+                "explanation": "目的前缀列表名称，用于匹配目的地址。"
+            }
+        ]
+    },
+    "set policy-options policy-statement MULTICAST-SOURCES": {
+        "template": "set policy-options policy-statement [parameter1]",
+        "command": "set policy-options policy-statement MULTICAST-SOURCES",
+        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "name of the policy statement."
+            }
+        ],
+        "then accept": {
+            "template": "then [parameter2]",
+            "command": "then accept",
+            "explanation": "Configure the actions of the policy statement.",
+            "parameters": [
+                {
+                    "name": "action",
+                    "type": "string",
+                    "explanation": "Strategy statement actions, for example."
+                }
+            ]
+        }
+    },
+    "set policy-options prefix-list SSM-RANGE 232.1.1.0/24": {
+        "template": "set policy-options prefix-list [parameter1] [parameter2]",
+        "command": "set policy-options prefix-list SSM-RANGE 232.1.1.0/24",
+        "explanation": "Configure the prefix list.",
+        "parameters": [
+            {
+                "name": "prefix-list",
+                "type": "string",
+                "explanation": "The name of the prefix list."
+            },
+            {
+                "name": "prefix",
+                "type": "string",
+                "explanation": "Specific prefix."
+            }
+        ]
+    },
+    "set routing-options multicast forwarding-cache": {
+        "template": "set routing-options multicast [parameter1]",
+        "command": "set routing-options multicast forwarding-cache",
+        "explanation": "Configure route options to support all multicast routers.",
+        "parameters": [
+            {
+                "name": "multicast-option",
+                "type": "string",
+                "explanation": "The multicast route option, and all multicast routers were supported."
+            }
+        ]
+    },
+    "set interfaces ge-1/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family iso": {
+                "template": "family iso",
+                "command": "family iso",
+                "explanation": "Configure interfaces to support the ISO protocol community.",
+                "parameters": []
+            }
+        }
+    },
+    "set interfaces ge-1/0/0 unit 0 family inet pim-mode sparse": {
+        "template": "set interfaces [parameter1] unit [parameter2] family inet pim-mode [parameter3]",
+        "command": "set interfaces ge-1/0/0 unit 0 family inet pim-mode sparse",
+        "explanation": "配置接口的PIM模式为稀疏模式。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-1/0/0。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "pim-mode",
+                "type": "string",
+                "explanation": "PIM模式，sparse表示稀疏模式。"
+            }
+        ]
+    },
+    "set interfaces ge-2/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-2/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family iso": {
+                "template": "family iso",
+                "command": "family iso",
+                "explanation": "Configure interfaces to support the ISO protocol community.",
+                "parameters": []
+            }
+        }
+    },
+    "set interfaces ge-2/0/0 unit 0 family inet pim-mode sparse": {
+        "template": "set interfaces [parameter1] unit [parameter2] family inet pim-mode [parameter3]",
+        "command": "set interfaces ge-2/0/0 unit 0 family inet pim-mode sparse",
+        "explanation": "配置接口的PIM模式为稀疏模式。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-2/0/0。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "pim-mode",
+                "type": "string",
+                "explanation": "PIM模式，sparse表示稀疏模式。"
+            }
+        ]
+    }
+}

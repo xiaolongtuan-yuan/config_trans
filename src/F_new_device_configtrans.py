@@ -334,9 +334,9 @@ class Config_Translater:
         # print(json.dumps(target_config, indent=4, ensure_ascii=False))
 
         # 阶段六：输出并保存翻译的配置命令
-        trans_res, trans_mapping_info = self.print_and_save_translation_config(target_config, target_vendor)
+        trans_res, trans_mapping_info, trans_templates = self.print_and_save_translation_config(target_config, target_vendor)
 
-        return trans_res, trans_mapping_info
+        return trans_res, trans_mapping_info, trans_templates
 
     def translation_with_tau(self, json_configuration, vendor, target_vendor, tau=0.65):
         '''
@@ -367,9 +367,9 @@ class Config_Translater:
         # print(json.dumps(target_config, indent=4, ensure_ascii=False))
 
         # 阶段六：输出并保存翻译的配置命令
-        trans_res, trans_mapping_info = self.print_and_save_translation_config(target_config, target_vendor)
+        trans_res, trans_mapping_info, trans_templates = self.print_and_save_translation_config(target_config, target_vendor)
 
-        return trans_res, trans_mapping_info
+        return trans_res, trans_mapping_info, trans_templates
 
     def translation_without_llm(self, json_configuration, vendor, target_vendor, istatistics=False):
         '''
@@ -398,9 +398,9 @@ class Config_Translater:
             target_config = self.parameter_mapping(arranged_config, vendor, target_vendor)
 
             # 阶段六：输出并保存翻译的配置命令
-            trans_res, trans_mapping_info = self.print_and_save_translation_config(target_config, target_vendor)
+            trans_res, trans_mapping_info, trans_templates = self.print_and_save_translation_config(target_config, target_vendor)
 
-            return trans_res, trans_mapping_info
+            return trans_res, trans_mapping_info, trans_templates
         else:
             statistic_data = {
                 "command_count": len(commands_feature),
@@ -775,7 +775,7 @@ class Config_Translater:
         return dest_template
 
     def merge_config_nodes(self, root, target_vendor):
-        merged_root = ConfigNode("system")
+        merged_root = ConfigNode("system", "")
         node_map = {}
 
         for child in root.children:
@@ -791,7 +791,7 @@ class Config_Translater:
     # 输出对应视图的配置命令
     def print_and_save_translation_config(self, target_config, target_vendor):
         trans_pairs = []
-        root = ConfigNode("system")
+        root = ConfigNode("system", "")
         stack = [(root, -1)]
 
         # 遍历每一个需要翻译的配置命令
@@ -803,7 +803,7 @@ class Config_Translater:
                 # 输出该层级下所有的配置命令
                 for target_temp, command_info in target_command.items():
                     line = command_info['target_command']
-                    node = ConfigNode(line)
+                    node = ConfigNode(line, target_temp)
                     while stack and stack[-1][1] >= depth:
                         stack.pop()
 
@@ -819,7 +819,8 @@ class Config_Translater:
         else:
             trans_res = "\n".join(merged_config_tree.to_lines()[1:])
         trans_mapping_info = '\n'.join(trans_pairs)
-        return trans_res, trans_mapping_info
+        trans_templates = merged_config_tree.get_all_tags()
+        return trans_res, trans_mapping_info, trans_templates
 
     def juniper_combine(self, root):
         # 去除根节点，将树拆分为n个子树，深度遍历每个子树至根节点，将其line值用' '拼接为一条命令
@@ -867,8 +868,9 @@ class Config_Translater:
 
 
 class ConfigNode:
-    def __init__(self, line):
+    def __init__(self, line, tag):
         self.line = line.strip()
+        self.tag = tag
         self.children = []
 
     def add_child(self, child_node):
@@ -894,6 +896,19 @@ class ConfigNode:
                     break
             else:
                 self.children.append(deepcopy(other_child))
+
+    def get_all_tags(self):
+        """遍历整棵树，收集所有节点的tag（line）"""
+        tags = []
+
+        def dfs(node):
+            if node.tag:
+                tags.append(node.tag)
+            for child in node.children:
+                dfs(child)
+
+        dfs(self)
+        return tags
 
 
 # 最后阶段使用大模型做配置映射，保留接口，后续补充

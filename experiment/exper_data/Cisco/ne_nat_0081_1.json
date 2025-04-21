@@ -1,0 +1,162 @@
+{
+    "hostname CGNA": {
+        "template": "hostname [parameter1]",
+        "command": "hostname CGNA",
+        "explanation": "设置设备的主机名为 'CGNA'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "access-list 3001 permit ip 192.168.10.0 0.0.0.255 any": {
+        "template": "access-list [parameter1] permit ip [parameter2] [parameter3] any",
+        "command": "access-list 3001 permit ip 192.168.10.0 0.0.0.255 any",
+        "explanation": "创建一个编号为 3001 的 ACL，允许从 192.168.10.0/255.0.0.0 到任何地方的 IP 流量",
+        "parameters": [
+            {
+                "name": "access list number",
+                "type": "integer",
+                "explanation": "ACL 的编号"
+            },
+            {
+                "name": "source network",
+                "type": "IPv4",
+                "explanation": "源网络地址"
+            },
+            {
+                "name": "wildcard mask",
+                "type": "IPv4",
+                "explanation": "通配符掩码"
+            }
+        ]
+    },
+    "ip nat pool pool1 11.11.11.1 11.11.11.254 netmask 255.255.255.0": {
+        "template": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
+        "command": "ip nat pool pool1 11.11.11.1 11.11.11.254 netmask 255.255.255.0",
+        "explanation": "创建一个名为 pool1 的 NAT 池，范围从 11.11.11.1 到 11.11.11.254，子网掩码为 255.255.255.0",
+        "parameters": [
+            {
+                "name": "pool name",
+                "type": "string",
+                "explanation": "NAT 池的名称"
+            },
+            {
+                "name": "start address",
+                "type": "IPv4",
+                "explanation": "池的起始 IP 地址"
+            },
+            {
+                "name": "end address",
+                "type": "IPv4",
+                "explanation": "池的结束 IP 地址"
+            },
+            {
+                "name": "netmask",
+                "type": "IPv4",
+                "explanation": "子网掩码"
+            }
+        ]
+    },
+    "ip nat inside source list 3001 pool pool1 overload": {
+        "template": "ip nat inside source list [parameter1] pool [parameter2] overload",
+        "command": "ip nat inside source list 3001 pool pool1 overload",
+        "explanation": "配置 NAT，将匹配 ACL 3001 的内部流量通过 pool1 进行源地址转换，并允许端口重用",
+        "parameters": [
+            {
+                "name": "access list number",
+                "type": "integer",
+                "explanation": "要应用的 ACL 编号"
+            },
+            {
+                "name": "pool name",
+                "type": "string",
+                "explanation": "要使用的 NAT 池名称"
+            }
+        ]
+    },
+    "interface GigabitEthernet2/0/0": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet2/0/0",
+        "explanation": "进入 GigabitEthernet2/0/0 接口的配置模式",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名称"
+            }
+        ],
+        "ip address 192.168.10.1 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 192.168.10.1 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 192.168.10.1，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "ip nat inside": {
+            "template": "ip nat inside",
+            "command": "ip nat inside",
+            "explanation": "指定接口为 NAT 的内部接口",
+            "parameters": []
+        },
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        }
+    },
+    "interface GigabitEthernet2/0/1": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet2/0/1",
+        "explanation": "进入 GigabitEthernet2/0/1 接口的配置模式",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名称"
+            }
+        ],
+        "ip address 11.11.11.2 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 11.11.11.2 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 11.11.11.2，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "ip nat outside": {
+            "template": "ip nat outside",
+            "command": "ip nat outside",
+            "explanation": "指定接口为 NAT 的外部接口",
+            "parameters": []
+        },
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        }
+    }
+}

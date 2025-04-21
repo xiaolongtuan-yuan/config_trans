@@ -1,0 +1,170 @@
+{
+    "set system host-name ASBR2": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name ASBR2",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set protocols ldp label-install-mode liberal": {
+        "template": "set protocols ldp label-install-mode [parameter1]",
+        "command": "set protocols ldp label-install-mode liberal",
+        "explanation": "配置LDP标签安装模式为自由模式。",
+        "parameters": [
+            {
+                "name": "label-install-mode",
+                "type": "string",
+                "explanation": "LDP标签安装模式，liberal表示自由模式。"
+            }
+        ]
+    },
+    "set protocols ldp local-address 3.3.3.3": {
+        "template": "set protocols ldp local-address [parameter1]",
+        "command": "set protocols ldp local-address 3.3.3.3",
+        "explanation": "Configure the local address of the LDP protocol.",
+        "parameters": [
+            {
+                "name": "local-address",
+                "type": "string",
+                "explanation": "Local address for LDP protocol."
+            }
+        ]
+    },
+    "set interfaces ge-0/0/0 unit 0 family mpls encapsulation mpls": {
+        "template": "set interfaces [parameter1] unit [parameter2] family mpls encapsulation [parameter3]",
+        "command": "set interfaces ge-0/0/0 unit 0 family mpls encapsulation mpls",
+        "explanation": "配置接口的MPLS封装类型。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/0。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "encapsulation",
+                "type": "string",
+                "explanation": "封装类型，例如mpls。"
+            }
+        ]
+    },
+    "set interfaces ge-0/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family mpls": {
+                "template": "family mpls",
+                "command": "family mpls",
+                "explanation": "Enables the MPLS protocol community on the interface.",
+                "parameters": []
+            }
+        }
+    },
+    "set interfaces ge-0/0/0 unit 0 family mpls ldp discovery transport-address 10.20.1.1": {
+        "template": "set interfaces [parameter1] unit [parameter2] family mpls ldp discovery transport-address [parameter3]",
+        "command": "set interfaces ge-0/0/0 unit 0 family mpls ldp discovery transport-address 10.20.1.1",
+        "explanation": "配置MPLS LDP发现传输地址。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/0。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "transport-address",
+                "type": "string",
+                "explanation": "LDP发现传输地址。"
+            }
+        ]
+    },
+    "set interfaces ge-0/0/0 unit 0 family mpls l2transport enable": {
+        "template": "set interfaces [parameter1] unit [parameter2] family mpls l2transport enable",
+        "command": "set interfaces ge-0/0/0 unit 0 family mpls l2transport enable",
+        "explanation": "启用接口的MPLS L2传输功能。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/0。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            }
+        ]
+    },
+    "set routing-options router ospf 1": {
+        "template": "set routing-options router ospf [parameter1]",
+        "command": "set routing-options router ospf 1",
+        "explanation": "Configure the example of an OSF router protocol.",
+        "parameters": [
+            {
+                "name": "ospf-process-id",
+                "type": "integer",
+                "explanation": "OSF process ID."
+            }
+        ],
+        "network 10.20.1.0/24": {
+            "template": "network [parameter2]/[parameter3]",
+            "command": "network 10.20.1.0/24",
+            "explanation": "This command configures an OSPF network statement, defining the network `[parameter2]/[parameter3]` to participate in OSPF routing under `[parameter1]` area.",
+            "parameters": [
+                {
+                    "name": "network-address",
+                    "type": "string",
+                    "explanation": "Web address."
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "bits of subnet mask."
+                }
+            ],
+            "area 0": {
+                "template": "area [parameter4]",
+                "command": "area 0",
+                "explanation": "Configure the network and area of the OSPF route protocol.",
+                "parameters": [
+                    {
+                        "name": "area-id",
+                        "type": "integer",
+                        "explanation": "Area ID."
+                    }
+                ]
+            }
+        }
+    }
+}

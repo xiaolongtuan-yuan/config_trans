@@ -1,0 +1,269 @@
+{
+    "set system host-name PE2": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name PE2",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set protocols mpls label-switched-path ldp-automatically-assigned": {
+        "template": "set protocols mpls label-switched-path [parameter1]",
+        "command": "set protocols mpls label-switched-path ldp-automatically-assigned",
+        "explanation": "Configure the label exchange path (LSP) for MPLS to use the LDP protocol.",
+        "parameters": [
+            {
+                "name": "lsp-name",
+                "type": "string",
+                "explanation": "The name of the label exchange path."
+            }
+        ]
+    },
+    "set protocols l2circuit neighbor <LDP-Neighbor-IP>": {
+        "template": "set protocols l2circuit neighbor [parameter1]",
+        "command": "set protocols l2circuit neighbor <LDP-Neighbor-IP>",
+        "explanation": "Configures a Layer 2 Circuit (L2Circuit) neighbor with the specified IP address (`[parameter1]`) for point-to-point pseudowire connectivity.",
+        "parameters": [
+            {
+                "name": "neighbor-ip",
+                "type": "string",
+                "explanation": "Neighbor's IP address."
+            }
+        ],
+        "interface ge-1/0/1.1": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-1/0/1.1",
+            "explanation": "This command configures a Layer 2 Circuit (L2Circuit) by specifying a neighbor device (`parameter1`) and associating it with a local interface (`parameter2`) for pseudowire establishment.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "interface name."
+                }
+            ],
+            "virtual-circuit-id <VCID>": {
+                "template": "virtual-circuit-id [parameter3]",
+                "command": "virtual-circuit-id <VCID>",
+                "explanation": "The L2 circuit is equipped with neighbours, interfaces and virtual circuit ID.",
+                "parameters": [
+                    {
+                        "name": "virtual-circuit-id",
+                        "type": "integer",
+                        "explanation": "Virtual circuit identifier."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols mpls interface ge-1/0/2.0": {
+        "template": "set protocols mpls interface [parameter1]",
+        "command": "set protocols mpls interface ge-1/0/2.0",
+        "explanation": "Enables the MPLS protocol on the specified interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ]
+    },
+    "set protocols mpls interface ge-1/0/3.0": {
+        "template": "set protocols mpls interface [parameter1]",
+        "command": "set protocols mpls interface ge-1/0/3.0",
+        "explanation": "Enables the MPLS protocol on the specified interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ]
+    },
+    "set protocols ospf area 0.0.0.0": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0.0.0.0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface ge-1/0/3.0": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-1/0/3.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        }
+    },
+    "set interfaces ge-1/0/1": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 1": {
+            "template": "unit [parameter2]",
+            "command": "unit 1",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "vlan-id 100": {
+                "template": "vlan-id [parameter3]",
+                "command": "vlan-id 100",
+                "explanation": "Configure VLAN IDs for interface units.",
+                "parameters": [
+                    {
+                        "name": "vlan-id",
+                        "type": "integer",
+                        "explanation": "VLAN ID, used to identify VLAN."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-1/0/2": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/2",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 192.168.2.2/30": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 192.168.2.2/30",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-1/0/3": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/3",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 192.168.3.2/30": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 192.168.3.2/30",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces lo0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces lo0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 1": {
+            "template": "unit [parameter2]",
+            "command": "unit 1",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 2.2.2.9/32": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 2.2.2.9/32",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    }
+}

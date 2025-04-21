@@ -1,0 +1,237 @@
+{
+    "set system host-name Device": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name Device",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set system authentication-order radius": {
+        "template": "set system authentication-order [parameter1]",
+        "command": "set system authentication-order radius",
+        "explanation": "Configure the authentication order of the system.",
+        "parameters": [
+            {
+                "name": "authentication-method",
+                "type": "string",
+                "explanation": "Authentication methods, such as Radius."
+            }
+        ]
+    },
+    "set system radius-server 10.6.55.55": {
+        "template": "set system radius-server [parameter1]",
+        "command": "set system radius-server 10.6.55.55",
+        "explanation": "Configures a RADIUS server with the specified parameters, such as IP address, port, and shared secret, for network authentication and accounting purposes.",
+        "parameters": [
+            {
+                "name": "radius-server-ip",
+                "type": "string",
+                "explanation": "IP address of RADIUS server."
+            }
+        ],
+        "port 1550": {
+            "template": "port [parameter2]",
+            "command": "port 1550",
+            "explanation": "Configures the RADIUS server with `[parameter1]` as the server address and `[parameter2]` as the port number for authentication and accounting communication.",
+            "parameters": [
+                {
+                    "name": "port",
+                    "type": "integer",
+                    "explanation": "Port number for the RADIGUS server."
+                }
+            ],
+            "secret vS796FO7CpBCRqjgSCqRX6P!DYI@": {
+                "template": "secret [parameter3]",
+                "command": "secret vS796FO7CpBCRqjgSCqRX6P!DYI@",
+                "explanation": "Configure the IP address, port and shared key of the RADIUS server.",
+                "parameters": [
+                    {
+                        "name": "secret",
+                        "type": "string",
+                        "explanation": "Share key for RADIGUS server."
+                    }
+                ]
+            }
+        }
+    },
+    "set system services dhcpv6 dns-server 2001:DB8::2:2": {
+        "template": "set system services dhcpv6 dns-server [parameter1]",
+        "command": "set system services dhcpv6 dns-server 2001:DB8::2:2",
+        "explanation": "配置DHCPv6服务的DNS服务器地址。",
+        "parameters": [
+            {
+                "name": "dns-server",
+                "type": "string",
+                "explanation": "DHCPv6服务的DNS服务器IPv6地址。"
+            }
+        ]
+    },
+    "set routing-options rib inet6.0 static route 2001:DB8::/62 discard": {
+        "template": "set routing-options rib [parameter1] static route [parameter2] [parameter3]",
+        "command": "set routing-options rib inet6.0 static route 2001:DB8::/62 discard",
+        "explanation": "配置IPv6静态路由，指定下一跳为丢弃。",
+        "parameters": [
+            {
+                "name": "rib",
+                "type": "string",
+                "explanation": "路由信息库名称。"
+            },
+            {
+                "name": "route",
+                "type": "string",
+                "explanation": "静态路由的IPv6前缀。"
+            },
+            {
+                "name": "next-hop",
+                "type": "string",
+                "explanation": "下一跳地址，此处为丢弃。"
+            }
+        ]
+    },
+    "set access address-assignment pool pool1 family inet6 prefix 2001:DB8::/64 prefix-length 64": {
+        "template": "set access address-assignment pool [parameter1] family inet6 prefix [parameter2] prefix-length [parameter3]",
+        "command": "set access address-assignment pool pool1 family inet6 prefix 2001:DB8::/64 prefix-length 64",
+        "explanation": "配置IPv6地址分配池，指定前缀和前缀长度。",
+        "parameters": [
+            {
+                "name": "pool",
+                "type": "string",
+                "explanation": "地址分配池的名称。"
+            },
+            {
+                "name": "prefix",
+                "type": "string",
+                "explanation": "IPv6前缀。"
+            },
+            {
+                "name": "prefix-length",
+                "type": "integer",
+                "explanation": "前缀长度。"
+            }
+        ]
+    },
+    "set access address-assignment pool pool2 family inet6 prefix 2001:DB8::/62 prefix-length 63": {
+        "template": "set access address-assignment pool [parameter1] family inet6 prefix [parameter2] prefix-length [parameter3]",
+        "command": "set access address-assignment pool pool2 family inet6 prefix 2001:DB8::/62 prefix-length 63",
+        "explanation": "配置IPv6地址分配池，指定前缀和前缀长度。",
+        "parameters": [
+            {
+                "name": "pool",
+                "type": "string",
+                "explanation": "地址分配池的名称。"
+            },
+            {
+                "name": "prefix",
+                "type": "string",
+                "explanation": "IPv6前缀。"
+            },
+            {
+                "name": "prefix-length",
+                "type": "integer",
+                "explanation": "前缀长度。"
+            }
+        ]
+    },
+    "set interfaces ge-1/0/1.1": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/1.1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "encapsulation vlan-ccc": {
+            "template": "encapsulation [parameter2]",
+            "command": "encapsulation vlan-ccc",
+            "explanation": "Configure the type of envelope for the sub-interface.",
+            "parameters": [
+                {
+                    "name": "encapsulation",
+                    "type": "string",
+                    "explanation": "Cover type, e.g. othernet-bridging."
+                }
+            ],
+            "vlan-id 1": {
+                "template": "vlan-id [parameter3]",
+                "command": "vlan-id 1",
+                "explanation": "Configure an interface with a VLAN bridge and specify VLAN ID.",
+                "parameters": [
+                    {
+                        "name": "vlan-id",
+                        "type": "integer",
+                        "explanation": "Vlan's ID."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-1/0/1 unit 1 family inet6 address autoconfig": {
+        "template": "set interfaces [parameter1] unit [parameter2] family inet6 address [parameter3]",
+        "command": "set interfaces ge-1/0/1 unit 1 family inet6 address autoconfig",
+        "explanation": "配置接口的IPv6地址自动配置。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-1/0/1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "address",
+                "type": "string",
+                "explanation": "地址配置方式，此处为自动配置。"
+            }
+        ]
+    },
+    "set interfaces ge-1/0/2 family inet6 address 2001:DB8::/64 eui-64": {
+        "template": "set interfaces [parameter1] family inet6 address [parameter2] [parameter3]",
+        "command": "set interfaces ge-1/0/2 family inet6 address 2001:DB8::/64 eui-64",
+        "explanation": "配置接口的IPv6地址，使用EUI-64格式。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-1/0/2。"
+            },
+            {
+                "name": "address",
+                "type": "string",
+                "explanation": "IPv6地址前缀。"
+            },
+            {
+                "name": "eui-64",
+                "type": "string",
+                "explanation": "使用EUI-64格式生成接口标识符。"
+            }
+        ]
+    },
+    "set interfaces ge-1/0/2 family inet6 address autoconfig": {
+        "template": "set interfaces [parameter1] family inet6 address [parameter2]",
+        "command": "set interfaces ge-1/0/2 family inet6 address autoconfig",
+        "explanation": "配置接口的IPv6地址自动配置。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-1/0/2。"
+            },
+            {
+                "name": "address",
+                "type": "string",
+                "explanation": "地址配置方式，此处为自动配置。"
+            }
+        ]
+    }
+}

@@ -49,21 +49,20 @@ def calculate_match_ratio(result_templates, expected_templates, result_extra_com
     """计算翻译的模板序列的匹配度"""
     match_count = 0
     error_templates = []
-    for result_template in result_templates:
-        if result_template in expected_templates:
+    for expected_template in expected_templates:
+        if expected_template in result_templates:
             match_count += 1
-            # expected_templates.remove(result_template)
         else:
-            error_templates.append(result_template)
+            error_templates.append(expected_template)
 
-    for result_extra_command in result_extra_commands:
-        if result_extra_command in expected_extra_commands:
+    for expected_extra_command in expected_extra_commands:
+        if expected_extra_command in result_extra_commands:
             match_count += 1
             # expected_extra_commands.remove(result_extra_command)
         else:
-            error_templates.append(result_extra_command)
+            error_templates.append(expected_extra_command)
 
-    return match_count, (len(result_templates) + len(result_extra_commands)), error_templates
+    return match_count, (len(expected_templates) + len(expected_extra_commands)), error_templates
 
 
 def cul_command_accuracy(translated_dir, real_dir, config_files):
@@ -101,6 +100,43 @@ def cul_grammatical_accuracy(translated_dir, real_dir, config_files, config_mode
                                                                             expected_templates,
                                                                             result_extra_command,
                                                                             expected_extra_command)
+        total_match_score += match_score
+        total_match_account += match_account
+    average_match_ratio = total_match_score / total_match_account if total_match_account > 0 else 0
+    return average_match_ratio
+
+
+def get_all_templates(data):
+    templates = []
+
+    def dfs(data:dict):
+        for key, value in data.items():
+            if isinstance(value, dict):
+                dfs(value)
+            elif key == 'template':
+                templates.append(value)
+    dfs(data)
+    return templates
+
+def cul_grammatical_accuracy_with_json(translated_dir, real_dir, config_files):
+    '''
+    直接使用保存的template和label对应的json文件进行匹配，不实用config_model
+    real_dir="./exper_data/vendor/"
+    '''
+
+    total_match_score = 0
+    total_match_account = 0
+    for file_name in config_files:
+        device_name= os.path.splitext(file_name)[0]
+
+        trans_templates = json.load(open(os.path.join(translated_dir, f"{device_name}_temp.json")))
+        expected_json = os.path.join(real_dir, f"{device_name}.json")
+        expected_templates = get_all_templates(json.load(open(expected_json)))
+
+        match_score, match_account, error_templates = calculate_match_ratio(trans_templates,
+                                                                            expected_templates,
+                                                                            [],
+                                                                            [])
         total_match_score += match_score
         total_match_account += match_account
     average_match_ratio = total_match_score / total_match_account if total_match_account > 0 else 0

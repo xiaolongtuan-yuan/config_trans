@@ -1,0 +1,274 @@
+{
+    "hostname PE2": {
+        "template": "hostname [parameter1]",
+        "command": "hostname PE2",
+        "explanation": "设置设备的主机名为 'PE2'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "cfm": {
+        "template": "cfm",
+        "command": "cfm",
+        "explanation": "启用连续性故障管理功能",
+        "parameters": []
+    },
+    "evpn vpn-instance evpna": {
+        "template": "evpn vpn-instance [parameter1]",
+        "command": "evpn vpn-instance evpna",
+        "explanation": "配置EVPN的VPN实例",
+        "parameters": [
+            {
+                "name": "vpn instance name",
+                "type": "string",
+                "explanation": "VPN实例的名称"
+            }
+        ],
+        "route-distinguisher 200:1": {
+            "template": "route-distinguisher [parameter1]",
+            "command": "route-distinguisher 200:1",
+            "explanation": "设置路由区分器",
+            "parameters": [
+                {
+                    "name": "route distinguisher",
+                    "type": "string",
+                    "explanation": "路由区分器的值"
+                }
+            ]
+        },
+        "route-target export 1:1": {
+            "template": "route-target export [parameter1]",
+            "command": "route-target export 1:1",
+            "explanation": "配置出口路由目标",
+            "parameters": [
+                {
+                    "name": "route target",
+                    "type": "string",
+                    "explanation": "路由目标的值"
+                }
+            ]
+        },
+        "route-target import 1:1": {
+            "template": "route-target import [parameter1]",
+            "command": "route-target import 1:1",
+            "explanation": "配置进口路由目标",
+            "parameters": [
+                {
+                    "name": "route target",
+                    "type": "string",
+                    "explanation": "路由目标的值"
+                }
+            ]
+        }
+    },
+    "bridge-domain 10": {
+        "template": "bridge-domain [parameter1]",
+        "command": "bridge-domain 10",
+        "explanation": "配置桥接域",
+        "parameters": [
+            {
+                "name": "bridge domain id",
+                "type": "integer",
+                "explanation": "桥接域的标识号"
+            }
+        ],
+        "evpn": {
+            "template": "evpn",
+            "command": "evpn",
+            "explanation": "启用EVPN",
+            "parameters": []
+        },
+        "vpn-id evpna": {
+            "template": "vpn-id [parameter1]",
+            "command": "vpn-id evpna",
+            "explanation": "关联VPN实例",
+            "parameters": [
+                {
+                    "name": "vpn instance name",
+                    "type": "string",
+                    "explanation": "VPN实例的名称"
+                }
+            ]
+        }
+    },
+    "interface GigabitEthernet1/0/1.1": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/1.1",
+        "explanation": "配置接口 'GigabitEthernet1/0/1.1'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "encapsulation dot1q 2": {
+            "template": "encapsulation dot1q [parameter1]",
+            "command": "encapsulation dot1q 2",
+            "explanation": "配置封装类型为dot1q，VLAN ID为2",
+            "parameters": [
+                {
+                    "name": "vlan id",
+                    "type": "integer",
+                    "explanation": "VLAN标识号"
+                }
+            ]
+        },
+        "rewrite ingress tag pop 1 symmetric": {
+            "template": "rewrite ingress tag pop [parameter1] symmetric",
+            "command": "rewrite ingress tag pop 1 symmetric",
+            "explanation": "配置入站标签弹出",
+            "parameters": [
+                {
+                    "name": "number of tags",
+                    "type": "integer",
+                    "explanation": "弹出的标签数量"
+                }
+            ]
+        },
+        "bridge-domain 10": {
+            "template": "bridge-domain [parameter1]",
+            "command": "bridge-domain 10",
+            "explanation": "将接口关联到桥接域10",
+            "parameters": [
+                {
+                    "name": "bridge domain id",
+                    "type": "integer",
+                    "explanation": "桥接域的标识号"
+                }
+            ]
+        }
+    },
+    "cfm md md1": {
+        "template": "cfm md [parameter1]",
+        "command": "cfm md md1",
+        "explanation": "配置CFM管理域",
+        "parameters": [
+            {
+                "name": "management domain name",
+                "type": "string",
+                "explanation": "管理域的名称"
+            }
+        ],
+        "ma ma1": {
+            "template": "ma [parameter1]",
+            "command": "ma ma1",
+            "explanation": "配置维护关联",
+            "parameters": [
+                {
+                    "name": "maintenance association name",
+                    "type": "string",
+                    "explanation": "维护关联的名称"
+                }
+            ],
+            "bridge-domain 10": {
+                "template": "bridge-domain [parameter1]",
+                "command": "bridge-domain 10",
+                "explanation": "将维护关联关联到桥接域10",
+                "parameters": [
+                    {
+                        "name": "bridge domain id",
+                        "type": "integer",
+                        "explanation": "桥接域的标识号"
+                    }
+                ],
+                "mep 1 interface GigabitEthernet1/0/1.1 direction outward": {
+                    "template": "mep [parameter1] interface [parameter2] direction [parameter3]",
+                    "command": "mep 1 interface GigabitEthernet1/0/1.1 direction outward",
+                    "explanation": "配置MEP，接口方向为外向",
+                    "parameters": [
+                        {
+                            "name": "mep id",
+                            "type": "integer",
+                            "explanation": "MEP标识号"
+                        },
+                        {
+                            "name": "interface name",
+                            "type": "string",
+                            "explanation": "接口名"
+                        },
+                        {
+                            "name": "direction",
+                            "type": "string",
+                            "explanation": "方向，内向或外向"
+                        }
+                    ]
+                },
+                "mep 3 ccm-send enable": {
+                    "template": "mep [parameter1] ccm-send enable",
+                    "command": "mep 3 ccm-send enable",
+                    "explanation": "启用MEP 3的CCM发送",
+                    "parameters": [
+                        {
+                            "name": "mep id",
+                            "type": "integer",
+                            "explanation": "MEP标识号"
+                        }
+                    ]
+                },
+                "remote-mep 4": {
+                    "template": "remote-mep [parameter1]",
+                    "command": "remote-mep 4",
+                    "explanation": "配置远程MEP 4",
+                    "parameters": [
+                        {
+                            "name": "remote mep id",
+                            "type": "integer",
+                            "explanation": "远程MEP标识号"
+                        }
+                    ],
+                    "remote-mep 4 ccm-receive enable": {
+                        "template": "remote-mep [parameter1] ccm-receive enable",
+                        "command": "remote-mep 4 ccm-receive enable",
+                        "explanation": "启用远程MEP 4的CCM接收",
+                        "parameters": [
+                            {
+                                "name": "remote mep id",
+                                "type": "integer",
+                                "explanation": "远程MEP标识号"
+                            }
+                        ]
+                    },
+                    "test-id 2 mep 3 remote-mep 4": {
+                        "template": "test-id [parameter1] mep [parameter2] remote-mep [parameter3]",
+                        "command": "test-id 2 mep 3 remote-mep 4",
+                        "explanation": "配置测试ID 2，MEP 3与远程MEP 4",
+                        "parameters": [
+                            {
+                                "name": "test id",
+                                "type": "integer",
+                                "explanation": "测试标识号"
+                            },
+                            {
+                                "name": "mep id",
+                                "type": "integer",
+                                "explanation": "MEP标识号"
+                            },
+                            {
+                                "name": "remote mep id",
+                                "type": "integer",
+                                "explanation": "远程MEP标识号"
+                            }
+                        ]
+                    },
+                    "loss-measure dual-ended continual test-id 2": {
+                        "template": "loss-measure dual-ended continual test-id [parameter1]",
+                        "command": "loss-measure dual-ended continual test-id 2",
+                        "explanation": "配置双端连续性损失测量，测试ID 2",
+                        "parameters": [
+                            {
+                                "name": "test id",
+                                "type": "integer",
+                                "explanation": "测试标识号"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

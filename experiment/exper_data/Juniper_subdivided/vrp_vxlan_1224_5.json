@@ -1,0 +1,268 @@
+{
+    "set system host-name Leaf4": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name Leaf4",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces ge-0/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 192.168.40.2/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 192.168.40.2/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-0/0/1": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family ethernet-switching bridge-domain 10": {
+                "template": "family ethernet-switching bridge-domain [parameter3]",
+                "command": "family ethernet-switching bridge-domain 10",
+                "explanation": "Configure the interface to exchange mode with the ethnet and specify the bridge domain.",
+                "parameters": [
+                    {
+                        "name": "bridge-domain",
+                        "type": "integer",
+                        "explanation": "Bridge domain numbering to identify different bridges."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces lo0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces lo0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 4.4.4.4/32": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 4.4.4.4/32",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set forwarding-options vrf default route distinguisher 1:10": {
+        "template": "set forwarding-options vrf [parameter1] route distinguisher [parameter2]:[parameter3]",
+        "command": "set forwarding-options vrf default route distinguisher 1:10",
+        "explanation": "配置VRF的路由区分符。",
+        "parameters": [
+            {
+                "name": "vrf",
+                "type": "string",
+                "explanation": "VRF名称，例如default。"
+            },
+            {
+                "name": "route-distinguisher",
+                "type": "string",
+                "explanation": "路由区分符，用于区分不同VRF的路由。"
+            }
+        ]
+    },
+    "set forwarding-options tunnel-options vxlan vni 20": {
+        "template": "set forwarding-options tunnel-options vxlan vni [parameter1]",
+        "command": "set forwarding-options tunnel-options vxlan vni 20",
+        "explanation": "This command configures a VXLAN Network Identifier (VNI) for a VXLAN tunnel, where `[parameter1]` specifies the unique VNI value to identify the virtual network segment.",
+        "parameters": [
+            {
+                "name": "vni",
+                "type": "integer",
+                "explanation": "VXLAN network identifier, used to identify different VXLAN networks."
+            }
+        ],
+        "mcast-group 239.1.1.1": {
+            "template": "mcast-group [parameter2]",
+            "command": "mcast-group 239.1.1.1",
+            "explanation": "This command configures VXLAN (Virtual Extensible LAN) by setting the VNI (VXLAN Network Identifier) to `[parameter1]` and assigning the multicast group `[parameter2]` for the VXLAN tunnel.",
+            "parameters": [
+                {
+                    "name": "mcast-group",
+                    "type": "string",
+                    "explanation": "The address of the group was used for the broadcast of the VXLAN tunnel."
+                }
+            ],
+            "interface ge-0/0/0.0": {
+                "template": "interface [parameter3]",
+                "command": "interface ge-0/0/0.0",
+                "explanation": "Configure VNI, group and interfaces in VXLAN tunnels.",
+                "parameters": [
+                    {
+                        "name": "interface",
+                        "type": "string",
+                        "explanation": "Interface name, e.g., g-0/0/0.0."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols bgp group internal": {
+        "template": "set protocols bgp group [parameter1]",
+        "command": "set protocols bgp group internal",
+        "explanation": "This command configures a BGP group named [parameter1], defining a set of BGP peers with shared session parameters.",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP Group name."
+            }
+        ],
+        "neighbor 3.3.3.3": {
+            "template": "neighbor [parameter2]",
+            "command": "neighbor 3.3.3.3",
+            "explanation": "Configure the neighbors of the BGP team.",
+            "parameters": [
+                {
+                    "name": "neighbor",
+                    "type": "string",
+                    "explanation": "Neighbor's IP address."
+                }
+            ],
+            "interface ge-0/0/0.0": {
+                "template": "interface [parameter3]",
+                "command": "interface ge-0/0/0.0",
+                "explanation": "Configure the BGP team's neighbors and interfaces.",
+                "parameters": [
+                    {
+                        "name": "interface",
+                        "type": "string",
+                        "explanation": "Interface name, e.g., g-0/0/0.0."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols ospf area 0.0.0.0": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0.0.0.0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "network 4.4.4.4/32": {
+            "template": "network [parameter2]/[parameter3]",
+            "command": "network 4.4.4.4/32",
+            "explanation": "Configure the network within the OSPF area.",
+            "parameters": [
+                {
+                    "name": "network",
+                    "type": "string",
+                    "explanation": "Web address."
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "bits of subnet mask."
+                }
+            ]
+        }
+    },
+    "set protocols bgp vrf default": {
+        "template": "set protocols bgp vrf [parameter1]",
+        "command": "set protocols bgp vrf default",
+        "explanation": "This command configures BGP (Border Gateway Protocol) within a specified VRF (Virtual Routing and Forwarding) instance, identified by `[parameter1]`, enabling routing in a virtualized network segment.",
+        "parameters": [
+            {
+                "name": "vrf",
+                "type": "string",
+                "explanation": "VRF name, for example, default."
+            }
+        ],
+        "auto-summary": {
+            "template": "auto-summary",
+            "command": "auto-summary",
+            "explanation": "Configure BGPs under VRF.",
+            "parameters": []
+        }
+    }
+}

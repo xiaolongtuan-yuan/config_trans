@@ -1,0 +1,229 @@
+{
+    "set system host-name DeviceA": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DeviceA",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set vlans vlan-10": {
+        "template": "set vlans [parameter1]",
+        "command": "set vlans vlan-10",
+        "explanation": "Configure VLAN.",
+        "parameters": [
+            {
+                "name": "vlan-name",
+                "type": "string",
+                "explanation": "VLAN's name, like Vlan100."
+            }
+        ],
+        "vlan-id 10": {
+            "template": "vlan-id [parameter2]",
+            "command": "vlan-id 10",
+            "explanation": "Configure VLAN's ID.",
+            "parameters": [
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN ID for the only identification of a VLAN."
+                }
+            ]
+        }
+    },
+    "set routing-options rib inet6.0": {
+        "template": "set routing-options rib [parameter1]",
+        "command": "set routing-options rib inet6.0",
+        "explanation": "This command fragment creates or modifies a custom Routing Information Base (RIB) named `[parameter1]` within the routing options, allowing for separate routing tables.",
+        "parameters": [
+            {
+                "name": "rib",
+                "type": "string",
+                "explanation": "RIB name, e.g. not."
+            }
+        ],
+        "static route ::/0": {
+            "template": "static route [parameter2]",
+            "command": "static route ::/0",
+            "explanation": "This command adds a static route `[parameter2]` to the specified Routing Information Base (RIB) `[parameter1]` in Junos routing configuration.",
+            "parameters": [
+                {
+                    "name": "route",
+                    "type": "string",
+                    "explanation": "Target IPv6 network address and prefix length."
+                }
+            ],
+            "next-hop (next-hop-address)": {
+                "template": "next-hop [parameter3]",
+                "command": "next-hop (next-hop-address)",
+                "explanation": "Configure IPv6 static routers.",
+                "parameters": [
+                    {
+                        "name": "next-hop",
+                        "type": "string",
+                        "explanation": "Next jump IPv6 address."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces vlan": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces vlan",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 10": {
+            "template": "unit [parameter2]",
+            "command": "unit 10",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet6 address 2001:DB8:300:400::3/64": {
+                "template": "family inet6 address [parameter3]/[parameter4]",
+                "command": "family inet6 address 2001:DB8:300:400::3/64",
+                "explanation": "Configure the IPv6 address of the interface and the length of the subnet prefix.",
+                "parameters": [
+                    {
+                        "name": "ipv6-address",
+                        "type": "string",
+                        "explanation": "The IPv6 address assigned to the interface."
+                    },
+                    {
+                        "name": "prefix-length",
+                        "type": "integer",
+                        "explanation": "Subnet prefix length for IPv6."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces vlan unit 10 family inet6 address 2001:DB8:300:400::3/64 nd router-advertisement managed-configuration": {
+        "template": "set interfaces [parameter1] unit [parameter2] family inet6 address [parameter3]/[parameter4] nd router-advertisement [parameter5]",
+        "command": "set interfaces vlan unit 10 family inet6 address 2001:DB8:300:400::3/64 nd router-advertisement managed-configuration",
+        "explanation": "配置IPv6地址的ND路由器公告管理配置。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如vlan。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "ip-address",
+                "type": "string",
+                "explanation": "分配给接口的IPv6地址。"
+            },
+            {
+                "name": "prefix-length",
+                "type": "integer",
+                "explanation": "IPv6地址的前缀长度。"
+            },
+            {
+                "name": "nd-option",
+                "type": "string",
+                "explanation": "ND路由器公告选项，例如managed-configuration。"
+            }
+        ]
+    },
+    "set interfaces vlan unit 10 family inet6 address 2001:DB8:300:400::3/64 nd router-advertisement other-stateful-configuration": {
+        "template": "set interfaces [parameter1] unit [parameter2] family inet6 address [parameter3]/[parameter4] nd router-advertisement [parameter5]",
+        "command": "set interfaces vlan unit 10 family inet6 address 2001:DB8:300:400::3/64 nd router-advertisement other-stateful-configuration",
+        "explanation": "配置IPv6地址的ND路由器公告其他状态配置。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如vlan。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "ip-address",
+                "type": "string",
+                "explanation": "分配给接口的IPv6地址。"
+            },
+            {
+                "name": "prefix-length",
+                "type": "integer",
+                "explanation": "IPv6地址的前缀长度。"
+            },
+            {
+                "name": "nd-option",
+                "type": "string",
+                "explanation": "ND路由器公告选项，例如other-stateful-configuration。"
+            }
+        ]
+    },
+    "set interfaces vlan unit 10 family inet6 address 2001:DB8:300:400::3/64 nd router-advertisement suppress": {
+        "template": "set interfaces [parameter1] unit [parameter2] family inet6 address [parameter3]/[parameter4] nd router-advertisement [parameter5]",
+        "command": "set interfaces vlan unit 10 family inet6 address 2001:DB8:300:400::3/64 nd router-advertisement suppress",
+        "explanation": "配置IPv6地址的ND路由器公告抑制。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如vlan。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "ip-address",
+                "type": "string",
+                "explanation": "分配给接口的IPv6地址。"
+            },
+            {
+                "name": "prefix-length",
+                "type": "integer",
+                "explanation": "IPv6地址的前缀长度。"
+            },
+            {
+                "name": "nd-option",
+                "type": "string",
+                "explanation": "ND路由器公告选项，例如suppress。"
+            }
+        ]
+    },
+    "set interfaces ge-1/0/1": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "enable": {
+            "template": "enable",
+            "command": "enable",
+            "explanation": "Enables the specified interface.",
+            "parameters": []
+        }
+    }
+}

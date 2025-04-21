@@ -1,0 +1,310 @@
+{
+    "set system host-name PE2": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name PE2",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set protocols ptp clock-source bits1": {
+        "template": "set protocols ptp clock-source [parameter1]",
+        "command": "set protocols ptp clock-source bits1",
+        "explanation": "配置PTP时钟源。",
+        "parameters": [
+            {
+                "name": "clock-source",
+                "type": "string",
+                "explanation": "PTP时钟源类型，例如bits1。"
+            }
+        ]
+    },
+    "set protocols ptp clock-source priority 1": {
+        "template": "set protocols ptp clock-source priority [parameter1]",
+        "command": "set protocols ptp clock-source priority 1",
+        "explanation": "配置PTP时钟源的优先级。",
+        "parameters": [
+            {
+                "name": "priority",
+                "type": "integer",
+                "explanation": "PTP时钟源的优先级，数值越小优先级越高。"
+            }
+        ]
+    },
+    "set protocols ptp domain 1": {
+        "template": "set protocols ptp domain [parameter1]",
+        "command": "set protocols ptp domain 1",
+        "explanation": "Configures the domain number of the PTP protocol.",
+        "parameters": [
+            {
+                "name": "domain",
+                "type": "integer",
+                "explanation": "The PTP protocol domain number, which distinguishes between different PTP domains."
+            }
+        ]
+    },
+    "set protocols ospf area 0.0.0.0": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0.0.0.0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface ge-0/0/0.0": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-0/0/0.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        }
+    },
+    "set interfaces ge-0/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family ethernet-switching ptp delay-mechanism pdelay": {
+                "template": "family ethernet-switching ptp delay-mechanism [parameter3]",
+                "command": "family ethernet-switching ptp delay-mechanism pdelay",
+                "explanation": "Configure the PTP delay mechanism for the interface.",
+                "parameters": [
+                    {
+                        "name": "delay-mechanism",
+                        "type": "string",
+                        "explanation": "Type of PTP delay mechanism, e.g., teray."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-0/0/0 unit 0 family ethernet-switching ptp announce-interval 8": {
+        "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching ptp announce-interval [parameter3]",
+        "command": "set interfaces ge-0/0/0 unit 0 family ethernet-switching ptp announce-interval 8",
+        "explanation": "配置PTP公告间隔。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/0。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "announce-interval",
+                "type": "integer",
+                "explanation": "PTP公告间隔，单位为秒。"
+            }
+        ]
+    },
+    "set interfaces ge-0/0/0 unit 0 family ethernet-switching ptp min-delayreq-interval 10": {
+        "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching ptp min-delayreq-interval [parameter3]",
+        "command": "set interfaces ge-0/0/0 unit 0 family ethernet-switching ptp min-delayreq-interval 10",
+        "explanation": "配置PTP最小延迟请求间隔。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/0。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "min-delayreq-interval",
+                "type": "integer",
+                "explanation": "PTP最小延迟请求间隔，单位为秒。"
+            }
+        ]
+    },
+    "set interfaces ge-0/0/0 unit 0 family ethernet-switching ptp udp-egress source-ip 192.168.0.1 destination-ip 192.168.0.2": {
+        "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching ptp udp-egress source-ip [parameter3] destination-ip [parameter4]",
+        "command": "set interfaces ge-0/0/0 unit 0 family ethernet-switching ptp udp-egress source-ip 192.168.0.1 destination-ip 192.168.0.2",
+        "explanation": "配置PTP UDP出口的源IP和目的IP。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/0。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "source-ip",
+                "type": "string",
+                "explanation": "UDP出口的源IP地址。"
+            },
+            {
+                "name": "destination-ip",
+                "type": "string",
+                "explanation": "UDP出口的目的IP地址。"
+            }
+        ]
+    },
+    "set interfaces ge-0/0/0 unit 0 family ethernet-switching ptp udp-egress destination-mac 00:0e:fc:22:44:44": {
+        "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching ptp udp-egress destination-mac [parameter3]",
+        "command": "set interfaces ge-0/0/0 unit 0 family ethernet-switching ptp udp-egress destination-mac 00:0e:fc:22:44:44",
+        "explanation": "配置PTP UDP出口的目的MAC地址。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/0。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "destination-mac",
+                "type": "string",
+                "explanation": "UDP出口的目的MAC地址。"
+            }
+        ]
+    },
+    "set interfaces ge-0/0/1": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family ethernet-switching ptp delay-mechanism pdelay": {
+                "template": "family ethernet-switching ptp delay-mechanism [parameter3]",
+                "command": "family ethernet-switching ptp delay-mechanism pdelay",
+                "explanation": "Configure the PTP delay mechanism for the interface.",
+                "parameters": [
+                    {
+                        "name": "delay-mechanism",
+                        "type": "string",
+                        "explanation": "Type of PTP delay mechanism, e.g., teray."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-0/0/1 unit 0 family ethernet-switching ptp udp-egress source-ip 10.0.0.2 destination-ip 10.0.0.1": {
+        "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching ptp udp-egress source-ip [parameter3] destination-ip [parameter4]",
+        "command": "set interfaces ge-0/0/1 unit 0 family ethernet-switching ptp udp-egress source-ip 10.0.0.2 destination-ip 10.0.0.1",
+        "explanation": "配置PTP UDP出口的源IP和目的IP。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "source-ip",
+                "type": "string",
+                "explanation": "UDP出口的源IP地址。"
+            },
+            {
+                "name": "destination-ip",
+                "type": "string",
+                "explanation": "UDP出口的目的IP地址。"
+            }
+        ]
+    },
+    "set interfaces ge-0/0/1 unit 0 family ethernet-switching ptp udp-egress destination-mac 00:0e:fc:22:11:11": {
+        "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching ptp udp-egress destination-mac [parameter3]",
+        "command": "set interfaces ge-0/0/1 unit 0 family ethernet-switching ptp udp-egress destination-mac 00:0e:fc:22:11:11",
+        "explanation": "配置PTP UDP出口的目的MAC地址。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "destination-mac",
+                "type": "string",
+                "explanation": "UDP出口的目的MAC地址。"
+            }
+        ]
+    },
+    "set interfaces ge-0/0/1 unit 0 family ethernet-switching ptp announce-receipt-timeout 10": {
+        "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching ptp announce-receipt-timeout [parameter3]",
+        "command": "set interfaces ge-0/0/1 unit 0 family ethernet-switching ptp announce-receipt-timeout 10",
+        "explanation": "配置PTP公告接收超时时间。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-0/0/1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "announce-receipt-timeout",
+                "type": "integer",
+                "explanation": "PTP公告接收超时时间，单位为秒。"
+            }
+        ]
+    }
+}
