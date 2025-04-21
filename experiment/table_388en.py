@@ -56,10 +56,10 @@ if __name__ == '__main__':
                 trannlated_config_files = [f for f in os.listdir(translated_config_dir) if f.endswith('.txt')]
                 real_config_dir = f'./exper_data/lable/{target_vendor}'
 
-                semantic_similarity = compute_embded_similarity(translated_config_dir, real_config_dir,
-                                                                trannlated_config_files)
-                exper_data['semantic_similarity']['vendors'].append(
-                    (f'{source_vendor}_{target_vendor}', semantic_similarity))
+                # semantic_similarity = compute_embded_similarity(translated_config_dir, real_config_dir,
+                #                                                 trannlated_config_files)
+                # exper_data['semantic_similarity']['vendors'].append(
+                #     (f'{source_vendor}_{target_vendor}', semantic_similarity))
 
                 command_accuracy = cul_command_accuracy(translated_config_dir, real_config_dir, trannlated_config_files)
                 exper_data['command_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', command_accuracy))
@@ -68,8 +68,9 @@ if __name__ == '__main__':
                                                     vendor_config_models[target_vendor])
                 exper_data['param_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', param_accuracy))
 
-                real_target_config_json_dir = f'./exper_data/{target_vendor}' if target_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
-                grammatical_accuracy = cul_grammatical_accuracy_with_json(translated_config_dir, real_target_config_json_dir,
+                # real_target_config_json_dir = f'./exper_data/{target_vendor}' if target_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
+                real_target_config_json_dir = f'./exper_data/lable/{target_vendor}'
+                grammatical_accuracy = cul_grammatical_accuracy(translated_config_dir, real_target_config_json_dir,
                                                                 trannlated_config_files)
 
                 exper_data['grammatical_accuracy']['vendors'].append(
@@ -79,9 +80,9 @@ if __name__ == '__main__':
                                                   vendor_config_models[target_vendor])
                 exper_data['view_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', view_accuracy))
         # 计算平均值
-        exper_data['semantic_similarity']['average'] = sum(
-            [x[1] for x in exper_data['semantic_similarity']['vendors']]) / len(
-            exper_data['semantic_similarity']['vendors'])
+        # exper_data['semantic_similarity']['average'] = sum(
+        #     [x[1] for x in exper_data['semantic_similarity']['vendors']]) / len(
+        #     exper_data['semantic_similarity']['vendors'])
         exper_data['command_accuracy']['average'] = sum(
             [x[1] for x in exper_data['command_accuracy']['vendors']]) / len(exper_data['command_accuracy']['vendors'])
         exper_data['param_accuracy']['average'] = sum(

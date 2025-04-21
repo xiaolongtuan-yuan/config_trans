@@ -1,0 +1,23 @@
+hostname CE1
+interface GigabitEthernet3/0/1.1
+ vlan-type dot1q 200
+cfm version standard
+cfm enable
+ethernet cfm md md3
+cfm ethernet cfm md ma3
+ mep domain ma3
+cfm
+ domain enable
+  ma 3
+   mep 3 ccm-send enable
+   remote-mep 4
+    remote-mep 4 ccm-receive enable
+   test-id 1 mep 3 remote-mep 4
+cfm md 3
+ domain enable
+ cfm ma 3
+  ma 3
+  cfm mep mep-id none interface none direction outward
+   mep 200 interface GigabitEthernet3/0/1.1 direction none
+cfm domain 4
+ remote-mep none mep 4

@@ -1,0 +1,18 @@
+sysname CE1
+vlan 2
+ip netstream export version 0
+cfm enable
+interface GigabitEthernet1/0/1
+interface trunk
+ undo shutdown
+ port trunk allow-pass vlan 2
+return
+cfm md md1
+ mep ccm-send mep-id ma1 enable
+ ma ma1
+  test-id none mep 1
+ma ma1
+mep mep-id 2 interface GigabitEthernet1/0/1 none
+mep mep-id 1 interface GigabitEthernet1/0/1 none
+mep ccm-send mep-id 2 none
+mep ccm-send mep-id 1 none

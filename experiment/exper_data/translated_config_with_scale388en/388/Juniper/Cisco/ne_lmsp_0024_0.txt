@@ -1,0 +1,19 @@
+hostname PE1
+router isis
+ isis segment-routing 1
+ metric-style none
+ isis traffic-eng 1-2
+ isis traffic-eng 50
+interface ge-2/0/1
+ isis network none
+ interface ge-2/0/2
+interface ge-2/0/2
+ interface lo0
+interface 0 point-to-point
+interface lo0
+ ipv4 address 1.1.1.1 32
+ isis metric none
+router bgp ge-2/0/1
+ interface ge-2/0/1
+ address-family 0 none
+clock identity ge-2/0/2

@@ -1,0 +1,22 @@
+sysname CE2
+bridge-domain vlan2
+ vxlan vni vlan2
+interface ge-1/0/1
+ dot1q termination vid 2
+ e1 0 none
+ eth-trunk trunk
+ port trunk allow-pass vlan vlan2
+ undo shutdown
+cfm version standard
+cfm md none level 3
+cfm md none level 2
+ccc down interface none in-label none out-label none nexthop none
+mep mep-id 4 interface ge-1/0/1 none
+ma enable
+ mep ccm-send mep-id 1 enable
+mep ccm-send mep-id 4 none
+remote-mep ccm-receive mep-id 3 none
+remote-mep ccm-receive mep-id enable none
+cfm md md3
+ ma enable
+  test-id none mep none remote-mep 1000

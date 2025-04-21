@@ -1,0 +1,31 @@
+sysname PE2
+interface all
+interface ge-1/0/2.0
+interface ge-1/0/3.0
+ospf 0.0.0.0
+ area 0.0.0.0
+ import-route vpls
+interface lo0.1
+ip route-static vpn-instance ldp1 none none none
+bgp ge-1/0/1.10
+ peer none connect-interface ge-1/0/1.10
+ip vpn-instance 2:1
+ route-distinguisher 2:1
+isis target:2:1
+ import-route isis none into target:2:1
+interface local-site
+vsi 2
+ vpls-id 2
+interface 1.1.1.9
+interface 3.3.3.9
+interface ge-1/0/1
+ e1 0 none
+interface trunk
+ port trunk allow-pass vlan [10
+interface ge-1/0/2
+ ip address 192.168.2.2 30
+interface ge-1/0/3
+ ip address 192.168.3.2 30
+interface lo0
+ e1 1 none
+ ip address 2.2.2.9 32

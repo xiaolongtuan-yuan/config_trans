@@ -1,0 +1,145 @@
+{
+    "set system host-name DeviceD": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DeviceD",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces ge-1/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet6 address 2001:db8:102::2/96": {
+                "template": "family inet6 address [parameter3]/[parameter4]",
+                "command": "family inet6 address 2001:db8:102::2/96",
+                "explanation": "Configure the IPv6 address of the interface and the length of the subnet prefix.",
+                "parameters": [
+                    {
+                        "name": "ipv6-address",
+                        "type": "string",
+                        "explanation": "The IPv6 address assigned to the interface."
+                    },
+                    {
+                        "name": "prefix-length",
+                        "type": "integer",
+                        "explanation": "Subnet prefix length for IPv6."
+                    }
+                ]
+            },
+            "disable": {
+                "template": "disable",
+                "command": "disable",
+                "explanation": "Disables the specified interface unit.",
+                "parameters": []
+            }
+        }
+    },
+    "set routing-options autonomous-system 200": {
+        "template": "set routing-options autonomous-system [parameter1]",
+        "command": "set routing-options autonomous-system 200",
+        "explanation": "Autonomy system number with equipment.",
+        "parameters": [
+            {
+                "name": "autonomous-system",
+                "type": "integer",
+                "explanation": "Autonomy system number for equipment, used for route agreements such as BGP."
+            }
+        ]
+    },
+    "set routing-options router-id 4.4.4.4": {
+        "template": "set routing-options router-id [parameter1]",
+        "command": "set routing-options router-id 4.4.4.4",
+        "explanation": "Configure the device's Router ID.",
+        "parameters": [
+            {
+                "name": "router-id",
+                "type": "string",
+                "explanation": "Router ID of equipment for OSPF, BGP, etc."
+            }
+        ]
+    },
+    "set protocols bgp group BGP-PEER": {
+        "template": "set protocols bgp group [parameter1]",
+        "command": "set protocols bgp group BGP-PEER",
+        "explanation": "This command configures a BGP group named [parameter1], defining a set of BGP peers with shared session parameters.",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP Group name."
+            }
+        ],
+        "type internal": {
+            "template": "type [parameter2]",
+            "command": "type internal",
+            "explanation": "Configure the type of BGP group to be external.",
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "explanation": "Type of BGP group, for example, external."
+                }
+            ]
+        },
+        "local-address 4.4.4.4": {
+            "template": "local-address [parameter2]",
+            "command": "local-address 4.4.4.4",
+            "explanation": "Configure the local address of the BGP group.",
+            "parameters": [
+                {
+                    "name": "local-address",
+                    "type": "string",
+                    "explanation": "Local address of the BGP group."
+                }
+            ]
+        },
+        "neighbor 2001:db8:102::1": {
+            "template": "neighbor [parameter2]",
+            "command": "neighbor 2001:db8:102::1",
+            "explanation": "Configure the neighbors of the BGP team.",
+            "parameters": [
+                {
+                    "name": "neighbor",
+                    "type": "string",
+                    "explanation": "Neighbor's IP address."
+                }
+            ]
+        },
+        "family inet unicast": {
+            "template": "family inet unicast",
+            "command": "family inet unicast",
+            "explanation": "Configure BGP teams to support IPv4 solo addresses.",
+            "parameters": []
+        },
+        "family inet6 unicast": {
+            "template": "family inet6 unicast",
+            "command": "family inet6 unicast",
+            "explanation": "Configure BGP teams to support the IPv6 solo community.",
+            "parameters": []
+        }
+    }
+}

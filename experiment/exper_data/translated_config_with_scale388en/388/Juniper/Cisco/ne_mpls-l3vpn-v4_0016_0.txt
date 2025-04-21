@@ -1,0 +1,24 @@
+hostname CE1
+interface ge-2/0/0
+ ipv4 address 10.4.1.1 24
+ interface ge-1/0/0
+interface 0 point-to-point
+interface ge-1/0/0
+ ipv4 address 10.1.1.1 24
+ip route 0 none none none
+ip route none none 10.1.1.2
+bgp IBGP
+ peer none as-number IBGP
+address-family external vrf [parameter2]
+ import route external
+router bgp 100
+ neighbor none remote-as 100
+ neighbor 10.1.1.2 activate
+ address-family unicast
+  neighbor none route-policy BGP-NETWORKS export
+ permit exact none none 10.1.1.0
+ network none mask 24
+tunnel-te policy BGP-NETWORKS
+tunnel-policy 1
+ip access-list extended 10.1.1.0
+aaa authorization exec none none accept

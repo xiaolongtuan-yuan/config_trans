@@ -1,0 +1,19 @@
+set system host-name CE1
+
+set protocols pim interface ge-1/0/2 mode sparse
+set interfaces ge-1/0/2 unit 0 family inet address 192.168.3.1/24
+
+set protocols pim interface ge-1/0/1 mode sparse
+set interfaces ge-1/0/1 unit 0 family inet address 192.168.1.1/24
+
+set protocols pim rp static address 192.168.3.1
+
+set protocols bgp group external-peers type external
+set protocols bgp group external-peers neighbor 192.168.1.2 remote-as 100
+set protocols bgp group external-peers family inet unicast
+set protocols bgp group external-peers export advertise-routes
+
+set policy-options policy-statement advertise-routes term 1 from route-filter 192.168.1.0/24 exact
+set policy-options policy-statement advertise-routes then accept
+
+set routing-options autonomous-system 65003

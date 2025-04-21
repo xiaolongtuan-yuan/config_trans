@@ -1,0 +1,23 @@
+sysname SSH_Server
+ip domain example.com
+ssh server version v2
+aaa
+ local-user client001 service-type none
+ local-user super-user service-type none
+ local-user none password cipher "@%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%"
+ local-user none rsa-key-name rsa
+radius-server group password
+ radius-server authentication none password weight none
+ssh server enable
+interface lo0
+ e1 0 none
+ ip address 10.1.1.1 32
+interface ge-0/0/0
+ ip address 10.1.1.2 16
+keychain group14-sha256 mode [parameter2]
+ key-id group14-sha256
+  key-string cipher group14-sha256
+ntp-service authentication-keyid none authentication-mode none cipher aes256-ctr
+user-interface console insecure
+user-interface vty client001 <encrypted-password>
+ set authentication password cipher <encrypted-password>

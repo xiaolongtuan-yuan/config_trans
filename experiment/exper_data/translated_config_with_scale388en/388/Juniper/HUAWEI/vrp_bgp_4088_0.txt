@@ -1,0 +1,23 @@
+sysname DeviceA
+interface ge-1/0/0
+ e1 0 none
+ ip address 10.1.4.1 24
+ ip unnumbered "GigabitEthernet1/0/0"
+interface ge-2/0/0
+ ip address 10.1.2.1 24
+ ip unnumbered "GigabitEthernet2/0/0"
+ traffic-policy REDISTRIBUTE_CONNECTED inbound
+bgp 10
+ group EBGP_AS20 internal
+ospf none router-id 1.1.1.1
+ipv4-family REDISTRIBUTE_CONNECTED
+ peer none route-policy REDISTRIBUTE_CONNECTED export
+isis external
+ bgp-ls enable external
+bgp 20
+ ipv4-family REDISTRIBUTE_CONNECTED
+  peer 10.1.2.2 advertise-community
+traffic policy 1
+user-interface vty direct [parameter2]
+ protocol inbound direct
+route-policy none accept node none

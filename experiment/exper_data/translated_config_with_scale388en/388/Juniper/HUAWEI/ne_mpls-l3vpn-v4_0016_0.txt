@@ -1,0 +1,22 @@
+sysname CE1
+interface ge-2/0/0
+ e1 0 none
+ ip address 10.4.1.1 24
+interface ge-1/0/0
+ ip address 10.1.1.1 24
+ traffic-policy BGP-NETWORKS inbound
+ip route-static 0.0.0.0 0 none none
+ip route-static none none 10.1.1.2
+bgp 100
+ group IBGP internal
+ ipv4-family 10.1.1.2
+  peer 10.1.1.2 advertise-community
+ ipv6-family unicast
+ network none 24
+  peer none route-filter exact import
+isis external
+ bgp-ls enable external
+ipv4-family 10.1.1.2
+ peer none route-policy BGP-NETWORKS export
+traffic policy 1
+route-policy none accept node none

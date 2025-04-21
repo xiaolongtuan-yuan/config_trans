@@ -1,0 +1,25 @@
+set host-name PE2
+set protocols mpls label protocol ldp
+set protocols mpls l2transport
+set interfaces ldp1 encapsulation dot1q ldp1 connect vfi ldp1
+set interfaces ldp1 unit 1.1.1.9 family ethernet-switching pw-id 2
+set interfaces ldp1 unit 1.1.1.9 no shutdown
+set interfaces ldp1 unit 1.1.1.9 encapsulation dot1q 10
+set interfaces ldp1 unit 1.1.1.9 encapsulation dot1q 20
+set interfaces ldp1 ip address 192.168.2.2/255.255.255.252
+set interfaces ldp1 ip address 192.168.3.2/255.255.255.252
+set interfaces ldp1 ip address 2.2.2.9/255.255.255.255
+set protocols l2vpn vfi 2 vpn-id 2
+set protocols l2circuit neighbor 1.1.1.9
+set protocols l2circuit neighbor 3.3.3.9
+set vlans GigabitEthernet1/0/1 vlan-interfaces interface GigabitEthernet1/0/1
+set vlans GigabitEthernet1/0/1 vlan-interfaces interface GigabitEthernet1/0/1.10
+set vlans GigabitEthernet1/0/1 vlan-interfaces interface GigabitEthernet1/0/2
+set vlans GigabitEthernet1/0/1 vlan-interfaces interface GigabitEthernet1/0/3
+set vlans GigabitEthernet1/0/1 vlan-interfaces interface Loopback1
+set routing-instances ldp1 vfi-id ldp1
+set protocols mpls ip
+set routing-options router ospf 1
+set router ospf area 0 network 2.2.2.9/0.0.0.0 none
+set router ospf area 0 network 192.168.2.0/0.0.0.3 none
+set router ospf area 0 network 192.168.3.0/0.0.0.3 none

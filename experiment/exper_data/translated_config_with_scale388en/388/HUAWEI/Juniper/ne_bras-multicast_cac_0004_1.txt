@@ -1,0 +1,27 @@
+set system host-name BRAS
+set routing-options multicast-routing
+set ip local-pool huawei ip address 10.1.1.1/255.255.255.0
+set ip local-pool huawei range 10.0.0.1 10.0.255.255
+set interfaces 10.0.0.1 ip address 10.0.0.1/255.255.0.0
+set interfaces 10.0.0.1 unit chap ppp authentication chap
+set interfaces 10.0.0.1 unit chap pppoe-server bind 100
+set interfaces 10.0.0.1 unit chap family inet pim sm
+set interfaces 10.0.0.1 unit chap family inet igmp version none
+set interfaces 10.0.0.1 ip address 10.1.2.1/255.255.255.0
+set aaa new-model
+set aaa multicast-group 225.1.1.1
+set aaa multicast-group 227.1.1.1
+set access profile profile1 address-assignment pool ipv4
+set protocols isis interface 0 segment-routing prefix-sid index 1
+set system login user none authentication none none
+set services analytics subscriptions subscription-name none
+set accounting-options none
+set protocols ptp domain ipv4
+set protocols ospf area Virtual-Template100 interface Virtual-Template100
+set protocols ospf area Virtual-Template100 interface GigabitEthernet1/0/0
+set protocols ospf area Virtual-Template100 interface GigabitEthernet1/0/1
+set protocols ospf area Virtual-Template100 interface GigabitEthernet1/0/2
+set subscriber-template bas authentication bind
+set access layer2-subscriber default-domain authentication ipv4
+set access layer2-subscriber multicast copy-by-session
+commit and-quit

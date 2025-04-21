@@ -1,0 +1,370 @@
+{
+    "set system host-name routerB": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name routerB",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set firewall family inet filter acl-2001": {
+        "template": "set firewall family inet filter [parameter1]",
+        "command": "set firewall family inet filter acl-2001",
+        "explanation": "This command fragment configures an IPv4 firewall filter named `[parameter1]` in Junos OS, defining rules to control traffic based on specified conditions.",
+        "parameters": [
+            {
+                "name": "filter",
+                "type": "string",
+                "explanation": "Firewall filter name."
+            }
+        ],
+        "term 1": {
+            "template": "term [parameter2]",
+            "command": "term 1",
+            "explanation": "This command fragment creates a term within an IPv4 firewall filter, where `[parameter1]` is the filter name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "string",
+                    "explanation": "Filter term name."
+                }
+            ],
+            "from source-address 2.2.2.2/32": {
+                "template": "from source-address [parameter3]/[parameter4]",
+                "command": "from source-address 2.2.2.2/32",
+                "explanation": "Configures the source address conditions for access to the control list.",
+                "parameters": [
+                    {
+                        "name": "source-address",
+                        "type": "string",
+                        "explanation": "Source IP address."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Number of subnet masks in source IP address."
+                    }
+                ]
+            },
+            "then accept": {
+                "template": "then [parameter3]",
+                "command": "then accept",
+                "explanation": "Configure firewall filter terminologies and accept all traffic.",
+                "parameters": [
+                    {
+                        "name": "action",
+                        "type": "string",
+                        "explanation": "Action, accept indicates acceptance of traffic."
+                    }
+                ]
+            }
+        },
+        "term default": {
+            "template": "term [parameter2]",
+            "command": "term default",
+            "explanation": "This command fragment creates a term within an IPv4 firewall filter, where `[parameter1]` is the filter name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "string",
+                    "explanation": "Filter term name."
+                }
+            ],
+            "then discard": {
+                "template": "then [parameter3]",
+                "command": "then discard",
+                "explanation": "Configure firewall filter terminologies and accept all traffic.",
+                "parameters": [
+                    {
+                        "name": "action",
+                        "type": "string",
+                        "explanation": "Action, accept indicates acceptance of traffic."
+                    }
+                ]
+            }
+        }
+    },
+    "set firewall policer port-mirror if-exceeding bandwidth-limit 100g": {
+        "template": "set firewall policer [parameter1] if-exceeding bandwidth-limit [parameter2]",
+        "command": "set firewall policer port-mirror if-exceeding bandwidth-limit 100g",
+        "explanation": "配置防火墙策略器的带宽限制。",
+        "parameters": [
+            {
+                "name": "policer-name",
+                "type": "string",
+                "explanation": "策略器的名称。"
+            },
+            {
+                "name": "bandwidth-limit",
+                "type": "string",
+                "explanation": "带宽限制值，例如100g。"
+            }
+        ]
+    },
+    "set forwarding-options port-mirroring instance mirror-instance input": {
+        "template": "set forwarding-options port-mirroring instance [parameter1] input",
+        "command": "set forwarding-options port-mirroring instance mirror-instance input",
+        "explanation": "配置端口镜像实例的输入方向。",
+        "parameters": [
+            {
+                "name": "instance-name",
+                "type": "string",
+                "explanation": "端口镜像实例的名称。"
+            }
+        ]
+    },
+    "set forwarding-options port-mirroring instance mirror-instance family inet input filter acl-2001": {
+        "template": "set forwarding-options port-mirroring instance [parameter1] family inet input filter [parameter2]",
+        "command": "set forwarding-options port-mirroring instance mirror-instance family inet input filter acl-2001",
+        "explanation": "配置端口镜像实例的IPv4输入过滤器。",
+        "parameters": [
+            {
+                "name": "instance-name",
+                "type": "string",
+                "explanation": "端口镜像实例的名称。"
+            },
+            {
+                "name": "filter-name",
+                "type": "string",
+                "explanation": "过滤器的名称。"
+            }
+        ]
+    },
+    "set forwarding-options port-mirroring instance mirror-instance output": {
+        "template": "set forwarding-options port-mirroring instance [parameter1] output",
+        "command": "set forwarding-options port-mirroring instance mirror-instance output",
+        "explanation": "配置端口镜像实例的输出方向。",
+        "parameters": [
+            {
+                "name": "instance-name",
+                "type": "string",
+                "explanation": "端口镜像实例的名称。"
+            }
+        ]
+    },
+    "set forwarding-options sampling instance capture-instance": {
+        "template": "set forwarding-options sampling instance [parameter1]",
+        "command": "set forwarding-options sampling instance capture-instance",
+        "explanation": "This command configures packet sampling on a Junos device by creating a sampling instance named `[parameter1]` to capture and analyze network traffic.",
+        "parameters": [
+            {
+                "name": "instance",
+                "type": "string",
+                "explanation": "The name of the NetFlow surveillance instance."
+            }
+        ],
+        "input rate 1": {
+            "template": "input rate [parameter2]",
+            "command": "input rate 1",
+            "explanation": "Configure input sampling rates for NetFlow monitoring examples.",
+            "parameters": [
+                {
+                    "name": "rate",
+                    "type": "integer",
+                    "explanation": "Sample rate, which means one sample per N package."
+                }
+            ]
+        }
+    },
+    "set forwarding-options sampling instance capture-instance family inet input filter acl-2001": {
+        "template": "set forwarding-options sampling instance [parameter1] family inet input filter [parameter2]",
+        "command": "set forwarding-options sampling instance capture-instance family inet input filter acl-2001",
+        "explanation": "配置采样实例的IPv4输入过滤器。",
+        "parameters": [
+            {
+                "name": "instance-name",
+                "type": "string",
+                "explanation": "采样实例的名称。"
+            },
+            {
+                "name": "filter-name",
+                "type": "string",
+                "explanation": "过滤器的名称。"
+            }
+        ]
+    },
+    "set forwarding-options sampling instance capture-instance output interface ge-1/0/3": {
+        "template": "set forwarding-options sampling instance [parameter1] output interface [parameter2]",
+        "command": "set forwarding-options sampling instance capture-instance output interface ge-1/0/3",
+        "explanation": "配置采样实例的输出接口。",
+        "parameters": [
+            {
+                "name": "instance-name",
+                "type": "string",
+                "explanation": "采样实例的名称。"
+            },
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "输出接口的名称。"
+            }
+        ]
+    },
+    "set interfaces ge-1/0/1": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 7.1.1.2/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 7.1.1.2/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        },
+        "enable": {
+            "template": "enable",
+            "command": "enable",
+            "explanation": "Enables the specified interface.",
+            "parameters": []
+        }
+    },
+    "set interfaces ge-1/0/1 unit 0 input filter acl-2001": {
+        "template": "set interfaces [parameter1] unit [parameter2] input filter [parameter3]",
+        "command": "set interfaces ge-1/0/1 unit 0 input filter acl-2001",
+        "explanation": "配置接口的输入过滤器。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-1/0/1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "filter-name",
+                "type": "string",
+                "explanation": "过滤器的名称。"
+            }
+        ]
+    },
+    "set interfaces ge-1/0/2": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/2",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 8.1.1.2/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 8.1.1.2/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        },
+        "enable": {
+            "template": "enable",
+            "command": "enable",
+            "explanation": "Enables the specified interface.",
+            "parameters": []
+        }
+    },
+    "set interfaces ge-1/0/3": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/3",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet": {
+                "template": "family inet",
+                "command": "family inet",
+                "explanation": "Configure interfaces to support IPv4 protocol communities.",
+                "parameters": []
+            }
+        }
+    },
+    "set forwarding-options port-mirroring instance mirror-instance output interface ge-1/0/3": {
+        "template": "set forwarding-options port-mirroring instance [parameter1] output interface [parameter2]",
+        "command": "set forwarding-options port-mirroring instance mirror-instance output interface ge-1/0/3",
+        "explanation": "配置端口镜像实例的输出接口。",
+        "parameters": [
+            {
+                "name": "instance-name",
+                "type": "string",
+                "explanation": "端口镜像实例的名称。"
+            },
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "输出接口的名称。"
+            }
+        ]
+    }
+}

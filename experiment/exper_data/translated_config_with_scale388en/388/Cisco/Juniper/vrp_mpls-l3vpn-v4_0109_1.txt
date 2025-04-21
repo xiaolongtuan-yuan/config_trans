@@ -1,0 +1,30 @@
+set host-name Spoke-PE1
+set routing-options instance vrf vpna
+set routing-instances 100:1 routing-options route-distinguisher 100:1 :100:1
+set routing-instances 100:1 vrf-export target 100:1
+set routing-instances 100:1 vrf-import target 200:1
+set routing-instances 100:1 protocols bgp group 2.2.2.9 neighbor 2.2.2.9
+set forwarding-options mpls ldp router-id Loopback1 none
+set protocols mpls ip
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet1/0/0
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet2/0/0
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface Loopback1
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] family ip address ipv4/none
+set interfaces [parameter1] unit [parameter2] family ip address vpnv4/none
+set interfaces [parameter1] ip address 100.1.1.2/255.255.255.0
+set interfaces [parameter1] ip address 20.1.1.1/255.255.255.0
+set interfaces [parameter1] ip address 1.1.1.9/255.255.255.255
+set protocols bgp peer 100 as 100
+set protocols bgp group 2.2.2.9 protocols bgp group 2.2.2.9
+set protocols bgp group 2.2.2.9 neighbor 2.2.2.9 neighbor 2.2.2.9
+set protocols bgp group 2.2.2.9 neighbor 2.2.2.9 remote-as 100
+set protocols bgp group 2.2.2.9 neighbor 2.2.2.9 as 2.2.2.9 ebgp-multihop 2.2.2.9 update-source Loopback1
+set protocols bgp group 2.2.2.9 neighbor-address 2.2.2.9
+set protocols bgp group 2.2.2.9 send-community both
+set protocols bgp neighbor [parameter1] sync
+set protocols bgp peer-group 2.2.2.9
+set routing-options router ospf 1
+set router ospf area 0 network 20.1.1.0/0.0.0.255 none
+set router ospf area 0 network 1.1.1.9/0.0.0.0 none
+commit and-quit

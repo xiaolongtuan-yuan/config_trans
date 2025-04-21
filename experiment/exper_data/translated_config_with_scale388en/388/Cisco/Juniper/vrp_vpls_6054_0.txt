@@ -1,0 +1,21 @@
+set host-name CE1
+set vlans 10 id 10
+set vlans 10 vlan-interfaces interface Vlan10
+set vlans 10 vlan-interfaces interface GigabitEthernet1/0/0
+set vlans 10 vlan-interfaces interface GigabitEthernet2/0/0
+set interfaces [parameter1] unit [parameter2] cfm etherenet domain none
+set interfaces [parameter1] unit [parameter2] family ethernet-switching
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] family ethernet-trunk switchport trunk allowed-vlans 10
+set interfaces [parameter1] ip address 10.10.1.1/255.255.255.0
+set interfaces [parameter1] vlan-id 10
+commit and-quit
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 mep-id 1
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association 1 remote-mep mep-id transmit
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 mep-id 3
+set protocols cfm interface ma1 cfm ma ma1
+set protocols cfm interface ma1 cfm ma ma2
+set protocols cfm mep interface GigabitEthernet1/0/0 ccm-send mep-id 1
+set protocols cfm mep interface GigabitEthernet1/0/0 remote-mep 2
+set protocols cfm mep interface GigabitEthernet2/0/0 ccm-send mep-id 3
+set protocols cfm mep interface GigabitEthernet2/0/0 remote-mep 4

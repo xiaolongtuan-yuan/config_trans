@@ -1,0 +1,23 @@
+sysname P
+interface GigabitEthernet2/0/0
+ undo shutdown
+ mpls
+  ldp
+ip pool 10.1.1.2 server
+ ip address 10.1.1.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 10.2.2.1 none
+ ip address 4.4.4.4 none
+ gateway none 255.255.255.255 section none none none
+mpls ldp remote-peer none
+interface GigabitEthernet2/0/1
+interface Loopback0
+bgp 1
+ ipv4-family unicast
+  import-route ospf 1
+ospf 4.4.4.4
+ network 4.4.4.4 0.0.0.0
+ area 0
+ network 10.1.1.0 0.0.0.255
+ network 10.2.2.0 0.0.0.255
+mpls ldp

@@ -1,0 +1,16 @@
+hostname CE2
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.2.1.1 255.255.255.0
+ interface GigabitEthernet2/0/0
+interface GigabitEthernet2/0/0
+ ip address 172.16.2.1 255.255.255.0
+bgp 600
+ peer 10.2.1.2 as-number 100
+ ipv4-family unicast
+  peer 10.2.1.2 enable
+router bgp [parameter1]
+ no synchronization
+ address-family vpnv4 vrf [parameter1]
+  import route direct
+return

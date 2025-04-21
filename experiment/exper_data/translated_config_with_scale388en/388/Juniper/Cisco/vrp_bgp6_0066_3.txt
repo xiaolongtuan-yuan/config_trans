@@ -1,0 +1,17 @@
+hostname DeviceD
+interface ge-1/0/0
+ ipv6 address 96
+ isis enable
+interface 0 point-to-point
+router bgp 200
+ neighbor 2001:db8:102::1 activate
+ address-family ipv4 unicast
+router isis
+ isis router-id 4.4.4.4
+bgp BGP-PEER
+ peer none as-number BGP-PEER
+address-family internal vrf [parameter2]
+ import route internal
+ptp clock-domain 4.4.4.4
+ local-ip 4.4.4.4
+ipv6 unicast-routing

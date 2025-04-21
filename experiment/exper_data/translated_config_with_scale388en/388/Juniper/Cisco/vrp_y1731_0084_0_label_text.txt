@@ -1,0 +1,18 @@
+hostname CE1
+
+vlan 2
+
+mac bridge-domain 2
+   member GigabitEthernet1/0/1
+
+cfm domain default level 2
+   md md1
+      ma ma1
+         mep domain 2
+            interface GigabitEthernet1/0/1
+               mep id 2 mep-direction down
+               mep ccm-send mep-id 2 interval 1
+               mep ccm-receive mep-id 1 enable
+               remote-mep mep-id 1
+                  remote-mep ccm-receive mep-id 1 enable
+               loss-measurement single-ended receive test-id 1

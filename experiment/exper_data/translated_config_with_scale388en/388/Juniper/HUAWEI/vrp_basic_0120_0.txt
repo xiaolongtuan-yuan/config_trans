@@ -1,0 +1,18 @@
+sysname SSH_Server
+aaa
+ local-user client001 service-type none
+ local-user read-only service-type none
+ local-user none rsa-key-name ssh
+ local-user client002 service-type none
+ local-user read-only privilege level none
+ local-user none level view
+ssh authentication-type default deny
+radius-server group password
+ radius-server authentication none password weight none
+user-interface vty client001 "$encrypted-password"
+ set authentication password cipher "$encrypted-password"
+ssh server version v2
+interface ge-0/0/0
+ e1 0 none
+ ip address x.x.x.x y
+clock ssm-control configure

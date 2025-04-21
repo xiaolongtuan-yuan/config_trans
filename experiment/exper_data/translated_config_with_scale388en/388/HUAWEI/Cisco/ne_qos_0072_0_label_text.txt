@@ -1,0 +1,24 @@
+hostname DeviceA
+
+class-map match-any AF4
+ match dscp af41
+
+policy-map MPLS-EXP-OUTBOUND
+ class AF4
+  set mpls experimental topmost 5
+
+policy-map DSCP-INBOUND
+ class AF4
+  set ip dscp 18
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 2.2.2.1 255.255.255.0
+ service-policy input DSCP-INBOUND
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 3.3.3.1 255.255.255.0
+ service-policy input DSCP-INBOUND
+
+end

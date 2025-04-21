@@ -1,0 +1,20 @@
+interface ge-0/0/1
+ e1 0 none
+ port trunk allow-pass vlan default
+bridge-domain bd-2
+ vxlan vni default
+cfm md ge-0/0/1.0
+ ma ge-0/0/1.0
+  mep mep-id 1 interface ge-0/0/1.0 vlan none none
+  loss-measure 0 none test-id 1
+cfm md none level 2
+mpls l2vpn ge-0/0/1 encapsulation 0
+ ce ge-0/0/1 id 0 range 2 default-offset 1
+  connection ce-offset none interface ge-0/0/1
+ma ge-0/0/1.0
+ ce ge-0/0/1 id 0 range 2 default-offset 1
+ mep ccm-send mep-id 1 enable
+  connection ce-offset none interface ge-0/0/1
+ remote-mep ccm-receive mep-id 1 enable
+bridge-domain ge-0/0/1
+bridge-domain 2

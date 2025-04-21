@@ -1,0 +1,41 @@
+hostname NPE2
+vpn instance vpn1
+router bgp [parameter1]
+ address-family none
+ no synchronization
+ address-family vpnv4 vrf [parameter1]
+  import route direct
+mpls l2vpn 10:2
+ route-distinguisher 10:2
+ import route-target both none
+evpn vpn-instance none
+mpls traffic-eng bfd none bind interface none reverse-lsp-id 3.3.3.3 lsp-id none
+mpls
+mpls ldp
+interface GigabitEthernet1/0/0
+ ip router isis 1
+ undo shutdown
+ ip address 10.2.1.2 255.255.255.0
+ interface GigabitEthernet2/0/0
+router isis
+ net 10.0000.0000.0003.00
+interface GigabitEthernet2/0/0
+ ip address 192.168.30.1 255.255.255.0
+ interface LoopBack1
+interface LoopBack1
+ ip address 3.3.3.3 255.255.255.255
+bgp 100
+ peer 2.2.2.2 as-number 100
+ ipv4-family unicast
+  peer 2.2.2.2 enable
+ peer 2.2.2.2 as-number none
+bfd all-interfaces
+ peer 2.2.2.2 as-number none
+ bind peer-ip none interface LoopBack1
+l2vpn
+return
+vfi 2:2
+ vpn-id evpn
+mpls l2vpn
+router ospf [parameter1]
+ traffic-adjustment advertise

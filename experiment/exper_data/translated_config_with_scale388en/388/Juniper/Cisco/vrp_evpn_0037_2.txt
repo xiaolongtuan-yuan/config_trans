@@ -1,0 +1,34 @@
+hostname ASBR2
+mpls ldp router-id all none
+mpls ldp router-id ge-1/0/0 none
+bgp EBGP-100
+ peer none as-number EBGP-100
+ peer none as-number IBGP-200
+address-family external vrf [parameter2]
+ import route external
+ import route internal
+router bgp 200
+ neighbor none remote-as 100
+ neighbor 192.168.1.1 activate
+ neighbor none remote-as 200
+ neighbor 4.4.4.9 activate
+ address-family unicast
+ptp clock-domain 3.3.3.9
+ local-ip 3.3.3.9
+interface lo0.1
+ ospfv3 none area 0
+ interface ge-1/0/0.0
+interface ge-1/0/0.0
+ interface ge-1/0/0
+interface 0 point-to-point
+interface ge-1/0/0
+ ipv4 address 172.22.1.1 24
+ interface ge-2/0/0
+mpls
+interface ge-2/0/0
+ ipv4 address 192.168.1.2 24
+ interface lo0
+interface 1 point-to-point
+interface lo0
+ ipv4 address 3.3.3.9 32
+bridge none protocol signaling

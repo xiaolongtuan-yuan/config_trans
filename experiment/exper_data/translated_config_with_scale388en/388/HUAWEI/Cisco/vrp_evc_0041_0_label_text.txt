@@ -1,0 +1,20 @@
+hostname Device A
+!
+ip multicast-routing
+!
+router isis 1
+ net 10.0000.0000.0001.00
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 10.0.0.1 255.255.255.0
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 192.168.1.1 255.255.255.0
+ ip pim sparse-mode
+ isis enable
+!
+ip pim
+ bsr-candidate GigabitEthernet1/0/2
+ rp-candidate GigabitEthernet1/0/2

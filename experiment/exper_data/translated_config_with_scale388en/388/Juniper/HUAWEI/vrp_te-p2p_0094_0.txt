@@ -1,0 +1,30 @@
+sysname LSR-A
+bgp 49.0005.0000.0000.0100
+ ipv4-family unicast
+  peer 49.0005.0000.0000.0100 reflect-client
+interface ge-0/0/0
+ isis link-quality none incr-cost point-to-point
+ link-protocol none
+ isis link-quality none incr-cost wide
+ e1 0 none
+ ip address 10.1.1.1 24
+ mpls te bidirectional
+ip pool 49.0005.0000.0000.0100 bas local
+ section 49.0005.0000.0000.0100 none none
+isis [parameter1]
+ import-route isis none into none
+mpls
+ mpls traffic-eng enable
+interface ge-0/0/0(unit
+interface none
+ mpls te bandwidth max-reservable-bandwidth none
+ mpls te bandwidth none none
+interface lo0
+ ip address 1.1.1.9 32
+ isis prefix-sid absolute none
+interface tun0
+ port default vlan lo0.0
+ mpls te tunnel-id 1
+interface shared
+ tunnel-protocol 4.4.4.9
+ mpls te bypass-attributes bandwidth 20000 priority 1 none

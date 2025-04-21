@@ -1,0 +1,12 @@
+set system host-name DeviceB
+set interfaces [parameter1] bfd local-discriminator none
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] ip address 10.1.1.2/255.255.255.0
+set interfaces [parameter1] ip address 10.2.1.2/255.255.255.0
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet1/0/0
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet1/0/0.1
+set protocols bfd interface 2 local-discriminator 2
+set protocols bfd interface 2 bind peer-ip GigabitEthernet1/0/0
+set protocols bfd peer-group 1 discriminator-local 1 discriminator-remote 1
+commit and-quit
+set protocols mpls traffic-engineering bfd sub-if bind interface sub-if

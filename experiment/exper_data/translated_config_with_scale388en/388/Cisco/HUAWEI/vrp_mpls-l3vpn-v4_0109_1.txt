@@ -1,0 +1,42 @@
+sysname Spoke-PE1
+bridge-domain vpna
+ evpn binding vpn-instance vpna
+ip vpn-instance 100:1
+ route-distinguisher 100:1
+isis 100:1
+ import-route isis none into 100:1
+ospf 200:1
+ import-route 200:1
+ network 20.1.1.0 0.0.0.255
+ area 0
+ network 1.1.1.9 0.0.0.0
+interface Loopback1
+ subscription 2.2.2.9
+ source Loopback1
+  local-source-address ipv4 2.2.2.9 port none
+mpls ldp remote-peer none
+interface GigabitEthernet1/0/0
+ undo shutdown
+ip pool 100.1.1.2 server
+ ip address 100.1.1.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 20.1.1.1 none
+ ip address 1.1.1.9 none
+ gateway none 255.255.255.255 section none none none
+interface GigabitEthernet2/0/0
+bgp 100
+ peer none as-number 100
+ ipv4-family ipv4
+  peer 2.2.2.9 advertise-community
+ ipv4-family unicast
+  import-route ospf 1
+remote-ip 2.2.2.9
+telemetry
+ipv4-family ipv4
+ undo synchronization
+ipv4-family vpnv4
+route-policy 2.2.2.9 both node [parameter3]
+ ipv4-family vpnv4
+ apply community both
+  peer 2.2.2.9 advertise-community
+emdi

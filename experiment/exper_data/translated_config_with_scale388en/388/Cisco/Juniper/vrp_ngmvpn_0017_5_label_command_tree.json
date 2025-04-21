@@ -1,0 +1,218 @@
+{
+    "set system host-name CE2": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name CE2",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set protocols multicast routing": {
+        "template": "set protocols multicast routing",
+        "command": "set protocols multicast routing",
+        "explanation": "启用多播路由功能。",
+        "parameters": []
+    },
+    "set protocols igmp interface ge-1/0/1": {
+        "template": "set protocols igmp interface [parameter1]",
+        "command": "set protocols igmp interface ge-1/0/1",
+        "explanation": "This command enables IGMP (Internet Group Management Protocol) on a specified network interface (`[parameter1]`) for multicast group management.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "interface name."
+            }
+        ],
+        "join-group 225.0.0.1": {
+            "template": "join-group [parameter2]",
+            "command": "join-group 225.0.0.1",
+            "explanation": "Configure the IGMP protocol on the specified interface and add the specified group.",
+            "parameters": [
+                {
+                    "name": "group-address",
+                    "type": "string",
+                    "explanation": "Group address, e.g. 224.0.0.1."
+                }
+            ]
+        }
+    },
+    "set protocols ospf area 0": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface ge-1/0/0": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-1/0/0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        },
+        "interface ge-1/0/1": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-1/0/1",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        }
+    },
+    "set protocols pim rp static address 4.4.4.4": {
+        "template": "set protocols pim rp static address [parameter1]",
+        "command": "set protocols pim rp static address 4.4.4.4",
+        "explanation": "Configure PIM's static RP address.",
+        "parameters": [
+            {
+                "name": "rp-address",
+                "type": "string",
+                "explanation": "PIM's static RP address."
+            }
+        ]
+    },
+    "set interfaces ge-1/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 192.168.2.2/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 192.168.2.2/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-1/0/0 unit 0 family inet pim-mode sparse": {
+        "template": "set interfaces [parameter1] unit [parameter2] family inet pim-mode [parameter3]",
+        "command": "set interfaces ge-1/0/0 unit 0 family inet pim-mode sparse",
+        "explanation": "配置接口的PIM模式为稀疏模式。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-1/0/0。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "pim-mode",
+                "type": "string",
+                "explanation": "PIM模式，例如sparse。"
+            }
+        ]
+    },
+    "set interfaces ge-1/0/1": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 10.1.5.1/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.1.5.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-1/0/1 unit 0 family inet pim-mode sparse": {
+        "template": "set interfaces [parameter1] unit [parameter2] family inet pim-mode [parameter3]",
+        "command": "set interfaces ge-1/0/1 unit 0 family inet pim-mode sparse",
+        "explanation": "配置接口的PIM模式为稀疏模式。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-1/0/1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "pim-mode",
+                "type": "string",
+                "explanation": "PIM模式，例如sparse。"
+            }
+        ]
+    }
+}

@@ -390,6 +390,16 @@ class Config_Translater:
             # 阶段二：模糊映射fuzzy_mapping-->针对规则映射库未覆盖的配置命令
             config_match = self.fuzzy_mapping(rest_commands_feature, config_match, vendor, target_vendor,  tau=0)
 
+            # 映射规则使用统计
+            map_rule_freq = {}
+            for command, match in config_match.items():
+                map_rule = str([match['template'], match['match']])
+
+                if map_rule not in map_rule_freq.keys():
+                    map_rule_freq[map_rule] = 1
+                else:
+                    map_rule_freq[map_rule] += 1
+
             # 阶段四：配置命令编排，配置参数直接填充
             arranged_config = self.config_arranging(config_match, target_vendor)
             # print(json.dumps(arranged_config, indent=4, ensure_ascii=False))
@@ -400,7 +410,7 @@ class Config_Translater:
             # 阶段六：输出并保存翻译的配置命令
             trans_res, trans_mapping_info, trans_templates = self.print_and_save_translation_config(target_config, target_vendor)
 
-            return trans_res, trans_mapping_info, trans_templates
+            return trans_res, trans_mapping_info, trans_templates, map_rule_freq
         else:
             statistic_data = {
                 "command_count": len(commands_feature),
@@ -769,9 +779,12 @@ class Config_Translater:
         # 填充到目标模板
         if isinstance(params, types.GenericAlias):
             return dest_template
+        para_placeholders = re.findall(r'\[parameter\d+\]', dest_template)
         for index, param in enumerate(params):
+            if index >= len(para_placeholders):
+                break
             # dest_template = dest_template.replace(f"[parameter{index + 1}]", '{' + param + '}')
-            dest_template = dest_template.replace(f"[parameter{index + 1}]", param)
+            dest_template = dest_template.replace(f"{para_placeholders[index]}", param)
         return dest_template
 
     def merge_config_nodes(self, root, target_vendor):
@@ -829,16 +842,17 @@ class Config_Translater:
         else:
             subtrees = [root]
         commands = []
-        def dfs(node, current_command):
-            current_command.append(node.line)
+        def dfs(node, current_path):
+            current_path.append(node.line)
+            # 如果是叶节点，将当前路径拼接为命令
+            if not node.children:
+                commands.append(" ".join(current_path))
+            # 递归遍历子节点
             for child in node.children:
-                dfs(child, current_command)
+                dfs(child, current_path.copy())  # 使用copy创建新的路径副本
 
         for subtree in subtrees:
-            current_command = []
-            dfs(subtree, current_command)
-            # 用空格拼接为一条命令
-            commands.append(" ".join(current_command))
+            dfs(subtree, [])
 
         trans_res = '\n'.join(commands)
         return trans_res
@@ -1135,7 +1149,7 @@ if __name__ == "__main__":
         json_config = process_juniper_json(json_config)
     # 翻译Cisco配置到HUAWEI配置
 
-    translation_result, _ = config_translater.translation_without_llm(json_config, source_vendor, target_vendor)
+    translation_result, _, _, _ = config_translater.translation_without_llm(json_config, source_vendor, target_vendor)
     print(f'Translation result of {target_vendor} is: \n{translation_result}')
 
     # save_path = str(

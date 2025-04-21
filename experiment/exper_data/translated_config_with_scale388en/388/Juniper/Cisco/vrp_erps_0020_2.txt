@@ -1,0 +1,28 @@
+hostname DeviceC
+erps ethernet-ring 2
+ control-vlan vlan20
+ control-vlan vlan300-400
+ control-vlan 20
+ version 2
+ sub-ring
+interface ge-0/0/1
+ vlan-type dot1q 20
+ vlan-type dot1q 300-400
+ switchport mode trunk
+ interface ge-0/0/2
+erps 2
+interface 0 point-to-point
+spanning-tree vlan 20,300-400
+vfi 2
+ import vpls-id 20
+bgp 2
+ peer 300-400 as-number none
+clock source ptp priority 2
+ethernet cfm md 2 level 6
+ mep 6
+crypto isakmp policy 100
+clock identity ge-0/0/1
+erps ethernet-ring ge-0/0/2
+interface 0
+ interface 0
+ spanning-tree link-type portfast

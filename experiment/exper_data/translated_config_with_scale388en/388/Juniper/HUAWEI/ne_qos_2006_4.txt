@@ -1,0 +1,23 @@
+sysname CE2
+interface ge-0/0/0
+ e1 0 none
+ ip address 10.2.1.1 24
+ undo shutdown
+ traffic-policy bgp-export inbound
+bgp 100
+ group BGP-PEER internal
+ ipv4-family 10.2.1.2
+  peer 10.2.1.2 advertise-community
+ ipv6-family vpnv6
+  policy vpn-target
+isis external
+ bgp-ls enable external
+ipv4-family
+ipv4-family 10.2.1.2
+ peer none route-policy bgp-export export
+traffic policy 1
+xpl route-filter 10.2.1.0
+route-policy 24 none node none
+ if ip route-destination in {10.2.1.0} then
+  call route-filter 10.2.1.0
+route-policy none none node none

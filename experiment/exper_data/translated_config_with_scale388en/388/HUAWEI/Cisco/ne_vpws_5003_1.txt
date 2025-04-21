@@ -1,0 +1,31 @@
+hostname PE1
+mpls traffic-eng bfd none bind interface none reverse-lsp-id 1.1.1.9 lsp-id none
+mpls
+mpls l2vpn
+mpls ldp
+crypto map 3.3.3.9 [parameter2] [parameter3]
+ set peer 3.3.3.9
+vsi 3.3.3.9 [parameter2]
+ remote peer 3.3.3.9 pw-id none
+interface GigabitEthernet1/0/0
+ interface GigabitEthernet1/0/0.1
+interface GigabitEthernet1/0/0.1
+ vlan-type dot1q 10
+ mpls l2transport vc 3.3.3.9 101
+ interface GigabitEthernet2/0/0
+interface GigabitEthernet2/0/0
+ ip address 10.1.1.1 255.255.255.0
+ interface LoopBack1
+interface LoopBack1
+ ip address 1.1.1.9 255.255.255.255
+ no ip address
+ member vni none ingress-replication protocol cdp
+ipv6 router ospf 1
+router ospf 0.0.0.0
+ opaque-area 0.0.0.0
+router bgp 1.1.1.9
+access-list none none none none 0.0.0.0
+ network 1.1.1.9 mask none
+access-list none none none none 0.0.0.255
+ network 10.1.1.0 mask none
+return

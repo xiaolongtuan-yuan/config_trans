@@ -1,0 +1,31 @@
+set host-name PE1
+set ethernet-switching-options cfm version standard
+set protocols cfm interface [parameter1] cfm enable
+set protocols cfm interface [parameter1] cfm remote-mep mep-id 1
+set protocols cfm interface [parameter1] cfm remote-mep mep-id 2
+set protocols cfm interface [parameter1] cfm test-id 3 mep 1.1.1.1
+set protocols mpls label protocol ldp
+set protocols mpls ldp interface Loopback0
+set forwarding-options mpls ldp router-id force none
+set protocols mpls ip
+set protocols mpls l2vpn
+set protocols l2vpn
+set vlans ldp1 bridge-domain ldp1
+set vlans ldp1 vlan-interfaces interface GigabitEthernet1/0/1.1
+set vlans ldp1 vlan-interfaces interface GigabitEthernet1/0/2
+set vlans ldp1 vlan-interfaces interface Loopback0
+set interfaces [parameter1] unit [parameter2] family ip unnumbered none
+set interfaces [parameter1] unit [parameter2] encapsulation dot1q 2
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] ppp-options multilink group ldp1
+set interfaces [parameter1] unit [parameter2] ccm-management interval 3
+set interfaces [parameter1] ip address 10.1.1.1/255.255.255.0
+set interfaces [parameter1] ip address 2.2.2.2/255.255.255.0
+set routing-instances ldp1 vfi-id ldp1
+set routing-options router ospf 1
+set router ospf area 0 network 2.2.2.2/0.0.0.0 none
+set router ospf area 0 network 10.1.1.0/0.0.0.255 none
+set protocols cfm domain md1 MEP [parameter2] ccm-recv
+set protocols cfm md ma1
+set protocols ptp interface inward
+set protocols cfm mep interface 1 test-id 1

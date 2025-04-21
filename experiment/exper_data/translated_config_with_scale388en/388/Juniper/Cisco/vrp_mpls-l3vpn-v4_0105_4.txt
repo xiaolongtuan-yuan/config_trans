@@ -1,0 +1,23 @@
+hostname CE2
+interface ge-1/0/0
+ ipv4 address 10.2.1.1 24
+ isis enable
+ interface ge-2/0/0
+interface 0 point-to-point
+interface ge-2/0/0
+ ipv4 address 172.16.2.1 24
+bgp to-AS-100
+ peer none as-number to-AS-100
+address-family external vrf [parameter2]
+ import route external
+router bgp 600
+ neighbor none remote-as 100
+ neighbor 10.2.1.2 activate
+ address-family unicast
+  neighbor none route-policy redistribute-connected export
+tunnel-te policy redistribute-connected
+tunnel-policy 1
+vpdn-group direct
+ accept-dialin
+  protocol direct
+aaa authorization exec none none accept

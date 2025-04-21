@@ -1,0 +1,33 @@
+hostname DeviceC
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:9::1:2/64
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:10::2/64
+
+router bgp 200
+ bgp router-id 3.3.3.3
+ neighbor 2001:db8:9::1:1 remote-as 200
+ neighbor 2001:db8:10::1 remote-as 100
+ neighbor 2001:db8:10::1 route-map EXPORT out
+
+address-family ipv4 unicast
+ no synchronization
+
+address-family ipv6 unicast
+ no synchronization
+ neighbor 2001:db8:9::1:1 activate
+ neighbor 2001:db8:10::1 activate
+
+route-map EXPORT permit 10
+ match ip address prefix-list PREFIX
+ set metric 150
+
+ip prefix-list PREFIX permit 10.0.0.0/8
+
+end

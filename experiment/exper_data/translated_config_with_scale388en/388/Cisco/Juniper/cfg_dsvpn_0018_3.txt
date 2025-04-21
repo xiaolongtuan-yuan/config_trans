@@ -1,0 +1,20 @@
+set system name Spoke2
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet1/0/0
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface Loopback0
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface Tunnel0
+set interfaces 10.1.3.10 ip address 10.1.3.10/255.255.255.0
+set interfaces 10.1.3.10 unit GigabitEthernet1/0/0 family inet source-address GigabitEthernet1/0/0
+set interfaces 10.1.3.10 unit GigabitEthernet1/0/0 tunnel destination [IP
+set interfaces 10.1.3.10 unit GigabitEthernet1/0/0 family inet ptp
+set interfaces 10.1.3.10 ip address 192.168.2.1/255.255.255.255
+set interfaces 10.1.3.10 ip address 172.16.1.3/255.255.255.0
+set protocols mpls traffic-eng tunnels gre
+set security ipsec vpn ipsec-profile-name [IPsec
+set routing-options router ospf 1
+set protocols ospf router-id 172.16.1.3
+set router ospf area 0 network 172.16.1.0/0.0.0.255 none
+set router ospf area 0 network 192.168.2.0/0.0.0.255 none
+set routing-options router ospf 2
+set protocols ospf router-id 10.1.3.10
+set router ospf area 1 network 10.1.3.0/0.0.0.255 none
+set routing-options rib all neighbors none

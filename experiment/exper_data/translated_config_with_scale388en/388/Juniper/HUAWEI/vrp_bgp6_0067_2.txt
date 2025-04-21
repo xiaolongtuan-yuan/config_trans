@@ -1,0 +1,30 @@
+sysname DeviceC
+interface ge-1/0/0
+ e1 0 none
+ ipv6 address 2001:db8:9::1:2 none
+ ipv6 address 64
+ ipv6 enable
+interface ge-2/0/0
+ ipv6 address 2001:db8:10::2 none
+ ipv6 address 64
+ traffic-policy EXPORT inbound
+ mpls te igp metric absolute 150
+bgp 200
+ group IBGP internal
+ ipv4-family 2001:db8:9::1:1
+  peer 2001:db8:9::1:1 advertise-community
+ group EBGP internal
+ospf none router-id 3.3.3.3
+isis internal
+ bgp-ls enable internal
+ bgp-ls enable external
+bgp 100
+ ipv4-family 2001:db8:9::1:1
+  peer 2001:db8:10::1 advertise-community
+ ipv6-family vpnv6
+  policy vpn-target
+ipv4-family 2001:db8:9::1:1
+ peer none route-policy EXPORT export
+traffic policy 10
+xpl ip-prefix-list PREFIX
+ip ip-prefix none index none none 10.0.0.0 8

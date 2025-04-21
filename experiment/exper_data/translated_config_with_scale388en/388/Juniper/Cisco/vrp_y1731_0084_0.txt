@@ -1,0 +1,21 @@
+interface ge-0/0/1
+ interface ge-0/0/1.0
+interface 0 point-to-point
+erps ethernet-ring default
+ control-vlan default
+cfm md cfmd-default level none
+ethernet cfm md none level 2
+cfm domain ge-0/0/1
+ mep 1 ccm send
+cfm
+ mep ge-0/0/1 ccm send
+ domain ge-0/0/1
+  ma ge-0/0/1
+   remote-mep ge-0/0/1
+    remote-mep 1 ccm-receive enable
+interface ge-0/0/1.0
+ test cable-diagnostics tdr interface 0
+ tunnel mpls traffic-eng tunnel-id 1
+ bridge-domain bd-2 member ge-0/0/1
+ bridge-domain ge-0/0/1 member none
+ bridge-domain 2 mtu none

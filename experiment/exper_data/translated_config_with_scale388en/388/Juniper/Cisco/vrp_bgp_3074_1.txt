@@ -1,0 +1,27 @@
+hostname DeviceB
+interface ge-1/0/0
+ ipv4 address 172.16.1.1 24
+ description "GigabitEthernet1/0/0"
+ interface ge-2/0/0
+interface 0 point-to-point
+interface ge-2/0/0
+ ipv4 address 10.1.1.1 24
+ description "GigabitEthernet2/0/0"
+router bgp 65009
+ neighbor 172.16.1.2 activate
+ neighbor none remote-as 65008
+ neighbor 10.1.1.2 activate
+ address-family 10
+  neighbor none route-policy 10 export
+bgp internal
+ peer none as-number internal
+ peer none as-number external
+address-family internal vrf [parameter2]
+ import route internal
+ import route external
+ptp clock-domain 2.2.2.2
+ local-ip 2.2.2.2
+tunnel-te policy 10
+tunnel-policy 1
+route-map 100 [parameter2] [parameter3]
+ set metric 100

@@ -1,0 +1,26 @@
+hostname DeviceB
+ip pim rp-candidate all
+interface point-to-point
+ ip pim sparse
+ interface point-to-point
+ interface ge-1/0/0
+tunnel-te policy MULTICAST-SOURCES
+route-policy accept
+ apply accept
+ip prefix-list 232.1.1.0/24 none none
+ip multicast-source forwarding-cache
+interface 0 point-to-point
+interface ge-1/0/0
+ ipv4 address 192.168.2.2 24
+ interface ge-2/0/0
+router bgp [parameter1]
+ address-family none
+interface ge-2/0/0
+ ipv4 address 192.168.4.1 24
+ ip pim sparse
+clock source ptp ssm default
+router isis
+ isis network-entity 10.0000.0000.0002.00
+tunnel-te policy SSM-RANGE
+ip pim rp-candidate ge-1/0/0
+ip pim rp-candidate ge-2/0/0

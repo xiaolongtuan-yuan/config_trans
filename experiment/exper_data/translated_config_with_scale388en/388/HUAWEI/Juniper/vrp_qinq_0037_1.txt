@@ -1,0 +1,29 @@
+set system host-name PE2
+set routing-options mpls lsr-id 2.2.2.9
+set interfaces [parameter1] family inet enable-mpls
+set interfaces [parameter1] unit ldp1 l2circuit vsi ldp1
+set interfaces [parameter1] unit ldp1 family mpls ldp
+set interfaces [parameter1] unit ldp1 no shutdown
+set interfaces [parameter1] unit ldp1 family dot1q vlan-id 10
+set interfaces [parameter1] unit ldp1 family dot1q vlan-id 20
+set interfaces [parameter1] unit ldp1 family inet6 ospfv3 area 0.0.0.0
+set interfaces [parameter1] ip address 192.168.2.2/255.255.255.252
+set interfaces [parameter1] ip address 192.168.3.2/255.255.255.252
+set interfaces [parameter1] ip address 2.2.2.9/255.255.255.255
+set protocols mpls l2vpn
+set vlans 2 vfi 2 id 2
+set protocols bfd interface 1.1.1.9 family inet peer 1.1.1.9
+set protocols bfd interface 1.1.1.9 family inet peer 3.3.3.9
+set protocols mpls ldp
+set protocols ospf area GigabitEthernet1/0/1 interface GigabitEthernet1/0/1
+set protocols ospf area GigabitEthernet1/0/1 interface GigabitEthernet1/0/1.1
+set protocols ospf area GigabitEthernet1/0/1 interface GigabitEthernet1/0/2
+set protocols ospf area GigabitEthernet1/0/1 interface GigabitEthernet1/0/3
+set protocols ospf area GigabitEthernet1/0/1 interface LoopBack1
+set routing-options router ospf 1
+set protocols bgp network 2.2.2.9
+set policy-options policy-statement 2.2.2.9 term 2.2.2.9 from route-filter none/0.0.0.0 none
+set policy-options policy-statement 2.2.2.9 term 2.2.2.9 from route-filter none/0.0.0.3 none
+set protocols bgp network 192.168.3.0
+set protocols bgp network 192.168.2.0
+commit and-quit

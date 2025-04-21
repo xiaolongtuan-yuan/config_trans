@@ -1,0 +1,17 @@
+sysname CE2
+interface GigabitEthernet1/0/0
+ undo shutdown
+ip pool 10.2.1.1 server
+ ip address 10.2.1.1 none
+ gateway none 255.255.255.0 section none none none
+bgp 65420
+ peer none as-number 100
+ ipv4-family ipv4
+  peer 10.2.1.2 advertise-community
+remote-ip 10.2.1.2
+ipv4-family ipv4
+ undo synchronization
+ip pool 10.2.1.0 bas local
+ network 10.2.1.0 none
+ gateway none 255.255.255.0
+emdi

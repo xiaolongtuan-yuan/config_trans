@@ -1,0 +1,20 @@
+set system host-name DeviceB
+set protocols l2vpn vpns vpn1
+set protocols bgp [parameter1] family inet
+set routing-instances 100:3 routing-options route-distinguisher 100:3 :100:3
+set routing-instances 100:3 vpn-target 100:1
+set inet label none
+set protocols ospf area GigabitEthernet0/1/0 interface GigabitEthernet0/1/0
+set protocols ospf area GigabitEthernet0/1/0 interface GigabitEthernet2/0/0
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] ip address 10.1.1.2/255.255.255.0
+set interfaces [parameter1] ip address 10.1.2.2/255.255.255.0
+set protocols bgp group 100 type 100 peer 100 as 100
+set protocols bgp group 100 peer 10.1.1.1
+set protocols bgp group 100 family inet unicast
+delete protocols bgp synchronization
+set protocols ptp peer 10.1.1.1
+set protocols bgp family vpn1
+set protocols bgp 100 peer 10.1.2.3
+commit and-quit
+set protocols bgp peer-group aa

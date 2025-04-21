@@ -39,9 +39,23 @@ def parse_config_file_intact(file_path):
         for line in f:
             # 去除前后空格和缩进
             command = line.strip()
+            if command.startswith(('#', '!', '*', '/*', '*/')): # 注释行
+                continue
             if command:
                 commands.append(command.lower())
     # commands = set(commands)
+    return commands
+
+def parse_config_file_content_intact(file_content):
+    """解析配置文件为命令列表"""
+    commands = []
+    for line in file_content.split('\n'):
+        # 去除前后空格和缩进
+        command = line.strip()
+        if command.startswith(('#', '!', '*', '/*', '*/')):  # 注释行
+            continue
+        if command:
+            commands.append(command.lower())
     return commands
 
 

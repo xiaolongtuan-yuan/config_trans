@@ -1,0 +1,19 @@
+hostname DeviceC
+vpn instance vpn1
+router bgp [parameter1]
+ address-family none
+ no synchronization
+mpls l2vpn 100:1
+ route-distinguisher 100:3
+evpn vpn-instance none
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.1.2.3 255.255.255.0
+bgp 100
+ ipv4-family unicast
+ peer 10.1.2.2 as-number 200
+address-family [parameter1] vrf [parameter2]
+ import route none
+mpls l2vpn vpn1
+ip route vrf none 192.168.3.3 255.255.255.255 NULL0
+return

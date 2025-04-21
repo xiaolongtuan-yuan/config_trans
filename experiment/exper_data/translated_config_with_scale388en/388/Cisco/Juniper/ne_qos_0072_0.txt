@@ -1,0 +1,15 @@
+set host-name DeviceA
+set interfaces AF4 unit AF4 family dot1q vlan-map AF4
+set interfaces AF4 unit AF4 no shutdown
+set interfaces AF4 ip address 2.2.2.1/255.255.255.0
+set interfaces AF4 ip address 3.3.3.1/255.255.255.0
+set protocols ptp transport ip dscp af41
+set policy-map global out put MPLS-EXP-OUTBOUND
+set system login class AF4
+set unit 5 family mpls traffic-eng bandwidth max-reservable-bandwidth 5
+set policy-map global out put DSCP-INBOUND
+set protocols ptp transport ip dscp 18
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet1/0/0
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet2/0/0
+set policy-options policy-statement DSCP-INBOUND
+commit and-quit

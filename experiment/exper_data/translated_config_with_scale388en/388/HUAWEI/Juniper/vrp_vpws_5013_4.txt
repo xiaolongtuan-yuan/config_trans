@@ -1,0 +1,28 @@
+set system host-name PE2
+set interfaces [parameter1] bfd local-discriminator 2to1
+set interfaces [parameter1] family inet enable-mpls
+set interfaces [parameter1] mpls l2vc pw-template 2to1 none
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] family inet6 ospfv3 area 0.0.0.0
+set interfaces [parameter1] unit [parameter2] family pppoe access-concentrator none
+set interfaces [parameter1] ip address 10.3.1.2/255.255.255.252
+set interfaces [parameter1] ip address 4.4.4.4/255.255.255.255
+set routing-options mpls lsr-id 4.4.4.4
+set protocols mpls l2vpn
+set protocols ptp peer 1.1.1.1
+set protocols mpls ldp
+set protocols mpls ldp remote-peer 1.1.1.1
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet1/0/0
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet1/0/1
+set protocols ospf area GigabitEthernet1/0/0 interface LoopBack1
+set routing-options router ospf 1
+set protocols bgp network 4.4.4.4
+set policy-options policy-statement 4.4.4.4 term 4.4.4.4 from route-filter none/0.0.0.0 none
+set policy-options policy-statement 4.4.4.4 term 4.4.4.4 from route-filter none/0.0.0.3 none
+set protocols bgp network 10.3.1.0
+set protocols bfd interface 21 local-discriminator 21
+set protocols bfd peer-group 12 discriminator-local 12 discriminator-remote 12
+commit
+commit and-quit
+set protocols mpls l2transport vc-id 100 mpls l2vc pw-template 2to1 none
+set protocols mpls traffic-engineering bfd 2to1 bind interface GigabitEthernet1/0/0

@@ -1,0 +1,25 @@
+sysname DeviceB
+interface ge-1/0/0
+ e1 0 none
+ ip address 172.16.1.1 24
+ ip unnumbered "GigabitEthernet1/0/0"
+interface ge-2/0/0
+ ip address 10.1.1.1 24
+ ip unnumbered "GigabitEthernet2/0/0"
+ traffic-policy 10 inbound
+ mpls te igp metric absolute 100
+bgp 65009
+ group internal internal
+ ipv4-family 172.16.1.2
+  peer 172.16.1.2 advertise-community
+ group external internal
+isis internal
+ bgp-ls enable internal
+ bgp-ls enable 2.2.2.2
+ bgp-ls enable external
+bgp 65008
+ ipv4-family 172.16.1.2
+  peer 10.1.1.2 advertise-community
+ipv4-family 172.16.1.2
+ peer none route-policy 10 export
+traffic policy 1

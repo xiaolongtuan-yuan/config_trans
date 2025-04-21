@@ -1,0 +1,24 @@
+hostname SSH_Server
+cfm
+ domain example.com
+ip ssh version v2
+enable password client001
+policy-map super-user
+ class super-user
+l2tp-class "@%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%"
+ password "@%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%"
+crypto isakmp policy password
+ authentication password
+username none service-type none
+interface lo0
+ ipv4 address 10.1.1.1 32
+ interface ge-0/0/0
+interface 0 point-to-point
+interface ge-0/0/0
+ ipv4 address 10.1.1.2 16
+username none sshkey rsa
+username none sshkey group14-sha256
+tacacs-server host none key none aes256-ctr
+tacacs-server host none key none insecure
+line vty client001 <encrypted-password>
+ password none <encrypted-password>

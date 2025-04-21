@@ -1,0 +1,19 @@
+sysname DeviceB
+interface ge-1/0/0
+ e1 0 none
+ ip address 10.1.1.2 24
+ ip unnumbered "Interface
+ e1 1 none
+ ip address 10.2.1.2 24
+cfm md 1
+ ma 1
+  mep mep-id none interface none vlan 1 none
+bfd atob bind peer-ip none interface ge-1/0/0
+isis 10.1.1.2
+ bgp-ls enable 10.1.1.2
+bgp 10.1.1.1
+ ipv4-family 10.1.1.1
+  peer 10.1.1.1 advertise-community
+discriminator local 2
+discriminator remote 1
+ospf ge-1/0/0

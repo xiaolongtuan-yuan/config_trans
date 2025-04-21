@@ -1,0 +1,39 @@
+hostname ASBR2
+mpls traffic-eng bfd none bind interface none reverse-lsp-id 3.3.3.9 lsp-id none
+mpls
+mpls ldp
+router bgp [parameter1]
+ address-family none
+ no synchronization
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 172.22.1.1 255.255.255.0
+ interface GigabitEthernet2/0/0
+interface GigabitEthernet2/0/0
+ ip address 192.168.1.2 255.255.255.0
+ interface LoopBack1
+interface LoopBack1
+ ip address 3.3.3.9 255.255.255.255
+bgp 200
+ peer 192.168.1.1 as-number 100
+ peer 4.4.4.9 as-number 200
+ ipv4-family unicast
+  peer 192.168.1.1 enable
+  peer 4.4.4.9 enable
+bfd all-interfaces
+ peer 4.4.4.9 as-number none
+ bind peer-ip none interface LoopBack1
+l2vpn
+mpls l2vpn [parameter1]
+ import route-target both none
+vsi 4.4.4.9
+ peer 4.4.4.9 tnl-policy none
+ peer 192.168.1.1 tnl-policy none
+ipv6 router ospf 1
+router ospf 0.0.0.0
+ opaque-area 0.0.0.0
+access-list none none none none 0.0.0.0
+ network 3.3.3.9 mask none
+access-list none none none none 0.0.0.255
+ network 172.22.1.0 mask none
+return

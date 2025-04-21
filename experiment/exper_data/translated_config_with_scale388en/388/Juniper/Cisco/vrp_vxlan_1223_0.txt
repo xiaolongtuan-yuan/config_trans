@@ -1,0 +1,20 @@
+interface ge-0/0/0
+ ipv4 address 192.168.10.1 24
+ interface ge-0/0/1
+interface 0 point-to-point
+interface ge-0/0/1
+ ipv4 address 192.168.20.1 24
+ interface lo0
+interface lo0
+ ipv4 address 3.3.3.3 32
+ ospfv3 none area 0.0.0.0
+ interface ge-0/0/0.0
+router isis
+ isis router-id 3.3.3.3
+ip route 0 none none none
+ip route none none auto
+interface ge-0/0/0.0
+ interface ge-0/0/1.0
+interface ge-0/0/1.0
+ interface lo0.0
+hostname Spin1

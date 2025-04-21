@@ -1,0 +1,16 @@
+hostname DeviceB
+router ospfv3 [parameter1]
+ bfd all-interfaces enable
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.2 255.255.255.0
+ interface GigabitEthernet1/0/0.1
+interface GigabitEthernet1/0/0.1
+ ip address 10.2.1.2 255.255.255.0
+bfd all-interfaces
+ discriminator local 2
+ discriminator remote 1
+ bind peer-ip none interface sub-if
+return
+bgp default-ip
+ peer GigabitEthernet1/0/0 as-number none

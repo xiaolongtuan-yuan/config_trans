@@ -1,0 +1,12 @@
+set system host-name DeviceB
+set interfaces E1 unit E1 family inet filter input E1
+set interfaces E1 unit E1 no shutdown
+set interfaces E1 ppp multilink-group Mp-group2/0/1
+set interfaces E1 ip address 10.1.1.2/255.255.255.0
+set chassis fpc 1 pic 1 e1 1 channel-group 1 timeslots 1-15
+set chassis fpc 1 pic 1 e1 1 channel-group 1 timeslots 16-31
+set protocols ospf area Serial2/0/0:1 interface Serial2/0/0:1
+set protocols ospf area Serial2/0/0:1 interface Serial2/0/1:1
+set protocols ospf area Serial2/0/0:1 interface Mp-group2/0/1
+set telemetry ietf sensors destination-group ppp address-family ppp [parameter3] port ppp protocol ppp
+commit and-quit

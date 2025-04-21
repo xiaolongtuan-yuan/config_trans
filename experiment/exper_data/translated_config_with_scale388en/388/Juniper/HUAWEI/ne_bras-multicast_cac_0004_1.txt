@@ -1,0 +1,39 @@
+sysname BRAS
+ip pool huawei_bas_local server
+ gateway 10.0.0.1 none section none none none
+network-entity 10.0.0.0
+bgp 10.0.0.0
+ network none 16
+radius-server group [radius
+ radius-server authentication none [radius weight none
+aaa
+ local-user none service-type none
+multicast routing-enable
+xpl route-filter list1
+ if ip route-destination in {list1} then
+  call route-filter 1
+  call route-filter 2
+acl ipv6 number list1
+ if ip route-destination in {list1} then
+ rule none permit source none destination 225.1.1.1
+  call route-filter 1
+ rule none permit source none destination 227.1.1.1
+  call route-filter 2
+interface all
+pim
+ anycast-rp all
+interface ge-0/0/0
+ e1 0 none
+ ip address 10.1.1.1 24
+interface ge-0/0/1
+interface ge-0/0/2
+ ip address 10.1.2.1 24
+ destination 10.0.255.255
+ igmp static-group 225.1.1.1 source none
+ igmp static-group 227.1.1.1 source none
+ pppoe-server bind 100 none
+ pppoe-server bind chap none
+mpls l2vpn ge-0/0/0 encapsulation 0
+ ce ge-0/0/0 id 0 range [parameter3] default-offset [parameter4]
+  connection ce-offset none interface 0
+interface mp-group 0

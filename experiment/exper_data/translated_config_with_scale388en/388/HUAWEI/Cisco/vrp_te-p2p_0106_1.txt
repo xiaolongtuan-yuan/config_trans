@@ -1,0 +1,30 @@
+hostname LSRB
+mpls traffic-eng bfd none bind interface none reverse-lsp-id 2.2.2.2 lsp-id none
+mpls
+mpls rsvp-te
+mpls traffic-eng auto-bw
+mpls traffic-eng none
+ipv6 router ospf 1
+router ospf [parameter1]
+ opaque-lsa-capability
+ opaque-area 0.0.0.0
+router bgp 3.1.1.0
+access-list none none none none 0.0.0.255
+ network 3.1.1.0 mask none
+ network 3.2.1.0 mask none
+ network 2.1.1.0 mask none
+access-list none none none none 0.0.0.0
+ network 2.2.2.2 mask none
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 3.2.1.1 255.255.255.0
+ interface GigabitEthernet2/0/0
+interface GigabitEthernet2/0/0
+ ip address 3.1.1.1 255.255.255.0
+ interface GigabitEthernet3/0/0
+interface GigabitEthernet3/0/0
+ ip address 2.1.1.2 255.255.255.0
+ interface LoopBack1
+interface LoopBack1
+ ip address 2.2.2.2 255.255.255.255
+return

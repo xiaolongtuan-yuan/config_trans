@@ -1,0 +1,32 @@
+set system host-name Device
+set access profile 0 radius-server rd1
+set access profile 0 accounting-port 1551
+set access profile 0 address-assignment pool pool1
+set access profile 0 address-assignment pool pool2
+set system radius-server 1550
+set system accounting radius source-address 10.6.55.55
+set protocols ospf area Virtual-Template1 interface Virtual-Template1
+set protocols ospf area Virtual-Template1 interface GigabitEthernet1/0/1.1
+set protocols ospf area Virtual-Template1 interface GigabitEthernet1/0/2
+set interfaces pap unit pap ppp authentication pap
+set interfaces pap unit pap family inet6 dhcpv6 duid 006735f300188253a56a
+set interfaces pap unit pap family inet6 enable
+set interfaces pap unit pap pppoe-server bind 5
+set interfaces pap unit pap family inet6
+set interfaces pap vlan-id 20
+set system services dhcp pool 2001:DB8::2:2 dns-server 2001:DB8::2:2
+set aaa new-model
+set system login user auth1 authentication auth1 none
+set system login user auth1 authentication radius none
+set services analytics subscriptions subscription-name acct1
+set accounting-options radius
+set protocols ptp domain isp1
+set subscriber-template bas authentication bind
+set protocols isis interface 2001::DB8/64 unit pap
+set protocols isis interface 2001::DB8/64 family inet6 address none/eui-64 family inet6 address 2001::DB8/64/2001:DB8::/64
+set protocols isis interface 2001::DB8/64 family inet6 address none/pre1
+set protocols isis interface 2001::DB8/64 family inet6 address none/pre2
+set access radius-server dynamic-author %^%#vS%796FO7%C~pB%CR=q;j}gSCqR-X6+P!.DYI@)%^%# secret %^%#vS%796FO7%C~pB%CR=q;j}gSCqR-X6+P!.DYI@)%^%#
+set policy-options prefix-list none none/63 unit pap family inet6 address none/2001:DB8::/62
+set policy-options prefix-list none pre1
+set policy-options prefix-list none pre2

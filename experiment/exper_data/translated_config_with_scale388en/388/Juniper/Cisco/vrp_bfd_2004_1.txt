@@ -1,0 +1,17 @@
+hostname DeviceB
+interface ge-1/0/0
+ ipv4 address 10.1.1.2 24
+ description "Interface
+ switchport default vlan 1
+ ipv4 address 10.2.1.2 24
+ bfd neighbor none interface ge-1/0/0
+ ospfv3 ge-1/0/0 priority none
+interface 0 point-to-point
+interface 1 point-to-point
+ptp clock-domain 10.1.1.2
+ local-ip 10.1.1.2
+router bgp 10.1.1.1
+ neighbor 10.1.1.1 activate
+bfd all-interfaces
+ discriminator local 2
+ discriminator remote 1

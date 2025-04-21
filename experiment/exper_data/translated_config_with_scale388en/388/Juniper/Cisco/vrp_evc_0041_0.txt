@@ -1,0 +1,20 @@
+hostname "Device
+ip multicast-routing
+interface all
+ interface ge-1/0/2
+router isis
+ isis network-entity 10.0000.0000.0001.00
+ipv6 pim rp static 192.168.1.1
+ip pim rp-candidate ge-1/0/2
+interface ge-1/0/2
+ interface ge-1/0/1
+ ipv4 address 192.168.1.1 24
+ description "GigabitEthernet1/0/2"
+interface 0 point-to-point
+interface ge-1/0/1
+ ipv4 address 10.0.0.1 24
+ description "GigabitEthernet1/0/1"
+ isis enable
+ interface ge-1/0/2
+router ospf ge-1/0/2
+ no passive-interface 0

@@ -1,0 +1,21 @@
+hostname DeviceB
+bfd all-interfaces destination all-interfaces source none
+ipv6 router ospf 1
+router isis
+ isis segment-routing global-block none 0.0.0.0
+interface gigabitETHERNET1/0/0
+ ipv6 address 64
+ bfd interval 50 min_rx none
+ interface gigabitETHERNET2/0/0
+interface 0 point-to-point
+router bgp 3
+ neighbor none bfd min-tx-interval none min-rx-interval none detect-multiplier 3
+bfd interval 50 min_rx none multiplier none
+bfd all-interfaces
+ discriminator local 2
+interface gigabitETHERNET2/0/0
+ ipv6 address 64
+ standby version 2
+ aps group 1
+ ipv6 address FE80::1 none
+ ipv6 address 2001:DB8:2::100 none

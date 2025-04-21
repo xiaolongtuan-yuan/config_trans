@@ -1,0 +1,35 @@
+set system host-name Spoke-PE1
+set protocols l2vpn vpns vpna
+set protocols bgp [parameter1] family inet
+set routing-instances 100:1 routing-options route-distinguisher 100:1 :100:1
+set routing-instances 100:1 vpn-target 100:1
+set routing-instances 100:1 vpn-target 200:1 export-extcommunity
+set inet label none
+set routing-options mpls lsr-id 1.1.1.9
+set interfaces [parameter1] family inet enable-mpls
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] family inet6 ospfv3 area 0.0.0.0
+set interfaces [parameter1] ip address 100.1.1.2/255.255.255.0
+set interfaces [parameter1] ip address 20.1.1.1/255.255.255.0
+set interfaces [parameter1] ip address 1.1.1.9/255.255.255.255
+set protocols mpls ldp
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet1/0/0
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet2/0/0
+set protocols ospf area GigabitEthernet1/0/0 interface LoopBack1
+set protocols bgp group 100 type 100 peer 100 as 100
+set protocols bgp group 100 peer 2.2.2.9
+set protocols bgp group 100 peer-group 2.2.2.9
+set protocols bgp group 100 neighbor 2.2.2.9 peer-address 2.2.2.9
+set protocols bgp group 100 neighbor 2.2.2.9 interface LoopBack1
+set protocols bgp group 100 family inet unicast
+set protocols bgp group 100 family inet-vpn
+delete protocols bgp synchronization
+set protocols ptp peer 2.2.2.9
+set protocols bgp family vpna
+set protocols bgp 65410 peer 100.1.1.1
+set routing-options router ospf 1
+set protocols bgp network 20.1.1.0
+set policy-options policy-statement 20.1.1.0 term 20.1.1.0 from route-filter none/0.0.0.255 none
+set policy-options policy-statement 20.1.1.0 term 20.1.1.0 from route-filter none/0.0.0.0 none
+set protocols bgp network 1.1.1.9
+commit and-quit

@@ -1,0 +1,22 @@
+sysname DeviceB
+ip route-static vpn-instance vpn1 none none none
+ospf vrf
+ import-route vrf
+ip vpn-instance 100:3
+ route-distinguisher 100:3
+ vpn-target target:100:1 export-extcommunity
+remote-backup-profile target:100:1
+ vrrp-id target:100:1 interface none
+interface ge-0/1/0
+ e1 0 none
+ ip address 10.1.1.2 24
+interface ge-2/0/0
+ ip address 10.1.2.2 24
+bgp 100
+ group EBGP_AS200 internal
+ ipv4-family 10.1.1.1
+  peer 10.1.1.1 advertise-community
+  peer 100 advertise-community
+ peer none as-number 200
+ group EBGP_AS100 internal
+ipv4-family

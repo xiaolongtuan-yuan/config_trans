@@ -1,0 +1,24 @@
+hostname P2
+mpls traffic-eng bfd none bind interface none reverse-lsp-id 3.3.3.9 lsp-id none
+mpls
+mpls rsvp-te
+mpls traffic-eng none
+interface GigabitEthernet3/0/3
+ undo shutdown
+ ip address 10.1.3.2 255.255.255.0
+ interface GigabitEthernet4/0/0
+interface GigabitEthernet4/0/0
+ ip address 10.1.5.1 255.255.255.0
+ interface LoopBack1
+interface LoopBack1
+ ip address 3.3.3.9 255.255.255.255
+ipv6 router ospf 1
+router ospf [parameter1]
+ opaque-lsa-capability
+ opaque-area 0.0.0.0
+router bgp 3.3.3.9
+access-list none none none none 0.0.0.0
+ network 3.3.3.9 mask none
+access-list none none none none 0.0.0.255
+ network 10.1.3.0 mask none
+ network 10.1.5.0 mask none

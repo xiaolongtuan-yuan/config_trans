@@ -1,0 +1,41 @@
+sysname CSG
+bfd
+mpls ldp remote-peer ldp
+interface GigabitEthernet1/0/0
+ undo shutdown
+ mpls
+  ldp
+ip pool 10.1.1.1 server
+ ip address 10.1.1.1 none
+ gateway none 255.255.255.0 section none none none
+ ip address 1.1.1.1 none
+ gateway none 255.255.255.255 section none none none
+mpls ldp remote-peer none
+interface Loopback0
+ subscription 2.2.2.2
+ source Loopback0
+  local-source-address ipv4 2.2.2.2 port none
+ mpls te record-route label
+bgp 100
+ peer none as-number 100
+ ipv4-family ipv4
+  peer 2.2.2.2 advertise-community
+ ipv4-family unicast
+  import-route ospf 1
+remote-ip 2.2.2.2
+telemetry
+ipv4-family ipv4
+ip pool 1.1.1.1 bas local
+ network 1.1.1.1 0.0.0.0
+ gateway none 255.255.255.255
+ipv6 route-static none none out
+ peer 2.2.2.2 route-policy policy1 export
+ospf 1.1.1.1
+ area 0
+ network 10.1.1.0 0.0.0.255
+route-policy policy1 permit node none
+bgp 10
+emdi
+ptp-adaptive local-ip 2.2.2.2
+segment-routing
+ ipv4 adjacency local-ip-addr 2.2.2.2 remote-ip-addr none sid none

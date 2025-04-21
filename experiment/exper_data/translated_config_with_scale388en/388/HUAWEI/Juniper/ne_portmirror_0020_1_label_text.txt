@@ -1,0 +1,25 @@
+set system host-name routerB
+
+set firewall family inet filter acl-2001 term 1 from source-address 2.2.2.2/32
+set firewall family inet filter acl-2001 term 1 then accept
+set firewall family inet filter acl-2001 term default then discard
+
+set firewall policer port-mirror if-exceeding bandwidth-limit 100g # 示例带宽，实际需按需求定义
+set forwarding-options port-mirroring instance mirror-instance input
+
+set forwarding-options port-mirroring instance mirror-instance family inet input filter acl-2001
+set forwarding-options port-mirroring instance mirror-instance output
+
+set interfaces ge-1/0/1 unit 0 family inet address 7.1.1.2/24
+set interfaces ge-1/0/1 unit 0 input filter acl-2001
+set interfaces ge-1/0/1 enable
+
+set interfaces ge-1/0/2 unit 0 family inet address 8.1.1.2/24
+set interfaces ge-1/0/2 enable
+
+set interfaces ge-1/0/3 unit 0 family inet
+set forwarding-options port-mirroring instance mirror-instance output interface ge-1/0/3
+
+set forwarding-options sampling instance capture-instance input rate 1
+set forwarding-options sampling instance capture-instance family inet input filter acl-2001
+set forwarding-options sampling instance capture-instance output interface ge-1/0/3

@@ -1,0 +1,31 @@
+set host-name CSG
+set interfaces [parameter1] bfd interval none
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] mpls ldp autoconfig
+set interfaces [parameter1] unit [parameter2] family ip address ipv4/none
+set interfaces [parameter1] ip address 10.1.1.1/255.255.255.0
+set interfaces [parameter1] ip address 1.1.1.1/255.255.255.255
+set protocols mpls label protocol ldp
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet1/0/0
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface Loopback0
+set protocols mpls ip
+set protocols bgp peer 100 as 100
+set routing-instances policy1 protocols bgp group 2.2.2.2 neighbor 2.2.2.2
+set routing-instances policy1 route-target export permit
+set protocols bgp group 2.2.2.2 protocols bgp group 2.2.2.2
+set protocols bgp group 2.2.2.2 neighbor 2.2.2.2 neighbor 2.2.2.2
+set protocols bgp group 2.2.2.2 neighbor 2.2.2.2 remote-as 100
+set protocols bgp group 2.2.2.2 neighbor 2.2.2.2 as 2.2.2.2 ebgp-multihop 2.2.2.2 update-source Loopback0
+set protocols bgp network 1.1.1.1
+set policy-options policy-statement 1.1.1.1 term 1.1.1.1 from route-filter none/255.255.255.255 none
+set routing-options rib all neighbors 2.2.2.2
+set protocols bgp 2.2.2.2
+set protocols bgp peer-group 2.2.2.2 address-family ipv4-unicast neighbor 2.2.2.2
+set protocols bgp peer-group 2.2.2.2 export route-map out route-map policy1
+set routing-options router ospf 1
+set router ospf area 0 network 1.1.1.1/0.0.0.0 none
+set router ospf area 0 network 10.1.1.0/0.0.0.255 none
+set routes target-export 10
+commit and-quit
+set protocols bgp neighbor 2.2.2.2
+set protocols mpls label distribute none

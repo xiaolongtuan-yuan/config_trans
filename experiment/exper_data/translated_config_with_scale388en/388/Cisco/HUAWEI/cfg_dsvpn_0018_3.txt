@@ -1,0 +1,29 @@
+ptp-adaptive device-type Spoke2
+interface GigabitEthernet1/0/0
+ tunnel-protocol gre
+ source GigabitEthernet1/0/0
+ destination [IP
+ip pool 10.1.3.10 server
+ ip address 10.1.3.10 none
+ gateway none 255.255.255.0 section none none none
+ ip address 192.168.2.1 none
+ gateway none 255.255.255.255 section none none none
+ ip address 172.16.1.3 none
+interface Loopback0
+interface Tunnel0
+ tunnel protection ipsec profile [IPsec
+ ospf cost none
+bgp 1
+ ipv4-family unicast
+  import-route ospf 1
+  import-route ospf 2
+ router-id 172.16.1.3
+ router-id 10.1.3.10
+ospf 172.16.1.0
+ network 172.16.1.0 0.0.0.255
+ area 0
+ network 192.168.2.0 0.0.0.255
+ network 10.1.3.0 0.0.0.255
+ area 1
+nhrp enable
+bfd atob bind peer-ip none interface none

@@ -1,0 +1,28 @@
+sysname LSRB
+mpls ldp
+bgp 1
+ ipv4-family unicast
+  import-route ospf 1
+ router-id 2.2.2.2
+ip pool 0 bas local
+ section 0 none none
+interface ge-0/0/0
+ e1 0 none
+ ip address 3.2.1.1 24
+interface ge-0/0/1
+ ip address 3.1.1.1 24
+interface ge-0/0/2
+ ip address 2.1.1.1 24
+interface lo0
+ ip address 2.2.2.2 32
+ mpls te signal-protocol none
+ tunnel-protocol mpls te
+l2tp-group 3.1.1.0
+interface 0
+ tunnel name 24
+ mpls te signal-protocol none
+ mpls te tunnel-id 0
+ mpls
+  mpls te bandwidth bc0 0
+mpls
+ rsvp-te

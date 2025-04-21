@@ -6,6 +6,9 @@
 """
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from langchain_community.embeddings import HuggingFaceEmbeddings
+
+from experiment.tree_match import parse_config_file_intact, parse_config_file_content_intact, calculate_match_ratio, \
+    get_all_templates
 from src.F_new_device_configtrans import Config_Translater, Translation_Model, mapping_library_load, config_matchers_load
 import os
 import json
@@ -62,14 +65,62 @@ def translate_single_file(config_translater, input_dir, output_dir,
     json_config = load_json_file(config_path)
     file_name = os.path.splitext(config_file)[0]
 
-    # 翻译到目标供应商
+    trans_res, trans_mapping_info, trans_templates, map_rule_freq = config_translater.translation_without_llm(json_config, source_vendor, target_vendor)
+
+    # 评估
+    evaluate_res = {
+        "command_accuracy":0,
+        "missed_commands":[],
+        "grammatical_accuracy":0,
+        "missed_templates":[]
+    }
+    real_command_tree_dir = f'./exper_data/{target_vendor}' if target_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
+    real_command_tree_path = os.path.join(real_command_tree_dir, f"{file_name}.json")
+    real_config_dir = f'./exper_data/lable/{target_vendor}'
+    real_config_path = os.path.join(real_config_dir, f"{file_name}.txt")
+
+    with open(real_command_tree_path, encoding='utf-8') as f:
+        real_command_tree = json.load(f)
+    with open(real_config_path, encoding='utf-8') as f:
+        real_config = f.read()
+
+    expected_commands = parse_config_file_content_intact(real_config)
+    result_commands = parse_config_file_content_intact(trans_res)
+
+    command_match_score, command_match_account, missed_commands = calculate_match_ratio(result_commands,
+                                                                                       expected_commands,
+                                                                                       [],
+                                                                                       [])
+    evaluate_res['command_accuracy'] = command_match_score/command_match_account
+    evaluate_res['missed_commands'] = missed_commands
+
+    expected_templates = get_all_templates(real_command_tree)
+    match_score, match_account, error_templates = calculate_match_ratio(trans_templates,
+                                                                        expected_templates,
+                                                                        [],
+                                                                        [])
+    evaluate_res['missed_templates'] = error_templates
+    evaluate_res['grammatical_accuracy'] = match_score/match_account
+
     tran_res_output_path = os.path.join(output_dir, target_vendor, f"{file_name}.txt")
     tran_temp_output_path = os.path.join(output_dir, target_vendor, f"{file_name}_temp.json")
-    trans_res, _, trans_templates = config_translater.translation(json_config, source_vendor, target_vendor)
+    label_config_text_path = os.path.join(output_dir, target_vendor, f"{file_name}_label_text.txt")
+    label_command_tree_path = os.path.join(output_dir, target_vendor, f"{file_name}_label_command_tree.json")
+    tran_map_rule_usage_output_path = os.path.join(output_dir, target_vendor, f"{file_name}_map_rules.json")
+    tran_evaluate_output_path = os.path.join(output_dir, target_vendor, f"{file_name}_evaluate.json")
+
     with open(tran_res_output_path, 'w', encoding='utf-8') as f:
         f.write(trans_res)
     with open(tran_temp_output_path, 'w', encoding='utf-8') as f:
         json.dump(trans_templates, f, ensure_ascii=False, indent=4)
+    with open(label_config_text_path, mode='w', encoding='utf-8') as f:
+        f.write(real_config)
+    with open(label_command_tree_path, mode='w', encoding='utf-8') as f:
+        json.dump(real_command_tree, f, ensure_ascii=False, indent=4)
+    with open(tran_map_rule_usage_output_path, 'w', encoding='utf-8') as f:
+        json.dump(map_rule_freq, f, ensure_ascii=False, indent=4)
+    with open(tran_evaluate_output_path, 'w', encoding='utf-8') as f:
+        json.dump(evaluate_res, f, ensure_ascii=False, indent=4)
     return True
 
 

@@ -1,0 +1,38 @@
+sysname PE4
+mpls ldp remote-peer ldp
+mpls l2vpn
+vsi vsi1
+ vpls-id 2:2
+cfm md 2
+ ma 2
+  map bridge-domain 2
+mpls ldp
+mldp p2mp
+interface GigabitEthernet1/0/1
+ undo shutdown
+ip pool 10.1.5.2 server
+ ip address 10.1.5.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 4.4.4.4 none
+ gateway none 255.255.255.255 section none none none
+mpls ldp remote-peer none
+interface GigabitEthernet1/0/3.1
+ vlan-type dot1q vsi1
+interface 10 mode [parameter2]
+ encapsulation dot1q vid none to 10
+interface Loopback1
+ subscription 1.1.1.1
+ source Loopback1
+  local-source-address ipv4 1.1.1.1 port none
+bgp 100
+ peer none as-number 100
+ ipv4-family [parameter1]
+  peer 1.1.1.1 advertise-community
+ ipv4-family unicast
+  import-route ospf 100
+remote-ip 1.1.1.1
+telemetry
+ospf 4.4.4.4
+ network 4.4.4.4 0.0.0.0
+ area 0
+ network 10.1.5.0 0.0.0.255

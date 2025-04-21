@@ -1,0 +1,37 @@
+hostname routerB
+ip access-list extended acl-2001
+tunnel-policy 1
+aaa authorization exec none none accept
+tunnel-policy default
+aaa authorization exec none none discard
+ip flow monitor capture-instance none
+collect none 1
+interface ge-1/0/1
+ ipv4 address 7.1.1.2 24
+ isis enable
+ interface ge-1/0/2
+interface 0 point-to-point
+interface ge-1/0/2
+ ipv4 address 8.1.1.2 24
+ interface ge-1/0/3
+router bgp [parameter1]
+ address-family none
+access-list none permit ip host 2.2.2.2 none
+interface ge-1/0/3
+ ip address none 32
+ interface acl-2001
+ interface ge-1/0/3
+policy-map port-mirror
+mpls traffic-eng bandwidth 100g
+ class port-mirror
+  police none port-mirror conform-action none exceed-action none
+erps mirror-instance
+ instance mirror-instance
+crypto map capture-instance acl-2001 [parameter3]
+ set transform-set acl-2001
+interface acl-2001
+ instance capture-instance
+ interface ge-1/0/3
+cfm md ge-1/0/1
+ cfm ma ge-1/0/1
+  cfm mep mep-id none interface acl-2001 direction none

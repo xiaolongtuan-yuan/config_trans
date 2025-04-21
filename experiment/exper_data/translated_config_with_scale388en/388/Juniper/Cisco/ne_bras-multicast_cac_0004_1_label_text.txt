@@ -1,0 +1,44 @@
+hostname BRAS
+!
+ip multicast-routing
+!
+ip dhcp pool huawei_bas_local
+ network 10.0.0.0 255.255.0.0
+ default-router 10.0.0.1
+ip dhcp excluded-address 10.0.0.1 10.0.255.255
+!
+aaa new-model
+!
+ip access-list standard list1
+ permit 225.1.1.1
+ permit 227.1.1.1
+!
+ip multicast-routing profile profile1
+ multicast static-group 225.1.1.1
+ multicast static-group 227.1.1.1
+!
+aaa authentication login none none
+!
+aaa accounting none
+!
+ip domain ipv4
+!
+interface Virtual-Template100
+ ppp authentication chap
+!
+interface GigabitEthernet1/0/0
+ pppoe enable
+ pppoe-server bind Virtual-Template100
+ ip pim sparse-mode
+ ip igmp join-group 225.1.1.1
+ ip igmp join-group 227.1.1.1
+!
+interface GigabitEthernet1/0/1
+ ip address 10.1.1.1 255.255.255.0
+ ip pim sparse-mode
+!
+interface GigabitEthernet1/0/2
+ ip address 10.1.2.1 255.255.255.0
+ ip pim sparse-mode
+!
+end

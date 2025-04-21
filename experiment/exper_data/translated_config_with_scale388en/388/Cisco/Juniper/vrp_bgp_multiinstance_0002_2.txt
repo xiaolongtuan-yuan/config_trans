@@ -1,0 +1,21 @@
+set host-name DeviceC
+set routing-options instance vrf vpn1
+set routing-instances static routing-options route-distinguisher 100:3 :100:3
+set routing-instances static vrf-export target 100:1
+set routing-instances static vrf-import target 100:1
+set vlans GigabitEthernet2/0/0 vlan-interfaces interface GigabitEthernet2/0/0
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] family ip address ipv4/none
+set interfaces [parameter1] unit [parameter2] family inet6 vrf vpn1
+set interfaces [parameter1] ip address 10.1.2.3/255.255.255.0
+set interfaces [parameter1] virtual-address ipv4
+set protocols bgp peer 100 as 100
+set protocols bgp neighbor [parameter1] sync
+set protocols bgp group [parameter1] family inet none
+set protocols bgp group [parameter1] protocols bgp group 10.1.2.2
+set protocols bgp group [parameter1] neighbor 10.1.2.2 neighbor 10.1.2.2
+set protocols bgp group [parameter1] neighbor 10.1.2.2 remote-as 200
+set protocols vrrp group ipv4
+set routing-table vrf vpn1
+set routing-options static route none/255.255.255.255 Null0 route 192.168.3.3
+commit and-quit

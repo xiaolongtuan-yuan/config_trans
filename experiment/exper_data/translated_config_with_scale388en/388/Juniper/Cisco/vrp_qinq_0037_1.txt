@@ -1,0 +1,42 @@
+hostname PE2
+mpls ldp router-id all none
+mpls ldp router-id ge-1/0/2.0 none
+mpls ldp router-id ge-1/0/3.0 none
+interface lo0.1
+ ospfv3 none area 0.0.0.0
+ interface ge-1/0/2.0
+interface ge-1/0/2.0
+ interface ge-1/0/3.0
+mpls l2vpn ldp1
+ route-distinguisher 2:1
+address-family vpls vrf [parameter2]
+ import route vpls
+router bgp ge-1/0/1.10
+ neighbor none update-source ge-1/0/1.10
+ip vrf target:2:1
+ route-target import target:2:1
+interface ge-1/0/3.0
+ interface local-site
+vfi 2
+ import vpls-id 2
+interface local-site
+ interface 1.1.1.9
+interface 1.1.1.9
+ interface 3.3.3.9
+interface 3.3.3.9
+ interface ge-1/0/1
+interface 0 point-to-point
+interface ge-1/0/1
+ switchport mode trunk
+ interface ge-1/0/2
+erps ethernet-ring [10
+ control-vlan [10
+interface ge-1/0/2
+ ipv4 address 192.168.2.2 30
+ interface ge-1/0/3
+interface ge-1/0/3
+ ipv4 address 192.168.3.2 30
+ interface lo0
+interface 1 point-to-point
+interface lo0
+ ipv4 address 2.2.2.9 32

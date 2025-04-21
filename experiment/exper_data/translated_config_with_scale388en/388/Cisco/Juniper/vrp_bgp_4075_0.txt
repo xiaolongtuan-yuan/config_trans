@@ -1,0 +1,21 @@
+set host-name DeviceA
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet1/0/0
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet2/0/0
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet3/0/0
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] family inet address none/none
+set interfaces [parameter1] ip address 10.1.1.2/255.255.255.0
+set interfaces [parameter1] ip address 10.1.3.2/255.255.255.0
+set interfaces [parameter1] ip address 172.16.1.1/255.255.255.0
+set protocols bgp peer 65010 as 65010
+set protocols bgp group 1.1.1.1 router-id 1.1.1.1
+set protocols bgp group 1.1.1.1 protocols bgp group 10.1.1.1
+set protocols bgp group 1.1.1.1 neighbor 10.1.1.1 neighbor 10.1.1.1
+set protocols bgp group 1.1.1.1 neighbor 10.1.1.1 remote-as 65010
+set protocols bgp group 1.1.1.1 neighbor 10.1.1.1 neighbor 10.1.3.1
+set routing-instances 10.1.1.1 protocols bgp group 10.1.1.1 neighbor 10.1.1.1
+set routing-instances 10.1.1.1 protocols bgp group 10.1.1.1 neighbor 10.1.3.1
+set protocols bgp neighbor [parameter1] sync
+set protocols bgp network 172.16.1.0
+set policy-options policy-statement 172.16.1.0 term 172.16.1.0 from route-filter none/255.255.255.0 none
+commit and-quit

@@ -1,0 +1,29 @@
+sysname PE1
+ospf none router-id 1.1.1.9
+ospf 0
+ area 0
+ import-route vfi
+bgp 1.1.1.9/32
+ network 1.1.1.9/32 none
+ network 10.10.1.0/24 none
+ ipv4-family test
+  peer 100 advertise-community
+ group lo0.0 internal
+interface ge-0/0/0
+ e1 0 none
+ ip address 10.10.1.1 24
+mpls
+interface lo0
+ ip address 1.1.1.9 32
+ip route-static vpn-instance vpn1 none none none
+ip vpn-instance route-target:100:1
+ vpn-target route-target:100:1 export-extcommunity
+ vpn-target 100 import-extcommunity
+remote-backup-profile route-target:100:1
+ vrrp-id route-target:100:1 interface none
+bfd atob bind peer-ip [parameter1] interface [parameter2]
+ commit
+remote-ip 100
+mpls l2vpn vpn1 encapsulation ge-0/0/0.0
+ ce vpn1 id ge-0/0/0.0 range [parameter3] default-offset [parameter4]
+  connection ce-offset none interface ge-0/0/0.0
