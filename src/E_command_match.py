@@ -228,8 +228,8 @@ def _build_mapping_template_library_388en(vendors, template_path, save_path):
             for target_vendor in vendors:
                 if vendor == target_vendor:
                     continue
-                '''if (not vendor == 'Juniper') and (not target_vendor == 'Juniper'):
-                   continue'''
+                if (not vendor == 'Cisco') and (not target_vendor == 'Cisco'):
+                   continue
                 command_mapping = {}
                 # 映射每一条配置命令到目标供应商配置命令
                 description = "Match process from {} to {}".format(vendor, target_vendor)

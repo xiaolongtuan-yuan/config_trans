@@ -204,11 +204,14 @@ if __name__ == "__main__":
     '''
 
     # 只处理前400条juniper数据-388条
-    vendors = ['Cisco', "HUAWEI", "Juniper"]
+    # vendors = ['Cisco', "HUAWEI", "Juniper"]
+    vendors = ['Cisco']
     project_root = Path(__file__).parent.parent
     folder_path = str(project_root / f'dataset_multi_vendor_config/Json_config/Juniper_simplified')
 
     json_files = get_json_filenames(folder_path)
+    error_file_list = json.load(open(str(project_root / f'dataset_multi_vendor_config/error_file_record/error_cisco.json')))
+    error_device_list = [file_name.split('.')[0] for file_name in error_file_list]
 
     for vendor in vendors:
         template_used_statistic = {}
@@ -217,6 +220,8 @@ if __name__ == "__main__":
         merge_count = 0
         # print(vendor)
         for json_file in tqdm(json_files[:388], desc="Merged config num"):
+            if vendor == 'Cisco' and json_file.split('.')[0] in error_device_list:# 去除cisco数据中有 huawei配置的文件
+                continue
             vendor_folder_path = str(project_root / f'dataset_multi_vendor_config/Json_config/{vendor}_simplified')
             json_config_path = vendor_folder_path + '/' + json_file
             # 加载设备配置模型

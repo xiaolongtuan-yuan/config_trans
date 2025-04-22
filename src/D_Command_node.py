@@ -247,7 +247,8 @@ def main_en_388():
     # embedding_model = SentenceTransformer(local_EMmodel_path)
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
 
-    vendors = ["Juniper", "Cisco", "HUAWEI"]
+    # vendors = ["Juniper", "Cisco", "HUAWEI"]
+    vendors = ["Cisco"]
     config_num = [388]
 
     # vendors = ["HUAWEI"]
