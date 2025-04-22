@@ -1081,9 +1081,31 @@ def process_juniper_json(json_config):
                 processed_json[command] = info
     return processed_json
 
+def translated_result_template_statistic(translated_result):
+    # 统计翻译结果中每个命令模板的出现次数
+    processed_json = {}
+    # 遍历翻译结果
+    for command, translated_comamnd in translated_result.items():
+        translated_template = []
+        # 遍历规则匹配项
+        for match in translated_comamnd["match"]:
+            if len(match) == 2:
+                translated_template = translated_template + [match[0]] + match[1]
+            elif len(match) == 4:
+                translated_template = translated_template + [match[2]] + match[3]
+        # 统计命令模板
+        translated_template = list(set(translated_template))
+        for template in translated_template:
+            if template not in processed_json:
+                processed_json[template] = 1
+            else:
+                processed_json[template] += 1
+    # 将统计结果转换为JSON格式
+    processed_json = json.dumps(processed_json, indent=2, ensure_ascii=False)
+    return processed_json
 
 if __name__ == "__main__":
-    
+    vendors = ["Cisco", "HUAWEI", "Juniper"]
     # mapping_library_path = str(project_root / 'dataset_multi_vendor_config/mapping_template_library_examined/{}_{}.json')
     mapping_library_path = str(
         project_root / 'dataset_multi_vendor_config/mapping_template_library/scale388en/{}_{}_388.json')
@@ -1111,20 +1133,25 @@ if __name__ == "__main__":
     config_translater = Config_Translater(mapping_libraries, config_matchers,embedding_model=embedding_model)
 
     # translation test
-    file_name = 'cfg_dsvpn_0015_00_0'
+    file_name = 'cfg_dsvpn_0015_02_2'
     # config_path = str(project_root / f'dataset_multi_vendor_config/test/{file_name}.json')
-    vendors = ["Cisco", "HUAWEI", "Juniper"]
+    
     for vendor in ["Juniper"]:
         for target_vendor in ["Cisco"]:
             if vendor == target_vendor:
                 continue
-            config_path = str(project_root / f'dataset_multi_vendor_config/Json_config/{vendor}/{file_name}.json')
+            if vendor != 'Juniper':
+                config_path = str(project_root / f'experiment/exper_data/{vendor}/{file_name}.json')
+            else:
+                config_path = str(project_root / f'experiment/exper_data/Juniper_subdivided/{file_name}.json')
     
             json_config = load_json_file(config_path)
-            if vendor == 'Juniper':
-                json_config = process_juniper_json(json_config)
+            '''if vendor == 'Juniper':
+                json_config = process_juniper_json(json_config)'''
 
-            translation_result = config_translater.translation_without_llm(json_config, vendor, target_vendor)
-            translation_result = json.dumps(translation_result, indent=2, ensure_ascii=False)
+            translation_result1 = config_translater.translation_without_llm(json_config, vendor, target_vendor)
+            translation_result = json.dumps(translation_result1, indent=2, ensure_ascii=False)
             print(f'Translation result of {vendor}-{target_vendor} is: \n{translation_result}')
-
+            translated_templates = translated_result_template_statistic(translation_result1)
+            # translated_templates = json.dumps(translated_templates, indent=2, ensure_ascii=False)
+            print(f'Translation templates of {vendor}-{target_vendor} is: \n{translated_templates}')
