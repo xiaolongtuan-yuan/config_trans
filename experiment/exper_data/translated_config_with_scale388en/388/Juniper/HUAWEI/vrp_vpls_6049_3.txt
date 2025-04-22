@@ -1,0 +1,30 @@
+network-entity PE4
+ip pool 10.1.5.0/24 server
+interface ge-0/0/1
+ ip address 10.1.5.2 24
+ e1 0 none
+aaa
+ domain 10.1.5.254
+  ip-pool 10.1.5.254
+bgp 100
+ peer none group AS100
+ group AS100 internal
+discriminator remote 100
+isis internal
+ bgp-ls enable internal
+ bgp-ls enable Loopback1
+pw-template 1.1.1.1
+ peer-address 1.1.1.1
+mpls
+interface ge-0/0/3.1
+ vlan-type dot1q 10
+ vrrp6 vrid none virtual-ip vsi1 link-local
+ ip address 10.1.5.2 30
+ vrrp vrid vsi1 virtual-ip vsi1
+bfd 2 bind peer-ip [parameter2] interface [parameter3]
+ dot1q vid 2
+bridge-domain vsi1
+ vxlan vni vsi1
+ip vpn-instance no-te
+ vpn-target no-te export-extcommunity
+ip route-static none 4.4.4.4/32 self

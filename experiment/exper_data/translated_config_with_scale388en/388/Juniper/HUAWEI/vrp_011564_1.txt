@@ -1,0 +1,33 @@
+sysname PE1
+cfm enable
+cfm md md1
+ ma [parameter1]
+  loss-measure dual-ended continual test-id 1
+  loss-measure single-ended send test-id none interval 1000 count 20
+  mep mep-id none interface none vlan 2 none
+  test-id none mep 1
+  test-id none mep none remote-mep 2
+  loss-measure single-ended receive test-id 1
+arp static none ma1
+interface ge-0/0/1.1
+ e1 0 none
+ma [parameter1]
+ mep ccm-send mep-id none enable
+ remote-mep ccm-receive mep-id none enable
+remote-mep ccm-receive mep-id ccm-receive none
+ip route-static vpn-instance evpna none none none
+ospf virtual-router
+ import-route virtual-router
+ip vpn-instance 100:1
+ route-distinguisher 100:1
+ vpn-target 1:1 export-extcommunity
+ vpn-target none export-extcommunity
+ vpn-target none import-extcommunity
+bridge-domain 10
+interface trunk
+ port trunk allow-pass vlan 10
+ ppp multilink
+interface flexible-ethernet-services mode [parameter2]
+ encapsulation flexible-ethernet-services
+ encapsulation vlan-bridge
+mep mep-id none interface none none

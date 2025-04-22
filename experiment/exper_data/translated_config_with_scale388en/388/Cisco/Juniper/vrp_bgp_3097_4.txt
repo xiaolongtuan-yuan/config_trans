@@ -1,0 +1,25 @@
+set host-name RR
+set vlans GigabitEthernet3/0/3 vlan-interfaces interface GigabitEthernet3/0/3
+set vlans GigabitEthernet3/0/3 vlan-interfaces interface GigabitEthernet1/0/1
+set vlans GigabitEthernet3/0/3 vlan-interfaces interface GigabitEthernet1/0/2
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] ip address 172.16.4.1/255.255.255.0
+set interfaces [parameter1] ip address 172.16.2.2/255.255.255.0
+set interfaces [parameter1] ip address 172.16.5.1/255.255.255.0
+set protocols bgp peer 65008 as 65008
+set protocols bgp group 5.5.5.5 router-id 5.5.5.5
+set protocols bgp group 5.5.5.5 protocols bgp group 172.16.2.1
+set protocols bgp group 5.5.5.5 neighbor 172.16.2.1 neighbor 172.16.2.1
+set protocols bgp group 5.5.5.5 neighbor 172.16.2.1 remote-as 65008
+set protocols bgp group 5.5.5.5 neighbor 172.16.2.1 neighbor 172.16.4.2
+set protocols bgp group 5.5.5.5 neighbor 172.16.2.1 neighbor 172.16.5.2
+set protocols bgp group 5.5.5.5 family inet unicast maximum-paths 2
+set routing-instances 172.16.2.1 protocols bgp group 172.16.2.1 neighbor 172.16.2.1
+set routing-instances 172.16.2.1 protocols bgp group 172.16.2.1 neighbor 172.16.4.2
+set routing-instances 172.16.2.1 protocols bgp group 172.16.2.1 neighbor 172.16.5.2
+set protocols bgp neighbor [parameter1] sync
+set protocols bgp network 172.16.2.0
+set policy-options policy-statement 172.16.2.0 term 172.16.2.0 from route-filter none/255.255.255.0 none
+set protocols bgp network 172.16.4.0
+set protocols bgp network 172.16.5.0
+set protocols bgp instance-external instance-name [parameter1] address-family inet unicast

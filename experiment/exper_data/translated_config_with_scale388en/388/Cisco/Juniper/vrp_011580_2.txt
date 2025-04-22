@@ -1,0 +1,16 @@
+set host-name CE2
+set interfaces 2 vlan-id 2
+set interfaces 2 unit trunk family ethernet-switching interface-mode trunk
+set interfaces 2 unit trunk family ethernet-trunk switchport trunk allowed-vlans 2
+set interfaces 2 unit trunk no shutdown
+set ethernet-switching-options cfm version standard
+set protocols cfm interface [parameter1] cfm enable
+set protocols cfm interface [parameter1] cfm remote-mep mep-id 3
+set protocols cfm maintenance-association ma1
+set vlans GigabitEthernet1/0/1 vlan-interfaces interface GigabitEthernet1/0/1
+set protocols cfm domain md1
+set protocols oam ethernet connectivity-fault-management maintenance-domain 4
+set protocols cfm mep interface GigabitEthernet1/0/1 maintenance-association 4 up-mep mep-id 4 interface outward
+set protocols cfm mep interface GigabitEthernet1/0/1 ccm-send mep-id 4
+set protocols cfm mep interface GigabitEthernet1/0/1 remote-mep 3
+set protocols cfm mep interface GigabitEthernet1/0/1 test-id 2

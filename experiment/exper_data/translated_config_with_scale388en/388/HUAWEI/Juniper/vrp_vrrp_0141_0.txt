@@ -1,0 +1,18 @@
+set system host-name DeviceA
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet1/0/0
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet2/0/0
+set interfaces test1 ip address 10.1.1.1/255.255.255.0
+set interfaces test1 unit 1 vrrp group 1 virtual-address 10.1.1.10
+set interfaces test1 unit 1 vrrp group 1 priority 120
+set interfaces test1 unit 1 family inet address 1 vrrp-group 1 preempt-delay 20
+set interfaces test1 unit 1 encapsulation mpls ttl-sec 10
+set interfaces test1 ip address 10.1.2.1/255.255.255.0
+set interfaces test1 ipv4 address 10.2.1.1/none
+set interfaces test1 clock-rate 20
+set protocols vrrp group admin unit 1 vrrp group 1 priority 40
+set routing-table route 10.2.1.0/none
+set routing-options static route none/255.255.255.0 10.1.1.2
+set protocols cfm mep interface admin test-id test1
+set services diagnostics tdr interface icmp pattern icmp
+set failover schedule now start-time now
+commit and-quit

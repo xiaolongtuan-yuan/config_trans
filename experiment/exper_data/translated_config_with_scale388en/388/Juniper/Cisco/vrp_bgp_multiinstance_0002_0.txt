@@ -1,15 +1,14 @@
 hostname DeviceA
-interface ge-0/1/0
+mpls ldp router-id ge-0/1/0 none
+interface 0
  ipv4 address 10.1.1.1 24
-interface 0 point-to-point
 ip route 192.168.1.1 none none none
 ip route none 32 none
 ip route vrf none none none discard
 router bgp 200
+ address-family unicast
+  neighbor none send-community EBGP-100
  neighbor none remote-as 100
  neighbor 10.1.1.2 activate
- address-family unicast
-bgp EBGP-100
- peer none as-number EBGP-100
 address-family external vrf [parameter2]
  import route external

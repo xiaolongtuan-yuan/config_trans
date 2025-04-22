@@ -1,0 +1,46 @@
+sysname PE2
+interface Loopback0
+mpls ldp remote-peer ldp
+mpls l2vpn
+controller E1 3to1
+ line-code 3to1
+interface mpls mode [parameter2]
+ encapsulation mpls
+ encapsulation ppp
+pw-template 20
+ jitter-buffer depth 20
+ tdm-encapsulation-number 40
+ peer-address 192.168.1.2
+mpls ldp
+interface Cpos3/0/1
+ undo shutdown
+interface Cpos3/0/2
+interface GigabitEthernet3/0/1
+ ip address unnumbered interface none
+interface GigabitEthernet3/0/2
+interface trunk-serial1/1:0
+interface trunk-serial1/2:0
+interface GigabitEthernet2/0/0
+ip pool 10.2.2.2 server
+ ip address 10.2.2.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 192.168.1.3 none
+ gateway none 255.255.255.255 section none none none
+mpls ldp remote-peer none
+bgp 1
+ ipv4-family unicast
+  import-route ospf 1
+ospf 192.168.1.3
+ network 192.168.1.3 0.0.0.0
+ area 0
+ network 10.2.1.0 0.0.0.255
+controller 1
+ aps group 1
+ aps protect
+ e1 1+1 none
+ aps mode none unidirectional
+interface 3to1
+ eth-trunk 100
+ l2vpn-ad-family
+ eth-trunk 200
+  peer 192.168.1.2 signaling none

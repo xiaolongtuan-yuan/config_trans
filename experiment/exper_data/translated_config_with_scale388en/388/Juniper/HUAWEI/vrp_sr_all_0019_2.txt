@@ -1,0 +1,26 @@
+sysname PE3
+interface lo0
+ e1 0 none
+ ip address 4.4.4.9 32
+ e1 1 none
+ ip address 2.2.2.9 32
+interface ge-1/0/0
+ ip address 172.18.1.2 24
+ isis ipv6 enable 1
+ link-protocol none
+mpls
+ mpls ldp router-id 4.4.4.9
+isis [parameter1]
+ cost-style none
+ traffic-eng none
+ import-route isis none into 1
+ptp-adaptive request announce-interval 1
+keychain 10 mode [parameter2]
+ key-id 10
+  send-time none none to 10 none
+bgp 3
+ peer none bfd min-tx-interval none min-rx-interval none detect-multiplier 3
+interface all
+interface 49.0001.0000.0000.0004.00
+interface lo0.1
+ isis prefix-sid index 20

@@ -1,0 +1,18 @@
+hostname CE2
+vlan vlan-2
+vlan 2
+cfm md ge-0/0/1
+ cfm ma ge-0/0/1
+  cfm mep mep-id none interface ge-0/0/1 direction outward
+  cfm mep mep-id 4 remote-mep
+  cfm mep mep-id 4 ccm-send none
+  cfm mep mep-id none test-id 2 remote-mep 3
+  cfm mep mep-id 3 ccm-receive none
+interface dual-ended
+ ethernet cfm mode continual
+mpls ldp router-id ge-0/0/1 none
+interface 0
+ switchport mode trunk
+ switchport trunk allowed vlan add 2
+ isis enable
+commit

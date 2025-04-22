@@ -1,0 +1,28 @@
+hostname NATA
+address-family VRF1 vrf [parameter2]
+ import route VRF1
+ import route vrf
+ip vrf 1:1
+ rd 1:1
+vrf definition target:1:1
+interface ge-1/0/0.0
+ip access-list extended ACL1
+tunnel-policy match-traffic
+tunnel-policy accept
+ip nat inside source list none pool NAT_POOL1 overload
+ip local pool none 11.11.11.101 none
+access-list none permit ip none 11.11.11.105
+ip nat pool none none none netmask 255.255.255.0
+policy-map NAT_RULE1
+interface input
+tunnel-policy 1
+ipv6 access-list 192.168.10.0/24
+ permit ipv6 192.168.10.0/24 any
+mpls ldp router-id ge-1/0/0 none
+interface 0
+ ipv4 address 192.168.10.1 24
+ isis enable
+ ipv4 address 1.1.1.1 24
+bfd template ACL1
+mpls ldp router-id ge-1/0/1 none
+tacacs-server host 192.168.10.0/24 key none none

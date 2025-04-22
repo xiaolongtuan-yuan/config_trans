@@ -1,0 +1,30 @@
+hostname DeviceB
+router all-routes
+ip access-list extended ACL-2001
+tunnel-policy 1
+tunnel-policy accept
+interface 2
+ isis network wide-metrics-only
+ isis network disable
+interface all
+interface passive
+ ip pim sparse
+router isis 0000.0000.0002
+bfd all-interfaces
+ bind peer-ip none interface ge-1/0/0
+ bind peer-ip none interface ge-2/0/0
+interface point-to-point
+cfm ethernet cfm md ACL-2001
+ mep domain ACL-2001
+  mep ACL-2001
+   ccm-management interval ACL-2001
+ip pim rp-address 192.168.4.1
+mpls ldp router-id ge-1/0/0 none
+interface 0
+ ipv4 address 192.168.2.1 24
+ ipv4 address 10.110.2.1 24
+ ip igmp version 3
+ tunnel destination 232.1.1.0/24
+mpls ldp router-id ge-2/0/0 none
+interface lo0
+ ip address 192.168.2.1 none

@@ -247,7 +247,7 @@ if __name__ == '__main__':
 
             translated_config_dir = os.path.join(translated_config_base, str(scale), source_vendor, target_vendor)
             trannlated_config_files = [f for f in os.listdir(translated_config_dir) if f.endswith('.txt')]
-            real_config_dir = f'./exper_data/lable/{target_vendor}'
+            real_config_dir = f'./exper_data/label/{target_vendor}'
             # config_model = f'../dataset_multi_vendor_config/config_model/different_scale/{target_vendor}_{scale}.json'
             config_model = f'../dataset_multi_vendor_config/config_model/different_scale/{target_vendor}_{scale}.json'
             config_model = load_config_model(config_model)

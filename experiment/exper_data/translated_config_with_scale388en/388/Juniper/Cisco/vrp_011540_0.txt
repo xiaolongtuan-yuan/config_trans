@@ -1,0 +1,18 @@
+hostname CE1
+vlan vlan2
+vlan 2
+interface 3
+ ethernet cfm mode standard
+ cfm ma none test none mep 3 remote-mep none
+cfm ethernet cfm md md3
+ mep domain ma3
+  remote-mep 4
+interface ge-1/0/1
+ cfm ma none test none mep 4 remote-mep none
+mpls ldp router-id ge-1/0/1 none
+interface 0
+ switchport mode trunk
+cfm md down
+ cfm ma down
+  cfm mep mep-id none interface none direction down
+  cfm mep mep-id none ccm-send enable

@@ -803,6 +803,7 @@ class Config_Translater:
 
     # 输出对应视图的配置命令
     def print_and_save_translation_config(self, target_config, target_vendor):
+        # print('target_config:', target_config)
         trans_pairs = []
         root = ConfigNode("system", "")
         stack = [(root, -1)]
@@ -829,10 +830,12 @@ class Config_Translater:
 
         if target_vendor == 'Juniper':
             trans_res = self.juniper_combine(merged_config_tree)
+            trans_templates = self.juniper_template_combine(target_config)
         else:
             trans_res = "\n".join(merged_config_tree.to_lines()[1:])
+            trans_templates = merged_config_tree.get_all_tags()
         trans_mapping_info = '\n'.join(trans_pairs)
-        trans_templates = merged_config_tree.get_all_tags()
+    
         return trans_res, trans_mapping_info, trans_templates
 
     def juniper_combine(self, root):
@@ -856,7 +859,19 @@ class Config_Translater:
 
         trans_res = '\n'.join(commands)
         return trans_res
-
+    
+    # juniper模板合并
+    def juniper_template_combine(self, target_config):
+        trans_templates = []
+        for src_command, translation in target_config.items():
+            comamnd_key = list(translation.keys())[-1]
+            for target_command, item in translation[comamnd_key].items():
+                template_command = ''
+                for template in item['parent_node']:
+                    template_command += template
+                template_command += target_command
+            trans_templates.append(template_command)
+        return trans_templates
 
     def insert_parent_command(self, target_commands, src_command, src_depth, parent_commands:[], all_params, target_vendor):
         for index, parent_command in enumerate(parent_commands):

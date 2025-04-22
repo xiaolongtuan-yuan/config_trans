@@ -1,0 +1,24 @@
+sysname SSH_Server
+aaa
+ local-user huawei123 service-type none
+ local-user 2003 privilege level none
+ local-user operator service-type none
+ local-user none password cipher "$1c$+,JS+))\\2$KVNj(.3`_5x0FCKGv}H&.kUTI`Ff&H*eBqO.ua>)$"
+ local-user root service-type none
+ssh server version v2
+ssh authentication-type default deny
+ssh authentication-type default password
+ssh server-source -i ge-0/0/0.0
+user-interface vty password [parameter2]
+ authentication-mode password
+acl ipv6 number 2000
+traffic policy 1
+route-policy none accept node none
+bgp inet6
+ ipv6-family inet6
+interface ge-0/0/0
+ ipv6 address 2001:DB8::1 2048
+ e1 0 none
+ ipv6 address 32
+ undo shutdown
+ ipv6 address 2001:DB8::/32

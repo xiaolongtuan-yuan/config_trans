@@ -1,0 +1,19 @@
+set system host-name P
+set routing-options mpls lsr-id 192.168.4.4
+set interfaces [parameter1] family inet enable-mpls
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] family inet6 ospfv3 area 0.0.0.0
+set interfaces [parameter1] ip address 10.1.1.2/255.255.255.0
+set interfaces [parameter1] ip address 10.2.2.1/255.255.255.0
+set interfaces [parameter1] ip address 192.168.4.4/255.255.255.255
+set protocols mpls ldp
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet1/0/0
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet2/0/0
+set protocols ospf area GigabitEthernet1/0/0 interface LoopBack0
+set routing-options router ospf 1
+set protocols bgp network 192.168.4.4
+set policy-options policy-statement 192.168.4.4 term 192.168.4.4 from route-filter none/0.0.0.0 none
+set policy-options policy-statement 192.168.4.4 term 192.168.4.4 from route-filter none/0.0.0.255 none
+set protocols bgp network 10.1.1.0
+set protocols bgp network 10.2.2.0
+commit and-quit

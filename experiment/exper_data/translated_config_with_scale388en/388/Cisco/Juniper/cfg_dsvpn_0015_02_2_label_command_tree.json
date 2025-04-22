@@ -1,311 +1,312 @@
 {
-    "set system host-name Spoke2": {
-        "template": "set system host-name [parameter1]",
-        "command": "set system host-name Spoke2",
-        "explanation": "Configure the host name of the device.",
-        "parameters": [
-            {
-                "name": "hostname",
-                "type": "string",
-                "explanation": "The host name of the equipment is used to identify the equipment in the network."
-            }
-        ]
-    },
-    "set interfaces ge-1/0/0": {
-        "template": "set interfaces [parameter1]",
-        "command": "set interfaces ge-1/0/0",
-        "explanation": "Creates a polymer interface.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g., g-1/0/0."
-            }
-        ],
-        "unit 0": {
-            "template": "unit [parameter2]",
-            "command": "unit 0",
-            "explanation": "Configure the unit number of the interface.",
+    "set system": {
+        "set system host-name Spoke2": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name Spoke2",
+            "explanation": "配置设备的主机名。",
             "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "set interfaces ge-1/0/0 unit 0 family inet address 10.1.3.10/24": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces ge-1/0/0 unit 0 family inet address 10.1.3.10/24",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0。"
+                },
                 {
                     "name": "unit",
                     "type": "integer",
-                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
                 }
-            ],
-            "family inet address 10.1.3.10/24": {
-                "template": "family inet address [parameter3]/[parameter4]",
-                "command": "family inet address 10.1.3.10/24",
-                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
-                "parameters": [
-                    {
-                        "name": "ip-address",
-                        "type": "string",
-                        "explanation": "The IPv4 address assigned to the interface."
-                    },
-                    {
-                        "name": "subnet-mask",
-                        "type": "integer",
-                        "explanation": "Bits of IPv4 subnet mask."
-                    }
-                ]
-            },
-            "tunnel source lo0.0": {
-                "template": "tunnel source [parameter3]",
-                "command": "tunnel source lo0.0",
-                "explanation": "Configure tunnel source interfaces.",
-                "parameters": [
-                    {
-                        "name": "source-interface",
-                        "type": "string",
-                        "explanation": "Name of tunnel source interface, e.g. lo0.0."
-                    }
-                ]
-            },
-            "tunnel multipoint": {
-                "template": "tunnel multipoint",
-                "command": "tunnel multipoint",
-                "explanation": "Configure tunnels to multipoint mode.",
-                "parameters": []
-            }
-        }
-    },
-    "set interfaces lo0": {
-        "template": "set interfaces [parameter1]",
-        "command": "set interfaces lo0",
-        "explanation": "Creates a polymer interface.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g., g-1/0/0."
-            }
-        ],
-        "unit 0": {
-            "template": "unit [parameter2]",
-            "command": "unit 0",
-            "explanation": "Configure the unit number of the interface.",
+            ]
+        },
+        "set interfaces ge-1/0/0 unit 0 tunnel source lo0.0": {
+            "template": "set interfaces [parameter1] unit [parameter2] tunnel source [parameter3]",
+            "command": "set interfaces ge-1/0/0 unit 0 tunnel source lo0.0",
+            "explanation": "配置隧道源接口。",
             "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0。"
+                },
                 {
                     "name": "unit",
                     "type": "integer",
-                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "source-interface",
+                    "type": "string",
+                    "explanation": "隧道源接口名称，例如lo0.0。"
                 }
-            ],
-            "family inet address 192.168.2.1/32": {
-                "template": "family inet address [parameter3]/[parameter4]",
-                "command": "family inet address 192.168.2.1/32",
-                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
-                "parameters": [
-                    {
-                        "name": "ip-address",
-                        "type": "string",
-                        "explanation": "The IPv4 address assigned to the interface."
-                    },
-                    {
-                        "name": "subnet-mask",
-                        "type": "integer",
-                        "explanation": "Bits of IPv4 subnet mask."
-                    }
-                ]
-            }
-        }
-    },
-    "set interfaces gr-1/0/0": {
-        "template": "set interfaces [parameter1]",
-        "command": "set interfaces gr-1/0/0",
-        "explanation": "Creates a polymer interface.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g., g-1/0/0."
-            }
-        ],
-        "unit 0": {
-            "template": "unit [parameter2]",
-            "command": "unit 0",
-            "explanation": "Configure the unit number of the interface.",
+            ]
+        },
+        "set interfaces ge-1/0/0 unit 0 tunnel multipoint": {
+            "template": "set interfaces [parameter1] unit [parameter2] tunnel multipoint",
+            "command": "set interfaces ge-1/0/0 unit 0 tunnel multipoint",
+            "explanation": "配置隧道为多点模式。",
             "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0。"
+                },
                 {
                     "name": "unit",
                     "type": "integer",
-                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
                 }
-            ],
-            "family inet address 172.16.1.3/24": {
-                "template": "family inet address [parameter3]/[parameter4]",
-                "command": "family inet address 172.16.1.3/24",
-                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
-                "parameters": [
-                    {
-                        "name": "ip-address",
-                        "type": "string",
-                        "explanation": "The IPv4 address assigned to the interface."
-                    },
-                    {
-                        "name": "subnet-mask",
-                        "type": "integer",
-                        "explanation": "Bits of IPv4 subnet mask."
-                    }
-                ]
-            },
-            "tunnel source ge-1/0/0": {
-                "template": "tunnel source [parameter3]",
-                "command": "tunnel source ge-1/0/0",
-                "explanation": "Configure tunnel source interfaces.",
-                "parameters": [
-                    {
-                        "name": "source-interface",
-                        "type": "string",
-                        "explanation": "Name of tunnel source interface, e.g. lo0.0."
-                    }
-                ]
-            },
-            "tunnel destination 10.1.1.10": {
-                "template": "tunnel destination [parameter3]",
-                "command": "tunnel destination 10.1.1.10",
-                "explanation": "Configure the tunnel destination address.",
-                "parameters": [
-                    {
-                        "name": "destination-address",
-                        "type": "string",
-                        "explanation": "Tunnel destination address."
-                    }
-                ]
-            }
+            ]
+        },
+        "set interfaces lo0 unit 0 family inet address 192.168.2.1/32": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces lo0 unit 0 family inet address 192.168.2.1/32",
+            "explanation": "配置环回接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如lo0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        },
+        "set interfaces gr-1/0/0 unit 0 family inet address 172.16.1.3/24": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces gr-1/0/0 unit 0 family inet address 172.16.1.3/24",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如gr-1/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        },
+        "set interfaces gr-1/0/0 unit 0 tunnel source ge-1/0/0": {
+            "template": "set interfaces [parameter1] unit [parameter2] tunnel source [parameter3]",
+            "command": "set interfaces gr-1/0/0 unit 0 tunnel source ge-1/0/0",
+            "explanation": "配置隧道源接口。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如gr-1/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "source-interface",
+                    "type": "string",
+                    "explanation": "隧道源接口名称，例如ge-1/0/0。"
+                }
+            ]
+        },
+        "set interfaces gr-1/0/0 unit 0 tunnel destination 10.1.1.10": {
+            "template": "set interfaces [parameter1] unit [parameter2] tunnel destination [parameter3]",
+            "command": "set interfaces gr-1/0/0 unit 0 tunnel destination 10.1.1.10",
+            "explanation": "配置隧道目的地址。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如gr-1/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "destination-address",
+                    "type": "string",
+                    "explanation": "隧道目的地址。"
+                }
+            ]
         }
     },
-    "set security ipsec vpn IPSEC_PROFILE": {
-        "template": "set security ipsec vpn [parameter1]",
-        "command": "set security ipsec vpn IPSEC_PROFILE",
-        "explanation": "This command configures an IPsec VPN in Junos by setting specific parameters (e.g., name, IKE gateway, IPsec policy) under the `security ipsec vpn` hierarchy.",
-        "parameters": [
-            {
-                "name": "vpn-profile",
-                "type": "string",
-                "explanation": "IPSec VPN configuration name."
-            }
-        ],
-        "bind-interface gr-1/0/0": {
-            "template": "bind-interface [parameter2]",
-            "command": "bind-interface gr-1/0/0",
-            "explanation": "Tie IPSec VPN to the specified interface.",
+    "set security ipsec vpn": {
+        "set security ipsec vpn IPSEC_PROFILE bind-interface gr-1/0/0": {
+            "template": "set security ipsec vpn [parameter1] bind-interface [parameter2]",
+            "command": "set security ipsec vpn IPSEC_PROFILE bind-interface gr-1/0/0",
+            "explanation": "将IPSec VPN绑定到指定接口。",
             "parameters": [
+                {
+                    "name": "vpn-profile",
+                    "type": "string",
+                    "explanation": "IPSec VPN配置名称。"
+                },
                 {
                     "name": "bind-interface",
                     "type": "string",
-                    "explanation": "Tie interface names, e.g. g-1/0/0."
+                    "explanation": "绑定接口名称，例如gr-1/0/0。"
                 }
             ]
         },
-        "ike gateway IKE_GATEWAY": {
-            "template": "ike gateway [parameter2]",
-            "command": "ike gateway IKE_GATEWAY",
-            "explanation": "Configure IPSec VPN's IKE gateway.",
+        "set security ipsec vpn IPSEC_PROFILE ike gateway IKE_GATEWAY": {
+            "template": "set security ipsec vpn [parameter1] ike gateway [parameter2]",
+            "command": "set security ipsec vpn IPSEC_PROFILE ike gateway IKE_GATEWAY",
+            "explanation": "配置IPSec VPN的IKE网关。",
             "parameters": [
+                {
+                    "name": "vpn-profile",
+                    "type": "string",
+                    "explanation": "IPSec VPN配置名称。"
+                },
                 {
                     "name": "ike-gateway",
                     "type": "string",
-                    "explanation": "IKE gateway name."
+                    "explanation": "IKE网关名称。"
                 }
             ]
         },
-        "ike ipsec-policy IPSEC_POLICY": {
-            "template": "ike ipsec-policy [parameter2]",
-            "command": "ike ipsec-policy IPSEC_POLICY",
-            "explanation": "Configure IPSec VPN IPSec policy.",
+        "set security ipsec vpn IPSEC_PROFILE ike ipsec-policy IPSEC_POLICY": {
+            "template": "set security ipsec vpn [parameter1] ike ipsec-policy [parameter2]",
+            "command": "set security ipsec vpn IPSEC_PROFILE ike ipsec-policy IPSEC_POLICY",
+            "explanation": "配置IPSec VPN的IPSec策略。",
             "parameters": [
+                {
+                    "name": "vpn-profile",
+                    "type": "string",
+                    "explanation": "IPSec VPN配置名称。"
+                },
                 {
                     "name": "ipsec-policy",
                     "type": "string",
-                    "explanation": "IPSec policy name."
+                    "explanation": "IPSec策略名称。"
                 }
             ]
         }
     },
-    "set protocols ospf area 0.0.0.0": {
-        "template": "set protocols ospf area [parameter1]",
-        "command": "set protocols ospf area 0.0.0.0",
-        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
-        "parameters": [
-            {
-                "name": "area",
-                "type": "string",
-                "explanation": "OSPF area ID."
-            }
-        ],
-        "interface gr-1/0/0.0": {
-            "template": "interface [parameter2]",
-            "command": "interface gr-1/0/0.0",
-            "explanation": "Configure interfaces in the OSPF area.",
+    "set protocols ospf": {
+        "set protocols ospf area 0.0.0.0 interface gr-1/0/0.0": {
+            "template": "set protocols ospf area [parameter1] interface [parameter2]",
+            "command": "set protocols ospf area 0.0.0.0 interface gr-1/0/0.0",
+            "explanation": "配置OSPF区域内的接口。",
             "parameters": [
+                {
+                    "name": "area",
+                    "type": "string",
+                    "explanation": "OSPF区域号。"
+                },
                 {
                     "name": "interface",
                     "type": "string",
-                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                    "explanation": "接口名称，例如gr-1/0/0.0。"
                 }
             ]
         },
-        "interface lo0.0": {
-            "template": "interface [parameter2]",
-            "command": "interface lo0.0",
-            "explanation": "Configure interfaces in the OSPF area.",
+        "set protocols ospf area 0.0.0.0 interface lo0.0": {
+            "template": "set protocols ospf area [parameter1] interface [parameter2]",
+            "command": "set protocols ospf area 0.0.0.0 interface lo0.0",
+            "explanation": "配置OSPF区域内的接口。",
             "parameters": [
+                {
+                    "name": "area",
+                    "type": "string",
+                    "explanation": "OSPF区域号。"
+                },
                 {
                     "name": "interface",
                     "type": "string",
-                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                    "explanation": "接口名称，例如lo0.0。"
                 }
             ]
-        }
-    },
-    "set protocols ospf router-id 172.16.1.3": {
-        "template": "set protocols ospf router-id [parameter1]",
-        "command": "set protocols ospf router-id 172.16.1.3",
-        "explanation": "Configure the ID of the OSF router.",
-        "parameters": [
-            {
-                "name": "router-id",
-                "type": "string",
-                "explanation": "OSPF router's ID."
-            }
-        ]
-    },
-    "set protocols ospf area 0.0.0.1": {
-        "template": "set protocols ospf area [parameter1]",
-        "command": "set protocols ospf area 0.0.0.1",
-        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
-        "parameters": [
-            {
-                "name": "area",
-                "type": "string",
-                "explanation": "OSPF area ID."
-            }
-        ],
-        "interface ge-1/0/0.0": {
-            "template": "interface [parameter2]",
-            "command": "interface ge-1/0/0.0",
-            "explanation": "Configure interfaces in the OSPF area.",
+        },
+        "set protocols ospf router-id 172.16.1.3": {
+            "template": "set protocols ospf router-id [parameter1]",
+            "command": "set protocols ospf router-id 172.16.1.3",
+            "explanation": "配置OSPF路由器的ID。",
             "parameters": [
+                {
+                    "name": "router-id",
+                    "type": "string",
+                    "explanation": "OSPF路由器的ID。"
+                }
+            ]
+        },
+        "set protocols ospf area 0.0.0.1 interface ge-1/0/0.0": {
+            "template": "set protocols ospf area [parameter1] interface [parameter2]",
+            "command": "set protocols ospf area 0.0.0.1 interface ge-1/0/0.0",
+            "explanation": "配置OSPF区域内的接口。",
+            "parameters": [
+                {
+                    "name": "area",
+                    "type": "string",
+                    "explanation": "OSPF区域号。"
+                },
                 {
                     "name": "interface",
                     "type": "string",
-                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                    "explanation": "接口名称，例如ge-1/0/0.0。"
+                }
+            ]
+        },
+        "set protocols ospf router-id 10.1.3.10": {
+            "template": "set protocols ospf router-id [parameter1]",
+            "command": "set protocols ospf router-id 10.1.3.10",
+            "explanation": "配置OSPF路由器的ID。",
+            "parameters": [
+                {
+                    "name": "router-id",
+                    "type": "string",
+                    "explanation": "OSPF路由器的ID。"
                 }
             ]
         }
-    },
-    "set protocols ospf router-id 10.1.3.10": {
-        "template": "set protocols ospf router-id [parameter1]",
-        "command": "set protocols ospf router-id 10.1.3.10",
-        "explanation": "Configure the ID of the OSF router.",
-        "parameters": [
-            {
-                "name": "router-id",
-                "type": "string",
-                "explanation": "OSPF router's ID."
-            }
-        ]
     }
 }

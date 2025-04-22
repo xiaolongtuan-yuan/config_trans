@@ -1,0 +1,20 @@
+set system host-name PE3
+set routing-options mpls lsr-id 4.4.4.9
+set interfaces [parameter1] family inet enable-mpls
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] ip address 172.18.1.2/255.255.255.0
+set interfaces [parameter1] ip address 4.4.4.9/255.255.255.255
+set interfaces [parameter1] ip address 2.2.2.9/255.255.255.255
+set protocols isis level [parameter1] segment-routing mpls
+set protocols mpls traffic-eng tunnels segment-routing
+set protocols isis system-id 1
+set routing-options isis all level-1
+set routing-options isis metric-style wide
+set protocols isis net-entity 10.0000.0000.0004.00
+set routing-instances mpls
+set protocols segment-routing global-block 160000 161000
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet1/0/0
+set protocols ospf area GigabitEthernet1/0/0 interface LoopBack0
+set protocols ospf area GigabitEthernet1/0/0 interface LoopBack1
+set protocols isis prefix-sid index 20
+commit and-quit

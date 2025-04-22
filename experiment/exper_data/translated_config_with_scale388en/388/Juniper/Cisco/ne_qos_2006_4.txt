@@ -1,21 +1,21 @@
 hostname CE2
-interface ge-0/0/0
+mpls ldp router-id ge-0/0/0 none
+interface 0
  ipv4 address 10.2.1.1 24
  isis enable
-interface 0 point-to-point
-bgp BGP-PEER
- peer none as-number BGP-PEER
-address-family external vrf [parameter2]
- import route external
-router bgp 100
+router bgp BGP-PEER
+ address-family BGP-PEER
+  neighbor none send-community BGP-PEER
+  neighbor none route-policy bgp-export export
+  neighbor none route-policy none export
  neighbor none remote-as 100
  neighbor 10.2.1.2 activate
  address-family ipv4 unicast
- address-family bgp-export
-  neighbor none route-policy bgp-export export
-tunnel-te policy bgp-export
+address-family external vrf [parameter2]
+ import route external
+tunnel-policy bgp-export
 tunnel-policy 1
-mpls l2vpn 10.2.1.0
- route-distinguisher 24
-route-policy none
-crypto isakmp policy none
+ip vrf 10.2.1.0
+route-map 24 none none
+ route-target import 10.2.1.0
+policy-map none

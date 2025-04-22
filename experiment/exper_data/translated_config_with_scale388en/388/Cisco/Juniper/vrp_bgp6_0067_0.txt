@@ -1,0 +1,24 @@
+set host-name DeviceA
+set interfaces [parameter1] bfd interval none
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] family inet6 enable
+set interfaces [parameter1] unit [parameter2] family inet address none/none
+set interfaces [parameter1] unit [parameter2] family inet6
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet1/0/0
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet2/0/0
+set protocols isis interface 2001:db8:8::1/64 family inet6 address 2001:db8:8::1/64/none
+set protocols isis interface 2001:db8:8::1/64 family inet6 address 2001:db8:10::1/64/none
+set protocols bgp peer 100 as 100
+set protocols ospf traffic-engineering router-id 1.1.1.1
+set routing-instances 2001:db8:8::2 protocols bgp group 2001:db8:8::2 neighbor 2001:db8:8::2
+set routing-instances 2001:db8:8::2 protocols bgp group 2001:db8:8::2 neighbor 2001:db8:10::2
+set protocols bgp group 2001:db8:8::2 protocols bgp group 2001:db8:8::2
+set protocols bgp group 2001:db8:8::2 neighbor 2001:db8:8::2 neighbor 2001:db8:8::2
+set protocols bgp group 2001:db8:8::2 neighbor 2001:db8:8::2 remote-as 200
+set protocols bgp group 2001:db8:8::2 neighbor 2001:db8:8::2 neighbor 2001:db8:10::2
+set protocols bgp group 2001:db8:8::2 family inet none
+set protocols bgp group 2001:db8:8::2 bfd-liveness-detection multiplier 4
+set protocols bgp group 2001:db8:8::2 bfd-liveness-detection minimum-interval 100
+set protocols bgp group 2001:db8:8::2 address-family vpnv6 neighbor 2001:db8:8::2
+set protocols bgp neighbor [parameter1] sync
+commit and-quit

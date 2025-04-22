@@ -1,7 +1,7 @@
 set host-name DeviceB
 set protocols bfd all-interfaces enable
 set routing-options router ospf 1
-set protocols ospf router-id 2.2.2.2
+set protocols ospf traffic-engineering router-id 2.2.2.2
 set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet1/0/0
 set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet2/0/0
 set interfaces [parameter1] unit [parameter2] no shutdown
@@ -14,10 +14,9 @@ set protocols isis interface 2001:DB8::2/64 family inet6 address 2001:DB8:2::1/6
 set failover group 1 unit [parameter2]
 set failover group 1 standby-address family inet6 FE80::1 family inet address 2/[parameter4] standby version 1
 set failover group 1 standby-address family inet6 2001:DB8::100 family inet address 2/[parameter4] standby version 1
-set protocols bfd template 50
-set protocols bfd interface 50 min-transmit-interval 50
-set protocols bfd interface 50 multiplier 3 min-receive-interval 50
 set protocols bfd interface 50 local-discriminator 2
+set protocols bfd template 50 minimum-interval 3
+set protocols bfd template 50 min-transmit-interval 50 min-receive-interval 50
 set protocols bfd peer-group 2001:DB8::1 unit [parameter2]
 set protocols bfd peer-group 2001:DB8::1 discriminator-local 1 family inet6 bfd-liveness-detection neighbor 2001:DB8::1
 commit

@@ -1,0 +1,24 @@
+hostname DeviceA
+interface GigabitEthernet1/0/0
+ ip address 10.1.1.1 255.255.255.0
+ vrrp none ip 10.1.1.10
+ vrrp none ip 1
+ vrrp none priority 120
+ vrrp none priority 20
+interface test1
+ vrrp none ip 1
+ vrrp none priority 40
+interface GigabitEthernet2/0/0
+ ip address 10.1.2.1 255.255.255.0
+ ipv4 address 10.2.1.1 none
+ip route 10.2.1.0 255.255.255.0 10.1.1.2
+evpn vpn-instance test1
+router isis
+ is-type icmp
+ip sla 20
+ frequency 20
+policy-map 10
+ class 10
+  set mpls experimental topmost 10
+ip sla schedule none start-time now life none
+return

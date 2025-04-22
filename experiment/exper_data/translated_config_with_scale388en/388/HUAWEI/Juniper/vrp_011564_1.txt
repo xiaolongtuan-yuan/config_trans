@@ -1,0 +1,21 @@
+set system host-name PE1
+set protocols cfm interface [parameter1] cfm enable
+set protocols cfm interface [parameter1] cfm md md1
+set protocols l2vpn vpns evpna
+set routing-instances 100:1 routing-options route-distinguisher 100:1 :100:1
+set routing-instances 100:1 vpn-target 1:1
+set vlans 10 bridge-domain 10
+set vlans 10 vlan-interfaces interface l2
+set interfaces 2 unit 2 encapsulation dot1q 2
+set interfaces 2 unit 2 family ethernet-switching vlan members [parameter3] no-tag
+set interfaces 2 unit 2 family ethernet-switching enhanced-frame-loss-monitor test-id 1 interval 1000 count 20
+set interfaces 2 cfm loss-measurement dual-ended continual test-id 1
+set protocols cfm maintenance-association ma1
+set forwarding-options bridge domain none 10
+set protocols cfm mep interface GigabitEthernet1/0/1.1 ccm-send mep-id 1
+set protocols cfm mep interface GigabitEthernet1/0/1.1 mep-id 2
+set protocols cfm mep interface GigabitEthernet1/0/1.1 remote-mep 2 ccm-receive mep-id 2
+set protocols cfm mep interface GigabitEthernet1/0/1.1 cfm test-id 1
+set protocols cfm domain 1 mep-id 1
+set protocols cfm domain 1 MEP outward
+commit and-quit

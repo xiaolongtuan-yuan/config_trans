@@ -1,29 +1,25 @@
 hostname DeviceC
-interface ge-1/0/0
+mpls ldp router-id ge-1/0/0 none
+interface 0
  ipv6 address 64
  ipv6 enable
- interface ge-2/0/0
-interface 0 point-to-point
-interface ge-2/0/0
- ipv6 address 64
+mpls ldp router-id ge-2/0/0 none
 router bgp 200
+ address-family IBGP
+  neighbor none send-community IBGP
+  neighbor none send-community EBGP
+  neighbor none route-policy EXPORT export
  neighbor none remote-as 200
  neighbor 2001:db8:9::1:1 activate
  neighbor none remote-as 100
  neighbor 2001:db8:10::1 activate
- address-family EXPORT
-  neighbor none route-policy EXPORT export
-router isis
- isis router-id 3.3.3.3
-bgp IBGP
- peer none as-number IBGP
- peer none as-number EBGP
+mpls traffic-eng router-id 3.3.3.3
 address-family internal vrf [parameter2]
  import route internal
  import route external
-tunnel-te policy EXPORT
+tunnel-policy EXPORT
 tunnel-policy 10
 ip prefix-list PREFIX none 10.0.0.0
 route-map 150 [parameter2] [parameter3]
  set metric 150
-crypto isakmp policy none
+policy-map none

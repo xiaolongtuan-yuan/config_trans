@@ -1,134 +1,125 @@
 {
-    "set system host-name CE1": {
-        "template": "set system host-name [parameter1]",
-        "command": "set system host-name CE1",
-        "explanation": "Configure the host name of the device.",
-        "parameters": [
-            {
-                "name": "hostname",
-                "type": "string",
-                "explanation": "The host name of the equipment is used to identify the equipment in the network."
-            }
-        ]
-    },
-    "set vlans dcn": {
-        "template": "set vlans [parameter1]",
-        "command": "set vlans dcn",
-        "explanation": "Configure VLAN.",
-        "parameters": [
-            {
-                "name": "vlan-name",
-                "type": "string",
-                "explanation": "VLAN's name, like Vlan100."
-            }
-        ],
-        "vlan-id 10": {
-            "template": "vlan-id [parameter2]",
-            "command": "vlan-id 10",
-            "explanation": "Configure VLAN's ID.",
+    "set system": {
+        "set system host-name CE1": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name CE1",
+            "explanation": "配置设备的主机名。",
             "parameters": [
                 {
-                    "name": "vlan-id",
-                    "type": "integer",
-                    "explanation": "VLAN ID for the only identification of a VLAN."
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
                 }
             ]
         }
     },
-    "set interfaces ge-0/0/1": {
-        "template": "set interfaces [parameter1]",
-        "command": "set interfaces ge-0/0/1",
-        "explanation": "Creates a polymer interface.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g., g-1/0/0."
-            }
-        ],
-        "unit 0": {
-            "template": "unit [parameter2]",
-            "command": "unit 0",
-            "explanation": "Configure the unit number of the interface.",
+    "set vlans": {
+        "set vlans dcn vlan-id 10": {
+            "template": "set vlans [parameter1] vlan-id [parameter2]",
+            "command": "set vlans dcn vlan-id 10",
+            "explanation": "配置VLAN的ID。",
             "parameters": [
                 {
-                    "name": "unit",
+                    "name": "vlan-name",
+                    "type": "string",
+                    "explanation": "VLAN的名称。"
+                },
+                {
+                    "name": "vlan-id",
                     "type": "integer",
-                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                    "explanation": "VLAN的ID号。"
                 }
-            ],
-            "family ethernet-switching port-mode access": {
-                "template": "family ethernet-switching port-mode [parameter3]",
-                "command": "family ethernet-switching port-mode access",
-                "explanation": "Configure the interface 's port mode is trunk.",
-                "parameters": [
-                    {
-                        "name": "port-mode",
-                        "type": "string",
-                        "explanation": "Port mode, for example, trunk."
-                    }
-                ]
-            },
-            "family ethernet-switching vlan members dcn": {
-                "template": "family ethernet-switching vlan members [parameter3]",
-                "command": "family ethernet-switching vlan members dcn",
-                "explanation": "Configure the VLAN members of the interface.",
-                "parameters": [
-                    {
-                        "name": "vlan-members",
-                        "type": "string",
-                        "explanation": "VLAN members, e.g. vlan 100."
-                    }
-                ]
-            }
+            ]
         }
     },
-    "set interfaces ge-0/0/2": {
-        "template": "set interfaces [parameter1]",
-        "command": "set interfaces ge-0/0/2",
-        "explanation": "Creates a polymer interface.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g., g-1/0/0."
-            }
-        ],
-        "unit 0": {
-            "template": "unit [parameter2]",
-            "command": "unit 0",
-            "explanation": "Configure the unit number of the interface.",
+    "set interfaces": {
+        "set interfaces ge-0/0/1 unit 0 family ethernet-switching port-mode access": {
+            "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching port-mode [parameter3]",
+            "command": "set interfaces ge-0/0/1 unit 0 family ethernet-switching port-mode access",
+            "explanation": "配置接口的以太网交换模式为接入模式。",
             "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                },
                 {
                     "name": "unit",
                     "type": "integer",
-                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "port-mode",
+                    "type": "string",
+                    "explanation": "接口的端口模式，例如access或trunk。"
                 }
-            ],
-            "family ethernet-switching port-mode trunk": {
-                "template": "family ethernet-switching port-mode [parameter3]",
-                "command": "family ethernet-switching port-mode trunk",
-                "explanation": "Configure the interface 's port mode is trunk.",
-                "parameters": [
-                    {
-                        "name": "port-mode",
-                        "type": "string",
-                        "explanation": "Port mode, for example, trunk."
-                    }
-                ]
-            },
-            "family ethernet-switching vlan members dcn": {
-                "template": "family ethernet-switching vlan members [parameter3]",
-                "command": "family ethernet-switching vlan members dcn",
-                "explanation": "Configure the VLAN members of the interface.",
-                "parameters": [
-                    {
-                        "name": "vlan-members",
-                        "type": "string",
-                        "explanation": "VLAN members, e.g. vlan 100."
-                    }
-                ]
-            }
+            ]
+        },
+        "set interfaces ge-0/0/1 unit 0 family ethernet-switching vlan members dcn": {
+            "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching vlan members [parameter3]",
+            "command": "set interfaces ge-0/0/1 unit 0 family ethernet-switching vlan members dcn",
+            "explanation": "配置接口的VLAN成员。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "vlan-members",
+                    "type": "string",
+                    "explanation": "VLAN成员名称。"
+                }
+            ]
+        },
+        "set interfaces ge-0/0/2 unit 0 family ethernet-switching port-mode trunk": {
+            "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching port-mode [parameter3]",
+            "command": "set interfaces ge-0/0/2 unit 0 family ethernet-switching port-mode trunk",
+            "explanation": "配置接口的以太网交换模式为干道模式。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/2。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "port-mode",
+                    "type": "string",
+                    "explanation": "接口的端口模式，例如access或trunk。"
+                }
+            ]
+        },
+        "set interfaces ge-0/0/2 unit 0 family ethernet-switching vlan members dcn": {
+            "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching vlan members [parameter3]",
+            "command": "set interfaces ge-0/0/2 unit 0 family ethernet-switching vlan members dcn",
+            "explanation": "配置接口的VLAN成员。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/2。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "vlan-members",
+                    "type": "string",
+                    "explanation": "VLAN成员名称。"
+                }
+            ]
         }
     }
 }

@@ -1,0 +1,12 @@
+hostname DeviceA
+ip route none none none bfd.log
+interface 0
+ bfd neighbor none interface ge-1/0/0
+ bfd interval 100 min_rx none multiplier none
+ ipv4 address 10.1.1.1 24
+router bgp 10.1.1.2
+ neighbor 10.1.1.2 activate
+ address-family 10.1.1.1
+bfd all-interfaces
+ discriminator local 1
+mpls ldp router-id ge-1/0/0 none

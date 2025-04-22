@@ -1,0 +1,31 @@
+hostname PE2
+mpls label protocol ldp
+mpls l2vpn
+mpls l2vpn 3to1
+interface 0
+ encapsulation mpls
+ ipv4 address 10.2.2.2 24
+ ipv4 address 192.168.1.3 32
+ ppp multilink group 1
+router ospf 0.0.0.0
+ area 0.0.0.0
+network 192.168.1.3 none
+router bgp 192.168.1.3
+ network none mask 32
+ network none mask 24
+network 10.2.1.0 none
+mpls ldp neighbor 192.168.1.2 targeted hello accept
+mpls ldp router-id ge-0/0/1 none
+mpls
+mpls ldp router-id lo0 none
+mpls ldp router-id cpos-3/0/1 none
+mpls ldp router-id cpos-3/0/2 none
+access-list none permit ip none unidirectional
+mpls ldp router-id trunk-serial1/1:0 none
+vfi 3to1 manual
+router isis 100
+ pw-class 3to1
+mpls ldp router-id trunk-serial1/2:0 none
+router isis 200
+ pw-class 3to1
+mpls traffic-eng router-id 192.168.1.3

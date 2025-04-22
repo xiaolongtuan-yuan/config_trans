@@ -1,0 +1,25 @@
+hostname PE3
+mpls ldp router-id lo0 none
+interface 0
+ ipv4 address 4.4.4.9 32
+interface 1
+ ipv4 address 2.2.2.9 32
+ ipv4 address 172.18.1.2 24
+ isis enable
+ isis segment-routing prefix-sid index 20
+mpls ldp router-id ge-1/0/0 none
+mpls ldp router-id 4.4.4.9 none
+router isis
+ metric-style none
+ is-type none
+mpls ldp discovery targeted-hello interval 1
+mpls ldp discovery targeted-hello interval 10
+bfd template single-hop 3
+ interval min-tx none min-rx none multiplier 3
+ip vrf [parameter1]
+ route-target import none
+interface all
+ isis network 49.0001.0000.0000.0004.00
+interface ge-1/0/0
+ isis network none
+interface lo0.1

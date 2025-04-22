@@ -1,0 +1,16 @@
+set system host-name SSH
+set access class 2000 acl-name 2000
+set security nat source rule-set 5 rule 5 match source-address any/none
+set system login user [parameter1] authentication ssh-key rsa-key none
+set system login user [parameter1] authentication plain-text-password $1c$+,JS+))\2$KVNj(.3`_5x0FCKGv}H&.kUTI`Ff&H*eBqO.ua>)$
+set system login user [parameter1] authentication-method none
+set security forwarding-options family 2048 generate-crypto-key rsa modulus 2048
+set aaa new-model
+set protocols ospf area GigabitEthernet0/0/0 interface GigabitEthernet0/0/0
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] family inet6 enable
+set protocols isis interface 2001:DB8::1/32 family inet6 address none/2001:DB8::1/32
+set system services ssh source-interface GigabitEthernet0/0/0
+set system authorization class 3
+set protocols rsvp-te enable
+commit and-quit

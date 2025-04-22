@@ -1,0 +1,18 @@
+sysname DeviceB
+interface eth0
+ e1 0 none
+ port trunk allow-pass vlan vlan10
+interface ge-0/0/1
+ eth-trunk access
+bridge-domain vlan10
+ vxlan vni vlan10
+interface ge-0/0/2
+ eth-trunk trunk
+interface eth0.0
+ stp bpdu vlan none
+lns-group 1
+isis 10.1.1.3
+ bgp-ls enable 10.1.1.3
+ip pool none none rapid-pvst
+interface 10 mode [parameter2]
+ encapsulation dot1q vid 10

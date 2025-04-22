@@ -4,6 +4,9 @@
 @Auth ： xiaolongtuan
 @File ：exper_data_translated.py
 """
+import sys
+sys.path.append("/data/public/hrx/Repositories/config_trans")
+import experiment
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
@@ -13,7 +16,11 @@ from src.F_new_device_configtrans import Config_Translater, Translation_Model, m
 import os
 import json
 from tqdm import tqdm
+from pathlib import Path
 
+with open('exper_data/test_filenames.json', 'r', encoding='utf-8') as f:
+        test_filenames = json.load(f)  # 直接作为json加载
+ 
 
 def load_json_file(file_path):
     """加载JSON文件"""
@@ -21,8 +28,8 @@ def load_json_file(file_path):
         return json.load(f)
 
 
-def batch_translate(config_translater, input_dir, output_dir, source_vendor, target_vendor, batch_size=100):
-    config_files = [f for f in os.listdir(input_dir) if f.endswith('.json')]
+def batch_translate(config_translater, input_dir, output_dir, source_vendor, target_vendor, batch_size=1):
+    config_files = [f for f in os.listdir(input_dir) if f.endswith('.json') and Path(f).stem in test_filenames]
     os.makedirs(os.path.join(output_dir, target_vendor), exist_ok=True)
 
     successed_files = 0
@@ -74,9 +81,9 @@ def translate_single_file(config_translater, input_dir, output_dir,
         "grammatical_accuracy":0,
         "missed_templates":[]
     }
-    real_command_tree_dir = f'./exper_data/{target_vendor}' if target_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
+    real_command_tree_dir = f'./exper_data/{target_vendor}' # if target_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
     real_command_tree_path = os.path.join(real_command_tree_dir, f"{file_name}.json")
-    real_config_dir = f'./exper_data/lable/{target_vendor}'
+    real_config_dir = f'./exper_data/label/{target_vendor}'
     real_config_path = os.path.join(real_config_dir, f"{file_name}.txt")
 
     with open(real_command_tree_path, encoding='utf-8') as f:
@@ -95,6 +102,10 @@ def translate_single_file(config_translater, input_dir, output_dir,
     evaluate_res['missed_commands'] = missed_commands
 
     expected_templates = get_all_templates(real_command_tree)
+
+    # print(f"expected_templates: {expected_templates}")
+    # print(f"trans_templates: {trans_templates}")
+    
     match_score, match_account, error_templates = calculate_match_ratio(trans_templates,
                                                                         expected_templates,
                                                                         [],
@@ -168,8 +179,8 @@ def main():
                 mapping_libraries = mapping_library_load(mapping_library_path, vendors)
                 config_matchers = config_matchers_load(templates_path, vendors)
 
-                translation_llm = Translation_Model('aliyun_deepseek-v3', config_model_dir=config_model_dir, vendors=vendors, endpoint_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
-
+                # translation_llm = Translation_Model('aliyun_deepseek-v3', config_model_dir=config_model_dir, vendors=vendors, endpoint_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
+                translation_llm = {}
 
                 config_translater = Config_Translater(mapping_libraries, config_matchers,
                                                       translation_llm, embedding_model)

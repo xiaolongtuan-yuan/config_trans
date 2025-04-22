@@ -191,7 +191,7 @@ if __name__ == "__main__":
         json_files = get_json_filenames(folder_path)
         i = 0
         index = 0
-        for json_file in json_files:
+        for json_file in sorted(json_files):
             index += 1
             if index >= 400:
                 break
@@ -204,10 +204,10 @@ if __name__ == "__main__":
                 # Juniper配置层级多, 与huawei, cisco一致的化简流程会出错, 插入template保持一致
                 json_config = insert_template(json_config)
 
-            json_config_simplified = simplify_json(json_config)
+            '''json_config_simplified = simplify_json(json_config)
             json_name, _ = os.path.splitext(json_file)
             save_file_path = save_path + '/' + json_name + '.json'
-            save_json_file(json_config_simplified, save_file_path)
+            save_json_file(json_config_simplified, save_file_path)'''
             i += 1
         print("finished: " + str(i))
 

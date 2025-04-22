@@ -1,0 +1,27 @@
+sysname DeviceC
+mpls lsr-id 3.3.3.9
+mpls
+isis 1
+ segment-routing mpls
+network-entity 49.0000.0000.0003.00
+nqa test-instance level-1 [parameter2]
+ test-type level-1
+interface GigabitEthernet1/0/0
+ mpls
+  mpls te metric wide
+ undo shutdown
+ isis link-quality none incr-cost level-1
+ip pool 10.2.1.2 server
+ ip address 10.2.1.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 10.3.1.1 none
+ ip address 3.3.3.9 none
+ gateway none 255.255.255.255 section none none none
+interface GigabitEthernet2/0/0
+interface Loopback1
+ mpls
+  mpls te metric 100
+ isis prefix-sid absolute 30
+ospf 16000
+bidirectional static-cr-lsp ingress 23999
+ segment-routing global-block 16000 none

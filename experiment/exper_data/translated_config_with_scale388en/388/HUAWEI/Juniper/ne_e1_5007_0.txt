@@ -1,0 +1,14 @@
+set system host-name DeviceA
+set chassis fpc 1/0/0 pic 1 e1 1 channel-group 1 timeslots 1-31
+set interfaces [parameter1] clocking none
+set interfaces [parameter1] framing NO-CRC4
+set interfaces [parameter1] cable-length long
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] family iso channel-group 1/0/1
+set interfaces [parameter1] ppp multilink group 1/0/1
+set interfaces [parameter1] ip address 10.1.1.1/255.255.255.0
+set protocols ptp interface internal clock-source internal
+set protocols l2vpn pw-class HDB3
+set protocols ospf area Serial1/0/0:0 interface Serial1/0/0:0
+set telemetry ietf sensors destination-group ppp address-family ppp [parameter3] port ppp protocol ppp
+commit and-quit

@@ -1,0 +1,21 @@
+sysname SSH_Server
+acl ipv6 number 2000
+ ipv6 address 2001:DB8::/32
+ rule none permit source none
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8::1/32 none
+rsa local-key-pair create
+ modulus 2048
+aaa
+user-interface vty 0 14
+ local-user huawei123 password cipher $1c$+,JS+))\2$KVNj(.3`_5x0FCKGv}H&.kUTI`Ff&H*eBqO.ua>)$
+ local-user none password irreversible-cipher 0
+ protocol inbound ssh
+ user privilege level 3
+ssh server version 2
+ssh server ipv6 enable
+ssh server-source -i GigabitEthernet0/0/0
+aaa authentication-scheme [parameter1]
+ authentication-mode local

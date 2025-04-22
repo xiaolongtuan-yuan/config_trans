@@ -1,0 +1,23 @@
+sysname HUAWEI
+ip pool pool1 server
+ gateway 172.30.0.1 none section none none none
+network-entity 172.30.0.0
+bgp 172.30.0.0
+ network none 24
+radius-server group radius
+ radius-server authentication 10.1.123.151 radius weight none
+ radius-server authentication 10.1.123.151 none weight none
+ radius-server shared-key "%^%#}v{/ZA}>yTiC'[0bvy'X"N[+,uj*U)L0^5;4Jtf6%^%#"
+ radius-server authentication 10.1.0.201 none weight none
+aaa
+ local-user rdp service-type none
+ local-user default service-type none
+interface ge-0/0/1
+ e1 0 none
+ ip address 10.1.0.197 8
+interface ge-0/0/2
+ e1 1 none
+ ip address 0.0.0.0 0
+ bas
+  access-type none default-domain authentication radiusproxy
+ authentication-method none

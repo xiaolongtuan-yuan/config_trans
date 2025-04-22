@@ -1,0 +1,30 @@
+cfm md PE4
+ ma PE4
+ipv6 dhcp pool 10.1.5.0/24
+ip local pool none 10.1.5.1 none
+access-list none permit ip none 10.1.5.254
+router bgp 100
+ neighbor none remote-as 100
+ address-family Loopback1
+  neighbor none send-community AS100
+ address-family 1.1.1.1 none
+vpdn-group AS100
+ accept-dialin
+  protocol AS100
+address-family internal vrf [parameter2]
+ import route internal
+mpls ldp router-id ge-0/0/1 none
+interface 0
+ ipv4 address 10.1.5.2 24
+ encapsulation dot1Q 10
+ xconnect vsi vsi1
+ switchport trunk allowed vlan add 2
+ ipv4 address 10.1.5.2 30
+ tunnel mode no-te
+mpls
+mpls ldp router-id ge-0/0/3.1 none
+vlan vsi1
+vfi vsi1 manual
+interface ge-0/0/3.1
+ip route vrf vsi1 none 4.4.4.4/32 none
+ip route none none self

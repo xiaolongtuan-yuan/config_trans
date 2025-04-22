@@ -1,0 +1,35 @@
+set system host-name Leaf4
+set protocols l2vpn vpns evrf1
+set routing-instances 10:1 routing-options route-distinguisher 10:1 :10:1
+set routing-instances 10:1 vpn-target 11:1 export-extcommunity
+set vlans 10 bridge-domain 10
+set vlans 10 vlan-interfaces interface GE2/0/0.1
+set forwarding-options tunnel-options vxlan vni 20
+set protocols ospf area GE1/0/0 interface GE1/0/0
+set protocols ospf area GE1/0/0 interface GE2/0/0
+set protocols ospf area GE1/0/0 interface LoopBack1
+set protocols ospf area GE1/0/0 interface Nve1
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] encapsulation dot1q 10
+set interfaces [parameter1] unit [parameter2] family ethernet-switching vlan members [parameter3] no-tag
+set interfaces [parameter1] unit [parameter2] family inet source-address 4.4.4.4
+set interfaces [parameter1] unit [parameter2] encapsulation vxlan none
+set interfaces [parameter1] unit [parameter2] family inet6 ospfv3 area 0.0.0.0
+set interfaces [parameter1] ip address 192.168.40.2/255.255.255.0
+set interfaces [parameter1] ip address 4.4.4.4/255.255.255.255
+set protocols l2circuit bgp-signaling vfi 20
+set protocols bgp group 20 peer bgp
+set protocols bgp group 20 type 200 peer 200 as 200
+set protocols bgp group 20 peer-group 3.3.3.3
+set protocols bgp group 20 neighbor 3.3.3.3 peer-address 3.3.3.3
+set protocols bgp group 20 neighbor 3.3.3.3 interface LoopBack1
+set protocols bgp group 20 family inet unicast
+set protocols bgp 200 peer 3.3.3.3
+set protocols bgp 200 family l2vpn-vpls
+set protocols ptp peer 3.3.3.3
+set routing-options router ospf 1
+set protocols bgp network 4.4.4.4
+set policy-options policy-statement 4.4.4.4 term 4.4.4.4 from route-filter none/0.0.0.0 none
+set policy-options policy-statement 4.4.4.4 term 4.4.4.4 from route-filter none/0.0.0.255 none
+set protocols bgp network 192.168.40.0
+commit and-quit

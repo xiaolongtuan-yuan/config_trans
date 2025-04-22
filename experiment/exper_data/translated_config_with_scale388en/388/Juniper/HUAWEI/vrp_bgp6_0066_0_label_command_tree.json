@@ -1,0 +1,169 @@
+{
+    "sysname DeviceA": {
+        "template": "sysname [parameter1]",
+        "command": "sysname DeviceA",
+        "explanation": "设置设备的主机名为 'DeviceA'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "interface GigabitEthernet1/0/0": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "进入接口GigabitEthernet1/0/0的配置模式",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "启用接口 (默认情况下接口是关闭的)",
+            "parameters": []
+        },
+        "ipv6 enable": {
+            "template": "ipv6 enable",
+            "command": "ipv6 enable",
+            "explanation": "启用接口的IPv6功能",
+            "parameters": []
+        },
+        "ipv6 address 2001:db8:1::1/64": {
+            "template": "ipv6 address [parameter1]",
+            "command": "ipv6 address 2001:db8:1::1/64",
+            "explanation": "配置接口的IPv6地址为2001:db8:1::1，前缀长度为64",
+            "parameters": [
+                {
+                    "name": "ipv6 address",
+                    "type": "IPv6",
+                    "explanation": "IPv6地址"
+                }
+            ]
+        }
+    },
+    "interface GigabitEthernet2/0/0": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet2/0/0",
+        "explanation": "进入接口GigabitEthernet2/0/0的配置模式",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "启用接口 (默认情况下接口是关闭的)",
+            "parameters": []
+        },
+        "ipv6 enable": {
+            "template": "ipv6 enable",
+            "command": "ipv6 enable",
+            "explanation": "启用接口的IPv6功能",
+            "parameters": []
+        },
+        "ipv6 address 2001:db8:100::1/96": {
+            "template": "ipv6 address [parameter1]",
+            "command": "ipv6 address 2001:db8:100::1/96",
+            "explanation": "配置接口的IPv6地址为2001:db8:100::1，前缀长度为96",
+            "parameters": [
+                {
+                    "name": "ipv6 address",
+                    "type": "IPv6",
+                    "explanation": "IPv6地址"
+                }
+            ]
+        }
+    },
+    "bgp 100": {
+        "template": "bgp [parameter1]",
+        "command": "bgp 100",
+        "explanation": "进入BGP配置模式，AS号为100",
+        "parameters": [
+            {
+                "name": "AS number",
+                "type": "integer",
+                "explanation": "自治系统号"
+            }
+        ],
+        "router-id 1.1.1.1": {
+            "template": "router-id [parameter1]",
+            "command": "router-id 1.1.1.1",
+            "explanation": "设置BGP的Router ID为1.1.1.1",
+            "parameters": [
+                {
+                    "name": "router id",
+                    "type": "IPv4",
+                    "explanation": "Router ID"
+                }
+            ]
+        },
+        "peer 2001:db8:100::2 as-number 200": {
+            "template": "peer [parameter1] as-number [parameter2]",
+            "command": "peer 2001:db8:100::2 as-number 200",
+            "explanation": "配置BGP对等体，对等体地址为2001:db8:100::2，AS号为200",
+            "parameters": [
+                {
+                    "name": "peer address",
+                    "type": "IPv6",
+                    "explanation": "对等体地址"
+                },
+                {
+                    "name": "AS number",
+                    "type": "integer",
+                    "explanation": "自治系统号"
+                }
+            ]
+        },
+        "ipv6-family unicast": {
+            "template": "ipv6-family unicast",
+            "command": "ipv6-family unicast",
+            "explanation": "进入IPv6单播地址族的配置模式",
+            "parameters": [],
+            "undo synchronization": {
+                "template": "undo synchronization",
+                "command": "undo synchronization",
+                "explanation": "关闭BGP与IGP的同步",
+                "parameters": []
+            },
+            "network 2001:db8:1:: 64": {
+                "template": "network [parameter1]",
+                "command": "network 2001:db8:1:: 64",
+                "explanation": "在BGP中通告网络2001:db8:1::，前缀长度为64",
+                "parameters": [
+                    {
+                        "name": "network address",
+                        "type": "IPv6",
+                        "explanation": "网络地址"
+                    }
+                ]
+            },
+            "peer 2001:db8:100::2 enable": {
+                "template": "peer [parameter1] enable",
+                "command": "peer 2001:db8:100::2 enable",
+                "explanation": "启用与对等体2001:db8:100::2的BGP会话",
+                "parameters": [
+                    {
+                        "name": "peer address",
+                        "type": "IPv6",
+                        "explanation": "对等体地址"
+                    }
+                ]
+            }
+        }
+    },
+    "return": {
+        "template": "return",
+        "command": "return",
+        "explanation": "退出当前视图，返回到用户视图",
+        "parameters": []
+    }
+}

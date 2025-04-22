@@ -1,0 +1,19 @@
+sysname LSRD
+mpls ldp remote-peer none
+mpls
+ mpls traffic-eng enable
+isis none
+interface GigabitEthernet1/0/0
+ undo shutdown
+ mpls rsvp-te
+ip pool 4.1.1.2 server
+ ip address 4.1.1.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 4.4.4.4 none
+ gateway none 255.255.255.255 section none none none
+interface Loopback1
+ isis link-quality none incr-cost none
+emdi
+pim
+ c-rp none
+interface 49.0005.0000.0000.0004.00

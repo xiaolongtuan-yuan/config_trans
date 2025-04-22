@@ -1,0 +1,27 @@
+set host-name PE4
+set protocols mpls label protocol ldp
+set protocols mpls ip
+set vlans GigabitEthernet1/0/1 vlan-interfaces interface GigabitEthernet1/0/1
+set vlans GigabitEthernet1/0/1 vlan-interfaces interface GigabitEthernet1/0/3.1
+set vlans GigabitEthernet1/0/1 vlan-interfaces interface Loopback1
+set vlans GigabitEthernet1/0/1 id 2
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] family mpls traffic-eng tunnels
+set interfaces [parameter1] unit [parameter2] mpls ldp autoconfig
+set interfaces [parameter1] unit [parameter2] encapsulation dot1q 10
+set interfaces [parameter1] ip address 10.1.5.2/255.255.255.0
+set interfaces [parameter1] ip address 4.4.4.4/255.255.255.255
+set interfaces [parameter1] encapsulation dot1q vsi1 connect vfi vsi1
+set protocols mpls traffic-eng rsvp-te
+set routing-instances vsi1 vfi-id vsi1
+set routing-instances vsi1 vpls-id 2:2
+set protocols bgp peer 100 as 100
+set protocols bgp group 1.1.1.1 protocols bgp group 1.1.1.1
+set protocols bgp group 1.1.1.1 neighbor 1.1.1.1 neighbor 1.1.1.1
+set protocols bgp group 1.1.1.1 neighbor 1.1.1.1 remote-as 100
+set protocols bgp group 1.1.1.1 neighbor 1.1.1.1 as 1.1.1.1 ebgp-multihop 1.1.1.1 update-source Loopback1
+set routing-options router ospf 100
+set router ospf area 0 network 4.4.4.4/0.0.0.0 none
+set router ospf area 0 network 10.1.5.0/0.0.0.255 none
+set protocols l2vpn vfi 2 vpn-id 2
+set protocols l2circuit pw-class none signaling none

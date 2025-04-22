@@ -1,0 +1,22 @@
+#
+sysname DeviceD
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.4.2 255.255.255.0
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.1.6.1 255.255.255.0
+#
+bgp 65010
+ router-id 4.4.4.4
+ peer 10.1.4.1 as-number 65010
+ peer 10.1.6.2 as-number 65010
+ #
+ ipv4-family unicast
+  undo synchronization 
+  peer 10.1.4.1 enable
+  peer 10.1.6.2 enable
+#
+return

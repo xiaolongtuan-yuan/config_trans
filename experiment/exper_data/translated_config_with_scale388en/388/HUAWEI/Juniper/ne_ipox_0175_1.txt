@@ -1,0 +1,22 @@
+set system host-name HUAWEI
+set access profile 0 radius-server shiva
+set access profile 0 accounting-port 1813
+set access profile 0 address-assignment pool pool1
+set access profile 0 client radius-server shiva secret %^%#}v{/ZA}>yTiC'[0bvy'X"N[+,uj*U)L0^5;4Jtf6%^%#
+set system radius-server 1812
+set system accounting radius source-address 10.1.123.151
+set ip local-pool pool1 ip address 10.1.0.197/255.0.0.0
+set ip local-pool pool1 range 172.30.0.2 172.30.0.254
+set interfaces 172.30.0.1 ip address 172.30.0.1/255.255.255.0
+set interfaces 172.30.0.1 unit [parameter2] no shutdown
+set aaa new-model
+set system login user rdp authentication rdp none
+set system login user rdp authentication radius-proxy none
+set services analytics subscriptions subscription-name rds
+set protocols ptp domain radiusproxy
+set access radius-server 10.1.0.201
+set protocols ospf area GigabitEthernet interface GigabitEthernet
+set subscriber-template bas authentication bind
+set access layer2-subscriber default-domain authentication radiusproxy
+set system authentication-order bind none
+commit and-quit

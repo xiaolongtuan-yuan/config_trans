@@ -1,0 +1,16 @@
+set host-name PE1
+set interfaces 10 vlan-id 10
+set interfaces 10 unit [parameter2] no shutdown
+set interfaces 10 unit [parameter2] encapsulation dot1q 10
+set interfaces 10 ip address 10.1.1.1/255.255.255.0
+set protocols mpls label protocol ldp
+set protocols mpls ip
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet1/0/0
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet1/0/0.1
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet2/0/0
+set protocols mpls l2transport vc-id 100 unit [parameter2] encapsulation mpls connect-ce 2.2.2.9 none
+set protocols mpls l2transport vc-id 100 unit [parameter2] encapsulation mpls none
+set routing-options router ospf 1
+set router ospf area 0 network 1.1.1.9/0.0.0.0 none
+set router ospf area 0 network 10.1.1.0/0.0.0.255 none
+commit and-quit

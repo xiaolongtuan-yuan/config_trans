@@ -1,0 +1,21 @@
+hostname PE1
+mpls lsr-id 1.1.1.1
+mpls
+mpls l2vpn
+mpls ldp
+interface GigabitEthernet1/0/0
+ no shutdown
+ xconnect 2.2.2.2 100 encapsulation none
+interface GigabitEthernet2/0/0
+ ip address 10.10.1.1 255.255.255.0
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+ipv6 router ospf 1
+router ospf 0.0.0.0
+ area 0.0.0.0
+router bgp 1.1.1.1
+access-list none none none none 0.0.0.0
+ network 1.1.1.1 mask none
+access-list none none none none 0.0.0.255
+ network 10.10.1.0 mask none
+return

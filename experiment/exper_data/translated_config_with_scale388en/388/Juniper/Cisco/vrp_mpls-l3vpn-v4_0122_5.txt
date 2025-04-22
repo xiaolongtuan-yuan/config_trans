@@ -1,13 +1,15 @@
 hostname DeviceA
-interface ge-1/0/0
+mpls ldp router-id ge-1/0/0 none
+interface 0
  ipv4 address 10.3.1.1 24
- interface lo0
-interface 0 point-to-point
-interface 1 point-to-point
-interface lo0
+mpls ldp router-id lo0 none
+interface 1
  ipv4 address 33.33.33.33 32
-router RIP-Group
+vpdn-group RIP-Group
+ accept-dialin
+  protocol RIP-Group
+mpls ldp
+router 10.0.0.0
  neighbor 10.0.0.0 targeted
  network 8
  neighbor 33.0.0.0 targeted
-mpls ldp

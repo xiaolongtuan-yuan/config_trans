@@ -1,0 +1,27 @@
+sysname ASBR1
+interface Loopback0
+interface GigabitEthernet1/0/0
+ undo shutdown
+ip pool 172.21.1.1 server
+ ip address 172.21.1.1 none
+ gateway none 255.255.255.0 section none none none
+ ip address 192.168.1.1 none
+ ip address 2.2.2.9 none
+ gateway none 255.255.255.255 section none none none
+mpls ldp remote-peer none
+interface GigabitEthernet2/0/0
+interface Loopback1
+bgp 100
+ ipv4-family l2vpn
+  peer 1.1.1.9 advertise-community
+  peer 192.168.1.2 advertise-community
+ link-state-family unicast
+ ipv4-family unicast
+  import-route ospf 1
+ peer 1.1.1.9 enable
+ peer 192.168.1.2 enable
+ipv4-family l2vpn
+ospf 2.2.2.9
+ network 2.2.2.9 0.0.0.0
+ area 0
+ network 172.21.1.0 0.0.0.255

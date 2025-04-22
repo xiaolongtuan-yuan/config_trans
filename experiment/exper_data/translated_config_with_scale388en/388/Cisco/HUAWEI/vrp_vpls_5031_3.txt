@@ -1,0 +1,41 @@
+sysname PE2
+mpls ldp remote-peer ldp
+mpls
+ mpls traffic-eng enable
+interface [parameter1]
+ mpls rsvp-te
+ undo shutdown
+ vlan-type dot1q a2
+mpls l2vpn
+controller E1 a2
+ line-code a2
+interface ldp mode [parameter2]
+ encapsulation ldp
+ encapsulation dot1q vid none to 10
+mpls ldp remote-peer 1.1.1.9
+interface GigabitEthernet1/0/0
+ip pool 10.20.1.2 server
+ ip address 10.20.1.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 3.3.3.9 none
+ gateway none 255.255.255.255 section none none none
+mpls ldp remote-peer none
+interface Loopback1
+interface Tunnel10
+ ip address unnumbered interface Loopback1
+ tunnel-protocol mpls
+ destination 1.1.1.9
+ mpls te tunnel-id 100
+ tunnel-protocol mpls te
+ source Loopback1
+bgp 1
+ ipv4-family unicast
+  import-route ospf 1
+isis Loopback1
+ mpls traffic-eng router-id Loopback1
+ospf 0
+ area 0
+ network 3.3.3.9 0.0.0.0
+ network 10.20.1.0 0.0.0.255
+traffic policy policy1
+emdi

@@ -1,0 +1,46 @@
+hostname PE2
+mpls lsr-id 3.3.3.9
+mpls
+mpls l2vpn
+mpls ldp
+interface GigabitEthernet1/0/0
+ no shutdown
+ ethernet cfm ma none mep mep-id 1 interface none
+ bind peer-ip 1.1.1.9 interface none
+ ip unnumbered LoopBack1
+interface GigabitEthernet2/0/0
+ ip address 192.168.10.2 255.255.255.0
+interface LoopBack1
+ ip address 3.3.3.9 255.255.255.255
+ xconnect none none encapsulation ethernet
+mpls l2vpn vpn1
+ip vrf 100:1
+ rd 100:1
+vfi 200:1
+ vpn-id 200:1
+ ve id 2
+evpn vpn-instance 200:1
+key chain ce2
+mpls label range none 0
+ethernet cfm ma 1
+router bgp 100
+ neighbor 1.1.1.9 remote-as none
+ address-family ipv4 unicast
+ no synchronization
+ admin-vsi
+ address-family 1.1.1.9 vpws
+  ip igmp snooping static-router-port remote-peer 1.1.1.9
+  neighbor none signaling protocol vpws
+bfd all-interfaces
+mpls l2vpn 1.1.1.9
+l2vpn
+tunnel-policy none
+vfi 1.1.1.9 manual
+ipv6 router ospf 1
+router ospf 0.0.0.0
+ area 0.0.0.0
+access-list none none none none 0.0.0.0
+ network 3.3.3.9 mask none
+access-list none none none none 0.0.0.255
+ network 192.168.10.0 mask none
+return
