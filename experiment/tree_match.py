@@ -156,7 +156,7 @@ def cul_grammatical_accuracy_with_json(translated_dir, real_dir, config_files):
     average_match_ratio = total_match_score / total_match_account if total_match_account > 0 else 0
     return average_match_ratio
 
-def grammatical_match(device_name, match_rule, real_dir, config_model:{}):
+def grammatical_match(device_name, match_rule, real_dir):
     expected_json = os.path.join(real_dir, f"{device_name}.json")
     expected_templates = get_all_templates(json.load(open(expected_json)))
 
@@ -172,10 +172,10 @@ def grammatical_match(device_name, match_rule, real_dir, config_model:{}):
                     error_mapping_rules[match_rule[0]].add(target_match[2])
                     error_mapping_rules_count[match_rule[0]] += 1
         else:
-            if target_template_matchs == '':
+            if target_template_matchs[0] == '':
                 continue
-            if target_template_matchs not in expected_templates:
-                error_mapping_rules[match_rule[0]].add(target_template_matchs)
+            if target_template_matchs[0] not in expected_templates:
+                error_mapping_rules[match_rule[0]].add(target_template_matchs[0])
                 error_mapping_rules_count[match_rule[0]] += 1
     return error_mapping_rules, error_mapping_rules_count
 

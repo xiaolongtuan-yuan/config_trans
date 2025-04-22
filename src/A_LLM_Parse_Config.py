@@ -10,6 +10,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 def load_client(model_name:str, endpoint_url:str):
     if 'gpt' in model_name:
         api_key = os.getenv("OPENAI_KEY")
+    elif 'aliyun' in model_name:
+        api_key = os.getenv("ALIYUN_API_KEY")
     elif 'deepseek' in model_name:
         api_key = os.getenv("DEEPSEEK_API_KEY")
     else:
@@ -109,8 +111,8 @@ def process_file(config_file, full_config_path, save_path, vendor, client, model
 
 
 if __name__ == "__main__":
-    model_name = "deepseek-chat"
-    client = load_client(model_name, endpoint_url='https://api.deepseek.com/v1')
+    model_name = "aliyun_deepseek-v3"
+    client = load_client(model_name, endpoint_url='https://dashscope.aliyuncs.com/compatible-mode/v1')
     ## 配置加载
     if len(sys.argv) != 3:
         print("Usage: python 1LMM_Parse_Config.py <vendor> <config_path>")

@@ -492,9 +492,9 @@ class Config_Translater:
             else:
                 filtered_commands_feature.append(command)
                 matched_result = command
-                result_node = {"structural_features": {'depth': structural_feature['depth'],
-                                                      'params': [],
-                                                      'parent_command': 'system'}}
+                result_node = {"structural_features": {'command_depth': structural_feature['depth'],
+                                                       'param_signature': {},
+                                                       'context_topology': {'parent_command': []}}}
 
                 self.config_matchers[target_vendor].templates[matched_result] = result_node
                 template = feature['semantic_feature']['template']
@@ -868,8 +868,8 @@ class Config_Translater:
             for target_command, item in translation[comamnd_key].items():
                 template_command = ''
                 for template in item['parent_node']:
-                    template_command += template
-                template_command += target_command
+                    template_command += ' ' + template
+                template_command += ' ' + target_command
             trans_templates.append(template_command)
         return trans_templates
 

@@ -68,9 +68,9 @@ def translate_single_file(config_translater, input_dir, error_mapping_rules, err
 
     _, map_rule_data = config_translater.translation_without_llm(json_config, source_vendor, target_vendor,
                                                                  istatistics=True)
-    config_model = config_translater.translation_llm.config_models[target_vendor]
+    # config_model = config_translater.translation_llm.config_models[target_vendor]
     real_dir = f'./exper_data/{target_vendor}' if target_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
-    error_mapping_data, error_mapping_rules_count = grammatical_match(device_name, map_rule_data, real_dir, config_model)
+    error_mapping_data, error_mapping_rules_count = grammatical_match(device_name, map_rule_data, real_dir)
     for source_temp, error_matchs in error_mapping_data.items():
         error_mapping_rules[source_temp].update(error_matchs)
     for source_temp, error_count in error_mapping_rules_count.items():
@@ -104,25 +104,24 @@ def main():
             for target_vendor in vendors:
                 if source_vendor == target_vendor:
                     continue
-                source_config_dir = f'./exper_data/{source_vendor}'
+                source_config_dir = f'./exper_data/{source_vendor}' if source_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
+
                 print(f"exper for {scale}, {source_vendor} to {target_vendor} translation without llm")
                 mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/scale388en/{{}}_{{}}_{scale}.json'
                 templates_path = f'../dataset_multi_vendor_config/config_command_node/scale388en/{{}}_{scale}.json'
-                config_model_dir = f'../dataset_multi_vendor_config/config_model/scale388en/{{}}_{scale}.json'
+                # config_model_dir = f'../dataset_multi_vendor_config/config_model/scale388en/{{}}_{scale}.json'
 
                 mapping_libraries = mapping_library_load(mapping_library_path, vendors)
                 config_matchers = config_matchers_load(templates_path, vendors)
 
-                translation_llm = Translation_Model('aliyun_deepseek-v3', config_model_dir=config_model_dir,
-                                                    vendors=vendors,
-                                                    endpoint_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
-
+                translation_llm = {}
                 config_translater = Config_Translater(mapping_libraries, config_matchers,
                                                       translation_llm, embedding_model)
                 # 执行批量翻译
                 error_mapping_rules_freq = batch_translate(config_translater, source_config_dir, "",
                                 source_vendor=source_vendor,
-                                target_vendor=target_vendor)
+                                target_vendor=target_vendor,
+                                                           batch_size=200)
                 os.makedirs("./exper_res/scale_388en_error_mapping_rules_freq", exist_ok=True)
                 with open(f'./exper_res/error_mapping_rules_freq/{source_vendor}_{target_vendor}_error_mapping_rules_freq.json', 'w', encoding='utf-8') as f:
                     json.dump(error_mapping_rules_freq, f, ensure_ascii=False, indent=4)
