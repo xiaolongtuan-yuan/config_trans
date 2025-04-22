@@ -1,0 +1,17 @@
+set system host-name PE3
+set protocols mpls interface all
+set protocols l2vpn
+set protocols l2vpn vfi s1 vpn-id 10
+set protocols l2vpn vfi s1 neighbor 1.1.1.1 pw-id 10
+set protocols l2vpn vfi s1 neighbor 2.2.2.2 pw-id 10
+set protocols ldp interface all
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.2/24
+set interfaces ge-1/0/0 unit 0 family mpls
+set interfaces ge-1/0/0 unit 0 family mpls ldp-synchronization
+set interfaces ge-2/0/0 unit 0 family inet address 10.2.1.2/24
+set interfaces ge-2/0/0 unit 0 family mpls
+set interfaces ge-2/0/0 unit 0 family mpls ldp-synchronization
+set interfaces lo0 unit 0 family inet address 3.3.3.3/32
+set protocols ospf area 0 interface lo0.0
+set protocols ospf area 0 interface ge-1/0/0.0
+set protocols ospf area 0 interface ge-2/0/0.0

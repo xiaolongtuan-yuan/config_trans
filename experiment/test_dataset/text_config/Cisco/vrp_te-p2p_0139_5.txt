@@ -1,0 +1,29 @@
+hostname LSRF
+!
+mpls label protocol ldp
+mpls ldp router-id Loopback1
+!
+mpls traffic-eng tunnels
+!
+router isis
+ net 49.0001.0000.0000.0006.00
+ is-type level-2-only
+ metric-style wide
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 10.5.1.2 255.255.255.0
+ mpls ip
+ mpls traffic-eng tunnels
+ mpls traffic-eng bandwidth max-reservable-bandwidth 10000
+ mpls traffic-eng bandwidth bc0 10000
+ mpls traffic-eng rsvp-te
+ isis network point-to-point
+ isis circuit-type level-2-only
+!
+interface Loopback1
+ ip address 6.6.6.6 255.255.255.255
+ isis network point-to-point
+ isis circuit-type level-2-only
+!
+end

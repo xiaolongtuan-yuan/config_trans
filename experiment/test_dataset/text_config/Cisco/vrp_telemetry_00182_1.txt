@@ -1,0 +1,18 @@
+hostname DeviceA
+
+telemetry ietf
+
+ sensor-group sensor1
+   filter op-cpuinfo
+     op-field utilization avg-1m op-type gt op-value 40
+   filter op-meminfo
+     op-field current-application-usage op-type gt op-value 50
+
+ destination-group destination1
+  address-family ipv4 10.20.2.1 port 10001 protocol udp
+
+ subscription subscription1
+  sensor-group-id sensor1
+  destination-id destination1
+  source-address ipv4 192.168.1.1 port 11111
+

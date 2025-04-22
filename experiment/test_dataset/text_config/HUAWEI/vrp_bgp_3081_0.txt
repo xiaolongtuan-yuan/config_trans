@@ -1,0 +1,22 @@
+#
+sysname DeviceA
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.1.2.1 255.255.255.0
+#
+bgp 100
+ router-id 1.1.1.1
+ peer 10.1.1.2 as-number 300
+ peer 10.1.2.2 as-number 300
+ #
+ ipv4-family unicast
+  maximum load-balancing 2
+  peer 10.1.1.2 enable
+  peer 10.1.2.2 enable
+#
+return

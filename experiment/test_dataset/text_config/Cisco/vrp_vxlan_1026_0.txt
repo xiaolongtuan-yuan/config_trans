@@ -1,0 +1,35 @@
+hostname Device1
+
+bridge-domain 10
+ vxlan vni 5010
+
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 192.168.1.1 255.255.255.0
+
+interface GigabitEthernet1/0/2
+ no shutdown
+
+interface GigabitEthernet1/0/2.1
+ encapsulation dot1q 10
+ bridge-domain 10
+ bridge-domain 10 member GigabitEthernet1/0/2.1
+ rewrite ingress tag pop 1 symmetric
+
+interface Loopback1
+ ip address 2.2.2.2 255.255.255.255
+
+interface nve1
+ source-interface Loopback1
+ member vni 5010 mcast-group 239.1.1.1
+ member vni 5010 suppress-arp
+ member vni 5010 ingress-replication protocol bgp
+ member vni 5010 ingress-replication protocol vxlan
+
+router ospf 1
+ router-id 2.2.2.2
+ network 2.2.2.2 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+ network 192.168.1.0 0.0.0.255 area 0
+
+end

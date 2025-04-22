@@ -1,0 +1,48 @@
+#
+sysname ASBR2
+#
+mpls lsr-id 3.3.3.9
+#
+mpls
+#
+mpls ldp
+ #
+ ipv4-family
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 172.22.1.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 192.168.1.2 255.255.255.0
+ mpls
+#
+interface LoopBack1
+ ip address 3.3.3.9 255.255.255.255
+#
+bgp 200
+ peer 192.168.1.1 as-number 100
+ peer 4.4.4.9 as-number 200
+ peer 4.4.4.9 connect-interface LoopBack1
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 192.168.1.1 enable
+  peer 4.4.4.9 enable
+ #
+ l2vpn-family evpn
+  undo policy vpn-target
+  peer 4.4.4.9 enable
+  peer 4.4.4.9 esad-route-compatible enable
+  peer 192.168.1.1 enable
+  peer 192.168.1.1 esad-route-compatible enable
+#
+ospf 1
+ area 0.0.0.0
+  network 3.3.3.9 0.0.0.0
+  network 172.22.1.0 0.0.0.255
+#
+return

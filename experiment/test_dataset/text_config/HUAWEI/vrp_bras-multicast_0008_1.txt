@@ -1,0 +1,41 @@
+#
+sysname BRAS
+#
+multicast routing-enable
+#
+ip pool huawei bas local
+ gateway 10.0.0.1 255.255.0.0
+ section 1 10.0.0.1 10.0.255.255
+#
+aaa
+ #
+ authentication-scheme none
+  authentication-mode none
+ #
+ accounting-scheme none
+  accounting-mode none
+ #
+ domain ipv4
+  authentication-scheme none
+  accounting-scheme none
+  ip-pool ipv4
+#
+interface Virtual-Template100
+ ppp authentication-mode chap
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ pim sm
+#
+interface GigabitEthernet1/0/1.1
+ user-vlan 2 
+ pppoe-server bind Virtual-Template 100
+ pim sm
+ igmp enable
+ bas
+ #
+  access-type layer2-subscriber default-domain authentication ipv4
+  multicast copy by-session
+#
+return
