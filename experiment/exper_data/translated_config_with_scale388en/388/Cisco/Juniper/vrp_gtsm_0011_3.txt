@@ -1,0 +1,25 @@
+set host-name DeviceD
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet1/0/0
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface Loopback0
+set interfaces 10.2.2.2 ip address 10.2.2.2/255.255.255.0
+set interfaces 10.2.2.2 unit [parameter2] no shutdown
+set interfaces 10.2.2.2 unit [parameter2] family ip address ipv4/none
+set interfaces 10.2.2.2 ip address 10.4.4.9/255.255.255.255
+set protocols bgp peer 20 as 20
+set protocols bgp group 10.4.4.9 router-id 10.4.4.9
+set protocols bgp group 10.4.4.9 protocols bgp group 10.2.2.9
+set protocols bgp group 10.4.4.9 neighbor 10.2.2.9 neighbor 10.2.2.9
+set protocols bgp group 10.4.4.9 neighbor 10.2.2.9 remote-as 20
+set protocols bgp group 10.4.4.9 neighbor 10.2.2.9 as 10.2.2.9 ebgp-multihop 10.2.2.9 update-source Loopback0
+set protocols bgp group 10.4.4.9 neighbor 10.2.2.9 neighbor 10.3.3.9
+set protocols bgp group 10.4.4.9 family inet none
+set routing-instances 10.2.2.9 protocols bgp group 10.2.2.9 neighbor 10.2.2.9
+set routing-instances 10.2.2.9 protocols bgp group 10.2.2.9 neighbor 10.3.3.9
+set protocols bgp neighbor [parameter1] sync
+set routing-options router ospf 1
+set router ospf area 0 network 10.2.2.0/0.0.0.255 none
+set router ospf area 0 network 10.4.4.9/0.0.0.0 none
+commit and-quit
+set protocols bgp 10.2.2.9 address-family ipv4-unicast neighbor 2
+set protocols bgp 10.2.2.9 neighbor 10.3.3.9
+set protocols bgp 10.2.2.9 address-family ipv4-unicast neighbor 1

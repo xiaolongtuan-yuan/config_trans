@@ -1,0 +1,19 @@
+sysname CE1
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:1::1/64 none
+interface Loopback1
+ ipv6 address 2001:db8:5::5/128 none
+bgp 100
+ router-id 5.5.5.5
+ peer none as-number 200
+ ipv6-family unicast
+ ipv4-family none
+  peer 2001:db8:1::2 advertise-community
+remote-ip 2001:db8:1::2
+ipv4-family none
+ undo synchronization
+rip 2001:db8:5::5/128
+ network 2001:db8:5::5/128
+emdi

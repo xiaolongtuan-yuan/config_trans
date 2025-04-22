@@ -1,0 +1,24 @@
+set system host-name DeviceA
+set protocols bgp group Huawei type 100 peer 100 as 100
+set interfaces Huawei authentication-key Huawei
+set interfaces Huawei unit Huawei cfm etherenet domain Huawei mode absolute
+set interfaces Huawei unit Huawei protocol mpls traffic-eng tunnels id 17
+set interfaces Huawei unit Huawei no shutdown
+set interfaces Huawei unit Huawei family ip address unicast/none
+set interfaces Huawei ip address 10.20.1.1/255.255.255.0
+set protocols bfd template 100 min-transmit-interval 100 min-receive-interval 100
+set protocols ptp interface all device-type 179
+set protocols isis net-identifier hmac-sha-256
+set vlans 1 id 1
+set protocols isis interface hmac-sha-256 prefix-sid hmac-sha-256
+set snmp v3 usm local-engine user %#%#e^1}%%w;/C[M)OQc7"j+,2)}%#%# privacy-aes128-key %#%#e^1}%%w;/C[M)OQc7"j+,2)}%#%#
+set failover schedule 11:00 start-time 2009-12-24
+set protocols isis level 11:00 bfd interval 11:00
+set protocols isis level 11:00 hello-interval 2009-12-24 mul 11:00 receive 12:00
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet1/0/0
+set routing-options router-id 1.1.1.1
+set protocols bgp 200 peer 10.20.1.2
+set protocols mpls ldp remote-peer 10.20.1.2
+delete protocols bgp synchronization
+set protocols ptp peer 10.20.1.2
+commit and-quit

@@ -1,0 +1,11 @@
+set system host-name DeviceA
+set interfaces Cpos3/0/0 unit Cpos3/0/0 family inet filter input Cpos3/0/0
+set interfaces Cpos3/0/0 unit Cpos3/0/0 no shutdown
+set interfaces Cpos3/0/0 ip address 10.1.1.1/255.255.255.0
+set interfaces Cpos3/0/0 ppp multilink-group Mp-group3/0/1
+set chassis fpc 1 pic 1 e1 1 channel-group 1 timeslots 1-15
+set chassis fpc 1 pic 1 e1 1 channel-group 1 timeslots 16-31
+set protocols ospf area Mp-group3/0/1 interface Mp-group3/0/1
+set protocols ospf area Mp-group3/0/1 interface Serial3/0/0/1:1
+set protocols ospf area Mp-group3/0/1 interface Serial3/0/0/2:1
+set telemetry ietf sensors destination-group ppp address-family ppp [parameter3] port ppp protocol ppp

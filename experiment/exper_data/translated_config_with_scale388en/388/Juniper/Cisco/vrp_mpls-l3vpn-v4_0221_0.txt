@@ -1,21 +1,19 @@
 hostname Spoke-CE1
-interface ge-0/0/0
+mpls ldp router-id ge-0/0/0 none
+interface 0
  ipv4 address 10.1.1.1 24
- interface lo0
-interface 0 point-to-point
-interface 1 point-to-point
-interface lo0
+mpls ldp router-id lo0 none
+interface 1
  ipv4 address 11.11.11.11 32
-bgp external-peers
- peer none as-number external-peers
-address-family external vrf [parameter2]
- import route external
-router bgp 100
+router bgp external-peers
+ address-family unicast
+  neighbor none send-community external-peers
+  neighbor none route-policy export-loopback export
  neighbor none remote-as 100
  neighbor 10.1.1.2 activate
- address-family unicast
-  neighbor none route-policy export-loopback export
-tunnel-te policy export-loopback
+address-family external vrf [parameter2]
+ import route external
+tunnel-policy export-loopback
 tunnel-policy 1
-aaa authorization exec none none accept
-route-policy exact
+tunnel-policy accept
+tunnel-policy exact

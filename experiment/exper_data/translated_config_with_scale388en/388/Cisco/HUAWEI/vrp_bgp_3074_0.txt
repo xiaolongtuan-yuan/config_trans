@@ -1,0 +1,19 @@
+sysname DeviceA
+interface GigabitEthernet1/0/0
+ undo shutdown
+ip pool 10.1.1.2 server
+ ip address 10.1.1.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 10.1.2.2 none
+interface GigabitEthernet2/0/0
+bgp 65008
+ router-id 1.1.1.1
+ peer none as-number 65009
+ ipv4-family ipv4
+  peer 10.1.1.1 advertise-community
+  peer 10.1.2.1 advertise-community
+ link-state-family unicast
+remote-ip 10.1.1.1
+remote-ip 10.1.2.1
+ipv4-family ipv4
+emdi

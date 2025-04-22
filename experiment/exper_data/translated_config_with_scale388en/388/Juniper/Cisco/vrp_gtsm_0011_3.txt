@@ -1,0 +1,20 @@
+hostname DeviceD
+mpls ldp router-id ge-1/0/0 none
+interface 0
+ ipv4 address 10.2.2.2 24
+ ipv4 address 10.4.4.9 32
+mpls ldp router-id lo0 none
+router bgp 20
+ address-family 10.4.4.9
+  neighbor none send-community group1
+ neighbor 10.2.2.9 activate
+ address-family 2 [parameter2]
+  neighbor none signaling protocol 2
+  neighbor none signaling protocol 1
+ neighbor 10.3.3.9 activate
+address-family internal vrf [parameter2]
+ import route internal
+router ospf 0
+ area 0
+interface ge-1/0/0
+interface lo0

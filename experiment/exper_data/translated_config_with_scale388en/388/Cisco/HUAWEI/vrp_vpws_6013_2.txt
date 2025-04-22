@@ -1,0 +1,21 @@
+sysname P
+mpls ldp remote-peer ldp
+interface GigabitEthernet1/0/0
+ undo shutdown
+ip pool 10.1.1.2 server
+ ip address 10.1.1.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 10.2.2.1 none
+ ip address 192.168.4.4 none
+ gateway none 255.255.255.255 section none none none
+mpls ldp remote-peer none
+interface GigabitEthernet2/0/0
+interface Loopback0
+bgp 1
+ ipv4-family unicast
+  import-route ospf 1
+ospf 192.168.4.4
+ network 192.168.4.4 0.0.0.0
+ area 0
+ network 10.1.1.0 0.0.0.255
+ network 10.2.2.0 0.0.0.255

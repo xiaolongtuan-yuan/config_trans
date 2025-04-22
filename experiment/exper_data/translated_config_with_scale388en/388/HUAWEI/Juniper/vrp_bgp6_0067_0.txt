@@ -1,0 +1,21 @@
+set system host-name DeviceA
+set interfaces [parameter1] bfd local-discriminator none
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] family inet6 enable
+set interfaces [parameter1] unit [parameter2] family inet6
+set interfaces [parameter1] min-transmit-interval 100 min-receive-interval 100
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet1/0/0
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet2/0/0
+set protocols isis interface 2001:db8:8::1/64 family inet6 address none/2001:db8:8::1/64
+set protocols isis interface 2001:db8:8::1/64 family inet6 address none/2001:db8:10::1/64
+set protocols bgp group 100 type 100 peer 100 as 100
+set protocols bgp group 100 family inet unicast
+set routing-options router-id 1.1.1.1
+set protocols bgp 200 peer 2001:db8:8::2
+set protocols bgp 200 peer 2001:db8:10::2
+set protocols bfd interface 2001:db8:8::2 family inet peer 2001:db8:8::2
+set protocols bfd template 2001:db8:8::2
+delete protocols bgp synchronization
+set protocols ptp peer 2001:db8:8::2
+set protocols ptp peer 2001:db8:10::2
+commit and-quit

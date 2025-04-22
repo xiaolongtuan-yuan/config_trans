@@ -1,162 +1,146 @@
 {
-    "set system host-name CE2": {
-        "template": "set system host-name [parameter1]",
-        "command": "set system host-name CE2",
-        "explanation": "Configure the host name of the device.",
-        "parameters": [
-            {
-                "name": "hostname",
-                "type": "string",
-                "explanation": "The host name of the equipment is used to identify the equipment in the network."
-            }
-        ]
-    },
-    "set interface ge-0/0/0": {
-        "template": "set interface [parameter1]",
-        "command": "set interface ge-0/0/0",
-        "explanation": "This command sets configuration parameters for a specified network interface, such as IP address, MTU, or administrative status, in Junos OS.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g. g-0/0/0."
-            }
-        ],
-        "unit 0": {
-            "template": "unit [parameter2]",
-            "command": "unit 0",
-            "explanation": "This command fragment configures a logical unit (`unit [parameter2]`) on a specified interface (`[parameter1]`) in Junos OS.",
+    "set system": {
+        "set system host-name CE2": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name CE2",
+            "explanation": "配置设备的主机名。",
             "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set interface": {
+        "set interface ge-0/0/0 unit 0 family inet address 10.2.1.1/24": {
+            "template": "set interface [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interface ge-0/0/0 unit 0 family inet address 10.2.1.1/24",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                },
                 {
                     "name": "unit",
                     "type": "integer",
-                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
                 }
-            ],
-            "family inet address 10.2.1.1/24": {
-                "template": "family inet address [parameter3]/[parameter4]",
-                "command": "family inet address 10.2.1.1/24",
-                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
-                "parameters": [
-                    {
-                        "name": "ip-address",
-                        "type": "string",
-                        "explanation": "The IPv4 address assigned to the interface."
-                    },
-                    {
-                        "name": "subnet-mask",
-                        "type": "integer",
-                        "explanation": "Bits of IPv4 subnet mask."
-                    }
-                ]
-            }
-        }
-    },
-    "set interface lo0": {
-        "template": "set interface [parameter1]",
-        "command": "set interface lo0",
-        "explanation": "This command sets configuration parameters for a specified network interface, such as IP address, MTU, or administrative status, in Junos OS.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g. g-0/0/0."
-            }
-        ],
-        "unit 0": {
-            "template": "unit [parameter2]",
-            "command": "unit 0",
-            "explanation": "This command fragment configures a logical unit (`unit [parameter2]`) on a specified interface (`[parameter1]`) in Junos OS.",
+            ]
+        },
+        "set interface lo0 unit 0 family inet address 6.6.6.6/32": {
+            "template": "set interface [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interface lo0 unit 0 family inet address 6.6.6.6/32",
+            "explanation": "配置环回接口的IPv4地址及子网掩码。",
             "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如lo0。"
+                },
                 {
                     "name": "unit",
                     "type": "integer",
-                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
                 }
-            ],
-            "family inet address 6.6.6.6/32": {
-                "template": "family inet address [parameter3]/[parameter4]",
-                "command": "family inet address 6.6.6.6/32",
-                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
-                "parameters": [
-                    {
-                        "name": "ip-address",
-                        "type": "string",
-                        "explanation": "The IPv4 address assigned to the interface."
-                    },
-                    {
-                        "name": "subnet-mask",
-                        "type": "integer",
-                        "explanation": "Bits of IPv4 subnet mask."
-                    }
-                ]
-            }
+            ]
         }
     },
-    "set routing-instance default-ri": {
-        "template": "set routing-instance [parameter1]",
-        "command": "set routing-instance default-ri",
-        "explanation": "The command `set routing-instance [parameter1]` configures a routing instance named `[parameter1]`, isolating routing tables and protocols for specific network segments or VPNs.",
-        "parameters": [
-            {
-                "name": "routing-instance",
-                "type": "string",
-                "explanation": "Name of route example, e.g. default-ri."
-            }
-        ],
-        "routing-options autonomous-system 65002": {
-            "template": "routing-options autonomous-system [parameter2]",
-            "command": "routing-options autonomous-system 65002",
-            "explanation": "Configure autonomous system numbers for route examples.",
+    "set routing-instance": {
+        "set routing-instance default-ri routing-options autonomous-system 65002": {
+            "template": "set routing-instance [parameter1] routing-options autonomous-system [parameter2]",
+            "command": "set routing-instance default-ri routing-options autonomous-system 65002",
+            "explanation": "配置路由实例的自治系统号。",
             "parameters": [
+                {
+                    "name": "routing-instance",
+                    "type": "string",
+                    "explanation": "路由实例名称，例如default-ri。"
+                },
                 {
                     "name": "autonomous-system",
                     "type": "integer",
-                    "explanation": "The Self-Government System No. for the marking of an autonomous system."
+                    "explanation": "自治系统号，用于标识一个自治系统。"
                 }
             ]
         }
     },
-    "set protocols bgp neighbor 10.2.1.2": {
-        "template": "set protocols bgp neighbor [parameter1]",
-        "command": "set protocols bgp neighbor 10.2.1.2",
-        "explanation": "Configures a BGP neighbor with the specified IP address or interface (`[parameter1]`) for establishing a BGP peering session.",
-        "parameters": [
-            {
-                "name": "neighbor-ip",
-                "type": "string",
-                "explanation": "BGP neighbor's IP address."
-            }
-        ],
-        "remote-as 200": {
-            "template": "remote-as [parameter2]",
-            "command": "remote-as 200",
-            "explanation": "Configure the remote self-government system number for BGP neighbours.",
+    "set protocols bgp": {
+        "set protocols bgp neighbor 10.2.1.2 remote-as 200": {
+            "template": "set protocols bgp neighbor [parameter1] remote-as [parameter2]",
+            "command": "set protocols bgp neighbor 10.2.1.2 remote-as 200",
+            "explanation": "配置BGP邻居的远程自治系统号。",
             "parameters": [
+                {
+                    "name": "neighbor-ip",
+                    "type": "string",
+                    "explanation": "BGP邻居的IP地址。"
+                },
                 {
                     "name": "remote-as",
                     "type": "integer",
-                    "explanation": "BGP neighbour's remote self-government system number."
+                    "explanation": "BGP邻居的远程自治系统号。"
                 }
             ]
         },
-        "activate": {
-            "template": "activate",
-            "command": "activate",
-            "explanation": "Activate the BGP neighbor.",
-            "parameters": []
+        "set protocols bgp neighbor 10.2.1.2 activate": {
+            "template": "set protocols bgp neighbor [parameter1] activate",
+            "command": "set protocols bgp neighbor 10.2.1.2 activate",
+            "explanation": "激活BGP邻居。",
+            "parameters": [
+                {
+                    "name": "neighbor-ip",
+                    "type": "string",
+                    "explanation": "BGP邻居的IP地址。"
+                }
+            ]
         },
-        "address-family ipv4 unicast": {
-            "template": "address-family ipv4 unicast",
-            "command": "address-family ipv4 unicast",
-            "explanation": "An IPv4 solo address for BGP neighbours.",
-            "parameters": []
+        "set protocols bgp neighbor 10.2.1.2 address-family ipv4 unicast": {
+            "template": "set protocols bgp neighbor [parameter1] address-family ipv4 unicast",
+            "command": "set protocols bgp neighbor 10.2.1.2 address-family ipv4 unicast",
+            "explanation": "为BGP邻居配置IPv4单播地址族。",
+            "parameters": [
+                {
+                    "name": "neighbor-ip",
+                    "type": "string",
+                    "explanation": "BGP邻居的IP地址。"
+                }
+            ]
         },
-        "sync": {
-            "template": "sync",
-            "command": "sync",
-            "explanation": "Configure BGP neighbor sync.",
-            "parameters": []
+        "set protocols bgp neighbor 10.2.1.2 sync": {
+            "template": "set protocols bgp neighbor [parameter1] sync",
+            "command": "set protocols bgp neighbor 10.2.1.2 sync",
+            "explanation": "配置BGP邻居同步。",
+            "parameters": [
+                {
+                    "name": "neighbor-ip",
+                    "type": "string",
+                    "explanation": "BGP邻居的IP地址。"
+                }
+            ]
         }
     }
 }

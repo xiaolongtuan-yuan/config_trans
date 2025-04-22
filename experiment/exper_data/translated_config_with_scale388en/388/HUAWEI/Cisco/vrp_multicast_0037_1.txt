@@ -1,0 +1,19 @@
+hostname DeviceB
+ip multicast-routing
+mpls ldp discovery targeted-hello accept acl 2001
+access-list 5 permit ip host 232.1.1.0 0.0.0.255 any
+interface GigabitEthernet1/0/0
+ ip router isis 1
+ no shutdown
+ ip address 192.168.2.1 255.255.255.0
+ ip pim none
+router isis
+ net 10.0000.0000.0002.00
+interface GigabitEthernet2/0/0
+ ip address 10.110.2.1 255.255.255.0
+ ip igmp version none
+router 3
+ version 3
+ip pim
+ rp-address 192.168.4.1
+return

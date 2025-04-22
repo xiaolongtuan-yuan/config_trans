@@ -1,0 +1,48 @@
+sysname P2
+mpls ldp remote-peer ldp
+mpls ldp remote-peer none
+mpls
+ mpls traffic-eng enable
+ mpls ldp router-id Loopback0
+ mpls te cspf
+interface GigabitEthernet1/0/0
+ mpls l2vc none none all
+ mpls
+  ldp
+  mpls rsvp-te
+   mpls rsvp-te hello
+ undo shutdown
+ mpls te bandwidth ct0 20000
+ptp-adaptive local-ip 2.2.2.2
+ip pool 10.3.1.2 server
+ ip address 10.3.1.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 10.4.1.2 none
+ ip address 4.4.4.4 none
+ gateway none 255.255.255.255 section none none none
+interface GigabitEthernet2/0/0
+mpls ldp
+interface Loopback1
+interface Tunnel1
+ ip address unnumbered interface Loopback1
+ destination 2.2.2.2
+ mpls te tunnel-id 101
+ mpls te bypass-attributes bandwidth 10000 priority none none
+ mpls te bandwidth max-reservable-bandwidth 0
+ mpls
+  mpls te bandwidth bc0 20000
+ mpls te bidirectional
+ mpls te igp metric absolute 1
+bgp 1
+ ipv4-family unicast
+  import-route ospf 1
+ospf [parameter1]
+ opaque-capability enable
+ enable traffic-adjustment advertise
+ network 4.4.4.4 0.0.0.0
+ area 0
+ network 10.3.1.0 0.0.0.255
+ network 10.4.1.0 0.0.0.255
+isis Loopback1
+ mpls traffic-eng router-id Loopback1
+emdi

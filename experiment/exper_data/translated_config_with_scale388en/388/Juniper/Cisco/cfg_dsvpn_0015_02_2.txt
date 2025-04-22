@@ -1,29 +1,25 @@
 hostname Spoke2
-interface ge-1/0/0
+mpls ldp router-id ge-1/0/0 none
+interface 0
  ipv4 address 10.1.3.10 24
  tunnel source lo0.0
  tunnel mode none
- interface lo0
-interface 0 point-to-point
-interface lo0
  ipv4 address 192.168.2.1 32
- interface gr-1/0/0
-interface gr-1/0/0
  ipv4 address 172.16.1.3 24
  tunnel source ge-1/0/0
  tunnel destination 10.1.1.10
  tunnel protection ipsec profile IPSEC_PROFILE
- interface gr-1/0/0
+mpls ldp router-id lo0 none
+mpls ldp router-id gr-1/0/0 none
+interface gr-1/0/0
  tunnel protection ipsec profile IPSEC_POLICY
- ospfv3 none area 0.0.0.0
- interface gr-1/0/0.0
-l2vpn vfi context IKE_GATEWAY
- vpn id IKE_GATEWAY
-interface gr-1/0/0.0
- interface lo0.0
-router bgp 172.16.1.3
+vfi IKE_GATEWAY
+ vpn-id IKE_GATEWAY
+router ospf 0.0.0.0
+ area 0.0.0.0
  router-id 172.16.1.3
+ area 0.0.0.1
  router-id 10.1.3.10
+interface gr-1/0/0.0
 interface lo0.0
- ospfv3 none area 0.0.0.1
- interface ge-1/0/0.0
+interface ge-1/0/0.0

@@ -1,0 +1,19 @@
+sysname CE4
+interface GigabitEthernet1/0/0
+ undo shutdown
+ip pool 10.4.1.2 server
+ ip address 10.4.1.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 44.44.44.44 none
+ gateway none 255.255.255.255 section none none none
+interface Loopback1
+bgp 65410
+ peer none as-number 100
+ ipv4-family ipv4
+  peer 10.4.1.1 advertise-community
+remote-ip 10.4.1.1
+ip pool 44.44.44.44 bas local
+ network 44.44.44.44 none
+ gateway none 255.255.255.255
+ipv4-family ipv4
+ undo synchronization

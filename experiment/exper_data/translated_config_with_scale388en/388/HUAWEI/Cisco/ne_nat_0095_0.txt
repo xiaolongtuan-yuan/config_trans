@@ -1,0 +1,24 @@
+hostname NATA
+enable
+vfi 1
+ ve id 1
+vpdn-group 1
+ ip igmp join-group address-group1
+interface GigabitEthernet
+ pppoe enable group group1
+ no shutdown
+ ip address 192.168.10.1 255.255.255.0
+ ip address 1.1.1.1 255.255.255.0
+policy-map nat1
+ class classifier1
+ class nat1
+ class behavior1
+ip nat inside source list 1 pool none overload
+ class nat1
+ip local pool none 11.11.11.101 11.11.11.105
+mpls ldp discovery targeted-hello accept acl 3001
+access-list 1 permit ip host 192.168.10.0 none any
+access-list none none none none 0.0.0.255
+tunnel-policy behavior1
+tunnel-policy policy1
+return

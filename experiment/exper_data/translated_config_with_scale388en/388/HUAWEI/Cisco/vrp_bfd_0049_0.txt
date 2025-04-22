@@ -1,0 +1,29 @@
+hostname PE1
+bfd discriminator local none
+mpls lsr-id 1.1.1.1
+mpls
+mpls rsvp-te
+mpls traffic-eng none
+interface gigabitethernet1/0/1
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+interface LoopBack0
+ ip address 1.1.1.1 255.255.255.255
+interface Tunnel0/0/1
+ ip unnumbered LoopBack1
+ tunnel mode mpls traffic-eng
+ tunnel destination 2.2.2.2
+ tunnel mpls traffic-eng tunnel-id 1
+ bind session-interface Tunnel0/0/1
+ tunnel mpls traffic-eng tunnel-id 2
+ipv6 router ospf 1
+router ospf [parameter1]
+ opaque-lsa-capability
+ area 0.0.0.0
+router bgp 1.1.1.1
+access-list none none none none 0.0.0.0
+ network 1.1.1.1 mask none
+access-list none none none none 0.0.0.255
+ network 10.1.1.0 mask none
+bfd template aaa
+return

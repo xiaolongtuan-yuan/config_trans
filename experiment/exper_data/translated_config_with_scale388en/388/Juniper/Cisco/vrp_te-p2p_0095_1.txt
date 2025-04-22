@@ -1,0 +1,22 @@
+hostname LSRB
+mpls label protocol ldp
+mpls
+ipv6 router ospf 1
+interface 0
+ isis segment-routing prefix-sid index 0
+ mpls traffic-eng bandwidth 100000 none
+ switchport
+ ipv4 address 192.168.1.2 24
+ ipv4 address 192.168.2.1 24
+ ipv4 address 192.168.3.1 24
+ ipv4 address 2.2.2.2 32
+router bgp gigabit-0/0/0.0
+ neighbor none update-source gigabit-0/0/0.0
+ network 192.168.1.0 mask 24
+ network 192.168.2.0 mask 24
+ network 192.168.3.0 mask 24
+mpls traffic-eng area 10101
+mpls ldp router-id ge-0/0/0 none
+mpls ldp router-id ge-0/1/0 none
+mpls ldp router-id ge-0/2/0 none
+mpls ldp router-id lo0 none

@@ -1,0 +1,27 @@
+set host-name PE2
+set protocols mpls label protocol ldp
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet1/0/0
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface GigabitEthernet2/0/0
+set vlans GigabitEthernet1/0/0 vlan-interfaces interface Loopback1
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] family mpls ldp enable
+set interfaces [parameter1] unit [parameter2] pppoe-options encapsulation mpls
+set interfaces [parameter1] unit [parameter2] family ip address ipv4/none
+set interfaces [parameter1] ip address 192.168.10.2/255.255.255.0
+set interfaces [parameter1] ip address 3.3.3.9/255.255.255.255
+set interfaces [parameter1] family inet address l2vpn/none
+set protocols mpls ip
+set protocols mpls l2vpn vpn1
+set routing-instances 100:1 routing-options route-distinguisher 100:1 :100:1
+set routing-instances 100:1 vrf-import target 200:1
+set routing-instances 100:1 vrf-export target 200:1
+set routing-instances 100:1 protocols bgp group 1.1.1.9 neighbor 1.1.1.9
+set protocols bgp peer 100 as 100
+set protocols bgp group ldp protocols bgp group 1.1.1.9
+set protocols bgp group ldp neighbor 1.1.1.9 neighbor 1.1.1.9
+set protocols bgp group ldp neighbor 1.1.1.9 remote-as 100
+set protocols bgp group ldp neighbor 1.1.1.9 as 1.1.1.9 ebgp-multihop 1.1.1.9 update-source Loopback1
+set routing-options router ospf 1
+set router ospf area 0 network 3.3.3.9/0.0.0.0 none
+set router ospf area 0 network 192.168.10.0/0.0.0.255 none
+commit and-quit

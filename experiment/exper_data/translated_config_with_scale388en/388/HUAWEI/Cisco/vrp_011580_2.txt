@@ -1,0 +1,20 @@
+hostname CE2
+interface GigabitEthernet1/0/1
+ switchport trunk allowed vlan add 2
+ no switchport
+ no shutdown
+cfm version standard
+cfm enable
+cfm domain md1
+cfm ethernet cfm md ma1
+ mep domain ma1
+vlan 2
+cfm md 4
+ cfm ma 4
+  cfm mep mep-id 4 interface GigabitEthernet1/0/1 direction outward
+  cfm mep mep-id 4 ccm-send none
+  cfm mep mep-id 3 remote-mep
+  cfm mep mep-id 4 test-id 2 remote-mep none
+  cfm mep mep-id none test-id 2 remote-mep none
+ethernet cfm ma 3
+ ethernet cfm ma none remote-mep mep-id 3 ccm-receive

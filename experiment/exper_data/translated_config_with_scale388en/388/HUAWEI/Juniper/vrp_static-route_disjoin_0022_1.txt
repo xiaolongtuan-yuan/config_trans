@@ -1,0 +1,14 @@
+set system host-name DeviceB
+set interfaces [parameter1] unit [parameter2] family inet6 enable
+set interfaces [parameter1] unit [parameter2] no shutdown
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet1/0/0
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet2/0/0
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet3/0/0
+set protocols isis interface 2001:db8:4::2/64 family inet6 address none/2001:db8:4::2/64
+set protocols isis interface 2001:db8:4::2/64 family inet6 address none/2001:db8:5::2/64
+set protocols isis interface 2001:db8:4::2/64 family inet6 address none/2001:db8:2::1/64
+set routing-options rib 2001:db8:1::
+set routing-instances 2001:db8:1:: static route 64
+set routing-instances 2001:db8:1:: routes static route GigabitEthernet1/0/0/none next-hop 2001:db8:4::1
+set routing-instances 2001:db8:1:: routes static route GigabitEthernet2/0/0/none next-hop 2001:db8:5::1
+commit and-quit

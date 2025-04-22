@@ -1,0 +1,38 @@
+set system host-name PE2
+set routing-options mpls lsr-id 3.3.3.9
+set interfaces [parameter1] family inet enable-mpls
+set interfaces [parameter1] unit [parameter2] mpls
+set interfaces [parameter1] unit [parameter2] family vfi a2
+set interfaces [parameter1] unit [parameter2] family mpls ldp
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] l2circuit vsi a2
+set interfaces [parameter1] unit [parameter2] family inet6 ospfv3 cost 1
+set interfaces [parameter1] unit [parameter2] tunnel destination 1.1.1.9
+set interfaces [parameter1] unit [parameter2] family mpls traffic-eng tunnel
+set interfaces [parameter1] unit [parameter2] family inet6 ospfv3 area 0.0.0.0
+set interfaces [parameter1] encap-type dot1q 10
+set interfaces [parameter1] ip address 10.20.1.2/255.255.255.0
+set interfaces [parameter1] ip address 3.3.3.9/255.255.255.255
+set protocols mpls traffic-eng rsvp-te
+set protocols mpls traffic-eng cspf
+set protocols mpls l2vpn
+set vlans 2 vfi 2 id 2
+set protocols ptp peer 1.1.1.9
+set forwarding l2vpn forwarder vsi 1.1.1.9 tunnels policy1
+set protocols mpls ldp
+set protocols mpls ldp remote-peer 1.1.1.9
+set protocols ospf area GigabitEthernet2/0/0.1 interface GigabitEthernet2/0/0.1
+set protocols ospf area GigabitEthernet2/0/0.1 interface GigabitEthernet1/0/0
+set protocols ospf area GigabitEthernet2/0/0.1 interface LoopBack1
+set protocols ospf area GigabitEthernet2/0/0.1 interface Tunnel10
+set protocols mpls traffic-eng tunnels
+set protocols mpls traffic-eng tunnels tunnel-id 100
+set routing-options router ospf 1
+set protocols ospf traffic-engineering options none
+set protocols bgp network 3.3.3.9
+set policy-options policy-statement policy1 term 3.3.3.9 from route-filter none/0.0.0.0 none
+set policy-options policy-statement policy1 term 3.3.3.9 from route-filter none/0.0.0.255 none
+set protocols bgp network 10.20.1.0
+set protocols ospf mpls traffic-eng area none
+set forwarding-forwarding-tables ip-forwarding forward-to Tunnel10 tunnel source 1.1.1.9
+commit and-quit

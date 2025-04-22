@@ -1,18 +1,18 @@
 hostname DeviceC
-mpls l2vpn vpn1
- route-distinguisher 100:3
-address-family vrf vrf [parameter2]
+address-family vpn1 vrf [parameter2]
+ import route vpn1
  import route vrf
  import route external
+ip vrf 100:3
+ rd 100:3
 vrf definition target:100:1
-bba-group pppoe external-peers
-bgp 200
- peer none as-number 200
-router bgp 100
+vpdn-group external-peers
+router bgp 200
  neighbor 10.1.2.2 activate
- address-family vpnv4 vrf none
 ip route none 32 none
  import route discard
-interface ge-2/0/0
+mpls ldp router-id ge-2/0/0 none
+interface 0
  ipv4 address 10.1.2.3 24
-interface 0 point-to-point
+ ip vrf forwarding none
+router bgp 100

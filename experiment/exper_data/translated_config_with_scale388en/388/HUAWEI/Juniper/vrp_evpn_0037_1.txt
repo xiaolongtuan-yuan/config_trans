@@ -1,0 +1,33 @@
+set system host-name ASBR1
+set routing-options mpls lsr-id 2.2.2.9
+set interfaces [parameter1] family inet enable-mpls
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] family inet6 ospfv3 area 0.0.0.0
+set interfaces [parameter1] ip address 172.21.1.1/255.255.255.0
+set interfaces [parameter1] ip address 192.168.1.1/255.255.255.0
+set interfaces [parameter1] ip address 2.2.2.9/255.255.255.255
+set protocols mpls ldp
+set protocols bgp [parameter1] family inet
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet1/0/0
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet2/0/0
+set protocols ospf area GigabitEthernet1/0/0 interface LoopBack1
+set protocols bgp group 100 type 100 peer 100 as 100
+set protocols bgp group 100 peer 192.168.1.2
+set protocols bgp group 100 peer-group 1.1.1.9
+set protocols bgp group 100 neighbor 1.1.1.9 peer-address 1.1.1.9
+set protocols bgp group 100 neighbor 1.1.1.9 interface LoopBack1
+set protocols bgp group 100 family inet unicast
+set protocols bgp 100 peer 1.1.1.9
+set protocols bgp 100 family l2vpn-vpls
+delete protocols bgp synchronization
+set protocols ptp peer 192.168.1.2
+set protocols ptp peer 1.1.1.9
+set routing-instances [parameter1] vpn-target [parameter2] export-extcommunity
+set protocols bfd peer 1.1.1.9
+set protocols bfd peer 192.168.1.2
+set routing-options router ospf 1
+set protocols bgp network 2.2.2.9
+set policy-options policy-statement 2.2.2.9 term 2.2.2.9 from route-filter none/0.0.0.0 none
+set policy-options policy-statement 2.2.2.9 term 2.2.2.9 from route-filter none/0.0.0.255 none
+set protocols bgp network 172.21.1.0
+commit and-quit

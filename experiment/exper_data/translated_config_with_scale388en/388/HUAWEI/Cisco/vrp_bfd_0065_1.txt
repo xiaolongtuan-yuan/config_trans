@@ -1,0 +1,13 @@
+hostname DeviceB
+bfd discriminator local none
+interface gigabitethernet1/0/0
+ bfd interval 120 min_rx none multiplier none
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+bfd template btoa
+bfd all-interfaces
+ bind session-interface gigabitethernet
+ bind peer-ip 10.1.1.1 interface none
+ discriminator local 20
+ discriminator remote 10
+return

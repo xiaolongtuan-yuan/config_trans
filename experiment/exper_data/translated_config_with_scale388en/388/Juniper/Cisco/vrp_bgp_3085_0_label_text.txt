@@ -1,0 +1,21 @@
+hostname DeviceA
+
+key chain Huawei
+ key 1
+  key-string 7 051C0A1B010E5E5D137D2F3B164D2C4F516337226A2B2C297D1B1C1D
+  send-lifetime 11:00 Dec 24 2009 duration 01:00
+  accept-lifetime 11:00 Dec 24 2009 duration 01:00
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.20.1.1 255.255.255.0
+
+router bgp 100
+ bgp router-id 1.1.1.1
+ neighbor 10.20.1.2 remote-as 200
+ neighbor 10.20.1.2 password 1 Huawei
+ !
+ address-family ipv4
+  no synchronization
+  neighbor 10.20.1.2 activate
+ exit-address-family

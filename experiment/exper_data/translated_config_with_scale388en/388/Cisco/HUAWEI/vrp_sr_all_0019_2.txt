@@ -1,0 +1,23 @@
+sysname PE3
+mpls ldp remote-peer ldp
+isis none
+network-entity 49.0001.0000.0000.0004.00
+nqa test-instance level-1 [parameter2]
+ test-type level-1
+interface GigabitEthernet1/0/0
+ undo shutdown
+ isis link-quality none incr-cost point-to-point
+ip pool 172.18.1.2 server
+ ip address 172.18.1.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 4.4.4.9 none
+ gateway none 255.255.255.255 section none none none
+ ip address 2.2.2.9 none
+interface Loopback0
+interface Loopback1
+ mpls
+  mpls te metric wide
+ isis prefix-sid index 20
+emdi
+mpls
+ mpls ldp router-id Loopback0

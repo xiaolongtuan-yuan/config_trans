@@ -1,0 +1,29 @@
+hostname LSRB
+mpls lsr-id 2.2.2.2
+mpls
+mpls rsvp-te
+ipv6 router ospf 1
+router ospf [parameter1]
+ opaque-lsa-capability
+ area 0.0.0.0
+router bgp 2.2.2.2
+access-list none none none none 0.0.0.0
+ network 2.2.2.2 mask none
+access-list none none none none 0.0.0.255
+ network 192.168.1.0 mask none
+ network 192.168.2.0 mask none
+ network 192.168.3.0 mask none
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.1.2 255.255.255.0
+interface GigabitEthernet2/0/0
+ ip address 192.168.2.1 255.255.255.0
+ ppp multilink group 10101
+ mpls traffic-eng bandwidth 100000
+ mpls traffic-eng bandwidth none 100000
+interface GigabitEthernet3/0/0
+ ip address 192.168.3.1 255.255.255.0
+ ppp multilink group 10011
+interface LoopBack1
+ ip address 2.2.2.2 255.255.255.255
+return

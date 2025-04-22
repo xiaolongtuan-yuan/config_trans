@@ -1,0 +1,24 @@
+sysname DeviceB
+vlan 10
+interface Vlan10
+ l2-multicast static-group source-address none group-address 1 dot1q vid none
+ vrrp vrid none virtual 10.1.1.1
+ip pool 10.1.1.3 server
+ ip address 10.1.1.3 none
+ gateway none 255.255.255.0 section none none none
+interface 1 mode 10.1.1.1
+interface Port-channel1
+ portswitch
+interface trunk
+ port trunk allow-pass vlan 10
+interface GigabitEthernet1/0/1
+ undo shutdown
+interface access
+ port default vlan 10
+interface GigabitEthernet1/0/2
+controller 1
+emdi
+ e1 1 unframed
+ emdi channel-group on
+interface GigabitEthernet1/0/3
+interface rapid-pvst

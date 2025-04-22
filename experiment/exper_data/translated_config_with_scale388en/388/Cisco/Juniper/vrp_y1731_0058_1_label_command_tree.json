@@ -1,146 +1,168 @@
 {
-    "set interfaces ge-0/0/1": {
-        "template": "set interfaces [parameter1]",
-        "command": "set interfaces ge-0/0/1",
-        "explanation": "Creates a polymer interface.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g., g-1/0/0."
-            }
-        ],
-        "unit 1": {
-            "template": "unit [parameter2]",
-            "command": "unit 1",
-            "explanation": "Configure the unit number of the interface.",
+    "set interfaces": {
+        "set interfaces ge-0/0/1 unit 1 family dot1q vlan-id 200 encapsulation dot1q 200": {
+            "template": "set interfaces [parameter1] unit [parameter2] family dot1q vlan-id [parameter3] encapsulation dot1q [parameter4]",
+            "command": "set interfaces ge-0/0/1 unit 1 family dot1q vlan-id 200 encapsulation dot1q 200",
+            "explanation": "配置接口的VLAN ID和封装类型。",
             "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                },
                 {
                     "name": "unit",
                     "type": "integer",
-                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN ID，用于标识不同的VLAN。"
+                },
+                {
+                    "name": "encapsulation",
+                    "type": "string",
+                    "explanation": "封装类型，例如dot1q。"
                 }
-            ],
-            "family dot1q vlan-id 200": {
-                "template": "family dot1q vlan-id [parameter3]",
-                "command": "family dot1q vlan-id 200",
-                "explanation": "This command configures a logical interface unit with IEEE 802.1Q VLAN tagging, assigning a specific VLAN ID to the interface for traffic segregation.",
-                "parameters": [
-                    {
-                        "name": "vlan-id",
-                        "type": "integer",
-                        "explanation": "VLAN ID, used to identify different VLANs."
-                    }
-                ],
-                "encapsulation dot1q 200": {
-                    "template": "encapsulation dot1q [parameter4]",
-                    "command": "encapsulation dot1q 200",
-                    "explanation": "Configure the VLAN ID and containment type of the interface.",
-                    "parameters": [
-                        {
-                            "name": "encapsulation",
-                            "type": "string",
-                            "explanation": "Cover type, e.g. dot1q."
-                        }
-                    ]
+            ]
+        },
+        "set interfaces ge-0/0/1 unit 1 cfm etherenet domain ma3 mode md": {
+            "template": "set interfaces [parameter1] unit [parameter2] cfm etherenet domain [parameter3] mode [parameter4]",
+            "command": "set interfaces ge-0/0/1 unit 1 cfm etherenet domain ma3 mode md",
+            "explanation": "配置接口的CFM以太网域和模式。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "domain",
+                    "type": "string",
+                    "explanation": "CFM以太网域名。"
+                },
+                {
+                    "name": "mode",
+                    "type": "string",
+                    "explanation": "CFM模式，例如md。"
                 }
-            },
-            "cfm etherenet domain ma3": {
-                "template": "cfm etherenet domain [parameter3]",
-                "command": "cfm etherenet domain ma3",
-                "explanation": "This command configures Ethernet CFM (Connectivity Fault Management) on a specific interface unit, associating it with a defined CFM domain for fault detection and monitoring.",
-                "parameters": [
-                    {
-                        "name": "domain",
-                        "type": "string",
-                        "explanation": "CFM with an etho-network domain name."
-                    }
-                ],
-                "mode md": {
-                    "template": "mode [parameter4]",
-                    "command": "mode md",
-                    "explanation": "Configure the interfaced CFM Ether domain and mode.",
-                    "parameters": [
-                        {
-                            "name": "mode",
-                            "type": "string",
-                            "explanation": "CFM models, for example, md."
-                        }
-                    ]
+            ]
+        },
+        "set interfaces ge-0/0/1 unit 1 cfm event-type all action enable": {
+            "template": "set interfaces [parameter1] unit [parameter2] cfm event-type [parameter3] action [parameter4]",
+            "command": "set interfaces ge-0/0/1 unit 1 cfm event-type all action enable",
+            "explanation": "启用接口上所有CFM事件类型的动作。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "event-type",
+                    "type": "string",
+                    "explanation": "CFM事件类型，例如all。"
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "explanation": "动作，例如enable。"
                 }
-            },
-            "cfm event-type all": {
-                "template": "cfm event-type [parameter3]",
-                "command": "cfm event-type all",
-                "explanation": "This command configures a Connectivity Fault Management (CFM) event type for a specific interface unit to monitor and report network faults or anomalies.",
-                "parameters": [
-                    {
-                        "name": "event-type",
-                        "type": "string",
-                        "explanation": "Type of CFM event, e.g. all."
-                    }
-                ],
-                "action enable": {
-                    "template": "action [parameter4]",
-                    "command": "action enable",
-                    "explanation": "Enables all CFM event type actions on the interface.",
-                    "parameters": [
-                        {
-                            "name": "action",
-                            "type": "string",
-                            "explanation": "Actions, like an enable."
-                        }
-                    ]
+            ]
+        },
+        "set interfaces ge-0/0/1 unit 1 ccm-management interval 1": {
+            "template": "set interfaces [parameter1] unit [parameter2] ccm-management interval [parameter3]",
+            "command": "set interfaces ge-0/0/1 unit 1 ccm-management interval 1",
+            "explanation": "配置CCM管理间隔。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "interval",
+                    "type": "integer",
+                    "explanation": "CCM管理间隔，单位为秒。"
                 }
-            },
-            "ccm-management interval 1": {
-                "template": "ccm-management interval [parameter3]",
-                "command": "ccm-management interval 1",
-                "explanation": "Configure the CCM management interval.",
-                "parameters": [
-                    {
-                        "name": "interval",
-                        "type": "integer",
-                        "explanation": "CCM management interval in seconds."
-                    }
-                ]
-            },
-            "ccm-management transmit": {
-                "template": "ccm-management transmit",
-                "command": "ccm-management transmit",
-                "explanation": "Enables the CCM management transfer.",
-                "parameters": []
-            },
-            "remote-mep index 3": {
-                "template": "remote-mep index [parameter3]",
-                "command": "remote-mep index 3",
-                "explanation": "This command configures a remote Maintenance End Point (MEP) index for a specific interface unit, enabling Ethernet OAM fault detection and monitoring.",
-                "parameters": [
-                    {
-                        "name": "index",
-                        "type": "integer",
-                        "explanation": "A remote MEP index."
-                    }
-                ],
-                "role peer": {
-                    "template": "role [parameter4]",
-                    "command": "role peer",
-                    "explanation": "Configure remote MEP indexes and roles.",
-                    "parameters": [
-                        {
-                            "name": "role",
-                            "type": "string",
-                            "explanation": "Remote MEP roles, for example, peer."
-                        }
-                    ]
+            ]
+        },
+        "set interfaces ge-0/0/1 unit 1 ccm-management transmit": {
+            "template": "set interfaces [parameter1] unit [parameter2] ccm-management transmit",
+            "command": "set interfaces ge-0/0/1 unit 1 ccm-management transmit",
+            "explanation": "启用CCM管理传输。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
                 }
-            },
-            "ccm-management receive": {
-                "template": "ccm-management receive",
-                "command": "ccm-management receive",
-                "explanation": "Enables CCM to manage receivers.",
-                "parameters": []
-            }
+            ]
+        },
+        "set interfaces ge-0/0/1 unit 1 remote-mep index 3 role peer": {
+            "template": "set interfaces [parameter1] unit [parameter2] remote-mep index [parameter3] role [parameter4]",
+            "command": "set interfaces ge-0/0/1 unit 1 remote-mep index 3 role peer",
+            "explanation": "配置远程MEP的索引和角色。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "index",
+                    "type": "integer",
+                    "explanation": "远程MEP的索引。"
+                },
+                {
+                    "name": "role",
+                    "type": "string",
+                    "explanation": "远程MEP的角色，例如peer。"
+                }
+            ]
+        },
+        "set interfaces ge-0/0/1 unit 1 ccm-management receive": {
+            "template": "set interfaces [parameter1] unit [parameter2] ccm-management receive",
+            "command": "set interfaces ge-0/0/1 unit 1 ccm-management receive",
+            "explanation": "启用CCM管理接收。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                }
+            ]
         }
     }
 }

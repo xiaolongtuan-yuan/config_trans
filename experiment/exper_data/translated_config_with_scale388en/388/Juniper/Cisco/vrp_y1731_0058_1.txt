@@ -1,19 +1,15 @@
-interface ge-0/0/1
- encapsulation dot1Q 200
- interface 200
-interface 1 point-to-point
-cfm ethernet cfm md ma3
+mpls ldp router-id ge-0/0/1 none
+interface 1
+ switchport trunk encapsulation 200
+ ethernet cfm mode md
+encapsulation dot1q 200
+ethernet cfm md ma3 level none
+interface all
+ ethernet cfm mode enable
+ ethernet cfm interval 1
+ cfm ma none remote-mep 3
+ cfm ma none remote-mep peer
+cfm ethernet cfm md [parameter1]
  mep domain [parameter1]
   remote-mep [parameter1]
    ccm-management receive
-interface 200
- ethernet cfm mode md
- interface all
-cfm mode enable
-interface all
- ethernet cfm interval 1
-ethernet cfm md 3 level [parameter2]
- mep 3
-  mep mep-id 3 interface none none
-ma peer
- remote-mep mep-id peer

@@ -1,0 +1,21 @@
+hostname P
+mpls lsr-id 192.168.4.4
+mpls
+mpls ldp
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+interface GigabitEthernet2/0/0
+ ip address 10.2.2.1 255.255.255.0
+interface LoopBack0
+ ip address 192.168.4.4 255.255.255.255
+ipv6 router ospf 1
+router ospf 0.0.0.0
+ area 0.0.0.0
+router bgp 192.168.4.4
+access-list none none none none 0.0.0.0
+ network 192.168.4.4 mask none
+access-list none none none none 0.0.0.255
+ network 10.1.1.0 mask none
+ network 10.2.2.0 mask none
+return

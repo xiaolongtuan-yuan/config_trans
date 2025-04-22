@@ -1,6 +1,6 @@
 from pathlib import Path
 import json
-
+import os
 # 读取txt文件
 def txtTojson(file_name):
     with open('{}.txt'.format(file_name), 'r', encoding='utf-8') as f:
@@ -13,7 +13,7 @@ def txtTojson(file_name):
 
 def get_txt_filenames(folder_path):
     folder = Path(folder_path)
-    txt_filenames = [str(file.name) for file in folder.rglob('*.txt')]
+    txt_filenames = [file.stem for file in folder.rglob('*.json')]
     return txt_filenames
 
 
@@ -38,7 +38,19 @@ def abstract_configModule(filenames):
     # print(results)  # 输出: ['dsvpn', 'NE40E', 'abc']
 
 if __name__ == "__main__":
-    folder_path = 'Cisco/'
-    txt_filenames = get_txt_filenames(folder_path)
-    result = abstract_configModule(txt_filenames)
-    print(len(result), '\n', result)
+    folder_path = 'Json_config/Juniper_simplified'
+    txt_filenames = get_txt_filenames(folder_path)[:388]
+    print(len(txt_filenames), '\n', sorted(txt_filenames))
+    error_filename_path = 'error_file_record/error_cisco.json'
+    with open(error_filename_path, 'r', encoding='utf-8') as f:
+        error_filenames = json.load(f)  # 直接作为json加载
+        
+    clean_names = [os.path.splitext(name)[0] for name in error_filenames]
+    correct_filenames = list(set(txt_filenames[:388]) - set(clean_names))
+    print(len(correct_filenames), '\n', sorted(correct_filenames))
+    # 写入json文件
+    test_filenames = 'Json_config/test_filenames.json'
+    with open(test_filenames, 'w', encoding='utf-8') as f:
+        json.dump(sorted(correct_filenames), f, ensure_ascii=False, indent=4)
+    # result = abstract_configModule(txt_filenames)
+    # print(len(result), '\n', result)

@@ -1,140 +1,116 @@
 {
-    "set system host-name DeviceA": {
-        "template": "set system host-name [parameter1]",
-        "command": "set system host-name DeviceA",
-        "explanation": "Configure the host name of the device.",
-        "parameters": [
-            {
-                "name": "hostname",
-                "type": "string",
-                "explanation": "The host name of the equipment is used to identify the equipment in the network."
-            }
-        ]
-    },
-    "set interfaces ge-1/0/0": {
-        "template": "set interfaces [parameter1]",
-        "command": "set interfaces ge-1/0/0",
-        "explanation": "Creates a polymer interface.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g., g-1/0/0."
-            }
-        ],
-        "unit 0": {
-            "template": "unit [parameter2]",
-            "command": "unit 0",
-            "explanation": "Configure the unit number of the interface.",
+    "set system": {
+        "set system host-name DeviceA": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name DeviceA",
+            "explanation": "配置设备的主机名。",
             "parameters": [
                 {
-                    "name": "unit",
-                    "type": "integer",
-                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
-                }
-            ],
-            "family inet address 10.3.1.1/24": {
-                "template": "family inet address [parameter3]/[parameter4]",
-                "command": "family inet address 10.3.1.1/24",
-                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
-                "parameters": [
-                    {
-                        "name": "ip-address",
-                        "type": "string",
-                        "explanation": "The IPv4 address assigned to the interface."
-                    },
-                    {
-                        "name": "subnet-mask",
-                        "type": "integer",
-                        "explanation": "Bits of IPv4 subnet mask."
-                    }
-                ]
-            }
-        }
-    },
-    "set interfaces lo0": {
-        "template": "set interfaces [parameter1]",
-        "command": "set interfaces lo0",
-        "explanation": "Creates a polymer interface.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g., g-1/0/0."
-            }
-        ],
-        "unit 1": {
-            "template": "unit [parameter2]",
-            "command": "unit 1",
-            "explanation": "Configure the unit number of the interface.",
-            "parameters": [
-                {
-                    "name": "unit",
-                    "type": "integer",
-                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
-                }
-            ],
-            "family inet address 33.33.33.33/32": {
-                "template": "family inet address [parameter3]/[parameter4]",
-                "command": "family inet address 33.33.33.33/32",
-                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
-                "parameters": [
-                    {
-                        "name": "ip-address",
-                        "type": "string",
-                        "explanation": "The IPv4 address assigned to the interface."
-                    },
-                    {
-                        "name": "subnet-mask",
-                        "type": "integer",
-                        "explanation": "Bits of IPv4 subnet mask."
-                    }
-                ]
-            }
-        }
-    },
-    "set protocols rip group RIP-Group": {
-        "template": "set protocols rip group [parameter1]",
-        "command": "set protocols rip group RIP-Group",
-        "explanation": "This command configures a RIP (Routing Information Protocol) group named `[parameter1]`, enabling RIP routing within that specific group on a Junos device.",
-        "parameters": [
-            {
-                "name": "group",
-                "type": "string",
-                "explanation": "Name of the RIP protocol group."
-            }
-        ],
-        "neighbor 10.0.0.0/8": {
-            "template": "neighbor [parameter2]/[parameter3]",
-            "command": "neighbor 10.0.0.0/8",
-            "explanation": "Configure the network of neighbours of the RIP protocol group.",
-            "parameters": [
-                {
-                    "name": "network",
+                    "name": "hostname",
                     "type": "string",
-                    "explanation": "Neighbor Network IPv4 address."
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "set interfaces ge-1/0/0 unit 0 family inet address 10.3.1.1/24": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces ge-1/0/0 unit 0 family inet address 10.3.1.1/24",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
                 },
                 {
                     "name": "subnet-mask",
                     "type": "integer",
-                    "explanation": "The number of subnet masks in the neighbourhood network."
+                    "explanation": "IPv4子网掩码的位数。"
                 }
             ]
         },
-        "neighbor 33.0.0.0/8": {
-            "template": "neighbor [parameter2]/[parameter3]",
-            "command": "neighbor 33.0.0.0/8",
-            "explanation": "Configure the network of neighbours of the RIP protocol group.",
+        "set interfaces lo0 unit 1 family inet address 33.33.33.33/32": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces lo0 unit 1 family inet address 33.33.33.33/32",
+            "explanation": "配置环回接口的IPv4地址及子网掩码。",
             "parameters": [
                 {
-                    "name": "network",
+                    "name": "interface",
                     "type": "string",
-                    "explanation": "Neighbor Network IPv4 address."
+                    "explanation": "接口名称，例如lo0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
                 },
                 {
                     "name": "subnet-mask",
                     "type": "integer",
-                    "explanation": "The number of subnet masks in the neighbourhood network."
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "set protocols rip group RIP-Group neighbor 10.0.0.0/8": {
+            "template": "set protocols rip group [parameter1] neighbor [parameter2]/[parameter3]",
+            "command": "set protocols rip group RIP-Group neighbor 10.0.0.0/8",
+            "explanation": "配置RIP协议组的邻居网络。",
+            "parameters": [
+                {
+                    "name": "group",
+                    "type": "string",
+                    "explanation": "RIP协议组的名称。"
+                },
+                {
+                    "name": "network",
+                    "type": "string",
+                    "explanation": "邻居网络的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "邻居网络的子网掩码位数。"
+                }
+            ]
+        },
+        "set protocols rip group RIP-Group neighbor 33.0.0.0/8": {
+            "template": "set protocols rip group [parameter1] neighbor [parameter2]/[parameter3]",
+            "command": "set protocols rip group RIP-Group neighbor 33.0.0.0/8",
+            "explanation": "配置RIP协议组的邻居网络。",
+            "parameters": [
+                {
+                    "name": "group",
+                    "type": "string",
+                    "explanation": "RIP协议组的名称。"
+                },
+                {
+                    "name": "network",
+                    "type": "string",
+                    "explanation": "邻居网络的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "邻居网络的子网掩码位数。"
                 }
             ]
         }

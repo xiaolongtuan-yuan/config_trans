@@ -1,20 +1,20 @@
 hostname DeviceA
-vfi AF4 manual
+l2tp-class AF4
 policy-map MPLS-EXP-OUTBOUND
-mpls traffic-eng bfd none bind interface AF4 reverse-lsp-id none lsp-id none
-route-map none none 5
+interface AF4
+mpls label range none 5
 ip access-list extended DSCP-INBOUND
 tunnel-policy AF4
+mpls ldp router-id ge-0/0/0 none
+interface 0
+ ipv4 address 2.2.2.1 24
+ ipv4 address 3.3.3.1 24
+bfd template DSCP-INBOUND
+mpls ldp router-id MPLS-EXP-OUTBOUND
+mpls ldp router-id ge-0/0/1 none
 class-map match-any AF4
  match dscp af41
  match dscp 18
-policy-map AF4
-policy-map default
-interface ge-0/0/0
- ipv4 address 2.2.2.1 24
- interface ge-0/0/1
-interface 0 point-to-point
-controller DSCP-INBOUND
-mpls ldp router-id MPLS-EXP-OUTBOUND
-interface ge-0/0/1
- ipv4 address 3.3.3.1 24
+router isis
+ net AF4
+ net default

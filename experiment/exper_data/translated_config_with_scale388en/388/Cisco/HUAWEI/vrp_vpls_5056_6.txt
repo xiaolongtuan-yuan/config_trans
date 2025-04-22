@@ -1,0 +1,16 @@
+sysname CE2
+vlan 10
+interface Vlan10
+ip pool 10.1.1.2 server
+ ip address 10.1.1.2 none
+ gateway none 255.255.255.0 section none none none
+interface Port-channel10
+ portswitch
+ port trunk allow-pass vlan 10
+interface GigabitEthernet1/0/0
+ undo shutdown
+controller 10
+emdi
+ e1 10 unframed
+ emdi channel-group on
+interface GigabitEthernet1/0/1

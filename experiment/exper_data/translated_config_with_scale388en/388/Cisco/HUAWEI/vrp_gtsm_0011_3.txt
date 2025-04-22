@@ -1,0 +1,34 @@
+sysname DeviceD
+interface GigabitEthernet1/0/0
+ undo shutdown
+ip pool 10.2.2.2 server
+ ip address 10.2.2.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 10.4.4.9 none
+ gateway none 255.255.255.255 section none none none
+interface Loopback0
+ subscription 10.2.2.9
+ source Loopback0
+  local-source-address ipv4 10.2.2.9 port none
+  local-source-address ipv4 10.3.3.9 port none
+bgp 20
+ router-id 10.4.4.9
+ peer none as-number 20
+ ipv4-family ipv4
+  peer 10.2.2.9 advertise-community
+  peer 10.3.3.9 advertise-community
+ link-state-family unicast
+ ipv4-family unicast
+  import-route ospf 1
+ peer none valid-ttl-hops 2
+ peer none valid-ttl-hops 1
+remote-ip 10.2.2.9
+telemetry
+remote-ip 10.3.3.9
+ipv4-family ipv4
+ undo synchronization
+ospf 10.2.2.0
+ network 10.2.2.0 0.0.0.255
+ area 0
+ network 10.4.4.9 0.0.0.0
+emdi

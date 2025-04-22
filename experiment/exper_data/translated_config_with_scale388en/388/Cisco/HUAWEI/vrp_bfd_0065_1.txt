@@ -1,0 +1,15 @@
+sysname DeviceB
+bfd 120 bind link-bundle peer-ip 120 interface 3 source-ip [parameter4]
+bgp 120
+ min-rx-interval 120
+ peer none bfd min-tx-interval none min-rx-interval 120 detect-multiplier 3
+interface GigabitEthernet1/0/0
+ undo shutdown
+ip pool 10.1.1.2 server
+ ip address 10.1.1.2 none
+ gateway none 255.255.255.0 section none none none
+bfd none bind peer-ip 10.1.1.1 interface none source-ip none auto
+emdi
+segment-routing
+ ipv4 adjacency local-ip-addr none remote-ip-addr 10 sid none
+ptp-adaptive local-ip 20

@@ -1,0 +1,35 @@
+sysname Spoke2
+interface GigabitEthernet1/0/0
+ source GigabitEthernet2/0/0
+ tunnel-protocol gre
+ mpls te tunnel-id 1
+ tunnel protection ipsec profile IPSEC_PROFILE_NAME
+ip pool 10.1.3.10 server
+ ip address 10.1.3.10 none
+ gateway none 255.255.255.0 section none none none
+ ip address 192.168.2.1 none
+ ip address 172.16.1.3 none
+interface GigabitEthernet2/0/0
+interface Tunnel0
+ source GigabitEthernet1/0/0
+ destination 172.16.1.1
+bgp 300
+ router-id 172.16.1.3
+ peer none as-number 100
+ peer none as-number 200
+ ipv4-family ipv4
+  peer 172.16.1.1 advertise-community
+  peer 172.16.1.2 advertise-community
+ peer ospf connect-interface none
+ ipv4-family unicast
+  import-route ospf 1
+  import-route ospf 2
+remote-ip 172.16.1.1
+remote-ip 172.16.1.2
+ospf 300 router-id 172.16.1.3
+ospf 192.168.2.0
+ network 192.168.2.0 0.0.0.255
+ area 0
+ network 10.1.3.0 0.0.0.255
+ area 1
+ospf 300 router-id 10.1.3.10

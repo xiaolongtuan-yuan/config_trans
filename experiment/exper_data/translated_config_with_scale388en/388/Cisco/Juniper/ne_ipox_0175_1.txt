@@ -1,0 +1,20 @@
+set host-name HUAWEI
+set system radius-server 10.1.123.151 port 1813
+set dhcp pool pool1
+set interfaces 172.30.0.0 ip address 172.30.0.0/255.255.255.0
+set interfaces 172.30.0.0 unit [parameter2] no shutdown
+set interfaces 172.30.0.0 unit [parameter2] family iso channel-group radius
+set interfaces 172.30.0.0 ip address 10.1.0.197/255.0.0.0
+set interfaces 172.30.0.0 protocols bgp group rds
+set system services dhcp default-router 172.30.0.1
+set aaa new-model
+set access profile radius accounting-order default
+set access profile radius client radius-server 0
+set access radius-server dynamic-author none
+set vlans GigabitEthernet1/0/1 vlan-interfaces interface GigabitEthernet1/0/1
+set vlans GigabitEthernet1/0/1 vlan-interfaces interface GigabitEthernet1/0/2.1
+set system login user default authentication default none
+set system login user default authentication-method radiusproxy
+set routing-instances rds
+set services analytics subscriptions subscription-name bas
+set subscriber-template bas authentication bind

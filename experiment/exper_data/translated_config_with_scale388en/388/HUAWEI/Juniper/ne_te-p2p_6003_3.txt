@@ -1,0 +1,38 @@
+set system host-name P2
+set routing-options mpls lsr-id 4.4.4.4
+set interfaces [parameter1] family inet enable-mpls
+set interfaces [parameter1] unit [parameter2] mpls
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] family mpls traffic-eng bandwidth max-reservable-bandwidth 20000
+set interfaces [parameter1] unit [parameter2] family mpls bandwidth bc0 20000
+set interfaces [parameter1] unit [parameter2] family mpls ldp enable
+set interfaces [parameter1] unit [parameter2] tunnel destination 2.2.2.2
+set interfaces [parameter1] unit [parameter2] family inet6 ospfv3 area 0.0.0.0
+set interfaces [parameter1] ip address 10.3.1.2/255.255.255.0
+set interfaces [parameter1] ip address 10.4.1.2/255.255.255.0
+set interfaces [parameter1] ip address 4.4.4.4/255.255.255.255
+set protocols mpls traffic-eng rsvp-te
+set protocols mpls traffic-eng cspf
+set protocols mpls traffic-engineering bfd [parameter1] bind interface [parameter2] reverse-lsp-id [parameter3] lsp-id none
+set protocols mpls ldp
+set protocols bgp [parameter1] family inet
+set protocols mpls ldp remote-peer lsrb
+set protocols mpls ldp remote-peer 2.2.2.2
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet1/0/0
+set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet2/0/0
+set protocols ospf area GigabitEthernet1/0/0 interface LoopBack1
+set protocols ospf area GigabitEthernet1/0/0 interface Tunnel1
+set protocols mpls traffic-eng tunnels
+set protocols mpls traffic-eng tunnels tunnel-id 101
+set protocols mpls segment-routing
+set protocols mpls label-switched-path name 1 metric 1
+set routing-options router ospf 1
+set protocols ospf traffic-engineering options none
+set protocols isis level [parameter1] te-enable
+set protocols bgp network 4.4.4.4
+set policy-options policy-statement 4.4.4.4 term 4.4.4.4 from route-filter none/0.0.0.0 none
+set policy-options policy-statement 4.4.4.4 term 4.4.4.4 from route-filter none/0.0.0.255 none
+set protocols bgp network 10.3.1.0
+set protocols bgp network 10.4.1.0
+set protocols ospf mpls traffic-eng area none
+set unit 10000 family mpls traffic-eng bandwidth max-reservable-bandwidth 10000

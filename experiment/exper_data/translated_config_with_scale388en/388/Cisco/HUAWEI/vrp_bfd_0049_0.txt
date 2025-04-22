@@ -1,0 +1,28 @@
+sysname PE1
+interface GigabitEthernet1/0/1
+ undo shutdown
+ip pool 10.1.1.1 server
+ ip address 10.1.1.1 none
+ gateway none 255.255.255.0 section none none none
+ ip address 1.1.1.1 none
+ gateway none 255.255.255.255 section none none none
+mpls ldp remote-peer none
+mpls
+ mpls traffic-eng enable
+interface Loopback0
+interface Tunnel1
+ ip address unnumbered interface Loopback0
+ destination 2.2.2.2
+ mpls te tunnel-id 1
+ ospf cost none
+bgp 1
+ ipv4-family unicast
+  import-route ospf 1
+isis Loopback0
+ mpls traffic-eng router-id Loopback0
+ospf 1.1.1.1
+ network 1.1.1.1 0.0.0.0
+ area 0
+ network 10.1.1.0 0.0.0.255
+bfd aaa bind mpls-te interface none reverse-te lsr-id none tunnel-id none auto
+mpls lsr-id 2

@@ -1,0 +1,30 @@
+!
+hostname PE1
+!
+cfm global enable
+!
+evpn
+ vpn-instance evpna
+  route-distinguisher 100:1
+  vpn-target 1:1 export-extcommunity
+  vpn-target 1:1 import-extcommunity
+!
+bridge-domain 10
+ member evpn evpna
+!
+interface GigabitEthernet1/0/1.1
+ encapsulation dot1Q 2
+ bridge-domain 10
+ cdp enable
+ pppoe enable
+!
+cfm md md1
+ ma ma1
+  map bridge-domain 10
+  mep 1 interface GigabitEthernet1/0/1.1 outgoing
+  mep 1 ccm-send enable
+  remote-mep 2
+  remote-mep ccm-receive enable
+  test-id 1 mep 1 remote-mep 2
+  loss-measure send test-id 1 interval 1000 count 20
+!

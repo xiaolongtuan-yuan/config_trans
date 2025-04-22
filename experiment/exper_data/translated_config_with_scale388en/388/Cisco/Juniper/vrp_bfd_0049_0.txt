@@ -1,0 +1,20 @@
+set host-name PE1
+set vlans GigabitEthernet1/0/1 vlan-interfaces interface GigabitEthernet1/0/1
+set vlans GigabitEthernet1/0/1 vlan-interfaces interface Loopback0
+set vlans GigabitEthernet1/0/1 vlan-interfaces interface Tunnel1
+set interfaces [parameter1] unit [parameter2] no shutdown
+set interfaces [parameter1] unit [parameter2] family mpls traffic-eng tunnels
+set interfaces [parameter1] unit [parameter2] family mpls traffic-engineering rsvp-te
+set interfaces [parameter1] unit [parameter2] tunnel destination 2.2.2.2
+set interfaces [parameter1] unit [parameter2] family mpls traffic-eng tunnel-id 1
+set interfaces [parameter1] ip address 10.1.1.1/255.255.255.0
+set interfaces [parameter1] ip address 1.1.1.1/255.255.255.255
+set protocols mpls ip
+set protocols mpls traffic-eng tunnels
+set routing-options router ospf 1
+set protocols traffic-engineering mpls router-id Loopback0
+set router ospf area 0 network 1.1.1.1/0.0.0.0 none
+set router ospf area 0 network 10.1.1.0/0.0.0.255 none
+set protocols ospf traffic-engineering
+set protocols mpls traffic-engineering bfd-mode aaa
+set protocols mpls traffic-engineering bfd aaa bind interface aaa reverse-lsp-id 2.2.2.2 lsp-id 2

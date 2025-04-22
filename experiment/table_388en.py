@@ -6,6 +6,9 @@
 """
 import json
 import os
+import sys
+sys.path.append("/data/public/hrx/Repositories/config_trans")
+import experiment
 
 from experiment.compute_bleu import compute_embded_similarity
 from experiment.syntax_correctness import load_config_model, cul_view_accuracy
@@ -54,7 +57,7 @@ if __name__ == '__main__':
 
                 translated_config_dir = os.path.join(translated_config_base, str(scale), source_vendor, target_vendor)
                 trannlated_config_files = [f for f in os.listdir(translated_config_dir) if f.endswith('.txt') and not f.endswith('text.txt')]
-                real_config_dir = f'./exper_data/lable/{target_vendor}'
+                real_config_dir = f'./exper_data/label/{target_vendor}'
 
                 # semantic_similarity = compute_embded_similarity(translated_config_dir, real_config_dir,
                 #                                                 trannlated_config_files)

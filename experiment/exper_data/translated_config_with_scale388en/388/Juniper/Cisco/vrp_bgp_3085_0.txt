@@ -1,0 +1,13 @@
+hostname DeviceA
+mpls ldp router-id ge-1/0/0 none
+interface 0
+ ipv4 address 10.20.1.1 24
+mpls traffic-eng router-id 1.1.1.1
+router bgp 200
+ address-family 10.20.1.1
+  neighbor none send-community EBGP
+ neighbor 10.20.1.2 activate
+ address-family ipv4 unicast
+ neighbor none password none "$9$encrypted-password"
+address-family external vrf [parameter2]
+ import route external

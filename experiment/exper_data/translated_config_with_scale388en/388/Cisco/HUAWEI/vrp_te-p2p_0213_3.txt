@@ -1,0 +1,24 @@
+sysname LSRD
+mpls ldp remote-peer ldp
+mpls
+ mpls traffic-eng enable
+isis none
+ cost-style wide
+ mpls traffic-eng level-2
+network-entity 49.0001.0040.0400.4004.00
+nqa test-instance level-2-only [parameter2]
+ test-type level-2-only
+interface GigabitEthernet1/0/1
+ undo shutdown
+ isis link-quality none incr-cost point-to-point
+ip pool 10.1.6.2 server
+ ip address 10.1.6.2 none
+ gateway none 255.255.255.0 section none none none
+ ip address 10.1.4.2 none
+ ip address 10.1.7.1 none
+ ip address 4.4.4.4 none
+ gateway none 255.255.255.255 section none none none
+mpls ldp remote-peer none
+interface GigabitEthernet1/0/2
+interface GigabitEthernet1/0/3
+interface Loopback1

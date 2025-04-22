@@ -1,0 +1,45 @@
+hostname PE1
+vpn instance evrf1
+ip vrf 100:1
+ rd 100:1
+router bgp [parameter1]
+ neighbor 3.3.3.3 remote-as none
+evpn vpn-instance 1:1
+vfi 1:1
+ vpn-id 1:1
+interface GigabitEthernet1/0/0
+ tunnel mpls traffic-eng tunnel-id 1
+ no shutdown
+ ip router isis 1
+cfm ethernet cfm md 100
+ ve id 100
+ mep domain 100
+  remote-mep 200
+mpls lsr-id 1.1.1.1
+mpls
+mpls ldp
+controller E1 0001.0002.0003.0004.0005
+encapsulation dot1q 1
+interface GigabitEthernet2/0/0
+ ip address 10.1.1.1 255.255.255.0
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+ bind peer-ip 3.3.3.3 interface none
+ ip unnumbered LoopBack1
+ source-interface 1.1.1.1
+router bgp 100
+ address-family ipv4 unicast
+ no synchronization
+bfd all-interfaces
+mpls l2vpn 3.3.3.3
+l2vpn
+tunnel-policy none
+ipv6 router ospf 1
+router ospf 0.0.0.0
+ area 0.0.0.0
+access-list none none none none 0.0.0.0
+ network 1.1.1.1 mask none
+access-list none none none none 0.0.0.255
+ network 10.1.1.0 mask none
+return
+interface GigabitEthernet1/0/0.1

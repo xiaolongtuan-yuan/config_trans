@@ -1,0 +1,24 @@
+hostname DeviceC
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ipv6 access-list [parameter1]
+ ipv6 address none
+ permit ipv6 none any
+interface GigabitEthernet2/0/0
+router bgp 200
+ neighbor 2001:db8:101::2 remote-as none
+ neighbor 2001:db8:102::2 remote-as none
+ address-family ipv6 unicast
+ no synchronization
+router ospf 3.3.3.3
+ router-id 3.3.3.3
+access-list none none none none 96
+ network 2001:db8:101:: mask none
+ network 2001:db8:102:: mask none
+mpls l2vpn 2001:db8:101::2
+bfd all-interfaces
+ bind peer-ip 2001:db8:101::2 interface none
+ bind peer-ip 2001:db8:102::2 interface none
+mpls l2vpn 2001:db8:102::2
+return

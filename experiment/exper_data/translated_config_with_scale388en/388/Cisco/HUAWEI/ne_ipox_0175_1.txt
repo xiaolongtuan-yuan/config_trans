@@ -1,0 +1,26 @@
+sysname HUAWEI
+radius-server group radius
+ radius-server authentication 10.1.123.151 none weight none
+ radius-server authentication none 1812
+ radius-server accounting none 1813
+ radius-server shared-key none
+aaa
+ domain pool1
+  ip-pool pool1
+interface GigabitEthernet1/0/1
+ undo shutdown
+ip pool 172.30.0.0 bas local
+ ip address 172.30.0.0 none
+ gateway none 255.255.255.0
+ip pool 172.30.0.1 server
+ gateway 172.30.0.1 255.0.0.0 section none none none
+ ip address 10.1.0.197 none
+interface GigabitEthernet1/0/2.1
+ bas
+  access-type none default-domain authentication radiusproxy
+ authentication-method none
+aaa authentication-scheme default
+bgp rds
+ group radius internal
+radius-client 10.1.0.201 mask none shared-key-cipher 0 server-group none
+pw-template bas
