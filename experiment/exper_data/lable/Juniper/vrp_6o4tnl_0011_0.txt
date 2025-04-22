@@ -1,0 +1,14 @@
+set system host-name DeviceA
+
+set interfaces ge-1/0/0 unit 0 family inet address 1.1.1.1/8
+
+set interfaces ge-1/0/1 unit 0 family inet6 address 2002:101:101:1::1/64
+
+set interfaces gr-10 unit 0 family inet6 address 2002:101:101::1/64
+set interfaces gr-10 unit 0 tunnel source ge-1/0/0.0
+set interfaces gr-10 unit 0 tunnel mode gre6
+
+set routing-options rib inet6.0 static route ::/0 next-hop 2002:202:202::1
+set routing-options rib inet6.0 static route 2002::/16 next-hop gr-10.0
+
+commit

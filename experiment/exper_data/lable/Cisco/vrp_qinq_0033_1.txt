@@ -1,0 +1,31 @@
+hostname PE2
+!
+mpls label protocol ldp
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+!
+interface GigabitEthernet1/0/1.1
+ encapsulation dot1q 100
+ xconnect vfi ldp1
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 192.168.2.2 255.255.255.252
+ mpls ip
+!
+interface GigabitEthernet1/0/3
+ no shutdown
+ ip address 192.168.3.2 255.255.255.252
+ mpls ip
+!
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255
+!
+router ospf 1
+ area 0
+ network 2.2.2.9 0.0.0.0 area 0
+ network 192.168.2.0 0.0.0.3 area 0
+ network 192.168.3.0 0.0.0.3 area 0
+!
+end

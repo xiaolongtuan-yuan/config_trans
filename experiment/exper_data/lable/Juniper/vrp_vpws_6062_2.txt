@@ -1,0 +1,17 @@
+set system host-name PE1
+set protocols ldp discovery transport-address loopback1
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-0/0/1 unit 0 family inet address 192.168.1.1/24
+set protocols mpls label-binding protocol ldp
+set protocols mpls router-id loopback1 force
+set protocols mpls ip
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+set protocols mpls vfi vPN1 interface ge-0/0/0.0 manual vpi 100 vcid 100 route-distinguisher 100:1 import-route-target 100:1
+set routing-options instance vrf vPN1 export-route-target 100:1
+set protocols bgp group external peer-as 100 local-address loopback1
+set protocols bgp group external neighbor 3.3.3.9 activate family inet
+set protocols bgp group external neighbor 3.3.3.9 activate family mpls l2vpn plsgmp inactive
+set routing-options router-id lo0
+set protocols ospf area 0 interface ge-0/0/0.0
+set protocols ospf area 0 interface ge-0/0/1.0
+set protocols ospf area 0 interface lo0.0

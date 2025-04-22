@@ -1,0 +1,25 @@
+set interfaces ge-3/0/0 unit 0 family inet address 172.16.6.1/24
+set interfaces ge-3/0/3 unit 0 family inet address 172.16.4.2/24
+set interfaces ge-1/0/3 unit 0 family inet address 172.16.1.2/24
+
+set routing-options router-id 3.3.3.3
+
+set protocols bgp group INTERNAL type internal
+set protocols bgp group INTERNAL local-address 3.3.3.3
+set protocols bgp group INTERNAL neighbor 172.16.1.1 peer-as 65008
+set protocols bgp group INTERNAL neighbor 172.16.4.1 peer-as 65008
+
+set protocols bgp group EXTERNAL type external
+set protocols bgp group EXTERNAL local-address 3.3.3.3
+set protocols bgp group EXTERNAL neighbor 172.16.6.2 peer-as 65009
+
+set protocols bgp group INTERNAL family inet unicast
+set protocols bgp group INTERNAL neighbor 172.16.1.1 family inet unicast
+set protocols bgp group INTERNAL neighbor 172.16.4.1 family inet unicast
+
+set protocols bgp group EXTERNAL family inet unicast
+set protocols bgp group EXTERNAL neighbor 172.16.6.2 family inet unicast
+
+set policy-options policy-statement REDIST-CONNECTED term 1 from protocol direct
+set policy-options policy-statement REDIST-CONNECTED term 1 then accept
+set protocols bgp export REDIST-CONNECTED

@@ -1,0 +1,37 @@
+#
+sysname RR1
+#
+interface GigabitEthernet3/0/1
+ undo shutdown
+ ip address 172.16.4.1 255.255.255.0
+#
+interface GigabitEthernet3/0/2
+ undo shutdown
+ ip address 172.16.2.2 255.255.255.0
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 172.16.6.1 255.255.255.0
+#
+bgp 65009
+ router-id 4.4.4.4
+ peer 172.16.2.1 as-number 65009
+ peer 172.16.4.2 as-number 65009
+ peer 172.16.6.2 as-number 65009
+ #
+ ipv4-family unicast
+  undo synchronization 
+  reflect change-path-attribute
+  import-route direct
+  peer 172.16.2.1 enable
+  peer 172.16.2.1 route-policy policy1 export
+  peer 172.16.2.1 reflect-client
+  peer 172.16.4.2 enable
+  peer 172.16.4.2 route-policy policy1 export
+  peer 172.16.6.2 enable
+  peer 172.16.6.2 route-policy policy1 export
+#
+route-policy policy1 permit node 10
+ apply local-preference 130
+#
+return

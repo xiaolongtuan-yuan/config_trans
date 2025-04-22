@@ -1,0 +1,25 @@
+#
+sysname DeviceB
+#
+bfd
+#
+isis 1
+ is-level level-2
+ network-entity aa.2222.2222.2222.00
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.2 255.255.255.0
+ isis enable 1
+ isis bfd static
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.2.1.1 255.255.255.0
+ isis enable 1
+#
+bfd btoa bind peer-ip 10.1.1.1 interface GigabitEthernet1/0/0
+ discriminator local 2
+ discriminator remote 1
+#
+return

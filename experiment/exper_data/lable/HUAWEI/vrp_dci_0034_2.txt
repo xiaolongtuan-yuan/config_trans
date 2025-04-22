@@ -1,0 +1,46 @@
+#
+sysname PE-AGG
+#
+mpls lsr-id 3.3.3.3
+#
+mpls
+#
+mpls l2vpn
+#
+vsi vsi1 bd-mode
+ pwsignal ldp
+  vsi-id 1
+  peer 1.1.1.1  
+  peer 2.2.2.2 
+  protect-group 10 
+   protect-mode pw-redundancy master
+   peer 1.1.1.1 preference 1
+   peer 2.2.2.2 preference 2
+#
+bridge-domain 10
+ l2 binding vsi vsi1
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.1.13.3 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip address 10.2.13.3 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack1
+ ip address 3.3.3.3 255.255.255.255
+#
+ospf 1
+ area 0.0.0.0
+  network 3.3.3.3 0.0.0.0
+  network 10.1.13.0 0.0.0.255
+  network 10.2.13.0 0.0.0.255
+#               
+return

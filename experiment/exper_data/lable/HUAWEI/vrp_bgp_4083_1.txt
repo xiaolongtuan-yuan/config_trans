@@ -1,0 +1,36 @@
+#
+sysname DeviceB
+#
+bfd
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.20.1.2 255.255.255.0
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ip address 172.16.1.1 255.255.255.0
+#
+bgp 200
+ router-id 2.2.2.2
+ peer 10.1.1.2 as-number 200
+ peer 10.20.1.1 as-number 100
+ peer 10.20.1.1 ebgp-max-hop 255
+ peer 10.20.1.1 bfd min-tx-interval 100 min-rx-interval 100 detect-multiplier 4
+ peer 10.20.1.1 bfd enable
+#
+ ipv4-family unicast
+  undo synchronization 
+  network 172.16.1.0 255.255.255.0
+  peer 10.1.1.2 enable
+  peer 10.20.1.1 enable
+  peer 10.20.1.1 route-policy 10 export
+#
+route-policy 10 permit node 10
+ apply cost 100
+#
+return

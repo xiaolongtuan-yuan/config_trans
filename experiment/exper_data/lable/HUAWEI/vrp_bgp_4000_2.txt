@@ -1,0 +1,23 @@
+#
+sysname DeviceC
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 192.168.2.2 255.255.255.0
+#
+bgp 200
+ router-id 3.3.3.3
+ peer 192.168.2.1 as-number 200
+ #
+ ipv4-family unicast
+  undo synchronization
+  filter-policy ip-prefix in import
+  peer 192.168.2.1 enable
+#
+ospf 1
+ area 0.0.0.0
+  network 192.168.2.0 0.0.0.255
+#
+ip ip-prefix in index 10 permit 172.16.18.0 24
+#
+return

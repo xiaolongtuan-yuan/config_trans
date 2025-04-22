@@ -1,0 +1,32 @@
+#
+ sysname DeviceB
+#
+ vlan batch 10 100 to 200
+#
+stp region-configuration
+ instance 1 vlan 10 100 to 200
+#
+erps ring 1
+ control-vlan 10
+ protected-instance 1
+ version v2
+ wtr-timer 6
+ guard-timer 100
+#
+interface GigabitEthernet1/0/1
+ portswitch
+ undo shutdown
+ port link-type trunk
+ port trunk allow-pass vlan 10 100 to 200
+ stp disable
+ erps ring 1 rpl owner
+#
+interface GigabitEthernet1/0/2
+ portswitch
+ undo shutdown
+ port link-type trunk
+ port trunk allow-pass vlan 10 100 to 200
+ stp disable
+ erps ring 1
+#
+return

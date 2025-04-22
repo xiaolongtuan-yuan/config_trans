@@ -1,0 +1,26 @@
+hostname CE1
+
+vlan batch 2
+
+vlan 2
+
+interface Vlan2
+ ip address 192.168.1.11 255.255.255.0
+
+interface Port-channel10
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan 2
+ lacp rate fast
+ channel-protocol lacp
+ channel-group 10 mode active
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ channel-group 10 mode active
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ channel-group 10 mode active
+
+end

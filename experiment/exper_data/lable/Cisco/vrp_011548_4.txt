@@ -1,0 +1,22 @@
+hostname CE2
+
+cfm version standard
+cfm
+
+interface GigabitEthernet1/0/1
+ no shutdown
+ switchport
+ switchport trunk allowed vlan 10
+
+cfm mep domain md2 level 6
+cfm ma md2 ma2
+cfm ma md2 ma2 mpls vlan 10
+cfm ma md2 ma2 mep 62 interface gigabitEthernet1/0/1 direction outward
+cfm ma md2 ma2 ccm-interval 10000
+cfm ma md2 ma2 mep 62 ccm-send enable
+cfm ma md2 ma2 remote-mep 61
+cfm ma md2 ma2 remote-mep 61 ccm-receive enable
+cfm ma md2 ma2 ais enable
+cfm ma md2 ma2 ais suppress-alarm
+
+end

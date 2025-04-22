@@ -1,0 +1,21 @@
+set system host-name DeviceB
+set protocols bfd
+set interfaces ge-1/0/0 unit 0 family inet address 192.168.1.1/24
+set interfaces ge-2/0/0 unit 0 family inet
+set interfaces ge-2/0/0 unit 1 vlan-id 10
+set interfaces ge-2/0/0 unit 1 family inet address 10.1.1.2/24
+set protocols vrrp group 1 interface ge-2/0/0.1
+set protocols vrrp group 1 virtual-address 10.1.1.100
+set protocols vrrp group 1 priority 100
+set protocols vrrp group 1 preempt
+set protocols vrrp group 1 track bfd-session 2
+set protocols arp interface ge-2/0/0.1 broadcast
+set protocols bfd session atob
+set protocols bfd session atob local-address 10.1.1.2
+set protocols bfd session atob neighbor 10.1.1.1
+set protocols bfd session atob local-discriminator 2
+set protocols bfd session atob remote-discriminator 1
+set protocols bfd session atob vlan-id 10
+set protocols ospf area 0 interface ge-1/0/0
+set protocols ospf area 0 interface ge-2/0/0.1
+commit

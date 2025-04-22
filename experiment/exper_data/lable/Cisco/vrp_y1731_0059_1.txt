@@ -1,0 +1,19 @@
+hostname PE3
+
+interface GigabitEthernet3/0/1.1
+encapsulation dot1q 200
+
+cfm version 2
+cfm enable
+
+cfm mep domain md3
+cfm mep domain md3 service ma3
+cfm mep domain md3 service ma3 mep 4
+cfm mep domain md3 service ma3 mep 4 interface GigabitEthernet3/0/1.1 vlan 200
+cfm mep domain md3 service ma3 mep 4 ccm-send
+cfm mep domain md3 service ma3 remote-mep 3
+cfm mep domain md3 service ma3 remote-mep 3 ccm-receive
+cfm mep domain md3 service ma3 test 1 mep 4
+cfm mep domain md3 service ma3 test 1 loss-measure dual-ended continual
+
+return

@@ -1,0 +1,47 @@
+hostname PE2
+!
+mpls label protocol ldp
+!
+mpls traffic-eng tunnels
+!
+ip explicit-path name path2asbr2
+ next-address 3.3.3.3
+!
+ip explicit-path name path2pe1
+ next-address 1.1.1.1
+!
+segment-routing mpls
+!
+router isis
+ net 49.0001.0000.0000.0004.00
+ metric-style wide
+ segment-routing mpls
+!
+interface GigabitEthernet1/0/0
+ no shut
+ ip address 10.9.1.2 255.255.255.0
+ isis network point-to-point
+ mpls ip
+ mpls traffic-eng tunnels
+!
+interface Loopback1
+ ip address 4.4.4.4 255.255.255.255
+ isis network point-to-point
+ mpls ip
+!
+interface Tunnel2
+ ip unnumbered Loopback1
+ tunnel mode mpls traffic-eng
+ tunnel destination 3.3.3.3
+ tunnel mpls traffic-eng autoroute announce
+ tunnel mpls traffic-eng path-option 1 explicit name path2asbr2
+ tunnel mpls traffic-eng binding-sid 3000
+!
+interface Tunnel3
+ ip unnumbered Loopback1
+ tunnel mode mpls traffic-eng
+ tunnel destination 1.1.1.1
+ tunnel mpls traffic-eng autoroute announce
+ tunnel mpls traffic-eng path-option 1 explicit name path2pe1
+!
+end

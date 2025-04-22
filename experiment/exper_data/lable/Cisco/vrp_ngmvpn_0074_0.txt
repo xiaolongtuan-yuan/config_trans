@@ -1,0 +1,22 @@
+hostname CE1
+ip multicast-routing
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 192.168.3.1 255.255.255.0
+ ip pim sparse-mode
+ exit
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 192.168.1.1 255.255.255.0
+ ip pim sparse-mode
+ exit
+router bgp 65003
+ neighbor 192.168.1.2 remote-as 100
+ !
+ address-family ipv4
+  no synchronization
+  network 192.168.1.0 mask 255.255.255.0
+  neighbor 192.168.1.2 activate
+ exit-address-family
+ip pim rp-address 192.168.3.1
+end

@@ -1,0 +1,19 @@
+set system host-name DeviceC
+
+set class-of-service forwarding-classes queue 3 name AF3
+set class-of-service forwarding-classes queue 3 dscp af31
+set class-of-service forwarding-classes queue 3 dscp af32
+set class-of-service forwarding-classes queue 3 dscp af33
+
+set policy-options policy-statement MPLS-PHB term AF3 from forwarding-class AF3
+set policy-options policy-statement MPLS-PHB term AF3 then mpls-exp-marking 5
+
+set interfaces ge-0/0/0 unit 0 family inet address 4.4.4.1/24
+set interfaces ge-0/0/0 unit 0 family mpls
+set interfaces ge-0/0/0 disable
+delete interfaces ge-0/0/0 disable
+
+set interfaces ge-0/0/1 unit 0 family inet address 5.5.5.1/24
+set interfaces ge-0/0/1 unit 0 family mpls
+set interfaces ge-0/0/1 disable
+delete interfaces ge-0/0/1 disable

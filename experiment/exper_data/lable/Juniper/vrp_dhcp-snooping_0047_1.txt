@@ -1,0 +1,25 @@
+set system host-name DHCP-relay
+
+set forwarding-options dhcp-relay
+set forwarding-options dhcp-relay dhcp-snooping
+set forwarding-options dhcp-relay arp-inspection dhcp-snooping enable
+
+set forwarding-options dhcp-relay vlan whitelist whitelist1
+set forwarding-options dhcp-relay binding 1 10.1.2.2/24 10.1.1.2/24 udp 68 67
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.2.1/24
+set interfaces ge-1/0/0 unit 0 family inet dhcp-relay server 10.1.1.2
+set interfaces ge-1/0/0 unit 0 family inet dhcp-relay option-82
+
+set forwarding-options dhcp-relay dhcp-snooping
+set forwarding-options dhcp-relay arp-inspection trust
+set forwarding-options dhcp-relay arp-inspection limit rate 10
+set forwarding-options dhcp-relay ip-inspection limit rate 10
+set forwarding-options dhcp-relay option-82 replace
+set forwarding-options dhcp-relay option-82 keep
+
+set forwarding-options dhcp-relay binding 00e0.fc5e.008a 10.1.3.1 interface ge-1/0/0
+
+set interfaces ge-1/0/1 unit 0 family inet address 10.1.1.1/24
+set forwarding-options dhcp-relay dhcp-snooping
+set forwarding-options dhcp-relay dhcp-snooping trusted

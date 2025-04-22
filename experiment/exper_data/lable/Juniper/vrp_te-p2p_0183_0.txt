@@ -1,0 +1,17 @@
+set system host-name LSRA
+set protocols mpls lsr-id 1.1.1.1
+set protocols mpls traffic-engineering
+
+set protocols mpls static-lsp ingress Tunnel10 to 3.3.3.3 next-hop 2.1.1.2 push 20
+set protocols mpls static-lsp egress Tunnel20 ingress GigabitEthernet1/0/0 pop 130
+
+set interfaces ge-1/0/0 unit 0 family inet address 2.1.1.1/24
+set interfaces ge-1/0/0 unit 0 family mpls
+set interfaces ge-1/0/0 disable false
+
+set interfaces lo0 unit 1 family inet address 1.1.1.1/32
+
+set interfaces gr-0/0/10 unit 0 family inet address 0.0.0.0
+set interfaces gr-0/0/10 unit 0 tunnel source lo0.1
+set interfaces gr-0/0/10 unit 0 tunnel destination 3.3.3.3
+set protocols mpls traffic-engineering static-lsp ingress Tunnel10 lsp-id 100

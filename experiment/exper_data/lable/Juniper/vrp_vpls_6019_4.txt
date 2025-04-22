@@ -1,0 +1,25 @@
+set system host-name PE2
+
+set protocols mpls
+set protocols l2vpn
+
+set interfaces gigabit-ethernet1/0/0 unit 0 family mpls
+set interfaces gigabit-ethernet1/0/0 unit 0 family ip address 192.168.10.2/30
+set interfaces gigabit-ethernet1/0/0 unit 0 family mpls ldp auto-config
+
+set interfaces gigabit-ethernet2/0/0 unit 1 encapsulation dot1q 10
+set interfaces gigabit-ethernet2/0/0 unit 1 family vfi bgp-1
+set interfaces gigabit-ethernet2/0/0 unit 1 family vfi bgp-1 vrf-id 100:1
+
+set routing-options router-id 3.3.3.9
+set protocols bgp group neighbor 1.1.1.9 as 100
+set protocols bgp group neighbor 1.1.1.9 update-source lo0.0
+
+set interfaces lo0 unit 0 family inet address 3.3.3.9/32
+
+set routing-options static route 0.0.0.0/0 next-hop 1.1.1.9
+
+set protocols ospf area 0 interface ge-1/0/0.0
+set protocols ospf area 0 interface lo0.0
+
+set interfaces gigabit-ethernet2/0/0 unit 1 family l2vlan protocol vxlan

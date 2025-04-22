@@ -1,0 +1,64 @@
+hostname LSRC
+
+mpls label protocol ldp
+
+mpls traffic-eng tunnels
+
+isis
+
+ router isis
+
+ isis circuit-type level-2-only
+
+ isis metric-style wide
+
+ address-family ipv4 unicast
+
+  network 10.3.1.1 0.0.0.0
+
+  mpls traffic-eng level-2
+
+ exit-address-family
+
+interface GigabitEthernet1/0/0
+
+ no shutdown
+
+ ip address 10.3.1.1 255.255.255.0
+
+ mpls ip
+
+ isis network point-to-point
+
+ mpls traffic-eng tunnels
+
+ mpls traffic-eng administrative-weight 100000
+
+ isis metric 10
+
+ mpls traffic-eng autoroute announce
+
+interface GigabitEthernet2/0/0
+
+ no shutdown
+
+ ip address 10.2.1.2 255.255.255.0
+
+ mpls ip
+
+ isis network point-to-point
+
+ mpls traffic-eng tunnels
+
+ isis metric 10
+
+ mpls traffic-eng autoroute announce
+
+interface Loopback1
+
+ ip address 3.3.3.9 255.255.255.255
+
+ isis network point-to-point
+
+exit
+

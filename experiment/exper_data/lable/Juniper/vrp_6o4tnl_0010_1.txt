@@ -1,0 +1,11 @@
+set system host-name DeviceB
+
+set interfaces ge-0/0/0 unit 0 family inet address 2.2.2.2/8
+
+set interfaces ge-0/0/1 unit 0 family inet6 address 2002:202:202:1::1/64
+
+set interfaces st0.10 unit 0 family inet6 address 2002:202:202::1/64
+set interfaces st0.10 unit 0 tunnel source ge-0/0/0
+set interfaces st0.10 unit 0 tunnel encapsulation sit
+
+set routing-options rib inet6.0 static route 2002::/16 next-hop st0.10

@@ -1,0 +1,16 @@
+set system host-name DeviceB
+set routing-options rib inet6.0 static
+set interfaces ge-1/0/1 unit 0 family inet6 address 2001:DB8:3::1/64
+set interfaces ge-1/0/1 unit 0 family inet6 nd dad attempts 0
+set interfaces ge-1/0/2 unit 0 family inet6 address 2001:DB8:2::2/64
+set interfaces ge-1/0/2 unit 0 family inet6 nd dad attempts 0
+set interfaces ge-1/0/3 unit 0 family inet6 address 2001:DB8:1::2/64
+set interfaces ge-1/0/3 unit 0 family inet6 nd dad attempts 0
+set interfaces ge-1/0/3 unit 0 family inet6 vrrp-group 1 virtual-address 2001:DB8:1::1
+set forwarding-options dhcp-relay family inet6 server-group dhcpv6-server 2001:DB8:2::1
+set forwarding-options dhcp-relay family inet6 active-server-group dhcpv6-server
+set forwarding-options dhcp-relay family inet6 interface ge-1/0/3
+set forwarding-options dhcp-relay family inet6 pd-route degrade-cost 100
+set interfaces ge-1/0/3 backup-options interface ge-1/0/3
+set interfaces ge-1/0/3 backup-options enable
+set interfaces ge-1/0/3 unit 0 family inet6 vrrp-group 1 virtual-address 2001:DB8:1::1
