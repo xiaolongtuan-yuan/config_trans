@@ -1,3 +1,4 @@
+import json
 import sys
 import time
 from pathlib import Path
@@ -30,7 +31,7 @@ def save_parsed_config(parsed_file_path, file_mane, parsed_config):
     if not os.path.exists(parsed_file_path):
         os.makedirs(parsed_file_path)
     with open(parsed_file_path + '/' + file_mane, 'w', encoding='utf-8') as file:
-        file.write(parsed_config)
+        json.dump(parsed_config, file)
 
 def prompt_massage_for_vendors(vendor):
     project_root = Path(__file__).parent.parent
@@ -80,6 +81,7 @@ def parse_config(client, model_name, prompt, messages, config):
                 }
             )
             new_text = response.choices[0].message.content
+            new_text = json.loads(new_text)
             return new_text
         except Exception as e:
             retry_count += 1
@@ -91,7 +93,7 @@ def parse_config(client, model_name, prompt, messages, config):
 
 def process_file_service(config:str, vendor, client, model_name):
     prompt, messages = prompt_massage_for_vendors(vendor)
-    response = parse_config(client, model_name, prompt, messages, config)
+    response = str(parse_config(client, model_name, prompt, messages, config))
     return response # 作为一个输出指标
 
 def process_file(config_file, full_config_path, save_path, vendor, client, model_name):
@@ -104,11 +106,6 @@ def process_file(config_file, full_config_path, save_path, vendor, client, model
     config = load_config(full_config_path, config_file)
     response = parse_config(client, model_name, prompt, messages, config)
     save_parsed_config(save_path, config_file, response)
-
-def process_file_service(config, vendor, client, model_name):
-    prompt, messages = prompt_massage_for_vendors(vendor)
-    response = parse_config(client, model_name, prompt, messages, config)
-    return response
 
 
 if __name__ == "__main__":
@@ -125,6 +122,8 @@ if __name__ == "__main__":
     full_config_path =  str(project_root / 'dataset_multi_vendor_config/{}/{}'.format(config_path, vendor))
     ## 获取文件名
     txt_files = get_txt_filenames(full_config_path)
+    test_filenames= json.load(open( f'../experiment/exper_data/test_filenames.json'))
+    txt_files = [file for file in txt_files if file.split('.')[0] in test_filenames]
     save_path = str(project_root / 'dataset_multi_vendor_config/Json_config/{}'.format(vendor))
 
     total_time = 0

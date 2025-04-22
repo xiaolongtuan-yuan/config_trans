@@ -1,7 +1,7 @@
 ```markdown
-nohup python -u A_LLM_Parse_Config.py HUAWEI config_data_801-1200 > HUAWEI.log 2>&1 &
+nohup python -u A_LLM_Parse_Config.py HUAWEI config_data_1-400 > HUAWEI.log 2>&1 &
 
-nohup python -u A_LLM_Parse_Config.py Cisco config_data_801-1200 > Cisco.log 2>&1 &
+nohup python -u A_LLM_Parse_Config.py Cisco config_data_1-400 > Cisco.log 2>&1 &
 
 ----------------
 nohup python -u A_LLM_Parse_Config.py Juniper config_data_1-400 > Juniper1_400.log 2>&1 &
