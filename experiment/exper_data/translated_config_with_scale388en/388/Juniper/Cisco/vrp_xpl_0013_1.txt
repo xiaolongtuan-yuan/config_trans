@@ -1,0 +1,21 @@
+hostname DeviceB
+mpls ldp router-id ge-0/0/0 none
+interface 0
+ ipv4 address 1.1.5.1 24
+ ipv4 address 1.1.4.2 24
+ ipv4 address 1.1.3.2 24
+mpls ldp router-id ge-0/0/1 none
+mpls ldp router-id ge-0/0/2 none
+mpls traffic-eng router-id 1.1.5.1
+vpdn-group PEERS
+ accept-dialin
+  protocol PEERS
+router bgp 200
+ neighbor 1.1.3.1 remote-as 200
+ neighbor none activate
+ neighbor 1.1.4.1 remote-as none
+ neighbor 1.1.5.2 remote-as none
+ address-family PEERS
+  neighbor none send-community PEERS
+address-family internal vrf [parameter2]
+ import route internal

@@ -1,0 +1,283 @@
+{
+    "sysname PE1": {
+        "template": "sysname [parameter1]",
+        "command": "sysname PE1",
+        "explanation": "设置设备的主机名为 'PE1'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "cfm enable": {
+        "template": "cfm enable",
+        "command": "cfm enable",
+        "explanation": "启用连接故障管理功能",
+        "parameters": []
+    },
+    "evpn vpn-instance evpna bd-mode": {
+        "template": "evpn vpn-instance [parameter1] bd-mode",
+        "command": "evpn vpn-instance evpna bd-mode",
+        "explanation": "创建名为 'evpna' 的 EVPN VPN 实例，并设置为 BD 模式",
+        "parameters": [
+            {
+                "name": "vpn-instance name",
+                "type": "string",
+                "explanation": "VPN 实例名称"
+            }
+        ],
+        "route-distinguisher 100:1": {
+            "template": "route-distinguisher [parameter1]",
+            "command": "route-distinguisher 100:1",
+            "explanation": "配置路由区分器为 100:1",
+            "parameters": [
+                {
+                    "name": "route distinguisher",
+                    "type": "string",
+                    "explanation": "路由区分器"
+                }
+            ]
+        },
+        "vpn-target 1:1 export-extcommunity": {
+            "template": "vpn-target [parameter1] export-extcommunity",
+            "command": "vpn-target 1:1 export-extcommunity",
+            "explanation": "配置 VPN 目标为 1:1，用于导出扩展社区",
+            "parameters": [
+                {
+                    "name": "vpn target",
+                    "type": "string",
+                    "explanation": "VPN 目标"
+                }
+            ]
+        },
+        "vpn-target 1:1 import-extcommunity": {
+            "template": "vpn-target [parameter1] import-extcommunity",
+            "command": "vpn-target 1:1 import-extcommunity",
+            "explanation": "配置 VPN 目标为 1:1，用于导入扩展社区",
+            "parameters": [
+                {
+                    "name": "vpn target",
+                    "type": "string",
+                    "explanation": "VPN 目标"
+                }
+            ]
+        }
+    },
+    "bridge-domain 10": {
+        "template": "bridge-domain [parameter1]",
+        "command": "bridge-domain 10",
+        "explanation": "创建桥域 10",
+        "parameters": [
+            {
+                "name": "bridge domain id",
+                "type": "integer",
+                "explanation": "桥域 ID"
+            }
+        ],
+        "evpn binding vpn-instance evpna": {
+            "template": "evpn binding vpn-instance [parameter1]",
+            "command": "evpn binding vpn-instance evpna",
+            "explanation": "将桥域绑定到名为 'evpna' 的 EVPN VPN 实例",
+            "parameters": [
+                {
+                    "name": "vpn-instance name",
+                    "type": "string",
+                    "explanation": "VPN 实例名称"
+                }
+            ]
+        }
+    },
+    "interface GigabitEthernet1/0/1.1 mode l2": {
+        "template": "interface [parameter1] mode [parameter2]",
+        "command": "interface GigabitEthernet1/0/1.1 mode l2",
+        "explanation": "配置接口 GigabitEthernet1/0/1.1 为二层模式",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名称"
+            },
+            {
+                "name": "mode",
+                "type": "string",
+                "explanation": "模式"
+            }
+        ],
+        "encapsulation dot1q vid 2": {
+            "template": "encapsulation dot1q vid [parameter1]",
+            "command": "encapsulation dot1q vid 2",
+            "explanation": "配置接口的封装类型为 dot1q，VLAN ID 为 2",
+            "parameters": [
+                {
+                    "name": "vlan id",
+                    "type": "integer",
+                    "explanation": "VLAN ID"
+                }
+            ]
+        },
+        "rewrite pop single": {
+            "template": "rewrite pop single",
+            "command": "rewrite pop single",
+            "explanation": "配置接口的标签操作为弹出单个标签",
+            "parameters": []
+        },
+        "bridge-domain 10": {
+            "template": "bridge-domain [parameter1]",
+            "command": "bridge-domain 10",
+            "explanation": "将接口绑定到桥域 10",
+            "parameters": [
+                {
+                    "name": "bridge domain id",
+                    "type": "integer",
+                    "explanation": "桥域 ID"
+                }
+            ]
+        }
+    },
+    "cfm md md1": {
+        "template": "cfm md [parameter1]",
+        "command": "cfm md md1",
+        "explanation": "创建名为 'md1' 的维护域",
+        "parameters": [
+            {
+                "name": "maintenance domain name",
+                "type": "string",
+                "explanation": "维护域名称"
+            }
+        ],
+        "ma ma1": {
+            "template": "ma [parameter1]",
+            "command": "ma ma1",
+            "explanation": "创建名为 'ma1' 的维护关联",
+            "parameters": [
+                {
+                    "name": "maintenance association name",
+                    "type": "string",
+                    "explanation": "维护关联名称"
+                }
+            ],
+            "map bridge-domain 10": {
+                "template": "map bridge-domain [parameter1]",
+                "command": "map bridge-domain 10",
+                "explanation": "将维护关联映射到桥域 10",
+                "parameters": [
+                    {
+                        "name": "bridge domain id",
+                        "type": "integer",
+                        "explanation": "桥域 ID"
+                    }
+                ]
+            },
+            "mep mep-id 1 interface GigabitEthernet1/0/1.1 outward": {
+                "template": "mep mep-id [parameter1] interface [parameter2] [parameter3]",
+                "command": "mep mep-id 1 interface GigabitEthernet1/0/1.1 outward",
+                "explanation": "在接口 GigabitEthernet1/0/1.1 上创建向外方向的 MEP，MEP ID 为 1",
+                "parameters": [
+                    {
+                        "name": "mep id",
+                        "type": "integer",
+                        "explanation": "MEP ID"
+                    },
+                    {
+                        "name": "interface name",
+                        "type": "string",
+                        "explanation": "接口名称"
+                    },
+                    {
+                        "name": "direction",
+                        "type": "string",
+                        "explanation": "方向"
+                    }
+                ]
+            },
+            "mep ccm-send mep-id 1 enable": {
+                "template": "mep ccm-send mep-id [parameter1] enable",
+                "command": "mep ccm-send mep-id 1 enable",
+                "explanation": "启用 MEP ID 为 1 的 CCM 发送功能",
+                "parameters": [
+                    {
+                        "name": "mep id",
+                        "type": "integer",
+                        "explanation": "MEP ID"
+                    }
+                ]
+            },
+            "remote-mep mep-id 2": {
+                "template": "remote-mep mep-id [parameter1]",
+                "command": "remote-mep mep-id 2",
+                "explanation": "配置远程 MEP ID 为 2",
+                "parameters": [
+                    {
+                        "name": "mep id",
+                        "type": "integer",
+                        "explanation": "MEP ID"
+                    }
+                ]
+            },
+            "remote-mep ccm-receive mep-id 2 enable": {
+                "template": "remote-mep ccm-receive mep-id [parameter1] enable",
+                "command": "remote-mep ccm-receive mep-id 2 enable",
+                "explanation": "启用接收远程 MEP ID 为 2 的 CCM 功能",
+                "parameters": [
+                    {
+                        "name": "mep id",
+                        "type": "integer",
+                        "explanation": "MEP ID"
+                    }
+                ]
+            },
+            "test-id 1 mep 1 remote-mep 2": {
+                "template": "test-id [parameter1] mep [parameter2] remote-mep [parameter3]",
+                "command": "test-id 1 mep 1 remote-mep 2",
+                "explanation": "配置测试 ID 为 1，MEP ID 为 1，远程 MEP ID 为 2",
+                "parameters": [
+                    {
+                        "name": "test id",
+                        "type": "integer",
+                        "explanation": "测试 ID"
+                    },
+                    {
+                        "name": "mep id",
+                        "type": "integer",
+                        "explanation": "MEP ID"
+                    },
+                    {
+                        "name": "remote mep id",
+                        "type": "integer",
+                        "explanation": "远程 MEP ID"
+                    }
+                ]
+            },
+            "loss-measure single-ended send test-id 1 interval 1000 count 20": {
+                "template": "loss-measure single-ended send test-id [parameter1] interval [parameter2] count [parameter3]",
+                "command": "loss-measure single-ended send test-id 1 interval 1000 count 20",
+                "explanation": "配置单向丢包测量，发送测试 ID 为 1，间隔为 1000 毫秒，计数为 20",
+                "parameters": [
+                    {
+                        "name": "test id",
+                        "type": "integer",
+                        "explanation": "测试 ID"
+                    },
+                    {
+                        "name": "interval",
+                        "type": "integer",
+                        "explanation": "间隔时间"
+                    },
+                    {
+                        "name": "count",
+                        "type": "integer",
+                        "explanation": "计数"
+                    }
+                ]
+            }
+        }
+    },
+    "return": {
+        "template": "return",
+        "command": "return",
+        "explanation": "退出当前视图，返回用户视图",
+        "parameters": []
+    }
+}

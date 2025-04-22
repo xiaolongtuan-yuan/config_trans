@@ -1,0 +1,19 @@
+hostname DeviceB
+mpls ldp router-id eth0 none
+interface 0
+ switchport mode access
+ encapsulation dot1Q vlan10
+ switchport mode trunk
+vlan vlan10
+mpls ldp router-id ge-0/0/1 none
+mpls ldp router-id ge-0/0/2 none
+interface eth0.0
+bridge 1 protocol none
+router bgp 10.1.1.3
+ address-family 10.1.1.3
+vpdn-group rapid-pvst
+ accept-dialin
+  protocol rapid-pvst
+bridge-domain 10
+ vxlan vni 10
+spanning-tree mode none

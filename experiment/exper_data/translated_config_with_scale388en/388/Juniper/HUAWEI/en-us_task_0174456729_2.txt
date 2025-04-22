@@ -1,0 +1,19 @@
+sysname DeviceC
+mpls lsr-id 3.3.3.9
+mpls
+isis [parameter1]
+ segment-routing mpls
+ import-route isis none into 1
+ospf 16000
+ segment-routing global-block 16000 23999
+interface ge-0/0/0
+ isis ipv6 enable 1
+ isis ipv6 enable wide
+ e1 0 none
+ ip address 10.2.1.2 24
+interface ge-0/0/1
+ isis cost 100
+ ip address 10.3.1.1 24
+interface lo0
+ isis prefix-sid absolute 30
+ ip address 3.3.3.9 32

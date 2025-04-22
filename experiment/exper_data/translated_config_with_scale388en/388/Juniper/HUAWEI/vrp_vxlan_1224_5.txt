@@ -1,0 +1,29 @@
+sysname Leaf4
+interface ge-0/0/0
+ e1 0 none
+ ip address 192.168.40.2 24
+interface ge-0/0/1
+bridge-domain 10
+ vxlan vni 20
+ vxlan vni 239.1.1.1
+interface lo0
+ ip address 4.4.4.4 32
+ vrrp vrid default virtual-ip none
+bgp ge-0/0/0.0
+ peer none connect-interface ge-0/0/0.0
+ group internal internal
+ ipv4-family 3.3.3.3
+  peer 3.3.3.3 advertise-community
+ peer none as-number 200
+ network none 24
+ network none 32
+isis internal
+ bgp-ls enable internal
+ospf 0.0.0.0
+ area 0.0.0.0
+network-entity 192.168.40.0
+network-entity 4.4.4.4
+vsi [parameter1]
+ bgp-ad
+ip vpn-instance default
+ route-distinguisher 1

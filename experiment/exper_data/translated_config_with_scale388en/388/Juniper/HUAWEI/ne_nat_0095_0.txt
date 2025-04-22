@@ -1,0 +1,40 @@
+sysname NATA
+ip route-static vpn-instance VRF1 none none none
+ospf vrf
+ import-route vrf
+ip vpn-instance 1:1
+ route-distinguisher 1:1
+ vpn-target target:1:1 export-extcommunity
+remote-backup-profile target:1:1
+ vrrp-id target:1:1 interface none
+interface ge-1/0/0.0
+ ip address 192.168.10.1 24
+ ipv6 address 192.168.10.0/24
+ip ip-prefix ACL1 index none none none none
+traffic policy match-traffic
+route-policy none accept node none
+ip pool NAT_POOL1 bas local
+ gateway none 255.255.255.0
+aaa
+ domain 11.11.11.105
+  ip-pool 11.11.11.105
+  ip-pool NAT_POOL1
+radius-server group NAT_RULE1
+nat instance input id [parameter2]
+ nat server protocol input global none inside none
+traffic policy 1
+interface ge-1/0/0
+ e1 0 none
+ admin-vrrp vrid VRF1
+ undo shutdown
+telemetry
+ sensor-group ACL1
+  sensor-path ACL1
+   filter ACL1
+interface ge-1/0/1
+ ip address 1.1.1.1 24
+xpl route-filter ACL1
+acl ipv6 number ACL1
+ if ip route-destination in {ACL1} then
+ rule none permit source none destination 192.168.10.0/24
+  call route-filter match-traffic

@@ -1,0 +1,38 @@
+sysname SPE2
+mpls ldp
+bgp 1
+ ipv4-family unicast
+  import-route ospf 1
+ peer none connect-interface lo0.0
+ip pool 0 bas local
+ section 0 none none
+vsi ldp
+ peer none static-upe trans ldp recv none
+ mac-withdraw enable
+bidirectional static-cr-lsp ingress label
+ backward in-label label
+bridge-domain v100
+ vxlan vni v100
+user-interface console 300
+ idle-timeout none 300
+interface [parameter1]
+ undo shutdown
+ e1 0 none
+route-policy ge-0/0/0 none node none
+route-policy ge-0/0/1 none node none
+interface ge-0/0/1 mode none
+interface ge-0/0/0
+ port default vlan v100
+ ip address 10.10.2.2 24
+interface ge-0/0/1
+ ip address 10.10.4.1 24
+interface lo0
+ ip address 3.3.3.9 32
+ dot1q termination vid 100
+ip route-static vpn-instance test none none none
+ospf vplc
+ import-route vplc
+interface ge-0/0/0.0 mode none
+interface ge-0/0/1.0 mode none
+bfd atob bind peer-ip [parameter1] interface [parameter2]
+ commit

@@ -1,0 +1,17 @@
+sysname DeviceA
+interface ge-1/0/0
+ e1 0 none
+ ip address 10.1.1.2 24
+ ip unnumbered "GigabitEthernet1/0/0"
+interface ge-2/0/0
+ ip address 10.1.2.2 24
+ ip unnumbered "GigabitEthernet2/0/0"
+bgp 65008
+ group EBGP-PEERS internal
+ospf none router-id 1.1.1.1
+isis external
+ bgp-ls enable external
+bgp 65009
+ ipv4-family 10.1.1.1
+  peer 10.1.1.1 advertise-community
+  peer 10.1.2.1 advertise-community
