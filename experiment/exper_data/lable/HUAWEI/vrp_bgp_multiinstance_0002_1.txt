@@ -1,0 +1,32 @@
+#
+ sysname DeviceB
+#
+ip vpn-instance vpn1
+ ipv4-family
+  route-distinguisher 100:3
+  apply-label per-instance
+  vpn-target 100:1 export-extcommunity
+  vpn-target 100:1 import-extcommunity
+#
+interface GigabitEthernet0/1/0
+ undo shutdown
+ ip address 10.1.1.2 255.255.255.0
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip binding vpn-instance vpn1
+ ip address 10.1.2.2 255.255.255.0
+#
+bgp 100
+ peer 10.1.1.1 as-number 200
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 10.1.1.1 enable
+#
+bgp 200 instance aa
+ #
+ ipv4-family vpn-instance vpn1
+  peer 10.1.2.3 as-number 100
+#
+return

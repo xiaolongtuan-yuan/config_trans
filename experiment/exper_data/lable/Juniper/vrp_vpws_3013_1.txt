@@ -1,0 +1,29 @@
+set system host-name PE
+
+set protocols ldp enable
+set protocols mpls label-operation ldp
+
+set protocols static route 0.0.0.0/0 next-hop 1.1.1.10
+
+set interfaces ge-0/0/0 unit 0 family inet address 192.168.1.1/24
+set interfaces ge-0/0/0 unit 0 family mpls
+
+set interfaces ge-0/0/1 unit 0 family inet address 192.168.2.1/24
+set interfaces ge-0/0/1 unit 0 family mpls
+
+set protocols mpls ip
+
+set forwarding firewall家庭转发规则
+set routing-instances rni0 interface ge-0/0/0.0
+set routing-instances rni0 instance-type vfi mpls-l2vpn
+set routing-instances rni0 vfi-label allocate
+
+set routing-instances rni1 interface ge-0/0/1.0
+set routing-instances rni1 instance-type vfi mpls-l2vpn
+set routing-instances rni1 vfi-label 202
+
+set protocols ldp discover peer 192.168.2.2
+set protocols ldp discover peer 192.168.1.2 interface ge-0/0/0
+set protocols ldp discover peer 192.168.1.2 interface ge-0/0/1
+
+commit

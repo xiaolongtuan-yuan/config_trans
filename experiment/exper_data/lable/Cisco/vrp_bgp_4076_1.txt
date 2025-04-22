@@ -1,0 +1,17 @@
+hostname DeviceB
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+
+router bgp 65002
+ bgp router-id 2.2.2.2
+ bgp confederation identifier 200
+ bgp confederation peers 65001
+ neighbor 10.1.1.1 remote-as 65001
+
+ address-family ipv4 unicast
+  no synchronization
+  neighbor 10.1.1.1 activate
+
+end

@@ -1,0 +1,20 @@
+hostname DeviceA
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.4.1 255.255.255.0
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.1.2.1 255.255.255.0
+
+router bgp 10
+ bgp router-id 1.1.1.1
+ neighbor 10.1.2.2 remote-as 20
+
+ address-family ipv4 unicast
+  no synchronization
+  redistribute connected
+  neighbor 10.1.2.2 activate
+
+end

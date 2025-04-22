@@ -1,0 +1,41 @@
+#
+sysname P3
+#
+mpls lsr-id 3.3.3.3
+#
+mpls
+ mpls te
+#
+segment-routing
+#
+isis 1
+ is-level level-2
+ cost-style wide
+ network-entity 10.0000.0000.0004.00
+ traffic-eng level-2
+ segment-routing mpls
+ segment-routing global-block 16000 19000
+#
+interface GigabitEthernet1/0/0
+ undo shutdown 
+ ip address 10.2.1.2 255.255.255.0
+ isis enable 1
+ mpls
+ mpls te
+ mpls te bandwidth max-reservable-bandwidth 20000
+ mpls te bandwidth bc0 20000
+#
+interface GigabitEthernet2/0/0
+ undo shutdown 
+ ip address 10.3.1.1 255.255.255.0
+ isis enable 1
+ mpls
+ mpls te
+ mpls te bandwidth max-reservable-bandwidth 20000
+ mpls te bandwidth bc0 20000
+#
+interface LoopBack1
+ ip address 3.3.3.3 255.255.255.255
+ isis enable 1
+#
+return

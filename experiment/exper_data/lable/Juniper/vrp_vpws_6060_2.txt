@@ -1,0 +1,14 @@
+set system host-name PE1
+set protocols mpls label-policy LDPPolicy
+set protocols mpls ldp router-id Loopback1
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+set protocols mpls l2vpn vfi vpns1 encapsulation ethernet point-to-point
+set protocols mpls l2vpn vfi vpns1 interface GigabitEthernet0/0/0 connection-offset 2
+set protocols mpls l2vpn vfi vpns1 interface GigabitEthernet0/0/1 connection-offset 1
+set protocols mpls l2vpn route-distinguisher 100:1
+set protocols bgp group PE1 type internal
+set protocols bgp group PE1 local-as 100
+set interfaces xe-0/0/0 unit 10 family vlan-id 10
+set interfaces xe-0/0/1 unit 10 family vlan-id 10
+set protocols mpls l2vpn vfi vpns1 manual-vfi-id
+set protocols mpls ldp interface lo0

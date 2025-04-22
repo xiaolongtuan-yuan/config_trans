@@ -1,0 +1,37 @@
+#
+ sysname PE1
+#
+ bfd
+#
+ mpls lsr-id 1.1.1.1
+ mpls
+  mpls te
+  mpls rsvp-te
+  mpls te cspf
+#
+interface gigabitethernet1/0/1
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls
+ mpls te
+ mpls rsvp-te
+#
+interface LoopBack0
+ ip address 1.1.1.1 255.255.255.255
+#
+interface Tunnel0/0/1
+ ip address unnumbered interface LoopBack1
+ tunnel-protocol mpls te
+ destination 2.2.2.2
+ mpls te tunnel-id 1
+#
+ospf 1
+ opaque-capability enable
+ area 0.0.0.0
+  network 1.1.1.1 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+  mpls-te enable
+#
+bfd aaa bind mpls-te interface Tunnel0/0/1 reverse-te lsr-id 2.2.2.2 tunnel-id 2 auto
+#
+return

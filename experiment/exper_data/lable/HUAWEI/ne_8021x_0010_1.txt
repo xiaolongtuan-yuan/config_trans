@@ -1,0 +1,31 @@
+#
+system-view
+ dot1x-template 10
+#
+radius-server group shiva
+ radius-server authentication 10.7.66.66 1812
+#
+aaa
+ authentication-scheme 1
+ accounting-scheme 1
+ accounting-mode none
+ #
+domain huawei
+ authentication-scheme 1
+ accounting-scheme 1
+ radius-server group shiva 
+ dot1x-template 10
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ dot1x enable
+ dot1x force-domain huawei
+ dot1x max-user 1
+ dot1x guest-vlan 0
+ dot1x auth-fail vlan 0
+ dot1x auth-fail max-attempts 3
+ dot1x auth-fail action reauthenticate
+ dot1x timeout reauth-period 60
+ dot1x critical eapol
+#
+return

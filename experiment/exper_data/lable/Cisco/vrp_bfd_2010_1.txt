@@ -1,0 +1,33 @@
+hostname DeviceB
+!
+bfd
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.1.1 255.255.255.0
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+!
+interface GigabitEthernet2/0/0.1
+ no shutdown
+ encapsulation dot1q 10
+ ip address 10.1.1.2 255.255.255.0
+ standby version 2
+ standby 1 ip 10.1.1.100
+ standby 1 priority 100
+ standby 1 preempt
+ standby 1 track bfd 2
+ arp broadcast enable
+!
+bfd atob bind peer-ip default-ip interface GigabitEthernet2/0/0.1
+ discriminator local 2
+ discriminator remote 1
+ dot1q 10
+ commit
+!
+router ospf 1
+ network 192.168.1.0 0.0.0.255 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+!
+end

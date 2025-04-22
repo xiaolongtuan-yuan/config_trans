@@ -1,0 +1,42 @@
+#
+sysname P
+#
+multicast routing-enable
+#
+mpls lsr-id 2.2.2.2
+#
+mpls
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/0
+ undo portswitch
+ undo shutdown
+ ip address 192.168.1.2 255.255.255.0
+ pim sm
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet2/0/0
+ undo portswitch
+ undo shutdown
+ ip address 192.168.2.1 255.255.255.0
+ pim sm
+ mpls
+ mpls ldp
+#
+interface LoopBack1
+ ip address 2.2.2.2 255.255.255.255
+ pim sm
+#
+ospf 1
+ area 0.0.0.0
+  network 2.2.2.2 0.0.0.0
+  network 192.168.1.0 0.0.0.255
+  network 192.168.2.0 0.0.0.255
+#
+pim
+ c-bsr LoopBack1
+ c-rp LoopBack1
+#
+return

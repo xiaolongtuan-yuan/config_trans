@@ -1,0 +1,32 @@
+set system host-name CE1
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-1/0/0 unit 0 description "GigabitEthernet1/0/0"
+
+set interfaces ge-2/0/0 unit 0 family inet address 10.2.1.1/24
+set interfaces ge-2/0/0 unit 0 description "GigabitEthernet2/0/0"
+
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+
+set routing-options load-balance per-packet
+
+set routing-options static route 0.0.0.0/0 next-hop 10.1.1.2
+set routing-options static route 0.0.0.0/0 next-hop 10.2.1.2
+
+set protocols bfd template CE1_TO_PE1 minimum-interval 100
+set protocols bfd template CE1_TO_PE1 minimum-receive-interval 100
+set protocols bfd template CE1_TO_PE1 multiplier 3
+
+set protocols bfd template CE1_TO_PE2 minimum-interval 100
+set protocols bfd template CE1_TO_PE2 minimum-receive-interval 100
+set protocols bfd template CE1_TO_PE2 multiplier 3
+
+set protocols bfd interface ge-1/0/0 minimum-interval 100
+set protocols bfd interface ge-1/0/0 minimum-receive-interval 100
+set protocols bfd interface ge-1/0/0 multiplier 3
+set protocols bfd interface ge-1/0/0 neighbor 10.1.1.2
+
+set protocols bfd interface ge-2/0/0 minimum-interval 100
+set protocols bfd interface ge-2/0/0 minimum-receive-interval 100
+set protocols bfd interface ge-2/0/0 multiplier 3
+set protocols bfd interface ge-2/0/0 neighbor 10.2.1.2

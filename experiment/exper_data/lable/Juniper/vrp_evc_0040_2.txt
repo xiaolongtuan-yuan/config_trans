@@ -1,0 +1,27 @@
+set system host-name RSG
+
+set routing-instances vpna instance-type vrf
+set routing-instances vpna route-distinguisher 100:100
+set routing-instances vpna vrf-target target:100:100
+
+set protocols mpls interface all
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.3.3.2/24
+set interfaces ge-1/0/0 unit 0 family mpls
+
+set interfaces ge-2/0/0 unit 0 family inet address 10.4.4.1/24
+set interfaces ge-2/0/0 unit 0 vrf vpna
+
+set interfaces lo0 unit 1 family inet address 3.3.3.9/24
+
+set routing-options autonomous-system 100
+
+set protocols bgp group internal type internal
+set protocols bgp group internal local-address 3.3.3.9
+set protocols bgp group internal neighbor 2.2.2.9
+set protocols bgp group internal family inet unicast
+set protocols bgp group internal family inet-vpn unicast
+set protocols bgp group internal family inet-vpn vpn-apply-export
+
+set protocols ospf area 0 interface lo0.1
+set protocols ospf area 0 interface ge-1/0/0.0

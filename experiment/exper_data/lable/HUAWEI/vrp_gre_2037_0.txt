@@ -1,0 +1,30 @@
+#
+sysname DeviceA
+#
+vlan batch 10
+#
+interface Vlanif10
+ ip address 172.16.1.1 255.255.255.0
+#
+interface GigabitEthernet 1/0/0
+ portswitch
+ undo shutdown
+ port default vlan 10
+#
+interface LoopBack1
+ ip address 1.1.1.9 255.255.255.255
+ binding tunnel gre
+#
+interface Tunnel1
+ ip address 172.18.1.1 255.255.255.0
+ tunnel-protocol gre
+ keepalive period 20
+ source 1.1.1.9
+ destination 2.2.2.9
+#
+ospf 1
+ area 0.0.0.0
+  network 1.1.1.9 0.0.0.0
+  network 172.16.1.0 0.0.0.255
+#
+return

@@ -1,0 +1,28 @@
+hostname CE
+
+vlan 10
+vlan 100
+
+spanning-tree region vlan 10 100
+
+erps instance 1
+ control-vlan 100
+ protected-instance 0
+ version 2
+ sub-ring
+
+interface GigabitEthernet1/0/0
+ switchport mode trunk
+ switchport trunk allowed vlan 10,100
+ no shutdown
+ spanning-tree disable
+ erps instance 1
+
+interface GigabitEthernet2/0/0
+ switchport mode trunk
+ switchport trunk allowed vlan 10,100
+ shutdown
+ spanning-tree disable
+ erps instance 1 rpl owner
+
+end

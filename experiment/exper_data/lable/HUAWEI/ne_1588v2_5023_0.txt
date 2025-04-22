@@ -1,0 +1,26 @@
+#
+sysname CE1
+#
+ptp enable
+ptp device-type bc
+ptp domain 1
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 172.16.0.2 255.255.255.0
+ ptp enable
+ ptp mode boundary
+ ptp transport ipv4
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.10.0.1 255.255.255.0
+ ptp enable
+ ptp mode boundary
+ ptp transport ipv4
+#
+ospf 1
+ area 0.0.0.0
+  network 172.16.0.0 0.0.0.255
+  network 10.10.0.0 0.0.0.255
+#

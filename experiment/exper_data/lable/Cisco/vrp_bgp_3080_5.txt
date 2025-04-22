@@ -1,0 +1,45 @@
+sysname DeviceF
+
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.20.3.1 255.255.255.0
+
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.22.8.1.1 255.255.255.0
+
+interface LoopBack0
+ ip address 6.6.6.6 255.255.255.255
+
+bgp 400
+ peer 10.20.3.2 as-number 200
+
+ ipv4-family unicast
+  network 10.2.1.0 255.255.255.0
+  peer 10.20.3.2 enable
+  peer 10.20.3.2 default-route-advertise
+
+return
+
+
+hostname DeviceF
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.20.3.1 255.255.255.0
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.22.8.1 255.255.255.0
+
+interface Loopback0
+ ip address 6.6.6.6 255.255.255.255
+
+router bgp 400
+ neighbor 10.20.3.2 remote-as 200
+
+ address-family ipv4 unicast
+  network 10.2.1.0 mask 255.255.255.0
+  neighbor 10.20.3.2 activate
+  neighbor 10.20.3.2 default-originate
+

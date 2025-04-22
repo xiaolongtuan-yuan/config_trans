@@ -1,0 +1,29 @@
+sysname PE
+#
+vlan batch 10
+#
+bridge-domain 10
+ split-horizon enable
+#
+interface Vbdif10
+ undoshutdown
+ ip address 10.110.10.3 255.255.255.0
+ arp-proxy local enable
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+#
+interface GigabitEthernet1/0/1.1 mode l2
+ encapsulation dot1q vid 10
+ rewrite pop single
+ bridge-domain 10
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+#
+interface GigabitEthernet1/0/2.1 mode l2
+ encapsulation dot1q vid 10
+ rewrite pop single
+ bridge-domain 10
+#
+return

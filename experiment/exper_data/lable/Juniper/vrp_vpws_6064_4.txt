@@ -1,0 +1,17 @@
+set system host-name PE2
+set protocols ldp interface ge-1/0/0
+set interfaces ge-1/0/0 unit 0 family inet address 10.30.1.2/24
+set protocols mpls ip
+set interfaces lo0 unit 0 family inet address 4.4.4.9/32
+set vlans vnp1 vlan-id 1
+set forwarding-plane vxlan-vpn vnp1 protocol mpls
+set routing-options router-id lo0.0
+set protocols bgp peer-group ldp
+set protocols bgp group ldp peer-ip 1.1.1.9 as 100
+set protocols bgp group ldp local-address lo0.0
+set protocols bgp group ldp advertise-community extended
+set protocols ospf area 0 interface ge-1/0/0.0
+set protocols ospf area 0 network 4.4.4.9/32
+set routing-instances vnp1 instance-type vnf
+set interfaces lo0.0 unit 0 family vlan vnInstanceId 1
+set forwarding-options label-switching l2vpn vnp1

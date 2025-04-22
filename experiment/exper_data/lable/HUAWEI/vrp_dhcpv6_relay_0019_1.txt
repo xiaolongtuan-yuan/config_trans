@@ -1,0 +1,37 @@
+# 
+sysname DeviceB
+#
+dhcpv6 export pd-route
+#
+remote-backup-service service1
+ peer-ipv6 2001:DB8:3::2 source-ipv6 2001:DB8:3::1 port 2046
+ batch-backup service-type dhcpv6-relay daily 03:00:00
+#
+remote-backup-profile profile1
+ service-type dhcpv6-relay 
+ backup-id 10 remote-backup-service service1
+ peer-backup hot
+ vrrp6-id 1 interface GigabitEthernet1/0/3 
+#
+interface GigabitEthernet1/0/3
+ ipv6 enable
+ ipv6 address 2001:DB8:1::2/64
+ vrrp6 vrid 1 virtual-ip FE80::7 link-local 
+ vrrp6 vrid 1 virtual-ip 2001:DB8:1::1
+ ipv6 nd dad attempts 0
+ remote-backup-profile profile1
+ dhcpv6 relay destination 2001:DB8:2::1
+ dhcpv6 relay source-ip-address 2001:DB8:2::2
+ dhcpv6 relay pd-route degrade-cost 100
+#
+interface GigabitEthernet1/0/1
+ ipv6 enable
+ ipv6 address 2001:DB8:3::1/64
+ ipv6 nd dad attempts 0
+#
+interface GigabitEthernet1/0/2
+ ipv6 enable
+ ipv6 address 2001:DB8:2::2/64
+ ipv6 nd dad attempts 0
+#
+return

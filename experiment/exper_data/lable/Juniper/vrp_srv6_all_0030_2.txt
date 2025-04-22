@@ -1,0 +1,25 @@
+set system host-name P2
+
+set protocols bfd interface ge-0/0/0
+set protocols bfd interface ge-0/0/1
+
+set protocols isis level 2-only
+set protocols isis wide-metrics-only
+set protocols isis interface ge-0/0/0.0 family inet6 address 2001:db8:3::2/96
+set protocols isis interface ge-0/0/1.0 family inet6 address 2001:db8:4::1/96
+set protocols isis interface lo0.1 family inet6 address 4::4/128
+set protocols isis level 2-only network-entity 10.0000.0000.0004.00
+
+set routing-options forwarding-table export isis
+
+set interfaces ge-0/0/0 unit 0 family inet6 address 2001:db8:3::2/96
+set interfaces ge-0/0/0 unit 0 family inet6 address 2001:db8:3::2/96 preferred
+set interfaces ge-0/0/0 unit 0 family inet6 address 2001:db8:3::2/96 primary
+
+set interfaces ge-0/0/1 unit 0 family inet6 address 2001:db8:4::1/96
+set interfaces ge-0/0/1 unit 0 family inet6 address 2001:db8:4::1/96 preferred
+set interfaces ge-0/0/1 unit 0 family inet6 address 2001:db8:4::1/96 primary
+
+set interfaces lo0 unit 1 family inet6 address 4::4/128
+set interfaces lo0 unit 1 family inet6 address 4::4/128 preferred
+set interfaces lo0 unit 1 family inet6 address 4::4/128 primary

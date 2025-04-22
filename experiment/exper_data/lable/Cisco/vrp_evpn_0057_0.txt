@@ -1,0 +1,48 @@
+hostname PE1
+!
+l2vpn
+ bridge group evpna
+  bridge-domain 10
+   interface GigabitEthernet2/0/0.1
+    rewrite ingress tag pop 1 symmetric
+   !
+  !
+ !
+!
+interface GigabitEthernet2/0/0.1
+ encapsulation dot1q 1
+ bridge-domain 10
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.0.0.1 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+!
+router bgp 100
+ neighbor 2.2.2.2 remote-as 100
+ neighbor 2.2.2.2 update-source Loopback0
+ !
+ address-family ipv4 unicast
+  neighbor 2.2.2.2 activate
+  neighbor 2.2.2.2 next-hop-self
+ !
+ address-family l2vpn evpn
+  neighbor 2.2.2.2 activate
+  neighbor 2.2.2.2 advertise ipv4 unicast
+ !
+!
+router ospf 1
+ network 1.1.1.1 0.0.0.0 area 0
+ network 10.0.0.0 0.0.0.255 area 0
+!
+mpls ldp router-id Loopback0
+mpls ldp
+!
+evpn
+ source-address 1.1.1.1
+!
+end

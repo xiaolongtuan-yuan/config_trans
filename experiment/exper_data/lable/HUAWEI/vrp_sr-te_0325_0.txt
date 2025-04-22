@@ -1,0 +1,42 @@
+#
+sysname PE1
+#
+mpls lsr-id 1.1.1.1
+#
+mpls
+ mpls te
+#
+pce-client
+ capability segment-routing
+ connect-server 10.2.1.2
+#
+segment-routing
+#
+isis 1
+ is-level level-2
+ cost-style wide
+ bgp-ls enable level-2
+ network-entity 10.0000.0000.0002.00
+ traffic-eng level-2
+ segment-routing mpls
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.2.1 255.255.255.0
+ isis enable 1
+ mpls
+ mpls te
+#
+interface LoopBack0
+ ip address 1.1.1.1 255.255.255.255
+ isis enable 1
+#
+ interface Tunnel1
+ ip address unnumbered interface LoopBack0
+ tunnel-protocol mpls te
+ destination 3.3.3.3
+ mpls te signal-protocol segment-routing
+ mpls te tunnel-id 1
+ mpls te pce delegate
+# 
+return

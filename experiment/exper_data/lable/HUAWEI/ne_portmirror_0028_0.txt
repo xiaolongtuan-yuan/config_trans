@@ -1,0 +1,26 @@
+sysname PE1
+#
+mirror instance evcto201 location
+#
+slot 1 
+ mirror to observe-index 1
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+#
+interface GigabitEthernet1/0/1.1 mode l2
+ encapsulation dot1q vid 10
+ bridge-domain 10
+ port-mirroring instance evcto201 inbound vid 10 identifier none
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+#
+interface GigabitEthernet1/0/2.1 mode l2
+ encapsulation dot1q vid 10
+ bridge-domain 10
+#
+interface GigabitEthernet2/0/1
+ port-observing observe-index 1
+#
+return

@@ -1,0 +1,30 @@
+set system host-name DeviceB
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.20.1.2/24
+set interfaces ge-1/0/0 unit 0 description "GigabitEthernet1/0/0"
+
+set interfaces ge-2/0/0 unit 0 family inet address 10.0.1.1/24
+set interfaces ge-2/0/0 unit 0 description "GigabitEthernet2/0/0"
+
+set interfaces ge-3/0/0 unit 0 family inet address 10.0.3.2/24
+set interfaces ge-3/0/0 unit 0 description "GigabitEthernet3/0/0"
+
+set interfaces lo0 unit 0 family inet address 2.2.2.2/32
+
+set routing-options autonomous-system 200
+
+set protocols bgp group internal-peers type internal
+set protocols bgp group internal-peers local-address 2.2.2.2
+set protocols bgp group internal-peers neighbor 3.3.3.3
+set protocols bgp group internal-peers neighbor 4.4.4.4
+
+set protocols bgp group external-peers type external
+set protocols bgp group external-peers peer-as 100
+set protocols bgp group external-peers neighbor 10.20.1.1
+
+set protocols bgp group internal-peers family inet unicast
+set protocols bgp group external-peers family inet unicast
+
+set protocols ospf area 0 interface lo0.0
+set protocols ospf area 0 interface ge-2/0/0.0
+set protocols ospf area 0 interface ge-3/0/0.0

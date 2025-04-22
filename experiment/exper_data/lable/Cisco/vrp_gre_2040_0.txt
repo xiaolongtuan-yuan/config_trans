@@ -1,0 +1,30 @@
+hostname CE3
+vlan 10
+vlan 20
+router isis
+is-type level-1
+net 50.0000.0000.0001.00
+interface Vlan10
+ip address 10.21.1.2 255.255.255.0
+isis network point-to-point
+interface Vlan20
+ip address 10.3.1.1 255.255.255.0
+interface GigabitEthernet1/0/0
+switchport mode access
+switchport access vlan 10
+no shutdown
+interface GigabitEthernet2/0/0
+switchport mode access
+switchport access vlan 20
+no shutdown
+interface Loopback1
+ip address 5.5.5.9 255.255.255.255
+interface Tunnel2
+ip address 2.2.2.1 255.255.255.0
+tunnel source Loopback1
+tunnel destination 4.4.4.9
+isis network point-to-point
+router ospf 20
+network 5.5.5.9 0.0.0.0 area 0
+network 10.3.1.0 0.0.0.255 area 0
+end

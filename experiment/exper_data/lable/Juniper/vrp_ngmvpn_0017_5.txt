@@ -1,0 +1,17 @@
+set groups CE2 system host-name CE2
+
+set groups CE2 routing-options multicast
+
+set groups CE2 interfaces ge-1/0/0 unit 0 family inet address 192.168.2.2/24
+set groups CE2 interfaces ge-1/0/0 unit 0 family inet pim-mode sparse
+
+set groups CE2 interfaces ge-1/0/1 unit 0 family inet address 10.1.5.1/24
+set groups CE2 interfaces ge-1/0/1 unit 0 family inet pim-mode sparse
+set groups CE2 interfaces ge-1/0/1 unit 0 family inet igmp ssm-translate 225.0.0.1
+
+set groups CE2 protocols ospf area 0.0.0.0 interface ge-1/0/0.0
+set groups CE2 protocols ospf area 0.0.0.0 interface ge-1/0/1.0
+
+set groups CE2 protocols pim rp static address 4.4.4.4
+
+apply groups CE2

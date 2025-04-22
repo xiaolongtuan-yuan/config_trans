@@ -1,0 +1,30 @@
+#
+sysname DeviceB
+#
+remote-backup-service service1
+ bind ssl-policy policy1
+ peer 1.1.1.1 source 2.2.2.2 port 2046
+#
+remote-backup-profile profile1
+ service-type arp
+ backup-id 10 remote-backup-service service1
+ peer-backup hot
+ vrrp-id 1 interface GigabitEthernet1/0/0
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.2 255.255.255.0
+ vrrp vrid 1 virtual-ip 10.1.1.100
+ admin-vrrp vrid 1
+ vrrp vrid 1 preempt-mode timer delay 600
+ remote-backup-profile profile1
+#
+interface LoopBack1
+ ip address 2.2.2.2 255.255.255.255
+#
+ospf 1
+ area 0.0.0.0 
+  network 2.2.2.2 0.0.0.0 
+  network 10.1.1.0 0.0.0.255
+#
+return
