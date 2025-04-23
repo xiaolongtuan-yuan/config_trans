@@ -1,0 +1,36 @@
+#
+sysname P
+#               
+segment-routing ipv6
+ encapsulation source-address 2001:DB8:2::2
+ locator P ipv6-prefix 2001:DB8:120:: 64 static 32
+  opcode ::10 end
+#               
+isis 1          
+ is-level level-1
+ cost-style wide
+ network-entity 10.0000.0000.0002.00
+ #              
+ ipv6 enable topology ipv6
+ segment-routing ipv6 locator P auto-sid-disable
+ #              
+#
+interface GigabitEthernet1/0/0
+ undo shutdown  
+ ipv6 enable    
+ ipv6 address 2001:DB8:10::2/64
+ isis ipv6 enable 1
+#
+interface GigabitEthernet2/0/0
+ undo shutdown  
+ ipv6 enable    
+ ipv6 address 2001:DB8:20::1/64
+ isis ipv6 enable 1
+#
+interface LoopBack1
+ ipv6 enable    
+ ip address 2.2.2.2 255.255.255.255
+ ipv6 address 2001:DB8:2::2/128
+ isis ipv6 enable 1
+#
+return

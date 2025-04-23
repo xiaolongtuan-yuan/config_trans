@@ -1,73 +1,74 @@
-请按照以下格式将思科配置解析为 JSON，每条配置命令作为一个节点，节点的键为配置命令本身，值为解析后的 JSON 结构。解析时需提取以下信息：
-- **template**：配置命令的通用格式
-- **command**：具体的命令示例
-- **explanation**：命令的解释
-- **parameters**：参数列表，每个参数需包含：
-  - **name**：参数名
-  - **type**：参数类型
-  - **explanation**：参数解释
+The Cisco configuration is parsed into JSON according to the following format, each configuration command is treated as a node, the key of the node is the configuration command itself, and the value is the parsed JSON structure.
+The following information is extracted during parsing:
+- **template** : A common format for configuration commands
+- **command** : Concrete command examples
+- **explanation** : The explanation of the command
+- **parameters** : A list of parameters, each containing:
+  - **name** : The parameter name
+  - **type** : The type of the parameter
+  - **explanation** : explanation of the parameters
 
-若命令包含子配置，则作为其子节点嵌套，解析方式相同。
+f the command contains a child configuration, it is nested as its child node and parsed in the same way.
 
-### 示例：
-#### 配置命令：
+### Example:
+#### config:
 hostname DeviceA
 
 interface GigabitEthernet1/0/0
     no shutdown
     ip address 1.1.1.1 255.0.0.0
 
-#### 对应 JSON：
+#### for JSON：
 {
   "hostname DeviceA": {
     "template": "hostname [parameter1]",
     "command": "hostname DeviceA",
-    "explanation": "设置设备的主机名为 'DeviceA'",
+    "explanation": "Set the device host name to 'DeviceA'",
     "parameters": [
       {
         "name": "host name",
         "type": "string",
-        "explanation": "主机名"
+        "explanation": "the hostname of this device"
       }
     ]
   },
   "interface GigabitEthernet1/0/0": {
     "template": "interface [parameter1]",
     "command": "interface GigabitEthernet1/0/0",
-    "explanation": "配置接口 'GigabitEthernet1/0/0'",
+    "explanation": "Configure interface 'GigabitEthernet1/0/0",
     "parameters": [
       {
         "name": "interface name",
         "type": "string",
-        "explanation": "接口名"
+        "explanation": "interface name"
       }
     ],
     "no shutdown": {
       "template": "no shutdown",
       "command": "no shutdown",
-      "explanation": "启用接口（默认情况下接口是关闭的）",
+      "explanation": "Enable the interface (the interface is disabled by default)",
       "parameters": []
     },
     "ip address 1.1.1.1 255.0.0.0": {
       "template": "ip address [parameter1] [parameter2]",
       "command": "ip address 1.1.1.1 255.0.0.0",
-      "explanation": "配置接口的 IPv4 地址为 1.1.1.1，子网掩码为 255.0.0.0",
+      "explanation": "The IPv4 address of the configuration interface is 1.1.1.1, and the subnet mask is 255.0.0.0",
       "parameters": [
         {
           "name": "ip address",
           "type": "IPv4",
-          "explanation": "IPv4 地址"
+          "explanation": "IPv4 address"
         },
         {
           "name": "subnet mask",
           "type": "IPv4",
-          "explanation": "子网掩码"
+          "explanation": "subnet mask"
         }
       ]
     }
   }
 }
 
-### 任务：
-请将以下配置转换为 JSON，并直接以JSON格式输出：
-{配置命令}
+### Task:
+Please convert the following configuration to JSON and output it directly in JSON format:
+{Config command}

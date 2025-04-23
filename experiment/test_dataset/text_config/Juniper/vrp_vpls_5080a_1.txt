@@ -1,0 +1,10 @@
+set system host-name PE1
+set protocols mpls lsr-id 1.1.1.9
+set protocols mpls label protocol ldp
+set forwarding l2vpn forwarder vsi a2 tunnels p2p-lsp neighbor 3.3.3.9 policy policy1
+set protocols ospf area 0 interface GigabitEthernet0/0/0.1 encap dot1q 10 tunnel-mtu 5784 mtu-ignore
+set interfaces ge-0/0/0 unit 1 encapsulation dot1q 10 family ipv4 address 10.10.1.1/24
+set forwarding l2fib interface ge-0/0/0.0 tunnel-id vsi a2 explicit-name path2pe2 next-hop 16300
+set forwarding l2fib interface ge-0/0/0.0 tunnel-id vsi a2 explicit-name path2pe2 next-hop 16200
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+set routing-options static route 10.10.1.0/24 next-hop interface ge-0/0/0.0
