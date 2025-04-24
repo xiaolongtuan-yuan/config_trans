@@ -1,0 +1,45 @@
+hostname NE40EB
+!
+l2tp enable
+!
+radius-server host 10.0.0.249 auth-port 1812 acct-port 1813 key %^%#vS%796FO7%C~pB%CR=q;j}gSCqR-X6+P!.DYI@)%^%
+!
+interface Virtual-Template1
+ ppp authentication chap
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.100.100.2 255.255.255.0
+!
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 10.200.200.1 255.255.255.0
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+!
+ip route 2.2.2.2 255.255.255.255 10.200.200.2
+!
+l2tp-group LAC1
+ password %@%##!!!!!!!!!"!!!!"!!!!(!!!!1];16qfZ81fv"uMoKKZ.1k"`AO!X2K2N.b~'NB^V!!!!!!!!!!1!!!!o/4J(q"J1F.!K9%M!6x8%@%
+ tunnel-name LAC2
+ start l2tp ip 2.2.2.2
+!
+l2tp-group LNS1
+ allow l2tp virtual-template 1 remote LAC1
+ password %@%##!!!!!!!!!"!!!!"!!!!(!!!!1];16qfZ81fv"uMoKKZ.1k"`AO!X2K2N.b~'NB^V!!!!!!!!!!1!!!!o/4J(q"J1F.!K9%M!6x8%@%
+ tunnel-name LNS1
+!
+lns-group group1
+ bind slot 1
+ bind source Loopback0
+!
+aaa new-model
+aaa authentication ppp default group radius
+aaa accounting network default start-stop group radius
+!
+radius-server host 10.0.0.249 auth-port 1812 acct-port 1813 key %^%#vS%796FO7%C~pB%CR=q;j}gSCqR-X6+P!.DYI@)%^%
+!
+ip route 2.2.2.2 255.255.255.255 10.200.200.2
+!
+end

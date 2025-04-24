@@ -1,0 +1,24 @@
+hostname HUAWEI
+!
+aaa new-model
+!
+tacacs-server host 192.168.66.66 key 7 pbft&Zu2$Z<,,g4=vX~7958dF@U%YGfREMUAQA{:%
+tacacs-server host 192.168.66.67 key 7 pbft&Zu2$Z<,,g4=vX~7958dF@U%YGfREMUAQA{:%
+!
+aaa authentication login default group tacacs+ local
+aaa authentication login l-h group tacacs+ local
+!
+aaa authorization exec default group tacacs+ local
+aaa authorization exec scheme2 group tacacs+ local
+!
+aaa accounting exec default start-stop group tacacs+
+aaa accounting exec scheme3 start-stop group tacacs+
+!
+aaa server tacacs+ dynamic-template ht
+!
+line vty 0 4
+ login authentication default
+ login authorization exec default
+ accounting exec default
+ transport input ssh
+!

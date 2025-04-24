@@ -1,0 +1,62 @@
+hostname P1
+
+mpls ip
+
+mpls ldp router-id Loopback0
+
+mpls label protocol ldp
+
+mpls l2vpn
+
+vfi vsi1 manual
+ vpn id 1112
+ neighbor 4.4.4.4 pw-id 1112
+ exit
+
+mpls ldp discovery targeted-hello accept-from 4.4.4.4
+
+mpls ldp discovery targeted-hello accept-from 1.1.1.1
+
+router isis 1
+ net 10.0000.0000.0001.00
+ is-type level-2-only
+ metric-style wide
+ mpls traffic-eng level-2
+ exit
+
+interface Eth-Trunk1
+ ip address 10.1.1.2 255.255.255.0
+ mpls ip
+ isis network point-to-point
+ isis bfd enable
+ isis bfd point-to-point
+ isis bfd fast-detect
+ exit
+
+interface Eth-Trunk1.1
+ encapsulation dot1Q 100
+ xconnect vfi vsi1
+ exit
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ channel-group 1 mode on
+ exit
+
+interface GigabitEthernet1/0/1
+ no shutdown  
+ ip address 10.1.5.1 255.255.255.0
+ mpls ip
+ isis network point-to-point
+ exit
+
+interface GigabitEthernet1/0/2
+ no shutdown
+ channel-group 1 mode on
+ exit
+
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.255
+ exit
+
+end

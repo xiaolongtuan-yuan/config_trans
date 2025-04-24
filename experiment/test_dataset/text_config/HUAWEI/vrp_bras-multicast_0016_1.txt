@@ -1,0 +1,59 @@
+#
+sysname BRAS
+#
+multicast routing-enable
+#
+radius enable
+#
+radius-server group rd1
+ radius-server authentication 10.1.4.15 1812
+ radius-server accounting 10.1.4.15 1813
+#
+aaa
+ #
+ authentication-scheme 1
+  authentication-mode radius
+ #
+ accounting-scheme 1
+  accounting-mode radius
+ #
+ domain l3
+  authentication-scheme 1
+  accounting-scheme 1
+  radius-server group rd1
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ pim sm
+#
+interface GigabitEthernet1/0/2.1
+ undo shutdown
+ ip address 10.1.3.1 255.255.255.0
+ encapsulation dot1q-termination
+ dot1q termination vid 10
+ pim sm
+ bas
+ #
+  access-type layer3-leased-line user-name layer3 password cipher %^%#2hXm~)DX,6jjtH#jL!~:Vcg/@e"^Y0bxG default-domain authentication l3
+#
+interface GigabitEthernet1/0/3
+ undo shutdown
+ ip address 10.1.4.1 255.255.255.0
+#
+interface LoopBack0
+ ip address 1.1.1.1 255.255.255.255
+ pim sm
+#
+ospf 1
+ area 0.0.0.0
+  network 10.1.1.0 255.255.255.0
+  network 10.1.3.0 255.255.255.0
+  network 10.1.4.0 255.255.255.0
+  network 1.1.1.1 255.255.255.255
+#
+pim 
+ c-bsr LoopBack0
+ c-rp LoopBack0
+#
+return
