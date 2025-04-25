@@ -146,9 +146,10 @@ def delete_outdate_files(file_dir):
 def main():
     # 初始化路径
     device = "cuda:0"
-    output_dir = './exper_data/translated_config_with_scale388en'
-    mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/scale388en/{{}}_{{}}.json'
-    templates_path = f'../dataset_multi_vendor_config/config_command_node/scale388en/{{}}.json'
+    output_dir = './exper_data/translated_config_with_scale400'
+    mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/scale400/{{}}_{{}}.json'
+    manual_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
+    templates_path = f'../dataset_multi_vendor_config/config_command_node/scale400/{{}}.json'
     config_model_dir = f'../dataset_multi_vendor_config/config_model/scale400/{{}}.json'
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
@@ -173,7 +174,7 @@ def main():
                 print(f"exper for {scale}, {source_vendor} to {target_vendor} translation without llm")
 
 
-                mapping_libraries = mapping_library_load(mapping_library_path, vendors)
+                mapping_libraries = mapping_library_load(mapping_library_path, vendors, manual_mapping_path)
                 config_matchers = config_matchers_load(templates_path, vendors)
 
                 # translation_llm = Translation_Model('aliyun_deepseek-v3', config_model_dir=config_model_dir, vendors=vendors, endpoint_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
