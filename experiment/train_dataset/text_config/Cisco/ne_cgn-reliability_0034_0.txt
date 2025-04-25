@@ -1,0 +1,27 @@
+hostname NAT64_CGN
+
+license accept end user agreement
+license boot level nat
+license accept x.x.x.x  # Replace x.x.x.x with the license key
+
+ip nat translation timeout 86400
+ip nat translation tcp-timeout 86400
+ip nat translation udp-timeout 300
+ip nat translation icmp-timeout 10
+
+ipv6 access-list 3000
+ permit ipv6 host 2001:db8::1:1112/126 host 64:FF9B::C0A8:85/96
+ipv6 access-list 3003
+class-map match-all c1
+policy-map b1
+policy-map p1
+interface GigabitEthernet1/0/1
+ip nat inside source list 3000 interface GigabitEthernet1/0/1 overload
+nat64 vrf default
+ip nat pool nat64-group1 11.1.1.1 11.1.1.255 netmask 255.255.255.0
+ip nat inside source list 3000 pool nat64-group1 overload
+ip nat inside destination source static full-cone
+ipv6 nat prefix 64:FF9B::/96
+logging host 1.1.1.1 transport udp port 514
+logging on
+

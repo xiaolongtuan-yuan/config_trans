@@ -1,0 +1,50 @@
+sysname DeviceC
+#
+l2tp enable
+#
+radius-server group radius1
+ radius-server authentication 10.10.0.249 1812 
+ radius-server accounting 10.10.0.249 1813 
+ radius-server shared-key %^%#vS%796FO7%C~pB%CR=q;j}gSCqR-X6+P!.DYI@)%^% 
+#
+interface Virtual-Template1
+ ppp authentication-mode chap
+#
+interface GigabitEthernet2/0/0.100
+ undo shutdown
+ pppoe-server bind Virtual-Template 1
+ user-vlan 1 100
+ bas
+  access-type layer2-subscriber
+#
+ip vpn-instance vrf2
+ route-distinguisher 200:1
+ apply-label per-instance
+ vpn-target 200:1 export-extcommunity
+ vpn-target 200:1 import-extcommunity
+#
+interface LoopBack0
+ ip binding vpn-instance vrf1
+ ip address 2.2.2.2 255.255.255.255
+#
+l2tp-group lac2
+ tunnel password cipher %@%##!!!!!!!!!"!!!!"!!!!(!!!!1];16qfZ81fv"uMoKKZ.1k"`AO!X2K2N.b~'NB^V!!!!!!!!!!1!!!!o/4J(q"J1F.!K9%M!6x8%@%#
+ tunnel name lac2
+ start l2tp ip 4.4.4.4
+ tunnel source LoopBack0
+#
+aaa
+domain isp2
+  authentication-scheme default1
+  accounting-scheme default1
+  radius-server group radius1
+  l2tp-group lac2
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip binding vpn-instance vrf1
+ ip address 10.10.0.1 255.255.255.0
+#
+ ip route-static vpn-instance vrf2 4.4.4.4 255.255.255.255 10.10.0.2
+#
+return

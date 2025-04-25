@@ -1,0 +1,26 @@
+hostname HUAWEI
+
+license boot module c7600-rsp720cxl-p
+license accept end user agreement
+license boot module c7600-advipservicesk9-m
+license accept end user agreement
+
+ipv6 unicast-routing
+
+interface GigabitEthernet2/0/1
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8::1:110e/126
+ traffic-policy input p1
+ipv6 access-list 3003
+ permit ipv6 2001:db8::1:1112/126 64:FF9B::/96
+
+class-map match-any c1
+ match access-group 3003
+
+policy-map p1
+ class c1
+  nat64 instance nat1
+nat64 vrf default
+nat64 vrf default
+end

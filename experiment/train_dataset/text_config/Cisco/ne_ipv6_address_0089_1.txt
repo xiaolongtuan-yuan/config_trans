@@ -1,0 +1,24 @@
+sysname Device
+aaa new-model
+
+radius-server host 10.6.55.55 auth-port 1812 acct-port 1813 key 7 vS796FO7CpBCRqjgSCqRX6P-DYI
+
+ipv6 unicast-routing
+
+ipv6 dhcp pool pool1
+ dns-server 2001:DB82::2:2
+
+ipv6 route ::/0 GigabitEthernet1/0/3 2001:DB82::2:2
+
+ipv6 local pool pool1 2001:DB81::1/46
+interface GigabitEthernet1/0/1.1
+ encapsulation dot1Q 1 native
+ ipv6 address autoconfig
+
+interface GigabitEthernet1/0/3
+ ipv6 enable
+ ipv6 address 2001:DB82::2:1/64
+
+radius-server attribute 32 include-in-access-req format %h
+
+radius-server vsa send accounting

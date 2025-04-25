@@ -1,0 +1,26 @@
+set system host-name Spoke2
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.3.10/24
+set interfaces lo0 unit 0 family inet address 192.168.2.1/32
+set interfaces gr-0/0/0 unit 0 tunnel source 10.1.3.10
+set interfaces gr-0/0/0 unit 0 tunnel destination 172.16.1.1
+set interfaces gr-0/0/0 unit 0 family inet address 172.16.1.3/24
+
+set security ike policy GRE-IKE-POLICY mode main
+set security ike policy GRE-IKE-POLICY authentication-method pre-shared-keys
+set security ike gateway GRE-IKE-GATEWAY ike-policy GRE-IKE-POLICY
+set security ike gateway GRE-IKE-GATEWAY address 172.16.1.1
+set security ike gateway GRE-IKE-GATEWAY external-interface ge-1/0/0.0
+
+set security ipsec policy GRE-POLICY proposal GRE-PROPOSAL
+set security ipsec proposal GRE-PROPOSAL authentication-algorithm hmac-sha1-96
+set security ipsec proposal GRE-PROPOSAL encryption-algorithm aes-128-cbc
+
+set security ipsec vpn GRE-VPN bind-interface st0.0
+set security ipsec vpn GRE-VPN ike gateway GRE-IKE-GATEWAY
+set security ipsec vpn GRE-VPN ipsec-policy GRE-POLICY
+set protocols ospf area 0.0.0.0 interface gr-0/0/0.0
+set protocols ospf area 0.0.0.0 interface lo0.0
+set protocols ospf router-id 172.16.1.3
+set protocols ospf area 0.0.0.1 interface ge-1/0/0.0
+set protocols ospf router-id 10.1.3.10

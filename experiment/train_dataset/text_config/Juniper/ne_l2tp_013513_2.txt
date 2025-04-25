@@ -1,0 +1,17 @@
+set system host-name DeviceC
+
+set protocols l2tp enable
+set interfaces virtual-template1 unit 0 family inet address 0.0.0.0/32
+set interfaces lo0 unit 0 family inet address 4.4.4.4/32
+
+set interfaces ge-0/0/1 unit 0 family inet address 12.12.12.2/24
+
+set routing-options static route 1.1.1.1/32 next-hop 12.12.12.1
+
+set access address-assignment pool pool1 family inet network 10.10.0.102/30
+set access address-assignment pool pool1 family inet network 10.10.0.200/30
+
+set system authentication-order [ local ]
+set aaa accounting session start-stop
+set security vpn vpdn-group lns1 accept-dial-in protocol l2tp virtual-template 1
+set security vpn vpdn-group group1 bind-interface lo0.0

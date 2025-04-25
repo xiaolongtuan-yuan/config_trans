@@ -1,0 +1,29 @@
+hostname PE2
+
+cfm version standard
+mpls ip
+mpls ldp router-id Loopback0
+mpls l2vpn
+l2vpn vfi context ldp1
+ vpn id 1
+ member 2.2.2.2 encapsulation mpls
+interface GigabitEthernet1/0/1.1
+ encapsulation dot1q 2
+ xconnect vsi ldp1
+
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls ip
+ mpls ldp enable
+
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.0
+
+router ospf 1
+ network 1.1.1.1 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+
+cfm mode on
+cfm domain md1
+  cfm mep 2 interface GigabitEthernet1/0/1.1 direction inward

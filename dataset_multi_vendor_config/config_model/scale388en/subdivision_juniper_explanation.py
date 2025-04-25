@@ -57,7 +57,7 @@ def fill_explanations_recursive(llm_model: Translation_Model, node, parent_comma
             else:
                 messages = [
                     {"role": "system",
-                     "content": "You are a professional network engineer, please explain what this Junos command fragment does, go straight back to the command explanation, the explanation is no longer than 30 words"},
+                     "content": "You are a professional network engineer, please explain what this Junos command fragment does, directly answer the command explanation, the explanation is no longer than 30 words"},
                     {
                         "role": "system",
                         "content": context

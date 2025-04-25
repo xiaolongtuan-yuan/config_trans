@@ -1,0 +1,26 @@
+hostname CGN1
+
+ip nat session maximum 6
+ip access-list extended ACL-3001
+ permit ip 192.168.10.0 0.0.0.255
+class-map match-all CLASSIFIER1
+ match access-group ACL-3001
+
+policy-map POLICY1
+ class CLASSIFIER1
+  nat instance 1
+interface GigabitEthernet 2/0/0
+ no shutdown
+ ip address 192.168.10.1 255.255.255.0
+ service-policy input POLICY1
+
+interface Loopback 0
+ ip address 11.11.11.100 255.255.255.0
+
+ip nat inside source list ACL-3001 interface Loopback 0 overload
+
+interface service-engine 1/0/0
+ ip address 10.1.1.1 255.255.255.0
+ ip nat outside
+
+ip route 0.0.0.0 0.0.0.0 service-engine 1/0/0

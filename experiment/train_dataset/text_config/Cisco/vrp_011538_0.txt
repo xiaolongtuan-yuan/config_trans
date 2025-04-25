@@ -1,0 +1,29 @@
+hostname PE1
+
+cfm version standard
+mpls label protocol ldp
+mpls ip
+mpls l2vpn
+l2vpn
+ bridge group ldp1
+ bridge-domain ldp1
+
+interface GigabitEthernet1/0/1.1
+ no ip address
+ encapsulation dot1Q 2
+ xconnect vfi ldp1
+
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls ip
+ 
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.0
+
+router ospf 1
+ network 2.2.2.2 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+
+cfm domain md1
+  mep 1

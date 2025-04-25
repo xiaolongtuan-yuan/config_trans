@@ -1,0 +1,24 @@
+hostname HUAWEI
+!
+ip dhcp pool pool1
+ network 10.10.10.0 255.255.255.0
+ default-router 10.10.10.2
+ dns-server 10.20.20.1
+!
+aaa new-model
+aaa authentication login clcl none
+aaa accounting exec default stop-only group none
+aaa accounting delay-start
+!
+ip local pool pool1 10.10.10.3 10.10.10.100
+interface GigabitEthernet1/0/0.1
+ encapsulation dot1q 1 native
+interface GigabitEthernet1/0/0
+ switchport mode access
+ switchport access vlan 1
+!
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 10.20.20.2 255.255.255.0
+!
+

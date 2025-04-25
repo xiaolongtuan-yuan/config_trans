@@ -1,0 +1,16 @@
+hostname CR
+
+access-list 2001 permit ip 10.10.10.0 0.0.0.255
+class-map c1
+ match access-group 2001
+
+policy-map p1
+ class c1
+  set ip next-hop 192.168.11.2
+
+interface GigabitEthernet2/0/2
+ no shutdown
+ ip address 192.168.10.2 255.255.255.0
+ service-policy input p1
+
+end

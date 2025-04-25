@@ -1,0 +1,22 @@
+hostname DeviceA
+
+class-map match-any c1
+ match any
+
+policy-map p1
+ class c1
+  police cir 10000 bc 150000 conform-action transmit exceed-action drop
+
+interface GigabitEthernet0/1/0
+ no shutdown
+ ip address 10.10.1.1 255.255.255.0
+
+interface GigabitEthernet0/2/0.1
+ encapsulation dot1Q 1 native
+ ip address 10.1.1.1 255.255.255.0
+ service-policy input p1
+
+router ospf 1
+ network 10.1.1.0 0.0.0.255 area 0
+ network 10.10.1.0 0.0.0.255 area 0
+

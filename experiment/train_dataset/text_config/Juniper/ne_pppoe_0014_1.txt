@@ -1,0 +1,15 @@
+set system host-name DeviceA
+
+set system authentication-order [ radius local ]
+set system radius-server 2001:db8::1:1 accounting-port 1646
+
+set system login user admin class super-user authentication plain-text-password
+
+set address-assignment pool pool1 family inet6 prefix 2001:db8:2::/64
+set address-assignment pool pool1-inet family inet network 10.1.1.0/24
+set interfaces ge-1/0/2 unit 1 vlan-id 1
+set interfaces pp0 unit 0 encapsulation ppp-over-ether
+set interfaces pp0 unit 0 family inet6 dhcpv6-client client-type stateful
+set protocols pppoe traceoptions file pppoe.log
+set interfaces ge-1/0/1 unit 0 family inet6 address 2001:db8:3::/64 eui-64
+commit

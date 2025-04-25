@@ -1,0 +1,22 @@
+set system host-name DeviceC
+
+set access profile radius-profile authentication-order radius
+set access profile radius-profile radius-server 10.10.0.249 secret "%^%#vS%796FO7%C~pB%CR=q;j}gSCqR-X6+P!.DYI@)%^%"
+set access profile radius-profile radius-server 10.10.0.249 port 1812
+set access profile radius-profile radius-server 10.10.0.249 accounting-port 1813
+
+set interfaces pp0 unit 1 ppp-options chap default-chap-secret "%^%#vS%796FO7%C~pB%CR=q;j}gSCqR-X6+P!.DYI@)%^%"
+set interfaces ge-2/0/0 unit 100 family ethernet-switching vlan members 1
+set routing-instances vrf2 instance-type vrf
+set routing-instances vrf2 route-distinguisher 200:1
+set routing-instances vrf2 vrf-target import 200:1
+set interfaces lo0 unit 0 family inet address 2.2.2.2/32 routing-instance vrf1
+set services l2tp-class lac1 authentication chap
+set services l2tp-class lac1 tunnel password "%@%##!!!!!!!!!\"!!!!\"!!!!(!!!!1];16qfZ81fv\"uMoKKZ.1k`AO!X2K2N.b~'NB^V!!!!!!!!!!1!!!!o/4J(q\"J1F.!K9%M!6x8%@%"
+set services l2tp-class lac1 tunnel name lac1
+set services l2tp-class lac1 tunnel destination 4.4.4.4
+set services l2tp-class lac1 tunnel source lo0.0
+
+set system aaa authentication default-profile-name default1
+set interfaces ge-1/0/1 family inet address 10.10.0.1/24 routing-instance vrf1
+set routing-instances vrf2 routing-options static route 4.4.4.4/32 next-hop 10.10.0.2

@@ -1,0 +1,13 @@
+set system host-name CE1
+
+set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:1::1/64
+set interfaces lo0 unit 1 family inet6 address 2001:db8:5::5/128
+set routing-options router-id 5.5.5.5
+
+set protocols bgp group EBGP neighbor 2001:db8:1::2 peer-as 200
+set protocols bgp group EBGP neighbor 2001:db8:1::2 family inet6 unicast
+set protocols bgp group EBGP type external
+set protocols bgp group EBGP export EXPORT-NETWORK
+
+set policy-options policy-statement EXPORT-NETWORK term 1 from route-filter 2001:db8:5::5/128 exact
+set policy-options policy-statement EXPORT-NETWORK term 1 then accept

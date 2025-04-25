@@ -1,0 +1,25 @@
+set system host-name PE2
+
+set protocols mpls interface all
+set interfaces ge-0/0/1.0 unit 1 family ethernet-switching vlan-id 1
+set interfaces ge-0/0/1.0 unit 1 xconnect 1.1.1.1 1001 encapsulation mpls
+set interfaces ge-0/0/2 unit 0 family inet address 192.168.1.1/24
+set interfaces ge-0/0/2 unit 0 family mpls
+set protocols mpls ldp discovery accept
+set interfaces lo0 unit 0 family inet address 2.2.2.2/24
+
+set protocols ospf area 0.0.0.0 interface lo0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/2.0
+
+set protocols l2vpn
+set protocols l2vpn cfm
+set protocols l2vpn cfm md md1
+set protocols l2vpn cfm md md1 ma ma1
+set protocols l2vpn cfm md md1 ma ma1 mep 2 interface ge-0/0/1.0
+set protocols l2vpn cfm md md1 ma ma1 mep 2 ccm-send enable
+set protocols l2vpn cfm md md1 ma ma1 remote-mep 1
+set protocols l2vpn cfm md md1 ma ma1 remote-mep 1 ccm-receive enable
+set protocols l2vpn cfm md md1 ma ma1 test-id 1 mep 2
+set protocols l2vpn cfm md md1 ma ma1 delay-measure one-way receive test-id 1
+set protocols l2vpn cfm md md1 ma ma1 test-id 3 mep 2 remote-mep 1
+set protocols l2vpn cfm md md1 ma ma1 delay-measure one-way continual send test-id 3 interval 1000

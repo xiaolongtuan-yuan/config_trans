@@ -1,0 +1,14 @@
+hostname PE2
+!
+cfm
+evpn vpn-instance evpna
+bridge-domain 10
+ evpn
+interface GigabitEthernet1/0/1.1
+ encapsulation dot1q 2
+ rewrite ingress tag pop 1 symmetric
+!
+cfm md md1
+  mep 1 interface GigabitEthernet1/0/1.1 direction outward
+end
+

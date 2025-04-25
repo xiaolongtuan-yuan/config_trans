@@ -85,6 +85,7 @@ def parse_config(client, model_name, prompt, messages, config_chunks:[]):
                     }
                 )
                 parsed_str = response.choices[0].message.content
+                print(parsed_str)
                 parsed_json = json.loads(parsed_str)
                 config_parsed.update(parsed_json)
                 break
@@ -148,7 +149,7 @@ def process_file(config_file, full_config_path, save_path, vendor, client, model
     prompt, messages = prompt_massage_for_vendors(vendor)
     config = load_config(full_config_path, config_file)
     # 将较长的config分割为多个部分，每个部分的长度不超过40行
-    config_chunks = splite_config(config)
+    config_chunks = splite_config(config, max_length=15)
 
     response = parse_config(client, model_name, prompt, messages, config_chunks)
     save_parsed_config(save_path, config_file, response)
@@ -173,9 +174,9 @@ if __name__ == "__main__":
     ## 获取文件名
     txt_files = get_txt_filenames(full_config_path)
     print(txt_files[0])
-    test_filenames= json.load(open( f'../experiment/exper_data/test_filenames.json'))
-    print(test_filenames[0])
-    txt_files = [file for file in txt_files if file.split('.')[0] in test_filenames]
+    test_filenames = json.load(open( f'../syntactic_check/error_info/config_summary.json'))['all_config']['config']
+    print(f"{len(test_filenames)}: {test_filenames[0]}")
+    txt_files = [file for file in txt_files if file in test_filenames]
     print(len(txt_files))
     save_path = str(project_root / 'dataset_multi_vendor_config/Json_config/{}'.format(vendor))
 
@@ -190,6 +191,7 @@ if __name__ == "__main__":
             f for f in txt_files
             if not os.path.exists(os.path.join(save_path, f))
         ]
+        print(unprocessed_files)
 
         futures = [
             executor.submit(process_file, config_file, full_config_path, save_path, vendor, client, model_name)

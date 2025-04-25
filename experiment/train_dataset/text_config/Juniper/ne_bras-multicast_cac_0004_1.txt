@@ -1,0 +1,33 @@
+set system host-name BRAS
+
+set routing-options multicast
+
+set system services dhcp pool huawei_bas_local network 10.0.0.0/16
+set system services dhcp pool huawei_bas_local default-router 10.0.0.1
+set system services dhcp excluded-address 10.0.0.1 10.0.255.255
+
+set system authentication-order [radius tacplus]
+set firewall family inet filter list1 term 1 from source-address 225.1.1.1
+set firewall family inet filter list1 term 1 then accept
+set firewall family inet filter list1 term 2 from source-address 227.1.1.1
+set firewall family inet filter list1 term 2 then accept
+
+set protocols igmp interface all
+set protocols pim interface all
+set protocols igmp static-group 225.1.1.1
+set protocols igmp static-group 227.1.1.1
+
+set system login user none class none
+
+set interfaces ge-0/0/0 unit 0 pppoe-options pppoe-server bind virtual-template 100
+set protocols pim interface ge-0/0/0 unit 0
+set protocols igmp interface ge-0/0/0 unit 0 static-group 225.1.1.1
+set protocols igmp interface ge-0/0/0 unit 0 static-group 227.1.1.1
+
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.1.1/24
+set protocols pim interface ge-0/0/1 unit 0
+
+set interfaces ge-0/0/2 unit 0 family inet address 10.1.2.1/24
+set protocols pim interface ge-0/0/2 unit 0
+
+set interfaces virtual-template100 unit 0 ppp-options chap

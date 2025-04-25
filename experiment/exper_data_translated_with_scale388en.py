@@ -163,8 +163,8 @@ def main():
             for target_vendor in vendors:
                 if source_vendor == target_vendor:
                     continue
-                # if not source_vendor == 'Juniper':
-                #     continue
+                if not source_vendor == 'Juniper':
+                    continue
                 source_config_dir = f'./exper_data/{source_vendor}' if source_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
 
                 output_save_dir = os.path.join(output_dir, str(scale), source_vendor)

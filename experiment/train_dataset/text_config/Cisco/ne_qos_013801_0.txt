@@ -1,0 +1,36 @@
+hostname Device
+
+qos diffserv default
+qos diffserv domain 5p3d
+qos diffserv domain isp1
+ user-priority 3 phb af4 yellow
+qos diffserv domain qinq
+
+radius-server group rd1
+ radius-server shared-key-cipher 7 0 clY:%[]x='-RMNJus[s/VJ:3YBq3<..|.{'xgbp+%^%
+ radius-server authentication 192.168.7.249 1645 weight 0
+ radius-server accounting 192.168.7.249 1646 weight 0
+ radius-server type extended
+ radius-server traffic-unit kbyte
+
+ip dhcp pool pool1
+ network 10.82.0.0 255.255.255.0
+ default-router 10.82.0.1
+ dns-server 192.168.7.252
+
+aaa
+domain default0
+ ip-pool pool1
+interface Virtual-Template1
+#
+interface GigabitEthernet0/2/0
+ no shutdown
+
+interface GigabitEthernet0/2/0.1
+ vlan 1
+ pppoe enable
+interface GigabitEthernet0/1/0
+ no shutdown
+ ip address 192.168.7.1 255.255.255.0
+
+return

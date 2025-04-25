@@ -1,0 +1,203 @@
+{
+    "hostname DS-Lite": {
+        "template": "hostname [parameter1]",
+        "command": "hostname DS-Lite",
+        "explanation": "设置设备的主机名为 'DS-Lite'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "license boot level ds-lite": {
+        "template": "license boot level [parameter1]",
+        "command": "license boot level ds-lite",
+        "explanation": "设置启动时的许可证级别为 'ds-lite'",
+        "parameters": [
+            {
+                "name": "license level",
+                "type": "string",
+                "explanation": "许可证级别"
+            }
+        ]
+    },
+    "ipv6 access-list 3500": {
+        "template": "ipv6 access-list [parameter1]",
+        "command": "ipv6 access-list 3500",
+        "explanation": "创建一个 IPv6 访问控制列表，编号为 3500",
+        "parameters": [
+            {
+                "name": "access list number",
+                "type": "integer",
+                "explanation": "ACL 的编号"
+            }
+        ],
+        "permit ipv6 2001:DB8:2::/64 any": {
+            "template": "permit ipv6 [parameter1] [parameter2]",
+            "command": "permit ipv6 2001:DB8:2::/64 any",
+            "explanation": "允许从指定 IPv6 前缀到任何目的地的流量",
+            "parameters": [
+                {
+                    "name": "source prefix",
+                    "type": "IPv6 prefix",
+                    "explanation": "源 IPv6 前缀"
+                },
+                {
+                    "name": "destination",
+                    "type": "string",
+                    "explanation": "目的地，这里是以 'any' 表示任何地方"
+                }
+            ]
+        }
+    },
+    "ip vrf forwarding DS-Lite": {
+        "template": "ip vrf forwarding [parameter1]",
+        "command": "ip vrf forwarding DS-Lite",
+        "explanation": "配置 VRF 转发，VRF 名称为 'DS-Lite'",
+        "parameters": [
+            {
+                "name": "vrf name",
+                "type": "string",
+                "explanation": "VRF 的名称"
+            }
+        ]
+    },
+    "ipv6 unicast-routing": {
+        "template": "ipv6 unicast-routing",
+        "command": "ipv6 unicast-routing",
+        "explanation": "启用 IPv6 单播路由功能",
+        "parameters": []
+    },
+    "interface GigabitEthernet2/0/2": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet2/0/2",
+        "explanation": "配置接口 'GigabitEthernet2/0/2'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名称"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ipv6 enable": {
+            "template": "ipv6 enable",
+            "command": "ipv6 enable",
+            "explanation": "启用接口的 IPv6 功能",
+            "parameters": []
+        },
+        "ipv6 address 2001:DB8:1::2:1/64": {
+            "template": "ipv6 address [parameter1]",
+            "command": "ipv6 address 2001:DB8:1::2:1/64",
+            "explanation": "配置接口的 IPv6 地址为 2001:DB8:1::2:1/64",
+            "parameters": [
+                {
+                    "name": "ipv6 address",
+                    "type": "IPv6 with mask",
+                    "explanation": "IPv6 地址及前缀长度"
+                }
+            ]
+        },
+        "ipv6 traffic-policy p1 inbound": {
+            "template": "ipv6 traffic-policy [parameter1] inbound",
+            "command": "ipv6 traffic-policy p1 inbound",
+            "explanation": "在接口上应用 IPv6 流量策略 'p1'，方向为入站",
+            "parameters": [
+                {
+                    "name": "policy name",
+                    "type": "string",
+                    "explanation": "流量策略的名称"
+                }
+            ]
+        }
+    },
+    "ipv6 route 2001:DB8::1/128 GigabitEthernet2/0/2 2001:DB8:2::1": {
+        "template": "ipv6 route [parameter1] [parameter2] [parameter3]",
+        "command": "ipv6 route 2001:DB8::1/128 GigabitEthernet2/0/2 2001:DB8:2::1",
+        "explanation": "配置一条静态 IPv6 路由，目标为 2001:DB8::1/128，出接口为 GigabitEthernet2/0/2，下一跳为 2001:DB8:2::1",
+        "parameters": [
+            {
+                "name": "destination",
+                "type": "IPv6 with mask",
+                "explanation": "目标网络"
+            },
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "出接口"
+            },
+            {
+                "name": "next hop",
+                "type": "IPv6",
+                "explanation": "下一跳 IPv6 地址"
+            }
+        ]
+    },
+    "class-map match-all c1": {
+        "template": "class-map match-all [parameter1]",
+        "command": "class-map match-all c1",
+        "explanation": "创建一个类映射 'c1'，匹配所有条件",
+        "parameters": [
+            {
+                "name": "class map name",
+                "type": "string",
+                "explanation": "类映射的名称"
+            }
+        ],
+        "match access-group 3500": {
+            "template": "match access-group [parameter1]",
+            "command": "match access-group 3500",
+            "explanation": "匹配指定的访问控制列表 3500",
+            "parameters": [
+                {
+                    "name": "access list number",
+                    "type": "integer",
+                    "explanation": "ACL 的编号"
+                }
+            ]
+        }
+    },
+    "policy-map p1": {
+        "template": "policy-map [parameter1]",
+        "command": "policy-map p1",
+        "explanation": "创建一个策略映射 'p1'",
+        "parameters": [
+            {
+                "name": "policy map name",
+                "type": "string",
+                "explanation": "策略映射的名称"
+            }
+        ],
+        "class c1": {
+            "template": "class [parameter1]",
+            "command": "class c1",
+            "explanation": "指定类映射 'c1'",
+            "parameters": [
+                {
+                    "name": "class map name",
+                    "type": "string",
+                    "explanation": "类映射的名称"
+                }
+            ],
+            "set ip next-hop 2001:DB8:2::1": {
+                "template": "set ip next-hop [parameter1]",
+                "command": "set ip next-hop 2001:DB8:2::1",
+                "explanation": "设置 IP 下一跳为 2001:DB8:2::1",
+                "parameters": [
+                    {
+                        "name": "next hop",
+                        "type": "IPv6",
+                        "explanation": "下一跳 IPv6 地址"
+                    }
+                ]
+            }
+        }
+    }
+}

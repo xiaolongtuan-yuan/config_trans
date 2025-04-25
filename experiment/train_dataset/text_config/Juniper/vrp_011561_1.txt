@@ -1,0 +1,25 @@
+set system host-name PE2
+
+set protocols cfm enable
+set routing-instances evpna instance-type evpn
+set routing-instances evpna vrf-target export target:1:1
+set routing-instances evpna vrf-target import target:1:1
+
+set protocols mpls lsr-id 2.2.2.2
+
+set interfaces ge-1/0/1 unit 0 family ethernet-switching port-mode trunk
+set interfaces ge-1/0/1 unit 0 family ethernet-switching vlan-id 1
+set bridge-domains bd1 vlan-id 1
+set interfaces ge-1/0/2 unit 0 family inet address 10.2.1.1/24
+set interfaces ge-1/0/2 unit 0 family mpls
+
+set interfaces lo0 unit 0 family inet address 2.2.2.2/32
+
+set protocols bgp group EBGP type external
+set protocols bgp group EBGP neighbor 1.1.1.1 peer-as 100
+set protocols bgp group EBGP neighbor 1.1.1.1 local-address 2.2.2.2
+set protocols bgp group EBGP family inet unicast
+set protocols bgp group EBGP family evpn signaling
+
+set protocols ospf area 0 interface lo0
+set protocols ospf area 0 interface ge-1/0/2

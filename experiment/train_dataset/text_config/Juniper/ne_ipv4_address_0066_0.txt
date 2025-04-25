@@ -1,0 +1,28 @@
+set system host-name HUAWEI
+
+set access address-assignment pool pool1 family inet network 10.10.10.0/24
+set access address-assignment pool pool1 family inet range pool1-range low 10.10.10.3
+set access address-assignment pool pool1 family inet range pool1-range high 10.10.10.100
+set access address-assignment pool pool1 family inet dhcp-attributes router 10.10.10.2
+set access address-assignment pool pool1 family inet dhcp-attributes name-server 10.20.20.1
+
+set system authentication-order radius
+
+set system login user noauth class super-user
+set system login user noauth authentication plain-text-password ""
+
+set access profile isp1 authentication-order none
+set access profile isp1 client user noauth
+set access profile isp1 address-assignment pool pool1
+
+set vlans vlan1 vlan-id 1
+set vlans vlan1 l3-interface irb.1
+
+set interfaces ge-1/0/0 unit 0 family ethernet-switching port-mode access
+set interfaces ge-1/0/0 unit 0 family ethernet-switching vlan members vlan1
+
+set interfaces irb unit 1 family inet address 10.10.10.2/24
+
+set system services dhcp-local-server group DHCP-Pool1 interface irb.1
+
+set interfaces ge-3/0/0 unit 0 family inet address 10.20.20.2/24

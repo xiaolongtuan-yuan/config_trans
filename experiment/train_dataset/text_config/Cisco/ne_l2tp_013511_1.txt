@@ -1,0 +1,34 @@
+hostname Device
+
+aaa new-model
+aaa authentication login default group radius1
+aaa authorization network default group radius1
+aaa accounting network default start-stop group radius1
+aaa authorization exec default group radius1
+aaa domain doma1
+radius-server host 10.20.20.1 auth-port 1812 acct-port 1813 key %^%#vS%796FO7%C~pB%CR=q;j}gSCqR-X6+P!.DYI@)%^%
+radius-server source-ports 1645-1646
+
+policy-map QoS-Pro1
+ class class-default
+  shape average 100000
+  shape peak 200000
+
+interface Virtual-Template1
+ ppp authentication chap
+
+interface GigabitEthernet1/0/0
+ no shutdown
+
+interface GigabitEthernet1/0/0.2
+ encapsulation dot1Q 270
+ pppoe-server bind Virtual-Template 1
+ bas
+interface loopback0
+ ip address 192.168.0.1 255.255.255.255
+
+ip local pool pool1 10.10.10.2 10.10.10.100
+
+vpdn enable
+vpdn-group lns1
+ request-dialin

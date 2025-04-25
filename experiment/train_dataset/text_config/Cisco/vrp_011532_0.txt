@@ -1,0 +1,26 @@
+hostname PE1
+!
+mpls cef
+mpls label protocol ldp
+mpls l2vpn
+interface GigabitEthernet1/0/1.1
+ encapsulation dot1Q 1
+ xconnect 2.2.2.2 1001 encapsulation mpls
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 192.168.1.2 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.0
+!
+router ospf 1
+ network 1.1.1.1 0.0.0.0 area 0
+ network 192.168.1.0 0.0.0.255 area 0
+!
+cfm domain md1
+  encapsulation dot1q 1
+  mep 1
+end

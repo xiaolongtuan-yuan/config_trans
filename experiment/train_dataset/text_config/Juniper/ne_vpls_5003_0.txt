@@ -1,0 +1,14 @@
+set system host-name PE1
+!
+set protocols mpls label-protocol ldp
+set routing-instances a2 instance-type virtual-router
+set routing-instances a2 route-distinguisher 1:2
+set routing-instances a2 vrf-import target:1:2
+set interfaces ge-0/0/0 unit 0 family ethernet-switching vlan-id 10
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-0/0/1 unit 0 family mpls
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+!
+set protocols ospf area 0.0.0.0 interface lo0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+!

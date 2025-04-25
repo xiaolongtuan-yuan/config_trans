@@ -1,0 +1,32 @@
+hostname PE1
+!
+ptp clock domain 1
+ptp clock priority 1
+ptp device-type bc
+ptp clock-source bits1 priority1 2
+ptp clock source bits1 type 1pps input
+ptp clock synchronization
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 172.16.0.1 255.255.255.0
+ ptp
+ ptp domain 1
+ ptp delay-request mechanism pdelay
+ ptp clock announce interval 8
+ ptp clock min-delay-request interval 10
+ ptp udp-egress source-ip 172.16.0.1 destination-ip 172.16.0.2
+ ptp udp-egress destination-mac 00e0.fc22.1111
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.0.0.1 255.255.255.0
+ ptp clock announce receipt-timeout 10
+ ptp udp-egress source-ip 10.0.0.1 destination-ip 10.0.0.2
+ ptp udp-egress destination-mac 00e0.fc22.2222
+!
+router ospf 1
+ network 10.0.0.0 0.0.0.255 area 0
+ network 172.16.0.0 0.0.0.255 area 0
+!
+

@@ -1,0 +1,33 @@
+set system host-name HUAWEI
+set system name-server 192.168.7.252
+
+set system authentication-order [ radius password ]
+
+set access profile auth1 authentication-order [ radius local ]
+set access profile auth1 client "default" authentication protocol pap
+set access profile auth1 client "default" authentication protocol chap
+
+set access address-assignment pool pool1 family inet network 192.168.1.0/24
+set access address-assignment pool pool1 family inet range user-range low 192.168.1.2
+set access address-assignment pool pool1 family inet range user-range high 192.168.1.200
+
+
+set interfaces ge-2/0/0 unit 0 encapsulation ppp-over-ether
+set interfaces ge-2/0/0 unit 0 pppoe-options underlying-interface ge-2/0/0
+set interfaces ge-2/0/0 unit 0 family inet negotiate-address
+
+set routing-options multicast
+set protocols pim interface ge-1/0/0.0 mode sparse
+set protocols igmp interface ge-2/0/0.0 version 2
+
+set firewall policer MCAST-SHAPE if-exceeding bandwidth-limit 5000000
+set firewall policer MCAST-SHAPE if-exceeding burst-size-limit 10000000
+set firewall policer MCAST-SHAPE then discard
+
+set firewall family inet filter MCAST_LIST1 term match-mcast from source-address 10.0.0.2
+set firewall family inet filter MCAST_LIST1 term match-mcast from destination-address 239.0.0.1
+set firewall family inet filter MCAST_LIST1 term match-mcast then policer MCAST-SHAPE
+set firewall family inet filter MCAST_LIST1 term match-mcast then accept
+set firewall family inet filter MCAST_LIST1 term default then accept
+
+set interfaces ge-1/0/0 unit 0 family inet filter output MCAST_LIST1

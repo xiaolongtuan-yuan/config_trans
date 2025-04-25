@@ -1,0 +1,24 @@
+hostname DeviceA
+!
+access-list 3001 permit ip host 10.100.0.11 any
+interface Tunnel30
+!
+interface Tunnel40
+!
+route-map aaa permit 5
+ match ip address 3001
+ set interface Tunnel30
+!
+route-map aaa permit 10
+ match ip address 3002
+ set interface Tunnel40
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.100.0.10 255.255.255.0
+ ip policy route-map aaa
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.110.0.10 255.255.255.0
+ ip policy route-map aaa
+end

@@ -1,0 +1,24 @@
+set system host-name CE1
+set system domain-name example.com
+set system services ssh
+set system services ssh protocol-version v2
+set system services ssh client-algorithms encryption aes128-ctr aes192-ctr aes256-ctr
+set system login user client001 class super-user
+set system login user client001 authentication plain-text-password "@%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%"
+set system login user client002 class super-user
+set system login user client002 authentication plain-text-password "@%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%"
+
+set interfaces lo0 unit 0 family inet address 10.1.1.1/32
+set interfaces ge-1/0/1 unit 0 family inet address 10.3.3.3/24
+
+set protocols bgp group BGP-GROUP type external
+set protocols bgp group BGP-GROUP local-as 65410
+set protocols bgp group BGP-GROUP neighbor 10.1.1.2 peer-as 100
+set protocols bgp group BGP-GROUP neighbor 10.1.1.2 family inet unicast
+set protocols bgp group BGP-GROUP neighbor 10.1.1.2 local-address 10.1.1.1
+set protocols bgp group BGP-GROUP neighbor 10.1.1.2 export NEXT-HOP-SELF
+
+set system services ftp 
+set system services ssh root-login deny  # Secure access practice equivalent to `login local`.
+
+set system services telnet disable

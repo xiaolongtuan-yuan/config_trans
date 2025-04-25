@@ -1,0 +1,33 @@
+hostname Hub2
+
+access-list 2000 permit ip 192.168.0.0 0.0.0.255
+access-list 2001 permit ip 192.168.1.0 0.0.0.255
+route-map 1 permit 10
+ match ip address 2000
+
+route-map 2 permit 10
+ match ip address 2001
+
+ip nhrp network-id 100
+interface GigabitEthernet1/0/0
+ ip address 10.1.254.10 255.255.255.0
+ tunnel source 10.1.254.10
+ tunnel mode gre multipoint
+ tunnel protection ipsec profile IPSEC-PROFILE
+
+interface Loopback0
+ ip address 192.168.0.2 255.255.255.255
+
+interface Tunnel0
+ ip address 172.16.1.254 255.255.255.0
+ tunnel source GigabitEthernet1/0/0
+ tunnel mode gre multipoint
+ tunnel protection ipsec profile IPSEC-PROFILE
+ ip ospf network point-to-multipoint
+ ip ospf 1 area 0.0.0.0
+ ip ospf 1 network point-to-multipoint
+ip ospf 2 router-id 10.1.254.10
+ ip ospf 2 network point-to-point
+ip ospf 3 router-id 192.168.0.2
+ ip ospf 3 network point-to-point
+return

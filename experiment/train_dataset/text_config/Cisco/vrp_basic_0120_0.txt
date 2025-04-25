@@ -1,0 +1,20 @@
+hostname SSH_Server
+!
+crypto key generate rsa
+!
+username client001 privilege 3
+username client001 service-type ssh
+username client002 privilege 3
+username client002 service-type ssh
+aaa new-model
+aaa authentication login default local
+aaa authorization exec default local 
+!
+interface GigabitEthernet0/0/0
+ ip address x.x.x.x y.y.y.y
+line vty 0 4
+ transport input ssh
+ login authentication default
+ privilege level 3
+!
+end

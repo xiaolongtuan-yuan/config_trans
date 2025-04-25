@@ -1,0 +1,37 @@
+hostname PE1
+!
+cfm
+evpn
+mpls ip
+mpls label protocol ldp
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ethernet evpn
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls ip
+ mpls label protocol ldp
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+!
+router bgp 100
+ neighbor 2.2.2.2 remote-as 100
+ neighbor 2.2.2.2 update-source Loopback0
+ !
+ address-family ipv4 unicast
+  neighbor 2.2.2.2 activate
+  neighbor 2.2.2.2 next-hop-self
+ !
+ address-family l2vpn evpn
+ !
+router ospf 1
+ network 1.1.1.1 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+!
+evpn
+cfm md md1
+   ccm send enable

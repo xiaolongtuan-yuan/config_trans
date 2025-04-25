@@ -1,0 +1,42 @@
+hostname PE1
+
+router ospf 1
+ router-id 1.1.1.1
+
+mpls ldp router-id Loopback1 force
+
+mpls ip
+
+mpls l2transport
+l2 vfi v1 manual
+ vpn id 1
+ rd 10.10.1.1:1
+interface GigabitEthernet1/0/0.1
+ encapsulation dot1Q 10
+ xconnect vfi v1
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.10.1.1 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+
+router bgp 100
+ bgp router-id 1.1.1.1
+ neighbor 2.2.2.2 remote-as 100
+ neighbor 2.2.2.2 update-source Loopback1
+ address-family l2vpn vpls
+  neighbor 2.2.2.2 activate
+ exit-address-family
+
+router ospf 1
+ mpls ldp autoconfig area 0
+ network 1.1.1.1 0.0.0.0 area 0
+ network 10.10.1.0 0.0.0.255 area 0
+
+route-map p1 permit 10
+ set mpls label
+tunnel-policy p1

@@ -1,0 +1,28 @@
+hostname HUAWEI
+
+ip dhcp pool pool2
+ network 10.10.10.0 255.255.255.0
+ default-router 10.10.10.1
+ dns-server 10.1.1.1
+
+ip dhcp excluded-address 10.1.1.1
+
+aaa new-model
+aaa authentication login default local
+aaa authorization exec default local
+aaa accounting exec default start-stop group radius
+
+ip local pool pool2 10.10.10.2 10.10.10.10
+
+interface GigabitEthernet1/0/0.1
+ encapsulation dot1Q 1
+ ppp chap chap-password
+ ip address negotiated
+
+interface GigabitEthernet1/0/0
+ encapsulation dot1Q 1
+ ppp chap chap-password
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0

@@ -1,0 +1,45 @@
+set system host-name DeviceA
+set system services ssh
+
+set interfaces ge-0/0/0 unit 0 family inet address 10.20.1.2/24
+
+set interfaces ge-0/0/1 unit 0 family inet address 10.10.1.1/24
+
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+
+set firewall family inet filter ac term dd from dscp af11
+set firewall family inet filter ac term dd then forwarding-class assured-forwarding
+set firewall family inet filter ac term dd then accept
+set firewall family inet filter ac term else then accept
+
+set interfaces ge-0/0/1 unit 0 family inet filter input ac
+
+set routing-options static route 2.2.2.2/32 next-hop 10.20.1.1
+set routing-options static route 10.10.1.0/24 next-hop ge-0/0/1.0
+set routing-options static route 10.20.1.0/24 next-hop ge-0/0/0.0
+
+set protocols ospf area 0.0.0.0 interface lo0.0 passive
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+
+set routing-options autonomous-system 100
+
+set protocols bgp group EBGP-2.2.2.2 type external
+set protocols bgp group EBGP-2.2.2.2 local-address 1.1.1.1
+set protocols bgp group EBGP-2.2.2.2 peer-as 200
+set protocols bgp group EBGP-2.2.2.2 neighbor 2.2.2.2
+set protocols bgp group EBGP-2.2.2.2 multihop ttl 2
+
+set protocols bgp group EBGP-2.2.2.2 family inet unicast redistribute connected
+set protocols bgp group IBGP-10.20.1.1 type internal
+set protocols bgp group IBGP-10.20.1.1 local-address 1.1.1.1
+set protocols bgp group IBGP-10.20.1.1 peer-as 100
+set protocols bgp group IBGP-10.20.1.1 neighbor 10.20.1.1
+
+set policy-options community c_10_10 members 10:10
+
+set policy-options policy-statement aa term t1 from community c_10_10
+set policy-options policy-statement aa term t1 then accept
+set policy-options policy-statement aa term default then reject
+
+set protocols bgp group EBGP-2.2.2.2 import aa

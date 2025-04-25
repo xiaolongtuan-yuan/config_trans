@@ -1,0 +1,18 @@
+set system host-name PE1
+
+set protocols mpls ldp router-id 1.1.1.9
+set interfaces ge-0/0/0 unit 0 family inet6 address ::/0
+set protocols mpls ldp interface ge-0/0/0
+set interfaces ge-0/0/0.10 unit 0 family ethernet-switching vlan-id 10
+set interfaces ge-0/0/0.10 unit 0 encapsulation vlan-ccc
+set interfaces ge-0/0/0.10 unit 0 bridge-domain 101
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.1.1/24
+set protocols mpls interface ge-0/0/1
+
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+
+set routing-options static route 1.1.1.9/32 next-hop 0.0.0.0
+
+set protocols ospf area 0 interface lo0.0
+set protocols ospf area 0 interface ge-0/0/1.0
+

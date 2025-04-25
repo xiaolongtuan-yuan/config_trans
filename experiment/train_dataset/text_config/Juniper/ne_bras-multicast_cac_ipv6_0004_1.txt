@@ -1,0 +1,32 @@
+set system host-name BRAS
+
+set routing-options ipv6-routing
+set routing-options multicast
+
+set routing-options multicast mroute 2001:db8:1::/64 next-hop 2001:db8:1::1
+
+set routing-options multicast mroute FF1E::1 next-hop ge-0/0/0.0
+set routing-options multicast mroute FF1E::2 next-hop ge-0/0/0.0
+
+set system authentication-order radius
+set system radius-server 192.168.1.100 secret "radius-secret"
+
+set system login user admin authentication-order radius
+set system login user admin class super-user
+
+set system login user admin authentication-methods ppp
+
+set system accounting events login
+set system accounting events ppp
+
+set system accounting delay-start
+
+set pppoe bba-group global virtual-template 100
+set interfaces virtual-template100 unit 0 family inet ppp chap
+set interfaces ge-0/0/0 unit 0 family inet6 address 2001:db8:1::1/64
+set interfaces ge-0/0/1 unit 0 family inet6 address autoconfig
+set interfaces ge-0/0/1 unit 0 pppoe enable
+set routing-options static route 2001:db8:1::/64 next-hop ge-0/0/0.0
+set system services dhcp ipv6-pool pool-name prefix-delegation
+
+set system session-id common

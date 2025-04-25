@@ -1,0 +1,33 @@
+hostname DeviceA
+
+l2tp enable
+aaa new-model
+aaa authentication ppp default group radius
+aaa authorization network default group radius
+aaa accounting network default start-stop group radius
+
+radius-server host 10.0.0.249 auth-port 1812 acct-port 1813
+radius-server key 7 050803150C1E
+
+interface Virtual-Template1
+ ppp authentication chap
+
+interface GigabitEthernet2/0/0.100
+ no shutdown
+ pppoe enable
+ip vrf vrf1
+ rd 100:1
+interface Loopback0
+ ip vrf forwarding vrf1
+ ip address 1.1.1.1 255.255.255.255
+
+l2tp-class lac1
+ password 7 000A0B1A2B3C4D
+ tunnel name lac1
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip vrf forwarding vrf1
+ ip address 10.0.0.1 255.255.255.0
+
+ip route vrf vrf1 3.3.3.3 255.255.255.255 10.0.0.2
+

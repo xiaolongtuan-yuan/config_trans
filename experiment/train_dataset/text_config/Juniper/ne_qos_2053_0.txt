@@ -1,0 +1,17 @@
+set system host-name DeviceA
+
+set firewall policer p1 if-exceeding bandwidth-limit 10000k
+set firewall policer p1 if-exceeding burst-size-limit 150000
+set firewall policer p1 then discard
+
+set firewall filter f1 term t1 then policer p1
+set firewall filter f1 term t1 then accept
+
+set interfaces ge-0/1/0 unit 0 family inet address 10.10.1.1/24
+set interfaces ge-0/1/0 unit 0 disable
+
+set interfaces ge-0/2/0 vlan-tagging
+set interfaces ge-0/2/0 unit 0 vlan-id 1 family inet address 10.1.1.1/24
+
+set protocols ospf area 0 interface ge-0/1/0.0
+set protocols ospf area 0 interface ge-0/2/0.0

@@ -1,0 +1,24 @@
+hostname PE1
+!
+mpls ldp router-id Loopback0 force
+!
+mpls l2vpn
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls ip
+ mpls ldp
+ mpls ldp neighbor 3.3.3.9 targeted
+!
+interface GigabitEthernet5/0/0.1
+ encapsulation dot1q 1
+ xconnect 3.3.3.9 101 encapsulation mpls
+!
+interface Loopback1
+ ip address 1.1.1.9 255.255.255.255
+!
+router ospf 1
+ network 10.1.1.0 0.0.0.255 area 0
+ network 1.1.1.9 0.0.0.0 area 0
+!
+end

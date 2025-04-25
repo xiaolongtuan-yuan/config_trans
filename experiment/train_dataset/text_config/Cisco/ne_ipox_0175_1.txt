@@ -1,0 +1,27 @@
+hostname HUAWEI
+
+radius-server host 10.1.123.151 auth-port 1812 acct-port 1813
+
+ip dhcp pool pool1
+ network 172.30.0.0 255.255.255.0
+ default-router 172.30.0.1
+
+aaa new-model
+aaa authentication login rdp group radius
+aaa authentication login default none
+aaa accounting exec rds start-stop group radius
+aaa accounting exec default none
+aaa server radius dynamic-author
+ client 10.1.0.201 server-key 0 %^%#}v{/ZA}>yTiC'[0bvy'X"N[+,uj*U)L0^5;4Jtf6%^%#
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 10.1.0.197 255.0.0.0
+
+interface GigabitEthernet1/0/2.1
+ no shutdown
+
+subscriber template bas
+ default domain authentication radiusproxy
+ authentication bind
+
+

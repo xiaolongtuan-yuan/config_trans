@@ -1,0 +1,12 @@
+set system host-name DeviceB
+set system root-authentication encrypted-password "<password>"
+
+set interfaces ge-1/0/0 unit 0 family inet address 2.2.2.2/8
+
+set interfaces ge-1/0/1 unit 0 family inet6 address 2001:db8::1/64
+set interfaces st0.10 encapsulation ip6ip
+set interfaces st0.10 family inet6 address 2002:202:202::1/64
+
+set routing-options rib inet6.0 static route 2002::/16 next-hop st0.10
+
+commit

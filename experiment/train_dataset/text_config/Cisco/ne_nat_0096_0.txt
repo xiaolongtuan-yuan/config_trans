@@ -1,0 +1,27 @@
+hostname NATA
+
+vsm on-board-mode enable
+ip nat inside source list 1 interface GigabitEthernet1/0/1 overload
+
+access-list 1 permit ip 192.168.10.0 0.0.0.255
+interface GigabitEthernet1/0/1
+  no shutdown
+  ip address 192.168.10.1 255.255.255.0
+  ip nat inside
+  ip policy route-map policy1
+interface GigabitEthernet1/0/2
+  no shutdown
+  ip address 2.2.2.1 255.255.255.0
+  ip nat outside
+
+ip route 0.0.0.0 0.0.0.0 2.2.2.2
+
+access-list 100 permit ip any any
+
+route-map policy1 permit 10
+  match ip address 100
+  set ip next-hop 1.1.1.100
+
+router ospf 1
+  network 2.2.2.0 0.0.0.255 area 0
+

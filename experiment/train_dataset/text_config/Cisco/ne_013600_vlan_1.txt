@@ -1,0 +1,48 @@
+ip dhcp pool pool1
+ network 172.30.0.0 255.255.255.0
+ default-router 172.30.0.1
+ exclude-address 172.30.0.8
+aaa new-model
+aaa authentication login default local
+aaa authorization network default local
+aaa session-id common
+
+username admin privilege 15 password 0 <password>
+
+interface GigabitEthernet1/0/2
+ no shutdown
+ switchport access vlan 100
+
+interface GigabitEthernet1/0/2.1
+ encapsulation dot1q 100
+ ip address 172.30.0.2 255.255.255.0
+
+interface Vlan100
+ ip helper-address 172.30.0.1
+
+ip route 0.0.0.0 0.0.0.0 172.30.0.1
+ip route 172.30.0.8 255.255.255.255 172.30.0.2
+
+aaa new-model
+aaa authentication login default group local
+aaa accounting exec default start-stop group local
+
+access-list 1 permit 172.30.0.8
+access-list 1 deny any
+
+aaa group server radius local
+ server-private 172.30.0.8 auth-port 1812 acct-port 1813
+
+username 172.30.0.8 privilege 15 secret 0 <password>
+
+interface GigabitEthernet1/0/2.1
+ aaa authentication login default group local
+
+ip dhcp detect static-user interval 1
+
+interface Vlan100
+ ip helper-address 172.30.0.1
+ip dhcp snooping
+interface GigabitEthernet1/0/2.1
+ ip dhcp snooping trust
+ip dhcp snooping rate-limit unicast threshold 100 burst 10

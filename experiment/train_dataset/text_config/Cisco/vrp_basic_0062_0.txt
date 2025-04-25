@@ -1,0 +1,24 @@
+hostname SSH_Server
+!
+ipv6 access-list 2000
+ permit ipv6 2001:DB8::/32 any
+!
+crypto key generate rsa modulus 2048
+!
+aaa new-model
+!
+username huawei123 privilege 3 password 0 $1c$+,JS+))\\2$KVNj(.3`_5x0FCKGv}H&.kUTI`Ff&H*eBqO.ua>)$
+!
+interface GigabitEthernet0/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8::1/32
+!
+ip ssh version 2
+ipv6 ssh server enable
+line vty 0 14
+ transport input ssh
+ privilege level 3
+ login local
+!
+end

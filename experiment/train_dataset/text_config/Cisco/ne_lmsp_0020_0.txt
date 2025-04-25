@@ -1,0 +1,38 @@
+hostname PE1
+!
+mpls ldp router-id Loopback0
+!
+mpls label protocol ldp
+mpls l2vpn
+pseudowire-class 1to3
+ encapsulation mpls
+ peer 192.168.1.3  
+mpls ldp
+controller E1 2/0/1
+ using e1
+!
+controller E1 2/0/2
+ using e1
+!
+interface Serial2/0/1:0
+ link-protocol tdm
+ pseudowire-class 1to3
+ no shutdown
+interface Serial2/0/2:0
+ link-protocol tdm
+ no shutdown
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface Loopback0
+ ip address 192.168.1.2 255.255.255.255
+!
+router ospf 1
+ network 192.168.1.2 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+!
+end

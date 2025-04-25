@@ -1,0 +1,21 @@
+set system host-name DeviceA
+
+set firewall family inet filter PBR_aaa term match_3001 from source-address 10.100.0.11/32
+set firewall family inet filter PBR_aaa term match_3001 then next-hop <Tunnel30-Next-Hop-IP>
+
+set firewall family inet filter PBR_aaa term match_3002 from source-address 10.110.0.11/32
+set firewall family inet filter PBR_aaa term match_3002 then next-hop <Tunnel40-Next-Hop-IP>
+
+set firewall family inet filter PBR_aaa term default then accept
+
+set interfaces gr-0/0/30 unit 0 tunnel source <local-gre-source-IP>
+set interfaces gr-0/0/30 unit 0 tunnel destination <remote-tunnel30-IP>
+set interfaces gr-0/0/30 unit 0 family inet address <local-tunnel30-IP>/30
+set interfaces gr-0/0/40 unit 0 tunnel source <local-gre-source-IP>
+set interfaces gr-0/0/40 unit 0 tunnel destination <remote-tunnel40-IP>
+set interfaces gr-0/0/40 unit 0 family inet address <local-tunnel40-IP>/30
+set interfaces ge-0/0/0 unit 0 family inet address 10.100.0.10/24
+set interfaces ge-0/0/0 unit 0 family inet filter input PBR_aaa
+
+set interfaces ge-0/0/1 unit 0 family inet address 10.110.0.10/24
+set interfaces ge-0/0/1 unit 0 family inet filter input PBR_aaa

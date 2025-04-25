@@ -1,0 +1,344 @@
+{
+    "sysname DeviceB": {
+        "template": "sysname [parameter1]",
+        "command": "sysname DeviceB",
+        "explanation": "设置设备的主机名为 'DeviceB'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "interface GigabitEthernet2/0/0": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet2/0/0",
+        "explanation": "进入GigabitEthernet2/0/0接口的配置模式",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "启用接口 (默认情况下接口是关闭的)",
+            "parameters": []
+        },
+        "ip address 10.10.1.2 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.10.1.2 255.255.255.0",
+            "explanation": "配置接口的IPv4地址为 10.10.1.2，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "sub musk",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        }
+    },
+    "interface LoopBack0": {
+        "template": "interface [parameter1]",
+        "command": "interface LoopBack0",
+        "explanation": "进入LoopBack0接口的配置模式",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "ip address 2.2.2.2 255.255.255.255": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 2.2.2.2 255.255.255.255",
+            "explanation": "配置接口的IPv4地址为 2.2.2.2，子网掩码为 255.255.255.255",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "sub musk",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        }
+    },
+    "bgp 200": {
+        "template": "bgp [parameter1]",
+        "command": "bgp 200",
+        "explanation": "进入BGP配置模式，AS号为200",
+        "parameters": [
+            {
+                "name": "AS number",
+                "type": "integer",
+                "explanation": "AS号"
+            }
+        ],
+        "peer 1.1.1.1 as-number 100": {
+            "template": "peer [parameter1] as-number [parameter2]",
+            "command": "peer 1.1.1.1 as-number 100",
+            "explanation": "配置BGP对等体1.1.1.1，其AS号为100",
+            "parameters": [
+                {
+                    "name": "peer ip",
+                    "type": "IPv4",
+                    "explanation": "对等体IP地址"
+                },
+                {
+                    "name": "AS number",
+                    "type": "integer",
+                    "explanation": "对等体AS号"
+                }
+            ]
+        },
+        "peer 1.1.1.1 ebgp-max-hop 2": {
+            "template": "peer [parameter1] ebgp-max-hop [parameter2]",
+            "command": "peer 1.1.1.1 ebgp-max-hop 2",
+            "explanation": "配置EBGP对等体1.1.1.1的最大跳数为2",
+            "parameters": [
+                {
+                    "name": "peer ip",
+                    "type": "IPv4",
+                    "explanation": "对等体IP地址"
+                },
+                {
+                    "name": "max hop",
+                    "type": "integer",
+                    "explanation": "最大跳数"
+                }
+            ]
+        },
+        "peer 1.1.1.1 connect-interface LoopBack0": {
+            "template": "peer [parameter1] connect-interface [parameter2]",
+            "command": "peer 1.1.1.1 connect-interface LoopBack0",
+            "explanation": "配置与对等体1.1.1.1的连接接口为LoopBack0",
+            "parameters": [
+                {
+                    "name": "peer ip",
+                    "type": "IPv4",
+                    "explanation": "对等体IP地址"
+                },
+                {
+                    "name": "interface name",
+                    "type": "string",
+                    "explanation": "接口名"
+                }
+            ]
+        },
+        "ipv4-family unicast": {
+            "template": "ipv4-family unicast",
+            "command": "ipv4-family unicast",
+            "explanation": "进入IPv4单播地址族配置模式",
+            "parameters": [],
+            "undo synchronization": {
+                "template": "undo synchronization",
+                "command": "undo synchronization",
+                "explanation": "关闭BGP与IGP的同步",
+                "parameters": []
+            },
+            "import-route direct": {
+                "template": "import-route [parameter1]",
+                "command": "import-route direct",
+                "explanation": "引入直连路由到BGP",
+                "parameters": [
+                    {
+                        "name": "route type",
+                        "type": "string",
+                        "explanation": "路由类型"
+                    }
+                ]
+            },
+            "peer 1.1.1.1 enable": {
+                "template": "peer [parameter1] enable",
+                "command": "peer 1.1.1.1 enable",
+                "explanation": "使能与对等体1.1.1.1的BGP会话",
+                "parameters": [
+                    {
+                        "name": "peer ip",
+                        "type": "IPv4",
+                        "explanation": "对等体IP地址"
+                    }
+                ]
+            },
+            "peer 1.1.1.1 route-policy aa export": {
+                "template": "peer [parameter1] route-policy [parameter2] export",
+                "command": "peer 1.1.1.1 route-policy aa export",
+                "explanation": "对从对等体1.1.1.1接收的路由应用出口策略aa",
+                "parameters": [
+                    {
+                        "name": "peer ip",
+                        "type": "IPv4",
+                        "explanation": "对等体IP地址"
+                    },
+                    {
+                        "name": "route-policy name",
+                        "type": "string",
+                        "explanation": "路由策略名"
+                    }
+                ]
+            },
+            "peer 1.1.1.1 advertise-community": {
+                "template": "peer [parameter1] advertise-community",
+                "command": "peer 1.1.1.1 advertise-community",
+                "explanation": "向对等体1.1.1.1通告团体属性",
+                "parameters": [
+                    {
+                        "name": "peer ip",
+                        "type": "IPv4",
+                        "explanation": "对等体IP地址"
+                    }
+                ]
+            },
+            "quit": {
+                "template": "quit",
+                "command": "quit",
+                "explanation": "退出当前配置模式",
+                "parameters": []
+            }
+        }
+    },
+    "ospf 1": {
+        "template": "ospf [parameter1]",
+        "command": "ospf 1",
+        "explanation": "进入OSPF配置模式，进程号为1",
+        "parameters": [
+            {
+                "name": "process id",
+                "type": "integer",
+                "explanation": "OSPF进程号"
+            }
+        ],
+        "area 0.0.0.0": {
+            "template": "area [parameter1]",
+            "command": "area 0.0.0.0",
+            "explanation": "进入OSPF区域0.0.0.0的配置模式",
+            "parameters": [
+                {
+                    "name": "area id",
+                    "type": "IPv4",
+                    "explanation": "区域ID"
+                }
+            ],
+            "network 2.2.2.2 0.0.0.0": {
+                "template": "network [parameter1] [parameter2]",
+                "command": "network 2.2.2.2 0.0.0.0",
+                "explanation": "在OSPF区域0.0.0.0中宣告网络2.2.2.2，掩码为0.0.0.0",
+                "parameters": [
+                    {
+                        "name": "network address",
+                        "type": "IPv4",
+                        "explanation": "网络地址"
+                    },
+                    {
+                        "name": "wildcard mask",
+                        "type": "IPv4",
+                        "explanation": "通配符掩码"
+                    }
+                ]
+            },
+            "network 10.10.1.0 0.0.0.255": {
+                "template": "network [parameter1] [parameter2]",
+                "command": "network 10.10.1.0 0.0.0.255",
+                "explanation": "在OSPF区域0.0.0.0中宣告网络10.10.1.0，掩码为0.0.0.255",
+                "parameters": [
+                    {
+                        "name": "network address",
+                        "type": "IPv4",
+                        "explanation": "网络地址"
+                    },
+                    {
+                        "name": "wildcard mask",
+                        "type": "IPv4",
+                        "explanation": "通配符掩码"
+                    }
+                ]
+            }
+        }
+    },
+    "route-policy aa permit node 10": {
+        "template": "route-policy [parameter1] permit node [parameter2]",
+        "command": "route-policy aa permit node 10",
+        "explanation": "创建名为aa的路由策略，节点10为允许",
+        "parameters": [
+            {
+                "name": "route-policy name",
+                "type": "string",
+                "explanation": "路由策略名"
+            },
+            {
+                "name": "node number",
+                "type": "integer",
+                "explanation": "节点号"
+            }
+        ],
+        "if-match ip-prefix bb": {
+            "template": "if-match ip-prefix [parameter1]",
+            "command": "if-match ip-prefix bb",
+            "explanation": "匹配IP前缀列表bb",
+            "parameters": [
+                {
+                    "name": "ip-prefix name",
+                    "type": "string",
+                    "explanation": "IP前缀列表名"
+                }
+            ]
+        },
+        "apply community 10:10": {
+            "template": "apply community [parameter1]",
+            "command": "apply community 10:10",
+            "explanation": "应用团体属性10:10",
+            "parameters": [
+                {
+                    "name": "community value",
+                    "type": "string",
+                    "explanation": "团体属性值"
+                }
+            ]
+        }
+    },
+    "ip ip-prefix bb index 10 permit 10.1.1.1 32": {
+        "template": "ip ip-prefix [parameter1] index [parameter2] permit [parameter3] [parameter4]",
+        "command": "ip ip-prefix bb index 10 permit 10.1.1.1 32",
+        "explanation": "创建名为bb的IP前缀列表，索引为10，允许10.1.1.1/32",
+        "parameters": [
+            {
+                "name": "ip-prefix name",
+                "type": "string",
+                "explanation": "IP前缀列表名"
+            },
+            {
+                "name": "index number",
+                "type": "integer",
+                "explanation": "索引号"
+            },
+            {
+                "name": "network address",
+                "type": "IPv4",
+                "explanation": "网络地址"
+            },
+            {
+                "name": "prefix length",
+                "type": "integer",
+                "explanation": "前缀长度"
+            }
+        ]
+    },
+    "return": {
+        "template": "return",
+        "command": "return",
+        "explanation": "退出当前视图，返回到用户视图",
+        "parameters": []
+    }
+}

@@ -1,0 +1,13 @@
+set system host-name PE1
+!
+set protocols cfm global enable
+set routing-instances evpna instance-type virtual-router
+set routing-instances evpna route-distinguisher 100:1
+set routing-instances evpna vpn-target 1:1 export-extcommunity
+set bridge-domains 10 interface ge-0/0/1.1
+set interfaces ge-0/0/1.1 unit 0 family ethernet-switching interface-mode trunk
+ set interfaces ge-0/0/1.1 unit 0 family ethernet-switching vlan members 10
+ set interfaces ge-0/0/1.1 encapsulation flexible-ethernet-services
+ set interfaces ge-0/0/1.1 encapsulation vlan-bridge vlan-id 2
+ set interfaces ge-0/0/1.1 pppoe enable
+set protocols cfm md md1
