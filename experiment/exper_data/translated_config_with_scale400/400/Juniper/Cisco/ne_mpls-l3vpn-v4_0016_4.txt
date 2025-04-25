@@ -1,0 +1,21 @@
+hostname CE3
+route-map ge-1/0/0 permit [parameter2]
+ set interface ge-1/0/0
+controller E1 0
+ip address 10.3.1.1 24
+interface [parameter1]
+ no shutdown
+ ip policy route-map ADVERTISE_NETWORK
+ ipv6 traffic-policy ADVERTISE_NETWORK inbound
+ ipv6 traffic-policy 1 inbound
+ service-policy none reject
+router bgp 800
+ address-family unicast
+  neighbor 10.3.1.2 route-reflector-client
+ permit exact none none 10.3.1.0
+ network none mask 24
+bridge BGP_GROUP protocol none
+radius-server type external
+ip access-list extended 10.3.1.0
+access-list none accept none none none
+mpls ldp neighbor 100

@@ -1,0 +1,23 @@
+sysname CE3
+flexe group ge-1/0/0
+ binding interface ge-1/0/0
+interface exact
+ e1 0 none
+ ip address 10.3.1.1 24
+ dot1x enable
+ ip policy-based-route ADVERTISE_NETWORK
+ ip policy-based-route 1
+ network none mask 24
+ traffic-policy reject none
+bgp 800
+ ipv4-family unicast
+  peer 10.3.1.2 enable
+  peer none route-policy ADVERTISE_NETWORK export
+ peer 100 as-number none
+bridge BGP_GROUP protocol none
+tunnel-policy external
+ tunnel select-seq none external load-balance-number none
+route add 10.3.1.0 mask none none
+ip pool 10.3.1.0
+acl number accept
+ rule none deny accept

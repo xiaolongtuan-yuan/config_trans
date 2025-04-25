@@ -1,0 +1,121 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name CE2",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.1.2.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols bgp group [parameter1]": {
+        "template": "set protocols bgp group [parameter1]",
+        "command": "set protocols bgp group CE2_to_Peer",
+        "explanation": "This command configures a BGP group named [parameter1], defining a set of BGP peers with shared session parameters.",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP Group name."
+            }
+        ],
+        "type [parameter2]": {
+            "template": "type [parameter2]",
+            "command": "type external",
+            "explanation": "Configure the type of BGP group to be external.",
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "explanation": "Type of BGP group, for example, external."
+                }
+            ]
+        },
+        "peer-as [parameter2]": {
+            "template": "peer-as [parameter2]",
+            "command": "peer-as 100",
+            "explanation": "The equivalent autonomy system number for BGP groups.",
+            "parameters": [
+                {
+                    "name": "peer-as",
+                    "type": "integer",
+                    "explanation": "Equivalent Autonomy System Number."
+                }
+            ]
+        },
+        "neighbor [parameter2]": {
+            "template": "neighbor [parameter2]",
+            "command": "neighbor 10.1.2.2",
+            "explanation": "Configure the neighbors of the BGP team.",
+            "parameters": [
+                {
+                    "name": "neighbor",
+                    "type": "string",
+                    "explanation": "Neighbor's IP address."
+                }
+            ]
+        },
+        "family inet unicast": {
+            "template": "family inet unicast",
+            "command": "family inet unicast",
+            "explanation": "Configure BGP teams to support IPv4 solo addresses.",
+            "parameters": []
+        },
+        "family inet unicast prefix-limit [parameter2]": {
+            "template": "family inet unicast prefix-limit [parameter2]",
+            "command": "family inet unicast prefix-limit 10.1.2.0/24",
+            "explanation": "Configure prefix limits for BGP group IPv4 solo.",
+            "parameters": [
+                {
+                    "name": "prefix-limit",
+                    "type": "string",
+                    "explanation": "Prefix limits, e.g., 10.1.2.0/24."
+                }
+            ]
+        }
+    }
+}

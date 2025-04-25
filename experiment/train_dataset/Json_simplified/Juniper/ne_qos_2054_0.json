@@ -1,0 +1,230 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DeviceA",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set vlans [parameter1]": {
+        "template": "set vlans [parameter1]",
+        "command": "set vlans VLAN10",
+        "explanation": "Configure VLAN.",
+        "parameters": [
+            {
+                "name": "vlan-name",
+                "type": "string",
+                "explanation": "VLAN's name, like Vlan100."
+            }
+        ],
+        "vlan-id [parameter2]": {
+            "template": "vlan-id [parameter2]",
+            "command": "vlan-id 10",
+            "explanation": "Configure VLAN's ID.",
+            "parameters": [
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN ID for the only identification of a VLAN."
+                }
+            ]
+        }
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family ethernet-switching port-mode [parameter3]": {
+                "template": "family ethernet-switching port-mode [parameter3]",
+                "command": "family ethernet-switching port-mode trunk",
+                "explanation": "Configure the interface 's port mode is trunk.",
+                "parameters": [
+                    {
+                        "name": "port-mode",
+                        "type": "string",
+                        "explanation": "Port mode, for example, trunk."
+                    }
+                ]
+            },
+            "family ethernet-switching vlan members [parameter3]": {
+                "template": "family ethernet-switching vlan members [parameter3]",
+                "command": "family ethernet-switching vlan members VLAN10",
+                "explanation": "Configure the VLAN members of the interface.",
+                "parameters": [
+                    {
+                        "name": "vlan-members",
+                        "type": "string",
+                        "explanation": "VLAN members, e.g. vlan 100."
+                    }
+                ]
+            },
+            "family ethernet-switching native-vlan-id [parameter3]": {
+                "template": "family ethernet-switching native-vlan-id [parameter3]",
+                "command": "family ethernet-switching native-vlan-id 10",
+                "explanation": "This command sets the native VLAN ID for an interface in the `ethernet-switching` family, where `[parameter3]` specifies the VLAN ID number.",
+                "parameters": [
+                    {
+                        "name": "native-vlan-id",
+                        "type": "integer",
+                        "explanation": "The ID number of the native VLAN."
+                    }
+                ]
+            }
+        },
+        "disable": {
+            "template": "disable",
+            "command": "disable",
+            "explanation": "Disables the specified interface.",
+            "parameters": []
+        }
+    },
+    "set class-of-service classifiers dscp [parameter1]": {
+        "template": "set class-of-service classifiers dscp [parameter1]",
+        "command": "set class-of-service classifiers dscp EF-CLASS",
+        "explanation": "The command sets a DSCP (Differentiated Services Code Point) classifier named `[parameter1]` to classify traffic based on DSCP values in Junos Class of Service (CoS) configuration.",
+        "parameters": [
+            {
+                "name": "classifier-name",
+                "type": "string",
+                "explanation": "The name of the DSCP classifier."
+            }
+        ],
+        "forwarding-class [parameter2]": {
+            "template": "forwarding-class [parameter2]",
+            "command": "forwarding-class EF",
+            "explanation": "The command `forwarding-class [parameter2]` assigns a packet to a specific forwarding class (parameter2) for differentiated handling in traffic queuing and scheduling.",
+            "parameters": [
+                {
+                    "name": "forwarding-class",
+                    "type": "string",
+                    "explanation": "Forwarding class name."
+                }
+            ]
+        }
+    },
+    "set class-of-service rewrite-rules dscp [parameter1]": {
+        "template": "set class-of-service rewrite-rules dscp [parameter1]",
+        "command": "set class-of-service rewrite-rules dscp EF-REWRITE",
+        "explanation": "The command sets DSCP rewrite rules in Junos, mapping incoming DSCP values to specified outgoing DSCP values for traffic classification and prioritization.",
+        "parameters": [
+            {
+                "name": "rewrite-rule-name",
+                "type": "string",
+                "explanation": "The name of the DSCP rewrite rule."
+            }
+        ],
+        "forwarding-class [parameter2]": {
+            "template": "forwarding-class [parameter2]",
+            "command": "forwarding-class EF",
+            "explanation": "The command `forwarding-class [parameter2]` assigns a packet to a specific forwarding class (queue) based on `[parameter2]`, which determines its priority and handling in traffic management.",
+            "parameters": [
+                {
+                    "name": "forwarding-class",
+                    "type": "string",
+                    "explanation": "Forwarding class name."
+                }
+            ],
+            "loss-priority [parameter3]": {
+                "template": "loss-priority [parameter3]",
+                "command": "loss-priority low",
+                "explanation": "The command `loss-priority [parameter3]` sets the packet loss priority level to `parameter3`, influencing drop precedence during congestion in Junos QoS configurations.",
+                "parameters": [
+                    {
+                        "name": "loss-priority",
+                        "type": "string",
+                        "explanation": "The command explanation translates to: \"Lost priority, for example, low.\""
+                    }
+                ],
+                "code-point [parameter4]": {
+                    "template": "code-point [parameter4]",
+                    "command": "code-point 34",
+                    "explanation": "The Junos command `code-point [parameter4]` assigns a specific Differentiated Services Code Point (DSCP) value to traffic for Quality of Service (QoS) classification.",
+                    "parameters": [
+                        {
+                            "name": "code-point",
+                            "type": "integer",
+                            "explanation": "The explanation of the Junos command \"代码点值\" directly translates to \"Code Point Value.\""
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "set firewall family inet filter [parameter1]": {
+        "template": "set firewall family inet filter [parameter1]",
+        "command": "set firewall family inet filter QOS-POLICY",
+        "explanation": "This command fragment configures an IPv4 firewall filter named `[parameter1]` in Junos OS, defining rules to control traffic based on specified conditions.",
+        "parameters": [
+            {
+                "name": "filter",
+                "type": "string",
+                "explanation": "Firewall filter name."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term EF-CLASS",
+            "explanation": "This command fragment creates a term within an IPv4 firewall filter, where `[parameter1]` is the filter name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "string",
+                    "explanation": "Filter term name."
+                }
+            ],
+            "from dscp [parameter3]": {
+                "template": "from dscp [parameter3]",
+                "command": "from dscp ef",
+                "explanation": "Configure the matches for firewall filters.",
+                "parameters": [
+                    {
+                        "name": "dscp-value",
+                        "type": "string",
+                        "explanation": "DSCP values for matching traffic."
+                    }
+                ]
+            },
+            "then dscp [parameter3]": {
+                "template": "then dscp [parameter3]",
+                "command": "then dscp 34",
+                "explanation": "Configure firewall filter actions and modify DSCP values.",
+                "parameters": [
+                    {
+                        "name": "dscp-value",
+                        "type": "integer",
+                        "explanation": "modified DSCP values."
+                    }
+                ]
+            },
+            "then accept": {
+                "template": "then accept",
+                "command": "then accept",
+                "explanation": "The `then accept` command in Junos allows the traffic that matches the preceding conditions in a firewall filter or policy to pass through without further processing.",
+                "parameters": []
+            }
+        }
+    }
+}

@@ -1,0 +1,35 @@
+hostname NATA
+ethernet cfm domain 1 level [parameter2]
+ service none vlan 1
+network-clock synchronization slot 0 subslot none
+aaa group server tacacs+ group1
+ip nat pool nat1 none none netmask none
+bridge-domain nat1
+ vpn id 1
+ip access-list extended address-group1
+ group 3001
+ permit ip any object-group address-group1
+ permit none 192.168.10.0 none none
+ permit ip 2.2.2.0 0.0.0.255 any
+interface GigabitEthernet
+ permit ip any object-group 1
+ ipv6 mld join-group 1.1.1.105
+ ip nat inside
+ no shutdown
+ interface GigabitEthernet
+ mpls traffic-eng bandwidth none
+crypto isakmp policy 3001
+ip nat inside source static none 1.1.1.100
+ip nat inside source static network 192.168.10.10 none none
+class-map match-all 3001
+ match access-group 3001
+access-list 1 permit none none
+ip address 192.168.10.1 255.255.255.0
+ip address 2.2.2.1 255.255.255.0
+ip nat inside source list 3001 pool none overload
+ip nat inside source list none interface nat1 overload
+router ospf 1
+ area 0.0.0.0 nssa no-summary
+ip route vrf none 0.0.0.0 none none
+ip route none 0.0.0.0 2.2.2.2
+license boot module none technology-package none

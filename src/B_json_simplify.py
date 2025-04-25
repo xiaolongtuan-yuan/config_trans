@@ -181,33 +181,31 @@ def check_juniper_config(config_model: dict) -> bool:
 
 
 if __name__ == "__main__":
-    vendors = ["Juniper"]
+    vendors = ["Juniper", "Cisco", "HUAWEI"]
     project_root = Path(__file__).parent.parent
 
     # simplify the device configuration model
     for vendor in vendors:
-        folder_path = str(project_root / 'dataset_multi_vendor_config/Json_config/{}'.format(vendor))
-        save_path = str(project_root / 'dataset_multi_vendor_config/Json_config/{}'.format(vendor+'_simplified'))
+        if vendor == 'Juniper':
+            folder_path = str(project_root / 'experiment/train_dataset/command_tree/{}_subdivided'.format(vendor))
+        else:
+            folder_path = str(project_root / 'experiment/train_dataset/command_tree/{}'.format(vendor))
+        save_path = str(project_root / 'experiment/train_dataset/Json_simplified/{}'.format(vendor))
+        os.makedirs(save_path, exist_ok=True)
         json_files = get_json_filenames(folder_path)
         i = 0
         index = 0
         for json_file in sorted(json_files):
             index += 1
-            if index >= 400:
-                break
             json_config_path = folder_path + '/' + json_file
             json_config = load_json_file(json_config_path)
             if vendor == 'Juniper':
-                if not check_juniper_config(json_config):
-                    print(json_file, index)
-                    continue
-                # Juniper配置层级多, 与huawei, cisco一致的化简流程会出错, 插入template保持一致
                 json_config = insert_template(json_config)
 
-            '''json_config_simplified = simplify_json(json_config)
+            json_config_simplified = simplify_json(json_config)
             json_name, _ = os.path.splitext(json_file)
             save_file_path = save_path + '/' + json_name + '.json'
-            save_json_file(json_config_simplified, save_file_path)'''
+            save_json_file(json_config_simplified, save_file_path)
             i += 1
         print("finished: " + str(i))
 

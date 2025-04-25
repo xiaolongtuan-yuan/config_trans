@@ -1,0 +1,309 @@
+{
+    "sysname [parameter1]": {
+        "template": "sysname [parameter1]",
+        "command": "sysname HUAWEI",
+        "explanation": "Sets the device's hostname 'HUAWEI'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "Host Name"
+            }
+        ]
+    },
+    "radius-server group [parameter1]": {
+        "template": "radius-server group [parameter1]",
+        "command": "radius-server group shiva",
+        "explanation": "Create a RADIUS server group called 'shiva '",
+        "parameters": [
+            {
+                "name": "group name",
+                "type": "string",
+                "explanation": "RADIUS Server Group Name"
+            }
+        ],
+        "radius-server authentication [parameter1] [parameter2] weight [parameter3]": {
+            "template": "radius-server authentication [parameter1] [parameter2] weight [parameter3]",
+            "command": "radius-server authentication 10.1.123.151 1812 weight 0",
+            "explanation": "Configure RADIUS authentication server address 10.1.123.151, port 1812, weight 0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "RADius Authentication Server Address"
+                },
+                {
+                    "name": "port",
+                    "type": "integer",
+                    "explanation": "RADius Authentication Server Port"
+                },
+                {
+                    "name": "weight",
+                    "type": "integer",
+                    "explanation": "Weight"
+                }
+            ]
+        },
+        "radius-server accounting [parameter1] [parameter2] weight [parameter3]": {
+            "template": "radius-server accounting [parameter1] [parameter2] weight [parameter3]",
+            "command": "radius-server accounting 10.1.123.151 1813 weight 0",
+            "explanation": "Configure RADIUS billing server address 10.1.123.151, port 1813, weight 0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "RADIUS billing server address"
+                },
+                {
+                    "name": "port",
+                    "type": "integer",
+                    "explanation": "RADIUS billing server port"
+                },
+                {
+                    "name": "weight",
+                    "type": "integer",
+                    "explanation": "Weight"
+                }
+            ]
+        }
+    },
+    "radius-client [parameter1] mask [parameter2] shared-key-cipher [parameter3] server-group [parameter4]": {
+        "template": "radius-client [parameter1] mask [parameter2] shared-key-cipher [parameter3] server-group [parameter4]",
+        "command": "radius-client 10.1.123.151 mask 255.255.255.255 shared-key-cipher <key> server-group shiva",
+        "explanation": "Configure RADIUS client, IP address 10.1.123.151, mask 255.255.255.255.255, shared key <key>, with server group shiva",
+        "parameters": [
+            {
+                "name": "ip address",
+                "type": "IPv4",
+                "explanation": "RADius Client IP Address"
+            },
+            {
+                "name": "mask",
+                "type": "IPv4",
+                "explanation": "Mask"
+            },
+            {
+                "name": "shared-key-cipher",
+                "type": "string",
+                "explanation": "Shared Key"
+            },
+            {
+                "name": "server-group",
+                "type": "string",
+                "explanation": "Server Group Name"
+            }
+        ]
+    },
+    "ip pool [parameter1] bas local": {
+        "template": "ip pool [parameter1] bas local",
+        "command": "ip pool a bas local",
+        "explanation": "Create a local BAS IP address pool called 'a '",
+        "parameters": [
+            {
+                "name": "pool name",
+                "type": "string",
+                "explanation": "IP Address Pool Name"
+            }
+        ],
+        "gateway [parameter1] [parameter2]": {
+            "template": "gateway [parameter1] [parameter2]",
+            "command": "gateway 172.30.0.1 255.255.255.0",
+            "explanation": "The gateway to the IP address pool is 172.30.01 and the subnet mask is 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "gateway",
+                    "type": "IPv4",
+                    "explanation": "Gateway Address"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "Subnet mask"
+                }
+            ]
+        },
+        "section [parameter1] [parameter2] [parameter3]": {
+            "template": "section [parameter1] [parameter2] [parameter3]",
+            "command": "section 0 172.30.0.2 172.30.0.254",
+            "explanation": "Configure the address section of the IP address pool with an initial address of 172.30.0.0.2 and an end address of 172.300.0.254",
+            "parameters": [
+                {
+                    "name": "section number",
+                    "type": "integer",
+                    "explanation": "Address Field Number"
+                },
+                {
+                    "name": "start ip",
+                    "type": "IPv4",
+                    "explanation": "Start IP Address"
+                },
+                {
+                    "name": "end ip",
+                    "type": "IPv4",
+                    "explanation": "End IP Address"
+                }
+            ]
+        }
+    },
+    "aaa": {
+        "template": "aaa",
+        "command": "aaa",
+        "explanation": "Enter AAA Configuration Mode",
+        "parameters": [],
+        "authentication-scheme [parameter1]": {
+            "template": "authentication-scheme [parameter1]",
+            "command": "authentication-scheme rdp",
+            "explanation": "Create an authentication scheme called 'rdp '",
+            "parameters": [
+                {
+                    "name": "scheme name",
+                    "type": "string",
+                    "explanation": "Authentication programme name"
+                }
+            ],
+            "authentication-mode [parameter1]": {
+                "template": "authentication-mode [parameter1]",
+                "command": "authentication-mode radius-proxy",
+                "explanation": "Set authentication mode to RADIUS proxy",
+                "parameters": [
+                    {
+                        "name": "mode",
+                        "type": "string",
+                        "explanation": "Authentication mode"
+                    }
+                ]
+            }
+        },
+        "accounting-scheme [parameter1]": {
+            "template": "accounting-scheme [parameter1]",
+            "command": "accounting-scheme rds",
+            "explanation": "Create a billing scheme called 'rds'",
+            "parameters": [
+                {
+                    "name": "scheme name",
+                    "type": "string",
+                    "explanation": "Billing programme name"
+                }
+            ]
+        },
+        "domain [parameter1]": {
+            "template": "domain [parameter1]",
+            "command": "domain radiusproxy",
+            "explanation": "Create a field called 'radiusproxy '",
+            "parameters": [
+                {
+                    "name": "domain name",
+                    "type": "string",
+                    "explanation": "Domain Name"
+                }
+            ],
+            "authentication-scheme [parameter1]": {
+                "template": "authentication-scheme [parameter1]",
+                "command": "authentication-scheme rdp",
+                "explanation": "Specify authentication scheme as 'rdp '",
+                "parameters": [
+                    {
+                        "name": "scheme name",
+                        "type": "string",
+                        "explanation": "Authentication programme name"
+                    }
+                ]
+            },
+            "accounting-scheme [parameter1]": {
+                "template": "accounting-scheme [parameter1]",
+                "command": "accounting-scheme rds",
+                "explanation": "Specify the billing scheme as 'rds'",
+                "parameters": [
+                    {
+                        "name": "scheme name",
+                        "type": "string",
+                        "explanation": "Billing programme name"
+                    }
+                ]
+            },
+            "radius-server group [parameter1]": {
+                "template": "radius-server group [parameter1]",
+                "command": "radius-server group shiva",
+                "explanation": "Specify the RADUS server group as 'shita '",
+                "parameters": [
+                    {
+                        "name": "group name",
+                        "type": "string",
+                        "explanation": "RADIUS Server Group Name"
+                    }
+                ]
+            },
+            "ip-pool [parameter1]": {
+                "template": "ip-pool [parameter1]",
+                "command": "ip-pool a",
+                "explanation": "Specify IP Address Pool as 'a '",
+                "parameters": [
+                    {
+                        "name": "pool name",
+                        "type": "string",
+                        "explanation": "IP Address Pool Name"
+                    }
+                ]
+            }
+        }
+    },
+    "license": {
+        "template": "license",
+        "command": "license",
+        "explanation": "Enter License Configuration Mode",
+        "parameters": [],
+        "active bas slot [parameter1]": {
+            "template": "active bas slot [parameter1]",
+            "command": "active bas slot 1",
+            "explanation": "License to activate BAS slot 1",
+            "parameters": [
+                {
+                    "name": "slot number",
+                    "type": "integer",
+                    "explanation": "Slot"
+                }
+            ]
+        }
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet 1/0/1",
+        "explanation": "Enter gigabitEthernet 1/ 0/1 interface configuration mode",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "Interface Name"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "Enable interface (the interface is closed by default)",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.1.0.197 255.0.0.0",
+            "explanation": "Configure interface IPv4 address 10.1.0.197 with subnet mask 255.0.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 Address"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "Subnet mask"
+                }
+            ]
+        }
+    },
+    "return": {
+        "template": "return",
+        "command": "return",
+        "explanation": "Exit current configuration mode and return to user view",
+        "parameters": []
+    }
+}

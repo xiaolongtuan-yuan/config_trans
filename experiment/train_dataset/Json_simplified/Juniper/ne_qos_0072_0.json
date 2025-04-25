@@ -1,0 +1,181 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DeviceA",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set class-of-service forwarding-classes [parameter1]": {
+        "template": "set class-of-service forwarding-classes [parameter1]",
+        "command": "set class-of-service forwarding-classes AF4",
+        "explanation": "Configure the service category forward category.",
+        "parameters": [
+            {
+                "name": "forwarding-class",
+                "type": "string",
+                "explanation": "Forward class names for different flow categories."
+            }
+        ]
+    },
+    "set class-of-service rewrite-rules exp [parameter1]": {
+        "template": "set class-of-service rewrite-rules exp [parameter1]",
+        "command": "set class-of-service rewrite-rules exp MPLS-EXP-OUTBOUND",
+        "explanation": "This command sets EXP (experimental) bits in MPLS headers to specific values defined by `[parameter1]` for packet classification and QoS treatment.",
+        "parameters": [
+            {
+                "name": "rule-name",
+                "type": "string",
+                "explanation": "Rewrites the rule name."
+            }
+        ],
+        "forwarding-class [parameter2]": {
+            "template": "forwarding-class [parameter2]",
+            "command": "forwarding-class AF4",
+            "explanation": "This command fragment configures EXP (Ethernet Priority) rewrite rules in Junos, mapping [parameter1] (EXP value) to [parameter2] (forwarding class) for QoS traffic marking.",
+            "parameters": [
+                {
+                    "name": "forwarding-class",
+                    "type": "string",
+                    "explanation": "Forward class name."
+                }
+            ],
+            "exp [parameter3]": {
+                "template": "exp [parameter3]",
+                "command": "exp 5",
+                "explanation": "Configure the MPLS EXP rewrite rules.",
+                "parameters": [
+                    {
+                        "name": "exp-value",
+                        "type": "integer",
+                        "explanation": "EXP values for EXP fields in MPLS labels."
+                    }
+                ]
+            }
+        }
+    },
+    "set firewall family inet filter [parameter1]": {
+        "template": "set firewall family inet filter [parameter1]",
+        "command": "set firewall family inet filter DSCP-INBOUND",
+        "explanation": "This command fragment configures an IPv4 firewall filter named `[parameter1]` in Junos OS, defining rules to control traffic based on specified conditions.",
+        "parameters": [
+            {
+                "name": "filter",
+                "type": "string",
+                "explanation": "Firewall filter name."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term AF4",
+            "explanation": "This command fragment creates a term within an IPv4 firewall filter, where `[parameter1]` is the filter name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "string",
+                    "explanation": "Filter term name."
+                }
+            ],
+            "from dscp [parameter3]": {
+                "template": "from dscp [parameter3]",
+                "command": "from dscp af41",
+                "explanation": "Configure the matches for firewall filters.",
+                "parameters": [
+                    {
+                        "name": "dscp-value",
+                        "type": "string",
+                        "explanation": "DSCP values for matching traffic."
+                    }
+                ]
+            },
+            "then dscp [parameter3]": {
+                "template": "then dscp [parameter3]",
+                "command": "then dscp 18",
+                "explanation": "Configure firewall filter actions and modify DSCP values.",
+                "parameters": [
+                    {
+                        "name": "dscp-value",
+                        "type": "integer",
+                        "explanation": "modified DSCP values."
+                    }
+                ]
+            },
+            "then forwarding-class [parameter3]": {
+                "template": "then forwarding-class [parameter3]",
+                "command": "then forwarding-class AF4",
+                "explanation": "Configure the firewall filter action and set up a forward class.",
+                "parameters": [
+                    {
+                        "name": "forwarding-class",
+                        "type": "string",
+                        "explanation": "Forward class name."
+                    }
+                ]
+            },
+            "then accept": {
+                "template": "then accept",
+                "command": "then accept",
+                "explanation": "The `then accept` command in Junos allows the traffic that matches the preceding conditions in the firewall filter or policy to pass through without further processing.",
+                "parameters": []
+            }
+        }
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 2.2.2.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "family inet filter input [parameter3]": {
+                "template": "family inet filter input [parameter3]",
+                "command": "family inet filter input DSCP-INBOUND",
+                "explanation": "Configure the input filter for the interface.",
+                "parameters": [
+                    {
+                        "name": "filter-name",
+                        "type": "string",
+                        "explanation": "Filter name."
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,28 @@
+hostname Spoke1
+interface [parameter1]
+ ip nhrp redirect
+ tunnel mode none gre
+ tunnel source LoopBack0
+ interface LoopBack0
+ip address 10.1.2.10 255.255.255.0
+ip address 192.168.1.1 255.255.255.255
+interface LoopBack0
+ interface Tunnel0
+ip address 172.16.1.2 255.255.255.0
+interface Tunnel0
+ tunnel mode p2mp
+ tunnel source GigabitEthernet1/0/0
+ isis network p2mp
+ ip nhrp shortcut
+ tunnel protection ipsec profile <IPSEC_PROFILE_NAME>
+router ospf 1
+ router-id 172.16.1.2
+ area 0.0.0.0 nssa no-summary
+ip access-list extended 172.16.1.0
+ permit ip 172.16.1.0 0.0.0.255 any
+ permit ip 192.168.1.0 0.0.0.255 any
+ permit ip 10.1.2.0 0.0.0.255 any
+router ospf 2
+ router-id 10.1.2.10
+ area 0.0.0.1 nssa no-summary
+return

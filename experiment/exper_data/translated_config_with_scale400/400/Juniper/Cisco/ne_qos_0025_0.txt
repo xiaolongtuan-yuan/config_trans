@@ -1,0 +1,28 @@
+hostname DeviceA
+policy-map class1-policer
+ class 62500
+  police none 62500 conform-action none exceed-action none
+  police cir none pir 6000000 conform-action none exceed-action none violate-action none
+interface 5000000
+ ip rsvp bandwidth 5000000 none
+ ip rsvp bandwidth 2000000 none
+ ipv6 traffic-policy green inbound
+ monitor session none source interface none forward
+ ipv6 traffic-policy yellow inbound
+ ipv6 traffic-policy red inbound
+ monitor session none source interface none discard
+ ipv6 traffic-policy class1 inbound
+ ipv6 traffic-policy class2 inbound
+ ipv6 traffic-policy default inbound
+policy-map class2-policer
+ class 62500
+  police none 125000 conform-action none exceed-action none
+ip access-list extended policy1
+ permit none none policy1 none
+access-list none permit ip 1.1.1.1 32 none none
+access-list none accept none none none
+access-list none permit ip 1.1.1.2 32 none none
+route-map policy1 permit [parameter2]
+ set interface ge-1/0/0
+controller E1 0
+ip address 1.1.1.3 24

@@ -1,0 +1,20 @@
+sysname CE4
+flexe group ge-1/0/0
+ binding interface ge-1/0/0
+interface 0
+ e1 0 none
+ ip address 10.4.1.1 24
+ dot1x enable
+ ip policy-based-route redistribute-connected
+ ip policy-based-route 1
+bgp 65440
+ ipv4-family unicast
+  peer 10.4.1.2 enable
+  peer none route-policy redistribute-connected export
+ peer 100 as-number none
+bridge external protocol none
+tunnel-policy external
+ tunnel select-seq none external load-balance-number none
+ipsec policy direct none isakmp
+multicast bas-policy
+ policy accept

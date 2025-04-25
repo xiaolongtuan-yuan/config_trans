@@ -1,0 +1,15 @@
+sysname CE2
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.2.1.1 255.255.255.0
+bgp 700
+ peer 10.2.1.2 as-number 100
+ ipv4-family ipv4
+ ipv4-family unicast
+  undo synchronization
+  peer 10.2.1.2 enable
+ip pool 10.2.1.0
+ network 10.2.1.0 mask 255.255.255.0
+running-config
+ evpn instance running-config
+  route-target both startup-config

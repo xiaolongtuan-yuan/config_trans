@@ -17,12 +17,12 @@ from experiment.tree_match import cul_command_accuracy, cul_grammatical_accuracy
 
 if __name__ == '__main__':
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
-    scales = [388]
+    scales = [400]
 
-    translated_config_base = './exper_data/translated_config_with_scale388en'
+    translated_config_base = './exper_data/translated_config_with_scale400'
     vendor_config_models = {}
     for vendor in vendors:
-        config_model_path = f'../dataset_multi_vendor_config/config_model/scale388en/{vendor}_388.json'
+        config_model_path = f'../dataset_multi_vendor_config/config_model/scale400/{vendor}.json'
         config_model = load_config_model(config_model_path)
         vendor_config_models[vendor] = config_model
 
@@ -73,7 +73,7 @@ if __name__ == '__main__':
                                                     vendor_config_models[target_vendor])
                 exper_data['param_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', param_accuracy))
 
-                real_target_config_json_dir = f'./exper_data/{target_vendor}' if target_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
+                real_target_config_json_dir = f'./test_dataset/command_tree/{target_vendor}' if target_vendor != 'Juniper' else f'./test_dataset/command_tree/Juniper_subdivided'
 
                 grammatical_accuracy = cul_grammatical_accuracy_with_json(translated_config_dir, real_target_config_json_dir,
                                                                 trannlated_config_files)
@@ -84,10 +84,7 @@ if __name__ == '__main__':
                 view_accuracy = cul_view_accuracy(translated_config_dir, trannlated_config_files,
                                                   vendor_config_models[target_vendor])
                 exper_data['view_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', view_accuracy))
-        # 计算平均值
-        # exper_data['semantic_similarity']['average'] = sum(
-        #     [x[1] for x in exper_data['semantic_similarity']['vendors']]) / len(
-        #     exper_data['semantic_similarity']['vendors'])
+
         exper_data['command_accuracy']['average'] = sum(
             [x[1] for x in exper_data['command_accuracy']['vendors']]) / len(exper_data['command_accuracy']['vendors'])
         exper_data['param_accuracy']['average'] = sum(

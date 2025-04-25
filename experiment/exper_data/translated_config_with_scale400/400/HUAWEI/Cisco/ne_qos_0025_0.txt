@@ -1,0 +1,28 @@
+hostname DeviceA
+class-map match-all 2001
+ match access-group 2001
+ match access-group 2002
+access-list 5 permit ip 1.1.1.1 none none none
+ip access-list extended 5
+ permit ip none 0 any
+access-list 5 permit ip 1.1.1.2 none none none
+interface or
+ interface or
+ interface GigabitEthernet1/0/0
+policy-map behavior1
+ class green
+  police cir 5000 pir 6000 conform-action none exceed-action none
+ class class1
+  set precedence 5
+policy-map behavior2
+ class green
+  police cir 2000 conform-action none exceed-action none violate-action none
+ class class2
+  set precedence 10
+crypto isakmp policy policy1
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 traffic-policy policy1 inbound
+ ip policy route-map inbound
+ip address 1.1.1.3 255.255.255.0
+return

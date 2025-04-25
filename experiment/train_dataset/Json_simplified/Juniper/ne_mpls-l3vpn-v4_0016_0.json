@@ -1,0 +1,214 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name CE1",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-2/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.4.1.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set routing-options static route [parameter1]/[parameter2]": {
+        "template": "set routing-options static route [parameter1]/[parameter2]",
+        "command": "set routing-options static route 0.0.0.0/0",
+        "explanation": "This command configures a static route in Junos, where `[parameter1]` is the destination network and `[parameter2]` is the subnet mask.",
+        "parameters": [
+            {
+                "name": "destination",
+                "type": "string",
+                "explanation": "Target network address."
+            },
+            {
+                "name": "prefix-length",
+                "type": "integer",
+                "explanation": "Prefix length of target network."
+            }
+        ],
+        "next-hop [parameter3]": {
+            "template": "next-hop [parameter3]",
+            "command": "next-hop 10.1.1.2",
+            "explanation": "Configures static routers.",
+            "parameters": [
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "Next jump address."
+                }
+            ]
+        }
+    },
+    "set protocols bgp group [parameter1]": {
+        "template": "set protocols bgp group [parameter1]",
+        "command": "set protocols bgp group IBGP",
+        "explanation": "This command configures a BGP group named [parameter1], defining a set of BGP peers with shared session parameters.",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP Group name."
+            }
+        ],
+        "type [parameter2]": {
+            "template": "type [parameter2]",
+            "command": "type external",
+            "explanation": "Configure the type of BGP group to be external.",
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "explanation": "Type of BGP group, for example, external."
+                }
+            ]
+        },
+        "peer-as [parameter2]": {
+            "template": "peer-as [parameter2]",
+            "command": "peer-as 100",
+            "explanation": "The equivalent autonomy system number for BGP groups.",
+            "parameters": [
+                {
+                    "name": "peer-as",
+                    "type": "integer",
+                    "explanation": "Equivalent Autonomy System Number."
+                }
+            ]
+        },
+        "neighbor [parameter2]": {
+            "template": "neighbor [parameter2]",
+            "command": "neighbor 10.1.1.2",
+            "explanation": "Configure the neighbors of the BGP team.",
+            "parameters": [
+                {
+                    "name": "neighbor",
+                    "type": "string",
+                    "explanation": "Neighbor's IP address."
+                }
+            ]
+        },
+        "family inet [parameter2]": {
+            "template": "family inet [parameter2]",
+            "command": "family inet unicast",
+            "explanation": "Configure the IPv4 solo address of the BGP group.",
+            "parameters": [
+                {
+                    "name": "address-family",
+                    "type": "string",
+                    "explanation": "Address community type."
+                }
+            ]
+        },
+        "export [parameter2]": {
+            "template": "export [parameter2]",
+            "command": "export BGP-NETWORKS",
+            "explanation": "Configure the strategy for BGP to guide the route.",
+            "parameters": [
+                {
+                    "name": "export-policy",
+                    "type": "string",
+                    "explanation": "The policy name for the route."
+                }
+            ]
+        }
+    },
+    "set policy-options policy-statement [parameter1]": {
+        "template": "set policy-options policy-statement [parameter1]",
+        "command": "set policy-options policy-statement BGP-NETWORKS",
+        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "name of the policy statement."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term 1",
+            "explanation": "This command fragment configures a routing policy by defining a term within a policy statement, where `[parameter1]` is the policy name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "The term number of the policy statement."
+                }
+            ],
+            "from route-filter [parameter3]/[parameter4] [parameter5]": {
+                "template": "from route-filter [parameter3]/[parameter4] [parameter5]",
+                "command": "from route-filter 10.1.1.0/24 exact",
+                "explanation": "Declare the network in BGP.",
+                "parameters": [
+                    {
+                        "name": "route-filter",
+                        "type": "string",
+                        "explanation": "The IP address of the route filter."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    },
+                    {
+                        "name": "match-type",
+                        "type": "string",
+                        "explanation": "Match type, for example."
+                    }
+                ]
+            },
+            "then [parameter3]": {
+                "template": "then [parameter3]",
+                "command": "then accept",
+                "explanation": "Configure the action of the policy statement as accepted.",
+                "parameters": [
+                    {
+                        "name": "action",
+                        "type": "string",
+                        "explanation": "Execute actions such as accept."
+                    }
+                ]
+            }
+        }
+    }
+}

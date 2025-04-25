@@ -1,0 +1,319 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name PE2",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces lo0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 4.4.4.4/32",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "vlan-id [parameter3]": {
+                "template": "vlan-id [parameter3]",
+                "command": "vlan-id 10",
+                "explanation": "Configure VLAN IDs for interface units.",
+                "parameters": [
+                    {
+                        "name": "vlan-id",
+                        "type": "integer",
+                        "explanation": "VLAN ID, used to identify VLAN."
+                    }
+                ]
+            },
+            "family ethernet-switching vlan members [parameter3]": {
+                "template": "family ethernet-switching vlan members [parameter3]",
+                "command": "family ethernet-switching vlan members 10",
+                "explanation": "Configure the VLAN members of the interface.",
+                "parameters": [
+                    {
+                        "name": "vlan-members",
+                        "type": "string",
+                        "explanation": "VLAN members, e.g. vlan 100."
+                    }
+                ]
+            },
+            "family bridge interface-mode [parameter3]": {
+                "template": "family bridge interface-mode [parameter3]",
+                "command": "family bridge interface-mode trunk",
+                "explanation": "Configure the bridge mode for interface units is access.",
+                "parameters": [
+                    {
+                        "name": "interface-mode",
+                        "type": "string",
+                        "explanation": "Interface mode, for example, access."
+                    }
+                ]
+            }
+        },
+        "flexible-vlan-tagging": {
+            "template": "flexible-vlan-tagging",
+            "command": "flexible-vlan-tagging",
+            "explanation": "The `flexible-vlan-tagging` command enables an interface to accept both single-tagged and double-tagged VLAN traffic, providing flexibility in handling various VLAN tagging formats.",
+            "parameters": []
+        },
+        "encapsulation flexible-ethernet-services": {
+            "template": "encapsulation flexible-ethernet-services",
+            "command": "encapsulation flexible-ethernet-services",
+            "explanation": "The command `encapsulation flexible-ethernet-services` configures a Junos interface to support flexible Ethernet services, enabling VLAN tagging and multiple service encapsulations.",
+            "parameters": []
+        },
+        "mtu [parameter2]": {
+            "template": "mtu [parameter2]",
+            "command": "mtu 1500",
+            "explanation": "The command `mtu [parameter2]` sets the Maximum Transmission Unit (MTU) size for an interface to the value specified by `[parameter2]`.",
+            "parameters": [
+                {
+                    "name": "mtu",
+                    "type": "integer",
+                    "explanation": "Maximum transfer unit size, bytes."
+                }
+            ]
+        }
+    },
+    "set protocols ospf area [parameter1]": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0.0.0.0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface lo0.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        }
+    },
+    "set routing-options router-id [parameter1]": {
+        "template": "set routing-options router-id [parameter1]",
+        "command": "set routing-options router-id 4.4.4.4",
+        "explanation": "Configure the device's Router ID.",
+        "parameters": [
+            {
+                "name": "router-id",
+                "type": "string",
+                "explanation": "Router ID of equipment for OSPF, BGP, etc."
+            }
+        ]
+    },
+    "set protocols mpls interface [parameter1]": {
+        "template": "set protocols mpls interface [parameter1]",
+        "command": "set protocols mpls interface ge-0/0/2.0",
+        "explanation": "Enables the MPLS protocol on the specified interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ]
+    },
+    "set routing-instances [parameter1]": {
+        "template": "set routing-instances [parameter1]",
+        "command": "set routing-instances v1",
+        "explanation": "This command fragment configures a routing instance named `[parameter1]` in Junos, allowing for separate routing tables and protocols within that instance.",
+        "parameters": [
+            {
+                "name": "routing-instance",
+                "type": "string",
+                "explanation": "Name of route example, e.g. net."
+            }
+        ],
+        "instance-type [parameter2]": {
+            "template": "instance-type [parameter2]",
+            "command": "instance-type l2vpn",
+            "explanation": "Configure the type of route example that is a virtual router.",
+            "parameters": [
+                {
+                    "name": "instance-type",
+                    "type": "string",
+                    "explanation": "Type of route example, e.g. virtual-router."
+                }
+            ]
+        },
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-0/0/0.10",
+            "explanation": "Configure interfaces in route examples.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/2."
+                }
+            ]
+        },
+        "route-distinguisher [parameter2]": {
+            "template": "route-distinguisher [parameter2]",
+            "command": "route-distinguisher 10.10.3.4:1",
+            "explanation": "Configure routers for example.",
+            "parameters": [
+                {
+                    "name": "route-distinguisher",
+                    "type": "string",
+                    "explanation": "Routers, used to distinguish between different VPN routes."
+                }
+            ]
+        },
+        "vrf-target [parameter2]": {
+            "template": "vrf-target [parameter2]",
+            "command": "vrf-target target:100:1",
+            "explanation": "Configure the VRF target for the route example.",
+            "parameters": [
+                {
+                    "name": "vrf-target",
+                    "type": "string",
+                    "explanation": "VRF target, to control the import and export of route."
+                }
+            ]
+        },
+        "protocols evpn encapsulation [parameter2]": {
+            "template": "protocols evpn encapsulation [parameter2]",
+            "command": "protocols evpn encapsulation vxlan",
+            "explanation": "The command `protocols evpn encapsulation [parameter2]` configures the encapsulation type for EVPN (Ethernet VPN) traffic, with `[parameter2]` specifying the encapsulation method (e.g., VXLAN, MPLS).",
+            "parameters": [
+                {
+                    "name": "encapsulation-type",
+                    "type": "string",
+                    "explanation": "EVPN cover type, e.g. vxlan."
+                }
+            ]
+        }
+    },
+    "set protocols bgp group [parameter1]": {
+        "template": "set protocols bgp group [parameter1]",
+        "command": "set protocols bgp group evpn",
+        "explanation": "This command configures a BGP group named [parameter1], defining a set of BGP peers with shared session parameters.",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP Group name."
+            }
+        ],
+        "type [parameter2]": {
+            "template": "type [parameter2]",
+            "command": "type external",
+            "explanation": "Configure the type of BGP group to be external.",
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "explanation": "Type of BGP group, for example, external."
+                }
+            ]
+        },
+        "local-address [parameter2]": {
+            "template": "local-address [parameter2]",
+            "command": "local-address 4.4.4.4",
+            "explanation": "Configure the local address of the BGP group.",
+            "parameters": [
+                {
+                    "name": "local-address",
+                    "type": "string",
+                    "explanation": "Local address of the BGP group."
+                }
+            ]
+        },
+        "family evpn signaling": {
+            "template": "family evpn signaling",
+            "command": "family evpn signaling",
+            "explanation": "Configure the EVPN address of the BGP group.",
+            "parameters": []
+        },
+        "peer-as [parameter2]": {
+            "template": "peer-as [parameter2]",
+            "command": "peer-as 200",
+            "explanation": "The equivalent autonomy system number for BGP groups.",
+            "parameters": [
+                {
+                    "name": "peer-as",
+                    "type": "integer",
+                    "explanation": "Equivalent Autonomy System Number."
+                }
+            ]
+        },
+        "neighbor [parameter2]": {
+            "template": "neighbor [parameter2]",
+            "command": "neighbor 3.3.3.3",
+            "explanation": "Configure the neighbors of the BGP team.",
+            "parameters": [
+                {
+                    "name": "neighbor",
+                    "type": "string",
+                    "explanation": "Neighbor's IP address."
+                }
+            ]
+        },
+        "family inet-vpn unicast": {
+            "template": "family inet-vpn unicast",
+            "command": "family inet-vpn unicast",
+            "explanation": "The command `family inet-vpn unicast` enables the routing instance to support IPv4 VPN (Virtual Private Network) unicast routes for MPLS-based VPNs.",
+            "parameters": []
+        },
+        "export [parameter2]": {
+            "template": "export [parameter2]",
+            "command": "export advertise-community",
+            "explanation": "Configure the strategy for BGP to guide the route.",
+            "parameters": [
+                {
+                    "name": "export-policy",
+                    "type": "string",
+                    "explanation": "The policy name for the route."
+                }
+            ]
+        }
+    }
+}

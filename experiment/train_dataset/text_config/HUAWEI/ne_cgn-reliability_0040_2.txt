@@ -1,0 +1,27 @@
+#
+sysname CE
+#
+interface GigabitEthernet2/0/1
+ undo shutdown
+ ip address 10.11.11.2 255.255.255.0
+#
+interface GigabitEthernet2/0/2
+ undo shutdown
+ ip address 10.11.12.2 255.255.255.0
+#
+interface LoopBack0
+ ip address 10.2.2.2 255.255.255.255
+#
+bgp 200
+ peer 10.3.3.3 as-number 200
+ peer 10.3.3.3 connect-interface Loopback0
+ peer 10.4.4.4 as-number 200
+ peer 10.4.4.4 connect-interface Loopback0
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 10.3.3.3 enable
+  peer 10.3.3.3 route-policy local_pre import
+  peer 10.4.4.4 enable
+#
+return

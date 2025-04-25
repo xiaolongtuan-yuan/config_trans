@@ -1,0 +1,32 @@
+sysname NATA
+flexe group ge-1/0/1
+ binding interface ge-1/0/1
+ binding interface ge-2/0/0
+ binding interface ge-3/0/0
+interface ge-3/0/0.0
+ e1 0 none
+ ip address 1.1.1.1 24
+ ip address 192.168.10.1 24
+ ip address 2.2.2.1 24
+ source interface
+ ip policy-based-route ps1
+ ip policy-based-route 1
+ ip address none 24
+vlan 1
+cfm md bd1
+ ma bd1
+  map bridge-domain bd1
+acl number rs1
+ rule rs1 permit ip source 192.168.10.0 none
+ rule r1 permit vpn-instance none
+ rule none deny accept
+nat ip-pool trust
+acl untrust
+ rule permit ip source none untrust
+ip pool 2.2.2.0
+ rule none permit ip source 192.168.10.0 none destination none none
+ network none mask 24
+ospf 0.0.0.0
+ area 0.0.0.0
+ip route-static 0 none none preference none
+route add none mask none 2.2.2.2

@@ -1,0 +1,245 @@
+{
+    "set system host-name Spoke1": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name Spoke1",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces ge-1/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 10.1.2.10/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.1.2.10/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces lo0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces lo0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 192.168.1.1/32": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 192.168.1.1/32",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces gr-0/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces gr-0/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "tunnel source 10.1.2.10": {
+                "template": "tunnel source [parameter3]",
+                "command": "tunnel source 10.1.2.10",
+                "explanation": "Configure tunnel source interfaces.",
+                "parameters": [
+                    {
+                        "name": "source-interface",
+                        "type": "string",
+                        "explanation": "Name of tunnel source interface, e.g. lo0.0."
+                    }
+                ]
+            },
+            "tunnel family inet address 172.16.1.2/24": {
+                "template": "tunnel family inet address [parameter3]/[parameter4]",
+                "command": "tunnel family inet address 172.16.1.2/24",
+                "explanation": "This command configures an IPv4 address (`[parameter3]`) with a subnet mask (`[parameter4]`) on a tunnel interface in Junos.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "IPv4 addresses assigned to tunnel interfaces."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "tunnel mode gre-multipoint": {
+                "template": "tunnel mode [parameter3]",
+                "command": "tunnel mode gre-multipoint",
+                "explanation": "The command `tunnel mode [parameter3]` sets the encapsulation mode for a tunnel interface, where `[parameter3]` specifies the protocol (e.g., GRE, IPIP).",
+                "parameters": [
+                    {
+                        "name": "mode",
+                        "type": "string",
+                        "explanation": "Tunnel patterns, such as gre-multipoint."
+                    }
+                ]
+            }
+        }
+    },
+    "set security ipsec vpn PROFILE_NAME": {
+        "template": "set security ipsec vpn [parameter1]",
+        "command": "set security ipsec vpn PROFILE_NAME",
+        "explanation": "This command configures an IPsec VPN in Junos by setting specific parameters (e.g., name, IKE gateway, IPsec policy) under the `security ipsec vpn` hierarchy.",
+        "parameters": [
+            {
+                "name": "vpn-profile",
+                "type": "string",
+                "explanation": "IPSec VPN configuration name."
+            }
+        ],
+        "bind-interface gr-0/0/0.0": {
+            "template": "bind-interface [parameter2]",
+            "command": "bind-interface gr-0/0/0.0",
+            "explanation": "Tie IPSec VPN to the specified interface.",
+            "parameters": [
+                {
+                    "name": "bind-interface",
+                    "type": "string",
+                    "explanation": "Tie interface names, e.g. g-1/0/0."
+                }
+            ]
+        },
+        "ike gateway GATEWAY_NAME": {
+            "template": "ike gateway [parameter2]",
+            "command": "ike gateway GATEWAY_NAME",
+            "explanation": "Configure IPSec VPN's IKE gateway.",
+            "parameters": [
+                {
+                    "name": "ike-gateway",
+                    "type": "string",
+                    "explanation": "IKE gateway name."
+                }
+            ]
+        },
+        "establish-tunnels immediately": {
+            "template": "establish-tunnels [parameter2]",
+            "command": "establish-tunnels immediately",
+            "explanation": "The `establish-tunnels` command initiates the setup of specified tunnels, with `[parameter2]` defining the tunnel type or identifier to be established.",
+            "parameters": [
+                {
+                    "name": "establish-tunnels",
+                    "type": "string",
+                    "explanation": "Tunnels are built in ways like immediately."
+                }
+            ]
+        }
+    },
+    "set protocols ospf area 0.0.0.0": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0.0.0.0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface gr-0/0/0.0": {
+            "template": "interface [parameter2]",
+            "command": "interface gr-0/0/0.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        },
+        "interface lo0.0": {
+            "template": "interface [parameter2]",
+            "command": "interface lo0.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        }
+    }
+}

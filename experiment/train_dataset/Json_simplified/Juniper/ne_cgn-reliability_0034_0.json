@@ -1,0 +1,360 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name NAT64_CGN",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set system syslog host [parameter1]": {
+        "template": "set system syslog host [parameter1]",
+        "command": "set system syslog host 1.1.1.1",
+        "explanation": "The command configures a syslog server at the specified IP address or hostname (`[parameter1]`) to receive system log messages from the Junos device.",
+        "parameters": [
+            {
+                "name": "host",
+                "type": "string",
+                "explanation": "Log server 's IP address."
+            }
+        ],
+        "port [parameter2]": {
+            "template": "port [parameter2]",
+            "command": "port 514",
+            "explanation": "The command `port [parameter2]` in Junos specifies the physical port or interface to which the configuration or operation applies, using the value provided in `[parameter2]`.",
+            "parameters": [
+                {
+                    "name": "port",
+                    "type": "integer",
+                    "explanation": "The port number on the log server."
+                }
+            ],
+            "source-address [parameter3]": {
+                "template": "source-address [parameter3]",
+                "command": "source-address ge-0/0/1",
+                "explanation": "The command `source-address [parameter3]` specifies the source IP address `[parameter3]` for outbound traffic or communication in Junos configuration.",
+                "parameters": [
+                    {
+                        "name": "source-address",
+                        "type": "string",
+                        "explanation": "Sends the name of the source interface of the log."
+                    }
+                ]
+            }
+        },
+        "any [parameter2]": {
+            "template": "any [parameter2]",
+            "command": "any info",
+            "explanation": "The command fragment `any [parameter2]` in Junos is used to match any value for `parameter2` in a policy or filter condition, allowing all possible values.",
+            "parameters": [
+                {
+                    "name": "level",
+                    "type": "string",
+                    "explanation": "Log level, e.g. info."
+                }
+            ]
+        }
+    },
+    "set security policies from-zone [parameter1]": {
+        "template": "set security policies from-zone [parameter1]",
+        "command": "set security policies from-zone trust",
+        "explanation": "This command fragment configures the source zone (`[parameter1]`) for a security policy in Junos, defining the traffic origin for policy evaluation.",
+        "parameters": [
+            {
+                "name": "from-zone",
+                "type": "string",
+                "explanation": "Source area name."
+            }
+        ],
+        "to-zone [parameter2]": {
+            "template": "to-zone [parameter2]",
+            "command": "to-zone nat64",
+            "explanation": "The command `to-zone [parameter2]` specifies the destination security zone for traffic in a Junos security policy, determining where the traffic is allowed to flow.",
+            "parameters": [
+                {
+                    "name": "to-zone",
+                    "type": "string",
+                    "explanation": "Name of target area."
+                }
+            ],
+            "policy [parameter3]": {
+                "template": "policy [parameter3]",
+                "command": "policy IPV6_TO_NAT64",
+                "explanation": "The command `policy [parameter3]` in Junos defines or references a routing policy named `[parameter3]` for controlling route advertisement or acceptance.",
+                "parameters": [
+                    {
+                        "name": "policy",
+                        "type": "string",
+                        "explanation": "Policy name."
+                    }
+                ],
+                "match source-address [parameter4]": {
+                    "template": "match source-address [parameter4]",
+                    "command": "match source-address IPV6_HOST_1",
+                    "explanation": "The command fragment `match source-address [parameter4]` filters traffic based on the source IP address specified in `[parameter4]` in a Junos policy or firewall rule.",
+                    "parameters": [
+                        {
+                            "name": "source-address",
+                            "type": "string",
+                            "explanation": "Source address name."
+                        }
+                    ]
+                },
+                "match destination-address [parameter4]": {
+                    "template": "match destination-address [parameter4]",
+                    "command": "match destination-address NAT64_TRANSLATION",
+                    "explanation": "The command fragment `match destination-address [parameter4]` filters traffic based on the specified destination IP address or prefix in a Junos policy or firewall rule.",
+                    "parameters": [
+                        {
+                            "name": "destination-address",
+                            "type": "string",
+                            "explanation": "destination address."
+                        }
+                    ]
+                },
+                "then [parameter4]": {
+                    "template": "then [parameter4]",
+                    "command": "then permit",
+                    "explanation": "The `then [parameter4]` command in Junos specifies the action to take in a firewall filter or policy, such as `accept`, `discard`, or `reject`.",
+                    "parameters": [
+                        {
+                            "name": "action",
+                            "type": "string",
+                            "explanation": "Policy actions, like permit."
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "set security nat source pool [parameter1]": {
+        "template": "set security nat source pool [parameter1]",
+        "command": "set security nat source pool NAT64_GROUP1",
+        "explanation": "This command configures a source NAT pool named `[parameter1]` in Junos, defining a range of IP addresses used for translating private source IPs to public IPs.",
+        "parameters": [
+            {
+                "name": "pool-name",
+                "type": "string",
+                "explanation": "Name of NAT source pool."
+            }
+        ],
+        "address [parameter2]/[parameter3]": {
+            "template": "address [parameter2]/[parameter3]",
+            "command": "address 11.1.1.1/24",
+            "explanation": "The command assigns an IP address (`parameter2`) with a subnet mask (`parameter3`) to an interface in Junos OS.",
+            "parameters": [
+                {
+                    "name": "address",
+                    "type": "string",
+                    "explanation": "Address range."
+                },
+                {
+                    "name": "prefix-length",
+                    "type": "integer",
+                    "explanation": "Prefix length."
+                }
+            ]
+        }
+    },
+    "set security nat source rule-set [parameter1]": {
+        "template": "set security nat source rule-set [parameter1]",
+        "command": "set security nat source rule-set NAT_SOURCE_RULE",
+        "explanation": "This command configures a source NAT rule set in Junos, defining a collection of rules for translating source IP addresses in traffic matching specified criteria.",
+        "parameters": [
+            {
+                "name": "rule-set-name",
+                "type": "string",
+                "explanation": "Name of the NAT rule book."
+            }
+        ],
+        "from zone [parameter2]": {
+            "template": "from zone [parameter2]",
+            "command": "from zone trust",
+            "explanation": "Configure the source safety area for the NAT ruleset application.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "Name of the source security area."
+                }
+            ]
+        },
+        "to zone [parameter2]": {
+            "template": "to zone [parameter2]",
+            "command": "to zone nat64",
+            "explanation": "Configure the purpose safe area for the NAT ruleset application.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "The name of the destination security area."
+                }
+            ]
+        },
+        "rule [parameter2]": {
+            "template": "rule [parameter2]",
+            "command": "rule NAT_SOURCE_RULE",
+            "explanation": "This command configures a source NAT rule within a specified rule-set, defining how traffic matching the rule is translated before leaving the network.",
+            "parameters": [
+                {
+                    "name": "rule-name",
+                    "type": "string",
+                    "explanation": "Name of the NAT rule."
+                }
+            ],
+            "then source-nat pool [parameter3]": {
+                "template": "then source-nat pool [parameter3]",
+                "command": "then source-nat pool NAT64_GROUP1",
+                "explanation": "Configures the address pool that you want to use for the NAT conversion.",
+                "parameters": [
+                    {
+                        "name": "pool-name",
+                        "type": "string",
+                        "explanation": "Name of the address pool used for the source NAT conversion."
+                    }
+                ]
+            }
+        }
+    },
+    "set security nat destination pool [parameter1]": {
+        "template": "set security nat destination pool [parameter1]",
+        "command": "set security nat destination pool NAT64_DEST_POOL",
+        "explanation": "The command configures a destination NAT pool named `[parameter1]`, mapping external IP addresses to internal IP addresses for traffic redirection.",
+        "parameters": [
+            {
+                "name": "pool",
+                "type": "string",
+                "explanation": "The name of the target NAT pool."
+            }
+        ],
+        "address [parameter2]/[parameter3]": {
+            "template": "address [parameter2]/[parameter3]",
+            "command": "address 11.1.1.1/24",
+            "explanation": "Configures an IP address `[parameter2]` with a subnet mask prefix length `[parameter3]` on a network interface in Junos OS.",
+            "parameters": [
+                {
+                    "name": "address",
+                    "type": "string",
+                    "explanation": "Target NAT pool IP address."
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "Bits of subnet mask."
+                }
+            ]
+        }
+    },
+    "set security nat destination rule-set [parameter1]": {
+        "template": "set security nat destination rule-set [parameter1]",
+        "command": "set security nat destination rule-set NAT_DEST_RULE",
+        "explanation": "The command configures a destination NAT rule-set named `[parameter1]` in Junos, defining how traffic is translated when destined for specific IP addresses.",
+        "parameters": [
+            {
+                "name": "rule-set",
+                "type": "string",
+                "explanation": "The name of the target NAT ruleset."
+            }
+        ],
+        "from zone [parameter2]": {
+            "template": "from zone [parameter2]",
+            "command": "from zone nat64",
+            "explanation": "The command fragment `from zone [parameter2]` specifies the source zone in a Junos security policy, defining where the traffic originates.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "The name of the source area."
+                }
+            ]
+        },
+        "to zone [parameter2]": {
+            "template": "to zone [parameter2]",
+            "command": "to zone trust",
+            "explanation": "The command `to zone [parameter2]` in Junos specifies the destination security zone for traffic in a security policy, where `[parameter2]` is the zone name.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "Name of target area."
+                }
+            ]
+        },
+        "rule [parameter2]": {
+            "template": "rule [parameter2]",
+            "command": "rule NAT_DEST_RULE",
+            "explanation": "The command `rule [parameter2]` in Junos defines a specific rule within a firewall filter or policy, where `[parameter2]` specifies the rule's name or identifier.",
+            "parameters": [
+                {
+                    "name": "rule",
+                    "type": "string",
+                    "explanation": "Rule name."
+                }
+            ],
+            "then destination-nat pool [parameter3]": {
+                "template": "then destination-nat pool [parameter3]",
+                "command": "then destination-nat pool NAT64_DEST_POOL",
+                "explanation": "The command `then destination-nat pool [parameter3]` configures destination NAT by redirecting traffic to the specified NAT pool defined in `[parameter3]`.",
+                "parameters": [
+                    {
+                        "name": "pool",
+                        "type": "string",
+                        "explanation": "The name of the target NAT pool."
+                    }
+                ]
+            }
+        }
+    },
+    "set applications application [parameter1]": {
+        "template": "set applications application [parameter1]",
+        "command": "set applications application TCP_TIMEOUT",
+        "explanation": "The command `set applications application [parameter1]` defines a custom application in Junos by specifying its name as `[parameter1]` for use in security policies or services.",
+        "parameters": [
+            {
+                "name": "application",
+                "type": "string",
+                "explanation": "the name of the application."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term tcp",
+            "explanation": "The command `term [parameter2]` in Junos defines a specific condition or action within a firewall filter or policy, identified by `[parameter2]`.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "string",
+                    "explanation": "The name of the application entry."
+                }
+            ],
+            "protocol [parameter3]": {
+                "template": "protocol [parameter3]",
+                "command": "protocol tcp",
+                "explanation": "The command `protocol [parameter3]` in Junos specifies a routing protocol (e.g., OSPF, BGP) and its associated configuration parameters within a routing instance or interface.",
+                "parameters": [
+                    {
+                        "name": "protocol",
+                        "type": "string",
+                        "explanation": "Type of agreement."
+                    }
+                ]
+            },
+            "inactivity-timeout [parameter3]": {
+                "template": "inactivity-timeout [parameter3]",
+                "command": "inactivity-timeout 86400",
+                "explanation": "The `inactivity-timeout [parameter3]` command sets the maximum idle time (in seconds) before a session is terminated due to inactivity.",
+                "parameters": [
+                    {
+                        "name": "inactivity-timeout",
+                        "type": "integer",
+                        "explanation": "Inactive timeout in seconds."
+                    }
+                ]
+            }
+        }
+    }
+}

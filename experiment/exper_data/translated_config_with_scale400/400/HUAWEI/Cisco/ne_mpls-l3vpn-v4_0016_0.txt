@@ -1,0 +1,14 @@
+hostname CE1
+interface GigabitEthernet2/0/0
+ no shutdown
+ interface GigabitEthernet1/0/0
+ip address 10.4.1.1 255.255.255.0
+ip address 10.1.1.1 255.255.255.0
+router bgp 600
+ neighbor none remote-as 100
+ address-family ipv4 unicast
+  redistribute connected
+ no synchronization
+mpls ldp remote-peer 10.1.1.2 none
+ip route vrf none 0.0.0.0 none none
+ip route none 0 10.1.1.2

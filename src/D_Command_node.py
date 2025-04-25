@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from langchain_community.embeddings import HuggingFaceEmbeddings
@@ -43,7 +44,7 @@ def parse_command_node(Command_nodes: dict, config_model: dict, embedding_model,
                                   'parent_command': parent_command}
 
             # 创建命令节点
-            if run_type == 'main' or run_type == 'main_en_388':
+            if run_type == 'main' or run_type == 'main_experiment':
                 # 其次为语义特征（包括template/command/explanation/parameters）
                 command_example = sub_dict["command"] if sub_dict.get("command") else ''
                 command_explanation = sub_dict["explanation"] if sub_dict.get("explanation") else ''
@@ -61,7 +62,6 @@ def parse_command_node(Command_nodes: dict, config_model: dict, embedding_model,
                 Command_nodes[k] = {'structural_features': command_node.structural_features,
                                     'semantic_features': command_node.semantic_features,
                                     'parameter_features': command_node.paras_semantic_features}
-            print(k)
             # break
 
         '''for child_k, child_v in sub_dict.items():
@@ -92,7 +92,7 @@ class CommandNode:
         # 深度特征
         self._calculate_depth_levels(structural_features['depth'])
 
-        if run_type == 'main' or run_type == 'main_en_388':
+        if run_type == 'main' or run_type == 'main_experiment':
             # 语义特征
             self._generate_semantic_embedding(structural_features, semantic_features, embedding_model)
 
@@ -223,67 +223,28 @@ def main():
             # save_path = str(project_root / 'dataset_multi_vendor_config/config_command_node_debug/{}.json'.format(vendor))
             # save_json_file(Command_nodes, save_path)
 
-def juniper_pre_400():
-    project_root = Path(__file__).parent.parent
-    local_EMmodel_path = str(project_root / 'EmbeddingModel/MiniLM-L6-v2')
-    embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
-    Command_nodes = {}
-    config_model_path = str(
-        project_root / f'dataset_multi_vendor_config/config_model/different_scale/juniper_pre_400.json')
-
-    config_model = load_json_file(config_model_path)
-    # 解析配置节点
-    Command_nodes = parse_command_node(Command_nodes, config_model, embedding_model)
-    # 保存配置节点（json）
-    save_path = str(
-        project_root / f'dataset_multi_vendor_config/config_command_node/different_scale/juniper_pre_400.json')
-    save_json_file(Command_nodes, save_path)
-    print(f"finished juniper_pre_400")
-
-def main_en_388():
+def main_experiment():
     project_root = Path(__file__).parent.parent
     # 加载embedding model
     local_EMmodel_path = str(project_root / 'EmbeddingModel/MiniLM-L6-v2')
     # embedding_model = SentenceTransformer(local_EMmodel_path)
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
+    save_dir = str(project_root / f'dataset_multi_vendor_config/config_command_node/scale400')
+    os.makedirs(save_dir, exist_ok=True)
 
-    # vendors = ["Juniper", "Cisco", "HUAWEI"]
-    vendors = ["Cisco"]
-    config_num = [388]
-
-    # vendors = ["HUAWEI"]
+    vendors = ["Juniper", "Cisco", "HUAWEI"]
     for vendor in vendors:
-        for num in config_num:
-            Command_nodes = {}  # 'command_template': CommandNode_Object
-            config_model_path = str(project_root / f'dataset_multi_vendor_config/config_model/scale388en/{vendor}_{num}.json')
+        Command_nodes = {}  # 'command_template': CommandNode_Object
+        config_model_path = str(project_root / f'dataset_multi_vendor_config/config_model/scale400/{vendor}.json')
 
-            # 加载供应商配置模型
-            config_model = load_json_file(config_model_path)
-            # 解析配置节点
-            Command_nodes = parse_command_node(Command_nodes, config_model, embedding_model)
-            # 保存配置节点（json）
-            save_path = str(project_root / f'dataset_multi_vendor_config/config_command_node/scale388en/{vendor}_{num}.json')
-            save_json_file(Command_nodes, save_path)
-            node_num = len(Command_nodes.keys())
-            print(f"finished {vendor} with en{num} scales, total {node_num} command nodes")
-
-
-def juniper_pre_400():
-    project_root = Path(__file__).parent.parent
-    local_EMmodel_path = str(project_root / 'EmbeddingModel/MiniLM-L6-v2')
-    embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
-    Command_nodes = {}
-    config_model_path = str(
-        project_root / f'dataset_multi_vendor_config/config_model/different_scale/juniper_pre_400.json')
-
-    config_model = load_json_file(config_model_path)
-    # 解析配置节点
-    Command_nodes = parse_command_node(Command_nodes, config_model, embedding_model)
-    # 保存配置节点（json）
-    save_path = str(
-        project_root / f'dataset_multi_vendor_config/config_command_node/different_scale/juniper_pre_400.json')
-    save_json_file(Command_nodes, save_path)
-    print(f"finished juniper_pre_400")
+        # 加载供应商配置模型
+        config_model = load_json_file(config_model_path)
+        # 解析配置节点
+        Command_nodes = parse_command_node(Command_nodes, config_model, embedding_model)
+        # 保存配置节点（json）
+        save_json_file(Command_nodes, f"{save_dir}/{vendor}.json")
+        node_num = len(Command_nodes.keys())
+        print(f"finished {vendor} with 400 scales, total {node_num} command nodes")
 
 def debug():
     project_root = Path(__file__).parent.parent
@@ -310,15 +271,15 @@ def debug():
             print(f"finished {vendor} with {num} scales")
 
 if __name__ == "__main__":
-    run_type = 'main_en_388'
+    run_type = 'main_experiment'
 
     if run_type == 'main':
         main()
         # juniper_pre_400()
     if run_type == 'debug':
         debug()
-    if run_type == 'main_en_388':
-        main_en_388()
+    if run_type == 'main_experiment':
+        main_experiment()
 
 
 

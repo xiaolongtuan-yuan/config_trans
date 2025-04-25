@@ -1,0 +1,514 @@
+{
+    "set system host-name PE2": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name PE2",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set routing-instances VPNB": {
+        "template": "set routing-instances [parameter1]",
+        "command": "set routing-instances VPNB",
+        "explanation": "This command fragment configures a routing instance named `[parameter1]` in Junos, allowing for separate routing tables and protocols within that instance.",
+        "parameters": [
+            {
+                "name": "routing-instance",
+                "type": "string",
+                "explanation": "Name of route example, e.g. net."
+            }
+        ],
+        "instance-type vrf": {
+            "template": "instance-type [parameter2]",
+            "command": "instance-type vrf",
+            "explanation": "Configure the type of route example that is a virtual router.",
+            "parameters": [
+                {
+                    "name": "instance-type",
+                    "type": "string",
+                    "explanation": "Type of route example, e.g. virtual-router."
+                }
+            ]
+        },
+        "route-distinguisher 200:1": {
+            "template": "route-distinguisher [parameter2]",
+            "command": "route-distinguisher 200:1",
+            "explanation": "Configure routers for example.",
+            "parameters": [
+                {
+                    "name": "route-distinguisher",
+                    "type": "string",
+                    "explanation": "Routers, used to distinguish between different VPN routes."
+                }
+            ]
+        },
+        "vrf-import PER_INSTANCE": {
+            "template": "vrf-import [parameter2]",
+            "command": "vrf-import PER_INSTANCE",
+            "explanation": "Configure the VRF import policy for route examples.",
+            "parameters": [
+                {
+                    "name": "vrf-import",
+                    "type": "string",
+                    "explanation": "VRF import strategy identification."
+                }
+            ]
+        },
+        "vrf-export PER_INSTANCE": {
+            "template": "vrf-export [parameter2]",
+            "command": "vrf-export PER_INSTANCE",
+            "explanation": "Configure the VRF export policy for route examples.",
+            "parameters": [
+                {
+                    "name": "vrf-export",
+                    "type": "string",
+                    "explanation": "VRF export policy identification."
+                }
+            ]
+        },
+        "interface ge-2/0/0.0": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-2/0/0.0",
+            "explanation": "Configure interfaces in route examples.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/2."
+                }
+            ]
+        },
+        "protocols bgp group external-peers": {
+            "template": "protocols bgp group [parameter2]",
+            "command": "protocols bgp group external-peers",
+            "explanation": "Configure BGP groups in route examples.",
+            "parameters": [
+                {
+                    "name": "group",
+                    "type": "string",
+                    "explanation": "BGP Group name."
+                }
+            ],
+            "type external": {
+                "template": "type [parameter3]",
+                "command": "type external",
+                "explanation": "Configure the type of BGP group to be external.",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "type": "string",
+                        "explanation": "Type of BGP group, for example, external."
+                    }
+                ]
+            },
+            "peer-as 65420": {
+                "template": "peer-as [parameter3]",
+                "command": "peer-as 65420",
+                "explanation": "Configure the AS number of the BGP equivalent in the route example.",
+                "parameters": [
+                    {
+                        "name": "peer-as",
+                        "type": "integer",
+                        "explanation": "Reciprocal AS number."
+                    }
+                ]
+            },
+            "neighbor 10.11.1.2": {
+                "template": "neighbor [parameter3]",
+                "command": "neighbor 10.11.1.2",
+                "explanation": "The command `neighbor [parameter3]` specifies a BGP neighbor by its IP address or hostname, enabling configuration of BGP peering sessions with that specific neighbor.",
+                "parameters": [
+                    {
+                        "name": "neighbor",
+                        "type": "string",
+                        "explanation": "Neighbor's IP address."
+                    }
+                ],
+                "description \"BGP": {
+                    "template": "description [parameter4]",
+                    "command": "description \"BGP",
+                    "explanation": "The `description [parameter4]` command in Junos sets a descriptive text (specified by `[parameter4]`) for an interface or configuration object.",
+                    "parameters": [
+                        {
+                            "name": "description",
+                            "type": "string",
+                            "explanation": "Neighbor's description."
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "set policy-options community vpn-target-111-1": {
+        "template": "set policy-options community [parameter1]",
+        "command": "set policy-options community vpn-target-111-1",
+        "explanation": "The command `set policy-options community [parameter1]` defines a new BGP community with the name or value specified by `[parameter1]` for route tagging and policy control.",
+        "parameters": [
+            {
+                "name": "community",
+                "type": "string",
+                "explanation": "Name of community."
+            }
+        ],
+        "members target:111:1": {
+            "template": "members [parameter2]",
+            "command": "members target:111:1",
+            "explanation": "Configure community members in the strategy options.",
+            "parameters": [
+                {
+                    "name": "members",
+                    "type": "string",
+                    "explanation": "Community members."
+                }
+            ]
+        }
+    },
+    "set policy-options policy-statement PER_INSTANCE": {
+        "template": "set policy-options policy-statement [parameter1]",
+        "command": "set policy-options policy-statement PER_INSTANCE",
+        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "name of the policy statement."
+            }
+        ],
+        "term 10": {
+            "template": "term [parameter2]",
+            "command": "term 10",
+            "explanation": "This command fragment configures a routing policy by defining a term within a policy statement, where `[parameter1]` is the policy name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "The term number of the policy statement."
+                }
+            ],
+            "from community vpn-target-111-1": {
+                "template": "from community [parameter3]",
+                "command": "from community vpn-target-111-1",
+                "explanation": "Configure a strategy statement in a strategy option that matches a given community.",
+                "parameters": [
+                    {
+                        "name": "community",
+                        "type": "string",
+                        "explanation": "Match community names."
+                    }
+                ]
+            },
+            "then accept": {
+                "template": "then [parameter3]",
+                "command": "then accept",
+                "explanation": "Configure the action of the policy statement as accepted.",
+                "parameters": [
+                    {
+                        "name": "action",
+                        "type": "string",
+                        "explanation": "Execute actions such as accept."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-1/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 10.4.1.1/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.4.1.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "family mpls": {
+                "template": "family [parameter3]",
+                "command": "family mpls",
+                "explanation": "Enables the MPLS protocol on the interface.",
+                "parameters": [
+                    {
+                        "name": "family",
+                        "type": "string",
+                        "explanation": "Protocol, for example."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-2/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-2/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 10.11.1.1/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.11.1.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "family mpls": {
+                "template": "family [parameter3]",
+                "command": "family mpls",
+                "explanation": "Enables the MPLS protocol on the interface.",
+                "parameters": [
+                    {
+                        "name": "family",
+                        "type": "string",
+                        "explanation": "Protocol, for example."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces lo0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces lo0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 5.5.5.5/32": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 5.5.5.5/32",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols ldp interface all": {
+        "template": "set protocols ldp interface [parameter1]",
+        "command": "set protocols ldp interface all",
+        "explanation": "Enables the LDP protocol on the specified interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g. g-0/0/0."
+            }
+        ]
+    },
+    "set protocols ldp router-id lo0.0": {
+        "template": "set protocols ldp router-id [parameter1]",
+        "command": "set protocols ldp router-id lo0.0",
+        "explanation": "Configure the LDP protocol router ID.",
+        "parameters": [
+            {
+                "name": "router-id",
+                "type": "string",
+                "explanation": "Router ID for LDP protocol."
+            }
+        ]
+    },
+    "set protocols ospf area 0": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface lo0.0": {
+            "template": "interface [parameter2]",
+            "command": "interface lo0.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        },
+        "interface ge-1/0/0.0": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-1/0/0.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        }
+    },
+    "set protocols bgp group internal": {
+        "template": "set protocols bgp group [parameter1]",
+        "command": "set protocols bgp group internal",
+        "explanation": "This command configures a BGP group named [parameter1], defining a set of BGP peers with shared session parameters.",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP Group name."
+            }
+        ],
+        "type internal": {
+            "template": "type [parameter2]",
+            "command": "type internal",
+            "explanation": "Configure the type of BGP group to be external.",
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "explanation": "Type of BGP group, for example, external."
+                }
+            ]
+        },
+        "local-as 100": {
+            "template": "local-as [parameter2]",
+            "command": "local-as 100",
+            "explanation": "Configure local self-government system numbers for BGP groups.",
+            "parameters": [
+                {
+                    "name": "local-as",
+                    "type": "integer",
+                    "explanation": "Local self-government system number."
+                }
+            ]
+        },
+        "neighbor 1.1.1.1": {
+            "template": "neighbor [parameter2]",
+            "command": "neighbor 1.1.1.1",
+            "explanation": "Configure the neighbors of the BGP team.",
+            "parameters": [
+                {
+                    "name": "neighbor",
+                    "type": "string",
+                    "explanation": "Neighbor's IP address."
+                }
+            ],
+            "peer-as 100": {
+                "template": "peer-as [parameter3]",
+                "command": "peer-as 100",
+                "explanation": "Configure the BGP group's neighbours and their equivalents.",
+                "parameters": [
+                    {
+                        "name": "peer-as",
+                        "type": "integer",
+                        "explanation": "Peer AS."
+                    }
+                ]
+            }
+        },
+        "family inet-vpn unicast": {
+            "template": "family [parameter2] [parameter3]",
+            "command": "family inet-vpn unicast",
+            "explanation": "The command `family [parameter2] [parameter3]` in Junos configures a specific protocol family (e.g., `inet`, `inet6`, `mpls`) on an interface or routing instance.",
+            "parameters": [
+                {
+                    "name": "family",
+                    "type": "string",
+                    "explanation": "Address family type."
+                },
+                {
+                    "name": "unicast",
+                    "type": "string",
+                    "explanation": "Radio route."
+                }
+            ],
+            "send-community extended": {
+                "template": "send-community [parameter4]",
+                "command": "send-community extended",
+                "explanation": "The `send-community [parameter4]` command in Junos configures BGP to send the specified community attribute (e.g., `standard`, `extended`, or `both`) to a neighbor.",
+                "parameters": [
+                    {
+                        "name": "send-community",
+                        "type": "string",
+                        "explanation": "Sends the community attribute type."
+                    }
+                ]
+            }
+        }
+    }
+}

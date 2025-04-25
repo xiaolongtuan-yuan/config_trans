@@ -1,0 +1,199 @@
+{
+    "interface [interface_name]": {
+        "template": "interface [interface_name]",
+        "command": "interface GigabitEthernet3/0/0.1",
+        "explanation": "Configure interface GigabitEthernet3/0/0.1",
+        "parameters": [
+            {
+                "name": "interface_name",
+                "type": "string",
+                "explanation": "Interface name"
+            }
+        ],
+        "service-policy input [policy_name]": {
+            "template": "service-policy input [policy_name]",
+            "command": "service-policy input qos1",
+            "explanation": "Apply input service 'qos1' on the interface",
+            "parameters": [
+                {
+                    "name": "policy_name",
+                    "type": "string",
+                    "explanation": "Name of the service policy"
+                }
+            ]
+        },
+        "service-policy output [policy_name]": {
+            "template": "service-policy output [policy_name]",
+            "command": "service-policy output qos1",
+            "explanation": "Apply output service 'qos1' on the interface",
+            "parameters": [
+                {
+                    "name": "policy_name",
+                    "type": "string",
+                    "explanation": "Name of the service policy"
+                }
+            ]
+        },
+        "encapsulation dot1Q [vlan_id]": {
+            "template": "encapsulation dot1Q [vlan_id]",
+            "command": "encapsulation dot1Q 11",
+            "explanation": "Set encapsulation to dot1Q with VLAN ID 11",
+            "parameters": [
+                {
+                    "name": "vlan_id",
+                    "type": "integer",
+                    "explanation": "VLAN ID"
+                }
+            ]
+        },
+        "ip address [ip_address] [subnet_mask]": {
+            "template": "ip address [ip_address] [subnet_mask]",
+            "command": "ip address 10.192.167.2 255.255.255.0",
+            "explanation": "Set IP access and subnet Mask",
+            "parameters": [
+                {
+                    "name": "ip_address",
+                    "type": "IPv4",
+                    "explanation": "I don't know."
+                },
+                {
+                    "name": "subnet_mask",
+                    "type": "IPv4",
+                    "explanation": "Subnet Mask"
+                }
+            ]
+        },
+        "mls qos trust cos": {
+            "template": "mls qos trust cos",
+            "command": "mls qos trust cos",
+            "explanation": "Trust COS for QoS",
+            "parameters": []
+        },
+        "mpls ip": {
+            "template": "mpls ip",
+            "command": "mpls ip",
+            "explanation": "Enable MPLS IP compliance",
+            "parameters": []
+        },
+        "mpls ldp": {
+            "template": "mpls ldp",
+            "command": "mpls ldp",
+            "explanation": "_Other Organiser",
+            "parameters": []
+        },
+        "mls qos trust dei": {
+            "template": "mls qos trust dei",
+            "command": "mls qos trust dei",
+            "explanation": "Trust DIE for QoS",
+            "parameters": []
+        }
+    },
+    "class-map match-all [class_name]": {
+        "template": "class-map match-all [class_name]",
+        "command": "class-map match-all qos1",
+        "explanation": "Create a class-map name 'qos1' with match-all critteria",
+        "parameters": [
+            {
+                "name": "class_name",
+                "type": "string",
+                "explanation": "Name of the class-map"
+            }
+        ],
+        "match cos [cos_value]": {
+            "template": "match cos [cos_value]",
+            "command": "match cos 5",
+            "explanation": "Match packs with COS value 5",
+            "parameters": [
+                {
+                    "name": "cos_value",
+                    "type": "integer",
+                    "explanation": "Class of Service value"
+                }
+            ]
+        }
+    },
+    "policy-map [policy_name]": {
+        "template": "policy-map [policy_name]",
+        "command": "policy-map qos",
+        "explanation": "Create a policy-map named 'qos'",
+        "parameters": [
+            {
+                "name": "policy_name",
+                "type": "string",
+                "explanation": "Name of the policy-map"
+            }
+        ],
+        "class [class_name]": {
+            "template": "class [class_name]",
+            "command": "class qos1",
+            "explanation": "With the policy-map",
+            "parameters": [
+                {
+                    "name": "class_name",
+                    "type": "string",
+                    "explanation": "Name of the class"
+                }
+            ],
+            "priority percent [percentage]": {
+                "template": "priority percent [percentage]",
+                "command": "priority percent 0",
+                "explanation": "Set quality with zero percent",
+                "parameters": [
+                    {
+                        "name": "percentage",
+                        "type": "integer",
+                        "explanation": "Percent of bandwidth"
+                    }
+                ]
+            },
+            "bandwidth remaining percent [percentage]": {
+                "template": "bandwidth remaining percent [percentage]",
+                "command": "bandwidth remaining percent 100",
+                "explanation": "Allocate remaining bandwidth with 100% of the remaining bandwidth",
+                "parameters": [
+                    {
+                        "name": "percentage",
+                        "type": "integer",
+                        "explanation": "Personality of remaining"
+                    }
+                ]
+            },
+            "set dscp [dscp_value]": {
+                "template": "set dscp [dscp_value]",
+                "command": "set dscp default",
+                "explanation": "Set DSCP value to default",
+                "parameters": [
+                    {
+                        "name": "dscp_value",
+                        "type": "string",
+                        "explanation": "DSCP value"
+                    }
+                ]
+            },
+            "service-policy [policy_name]": {
+                "template": "service-policy [policy_name]",
+                "command": "service-policy qos",
+                "explanation": "Apply received service policy 'qos'",
+                "parameters": [
+                    {
+                        "name": "policy_name",
+                        "type": "string",
+                        "explanation": "Name of the service policy"
+                    }
+                ]
+            }
+        }
+    },
+    "mpls ip": {
+        "template": "mpls ip",
+        "command": "mpls ip",
+        "explanation": "Enable MPLS IP compliance",
+        "parameters": []
+    },
+    "mpls ldp": {
+        "template": "mpls ldp",
+        "command": "mpls ldp",
+        "explanation": "_Other Organiser",
+        "parameters": []
+    }
+}

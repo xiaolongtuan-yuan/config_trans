@@ -6,8 +6,8 @@ import os
 from tqdm import tqdm
 import re
 import sys
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-# from src.F_device_configtrans import process_juniper_json
 
 def process_juniper_json(json_config):
     processed_json = {}
@@ -204,37 +204,28 @@ if __name__ == "__main__":
     '''
 
     # 只处理前400条juniper数据-388条
-    # vendors = ['Cisco', "HUAWEI", "Juniper"]
-    vendors = ['Cisco']
+    vendors = ['Cisco', "HUAWEI", "Juniper"]
+    # vendors = ['Cisco']
     project_root = Path(__file__).parent.parent
-    folder_path = str(project_root / f'dataset_multi_vendor_config/Json_config/Juniper_simplified')
-
-    json_files = get_json_filenames(folder_path)
-    error_file_list = json.load(open(str(project_root / f'dataset_multi_vendor_config/error_file_record/error_cisco.json')))
-    error_device_list = [file_name.split('.')[0] for file_name in error_file_list]
-
     for vendor in vendors:
+        print(vendor)
+        folder_path = str(project_root / f'experiment/train_dataset/Json_simplified/{vendor}')
+        json_files = get_json_filenames(folder_path)
         template_used_statistic = {}
         vendor_model = {}
         vendor_command_re = {}
         merge_count = 0
-        # print(vendor)
-        for json_file in tqdm(json_files[:388], desc="Merged config num"):
-            if vendor == 'Cisco' and json_file.split('.')[0] in error_device_list:# 去除cisco数据中有 huawei配置的文件
-                continue
-            vendor_folder_path = str(project_root / f'dataset_multi_vendor_config/Json_config/{vendor}_simplified')
-            json_config_path = vendor_folder_path + '/' + json_file
-            # 加载设备配置模型
+        for json_file in tqdm(json_files, desc="Merged config num"):
+            json_config_path = folder_path + '/' + json_file
             try:
                 json_config = load_json_file(json_config_path)
-                if vendor == 'Juniper':
-                    json_config = process_juniper_json(json_config)
             except:
                 continue
             # 对vendor_model中的模版进行去重，主要问题是同样的conmand，llm在解析时可能出现不同的模版（配置参数缺失了），建议均采用最大的配置参数，我们需要一个字典来记录是否去重
             vendor_model = merge_models(vendor_model, json_config, vendor_command_re, template_used_statistic)
-        vendor_model_path = str(project_root / f'dataset_multi_vendor_config/config_model/scale388en/{vendor}_zh.json')
-        save_json_file(vendor_model, vendor_model_path)
+        vendor_model_dir = str(project_root / f'dataset_multi_vendor_config/config_model/scale400')
+        os.makedirs(vendor_model_dir, exist_ok=True)
+        save_json_file(vendor_model, f"{vendor_model_dir}/{vendor}.json")
 
 
 

@@ -1,0 +1,33 @@
+sysname HUAWEI
+#
+ip pool pool1 bas local
+ gateway 10.10.10.2 255.255.255.0
+ section 0 10.10.10.3 10.10.10.100
+ dns-server 10.20.20.1
+#
+aaa
+ authentication-scheme clcl
+  authentication-mode none
+ authorization-scheme default
+ #
+ accounting-scheme ccll
+  accounting-mode none
+ #
+ domain isp1
+  authentication-scheme clcl
+  accounting-scheme ccll
+  ip-pool pool1
+ #
+interface GigabitEthernet1/0/0.1
+ statistic enable
+ user-vlan 1
+ bas
+ #
+  access-type layer2-subscriber default-domain authentication isp1
+  authentication-method bind
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ip address 10.20.20.2 255.255.255.0
+#
+return

@@ -1,0 +1,25 @@
+sysname DeviceA
+#
+traffic behavior dd
+ remark dscp af11
+#
+qppb local-policy ac                                                           
+ qos-local-id 1 behavior dd
+#
+isis 1
+ is-level level-1
+ cost-style wide
+ network-entity 10.0000.0000.0001.00
+ filter-policy route-policy ac import
+ traffic-eng level-1
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.10.1.1 255.255.255.0
+ isis enable 1
+ qppb-policy ac source inbound
+#
+route-policy ac permit node 123
+ apply qos-local-id 1
+#
+return

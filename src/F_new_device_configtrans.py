@@ -870,7 +870,7 @@ class Config_Translater:
                 for template in item['parent_node']:
                     template_command += ' ' + template
                 template_command += ' ' + target_command
-            trans_templates.append(template_command)
+            trans_templates.append(template_command.strip())
         return trans_templates
 
     def insert_parent_command(self, target_commands, src_command, src_depth, parent_commands:[], all_params, target_vendor):

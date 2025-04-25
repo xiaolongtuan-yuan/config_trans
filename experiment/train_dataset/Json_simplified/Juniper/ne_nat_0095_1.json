@@ -1,0 +1,214 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name NATA",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 192.168.10.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set security nat source rule-set [parameter1]": {
+        "template": "set security nat source rule-set [parameter1]",
+        "command": "set security nat source rule-set NAT-RULES",
+        "explanation": "This command configures a source NAT rule set in Junos, defining a collection of rules for translating source IP addresses in traffic matching specified criteria.",
+        "parameters": [
+            {
+                "name": "rule-set-name",
+                "type": "string",
+                "explanation": "Name of the NAT rule book."
+            }
+        ],
+        "from zone [parameter2]": {
+            "template": "from zone [parameter2]",
+            "command": "from zone trust",
+            "explanation": "Configure the source safety area for the NAT ruleset application.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "Name of the source security area."
+                }
+            ]
+        },
+        "to zone [parameter2]": {
+            "template": "to zone [parameter2]",
+            "command": "to zone untrust",
+            "explanation": "Configure the purpose safe area for the NAT ruleset application.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "The name of the destination security area."
+                }
+            ]
+        },
+        "rule [parameter2]": {
+            "template": "rule [parameter2]",
+            "command": "rule NAT-RULE",
+            "explanation": "This command configures a source NAT rule within a specified rule-set, defining how traffic matching the rule is translated before leaving the network.",
+            "parameters": [
+                {
+                    "name": "rule-name",
+                    "type": "string",
+                    "explanation": "Name of the NAT rule."
+                }
+            ],
+            "match source-address [parameter3]/[parameter4]": {
+                "template": "match source-address [parameter3]/[parameter4]",
+                "command": "match source-address 192.168.10.0/24",
+                "explanation": "Configures the source address that the NAT rules match.",
+                "parameters": [
+                    {
+                        "name": "source-address",
+                        "type": "string",
+                        "explanation": "Matches the source address."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "_Other Organiser"
+                    }
+                ]
+            },
+            "then source-nat pool [parameter3]": {
+                "template": "then source-nat pool [parameter3]",
+                "command": "then source-nat pool address-group1",
+                "explanation": "Configures the address pool that you want to use for the NAT conversion.",
+                "parameters": [
+                    {
+                        "name": "pool-name",
+                        "type": "string",
+                        "explanation": "Name of the address pool used for the source NAT conversion."
+                    }
+                ]
+            }
+        }
+    },
+    "set security nat static rule-set [parameter1]": {
+        "template": "set security nat static rule-set [parameter1]",
+        "command": "set security nat static rule-set STATIC-NAT",
+        "explanation": "This command fragment configures a static NAT rule-set in Junos, defining a set of rules for translating private IP addresses to public IP addresses.",
+        "parameters": [
+            {
+                "name": "rule-set-name",
+                "type": "string",
+                "explanation": "The name of the static NAT ruleset."
+            }
+        ],
+        "rule [parameter2]": {
+            "template": "rule [parameter2]",
+            "command": "rule STATIC-RULE",
+            "explanation": "Configures a static NAT rule within a specified rule-set, mapping a specific source IP address to a destination IP address for traffic translation.",
+            "parameters": [
+                {
+                    "name": "rule-name",
+                    "type": "string",
+                    "explanation": "The name of the static NAT rule."
+                }
+            ],
+            "match destination-address [parameter3]/[parameter4]": {
+                "template": "match destination-address [parameter3]/[parameter4]",
+                "command": "match destination-address 11.11.11.101/32",
+                "explanation": "Configure the destination address for static NAT matching.",
+                "parameters": [
+                    {
+                        "name": "destination-address",
+                        "type": "string",
+                        "explanation": "Matches the destination address."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "the number of subnet bits of the destination address."
+                    }
+                ]
+            },
+            "then static-nat prefix [parameter3]/[parameter4]": {
+                "template": "then static-nat prefix [parameter3]/[parameter4]",
+                "command": "then static-nat prefix 11.11.11.105/32",
+                "explanation": "Configure prefixes for static NAT rules to perform static NAT conversions.",
+                "parameters": [
+                    {
+                        "name": "prefix",
+                        "type": "string",
+                        "explanation": "Static NAT conversion prefixes."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Prefixed subnet mask bits."
+                    }
+                ]
+            }
+        }
+    },
+    "set security zones security-zone [parameter1]": {
+        "template": "set security zones security-zone [parameter1]",
+        "command": "set security zones security-zone trust",
+        "explanation": "This command fragment configures a security zone named `[parameter1]` within the Junos security zones hierarchy, defining a logical boundary for security policies and interfaces.",
+        "parameters": [
+            {
+                "name": "zone-name",
+                "type": "string",
+                "explanation": "Name of the safe area."
+            }
+        ],
+        "interfaces [parameter2]": {
+            "template": "interfaces [parameter2]",
+            "command": "interfaces ge-1/0/0",
+            "explanation": "Configure secure area bound interfaces.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Ties the interface name to the security area."
+                }
+            ]
+        }
+    }
+}

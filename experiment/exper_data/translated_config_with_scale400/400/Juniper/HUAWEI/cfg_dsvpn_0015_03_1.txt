@@ -1,0 +1,34 @@
+sysname Spoke1
+flexe group ge-1/0/0
+ binding interface ge-1/0/0
+ binding interface ge-2/0/0
+ binding interface gr-0/0/0
+interface ge-2/0/0
+ e1 0 none
+ ip address 10.1.2.10 24
+ ip address 192.168.1.1 24
+ source ge-0/0/1
+ tunnel destination 172.16.1.1
+ ip address 172.16.1.2 24
+ interface ge-1/0/0
+bgp 200
+ ipv4-family unicast
+  peer 172.16.1.1 enable
+  peer 172.16.1.3 enable
+  peer none route-policy ospf-to-bgp export
+ peer 100 as-number none
+ peer 300 as-number none
+bridge bgp-group protocol none
+tunnel-policy external
+ tunnel select-seq none external load-balance-number none
+172.16.1.2
+ local-ip 172.16.1.2
+ospf 0.0.0.0
+ area 0.0.0.0
+ area 0.0.0.1
+interface ge-1/0/0
+ ip policy-based-route ospf-to-bgp
+ ip policy-based-route 1
+ipsec policy ospf none isakmp
+acl number accept
+ rule none deny accept

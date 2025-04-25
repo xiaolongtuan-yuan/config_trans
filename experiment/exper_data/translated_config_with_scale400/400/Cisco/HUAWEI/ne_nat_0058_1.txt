@@ -1,0 +1,25 @@
+sysname NATA
+nat ip-pool NATPOOL
+ inside-pool 100
+ip pool 1.1.1.105 local
+ip pool 255.255.255.0 none none
+acl number 100
+ rule none permit ip source 192.168.10.0 0.0.0.255
+ rule none permit ip source none none destination any none
+nat static-mapping
+nat instance 192.168.10.10 id 1.1.1.100
+ nat server global 1.1.1.100 inside none
+ nat server global none inside none
+ nat server protocol none global none inside none
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 192.168.10.1 255.255.255.0
+ interface GigabitEthernet3/0/0
+interface GigabitEthernet3/0/0
+ ip address 2.2.2.1 255.255.255.0
+ network 2.2.2.0 0.0.0.255
+ ip address 0 none
+ e1 none none
+ospf 1
+ip route-static 0.0.0.0 none none preference none
+ip route-static none 0.0.0.0 2.2.2.2

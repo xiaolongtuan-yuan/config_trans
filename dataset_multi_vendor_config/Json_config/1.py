@@ -7,7 +7,7 @@
 import json
 import os
 
-vendors = ['Juniper']
+vendors = ['Juniper', 'Cisco', 'HUAWEI']
 error_file_list = {}
 for vendor in vendors:
     data_source_dir = f'{vendor}'
@@ -22,6 +22,9 @@ for vendor in vendors:
                 config = json.loads(content)
                 if 'error' in content:
                     print("error in json file: ", file_path)
+                    error_file_list[vendor].append(file_path)
+                if len(config) <= 0:
+                    print("null json file: ", file_path)
                     error_file_list[vendor].append(file_path)
             except json.JSONDecodeError as e:
                 print(f"Error decoding JSON from {file_path}: {e}")

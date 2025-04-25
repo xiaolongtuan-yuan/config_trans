@@ -1,0 +1,373 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name Hub",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.1.1.10/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "tunnel source [parameter3]": {
+                "template": "tunnel source [parameter3]",
+                "command": "tunnel source 10.1.1.10",
+                "explanation": "Configure tunnel source interfaces.",
+                "parameters": [
+                    {
+                        "name": "source-interface",
+                        "type": "string",
+                        "explanation": "Name of tunnel source interface, e.g. lo0.0."
+                    }
+                ]
+            },
+            "tunnel destination [parameter3]": {
+                "template": "tunnel destination [parameter3]",
+                "command": "tunnel destination <destination",
+                "explanation": "Configure the tunnel destination address.",
+                "parameters": [
+                    {
+                        "name": "destination-address",
+                        "type": "string",
+                        "explanation": "Tunnel destination address."
+                    }
+                ]
+            },
+            "family inet": {
+                "template": "family inet",
+                "command": "family inet",
+                "explanation": "Configure interfaces to support IPv4 protocol communities.",
+                "parameters": []
+            }
+        }
+    },
+    "set security ike proposal [parameter1]": {
+        "template": "set security ike proposal [parameter1]",
+        "command": "set security ike proposal ike-proposal1",
+        "explanation": "The command `set security ike proposal [parameter1]` configures an IKE (Internet Key Exchange) proposal with specific security parameters for VPN phase 1 negotiation.",
+        "parameters": [
+            {
+                "name": "proposal-name",
+                "type": "string",
+                "explanation": "The name of the IKE proposal."
+            }
+        ],
+        "authentication-method [parameter2]": {
+            "template": "authentication-method [parameter2]",
+            "command": "authentication-method pre-shared-keys",
+            "explanation": "The command `authentication-method [parameter2]` specifies the authentication method (e.g., `md5`, `plain-text-password`) for a protocol or user in Junos configuration.",
+            "parameters": [
+                {
+                    "name": "authentication-method",
+                    "type": "string",
+                    "explanation": "Authentication method, such as pre-shared-keys."
+                }
+            ]
+        },
+        "dh-group [parameter2]": {
+            "template": "dh-group [parameter2]",
+            "command": "dh-group group14",
+            "explanation": "The command `dh-group [parameter2]` specifies the Diffie-Hellman (DH) group for key exchange in IPsec VPN configurations, determining the strength of the encryption.",
+            "parameters": [
+                {
+                    "name": "dh-group",
+                    "type": "string",
+                    "explanation": "The command explanation is: Diffie-Hellman group, for example, group14."
+                }
+            ]
+        },
+        "encryption-algorithm [parameter2]": {
+            "template": "encryption-algorithm [parameter2]",
+            "command": "encryption-algorithm aes-256-cbc",
+            "explanation": "The command `encryption-algorithm [parameter2]` specifies the encryption method (e.g., AES, 3DES) for securing data in a Junos configuration, such as IPsec VPNs.",
+            "parameters": [
+                {
+                    "name": "encryption-algorithm",
+                    "type": "string",
+                    "explanation": "Encryption algorithm, such as aes-256-cbc."
+                }
+            ]
+        },
+        "lifetime-seconds [parameter2]": {
+            "template": "lifetime-seconds [parameter2]",
+            "command": "lifetime-seconds 3600",
+            "explanation": "The `lifetime-seconds` command sets the duration (in seconds) for which a security association (SA) remains valid before it expires or needs renegotiation.",
+            "parameters": [
+                {
+                    "name": "lifetime-seconds",
+                    "type": "integer",
+                    "explanation": "The command explanation is: \"Lifecycle, unit in seconds.\""
+                }
+            ]
+        }
+    },
+    "set security ike policy [parameter1]": {
+        "template": "set security ike policy [parameter1]",
+        "command": "set security ike policy ike-policy1",
+        "explanation": "This command fragment configures an IKE (Internet Key Exchange) policy in Junos, defining parameters for VPN key exchange, such as encryption and authentication methods.",
+        "parameters": [
+            {
+                "name": "policy-name",
+                "type": "string",
+                "explanation": "The name of the IKE policy."
+            }
+        ],
+        "mode [parameter2]": {
+            "template": "mode [parameter2]",
+            "command": "mode main",
+            "explanation": "Configure the IKE strategy model.",
+            "parameters": [
+                {
+                    "name": "mode",
+                    "type": "string",
+                    "explanation": "IKE strategy models, like Main."
+                }
+            ]
+        },
+        "proposals [parameter2]": {
+            "template": "proposals [parameter2]",
+            "command": "proposals ike-proposal1",
+            "explanation": "Configure the encryption proposal for the IKE policy.",
+            "parameters": [
+                {
+                    "name": "proposal",
+                    "type": "string",
+                    "explanation": "Encryption proposals, such as aes-256-cbc."
+                }
+            ]
+        }
+    },
+    "set security ike gateway [parameter1]": {
+        "template": "set security ike gateway [parameter1]",
+        "command": "set security ike gateway ike-gateway1",
+        "explanation": "This command configures an IKE gateway in Junos, specifying parameters like peer address, authentication method, and policies for secure VPN tunnel establishment.",
+        "parameters": [
+            {
+                "name": "gateway-name",
+                "type": "string",
+                "explanation": "The name of the IKE gateway."
+            }
+        ],
+        "external-interface [parameter2]": {
+            "template": "external-interface [parameter2]",
+            "command": "external-interface ge-0/0/0",
+            "explanation": "Configure the external interface of the IKE gateway.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Name of external interface, e.g., g-0/0/1."
+                }
+            ]
+        },
+        "ike-policy [parameter2]": {
+            "template": "ike-policy [parameter2]",
+            "command": "ike-policy ike-policy1",
+            "explanation": "Configure IKE policy for the IKE gateway.",
+            "parameters": [
+                {
+                    "name": "policy-name",
+                    "type": "string",
+                    "explanation": "The name of the IKE policy."
+                }
+            ]
+        },
+        "version [parameter2]": {
+            "template": "version [parameter2]",
+            "command": "version v2-only",
+            "explanation": "The `version` command in Junos displays the current software version; `[parameter2]` is invalid as `version` does not accept additional parameters.",
+            "parameters": [
+                {
+                    "name": "version",
+                    "type": "string",
+                    "explanation": "IKE version, for example, v2-only."
+                }
+            ]
+        }
+    },
+    "set security ipsec proposal [parameter1]": {
+        "template": "set security ipsec proposal [parameter1]",
+        "command": "set security ipsec proposal ipsec-proposal1",
+        "explanation": "The command configures an IPsec proposal named `[parameter1]`, defining encryption and authentication settings for secure VPN tunnels in Junos OS.",
+        "parameters": [
+            {
+                "name": "proposal-name",
+                "type": "string",
+                "explanation": "The name of the IPSec proposal."
+            }
+        ],
+        "protocol [parameter2]": {
+            "template": "protocol [parameter2]",
+            "command": "protocol esp",
+            "explanation": "The command `protocol [parameter2]` in Junos specifies a routing protocol (e.g., OSPF, BGP) and its associated configuration parameters for network routing.",
+            "parameters": [
+                {
+                    "name": "protocol",
+                    "type": "string",
+                    "explanation": "The protocol used, for example, ESP."
+                }
+            ]
+        },
+        "encryption-algorithm [parameter2]": {
+            "template": "encryption-algorithm [parameter2]",
+            "command": "encryption-algorithm aes-256-cbc",
+            "explanation": "The command `encryption-algorithm [parameter2]` specifies the encryption method (e.g., AES, 3DES) for securing data in a Junos configuration, such as IPsec VPNs.",
+            "parameters": [
+                {
+                    "name": "encryption-algorithm",
+                    "type": "string",
+                    "explanation": "Encryption algorithm, such as aes-256-cbc."
+                }
+            ]
+        },
+        "authentication-algorithm [parameter2]": {
+            "template": "authentication-algorithm [parameter2]",
+            "command": "authentication-algorithm hmac-sha-256-128",
+            "explanation": "The command `authentication-algorithm [parameter2]` specifies the cryptographic algorithm used for authentication in Junos, ensuring data integrity and authenticity in secure communications.",
+            "parameters": [
+                {
+                    "name": "authentication-algorithm",
+                    "type": "string",
+                    "explanation": "**Authentication algorithm, such as hmac-sha-256-128.**"
+                }
+            ]
+        }
+    },
+    "set security ipsec policy [parameter1]": {
+        "template": "set security ipsec policy [parameter1]",
+        "command": "set security ipsec policy ipsec-policy1",
+        "explanation": "This command configures an IPsec policy named `[parameter1]`, defining security parameters for VPN tunnels, including encryption, authentication, and key management settings.",
+        "parameters": [
+            {
+                "name": "policy-name",
+                "type": "string",
+                "explanation": "Name of the IPsec policy."
+            }
+        ],
+        "proposals [parameter2]": {
+            "template": "proposals [parameter2]",
+            "command": "proposals ipsec-proposal1",
+            "explanation": "Configure encryption proposal for IPsec policy.",
+            "parameters": [
+                {
+                    "name": "proposal",
+                    "type": "string",
+                    "explanation": "Encryption proposal, for example, esp-sha256-hmac."
+                }
+            ]
+        }
+    },
+    "set security ipsec vpn [parameter1]": {
+        "template": "set security ipsec vpn [parameter1]",
+        "command": "set security ipsec vpn ipsec-vpn1",
+        "explanation": "This command configures an IPsec VPN in Junos by setting specific parameters (e.g., name, IKE gateway, IPsec policy) under the `security ipsec vpn` hierarchy.",
+        "parameters": [
+            {
+                "name": "vpn-profile",
+                "type": "string",
+                "explanation": "IPSec VPN configuration name."
+            }
+        ],
+        "bind-interface [parameter2]": {
+            "template": "bind-interface [parameter2]",
+            "command": "bind-interface st0.0",
+            "explanation": "Tie IPSec VPN to the specified interface.",
+            "parameters": [
+                {
+                    "name": "bind-interface",
+                    "type": "string",
+                    "explanation": "Tie interface names, e.g. g-1/0/0."
+                }
+            ]
+        },
+        "ike gateway [parameter2]": {
+            "template": "ike gateway [parameter2]",
+            "command": "ike gateway ike-gateway1",
+            "explanation": "Configure IPSec VPN's IKE gateway.",
+            "parameters": [
+                {
+                    "name": "ike-gateway",
+                    "type": "string",
+                    "explanation": "IKE gateway name."
+                }
+            ]
+        },
+        "ike ipsec-policy [parameter2]": {
+            "template": "ike ipsec-policy [parameter2]",
+            "command": "ike ipsec-policy ipsec-policy1",
+            "explanation": "Configure IPSec VPN IPSec policy.",
+            "parameters": [
+                {
+                    "name": "ipsec-policy",
+                    "type": "string",
+                    "explanation": "IPSec policy name."
+                }
+            ]
+        }
+    },
+    "set protocols ospf area [parameter1]": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface gr-0/0/0.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        }
+    }
+}

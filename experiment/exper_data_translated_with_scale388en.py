@@ -18,27 +18,25 @@ import json
 from tqdm import tqdm
 from pathlib import Path
 
-with open('exper_data/test_filenames.json', 'r', encoding='utf-8') as f:
-        test_filenames = json.load(f)  # 直接作为json加载
- 
-
 def load_json_file(file_path):
     """加载JSON文件"""
     with open(file_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 
-def batch_translate(config_translater, input_dir, output_dir, source_vendor, target_vendor, batch_size=1):
-    config_files = [f for f in os.listdir(input_dir) if f.endswith('.json') and Path(f).stem in test_filenames]
+def batch_translate(config_translater, input_dir, output_dir, real_config_dir, real_command_tree_dir, source_vendor, target_vendor, batch_size=None):
+    config_files = [f for f in os.listdir(input_dir) if f.endswith('.json')]
     os.makedirs(os.path.join(output_dir, target_vendor), exist_ok=True)
 
     successed_files = 0
+    if batch_size is None:
+        batch_size = len(config_files)
     with ThreadPoolExecutor(max_workers=5) as executor:  # 多线程好像有点问题，暂时不使用
         futures = []
         for file_index in range(batch_size):
             config_file = config_files.pop(0)
             futures.append(executor.submit(translate_single_file,
-                                           config_translater, input_dir, output_dir,
+                                           config_translater, input_dir, output_dir, real_config_dir, real_command_tree_dir,
                                            source_vendor, target_vendor, config_file))
         with tqdm(total=batch_size, desc="Successed files") as pbar:
             i = 0
@@ -53,7 +51,7 @@ def batch_translate(config_translater, input_dir, output_dir, source_vendor, tar
                     if config_files:
                         config_file = config_files.pop(0)
                         futures.append(executor.submit(translate_single_file,
-                                                       config_translater, input_dir, output_dir,
+                                                       config_translater, input_dir, output_dir, real_config_dir,real_command_tree_dir,
                                                        source_vendor, target_vendor, config_file))
 
                 # if future.result():
@@ -65,7 +63,7 @@ def batch_translate(config_translater, input_dir, output_dir, source_vendor, tar
     print(f"Translated {successed_files} configs")
 
 
-def translate_single_file(config_translater, input_dir, output_dir,
+def translate_single_file(config_translater, input_dir, output_dir, real_config_dir,real_command_tree_dir,
                           source_vendor, target_vendor, config_file):
     # 加载配置
     config_path = os.path.join(input_dir, config_file)
@@ -81,9 +79,7 @@ def translate_single_file(config_translater, input_dir, output_dir,
         "grammatical_accuracy":0,
         "missed_templates":[]
     }
-    real_command_tree_dir = f'./exper_data/{target_vendor}' # if target_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
     real_command_tree_path = os.path.join(real_command_tree_dir, f"{file_name}.json")
-    real_config_dir = f'./exper_data/label/{target_vendor}'
     real_config_path = os.path.join(real_config_dir, f"{file_name}.txt")
 
     with open(real_command_tree_path, encoding='utf-8') as f:
@@ -151,9 +147,12 @@ def main():
     # 初始化路径
     device = "cuda:0"
     output_dir = './exper_data/translated_config_with_scale388en'
+    mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/scale388en/{{}}_{{}}.json'
+    templates_path = f'../dataset_multi_vendor_config/config_command_node/scale388en/{{}}.json'
+    config_model_dir = f'../dataset_multi_vendor_config/config_model/scale400/{{}}.json'
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
-    config_num = [388]
+    config_num = [400]
     local_EMmodel_path = '../EmbeddingModel/MiniLM-L6-v2'
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})
@@ -163,18 +162,16 @@ def main():
             for target_vendor in vendors:
                 if source_vendor == target_vendor:
                     continue
-                if not source_vendor == 'Juniper':
-                    continue
-                source_config_dir = f'./exper_data/{source_vendor}' if source_vendor != 'Juniper' else f'./exper_data/Juniper_subdivided'
+                source_config_dir = f'./test_dataset/command_tree/{source_vendor}' if source_vendor != 'Juniper' else f'./test_dataset/command_tree/Juniper_subdivided'
+                real_config_dir = f'./test_dataset/text_config/{target_vendor}'
+                real_command_tree_dir = f'./test_dataset/command_tree/{target_vendor}'
 
                 output_save_dir = os.path.join(output_dir, str(scale), source_vendor)
                 os.makedirs(output_save_dir, exist_ok=True)
                 delete_outdate_files(os.path.join(output_dir, str(scale), source_vendor, target_vendor))
 
                 print(f"exper for {scale}, {source_vendor} to {target_vendor} translation without llm")
-                mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/scale388en/{{}}_{{}}_{scale}.json'
-                templates_path = f'../dataset_multi_vendor_config/config_command_node/scale388en/{{}}_{scale}.json'
-                config_model_dir = f'../dataset_multi_vendor_config/config_model/scale388en/{{}}_{scale}.json'
+
 
                 mapping_libraries = mapping_library_load(mapping_library_path, vendors)
                 config_matchers = config_matchers_load(templates_path, vendors)
@@ -185,10 +182,9 @@ def main():
                 config_translater = Config_Translater(mapping_libraries, config_matchers,
                                                       translation_llm, embedding_model)
                 # 执行批量翻译
-                batch_translate(config_translater, source_config_dir, output_save_dir,
+                batch_translate(config_translater, source_config_dir, output_save_dir, real_config_dir,real_command_tree_dir,
                                 source_vendor=source_vendor,
-                                target_vendor=target_vendor,
-                                batch_size=100)
+                                target_vendor=target_vendor)
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,19 @@
+set system host-name SSH_Server
+set system domain-name example.com
+set system login user client001 authentication public-keys generate rsa modulus 1024
+set system login user client001 authentication plain-text-password @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
+delete security ssh protocol-version 2
+set protocols oam ethernet connectivity-fault-management md Loopback0 ma Loopback0 mep Loopback0 interface Loopback0
+set protocols oam ethernet connectivity-fault-management md Loopback0 ma Loopback0 mep Loopback0 interface GigabitEthernet0/0/0
+set system telemetry destination-group 10.1.1.1
+set interfaces 10.1.1.1 ipv4-address 10.1.1.1
+set interfaces 10.1.1.1 family inet address none/255.255.255.255
+set interfaces 10.1.1.1 ipv4-address 10.1.1.2
+set interfaces 10.1.1.1 family inet address none/255.255.0.0
+set interfaces 10.1.1.1 unit [parameter2] tunnel mode none
+set system services ssh ciphers aes128-ctr aes192-ctr aes256-ctr
+set aaa new-model
+set chassis fpc [parameter1] pic [parameter2] controller [parameter3] no-shutdown
+set interfaces vlan unit 4
+set protocols ssh
+set system login class default authentication-order default

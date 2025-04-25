@@ -1,0 +1,432 @@
+{
+    "set system host-name NATA": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name NATA",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces ge-0/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 192.168.10.1/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 192.168.10.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-0/0/1": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 2.2.2.1/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 2.2.2.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set security zones security-zone trust": {
+        "template": "set security zones security-zone [parameter1]",
+        "command": "set security zones security-zone trust",
+        "explanation": "This command fragment configures a security zone named `[parameter1]` within the Junos security zones hierarchy, defining a logical boundary for security policies and interfaces.",
+        "parameters": [
+            {
+                "name": "zone-name",
+                "type": "string",
+                "explanation": "Name of the safe area."
+            }
+        ],
+        "interfaces ge-0/0/0.0": {
+            "template": "interfaces [parameter2]",
+            "command": "interfaces ge-0/0/0.0",
+            "explanation": "Configure secure area bound interfaces.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Ties the interface name to the security area."
+                }
+            ],
+            "host-inbound-traffic system-services all": {
+                "template": "host-inbound-traffic system-services [parameter3]",
+                "command": "host-inbound-traffic system-services all",
+                "explanation": "The command `host-inbound-traffic system-services [parameter3]` allows specified system services (e.g., SSH, SNMP) to receive traffic on the device's management interface.",
+                "parameters": [
+                    {
+                        "name": "system-services",
+                        "type": "string",
+                        "explanation": "Allowed type of system service, e.g. all system services."
+                    }
+                ]
+            }
+        }
+    },
+    "set security zones security-zone untrust": {
+        "template": "set security zones security-zone [parameter1]",
+        "command": "set security zones security-zone untrust",
+        "explanation": "This command fragment configures a security zone named `[parameter1]` within the Junos security zones hierarchy, defining a logical boundary for security policies and interfaces.",
+        "parameters": [
+            {
+                "name": "zone-name",
+                "type": "string",
+                "explanation": "Name of the safe area."
+            }
+        ],
+        "interfaces ge-0/0/1.0": {
+            "template": "interfaces [parameter2]",
+            "command": "interfaces ge-0/0/1.0",
+            "explanation": "Configure secure area bound interfaces.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Ties the interface name to the security area."
+                }
+            ],
+            "host-inbound-traffic system-services all": {
+                "template": "host-inbound-traffic system-services [parameter3]",
+                "command": "host-inbound-traffic system-services all",
+                "explanation": "The command `host-inbound-traffic system-services [parameter3]` allows specified system services (e.g., SSH, SNMP) to receive traffic on the device's management interface.",
+                "parameters": [
+                    {
+                        "name": "system-services",
+                        "type": "string",
+                        "explanation": "Allowed type of system service, e.g. all system services."
+                    }
+                ]
+            }
+        }
+    },
+    "set security policies from-zone trust": {
+        "template": "set security policies from-zone [parameter1]",
+        "command": "set security policies from-zone trust",
+        "explanation": "The command sets the source zone for a security policy in Junos OS, defining the network area from which traffic originates, with `[parameter1]` specifying the zone name.",
+        "parameters": [
+            {
+                "name": "from-zone",
+                "type": "string",
+                "explanation": "Source security area name, such as trust."
+            }
+        ],
+        "to-zone untrust": {
+            "template": "to-zone [parameter2]",
+            "command": "to-zone untrust",
+            "explanation": "The command `to-zone [parameter2]` specifies the destination security zone in a Junos security policy, defining where traffic is allowed to flow.",
+            "parameters": [
+                {
+                    "name": "to-zone",
+                    "type": "string",
+                    "explanation": "Purpose security area name, e.g. untrust."
+                }
+            ],
+            "policy permit-all": {
+                "template": "policy [parameter3]",
+                "command": "policy permit-all",
+                "explanation": "The command `policy [parameter3]` in Junos defines or references a routing policy named `[parameter3]` to control route advertisement or acceptance.",
+                "parameters": [
+                    {
+                        "name": "policy",
+                        "type": "string",
+                        "explanation": "Policy name, for example, permit-all."
+                    }
+                ],
+                "match source-address any": {
+                    "template": "match source-address [parameter4]",
+                    "command": "match source-address any",
+                    "explanation": "The command fragment `match source-address [parameter4]` filters traffic based on the specified source IP address (`[parameter4]`) in a Junos firewall or policy configuration.",
+                    "parameters": [
+                        {
+                            "name": "source-address",
+                            "type": "string",
+                            "explanation": "Source address matches, e.g. Any indicates any address."
+                        }
+                    ]
+                },
+                "match destination-address any": {
+                    "template": "match destination-address [parameter4]",
+                    "command": "match destination-address any",
+                    "explanation": "The command fragment `match destination-address [parameter4]` filters traffic based on the specified destination IP address or address range in a Junos policy or firewall rule.",
+                    "parameters": [
+                        {
+                            "name": "destination-address",
+                            "type": "string",
+                            "explanation": "Destination address matches, e.g. Any indicates any address."
+                        }
+                    ]
+                },
+                "match application any": {
+                    "template": "match application [parameter4]",
+                    "command": "match application any",
+                    "explanation": "The command `match application [parameter4]` filters traffic based on the specified application (parameter4) in a Junos firewall or security policy.",
+                    "parameters": [
+                        {
+                            "name": "application",
+                            "type": "string",
+                            "explanation": "Apply matching conditions, e.g. Any indicates arbitrary application."
+                        }
+                    ]
+                },
+                "then permit": {
+                    "template": "then [parameter4]",
+                    "command": "then permit",
+                    "explanation": "The `then [parameter4]` command in Junos specifies the action to take in a firewall filter or policy, such as `accept`, `discard`, or `reject`.",
+                    "parameters": [
+                        {
+                            "name": "action",
+                            "type": "string",
+                            "explanation": "Process actions that match traffic, such as permit, are allowed through."
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "set security nat source rule-set rs1": {
+        "template": "set security nat source rule-set [parameter1]",
+        "command": "set security nat source rule-set rs1",
+        "explanation": "This command configures a source NAT rule set in Junos, defining a collection of rules for translating source IP addresses in traffic matching specified criteria.",
+        "parameters": [
+            {
+                "name": "rule-set-name",
+                "type": "string",
+                "explanation": "Name of the NAT rule book."
+            }
+        ],
+        "from zone trust": {
+            "template": "from zone [parameter2]",
+            "command": "from zone trust",
+            "explanation": "Configure the source safety area for the NAT ruleset application.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "Name of the source security area."
+                }
+            ]
+        },
+        "to zone untrust": {
+            "template": "to zone [parameter2]",
+            "command": "to zone untrust",
+            "explanation": "Configure the purpose safe area for the NAT ruleset application.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "The name of the destination security area."
+                }
+            ]
+        },
+        "rule r1": {
+            "template": "rule [parameter2]",
+            "command": "rule r1",
+            "explanation": "The command `rule [parameter2]` in Junos defines a specific rule within a firewall filter or policy, where `[parameter2]` specifies the rule's name or identifier.",
+            "parameters": [
+                {
+                    "name": "rule",
+                    "type": "string",
+                    "explanation": "NAT rule name, e.g. r1."
+                }
+            ],
+            "match source-address 192.168.10.0/24": {
+                "template": "match source-address [parameter3]",
+                "command": "match source-address 192.168.10.0/24",
+                "explanation": "The command `match source-address [parameter3]` filters traffic based on the specified source IP address or address range in a Junos policy or firewall rule.",
+                "parameters": [
+                    {
+                        "name": "source-address",
+                        "type": "string",
+                        "explanation": "Source address matching conditions, e.g. 192.168.100.0/24."
+                    }
+                ]
+            },
+            "then source-nat interface": {
+                "template": "then source-nat [parameter3]",
+                "command": "then source-nat interface",
+                "explanation": "The command `then source-nat [parameter3]` in Junos applies source network address translation (NAT) using the specified NAT pool or interface defined in `[parameter3]`.",
+                "parameters": [
+                    {
+                        "name": "source-nat",
+                        "type": "string",
+                        "explanation": "NAT action type, e.g. interface for interface NAT."
+                    }
+                ]
+            }
+        }
+    },
+    "set security nat static rule-set static-rs": {
+        "template": "set security nat static rule-set [parameter1]",
+        "command": "set security nat static rule-set static-rs",
+        "explanation": "This command fragment configures a static NAT rule-set in Junos, defining a set of rules for translating private IP addresses to public IP addresses.",
+        "parameters": [
+            {
+                "name": "rule-set-name",
+                "type": "string",
+                "explanation": "The name of the static NAT ruleset."
+            }
+        ],
+        "from zone untrust": {
+            "template": "from zone [parameter2]",
+            "command": "from zone untrust",
+            "explanation": "The command fragment `from zone [parameter2]` specifies the source zone in a Junos security policy, defining the traffic origin for policy evaluation.",
+            "parameters": [
+                {
+                    "name": "from-zone",
+                    "type": "string",
+                    "explanation": "Source area name, e.g. untrust."
+                }
+            ]
+        },
+        "rule static-nat1": {
+            "template": "rule [parameter2]",
+            "command": "rule static-nat1",
+            "explanation": "The command `rule [parameter2]` in Junos defines a specific rule within a firewall filter or policy, where `[parameter2]` specifies the rule's name or identifier.",
+            "parameters": [
+                {
+                    "name": "rule",
+                    "type": "string",
+                    "explanation": "Static NAT rules name, e.g., status-nat1."
+                }
+            ],
+            "match destination-address 1.1.1.100/32": {
+                "template": "match destination-address [parameter3]",
+                "command": "match destination-address 1.1.1.100/32",
+                "explanation": "The command fragment `match destination-address [parameter3]` filters traffic based on the specified destination IP address or address range in a Junos policy or firewall rule.",
+                "parameters": [
+                    {
+                        "name": "destination-address",
+                        "type": "string",
+                        "explanation": "Purpose address matching conditions, such as 1.1.1.100/32."
+                    }
+                ]
+            },
+            "then static-nat prefix 192.168.10.10/32": {
+                "template": "then static-nat prefix [parameter3]",
+                "command": "then static-nat prefix 192.168.10.10/32",
+                "explanation": "The command configures static NAT by mapping a specified source IP prefix (`[parameter3]`) to a predefined destination IP address or range.",
+                "parameters": [
+                    {
+                        "name": "prefix",
+                        "type": "string",
+                        "explanation": "Static NAT prefixes, e.g. 192.168.10.10/32."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols ospf area 0.0.0.0": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0.0.0.0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface ge-0/0/1.0": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-0/0/1.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        }
+    },
+    "set routing-options static route 0.0.0.0/0": {
+        "template": "set routing-options static route [parameter1]",
+        "command": "set routing-options static route 0.0.0.0/0",
+        "explanation": "This command configures a static route in the routing table, where `[parameter1]` specifies the destination network prefix and its next-hop or discard/ reject behavior.",
+        "parameters": [
+            {
+                "name": "route",
+                "type": "string",
+                "explanation": "Target network address."
+            }
+        ],
+        "next-hop 2.2.2.2": {
+            "template": "next-hop [parameter2]",
+            "command": "next-hop 2.2.2.2",
+            "explanation": "This command configures a static route in Junos, where `[parameter1]` is the destination network and `[parameter2]` specifies the next-hop IP address for forwarding traffic.",
+            "parameters": [
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "Next jump address."
+                }
+            ]
+        }
+    }
+}

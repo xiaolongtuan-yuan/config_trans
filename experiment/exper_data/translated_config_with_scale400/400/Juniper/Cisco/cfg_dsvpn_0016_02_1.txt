@@ -1,0 +1,26 @@
+hostname Spoke1
+route-map ge-1/0/0 permit [parameter2]
+ set interface ge-1/0/0
+ set interface lo0
+ set interface gr-1/0/0
+ set interface ge-1/0/0.0
+ set interface gr-1/0/0.0
+controller E1 0
+ip address 10.1.2.10 24
+interface gr-1/0/0.0
+ tunnel source lo0.0
+ tunnel source ge-1/0/0.0
+ tunnel destination dynamic
+ tunnel protection ipsec profile <IPSEC_PROFILE_NAME>
+ interface lo0.0
+pseudowire-class gre
+ encapsulation gre
+ip address 192.168.1.1 32
+ip address 172.16.1.2 24
+router ospf 172.16.1.2
+ router-id 172.16.1.2
+ router-id 10.1.2.10
+ network 0.0.0.0 [parameter2] area [parameter3]
+  network none none area 0.0.0.1
+interface lo0.0
+ interface ge-1/0/0.0

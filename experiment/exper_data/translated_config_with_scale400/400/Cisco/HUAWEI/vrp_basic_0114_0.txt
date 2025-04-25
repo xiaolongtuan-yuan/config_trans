@@ -1,0 +1,20 @@
+sysname SSH_Server
+ip domain-name example.com
+modulus 1024
+ssh server version 2
+interface Loopback0
+ ip address 10.1.1.1 255.255.255.255
+ interface GigabitEthernet0/0/0
+ike proposal aes128-ctr
+ encryption-algorithm aes256-ctr
+aaa
+local-user client001 password irreversible-cipher @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
+local-user none privilege level 15
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 10.1.1.2 255.255.0.0
+ e1 none none
+vlan batch 0 to 4
+user-interface vty ssh [parameter2]
+ protocol inbound ssh
+ssh authentication-type default default

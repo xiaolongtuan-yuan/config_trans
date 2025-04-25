@@ -1,0 +1,389 @@
+{
+    "set system host-name Spoke2": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name Spoke2",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces ge-1/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 10.1.3.10/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.1.3.10/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-2/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-2/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 192.168.2.1/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 192.168.2.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces gr-0/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces gr-0/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "tunnel source 10.1.3.10": {
+                "template": "tunnel source [parameter3]",
+                "command": "tunnel source 10.1.3.10",
+                "explanation": "Configure tunnel source interfaces.",
+                "parameters": [
+                    {
+                        "name": "source-interface",
+                        "type": "string",
+                        "explanation": "Name of tunnel source interface, e.g. lo0.0."
+                    }
+                ]
+            },
+            "family inet address 172.16.1.3/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 172.16.1.3/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "encapsulation gre": {
+                "template": "encapsulation [parameter3]",
+                "command": "encapsulation gre",
+                "explanation": "Configure the envelope type of the interface.",
+                "parameters": [
+                    {
+                        "name": "encapsulation",
+                        "type": "string",
+                        "explanation": "Cover type, e.g., pp."
+                    }
+                ]
+            }
+        }
+    },
+    "set security ipsec vpn ipsec-profile-name": {
+        "template": "set security ipsec vpn [parameter1]",
+        "command": "set security ipsec vpn ipsec-profile-name",
+        "explanation": "This command configures an IPsec VPN in Junos by setting specific parameters (e.g., name, IKE gateway, IPsec policy) under the `security ipsec vpn` hierarchy.",
+        "parameters": [
+            {
+                "name": "vpn-profile",
+                "type": "string",
+                "explanation": "IPSec VPN configuration name."
+            }
+        ],
+        "bind-interface gr-0/0/0.0": {
+            "template": "bind-interface [parameter2]",
+            "command": "bind-interface gr-0/0/0.0",
+            "explanation": "Tie IPSec VPN to the specified interface.",
+            "parameters": [
+                {
+                    "name": "bind-interface",
+                    "type": "string",
+                    "explanation": "Tie interface names, e.g. g-1/0/0."
+                }
+            ]
+        }
+    },
+    "set protocols ospf area 0.0.0.0": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0.0.0.0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface ge-2/0/0.0": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-2/0/0.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        },
+        "interface gr-0/0/0.0": {
+            "template": "interface [parameter2]",
+            "command": "interface gr-0/0/0.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        }
+    },
+    "set protocols ospf area 0.0.0.1": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0.0.0.1",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface ge-1/0/0.0": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-1/0/0.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        }
+    },
+    "set protocols bgp group Spoke2_Group": {
+        "template": "set protocols bgp group [parameter1]",
+        "command": "set protocols bgp group Spoke2_Group",
+        "explanation": "This command configures a BGP group named [parameter1], defining a set of BGP peers with shared session parameters.",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP Group name."
+            }
+        ],
+        "type external": {
+            "template": "type [parameter2]",
+            "command": "type external",
+            "explanation": "Configure the type of BGP group to be external.",
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "explanation": "Type of BGP group, for example, external."
+                }
+            ]
+        },
+        "local-address 172.16.1.3": {
+            "template": "local-address [parameter2]",
+            "command": "local-address 172.16.1.3",
+            "explanation": "Configure the local address of the BGP group.",
+            "parameters": [
+                {
+                    "name": "local-address",
+                    "type": "string",
+                    "explanation": "Local address of the BGP group."
+                }
+            ]
+        },
+        "neighbor 172.16.1.1": {
+            "template": "neighbor [parameter2]",
+            "command": "neighbor 172.16.1.1",
+            "explanation": "Configure the neighbors of the BGP team.",
+            "parameters": [
+                {
+                    "name": "neighbor",
+                    "type": "string",
+                    "explanation": "Neighbor's IP address."
+                }
+            ],
+            "peer-as 100": {
+                "template": "peer-as [parameter3]",
+                "command": "peer-as 100",
+                "explanation": "Configure the BGP group's neighbours and their equivalents.",
+                "parameters": [
+                    {
+                        "name": "peer-as",
+                        "type": "integer",
+                        "explanation": "Peer AS."
+                    }
+                ]
+            }
+        },
+        "family inet unicast": {
+            "template": "family inet [parameter2]",
+            "command": "family inet unicast",
+            "explanation": "Configure the IPv4 solo address of the BGP group.",
+            "parameters": [
+                {
+                    "name": "address-family",
+                    "type": "string",
+                    "explanation": "Address community type."
+                }
+            ]
+        },
+        "export OSPF-to-BGP": {
+            "template": "export [parameter2]",
+            "command": "export OSPF-to-BGP",
+            "explanation": "Configure the strategy for BGP to guide the route.",
+            "parameters": [
+                {
+                    "name": "export-policy",
+                    "type": "string",
+                    "explanation": "The policy name for the route."
+                }
+            ]
+        },
+        "import none": {
+            "template": "import [parameter2]",
+            "command": "import none",
+            "explanation": "Configure the BGP group import route policy.",
+            "parameters": [
+                {
+                    "name": "import-policy",
+                    "type": "string",
+                    "explanation": "Organisation"
+                }
+            ]
+        }
+    },
+    "set policy-options policy-statement OSPF-to-BGP": {
+        "template": "set policy-options policy-statement [parameter1]",
+        "command": "set policy-options policy-statement OSPF-to-BGP",
+        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "name of the policy statement."
+            }
+        ],
+        "term 1": {
+            "template": "term [parameter2]",
+            "command": "term 1",
+            "explanation": "This command fragment configures a routing policy by defining a term within a policy statement, where `[parameter1]` is the policy name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "The term number of the policy statement."
+                }
+            ],
+            "from protocol ospf": {
+                "template": "from protocol [parameter3]",
+                "command": "from protocol ospf",
+                "explanation": "Configure the matching condition for the policy statement from the OSF protocol.",
+                "parameters": [
+                    {
+                        "name": "protocol",
+                        "type": "string",
+                        "explanation": "Matches the protocol name, for example."
+                    }
+                ]
+            },
+            "then accept": {
+                "template": "then [parameter3]",
+                "command": "then accept",
+                "explanation": "Configure the action of the policy statement as accepted.",
+                "parameters": [
+                    {
+                        "name": "action",
+                        "type": "string",
+                        "explanation": "Execute actions such as accept."
+                    }
+                ]
+            }
+        }
+    }
+}

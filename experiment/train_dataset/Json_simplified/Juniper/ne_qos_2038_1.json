@@ -1,0 +1,304 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DeviceB",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-2/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.10.1.2/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set routing-options autonomous-system [parameter1]": {
+        "template": "set routing-options autonomous-system [parameter1]",
+        "command": "set routing-options autonomous-system 200",
+        "explanation": "Autonomy system number with equipment.",
+        "parameters": [
+            {
+                "name": "autonomous-system",
+                "type": "integer",
+                "explanation": "Autonomy system number for equipment, used for route agreements such as BGP."
+            }
+        ]
+    },
+    "set policy-options prefix-list [parameter1] [parameter2]/[parameter3]": {
+        "template": "set policy-options prefix-list [parameter1] [parameter2]/[parameter3]",
+        "command": "set policy-options prefix-list bb 10.1.1.1/32",
+        "explanation": "Configure the prefix list.",
+        "parameters": [
+            {
+                "name": "prefix-list",
+                "type": "string",
+                "explanation": "The name of the prefix list."
+            },
+            {
+                "name": "ip-address",
+                "type": "string",
+                "explanation": "Prefix IPv4 address."
+            },
+            {
+                "name": "prefix-length",
+                "type": "integer",
+                "explanation": "The length of the prefix."
+            }
+        ]
+    },
+    "set policy-options community [parameter1]": {
+        "template": "set policy-options community [parameter1]",
+        "command": "set policy-options community COMMUNITY-10_10",
+        "explanation": "The command `set policy-options community [parameter1]` defines a new BGP community with the name or value specified by `[parameter1]` for route tagging and policy control.",
+        "parameters": [
+            {
+                "name": "community",
+                "type": "string",
+                "explanation": "Name of community."
+            }
+        ],
+        "members [parameter2]": {
+            "template": "members [parameter2]",
+            "command": "members \"10:10\"",
+            "explanation": "Configure community members in the strategy options.",
+            "parameters": [
+                {
+                    "name": "members",
+                    "type": "string",
+                    "explanation": "Community members."
+                }
+            ]
+        }
+    },
+    "set policy-options policy-statement [parameter1]": {
+        "template": "set policy-options policy-statement [parameter1]",
+        "command": "set policy-options policy-statement aa",
+        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "name of the policy statement."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term set-community",
+            "explanation": "This command fragment configures a routing policy by defining a term within a policy statement, where `[parameter1]` is the policy name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "The term number of the policy statement."
+                }
+            ],
+            "from prefix-list [parameter3]": {
+                "template": "from prefix-list [parameter3]",
+                "command": "from prefix-list bb",
+                "explanation": "Configures the list of prefixes for which the policy statement matches.",
+                "parameters": [
+                    {
+                        "name": "prefix-list",
+                        "type": "string",
+                        "explanation": "The name or specific prefix of the prefix list."
+                    }
+                ]
+            },
+            "then community add [parameter3]": {
+                "template": "then community add [parameter3]",
+                "command": "then community add COMMUNITY-10_10",
+                "explanation": "The command `then community add [parameter3]` in Junos adds the specified BGP community value (`[parameter3]`) to the route's existing community attributes.",
+                "parameters": [
+                    {
+                        "name": "community-name",
+                        "type": "string",
+                        "explanation": "The name of the community attribute."
+                    }
+                ]
+            },
+            "then accept": {
+                "template": "then accept",
+                "command": "then accept",
+                "explanation": "Configure the action of the policy statement as accepted.",
+                "parameters": []
+            },
+            "from route-filter [parameter3]/[parameter4]": {
+                "template": "from route-filter [parameter3]/[parameter4]",
+                "command": "from route-filter 2.2.2.2/32",
+                "explanation": "This command fragment configures a routing policy to match routes based on a specific prefix (`parameter3`) and prefix length (`parameter4`) within a defined term (`parameter2`) of a policy statement (`parameter1`).",
+                "parameters": [
+                    {
+                        "name": "route-filter",
+                        "type": "string",
+                        "explanation": "Route filter, specify a matching route prefix."
+                    },
+                    {
+                        "name": "prefix-length",
+                        "type": "integer",
+                        "explanation": "The length of the route prefix."
+                    }
+                ],
+                "exact": {
+                    "template": "exact",
+                    "command": "exact",
+                    "explanation": "Configures the matching conditions for the policy statement, which accurately matches the given route.",
+                    "parameters": []
+                }
+            },
+            "then reject": {
+                "template": "then reject",
+                "command": "then reject",
+                "explanation": "The command `then reject` in Junos drops the matching traffic and sends an ICMP unreachable message back to the source.",
+                "parameters": []
+            }
+        }
+    },
+    "set protocols bgp group [parameter1]": {
+        "template": "set protocols bgp group [parameter1]",
+        "command": "set protocols bgp group EBGP",
+        "explanation": "This command configures a BGP group named [parameter1], defining a set of BGP peers with shared session parameters.",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP Group name."
+            }
+        ],
+        "type [parameter2]": {
+            "template": "type [parameter2]",
+            "command": "type external",
+            "explanation": "Configure the type of BGP group to be external.",
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "explanation": "Type of BGP group, for example, external."
+                }
+            ]
+        },
+        "local-address [parameter2]": {
+            "template": "local-address [parameter2]",
+            "command": "local-address 2.2.2.2",
+            "explanation": "Configure the local address of the BGP group.",
+            "parameters": [
+                {
+                    "name": "local-address",
+                    "type": "string",
+                    "explanation": "Local address of the BGP group."
+                }
+            ]
+        },
+        "peer-as [parameter2]": {
+            "template": "peer-as [parameter2]",
+            "command": "peer-as 100",
+            "explanation": "The equivalent autonomy system number for BGP groups.",
+            "parameters": [
+                {
+                    "name": "peer-as",
+                    "type": "integer",
+                    "explanation": "Equivalent Autonomy System Number."
+                }
+            ]
+        },
+        "neighbor [parameter2]": {
+            "template": "neighbor [parameter2]",
+            "command": "neighbor 1.1.1.1",
+            "explanation": "Configure the neighbors of the BGP team.",
+            "parameters": [
+                {
+                    "name": "neighbor",
+                    "type": "string",
+                    "explanation": "Neighbor's IP address."
+                }
+            ]
+        },
+        "family inet unicast": {
+            "template": "family inet unicast",
+            "command": "family inet unicast",
+            "explanation": "Configure BGP teams to support IPv4 solo addresses.",
+            "parameters": []
+        },
+        "multihop ttl [parameter2]": {
+            "template": "multihop ttl [parameter2]",
+            "command": "multihop ttl 2",
+            "explanation": "The command `multihop ttl [parameter2]` sets the Time-To-Live (TTL) value for BGP multihop sessions, controlling the maximum number of hops for BGP packets.",
+            "parameters": [
+                {
+                    "name": "ttl",
+                    "type": "integer",
+                    "explanation": "More TTL values."
+                }
+            ]
+        }
+    },
+    "set protocols ospf area [parameter1]": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-2/0/0.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ],
+            "passive": {
+                "template": "passive",
+                "command": "passive",
+                "explanation": "Configure the interface in the OSPF area as passive mode.",
+                "parameters": []
+            }
+        }
+    }
+}

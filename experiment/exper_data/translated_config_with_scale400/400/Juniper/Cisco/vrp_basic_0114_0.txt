@@ -1,0 +1,23 @@
+hostname SSH_Server
+ip domain-name example.com
+ip ssh client algorithm server hostkey rsa
+ip ssh client algorithm server hostkey group14-sha256
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ssh version v2
+ip ssh pubkey-chain
+ username client001
+policy-map super-user
+ class super-user
+username none privilege none password none "@%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%"
+line vty <encrypted-password> [parameter2]
+ password none <encrypted-password>
+subscriber template password
+ default domain authentication password
+ssh client first-time enable
+line console insecure
+route-map lo0 permit [parameter2]
+ set interface lo0
+ set interface ge-0/0/0
+controller E1 0
+ip address 10.1.1.1 32
+ip address 10.1.1.2 16

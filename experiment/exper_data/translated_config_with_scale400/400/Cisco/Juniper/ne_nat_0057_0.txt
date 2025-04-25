@@ -1,0 +1,13 @@
+set system host-name NATA
+set access class INSIDE_ACL acl-name INSIDE_ACL
+set services ds-lite instance 192.168.10.0 address-group 192.168.10.0 section 192.168.10.0 prefix none/0.0.0.255
+set services nat pool address-group1
+set security nat source rule-set address-group1 rule address-group1
+set security nat source rule-set address-group1 address-netmask 255.255.255.0 then source-nat pool 11.11.11.105
+set services nat nat64 instance INSIDE_ACL address-pool address-group1
+set protocols oam ethernet connectivity-fault-management md GigabitEthernet2/0/0 ma GigabitEthernet2/0/0 mep GigabitEthernet2/0/0 interface GigabitEthernet2/0/0
+set system telemetry destination-group 192.168.10.1
+set interfaces 192.168.10.1 ipv4-address 192.168.10.1
+set interfaces 192.168.10.1 family inet address none/255.255.255.0
+set security nat destination pool none
+set chassis fpc [parameter1] pic [parameter2] controller [parameter3] no-shutdown

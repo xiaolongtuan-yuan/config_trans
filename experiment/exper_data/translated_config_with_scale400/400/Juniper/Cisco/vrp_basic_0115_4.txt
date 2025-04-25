@@ -1,0 +1,12 @@
+hostname CE2
+route-map ge-0/0/1 permit [parameter2]
+ set interface ge-0/0/1
+controller E1 0
+ip address 10.1.2.1 24
+bridge CE2_to_Peer protocol none
+radius-server type external
+router bgp 100
+ address-family 10.1.2.2
+  neighbor 10.1.2.2 route-reflector-client
+ address-family ipv4 unicast
+router bgp 10.1.2.0/24

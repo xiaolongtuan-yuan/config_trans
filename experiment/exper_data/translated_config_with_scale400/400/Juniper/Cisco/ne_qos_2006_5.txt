@@ -1,0 +1,20 @@
+hostname CE3
+route-map ge-1/0/0 permit [parameter2]
+ set interface ge-1/0/0
+controller E1 0
+ip address 10.3.1.1 24
+interface [parameter1]
+ no shutdown
+ ip policy route-map EXPORT-NETWORK
+ ipv6 traffic-policy EXPORT-NETWORK inbound
+ ipv6 traffic-policy 1 inbound
+router bgp 65430
+bridge BGP-PEERS protocol none
+radius-server type external
+router bgp 100
+ address-family unicast
+  neighbor 10.3.1.2 route-reflector-client
+ permit exact none none 10.3.1.0
+ network none mask 24
+ip access-list extended 10.3.1.0
+access-list none accept none none none

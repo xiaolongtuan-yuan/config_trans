@@ -1,0 +1,199 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name PE2",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set class-of-service forwarding-classes class [parameter1]": {
+        "template": "set class-of-service forwarding-classes class [parameter1]",
+        "command": "set class-of-service forwarding-classes class af1",
+        "explanation": "Configure the forward class.",
+        "parameters": [
+            {
+                "name": "class-name",
+                "type": "string",
+                "explanation": "The name of the forward class."
+            }
+        ]
+    },
+    "set class-of-service classifiers dot1p [parameter1]": {
+        "template": "set class-of-service classifiers dot1p [parameter1]",
+        "command": "set class-of-service classifiers dot1p af1-classifier",
+        "explanation": "This command configures a Dot1p classifier in Junos, mapping IEEE 802.1p priority values (parameter1) to forwarding classes for traffic classification and QoS handling.",
+        "parameters": [
+            {
+                "name": "classifier-name",
+                "type": "string",
+                "explanation": "Catalogue name."
+            }
+        ],
+        "forwarding-class [parameter2] [parameter3]": {
+            "template": "forwarding-class [parameter2] [parameter3]",
+            "command": "forwarding-class af1 2",
+            "explanation": "The command assigns a forwarding class (`[parameter2]`) to a specific traffic class or queue (`[parameter3]`) for differentiated handling in Junos QoS configuration.",
+            "parameters": [
+                {
+                    "name": "forwarding-class",
+                    "type": "string",
+                    "explanation": "The name of the forward class."
+                },
+                {
+                    "name": "priority",
+                    "type": "integer",
+                    "explanation": "Priority."
+                }
+            ]
+        }
+    },
+    "set class-of-service rewrite-rules dscp [parameter1]": {
+        "template": "set class-of-service rewrite-rules dscp [parameter1]",
+        "command": "set class-of-service rewrite-rules dscp gina",
+        "explanation": "The command sets DSCP rewrite rules in Junos, mapping incoming DSCP values to specified outgoing DSCP values for traffic classification and prioritization.",
+        "parameters": [
+            {
+                "name": "rule-name",
+                "type": "string",
+                "explanation": "Rewrite the name of the rule."
+            }
+        ],
+        "forwarding-class [parameter2]": {
+            "template": "forwarding-class [parameter2]",
+            "command": "forwarding-class af1",
+            "explanation": "The command `forwarding-class [parameter2]` assigns a packet to a specific forwarding class (queue) based on `[parameter2]` for differentiated traffic handling in Junos.",
+            "parameters": [
+                {
+                    "name": "forwarding-class",
+                    "type": "string",
+                    "explanation": "The name of the forward class."
+                }
+            ],
+            "loss-priority [parameter3]": {
+                "template": "loss-priority [parameter3]",
+                "command": "loss-priority low",
+                "explanation": "The command `loss-priority [parameter3]` sets the packet loss priority level for traffic, determining the likelihood of packet discard during congestion.",
+                "parameters": [
+                    {
+                        "name": "loss-priority",
+                        "type": "string",
+                        "explanation": "Throw the package priority."
+                    }
+                ],
+                "code-point [parameter4]": {
+                    "template": "code-point [parameter4]",
+                    "command": "code-point af11",
+                    "explanation": "The Junos command `code-point [parameter4]` assigns a specific Differentiated Services Code Point (DSCP) value to traffic for Quality of Service (QoS) classification.",
+                    "parameters": [
+                        {
+                            "name": "code-point",
+                            "type": "string",
+                            "explanation": "Code points."
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "set vlans [parameter1]": {
+        "template": "set vlans [parameter1]",
+        "command": "set vlans BD10",
+        "explanation": "Configure VLAN.",
+        "parameters": [
+            {
+                "name": "vlan-name",
+                "type": "string",
+                "explanation": "VLAN's name, like Vlan100."
+            }
+        ],
+        "vlan-id [parameter2]": {
+            "template": "vlan-id [parameter2]",
+            "command": "vlan-id 10",
+            "explanation": "Configure VLAN's ID.",
+            "parameters": [
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN ID for the only identification of a VLAN."
+                }
+            ]
+        }
+    },
+    "set bridge-domains [parameter1]": {
+        "template": "set bridge-domains [parameter1]",
+        "command": "set bridge-domains BD10",
+        "explanation": "Create a bridge field.",
+        "parameters": [
+            {
+                "name": "bridge-domain",
+                "type": "string",
+                "explanation": "Bridge domain names, such as vlan10."
+            }
+        ],
+        "domain-type [parameter2]": {
+            "template": "domain-type [parameter2]",
+            "command": "domain-type bridge",
+            "explanation": "Configure the type of bridge area.",
+            "parameters": [
+                {
+                    "name": "domain-type",
+                    "type": "string",
+                    "explanation": "The type of bridge area, like 'bridge'."
+                }
+            ]
+        }
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family ethernet-switching port-mode [parameter3]": {
+                "template": "family ethernet-switching port-mode [parameter3]",
+                "command": "family ethernet-switching port-mode trunk",
+                "explanation": "Configure the interface 's port mode is trunk.",
+                "parameters": [
+                    {
+                        "name": "port-mode",
+                        "type": "string",
+                        "explanation": "Port mode, for example, trunk."
+                    }
+                ]
+            },
+            "family ethernet-switching vlan members [parameter3]": {
+                "template": "family ethernet-switching vlan members [parameter3]",
+                "command": "family ethernet-switching vlan members BD10",
+                "explanation": "Configure the VLAN members of the interface.",
+                "parameters": [
+                    {
+                        "name": "vlan-members",
+                        "type": "string",
+                        "explanation": "VLAN members, e.g. vlan 100."
+                    }
+                ]
+            }
+        }
+    }
+}

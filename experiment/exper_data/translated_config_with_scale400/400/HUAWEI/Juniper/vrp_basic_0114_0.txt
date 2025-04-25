@@ -1,0 +1,24 @@
+set system host-name SSH_Server
+set system domain-name example.com
+set system login user [parameter1] authentication public-keys generate rsa modulus 2048
+set system login user [parameter1] authentication plain-text-password @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
+set system services ssh
+delete security ssh protocol-version 2
+set protocols ospf area LoopBack0 interface LoopBack0
+set protocols ospf area LoopBack0 interface GigabitEthernet0/0/0
+set system telemetry destination-group 10.1.1.1
+set interfaces 10.1.1.1 ipv4-address 10.1.1.1
+set interfaces 10.1.1.1 family inet address none/255.255.255.255
+set interfaces 10.1.1.1 ipv4-address 10.1.1.2
+set interfaces 10.1.1.1 family inet address none/255.255.0.0
+set aaa new-model
+set access profile client001
+set system login class client001 client user client001
+set system login class client001 authorization 15
+set system services client001
+set chassis fpc [parameter1] pic [parameter2] controller [parameter3] no-shutdown
+set system ports auxiliary 0
+set system ports console stop-bits 4
+set system services aaa authentication-order none none
+set system services ssh source-address none
+set system services ssh ciphers none none aes128-ctr

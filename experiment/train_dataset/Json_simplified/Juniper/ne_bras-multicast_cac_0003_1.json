@@ -1,0 +1,210 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name BRAS",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set system services dhcp pool [parameter1]": {
+        "template": "set system services dhcp pool [parameter1]",
+        "command": "set system services dhcp pool bas_local",
+        "explanation": "This command configures a DHCP pool with the specified parameter1, defining a range of IP addresses for dynamic allocation to clients on the network.",
+        "parameters": [
+            {
+                "name": "pool-name",
+                "type": "string",
+                "explanation": "Name of DHCP address pool."
+            }
+        ],
+        "network [parameter2]/[parameter3]": {
+            "template": "network [parameter2]/[parameter3]",
+            "command": "network 10.0.0.0/16",
+            "explanation": "The address pool and its network address and subnet mask with the DHCP service.",
+            "parameters": [
+                {
+                    "name": "network-address",
+                    "type": "string",
+                    "explanation": "Web address of DHCP address pool."
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "_Other Organiser"
+                }
+            ]
+        },
+        "default-router [parameter2]": {
+            "template": "default-router [parameter2]",
+            "command": "default-router 10.0.0.1",
+            "explanation": "Configure the default gateway to the DHCP address pool.",
+            "parameters": [
+                {
+                    "name": "default-router",
+                    "type": "string",
+                    "explanation": "Default gateway address for the DHCP address pool."
+                }
+            ]
+        },
+        "domain-name [parameter2]": {
+            "template": "domain-name [parameter2]",
+            "command": "domain-name ipv4",
+            "explanation": "The command `domain-name [parameter2]` sets the domain name for the device to the value specified in `[parameter2]`.",
+            "parameters": [
+                {
+                    "name": "domain-name",
+                    "type": "string",
+                    "explanation": "The domain name of the DHCP address pool."
+                }
+            ]
+        }
+    },
+    "set system domain-name [parameter1]": {
+        "template": "set system domain-name [parameter1]",
+        "command": "set system domain-name ipv4",
+        "explanation": "Configure the system domain name.",
+        "parameters": [
+            {
+                "name": "domain-name",
+                "type": "string",
+                "explanation": "System domain name."
+            }
+        ]
+    },
+    "set protocols pim interface [parameter1]": {
+        "template": "set protocols pim interface [parameter1]",
+        "command": "set protocols pim interface ge-0/0/1",
+        "explanation": "Enable the PIM protocol on the specified interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, for example, ge-0/0/1."
+            }
+        ]
+    },
+    "set protocols igmp-snooping interface [parameter1]": {
+        "template": "set protocols igmp-snooping interface [parameter1]",
+        "command": "set protocols igmp-snooping interface ge-0/0/0",
+        "explanation": "The command enables IGMP snooping on a specified interface (`[parameter1]`) to manage multicast traffic efficiently within a Layer 2 network.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, for example, ge-0/0/0."
+            }
+        ],
+        "group [parameter2]": {
+            "template": "group [parameter2]",
+            "command": "group 224.0.0.0",
+            "explanation": "The command `group [parameter2]` in Junos applies a configuration group named `[parameter2]` to inherit or modify settings within the current configuration context.",
+            "parameters": [
+                {
+                    "name": "group",
+                    "type": "string",
+                    "explanation": "The address of the IGMP Snooping group."
+                }
+            ]
+        }
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.1.1.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set forwarding-options multicast no-tunnel": {
+        "template": "set forwarding-options multicast no-tunnel",
+        "command": "set forwarding-options multicast no-tunnel",
+        "explanation": "The command explanation is: Configure multicast forwarding to not use tunnels.",
+        "parameters": []
+    },
+    "set forwarding-options multicast rp [parameter1]": {
+        "template": "set forwarding-options multicast rp [parameter1]",
+        "command": "set forwarding-options multicast rp 10.0.0.1",
+        "explanation": "Configure the RP (Rendezvous Point) address for multicast forwarding.",
+        "parameters": [
+            {
+                "name": "rp-address",
+                "type": "string",
+                "explanation": "The RP address for multicast forwarding."
+            }
+        ]
+    },
+    "set forwarding-options multicast policy [parameter1]": {
+        "template": "set forwarding-options multicast policy [parameter1]",
+        "command": "set forwarding-options multicast policy bas-policy",
+        "explanation": "The command configures a multicast routing policy named `[parameter1]` to control multicast traffic forwarding in Junos OS.",
+        "parameters": [
+            {
+                "name": "policy-name",
+                "type": "string",
+                "explanation": "The name of the multicast forwarding policy."
+            }
+        ],
+        "output bandwidth [parameter2]": {
+            "template": "output bandwidth [parameter2]",
+            "command": "output bandwidth 30000",
+            "explanation": "The command `output bandwidth [parameter2]` sets the egress bandwidth limit for a specific interface or queue to the value specified by `[parameter2]`.",
+            "parameters": [
+                {
+                    "name": "bandwidth",
+                    "type": "integer",
+                    "explanation": "The output bandwidth of the policy."
+                }
+            ],
+            "level-1 [parameter3]": {
+                "template": "level-1 [parameter3]",
+                "command": "level-1 20000",
+                "explanation": "The `level-1 [parameter3]` command in Junos configures IS-IS routing to operate at Level 1 only, limiting adjacency formation and route exchange to the local area.",
+                "parameters": [
+                    {
+                        "name": "level-1",
+                        "type": "integer",
+                        "explanation": "The explanation of the Junos command directly translates to: **\"Level 1 bandwidth of the policy.\"**"
+                    }
+                ]
+            }
+        }
+    }
+}

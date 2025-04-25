@@ -1,0 +1,175 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name SSH-Server",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set system login user [parameter1]": {
+        "template": "set system login user [parameter1]",
+        "command": "set system login user client001",
+        "explanation": "This command fragment configures a user account on a Junos device, where `[parameter1]` specifies the username for login authentication and management access.",
+        "parameters": [
+            {
+                "name": "username",
+                "type": "string",
+                "explanation": "User name."
+            }
+        ],
+        "class [parameter2]": {
+            "template": "class [parameter2]",
+            "command": "class operator",
+            "explanation": "Configure the type of system login user.",
+            "parameters": [
+                {
+                    "name": "user-class",
+                    "type": "string",
+                    "explanation": "User categories, e.g. super-user."
+                }
+            ]
+        },
+        "authentication plain-text-password [parameter2]": {
+            "template": "authentication plain-text-password [parameter2]",
+            "command": "authentication plain-text-password \"@%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%\"",
+            "explanation": "Configure the system login user's authentication as an explicit password.",
+            "parameters": [
+                {
+                    "name": "password",
+                    "type": "string",
+                    "explanation": "Express password."
+                }
+            ]
+        },
+        "authentication ssh-service": {
+            "template": "authentication ssh-service",
+            "command": "authentication ssh-service",
+            "explanation": "Configure user authentication for SSH.",
+            "parameters": []
+        },
+        "authentication ssh-key rsa-key [parameter2]": {
+            "template": "authentication ssh-key rsa-key [parameter2]",
+            "command": "authentication ssh-key rsa-key rsakey001",
+            "explanation": "Configure the user to authenticate with the SSH key.",
+            "parameters": [
+                {
+                    "name": "ssh-key",
+                    "type": "string",
+                    "explanation": "SSH key name."
+                }
+            ]
+        }
+    },
+    "set system services ssh root-login [parameter1]": {
+        "template": "set system services ssh root-login [parameter1]",
+        "command": "set system services ssh root-login allow",
+        "explanation": "Configure SSH services, prohibiting root users from login.",
+        "parameters": [
+            {
+                "name": "root-login",
+                "type": "string",
+                "explanation": "Whether or not to control root users can log in through SSH and Deny says no."
+            }
+        ]
+    },
+    "set system services ssh protocol-version [parameter1]": {
+        "template": "set system services ssh protocol-version [parameter1]",
+        "command": "set system services ssh protocol-version v2",
+        "explanation": "Configure the protocol version used for SSH services.",
+        "parameters": [
+            {
+                "name": "protocol-version",
+                "type": "string",
+                "explanation": "SSH protocol version, v2 indicates use of SSH version 2."
+            }
+        ]
+    },
+    "set system login password minimum-length [parameter1]": {
+        "template": "set system login password minimum-length [parameter1]",
+        "command": "set system login password minimum-length 8",
+        "explanation": "Configures the minimum length of the login password.",
+        "parameters": [
+            {
+                "name": "minimum-length",
+                "type": "integer",
+                "explanation": "The minimum length of the password."
+            }
+        ]
+    },
+    "set system login retry-options lockout-period [parameter1]": {
+        "template": "set system login retry-options lockout-period [parameter1]",
+        "command": "set system login retry-options lockout-period 15",
+        "explanation": "This command sets the duration (in minutes) a user account is locked after exceeding the maximum allowed failed login attempts, specified by `[parameter1]`.",
+        "parameters": [
+            {
+                "name": "lockout-period",
+                "type": "integer",
+                "explanation": "Lock time in minutes."
+            }
+        ],
+        "attempts [parameter2]": {
+            "template": "attempts [parameter2]",
+            "command": "attempts 3",
+            "explanation": "Configure the login retry option, including locking time and number of attempts.",
+            "parameters": [
+                {
+                    "name": "attempts",
+                    "type": "integer",
+                    "explanation": "Number of permitted attempts."
+                }
+            ]
+        }
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces lo0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.1.1.1/32",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "disable": {
+                "template": "disable",
+                "command": "disable",
+                "explanation": "Disables the specified interface unit.",
+                "parameters": []
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+sysname DeviceC
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.20.1.1 255.255.255.0
+#
+bgp 100
+ peer 10.20.1.2 as-number 100
+ #
+ ipv4-family unicast
+  undo synchronization
+  import-route direct
+  peer 10.20.1.2 enable
+#
+ospf 1
+ area 0.0.0.0
+  network 10.20.1.0 0.0.0.255
+#
+return

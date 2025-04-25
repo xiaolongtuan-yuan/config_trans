@@ -1,0 +1,259 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name HUAWEI",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set system radius-server [parameter1]": {
+        "template": "set system radius-server [parameter1]",
+        "command": "set system radius-server 192.168.7.249",
+        "explanation": "Configures a RADIUS server with the specified parameters, such as IP address, port, and shared secret, for network authentication and accounting purposes.",
+        "parameters": [
+            {
+                "name": "radius-server-ip",
+                "type": "string",
+                "explanation": "IP address of RADIUS server."
+            }
+        ],
+        "port [parameter2]": {
+            "template": "port [parameter2]",
+            "command": "port 1812",
+            "explanation": "Configures the RADIUS server with `[parameter1]` as the server address and `[parameter2]` as the port number for authentication and accounting communication.",
+            "parameters": [
+                {
+                    "name": "port",
+                    "type": "integer",
+                    "explanation": "Port number for the RADIGUS server."
+                }
+            ],
+            "secret [parameter3]": {
+                "template": "secret [parameter3]",
+                "command": "secret \"$9$02050D480809\"",
+                "explanation": "Configure the IP address, port and shared key of the RADIUS server.",
+                "parameters": [
+                    {
+                        "name": "secret",
+                        "type": "string",
+                        "explanation": "Share key for RADIGUS server."
+                    }
+                ]
+            }
+        },
+        "accounting-port [parameter2]": {
+            "template": "accounting-port [parameter2]",
+            "command": "accounting-port 1813",
+            "explanation": "Configure the billing port for the RADIGUS server.",
+            "parameters": [
+                {
+                    "name": "accounting-port",
+                    "type": "integer",
+                    "explanation": "RADIGUS server billing port number."
+                }
+            ]
+        }
+    },
+    "set system authentication-order [parameter1]": {
+        "template": "set system authentication-order [parameter1]",
+        "command": "set system authentication-order radius",
+        "explanation": "Configure the authentication order of the system.",
+        "parameters": [
+            {
+                "name": "authentication-method",
+                "type": "string",
+                "explanation": "Authentication methods, such as Radius."
+            }
+        ]
+    },
+    "set system accounting events [parameter1]": {
+        "template": "set system accounting events [parameter1]",
+        "command": "set system accounting events start-stop",
+        "explanation": "Configure the accounting events for login sessions.",
+        "parameters": [
+            {
+                "name": "event-type",
+                "type": "string",
+                "explanation": "Types of accounting events, such as login sessions."
+            }
+        ]
+    },
+    "set access profile [parameter1]": {
+        "template": "set access profile [parameter1]",
+        "command": "set access profile default",
+        "explanation": "This command fragment sets an access profile in Junos, defining a named profile (parameter1) to configure security policies, authentication, or authorization settings for network access.",
+        "parameters": [
+            {
+                "name": "profile-name",
+                "type": "string",
+                "explanation": "Accesses the name of the profile."
+            }
+        ],
+        "authentication-order [parameter2]": {
+            "template": "authentication-order [parameter2]",
+            "command": "authentication-order radius",
+            "explanation": "Configures the authentication order for access to the profile.",
+            "parameters": [
+                {
+                    "name": "authentication-method",
+                    "type": "string",
+                    "explanation": "Method of authentication, e.g. none."
+                }
+            ]
+        },
+        "accounting order [parameter2]": {
+            "template": "accounting order [parameter2]",
+            "command": "accounting order radius",
+            "explanation": "The command `accounting order [parameter2]` in Junos specifies the sequence in which accounting records are processed, with `[parameter2]` defining the order priority.",
+            "parameters": [
+                {
+                    "name": "accounting-method",
+                    "type": "string",
+                    "explanation": "Fee methods, such as Radius."
+                }
+            ]
+        }
+    },
+    "set access address-assignment pool [parameter1]": {
+        "template": "set access address-assignment pool [parameter1]",
+        "command": "set access address-assignment pool pool1",
+        "explanation": "This command fragment configures an address-assignment pool named `[parameter1]` for dynamic IP address allocation in Junos.",
+        "parameters": [
+            {
+                "name": "pool-name",
+                "type": "string",
+                "explanation": "Address allocated pool name."
+            }
+        ],
+        "family inet router [parameter2]": {
+            "template": "family inet router [parameter2]",
+            "command": "family inet router 10.82.0.1",
+            "explanation": "The command `family inet router [parameter2]` configures the IPv4 (inet) address family for a routing protocol instance specified by `[parameter2]`.",
+            "parameters": [
+                {
+                    "name": "router-address",
+                    "type": "string",
+                    "explanation": "Default gateway IP address."
+                }
+            ]
+        },
+        "family inet dns-server [parameter2]": {
+            "template": "family inet dns-server [parameter2]",
+            "command": "family inet dns-server 192.168.7.252",
+            "explanation": "The command configures a DNS server address for the `inet` address family, specifying the DNS server IP in `[parameter2]`.",
+            "parameters": [
+                {
+                    "name": "dns-server",
+                    "type": "string",
+                    "explanation": "The IP address of the DNS server."
+                }
+            ]
+        }
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.10.7.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "disable": {
+                "template": "disable",
+                "command": "disable",
+                "explanation": "Disables the specified interface unit.",
+                "parameters": []
+            },
+            "vlan-id [parameter3]": {
+                "template": "vlan-id [parameter3]",
+                "command": "vlan-id 100",
+                "explanation": "Configure VLAN IDs for interface units.",
+                "parameters": [
+                    {
+                        "name": "vlan-id",
+                        "type": "integer",
+                        "explanation": "VLAN ID, used to identify VLAN."
+                    }
+                ]
+            },
+            "family ethernet-switching": {
+                "template": "family ethernet-switching",
+                "command": "family ethernet-switching",
+                "explanation": "Configure the interface to exchange with the Ethernet.",
+                "parameters": []
+            }
+        }
+    },
+    "set bridge-domains [parameter1]": {
+        "template": "set bridge-domains [parameter1]",
+        "command": "set bridge-domains bridge-1",
+        "explanation": "Create a bridge field.",
+        "parameters": [
+            {
+                "name": "bridge-domain",
+                "type": "string",
+                "explanation": "Bridge domain names, such as vlan10."
+            }
+        ],
+        "domain-type [parameter2]": {
+            "template": "domain-type [parameter2]",
+            "command": "domain-type bridge",
+            "explanation": "Configure the type of bridge area.",
+            "parameters": [
+                {
+                    "name": "domain-type",
+                    "type": "string",
+                    "explanation": "The type of bridge area, like 'bridge'."
+                }
+            ]
+        },
+        "vlan-id [parameter2]": {
+            "template": "vlan-id [parameter2]",
+            "command": "vlan-id 100",
+            "explanation": "Configure the VLAN ID of the bridge domain.",
+            "parameters": [
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN ID, used to identify VLAN."
+                }
+            ]
+        }
+    }
+}
