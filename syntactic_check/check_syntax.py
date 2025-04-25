@@ -47,22 +47,28 @@ def syntax_verify(bf, config_file_path):
                                'text':list(warnings_df['Text']), 'comment': list(warnings_df['Comment'])}
 
 
-
+# range_num = '400'
+# range_num = '1200'
+# range_num = '2000'
+range_num = '2800'
 # 遍历源文件夹下所有.txt文件
 for vendor in ['Cisco', 'Juniper']:
     error_command_dic = {}
-    # 源文件夹和
-    source_folder = f'config_trans/dataset_multi_vendor_config/config_data_1-400/Juniper/'
+    # 源文件夹
+    source_folder = f'syntactic_check/config_data_{range_num}/{vendor}_config/'
     for filename in os.listdir(source_folder):
-        if filename.endswith('.txt'):
-            # 待检测的配置文件cfg
-            config_file_path = f'syntactic_check/config_data_400/{vendor}_config/{vendor}_{os.path.splitext(filename)[0]}/'
-            pass_flag, error_command = syntax_verify(bf, config_file_path)
-            if not pass_flag: 
-                error_command_dic[filename] = error_command
-                # print(error_command_dic, '\n', error_command)
+        config_name = filename.replace(f"{vendor}_", "")
+        # 待检测的配置文件cfg
+        config_file_path = f'syntactic_check/config_data_{range_num}/{vendor}_config/{filename}/'
+        pass_flag, error_command = syntax_verify(bf, config_file_path)
+        if not pass_flag: 
+            error_command_dic[config_name+'.txt'] = error_command 
+            # print(error_command_dic, '\n', error_command)
     print(len(list(error_command_dic.keys())))
-    save_path = f'syntactic_check/error_info/{vendor}_error_syntax.json'
+    save_dir = f'syntactic_check/config_data_{range_num}/error_info/'
+    # 确保目标文件夹存在
+    os.makedirs(save_dir, exist_ok=True)
+    save_path = save_dir + f'{vendor}_error_syntax.json'
     with open(save_path, 'w', encoding='utf-8') as json_file:
         # json.dump(data, json_file, indent=4)
         json.dump(error_command_dic, json_file, ensure_ascii=False, indent=4)
