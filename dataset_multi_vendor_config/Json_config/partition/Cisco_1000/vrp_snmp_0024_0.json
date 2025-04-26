@@ -1,0 +1,249 @@
+{
+    "hostname [parameter1]": {
+        "template": "hostname [parameter1]",
+        "command": "hostname DeviceA",
+        "explanation": "设置设备的主机名为 'DeviceA'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "access-list [parameter1] [parameter2] [parameter3] [parameter4] [parameter5]": {
+        "template": "access-list [parameter1] [parameter2] [parameter3] [parameter4] [parameter5]",
+        "command": "access-list 2001 permit ip host 1.1.1.2 any",
+        "explanation": "配置访问控制列表 2001，允许来自主机 1.1.1.2 的任何 IP 流量",
+        "parameters": [
+            {
+                "name": "access-list number",
+                "type": "integer",
+                "explanation": "访问控制列表编号"
+            },
+            {
+                "name": "action",
+                "type": "string",
+                "explanation": "动作，如 permit 或 deny"
+            },
+            {
+                "name": "protocol",
+                "type": "string",
+                "explanation": "协议类型"
+            },
+            {
+                "name": "source",
+                "type": "string",
+                "explanation": "源地址"
+            },
+            {
+                "name": "destination",
+                "type": "string",
+                "explanation": "目的地址"
+            }
+        ]
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "配置接口 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 1.1.2.1 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 1.1.2.1，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        }
+    },
+    "router ospf [parameter1]": {
+        "template": "router ospf [parameter1]",
+        "command": "router ospf 1",
+        "explanation": "启用 OSPF 进程 1",
+        "parameters": [
+            {
+                "name": "process ID",
+                "type": "integer",
+                "explanation": "OSPF 进程 ID"
+            }
+        ],
+        "network [parameter1] [parameter2] area [parameter3]": {
+            "template": "network [parameter1] [parameter2] area [parameter3]",
+            "command": "network 1.1.2.0 0.0.0.255 area 0",
+            "explanation": "将网络 1.1.2.0/24 加入到 OSPF 区域 0",
+            "parameters": [
+                {
+                    "name": "network address",
+                    "type": "IPv4",
+                    "explanation": "网络地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                },
+                {
+                    "name": "area ID",
+                    "type": "integer",
+                    "explanation": "区域 ID"
+                }
+            ]
+        }
+    },
+    "snmp-server community [parameter1] [parameter2]": {
+        "template": "snmp-server community [parameter1] [parameter2]",
+        "command": "snmp-server community %#%#qTp*MccD#Z[sHw4\"pbzVHzAfO]gWN;h#30K=)%}X1jIHNF<QdMskYG$9xj:9k\\EZN6Mi!Hrt@\\Oa8tqP%#%# RO",
+        "explanation": "配置 SNMP 社区字符串，权限为只读",
+        "parameters": [
+            {
+                "name": "community string",
+                "type": "string",
+                "explanation": "SNMP 社区字符串"
+            },
+            {
+                "name": "permission",
+                "type": "string",
+                "explanation": "权限类型，如 RO 或 RW"
+            }
+        ]
+    },
+    "snmp-server enable traps [parameter1]": {
+        "template": "snmp-server enable traps [parameter1]",
+        "command": "snmp-server enable traps snmp",
+        "explanation": "启用 SNMP 陷阱通知",
+        "parameters": [
+            {
+                "name": "trap type",
+                "type": "string",
+                "explanation": "陷阱类型"
+            }
+        ]
+    },
+    "snmp-server host [parameter1] version [parameter2] [parameter3] [parameter4]": {
+        "template": "snmp-server host [parameter1] version [parameter2] [parameter3] [parameter4]",
+        "command": "snmp-server host 1.1.1.2 version 2c %#%#&NchK)p777^{b1BQtds=_<$O.<~qR.DDbwYS3_G6%#%# inform",
+        "explanation": "配置 SNMP 服务器主机，使用 SNMPv2c 版本，发送通知类型为 inform",
+        "parameters": [
+            {
+                "name": "host address",
+                "type": "IPv4",
+                "explanation": "主机地址"
+            },
+            {
+                "name": "SNMP version",
+                "type": "string",
+                "explanation": "SNMP 版本"
+            },
+            {
+                "name": "community string",
+                "type": "string",
+                "explanation": "SNMP 社区字符串"
+            },
+            {
+                "name": "notification type",
+                "type": "string",
+                "explanation": "通知类型"
+            }
+        ]
+    },
+    "snmp-server user [parameter1] [parameter2] v3 encrypted auth [parameter3] [parameter4] privacy [parameter5] [parameter6]": {
+        "template": "snmp-server user [parameter1] [parameter2] v3 encrypted auth [parameter3] [parameter4] privacy [parameter5] [parameter6]",
+        "command": "snmp-server user admin snmp v3 encrypted auth md5 PASSWORD privacy des PASSWORD",
+        "explanation": "配置 SNMPv3 用户，使用 MD5 认证和 DES 加密",
+        "parameters": [
+            {
+                "name": "username",
+                "type": "string",
+                "explanation": "用户名"
+            },
+            {
+                "name": "group name",
+                "type": "string",
+                "explanation": "组名"
+            },
+            {
+                "name": "authentication protocol",
+                "type": "string",
+                "explanation": "认证协议"
+            },
+            {
+                "name": "authentication password",
+                "type": "string",
+                "explanation": "认证密码"
+            },
+            {
+                "name": "privacy protocol",
+                "type": "string",
+                "explanation": "加密协议"
+            },
+            {
+                "name": "privacy password",
+                "type": "string",
+                "explanation": "加密密码"
+            }
+        ]
+    },
+    "snmp-server view [parameter1] [parameter2]": {
+        "template": "snmp-server view [parameter1] [parameter2]",
+        "command": "snmp-server view allexthgmp excluded",
+        "explanation": "配置 SNMP 视图，排除指定的 MIB 视图",
+        "parameters": [
+            {
+                "name": "view name",
+                "type": "string",
+                "explanation": "视图名称"
+            },
+            {
+                "name": "included/excluded",
+                "type": "string",
+                "explanation": "包含或排除"
+            }
+        ]
+    },
+    "snmp-server ifindex persist": {
+        "template": "snmp-server ifindex persist",
+        "command": "snmp-server ifindex persist",
+        "explanation": "配置 SNMP 接口索引持久化",
+        "parameters": []
+    },
+    "snmp-server contact [parameter1]": {
+        "template": "snmp-server contact [parameter1]",
+        "command": "snmp-server contact Operator at 010-12345678",
+        "explanation": "配置 SNMP 联系信息",
+        "parameters": [
+            {
+                "name": "contact information",
+                "type": "string",
+                "explanation": "联系信息"
+            }
+        ]
+    },
+    "end": {
+        "template": "end",
+        "command": "end",
+        "explanation": "退出配置模式",
+        "parameters": []
+    }
+}

@@ -1,0 +1,170 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system name [parameter1]": {
+            "template": "set system name [parameter1]",
+            "command": "set system name PE2",
+            "explanation": "配置设备的名称。",
+            "parameters": [
+                {
+                    "name": "name",
+                    "type": "string",
+                    "explanation": "设备的名称，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols mpls label-ce [parameter1]": {
+            "template": "set protocols mpls label-ce [parameter1]",
+            "command": "set protocols mpls label-ce mpls",
+            "explanation": "配置MPLS协议的标签交换边缘（CE）功能。",
+            "parameters": [
+                {
+                    "name": "label-ce",
+                    "type": "string",
+                    "explanation": "指定MPLS标签交换边缘的类型。"
+                }
+            ]
+        },
+        "set protocols mpls enable-on-if [parameter1]": {
+            "template": "set protocols mpls enable-on-if [parameter1]",
+            "command": "set protocols mpls enable-on-if ge-2/0/0-unit-0",
+            "explanation": "在指定接口上启用MPLS协议。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-2/0/0-unit-0。"
+                }
+            ]
+        },
+        "set protocols ospf area [parameter1] interface [parameter2]": {
+            "template": "set protocols ospf area [parameter1] interface [parameter2]",
+            "command": "set protocols ospf area 0.0.0.0 interface lo0.0",
+            "explanation": "在指定OSPF区域中配置接口。",
+            "parameters": [
+                {
+                    "name": "area",
+                    "type": "string",
+                    "explanation": "OSPF区域ID。"
+                },
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如lo0.0。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family encapsulation dot1q vlan-id [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family encapsulation dot1q vlan-id [parameter3]",
+            "command": "set interfaces ge-1/0/0 unit 0 family encapsulation dot1q vlan-id 2",
+            "explanation": "配置接口的802.1Q VLAN封装。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN ID，用于标识不同的VLAN。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family l2vlan forwarding-vlan-id [parameter3] neighbor [parameter4] label [parameter5]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family l2vlan forwarding-vlan-id [parameter3] neighbor [parameter4] label [parameter5]",
+            "command": "set interfaces ge-1/0/0.1 unit 0 family l2vlan forwarding-vlan-id 2 neighbor 192.168.2.2 label 100",
+            "explanation": "配置L2VPN接口的转发VLAN ID、邻居地址和标签。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0.1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "forwarding-vlan-id",
+                    "type": "integer",
+                    "explanation": "转发VLAN ID，用于指定数据包的转发VLAN。"
+                },
+                {
+                    "name": "neighbor",
+                    "type": "string",
+                    "explanation": "邻居设备的IP地址。"
+                },
+                {
+                    "name": "label",
+                    "type": "integer",
+                    "explanation": "MPLS标签，用于标识数据包的转发路径。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces ge-2/0/0 unit 0 family inet address 10.2.2.2/24",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-2/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        }
+    },
+    "set routing-options": {
+        "template": "set routing-options",
+        "set routing-options static route [parameter1]/[parameter2] next-hop [parameter3]": {
+            "template": "set routing-options static route [parameter1]/[parameter2] next-hop [parameter3]",
+            "command": "set routing-options static route 0.0.0.0/0 next-hop 10.2.2.2",
+            "explanation": "配置静态路由。",
+            "parameters": [
+                {
+                    "name": "destination",
+                    "type": "string",
+                    "explanation": "目标网络地址。"
+                },
+                {
+                    "name": "prefix-length",
+                    "type": "integer",
+                    "explanation": "目标网络的前缀长度。"
+                },
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "下一跳地址。"
+                }
+            ]
+        }
+    }
+}

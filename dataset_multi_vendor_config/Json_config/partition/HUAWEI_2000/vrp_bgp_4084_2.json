@@ -1,0 +1,211 @@
+{
+    "sysname [parameter1]": {
+        "template": "sysname [parameter1]",
+        "command": "sysname DeviceC",
+        "explanation": "设置设备的主机名为 'DeviceC'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "bfd": {
+        "template": "bfd",
+        "command": "bfd",
+        "explanation": "进入BFD配置模式",
+        "parameters": []
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "进入接口GigabitEthernet1/0/0的配置模式",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "启用接口 (默认情况下接口是关闭的)",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.2.1.2 255.255.255.0",
+            "explanation": "配置接口的IPv4地址为 10.2.1.2，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "sub musk",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        }
+    },
+    "bgp [parameter1]": {
+        "template": "bgp [parameter1]",
+        "command": "bgp 200",
+        "explanation": "进入BGP配置模式，AS号为200",
+        "parameters": [
+            {
+                "name": "AS number",
+                "type": "integer",
+                "explanation": "AS号"
+            }
+        ],
+        "router-id [parameter1]": {
+            "template": "router-id [parameter1]",
+            "command": "router-id 3.3.3.3",
+            "explanation": "设置BGP的Router ID为3.3.3.3",
+            "parameters": [
+                {
+                    "name": "router id",
+                    "type": "IPv4",
+                    "explanation": "Router ID"
+                }
+            ]
+        },
+        "peer [parameter1] as-number [parameter2]": {
+            "template": "peer [parameter1] as-number [parameter2]",
+            "command": "peer 10.2.1.1 as-number 100",
+            "explanation": "配置BGP对等体10.2.1.1，AS号为100",
+            "parameters": [
+                {
+                    "name": "peer ip",
+                    "type": "IPv4",
+                    "explanation": "对等体IP地址"
+                },
+                {
+                    "name": "AS number",
+                    "type": "integer",
+                    "explanation": "AS号"
+                }
+            ]
+        },
+        "peer [parameter1] bfd min-tx-interval [parameter2] min-rx-interval [parameter3] detect-multiplier [parameter4]": {
+            "template": "peer [parameter1] bfd min-tx-interval [parameter2] min-rx-interval [parameter3] detect-multiplier [parameter4]",
+            "command": "peer 10.2.1.1 bfd min-tx-interval 100 min-rx-interval 100 detect-multiplier 4",
+            "explanation": "配置BGP对等体10.2.1.1的BFD参数，最小发送间隔100ms，最小接收间隔100ms，检测倍数4",
+            "parameters": [
+                {
+                    "name": "peer ip",
+                    "type": "IPv4",
+                    "explanation": "对等体IP地址"
+                },
+                {
+                    "name": "min-tx-interval",
+                    "type": "integer",
+                    "explanation": "最小发送间隔(ms)"
+                },
+                {
+                    "name": "min-rx-interval",
+                    "type": "integer",
+                    "explanation": "最小接收间隔(ms)"
+                },
+                {
+                    "name": "detect-multiplier",
+                    "type": "integer",
+                    "explanation": "检测倍数"
+                }
+            ]
+        },
+        "peer [parameter1] bfd enable": {
+            "template": "peer [parameter1] bfd enable",
+            "command": "peer 10.2.1.1 bfd enable",
+            "explanation": "启用BGP对等体10.2.1.1的BFD功能",
+            "parameters": [
+                {
+                    "name": "peer ip",
+                    "type": "IPv4",
+                    "explanation": "对等体IP地址"
+                }
+            ]
+        },
+        "ipv4-family unicast": {
+            "template": "ipv4-family unicast",
+            "command": "ipv4-family unicast",
+            "explanation": "进入IPv4单播地址族配置模式",
+            "parameters": [],
+            "undo synchronization": {
+                "template": "undo synchronization",
+                "command": "undo synchronization",
+                "explanation": "关闭BGP同步功能",
+                "parameters": []
+            },
+            "peer [parameter1] route-policy [parameter2] export": {
+                "template": "peer [parameter1] route-policy [parameter2] export",
+                "command": "peer 10.2.1.1 route-policy rtc export",
+                "explanation": "对BGP对等体10.2.1.1应用出口路由策略rtc",
+                "parameters": [
+                    {
+                        "name": "peer ip",
+                        "type": "IPv4",
+                        "explanation": "对等体IP地址"
+                    },
+                    {
+                        "name": "route-policy name",
+                        "type": "string",
+                        "explanation": "路由策略名"
+                    }
+                ]
+            },
+            "peer [parameter1] enable": {
+                "template": "peer [parameter1] enable",
+                "command": "peer 10.2.1.1 enable",
+                "explanation": "启用与BGP对等体10.2.1.1的会话",
+                "parameters": [
+                    {
+                        "name": "peer ip",
+                        "type": "IPv4",
+                        "explanation": "对等体IP地址"
+                    }
+                ]
+            }
+        }
+    },
+    "route-policy [parameter1] permit node [parameter2]": {
+        "template": "route-policy [parameter1] permit node [parameter2]",
+        "command": "route-policy rtc permit node 10",
+        "explanation": "创建名为rtc的路由策略，节点号为10，动作为允许",
+        "parameters": [
+            {
+                "name": "route-policy name",
+                "type": "string",
+                "explanation": "路由策略名"
+            },
+            {
+                "name": "node number",
+                "type": "integer",
+                "explanation": "节点号"
+            }
+        ],
+        "apply cost [parameter1]": {
+            "template": "apply cost [parameter1]",
+            "command": "apply cost 120",
+            "explanation": "设置路由的cost值为120",
+            "parameters": [
+                {
+                    "name": "cost",
+                    "type": "integer",
+                    "explanation": "cost值"
+                }
+            ]
+        }
+    },
+    "return": {
+        "template": "return",
+        "command": "return",
+        "explanation": "退出当前视图，返回到用户视图",
+        "parameters": []
+    }
+}

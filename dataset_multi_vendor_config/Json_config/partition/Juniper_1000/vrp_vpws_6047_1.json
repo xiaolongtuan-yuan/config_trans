@@ -1,0 +1,220 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name PE1",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols ldp enable": {
+            "template": "set protocols ldp enable",
+            "command": "set protocols ldp enable",
+            "explanation": "启用LDP协议。",
+            "parameters": []
+        },
+        "set protocols ldp router-id [parameter1]": {
+            "template": "set protocols ldp router-id [parameter1]",
+            "command": "set protocols ldp router-id loopback1",
+            "explanation": "配置LDP协议的Router ID。",
+            "parameters": [
+                {
+                    "name": "router-id",
+                    "type": "string",
+                    "explanation": "LDP协议的Router ID，通常为环回接口的IP地址。"
+                }
+            ]
+        },
+        "set protocols ldp peer [parameter1] remote-as [parameter2] update-source [parameter3]": {
+            "template": "set protocols ldp peer [parameter1] remote-as [parameter2] update-source [parameter3]",
+            "command": "set protocols ldp peer 4.4.4.4 remote-as 200 update-source lo0",
+            "explanation": "配置LDP对等体，指定远程AS号和更新源。",
+            "parameters": [
+                {
+                    "name": "peer-ip",
+                    "type": "string",
+                    "explanation": "LDP对等体的IP地址。"
+                },
+                {
+                    "name": "remote-as",
+                    "type": "integer",
+                    "explanation": "远程AS号。"
+                },
+                {
+                    "name": "update-source",
+                    "type": "string",
+                    "explanation": "更新源接口，通常为环回接口。"
+                }
+            ]
+        },
+        "set protocols bgp group [parameter1] type internal peer [parameter2] as-range [parameter3]": {
+            "template": "set protocols bgp group [parameter1] type internal peer [parameter2] as-range [parameter3]",
+            "command": "set protocols bgp group internal type internal peer 2.2.2.2 as-range 100",
+            "explanation": "配置内部BGP组，指定对等体和AS范围。",
+            "parameters": [
+                {
+                    "name": "group-name",
+                    "type": "string",
+                    "explanation": "BGP组的名称。"
+                },
+                {
+                    "name": "peer-ip",
+                    "type": "string",
+                    "explanation": "BGP对等体的IP地址。"
+                },
+                {
+                    "name": "as-range",
+                    "type": "integer",
+                    "explanation": "AS号范围。"
+                }
+            ]
+        },
+        "set protocols bgp group [parameter1] type external peer [parameter2] as-range [parameter3] multipath-sessions [parameter4] update-source [parameter5]": {
+            "template": "set protocols bgp group [parameter1] type external peer [parameter2] as-range [parameter3] multipath-sessions [parameter4] update-source [parameter5]",
+            "command": "set protocols bgp group external type external peer 4.4.4.4 as-range 200 multipath-sessions 255 update-source lo0",
+            "explanation": "配置外部BGP组，指定对等体、AS范围、多路径会话数和更新源。",
+            "parameters": [
+                {
+                    "name": "group-name",
+                    "type": "string",
+                    "explanation": "BGP组的名称。"
+                },
+                {
+                    "name": "peer-ip",
+                    "type": "string",
+                    "explanation": "BGP对等体的IP地址。"
+                },
+                {
+                    "name": "as-range",
+                    "type": "integer",
+                    "explanation": "AS号范围。"
+                },
+                {
+                    "name": "multipath-sessions",
+                    "type": "integer",
+                    "explanation": "多路径会话数。"
+                },
+                {
+                    "name": "update-source",
+                    "type": "string",
+                    "explanation": "更新源接口，通常为环回接口。"
+                }
+            ]
+        },
+        "set protocols rip [parameter1] network [parameter2] area [parameter3]": {
+            "template": "set protocols rip [parameter1] network [parameter2] area [parameter3]",
+            "command": "set protocols rip 1 network 1.1.1.1/32 area 0",
+            "explanation": "配置RIP协议的网络和区域。",
+            "parameters": [
+                {
+                    "name": "rip-instance",
+                    "type": "integer",
+                    "explanation": "RIP实例号。"
+                },
+                {
+                    "name": "network",
+                    "type": "string",
+                    "explanation": "RIP协议的网络地址。"
+                },
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "RIP协议的区域号。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family mpls": {
+            "template": "set interfaces [parameter1] unit [parameter2] family mpls",
+            "command": "set interfaces ge-0/0/0 unit 0 family mpls",
+            "explanation": "配置接口的MPLS协议族。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family mpls encapsulation [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family mpls encapsulation [parameter3]",
+            "command": "set interfaces ge-1/0/0 unit 0 family mpls encapsulation mpls-l2transport",
+            "explanation": "配置接口的MPLS协议族及封装类型。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "encapsulation",
+                    "type": "string",
+                    "explanation": "MPLS封装类型，例如mpls-l2transport。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces lo0 unit 0 family inet address 1.1.1.1/32",
+            "explanation": "配置环回接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如lo0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        }
+    },
+    "set routing-options": {
+        "template": "set routing-options",
+        "set routing-options router-id [parameter1]": {
+            "template": "set routing-options router-id [parameter1]",
+            "command": "set routing-options router-id lo0.0",
+            "explanation": "配置路由器的Router ID。",
+            "parameters": [
+                {
+                    "name": "router-id",
+                    "type": "string",
+                    "explanation": "路由器的Router ID，通常为环回接口的IP地址。"
+                }
+            ]
+        }
+    }
+}

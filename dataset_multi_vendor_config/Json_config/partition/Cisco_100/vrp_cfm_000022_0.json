@@ -1,0 +1,183 @@
+{
+    "hostname [parameter1]": {
+        "template": "hostname [parameter1]",
+        "command": "hostname DeviceA",
+        "explanation": "设置设备的主机名为 'DeviceA'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "vlan [parameter1]": {
+        "template": "vlan [parameter1]",
+        "command": "vlan 2,3,4",
+        "explanation": "创建 VLAN 2, 3, 4",
+        "parameters": [
+            {
+                "name": "vlan ids",
+                "type": "list",
+                "explanation": "VLAN ID 列表"
+            }
+        ]
+    },
+    "ethernet cfm": {
+        "template": "ethernet cfm",
+        "command": "ethernet cfm",
+        "explanation": "启用以太网连接故障管理 (CFM)",
+        "parameters": []
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "配置接口 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "switchport mode [parameter1]": {
+            "template": "switchport mode [parameter1]",
+            "command": "switchport mode trunk",
+            "explanation": "设置接口模式为 trunk",
+            "parameters": [
+                {
+                    "name": "mode",
+                    "type": "string",
+                    "explanation": "接口模式"
+                }
+            ]
+        },
+        "switchport trunk allowed vlan [parameter1]": {
+            "template": "switchport trunk allowed vlan [parameter1]",
+            "command": "switchport trunk allowed vlan 2-4",
+            "explanation": "允许 VLAN 2-4 通过 trunk 接口",
+            "parameters": [
+                {
+                    "name": "vlan range",
+                    "type": "string",
+                    "explanation": "允许的 VLAN 范围"
+                }
+            ]
+        }
+    },
+    "ethernet cfm md [parameter1] level [parameter2]": {
+        "template": "ethernet cfm md [parameter1] level [parameter2]",
+        "command": "ethernet cfm md md1 level 6",
+        "explanation": "配置 CFM 维护域 'md1'，级别为 6",
+        "parameters": [
+            {
+                "name": "maintenance domain",
+                "type": "string",
+                "explanation": "维护域名"
+            },
+            {
+                "name": "level",
+                "type": "integer",
+                "explanation": "维护域级别"
+            }
+        ],
+        "ethernet cfm ma [parameter1]": {
+            "template": "ethernet cfm ma [parameter1]",
+            "command": "ethernet cfm ma ma1",
+            "explanation": "配置 CFM 维护关联 'ma1'",
+            "parameters": [
+                {
+                    "name": "maintenance association",
+                    "type": "string",
+                    "explanation": "维护关联名"
+                }
+            ],
+            "ethernet cfm ma vlan [parameter1]": {
+                "template": "ethernet cfm ma vlan [parameter1]",
+                "command": "ethernet cfm ma vlan 2",
+                "explanation": "将维护关联 'ma1' 绑定到 VLAN 2",
+                "parameters": [
+                    {
+                        "name": "vlan id",
+                        "type": "integer",
+                        "explanation": "VLAN ID"
+                    }
+                ]
+            },
+            "ethernet cfm mep [parameter1] interface [parameter2] [parameter3]": {
+                "template": "ethernet cfm mep [parameter1] interface [parameter2] [parameter3]",
+                "command": "ethernet cfm mep 1 interface gigabitethernet 1/0/1 inward",
+                "explanation": "配置 CFM 维护端点 'mep 1'，接口为 'gigabitethernet 1/0/1'，方向为 inward",
+                "parameters": [
+                    {
+                        "name": "mep id",
+                        "type": "integer",
+                        "explanation": "维护端点 ID"
+                    },
+                    {
+                        "name": "interface",
+                        "type": "string",
+                        "explanation": "接口名"
+                    },
+                    {
+                        "name": "direction",
+                        "type": "string",
+                        "explanation": "方向"
+                    }
+                ]
+            },
+            "ethernet cfm mep [parameter1] ccm-send [parameter2]": {
+                "template": "ethernet cfm mep [parameter1] ccm-send [parameter2]",
+                "command": "ethernet cfm mep 1 ccm-send enable",
+                "explanation": "启用 CFM 维护端点 'mep 1' 的 CCM 发送功能",
+                "parameters": [
+                    {
+                        "name": "mep id",
+                        "type": "integer",
+                        "explanation": "维护端点 ID"
+                    },
+                    {
+                        "name": "ccm-send",
+                        "type": "string",
+                        "explanation": "CCM 发送状态"
+                    }
+                ]
+            },
+            "ethernet cfm remote-mep [parameter1]": {
+                "template": "ethernet cfm remote-mep [parameter1]",
+                "command": "ethernet cfm remote-mep 2",
+                "explanation": "配置 CFM 远程维护端点 'remote-mep 2'",
+                "parameters": [
+                    {
+                        "name": "remote mep id",
+                        "type": "integer",
+                        "explanation": "远程维护端点 ID"
+                    }
+                ]
+            },
+            "ethernet cfm remote-mep [parameter1] ccm-receive [parameter2]": {
+                "template": "ethernet cfm remote-mep [parameter1] ccm-receive [parameter2]",
+                "command": "ethernet cfm remote-mep 2 ccm-receive enable",
+                "explanation": "启用 CFM 远程维护端点 'remote-mep 2' 的 CCM 接收功能",
+                "parameters": [
+                    {
+                        "name": "remote mep id",
+                        "type": "integer",
+                        "explanation": "远程维护端点 ID"
+                    },
+                    {
+                        "name": "ccm-receive",
+                        "type": "string",
+                        "explanation": "CCM 接收状态"
+                    }
+                ]
+            }
+        }
+    },
+    "exit": {
+        "template": "exit",
+        "command": "exit",
+        "explanation": "退出当前配置模式",
+        "parameters": []
+    }
+}

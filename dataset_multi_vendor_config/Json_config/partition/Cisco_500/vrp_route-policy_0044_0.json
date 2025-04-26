@@ -1,0 +1,274 @@
+{
+    "hostname [parameter1]": {
+        "template": "hostname [parameter1]",
+        "command": "hostname PE1",
+        "explanation": "设置设备的主机名为 'PE1'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "ip vrf [parameter1]": {
+        "template": "ip vrf [parameter1]",
+        "command": "ip vrf vpna",
+        "explanation": "创建或进入名为 'vpna' 的 VRF 实例",
+        "parameters": [
+            {
+                "name": "vrf name",
+                "type": "string",
+                "explanation": "VRF 实例名称"
+            }
+        ],
+        "rd [parameter1]": {
+            "template": "rd [parameter1]",
+            "command": "rd 1:100",
+            "explanation": "为 VRF 实例 'vpna' 设置路由区分符为 1:100",
+            "parameters": [
+                {
+                    "name": "route distinguisher",
+                    "type": "string",
+                    "explanation": "路由区分符"
+                }
+            ]
+        },
+        "route-target export [parameter1]": {
+            "template": "route-target export [parameter1]",
+            "command": "route-target export 1:100",
+            "explanation": "为 VRF 实例 'vpna' 设置导出的路由目标为 1:100",
+            "parameters": [
+                {
+                    "name": "route target",
+                    "type": "string",
+                    "explanation": "路由目标"
+                }
+            ]
+        },
+        "route-target import [parameter1]": {
+            "template": "route-target import [parameter1]",
+            "command": "route-target import 1:100",
+            "explanation": "为 VRF 实例 'vpna' 设置导入的路由目标为 1:100",
+            "parameters": [
+                {
+                    "name": "route target",
+                    "type": "string",
+                    "explanation": "路由目标"
+                }
+            ]
+        }
+    },
+    "mpls label protocol [parameter1]": {
+        "template": "mpls label protocol [parameter1]",
+        "command": "mpls label protocol ldp",
+        "explanation": "设置 MPLS 标签分发协议为 LDP",
+        "parameters": [
+            {
+                "name": "protocol",
+                "type": "string",
+                "explanation": "标签分发协议"
+            }
+        ]
+    },
+    "mpls ip": {
+        "template": "mpls ip",
+        "command": "mpls ip",
+        "explanation": "在设备上启用 MPLS IP 转发",
+        "parameters": []
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "配置接口 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.1.1.1 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 10.1.1.1，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "mpls ip": {
+            "template": "mpls ip",
+            "command": "mpls ip",
+            "explanation": "在接口上启用 MPLS IP 转发",
+            "parameters": []
+        }
+    },
+    "router bgp [parameter1]": {
+        "template": "router bgp [parameter1]",
+        "command": "router bgp 100",
+        "explanation": "进入 BGP 配置模式，AS 号为 100",
+        "parameters": [
+            {
+                "name": "AS number",
+                "type": "integer",
+                "explanation": "自治系统号"
+            }
+        ],
+        "neighbor [parameter1] remote-as [parameter2]": {
+            "template": "neighbor [parameter1] remote-as [parameter2]",
+            "command": "neighbor 2.2.2.2 remote-as 100",
+            "explanation": "配置 BGP 邻居，IP 地址为 2.2.2.2，AS 号为 100",
+            "parameters": [
+                {
+                    "name": "neighbor ip",
+                    "type": "IPv4",
+                    "explanation": "邻居的 IP 地址"
+                },
+                {
+                    "name": "AS number",
+                    "type": "integer",
+                    "explanation": "邻居的自治系统号"
+                }
+            ]
+        },
+        "neighbor [parameter1] update-source [parameter2]": {
+            "template": "neighbor [parameter1] update-source [parameter2]",
+            "command": "neighbor 2.2.2.2 update-source Loopback1",
+            "explanation": "配置 BGP 邻居 2.2.2.2 的更新源为环回接口 Loopback1",
+            "parameters": [
+                {
+                    "name": "neighbor ip",
+                    "type": "IPv4",
+                    "explanation": "邻居的 IP 地址"
+                },
+                {
+                    "name": "source interface",
+                    "type": "string",
+                    "explanation": "更新源接口"
+                }
+            ]
+        },
+        "no synchronization": {
+            "template": "no synchronization",
+            "command": "no synchronization",
+            "explanation": "禁用 BGP 同步",
+            "parameters": []
+        },
+        "address-family [parameter1]": {
+            "template": "address-family [parameter1]",
+            "command": "address-family ipv4 unicast",
+            "explanation": "进入 IPv4 单播地址族配置模式",
+            "parameters": [
+                {
+                    "name": "address family",
+                    "type": "string",
+                    "explanation": "地址族"
+                }
+            ],
+            "neighbor [parameter1] activate": {
+                "template": "neighbor [parameter1] activate",
+                "command": "neighbor 2.2.2.2 activate",
+                "explanation": "激活 BGP 邻居 2.2.2.2 的 IPv4 单播地址族",
+                "parameters": [
+                    {
+                        "name": "neighbor ip",
+                        "type": "IPv4",
+                        "explanation": "邻居的 IP 地址"
+                    }
+                ]
+            },
+            "neighbor [parameter1] send-community [parameter2]": {
+                "template": "neighbor [parameter1] send-community [parameter2]",
+                "command": "neighbor 2.2.2.2 send-community extended",
+                "explanation": "配置 BGP 邻居 2.2.2.2 发送扩展团体属性",
+                "parameters": [
+                    {
+                        "name": "neighbor ip",
+                        "type": "IPv4",
+                        "explanation": "邻居的 IP 地址"
+                    },
+                    {
+                        "name": "community type",
+                        "type": "string",
+                        "explanation": "团体属性类型"
+                    }
+                ]
+            }
+        }
+    },
+    "ip route [parameter1] [parameter2] [parameter3] [parameter4]": {
+        "template": "ip route [parameter1] [parameter2] [parameter3] [parameter4]",
+        "command": "ip route 2.2.2.2 255.255.255.255 GigabitEthernet1/0/0 10.1.1.2",
+        "explanation": "配置静态路由，目的地址为 2.2.2.2/32，下一跳为 10.1.1.2，出接口为 GigabitEthernet1/0/0",
+        "parameters": [
+            {
+                "name": "destination ip",
+                "type": "IPv4",
+                "explanation": "目的 IP 地址"
+            },
+            {
+                "name": "subnet mask",
+                "type": "IPv4",
+                "explanation": "子网掩码"
+            },
+            {
+                "name": "next hop",
+                "type": "IPv4",
+                "explanation": "下一跳 IP 地址"
+            },
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "出接口"
+            }
+        ]
+    },
+    "ip route vrf [parameter1] [parameter2] [parameter3] [parameter4]": {
+        "template": "ip route vrf [parameter1] [parameter2] [parameter3] [parameter4]",
+        "command": "ip route vrf vpna 3.3.3.3 255.255.255.255 Null0",
+        "explanation": "在 VRF 实例 'vpna' 中配置静态路由，目的地址为 3.3.3.3/32，下一跳为 Null0",
+        "parameters": [
+            {
+                "name": "vrf name",
+                "type": "string",
+                "explanation": "VRF 实例名称"
+            },
+            {
+                "name": "destination ip",
+                "type": "IPv4",
+                "explanation": "目的 IP 地址"
+            },
+            {
+                "name": "subnet mask",
+                "type": "IPv4",
+                "explanation": "子网掩码"
+            },
+            {
+                "name": "next hop",
+                "type": "string",
+                "explanation": "下一跳"
+            }
+        ]
+    },
+    "end": {
+        "template": "end",
+        "command": "end",
+        "explanation": "退出配置模式",
+        "parameters": []
+    }
+}

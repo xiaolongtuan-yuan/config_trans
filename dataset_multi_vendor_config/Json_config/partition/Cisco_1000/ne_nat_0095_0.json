@@ -1,0 +1,265 @@
+{
+    "hostname [parameter1]": {
+        "template": "hostname [parameter1]",
+        "command": "hostname NATA",
+        "explanation": "设置设备的主机名为 'NATA'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "vrf definition [parameter1]": {
+        "template": "vrf definition [parameter1]",
+        "command": "vrf definition VRF1",
+        "explanation": "定义名为 'VRF1' 的 VRF",
+        "parameters": [
+            {
+                "name": "vrf name",
+                "type": "string",
+                "explanation": "VRF 名称"
+            }
+        ],
+        "rd [parameter1]": {
+            "template": "rd [parameter1]",
+            "command": "rd 1:1",
+            "explanation": "设置 VRF 的路由区分符为 '1:1'",
+            "parameters": [
+                {
+                    "name": "route distinguisher",
+                    "type": "string",
+                    "explanation": "路由区分符"
+                }
+            ]
+        },
+        "route-target export [parameter1]": {
+            "template": "route-target export [parameter1]",
+            "command": "route-target export 1:1",
+            "explanation": "设置 VRF 的导出路由目标为 '1:1'",
+            "parameters": [
+                {
+                    "name": "route-target",
+                    "type": "string",
+                    "explanation": "路由目标"
+                }
+            ]
+        },
+        "route-target import [parameter1]": {
+            "template": "route-target import [parameter1]",
+            "command": "route-target import 1:1",
+            "explanation": "设置 VRF 的导入路由目标为 '1:1'",
+            "parameters": [
+                {
+                    "name": "route-target",
+                    "type": "string",
+                    "explanation": "路由目标"
+                }
+            ]
+        },
+        "address-family [parameter1]": {
+            "template": "address-family [parameter1]",
+            "command": "address-family ipv4",
+            "explanation": "进入 IPv4 地址族配置模式",
+            "parameters": [
+                {
+                    "name": "address family",
+                    "type": "string",
+                    "explanation": "地址族"
+                }
+            ],
+            "exit-address-family": {
+                "template": "exit-address-family",
+                "command": "exit-address-family",
+                "explanation": "退出地址族配置模式",
+                "parameters": []
+            }
+        }
+    },
+    "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]": {
+        "template": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
+        "command": "ip nat pool NAT_POOL1 11.11.11.101 11.11.11.105 netmask 255.255.255.0",
+        "explanation": "定义名为 'NAT_POOL1' 的 NAT 池，地址范围为 11.11.11.101 到 11.11.11.105，子网掩码为 255.255.255.0",
+        "parameters": [
+            {
+                "name": "pool name",
+                "type": "string",
+                "explanation": "NAT 池名称"
+            },
+            {
+                "name": "start ip",
+                "type": "IPv4",
+                "explanation": "起始 IP 地址"
+            },
+            {
+                "name": "end ip",
+                "type": "IPv4",
+                "explanation": "结束 IP 地址"
+            },
+            {
+                "name": "netmask",
+                "type": "IPv4",
+                "explanation": "子网掩码"
+            }
+        ]
+    },
+    "ip access-list extended [parameter1]": {
+        "template": "ip access-list extended [parameter1]",
+        "command": "ip access-list extended ACL1",
+        "explanation": "定义名为 'ACL1' 的扩展访问控制列表",
+        "parameters": [
+            {
+                "name": "acl name",
+                "type": "string",
+                "explanation": "访问控制列表名称"
+            }
+        ],
+        "permit [parameter1] [parameter2] [parameter3] [parameter4]": {
+            "template": "permit [parameter1] [parameter2] [parameter3] [parameter4]",
+            "command": "permit ip 192.168.10.0 0.0.0.255 any",
+            "explanation": "允许来自 192.168.10.0/24 网络的任何 IP 流量",
+            "parameters": [
+                {
+                    "name": "protocol",
+                    "type": "string",
+                    "explanation": "协议"
+                },
+                {
+                    "name": "source network",
+                    "type": "IPv4",
+                    "explanation": "源网络地址"
+                },
+                {
+                    "name": "source wildcard",
+                    "type": "IPv4",
+                    "explanation": "源网络通配符"
+                },
+                {
+                    "name": "destination",
+                    "type": "string",
+                    "explanation": "目标地址"
+                }
+            ]
+        }
+    },
+    "class-map match-any [parameter1]": {
+        "template": "class-map match-any [parameter1]",
+        "command": "class-map match-any CLASS1",
+        "explanation": "定义名为 'CLASS1' 的类映射，匹配任何条件",
+        "parameters": [
+            {
+                "name": "class map name",
+                "type": "string",
+                "explanation": "类映射名称"
+            }
+        ],
+        "match access-group name [parameter1]": {
+            "template": "match access-group name [parameter1]",
+            "command": "match access-group name ACL1",
+            "explanation": "匹配访问控制列表 'ACL1'",
+            "parameters": [
+                {
+                    "name": "acl name",
+                    "type": "string",
+                    "explanation": "访问控制列表名称"
+                }
+            ]
+        }
+    },
+    "policy-map [parameter1]": {
+        "template": "policy-map [parameter1]",
+        "command": "policy-map POLICY1",
+        "explanation": "定义名为 'POLICY1' 的策略映射",
+        "parameters": [
+            {
+                "name": "policy map name",
+                "type": "string",
+                "explanation": "策略映射名称"
+            }
+        ],
+        "class [parameter1]": {
+            "template": "class [parameter1]",
+            "command": "class CLASS1",
+            "explanation": "应用类映射 'CLASS1'",
+            "parameters": [
+                {
+                    "name": "class map name",
+                    "type": "string",
+                    "explanation": "类映射名称"
+                }
+            ],
+            "nat": {
+                "template": "nat",
+                "command": "nat",
+                "explanation": "启用 NAT",
+                "parameters": []
+            }
+        }
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "配置接口 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "ip vrf forwarding [parameter1]": {
+            "template": "ip vrf forwarding [parameter1]",
+            "command": "ip vrf forwarding VRF1",
+            "explanation": "将接口关联到 VRF 'VRF1'",
+            "parameters": [
+                {
+                    "name": "vrf name",
+                    "type": "string",
+                    "explanation": "VRF 名称"
+                }
+            ]
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 192.168.10.1 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 192.168.10.1，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "service-policy input [parameter1]": {
+            "template": "service-policy input [parameter1]",
+            "command": "service-policy input POLICY1",
+            "explanation": "在接口的输入方向应用策略映射 'POLICY1'",
+            "parameters": [
+                {
+                    "name": "policy map name",
+                    "type": "string",
+                    "explanation": "策略映射名称"
+                }
+            ]
+        }
+    },
+    "end": {
+        "template": "end",
+        "command": "end",
+        "explanation": "退出配置模式",
+        "parameters": []
+    }
+}

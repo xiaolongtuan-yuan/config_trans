@@ -1,0 +1,367 @@
+{
+  "hostname PE2": {
+    "template": "hostname [parameter1]",
+    "command": "hostname PE2",
+    "explanation": "设置设备的主机名为 'PE2'",
+    "parameters": [
+      {
+        "name": "host name",
+        "type": "string",
+        "explanation": "主机名"
+      }
+    ]
+  },
+  "mpls ip": {
+    "template": "mpls ip",
+    "command": "mpls ip",
+    "explanation": "启用 MPLS IP 转发",
+    "parameters": []
+  },
+  "mpls ldp router-id Loopback0": {
+    "template": "mpls ldp router-id [parameter1]",
+    "command": "mpls ldp router-id Loopback0",
+    "explanation": "设置 MPLS LDP 的路由器 ID 为 'Loopback0' 接口的 IP 地址",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ]
+  },
+  "interface GigabitEthernet1/0/1.1": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet1/0/1.1",
+    "explanation": "配置子接口 'GigabitEthernet1/0/1.1'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "encapsulation dot1Q 1": {
+      "template": "encapsulation dot1Q [parameter1]",
+      "command": "encapsulation dot1Q 1",
+      "explanation": "配置子接口的封装类型为 dot1Q，VLAN ID 为 1",
+      "parameters": [
+        {
+          "name": "VLAN ID",
+          "type": "integer",
+          "explanation": "VLAN ID"
+        }
+      ]
+    },
+    "xconnect 1.1.1.1 1001 encapsulation mpls": {
+      "template": "xconnect [parameter1] [parameter2] encapsulation [parameter3]",
+      "command": "xconnect 1.1.1.1 1001 encapsulation mpls",
+      "explanation": "配置 MPLS 伪线连接，目标 IP 地址为 1.1.1.1，VC ID 为 1001，封装类型为 MPLS",
+      "parameters": [
+        {
+          "name": "target IP address",
+          "type": "IPv4",
+          "explanation": "目标 IP 地址"
+        },
+        {
+          "name": "VC ID",
+          "type": "integer",
+          "explanation": "虚拟电路 ID"
+        },
+        {
+          "name": "encapsulation type",
+          "type": "string",
+          "explanation": "封装类型"
+        }
+      ]
+    }
+  },
+  "interface GigabitEthernet1/0/2": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet1/0/2",
+    "explanation": "配置接口 'GigabitEthernet1/0/2'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "no shutdown": {
+      "template": "no shutdown",
+      "command": "no shutdown",
+      "explanation": "启用接口（默认情况下接口是关闭的）",
+      "parameters": []
+    },
+    "ip address 192.168.1.1 255.255.255.0": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 192.168.1.1 255.255.255.0",
+      "explanation": "配置接口的 IPv4 地址为 192.168.1.1，子网掩码为 255.255.255.0",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4 地址"
+        },
+        {
+          "name": "subnet mask",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    },
+    "mpls ip": {
+      "template": "mpls ip",
+      "command": "mpls ip",
+      "explanation": "启用 MPLS IP 转发",
+      "parameters": []
+    },
+    "mpls ldp discovery hello accept": {
+      "template": "mpls ldp discovery hello accept",
+      "command": "mpls ldp discovery hello accept",
+      "explanation": "配置 MPLS LDP 发现机制接受 hello 包",
+      "parameters": []
+    }
+  },
+  "interface Loopback0": {
+    "template": "interface [parameter1]",
+    "command": "interface Loopback0",
+    "explanation": "配置环回接口 'Loopback0'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "ip address 2.2.2.2 255.255.255.0": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 2.2.2.2 255.255.255.0",
+      "explanation": "配置环回接口的 IPv4 地址为 2.2.2.2，子网掩码为 255.255.255.0",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4 地址"
+        },
+        {
+          "name": "subnet mask",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    }
+  },
+  "router ospf 1": {
+    "template": "router ospf [parameter1]",
+    "command": "router ospf 1",
+    "explanation": "启用 OSPF 进程 1",
+    "parameters": [
+      {
+        "name": "process ID",
+        "type": "integer",
+        "explanation": "OSPF 进程 ID"
+      }
+    ],
+    "network 2.2.2.2 0.0.0.0 area 0": {
+      "template": "network [parameter1] [parameter2] area [parameter3]",
+      "command": "network 2.2.2.2 0.0.0.0 area 0",
+      "explanation": "配置 OSPF 网络，IP 地址为 2.2.2.2，通配符掩码为 0.0.0.0，区域为 0",
+      "parameters": [
+        {
+          "name": "network IP",
+          "type": "IPv4",
+          "explanation": "网络 IP 地址"
+        },
+        {
+          "name": "wildcard mask",
+          "type": "IPv4",
+          "explanation": "通配符掩码"
+        },
+        {
+          "name": "area ID",
+          "type": "integer",
+          "explanation": "区域 ID"
+        }
+      ]
+    },
+    "network 192.168.1.0 0.0.0.255 area 0": {
+      "template": "network [parameter1] [parameter2] area [parameter3]",
+      "command": "network 192.168.1.0 0.0.0.255 area 0",
+      "explanation": "配置 OSPF 网络，IP 地址为 192.168.1.0，通配符掩码为 0.0.0.255，区域为 0",
+      "parameters": [
+        {
+          "name": "network IP",
+          "type": "IPv4",
+          "explanation": "网络 IP 地址"
+        },
+        {
+          "name": "wildcard mask",
+          "type": "IPv4",
+          "explanation": "通配符掩码"
+        },
+        {
+          "name": "area ID",
+          "type": "integer",
+          "explanation": "区域 ID"
+        }
+      ]
+    }
+  },
+  "mpls l2vpn": {
+    "template": "mpls l2vpn",
+    "command": "mpls l2vpn",
+    "explanation": "启用 MPLS L2VPN 功能",
+    "parameters": []
+  },
+  "cfm": {
+    "template": "cfm",
+    "command": "cfm",
+    "explanation": "启用 CFM（Connectivity Fault Management）功能",
+    "parameters": []
+  },
+  "md md1": {
+    "template": "md [parameter1]",
+    "command": "md md1",
+    "explanation": "配置维护域 'md1'",
+    "parameters": [
+      {
+        "name": "maintenance domain name",
+        "type": "string",
+        "explanation": "维护域名"
+      }
+    ],
+    "ma ma1": {
+      "template": "ma [parameter1]",
+      "command": "ma ma1",
+      "explanation": "配置维护关联 'ma1'",
+      "parameters": [
+        {
+          "name": "maintenance association name",
+          "type": "string",
+          "explanation": "维护关联名"
+        }
+      ],
+      "mep mep-id 2 interface GigabitEthernet1/0/1.1": {
+        "template": "mep mep-id [parameter1] interface [parameter2]",
+        "command": "mep mep-id 2 interface GigabitEthernet1/0/1.1",
+        "explanation": "配置维护端点，ID 为 2，接口为 'GigabitEthernet1/0/1.1'",
+        "parameters": [
+          {
+            "name": "MEP ID",
+            "type": "integer",
+            "explanation": "维护端点 ID"
+          },
+          {
+            "name": "interface name",
+            "type": "string",
+            "explanation": "接口名"
+          }
+        ]
+      },
+      "mep ccm-send mep-id 2 enable": {
+        "template": "mep ccm-send mep-id [parameter1] enable",
+        "command": "mep ccm-send mep-id 2 enable",
+        "explanation": "启用维护端点 ID 为 2 的 CCM（Continuity Check Message）发送功能",
+        "parameters": [
+          {
+            "name": "MEP ID",
+            "type": "integer",
+            "explanation": "维护端点 ID"
+          }
+        ]
+      },
+      "remote-mep mep-id 1": {
+        "template": "remote-mep mep-id [parameter1]",
+        "command": "remote-mep mep-id 1",
+        "explanation": "配置远程维护端点，ID 为 1",
+        "parameters": [
+          {
+            "name": "remote MEP ID",
+            "type": "integer",
+            "explanation": "远程维护端点 ID"
+          }
+        ]
+      },
+      "remote-mep ccm-receive mep-id 1 enable": {
+        "template": "remote-mep ccm-receive mep-id [parameter1] enable",
+        "command": "remote-mep ccm-receive mep-id 1 enable",
+        "explanation": "启用远程维护端点 ID 为 1 的 CCM 接收功能",
+        "parameters": [
+          {
+            "name": "remote MEP ID",
+            "type": "integer",
+            "explanation": "远程维护端点 ID"
+          }
+        ]
+      },
+      "test-id 1 mep 2": {
+        "template": "test-id [parameter1] mep [parameter2]",
+        "command": "test-id 1 mep 2",
+        "explanation": "配置测试 ID 1 与维护端点 ID 2 关联",
+        "parameters": [
+          {
+            "name": "test ID",
+            "type": "integer",
+            "explanation": "测试 ID"
+          },
+          {
+            "name": "MEP ID",
+            "type": "integer",
+            "explanation": "维护端点 ID"
+          }
+        ]
+      },
+      "delay-measure one-way receive test-id 1": {
+        "template": "delay-measure one-way receive test-id [parameter1]",
+        "command": "delay-measure one-way receive test-id 1",
+        "explanation": "配置单向延迟测量接收测试，测试 ID 为 1",
+        "parameters": [
+          {
+            "name": "test ID",
+            "type": "integer",
+            "explanation": "测试 ID"
+          }
+        ]
+      },
+      "test-id 3 mep 2 remote-mep 1": {
+        "template": "test-id [parameter1] mep [parameter2] remote-mep [parameter3]",
+        "command": "test-id 3 mep 2 remote-mep 1",
+        "explanation": "配置测试 ID 3 与维护端点 ID 2 和远程维护端点 ID 1 关联",
+        "parameters": [
+          {
+            "name": "test ID",
+            "type": "integer",
+            "explanation": "测试 ID"
+          },
+          {
+            "name": "MEP ID",
+            "type": "integer",
+            "explanation": "维护端点 ID"
+          },
+          {
+            "name": "remote MEP ID",
+            "type": "integer",
+            "explanation": "远程维护端点 ID"
+          }
+        ]
+      },
+      "delay-measure one-way continual send test-id 3 interval 1000": {
+        "template": "delay-measure one-way continual send test-id [parameter1] interval [parameter2]",
+        "command": "delay-measure one-way continual send test-id 3 interval 1000",
+        "explanation": "配置单向持续发送延迟测量测试，测试 ID 为 3，间隔为 1000 毫秒",
+        "parameters": [
+          {
+            "name": "test ID",
+            "type": "integer",
+            "explanation": "测试 ID"
+          },
+          {
+            "name": "interval",
+            "type": "integer",
+            "explanation": "间隔时间（毫秒）"
+          }
+        ]
+      }
+    }
+  }
+}

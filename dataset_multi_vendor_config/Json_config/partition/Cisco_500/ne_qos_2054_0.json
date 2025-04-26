@@ -1,0 +1,181 @@
+{
+    "hostname [parameter1]": {
+        "template": "hostname [parameter1]",
+        "command": "hostname DeviceA",
+        "explanation": "设置设备的主机名为 'DeviceA'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "mls qos map cos-dscp [parameter1] [parameter2]": {
+        "template": "mls qos map cos-dscp [parameter1] [parameter2]",
+        "command": "mls qos map cos-dscp 2 46",
+        "explanation": "映射 CoS 值 2 到 DSCP 值 46",
+        "parameters": [
+            {
+                "name": "cos value",
+                "type": "integer",
+                "explanation": "Class of Service 值"
+            },
+            {
+                "name": "dscp value",
+                "type": "integer",
+                "explanation": "Differentiated Services Code Point 值"
+            }
+        ]
+    },
+    "vlan [parameter1]": {
+        "template": "vlan [parameter1]",
+        "command": "vlan 10",
+        "explanation": "创建或配置 VLAN 10",
+        "parameters": [
+            {
+                "name": "vlan id",
+                "type": "integer",
+                "explanation": "VLAN 标识符"
+            }
+        ],
+        "name [parameter1]": {
+            "template": "name [parameter1]",
+            "command": "name VLAN10",
+            "explanation": "为 VLAN 设置名称为 'VLAN10'",
+            "parameters": [
+                {
+                    "name": "vlan name",
+                    "type": "string",
+                    "explanation": "VLAN 的名称"
+                }
+            ]
+        }
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "配置接口 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名称"
+            }
+        ],
+        "switchport mode [parameter1]": {
+            "template": "switchport mode [parameter1]",
+            "command": "switchport mode trunk",
+            "explanation": "设置接口为 trunk 模式",
+            "parameters": [
+                {
+                    "name": "mode",
+                    "type": "string",
+                    "explanation": "接口模式，如 access 或 trunk"
+                }
+            ]
+        },
+        "switchport trunk allowed vlan [parameter1]": {
+            "template": "switchport trunk allowed vlan [parameter1]",
+            "command": "switchport trunk allowed vlan 10",
+            "explanation": "允许 VLAN 10 在 trunk 上通行",
+            "parameters": [
+                {
+                    "name": "vlan list",
+                    "type": "list of integers",
+                    "explanation": "允许的 VLAN 列表"
+                }
+            ]
+        },
+        "mls qos trust [parameter1]": {
+            "template": "mls qos trust [parameter1]",
+            "command": "mls qos trust dscp",
+            "explanation": "信任 DSCP 值进行 QoS 分类",
+            "parameters": [
+                {
+                    "name": "trust type",
+                    "type": "string",
+                    "explanation": "信任的 QoS 类型，如 dscp 或 cos"
+                }
+            ]
+        },
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "service-policy output [parameter1]": {
+            "template": "service-policy output [parameter1]",
+            "command": "service-policy output QOS-POLICY",
+            "explanation": "在输出方向应用策略映射 'QOS-POLICY'",
+            "parameters": [
+                {
+                    "name": "policy name",
+                    "type": "string",
+                    "explanation": "策略的名称"
+                }
+            ]
+        }
+    },
+    "class-map match-any [parameter1]": {
+        "template": "class-map match-any [parameter1]",
+        "command": "class-map match-any EF-CLASS",
+        "explanation": "创建一个类映射 'EF-CLASS'，匹配任何满足条件的流量",
+        "parameters": [
+            {
+                "name": "class name",
+                "type": "string",
+                "explanation": "类的名称"
+            }
+        ],
+        "match dscp [parameter1]": {
+            "template": "match dscp [parameter1]",
+            "command": "match dscp ef",
+            "explanation": "匹配 DSCP 值为 EF (46) 的流量",
+            "parameters": [
+                {
+                    "name": "dscp value",
+                    "type": "string or integer",
+                    "explanation": "DSCP 值，可以是十进制数或名称，如 ef"
+                }
+            ]
+        }
+    },
+    "policy-map [parameter1]": {
+        "template": "policy-map [parameter1]",
+        "command": "policy-map QOS-POLICY",
+        "explanation": "创建一个策略映射 'QOS-POLICY'",
+        "parameters": [
+            {
+                "name": "policy name",
+                "type": "string",
+                "explanation": "策略的名称"
+            }
+        ],
+        "class [parameter1]": {
+            "template": "class [parameter1]",
+            "command": "class EF-CLASS",
+            "explanation": "指定类 'EF-CLASS' 在策略映射中",
+            "parameters": [
+                {
+                    "name": "class name",
+                    "type": "string",
+                    "explanation": "类的名称"
+                }
+            ],
+            "set dscp [parameter1]": {
+                "template": "set dscp [parameter1]",
+                "command": "set dscp 34",
+                "explanation": "设置 DSCP 值为 34",
+                "parameters": [
+                    {
+                        "name": "dscp value",
+                        "type": "integer",
+                        "explanation": "DSCP 值"
+                    }
+                ]
+            }
+        }
+    }
+}

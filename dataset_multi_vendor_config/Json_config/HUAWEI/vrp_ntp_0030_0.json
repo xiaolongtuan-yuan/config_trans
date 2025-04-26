@@ -1,0 +1,85 @@
+{
+  "sysname DeviceC": {
+    "template": "sysname [parameter1]",
+    "command": "sysname DeviceC",
+    "explanation": "设置设备的主机名为 'DeviceC'",
+    "parameters": [
+      {
+        "name": "host name",
+        "type": "string",
+        "explanation": "主机名"
+      }
+    ]
+  },
+  "ntp-service refclock-master 2": {
+    "template": "ntp-service refclock-master [parameter1]",
+    "command": "ntp-service refclock-master 2",
+    "explanation": "配置NTP参考时钟为主时钟，层级为2",
+    "parameters": [
+      {
+        "name": "stratum",
+        "type": "integer",
+        "explanation": "层级"
+      }
+    ]
+  },
+  "ntp-service server source-interface gigabitethernet 1/0/0": {
+    "template": "ntp-service server source-interface [parameter1]",
+    "command": "ntp-service server source-interface gigabitethernet 1/0/0",
+    "explanation": "配置NTP服务器的源接口为GigabitEthernet1/0/0",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ]
+  },
+  "interface GigabitEthernet1/0/0": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet1/0/0",
+    "explanation": "进入接口GigabitEthernet1/0/0的配置模式",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "undo shutdown": {
+      "template": "undo shutdown",
+      "command": "undo shutdown",
+      "explanation": "启用接口 (默认情况下接口是关闭的)",
+      "parameters": []
+    },
+    "ip address 10.0.1.31 255.255.255.0": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 10.0.1.31 255.255.255.0",
+      "explanation": "配置接口的IPv4地址为 10.0.1.31，子网掩码为 255.255.255.0",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4地址"
+        },
+        {
+          "name": "sub musk",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    },
+    "ntp-service multicast-server": {
+      "template": "ntp-service multicast-server",
+      "command": "ntp-service multicast-server",
+      "explanation": "配置接口为NTP组播服务器",
+      "parameters": []
+    }
+  },
+  "return": {
+    "template": "return",
+    "command": "return",
+    "explanation": "退出当前视图，返回到用户视图",
+    "parameters": []
+  }
+}

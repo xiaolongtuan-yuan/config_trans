@@ -1,0 +1,194 @@
+{
+    "sysname [parameter1]": {
+        "template": "sysname [parameter1]",
+        "command": "sysname PE2",
+        "explanation": "设置设备的主机名为 'PE2'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "ptp enable": {
+        "template": "ptp enable",
+        "command": "ptp enable",
+        "explanation": "启用PTP（精密时间协议）功能",
+        "parameters": []
+    },
+    "clock bits-type [parameter1] [parameter2] [parameter3]": {
+        "template": "clock bits-type [parameter1] [parameter2] [parameter3]",
+        "command": "clock bits-type bits1 1pps input",
+        "explanation": "配置时钟的BITS类型，输入1PPS信号",
+        "parameters": [
+            {
+                "name": "bits-type",
+                "type": "string",
+                "explanation": "BITS类型"
+            },
+            {
+                "name": "signal-type",
+                "type": "string",
+                "explanation": "信号类型，如1PPS"
+            },
+            {
+                "name": "direction",
+                "type": "string",
+                "explanation": "信号方向，如input"
+            }
+        ]
+    },
+    "ptp clock-source [parameter1] on": {
+        "template": "ptp clock-source [parameter1] on",
+        "command": "ptp clock-source bits1 on",
+        "explanation": "设置PTP时钟源为bits1并启用",
+        "parameters": [
+            {
+                "name": "clock-source",
+                "type": "string",
+                "explanation": "时钟源名称"
+            },
+            {
+                "name": "state",
+                "type": "string",
+                "explanation": "状态，on表示启用"
+            }
+        ]
+    },
+    "ptp clock-source [parameter1] priority1 [parameter2]": {
+        "template": "ptp clock-source [parameter1] priority1 [parameter2]",
+        "command": "ptp clock-source bits1 priority1 1",
+        "explanation": "设置PTP时钟源bits1的优先级1为1",
+        "parameters": [
+            {
+                "name": "clock-source",
+                "type": "string",
+                "explanation": "时钟源名称"
+            },
+            {
+                "name": "priority-level",
+                "type": "integer",
+                "explanation": "优先级级别"
+            }
+        ]
+    },
+    "ptp device-type [parameter1]": {
+        "template": "ptp device-type [parameter1]",
+        "command": "ptp device-type bc",
+        "explanation": "设置PTP设备类型为边界时钟（BC）",
+        "parameters": [
+            {
+                "name": "device-type",
+                "type": "string",
+                "explanation": "设备类型，如bc"
+            }
+        ]
+    },
+    "ptp domain [parameter1]": {
+        "template": "ptp domain [parameter1]",
+        "command": "ptp domain 1",
+        "explanation": "设置PTP的域号为1",
+        "parameters": [
+            {
+                "name": "domain-number",
+                "type": "integer",
+                "explanation": "域号"
+            }
+        ]
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "进入GigabitEthernet1/0/0接口配置模式",
+        "parameters": [
+            {
+                "name": "interface-name",
+                "type": "string",
+                "explanation": "接口名称"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 192.168.0.1 255.255.255.0",
+            "explanation": "配置接口的IPv4地址为192.168.0.1，子网掩码为255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip-address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "ptp enable": {
+            "template": "ptp enable",
+            "command": "ptp enable",
+            "explanation": "在接口上启用PTP",
+            "parameters": []
+        },
+        "ptp delay-mechanism [parameter1]": {
+            "template": "ptp delay-mechanism [parameter1]",
+            "command": "ptp delay-mechanism pdelay",
+            "explanation": "设置PTP延迟机制为pdelay",
+            "parameters": [
+                {
+                    "name": "delay-mechanism",
+                    "type": "string",
+                    "explanation": "延迟机制类型，如pdelay"
+                }
+            ]
+        }
+    },
+    "ospf [parameter1]": {
+        "template": "ospf [parameter1]",
+        "command": "ospf 1",
+        "explanation": "启用OSPF进程，进程号为1",
+        "parameters": [
+            {
+                "name": "process-id",
+                "type": "integer",
+                "explanation": "OSPF进程ID"
+            }
+        ],
+        "area [parameter1]": {
+            "template": "area [parameter1]",
+            "command": "area 0.0.0.0",
+            "explanation": "配置OSPF区域0",
+            "parameters": [
+                {
+                    "name": "area-id",
+                    "type": "IPv4",
+                    "explanation": "区域ID"
+                }
+            ],
+            "network [parameter1] [parameter2]": {
+                "template": "network [parameter1] [parameter2]",
+                "command": "network 10.0.0.0 0.0.0.255",
+                "explanation": "将网络10.0.0.0/24加入OSPF区域",
+                "parameters": [
+                    {
+                        "name": "network-address",
+                        "type": "IPv4",
+                        "explanation": "网络地址"
+                    },
+                    {
+                        "name": "wildcard-mask",
+                        "type": "IPv4",
+                        "explanation": "反掩码"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,457 @@
+{
+    "sysname [parameter1]": {
+        "template": "sysname [parameter1]",
+        "command": "sysname CGN2",
+        "explanation": "设置设备的主机名为 'CGN2'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "license": {
+        "template": "license",
+        "command": "license",
+        "explanation": "进入license配置模式",
+        "parameters": [],
+        "active nat session-table size [parameter1] slot [parameter2] engine [parameter3]": {
+            "template": "active nat session-table size [parameter1] slot [parameter2] engine [parameter3]",
+            "command": "active nat session-table size 6 slot 1 engine 0",
+            "explanation": "激活NAT会话表，大小为6，槽位1，引擎0",
+            "parameters": [
+                {
+                    "name": "size",
+                    "type": "integer",
+                    "explanation": "会话表大小"
+                },
+                {
+                    "name": "slot",
+                    "type": "integer",
+                    "explanation": "槽位号"
+                },
+                {
+                    "name": "engine",
+                    "type": "integer",
+                    "explanation": "引擎号"
+                }
+            ]
+        }
+    },
+    "acl [parameter1]": {
+        "template": "acl [parameter1]",
+        "command": "acl 3001",
+        "explanation": "创建或进入ACL 3001的配置模式",
+        "parameters": [
+            {
+                "name": "acl number",
+                "type": "integer",
+                "explanation": "ACL编号"
+            }
+        ],
+        "rule [parameter1] permit ip source [parameter2] [parameter3]": {
+            "template": "rule [parameter1] permit ip source [parameter2] [parameter3]",
+            "command": "rule 1 permit ip source 192.168.10.0 0.0.0.255",
+            "explanation": "定义ACL规则1，允许源IP地址为192.168.10.0/24的IP流量",
+            "parameters": [
+                {
+                    "name": "rule number",
+                    "type": "integer",
+                    "explanation": "规则编号"
+                },
+                {
+                    "name": "source ip",
+                    "type": "IPv4",
+                    "explanation": "源IP地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                }
+            ]
+        }
+    },
+    "traffic classifier [parameter1]": {
+        "template": "traffic classifier [parameter1]",
+        "command": "traffic classifier classifier1",
+        "explanation": "创建或进入流量分类器classifier1的配置模式",
+        "parameters": [
+            {
+                "name": "classifier name",
+                "type": "string",
+                "explanation": "分类器名称"
+            }
+        ],
+        "if-match acl [parameter1]": {
+            "template": "if-match acl [parameter1]",
+            "command": "if-match acl 3001",
+            "explanation": "匹配ACL 3001的流量",
+            "parameters": [
+                {
+                    "name": "acl number",
+                    "type": "integer",
+                    "explanation": "ACL编号"
+                }
+            ]
+        }
+    },
+    "traffic behavior [parameter1]": {
+        "template": "traffic behavior [parameter1]",
+        "command": "traffic behavior behavior1",
+        "explanation": "创建或进入流量行为behavior1的配置模式",
+        "parameters": [
+            {
+                "name": "behavior name",
+                "type": "string",
+                "explanation": "行为名称"
+            }
+        ],
+        "nat bind instance [parameter1]": {
+            "template": "nat bind instance [parameter1]",
+            "command": "nat bind instance nat",
+            "explanation": "绑定NAT实例nat",
+            "parameters": [
+                {
+                    "name": "instance name",
+                    "type": "string",
+                    "explanation": "实例名称"
+                }
+            ]
+        }
+    },
+    "traffic policy [parameter1]": {
+        "template": "traffic policy [parameter1]",
+        "command": "traffic policy policy1",
+        "explanation": "创建或进入流量策略policy1的配置模式",
+        "parameters": [
+            {
+                "name": "policy name",
+                "type": "string",
+                "explanation": "策略名称"
+            }
+        ],
+        "classifier [parameter1] behavior [parameter2]": {
+            "template": "classifier [parameter1] behavior [parameter2]",
+            "command": "classifier classifier1 behavior behavior1",
+            "explanation": "将分类器classifier1与行为behavior1关联",
+            "parameters": [
+                {
+                    "name": "classifier name",
+                    "type": "string",
+                    "explanation": "分类器名称"
+                },
+                {
+                    "name": "behavior name",
+                    "type": "string",
+                    "explanation": "行为名称"
+                }
+            ]
+        }
+    },
+    "service-ha hot-backup enable": {
+        "template": "service-ha hot-backup enable",
+        "command": "service-ha hot-backup enable",
+        "explanation": "启用服务热备份",
+        "parameters": []
+    },
+    "service-location [parameter1]": {
+        "template": "service-location [parameter1]",
+        "command": "service-location 1",
+        "explanation": "创建或进入服务位置1的配置模式",
+        "parameters": [
+            {
+                "name": "location id",
+                "type": "integer",
+                "explanation": "位置ID"
+            }
+        ],
+        "location slot [parameter1] engine [parameter2]": {
+            "template": "location slot [parameter1] engine [parameter2]",
+            "command": "location slot 1 engine 0",
+            "explanation": "指定服务位置为槽位1，引擎0",
+            "parameters": [
+                {
+                    "name": "slot",
+                    "type": "integer",
+                    "explanation": "槽位号"
+                },
+                {
+                    "name": "engine",
+                    "type": "integer",
+                    "explanation": "引擎号"
+                }
+            ]
+        },
+        "vrrp vrid [parameter1] interface [parameter2]": {
+            "template": "vrrp vrid [parameter1] interface [parameter2]",
+            "command": "vrrp vrid 1 interface GigabitEthernet 1/0/1",
+            "explanation": "在接口GigabitEthernet 1/0/1上配置VRRP虚拟路由器ID 1",
+            "parameters": [
+                {
+                    "name": "vrid",
+                    "type": "integer",
+                    "explanation": "虚拟路由器ID"
+                },
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称"
+                }
+            ]
+        },
+        "remote-backup interface [parameter1] peer [parameter2]": {
+            "template": "remote-backup interface [parameter1] peer [parameter2]",
+            "command": "remote-backup interface GigabitEthernet 1/0/1 peer 10.1.1.1",
+            "explanation": "配置远程备份接口为GigabitEthernet 1/0/1，对端IP为10.1.1.1",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称"
+                },
+                {
+                    "name": "peer ip",
+                    "type": "IPv4",
+                    "explanation": "对端IP地址"
+                }
+            ]
+        }
+    },
+    "service-instance-group [parameter1]": {
+        "template": "service-instance-group [parameter1]",
+        "command": "service-instance-group group1",
+        "explanation": "创建或进入服务实例组group1的配置模式",
+        "parameters": [
+            {
+                "name": "group name",
+                "type": "string",
+                "explanation": "组名称"
+            }
+        ],
+        "service-location [parameter1]": {
+            "template": "service-location [parameter1]",
+            "command": "service-location 1",
+            "explanation": "将服务位置1添加到服务实例组group1",
+            "parameters": [
+                {
+                    "name": "location id",
+                    "type": "integer",
+                    "explanation": "位置ID"
+                }
+            ]
+        }
+    },
+    "nat instance [parameter1] id [parameter2]": {
+        "template": "nat instance [parameter1] id [parameter2]",
+        "command": "nat instance nat id 1",
+        "explanation": "创建或进入NAT实例nat的配置模式，实例ID为1",
+        "parameters": [
+            {
+                "name": "instance name",
+                "type": "string",
+                "explanation": "实例名称"
+            },
+            {
+                "name": "instance id",
+                "type": "integer",
+                "explanation": "实例ID"
+            }
+        ],
+        "service-instance-group [parameter1]": {
+            "template": "service-instance-group [parameter1]",
+            "command": "service-instance-group group1",
+            "explanation": "将服务实例组group1绑定到NAT实例nat",
+            "parameters": [
+                {
+                    "name": "group name",
+                    "type": "string",
+                    "explanation": "组名称"
+                }
+            ]
+        },
+        "nat address-group [parameter1] group-id [parameter2] [parameter3] [parameter4]": {
+            "template": "nat address-group [parameter1] group-id [parameter2] [parameter3] [parameter4]",
+            "command": "nat address-group address-group1 group-id 1 11.11.11.100 11.11.11.105",
+            "explanation": "配置NAT地址组address-group1，组ID为1，地址范围为11.11.11.100到11.11.11.105",
+            "parameters": [
+                {
+                    "name": "address group name",
+                    "type": "string",
+                    "explanation": "地址组名称"
+                },
+                {
+                    "name": "group id",
+                    "type": "integer",
+                    "explanation": "组ID"
+                },
+                {
+                    "name": "start ip",
+                    "type": "IPv4",
+                    "explanation": "起始IP地址"
+                },
+                {
+                    "name": "end ip",
+                    "type": "IPv4",
+                    "explanation": "结束IP地址"
+                }
+            ]
+        },
+        "nat outbound [parameter1] address-group [parameter2]": {
+            "template": "nat outbound [parameter1] address-group [parameter2]",
+            "command": "nat outbound 3001 address-group address-group1",
+            "explanation": "配置NAT出站，使用ACL 3001匹配流量，并使用地址组address-group1进行地址转换",
+            "parameters": [
+                {
+                    "name": "acl number",
+                    "type": "integer",
+                    "explanation": "ACL编号"
+                },
+                {
+                    "name": "address group name",
+                    "type": "string",
+                    "explanation": "地址组名称"
+                }
+            ]
+        }
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/1",
+        "explanation": "进入接口GigabitEthernet1/0/1的配置模式",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名称"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "启用接口",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.1.1.2 255.255.255.0",
+            "explanation": "配置接口的IPv4地址为10.1.1.2，子网掩码为255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "vrrp vrid [parameter1] virtual-ip [parameter2]": {
+            "template": "vrrp vrid [parameter1] virtual-ip [parameter2]",
+            "command": "vrrp vrid 1 virtual-ip 10.1.1.3",
+            "explanation": "配置VRRP虚拟路由器ID 1的虚拟IP地址为10.1.1.3",
+            "parameters": [
+                {
+                    "name": "vrid",
+                    "type": "integer",
+                    "explanation": "虚拟路由器ID"
+                },
+                {
+                    "name": "virtual ip",
+                    "type": "IPv4",
+                    "explanation": "虚拟IP地址"
+                }
+            ]
+        },
+        "admin-vrrp vrid [parameter1] ignore-if-down": {
+            "template": "admin-vrrp vrid [parameter1] ignore-if-down",
+            "command": "admin-vrrp vrid 1 ignore-if-down",
+            "explanation": "配置管理VRRP虚拟路由器ID 1忽略接口关闭状态",
+            "parameters": [
+                {
+                    "name": "vrid",
+                    "type": "integer",
+                    "explanation": "虚拟路由器ID"
+                }
+            ]
+        },
+        "vrrp vrid [parameter1] priority [parameter2]": {
+            "template": "vrrp vrid [parameter1] priority [parameter2]",
+            "command": "vrrp vrid 1 priority 150",
+            "explanation": "配置VRRP虚拟路由器ID 1的优先级为150",
+            "parameters": [
+                {
+                    "name": "vrid",
+                    "type": "integer",
+                    "explanation": "虚拟路由器ID"
+                },
+                {
+                    "name": "priority",
+                    "type": "integer",
+                    "explanation": "优先级"
+                }
+            ]
+        },
+        "vrrp vrid [parameter1] track service-location [parameter2] reduced [parameter3]": {
+            "template": "vrrp vrid [parameter1] track service-location [parameter2] reduced [parameter3]",
+            "command": "vrrp vrid 1 track service-location 1 reduced 60",
+            "explanation": "配置VRRP虚拟路由器ID 1跟踪服务位置1，优先级减少60",
+            "parameters": [
+                {
+                    "name": "vrid",
+                    "type": "integer",
+                    "explanation": "虚拟路由器ID"
+                },
+                {
+                    "name": "service location",
+                    "type": "integer",
+                    "explanation": "服务位置ID"
+                },
+                {
+                    "name": "reduced priority",
+                    "type": "integer",
+                    "explanation": "减少的优先级"
+                }
+            ]
+        },
+        "vrrp recover-delay [parameter1]": {
+            "template": "vrrp recover-delay [parameter1]",
+            "command": "vrrp recover-delay 15",
+            "explanation": "配置VRRP恢复延迟为15秒",
+            "parameters": [
+                {
+                    "name": "delay",
+                    "type": "integer",
+                    "explanation": "延迟时间"
+                }
+            ]
+        },
+        "traffic-policy [parameter1] [parameter2]": {
+            "template": "traffic-policy [parameter1] [parameter2]",
+            "command": "traffic-policy policy1 inbound",
+            "explanation": "在入方向应用流量策略policy1",
+            "parameters": [
+                {
+                    "name": "policy name",
+                    "type": "string",
+                    "explanation": "策略名称"
+                },
+                {
+                    "name": "direction",
+                    "type": "string",
+                    "explanation": "方向"
+                }
+            ]
+        }
+    },
+    "return": {
+        "template": "return",
+        "command": "return",
+        "explanation": "退出当前配置模式，返回到用户视图",
+        "parameters": []
+    }
+}

@@ -1,0 +1,211 @@
+{
+  "hostname PE1": {
+    "template": "hostname [parameter1]",
+    "command": "hostname PE1",
+    "explanation": "设置设备的主机名为 'PE1'",
+    "parameters": [
+      {
+        "name": "host name",
+        "type": "string",
+        "explanation": "主机名"
+      }
+    ]
+  },
+  "vlan 10": {
+    "template": "vlan [parameter1]",
+    "command": "vlan 10",
+    "explanation": "创建或进入 VLAN 10 的配置模式",
+    "parameters": [
+      {
+        "name": "vlan id",
+        "type": "integer",
+        "explanation": "VLAN ID"
+      }
+    ]
+  },
+  "mpls label protocol ldp": {
+    "template": "mpls label protocol [parameter1]",
+    "command": "mpls label protocol ldp",
+    "explanation": "设置 MPLS 标签分发协议为 LDP",
+    "parameters": [
+      {
+        "name": "protocol",
+        "type": "string",
+        "explanation": "标签分发协议"
+      }
+    ]
+  },
+  "mpls ip": {
+    "template": "mpls ip",
+    "command": "mpls ip",
+    "explanation": "在设备上全局启用 MPLS IP",
+    "parameters": []
+  },
+  "interface GigabitEthernet1/0/0": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet1/0/0",
+    "explanation": "配置接口 'GigabitEthernet1/0/0'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "no shutdown": {
+      "template": "no shutdown",
+      "command": "no shutdown",
+      "explanation": "启用接口（默认情况下接口是关闭的）",
+      "parameters": []
+    }
+  },
+  "interface GigabitEthernet1/0/0.1": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet1/0/0.1",
+    "explanation": "配置子接口 'GigabitEthernet1/0/0.1'",
+    "parameters": [
+      {
+        "name": "subinterface name",
+        "type": "string",
+        "explanation": "子接口名"
+      }
+    ],
+    "encapsulation dot1q 10": {
+      "template": "encapsulation dot1q [parameter1]",
+      "command": "encapsulation dot1q 10",
+      "explanation": "配置子接口的封装类型为 dot1q，并指定 VLAN ID 为 10",
+      "parameters": [
+        {
+          "name": "vlan id",
+          "type": "integer",
+          "explanation": "VLAN ID"
+        }
+      ]
+    },
+    "xconnect 2.2.2.9 100 encapsulation mpls": {
+      "template": "xconnect [parameter1] [parameter2] encapsulation [parameter3]",
+      "command": "xconnect 2.2.2.9 100 encapsulation mpls",
+      "explanation": "配置 MPLS 伪线连接，目标地址为 2.2.2.9，VC ID 为 100，封装类型为 MPLS",
+      "parameters": [
+        {
+          "name": "peer address",
+          "type": "IPv4",
+          "explanation": "对等体地址"
+        },
+        {
+          "name": "vc id",
+          "type": "integer",
+          "explanation": "虚电路 ID"
+        },
+        {
+          "name": "encapsulation type",
+          "type": "string",
+          "explanation": "封装类型"
+        }
+      ]
+    }
+  },
+  "interface GigabitEthernet2/0/0": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet2/0/0",
+    "explanation": "配置接口 'GigabitEthernet2/0/0'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "no shutdown": {
+      "template": "no shutdown",
+      "command": "no shutdown",
+      "explanation": "启用接口（默认情况下接口是关闭的）",
+      "parameters": []
+    },
+    "ip address 10.1.1.1 255.255.255.0": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 10.1.1.1 255.255.255.0",
+      "explanation": "配置接口的 IPv4 地址为 10.1.1.1，子网掩码为 255.255.255.0",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4 地址"
+        },
+        {
+          "name": "subnet mask",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    },
+    "mpls ip": {
+      "template": "mpls ip",
+      "command": "mpls ip",
+      "explanation": "在接口上启用 MPLS IP",
+      "parameters": []
+    }
+  },
+  "router ospf 1": {
+    "template": "router ospf [parameter1]",
+    "command": "router ospf 1",
+    "explanation": "进入 OSPF 进程 1 的配置模式",
+    "parameters": [
+      {
+        "name": "process id",
+        "type": "integer",
+        "explanation": "OSPF 进程 ID"
+      }
+    ],
+    "network 1.1.1.9 0.0.0.0 area 0": {
+      "template": "network [parameter1] [parameter2] area [parameter3]",
+      "command": "network 1.1.1.9 0.0.0.0 area 0",
+      "explanation": "在 OSPF 中宣告网络 1.1.1.9/32 属于区域 0",
+      "parameters": [
+        {
+          "name": "network address",
+          "type": "IPv4",
+          "explanation": "网络地址"
+        },
+        {
+          "name": "wildcard mask",
+          "type": "IPv4",
+          "explanation": "通配符掩码"
+        },
+        {
+          "name": "area id",
+          "type": "integer",
+          "explanation": "区域 ID"
+        }
+      ]
+    },
+    "network 10.1.1.0 0.0.0.255 area 0": {
+      "template": "network [parameter1] [parameter2] area [parameter3]",
+      "command": "network 10.1.1.0 0.0.0.255 area 0",
+      "explanation": "在 OSPF 中宣告网络 10.1.1.0/24 属于区域 0",
+      "parameters": [
+        {
+          "name": "network address",
+          "type": "IPv4",
+          "explanation": "网络地址"
+        },
+        {
+          "name": "wildcard mask",
+          "type": "IPv4",
+          "explanation": "通配符掩码"
+        },
+        {
+          "name": "area id",
+          "type": "integer",
+          "explanation": "区域 ID"
+        }
+      ]
+    }
+  },
+  "end": {
+    "template": "end",
+    "command": "end",
+    "explanation": "退出配置模式",
+    "parameters": []
+  }
+}
