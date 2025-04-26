@@ -1,0 +1,28 @@
+#
+ sysname DeviceE
+#
+ router id 5.5.5.5
+#
+ multicast routing-enable
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.0.3.2 255.255.255.0
+ pim sm
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 192.168.3.1 255.255.255.0
+ pim sm
+#
+interface LoopBack0
+ ip address 5.5.5.5 255.255.255.255
+ pim sm
+#
+ospf 1
+ area 0.0.0.0
+  network 10.0.3.0 0.0.0.255
+  network 192.168.3.0 0.0.0.255
+  network 5.5.5.5 0.0.0.0
+#
+return

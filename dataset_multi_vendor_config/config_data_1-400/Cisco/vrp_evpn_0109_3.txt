@@ -1,0 +1,51 @@
+hostname PE2
+
+ip vrf vpn1
+ rd 200:1
+ route-target export 1:1
+ route-target import 1:1
+
+mpls ldp router-id 4.4.4.9
+
+mpls ip
+
+mpls ldp
+
+router isis
+ net 00.1111.1111.2222.00
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.3.1.1 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip vrf forwarding vpn1
+ ip address 192.168.2.1 255.255.255.0
+
+interface Loopback1
+ ip address 4.4.4.9 255.255.255.255
+ mpls ip
+
+router bgp 200
+ neighbor 3.3.3.9 remote-as 200
+ neighbor 3.3.3.9 update-source Loopback1
+
+ address-family ipv4 unicast
+  no synchronization
+  neighbor 3.3.3.9 activate
+
+ address-family vpnv4
+  neighbor 192.168.2.2 remote-as 65420
+  neighbor 192.168.2.2 activate
+  neighbor 192.168.2.2 send-community extended
+
+ address-family l2vpn evpn
+  neighbor 3.3.3.9 activate
+  neighbor 3.3.3.9 send-community extended
+
+evpn source-interface Loopback1
+
+end

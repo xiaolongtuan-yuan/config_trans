@@ -1,0 +1,60 @@
+#
+sysname MASG
+#
+ip vpn-instance vpn1
+ ipv4-family
+  route-distinguisher 100:1
+  apply-label per-instance
+  vpn-target 1:1 export-extcommunity
+  vpn-target 1:1 import-extcommunity
+#
+mpls lsr-id 5.5.5.5
+#
+mpls
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip binding vpn-instance vpn1
+ ip address 10.6.1.1 255.255.255.0
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.4.1.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack1
+ ip address 5.5.5.5 255.255.255.255
+#
+bgp 200
+ peer 2.2.2.2 as-number 100
+ peer 2.2.2.2 ebgp-max-hop 10
+ peer 2.2.2.2 connect-interface LoopBack1
+ peer 4.4.4.4 as-number 200
+ peer 4.4.4.4 connect-interface LoopBack1
+ #
+ ipv4-family unicast
+  network 5.5.5.5 255.255.255.255
+  peer 2.2.2.2 enable
+  peer 4.4.4.4 enable
+  peer 4.4.4.4 route-policy policy1 export
+  peer 4.4.4.4 label-route-capability
+ #
+ ipv4-family vpnv4
+  policy vpn-target
+  peer 2.2.2.2 enable
+ #
+ ipv4-family vpn-instance vpn1
+  import-route direct
+#
+ospf 2
+ area 0.0.0.0
+  network 5.5.5.5 0.0.0.0
+  network 10.4.1.0 0.0.0.255
+#
+route-policy policy1 permit node 1
+ apply mpls-label
+#
+return

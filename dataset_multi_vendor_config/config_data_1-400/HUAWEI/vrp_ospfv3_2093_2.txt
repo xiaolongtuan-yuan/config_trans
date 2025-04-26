@@ -1,0 +1,31 @@
+#
+sysname DeviceC
+#
+vlan batch 14 18
+#               
+ospfv3 1        
+ router-id 3.3.3.3
+ import-route static
+ area 0.0.0.0   
+#               
+interface Vlanif14
+ ipv6 enable    
+ ipv6 address 2001:DB8:3::2/64
+ ospfv3 1 area 0.0.0.0
+#               
+interface Vlanif18
+ ipv6 enable    
+ ipv6 address 2001:DB8:1::1/64
+ ospfv3 1 area 0.0.0.0
+#
+interface GigabitEthernet1/0/0
+ undo shutdown  
+ port default vlan 18
+#
+interface GigabitEthernet2/0/0
+ undo shutdown  
+ port default vlan 14
+#               
+ipv6 route-static 2001:DB8:7::1 128 NULL0 
+#
+return

@@ -1,0 +1,18 @@
+set system host-name SPE1
+set protocols ldp router-id loopback0 force
+set protocols mpls ip
+set forwarding-vpn vpns vfi v100 manual
+set forwarding-vpn vpns vfi v100 vpn-id 100
+set forwarding-options mac-withdraw enable
+set interfaces ge-1/0/0 unit 0 family l2vpn pw id 300
+set interfaces ge-1/0/0 unit 0 family inet address 10.10.1.1/24
+set protocols ldp auto configure interface ge-1/0/0
+set interfaces ge-1/0/0 unit 0 family inet dhcp
+set forwarding-vpn vpns vfi v100 mac-withdraw disable
+set interfaces ge-1/0/0 unit 0 family l2vpn pw id 200
+set interfaces ge-1/0/0 unit 0 family inet address 10.10.3.1/24
+set protocols ldp auto configure interface ge-1/0/0
+set lo0 unit 0 family inet address 1.1.1.9/32
+set routing-options routers ospf 1 area 0 network 1.1.1.9.0.0.0.0
+set routing-options routers ospf 1 area 0 network 10.10.1.0.0.0.255.255
+set routing-options routers ospf 1 area 0 network 10.10.3.0.0.0.255.255

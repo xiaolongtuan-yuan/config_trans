@@ -1,0 +1,112 @@
+set system host-name PE2
+set protocols bfd all-interfaces
+set protocols mpls label-protocol ldp
+set protocols mpls ip
+set protocols mpls ldp router-id lo0.0
+set protocols mpls ldp discovery transport-address lo0.0
+set protocols mpls ldp neighbor 1.1.1.1 targeted
+
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.5.1/24
+set interfaces ge-0/0/0 unit 0 family mpls
+set protocols mpls ldp interface ge-0/0/0
+
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.4.1/24
+set interfaces ge-0/0/1 unit 0 family mpls
+set protocols mpls ldp interface ge-0/0/1
+
+set interfaces lo0 unit 0 family inet address 4.4.4.4/32
+set protocols ospf area 0 interface lo0.0
+set protocols ospf frr alternate-route loop-free
+
+set protocols ospf router-id 4.4.4.4
+set protocols ospf area 0 network 4.4.4.4/32
+set protocols ospf area 0 network 10.1.4.0/24
+set protocols ospf area 0 network 10.1.5.0/24
+
+set protocols mpls traffic-eng router-id lo0.0
+set protocols mpls traffic-eng area 0
+set protocols mpls traffic-eng node-id 4.4.4.4
+set protocols mpls traffic-eng bfd
+set protocols mpls traffic-eng bfd min-tx-interval 600
+set protocols mpls traffic-eng bfd min-rx-interval 100
+set protocols mpls traffic-eng bfd multiplier 4
+
+set protocols mpls traffic-eng lsp LSPNAME bfd
+set protocols mpls traffic-eng lsp LSPNAME bfd min-tx-interval 600
+set protocols mpls traffic-eng lsp LSPNAME bfd min-rx-interval 100
+set protocols mpls traffic-eng lsp LSPNAME bfd multiplier 4
+set protocols mpls traffic-eng lsp LSPNAME required
+set protocols mpls traffic-eng lsp LSPNAME required min-tx-interval 600
+set protocols mpls traffic-eng lsp LSPNAME required min-rx-interval 100
+set protocols mpls traffic-eng lsp LSPNAME required multiplier 4
+
+set protocols mpls traffic-eng auto-bw
+set protocols mpls traffic-eng auto-bw bc0
+set protocols mpls traffic-eng autoroute announce
+set protocols mpls traffic-eng autoroute metric delay
+set protocols mpls traffic-eng autoroute metric hoplimit
+set protocols mpls traffic-eng autoroute metric te
+set protocols mpls traffic-eng autoroute metric te delay
+set protocols mpls traffic-eng autoroute metric te hoplimit
+set protocols mpls traffic-eng autoroute metric te reoptimize
+set protocols mpls traffic-eng autoroute metric te reoptimize delay
+set protocols mpls traffic-eng autoroute metric te reoptimize hoplimit
+
+set protocols mpls traffic-eng autoroute redistribute connected
+set protocols mpls traffic-eng autoroute redistribute static
+set protocols mpls traffic-eng autoroute redistribute bgp
+set protocols mpls traffic-eng autoroute redistribute ospf
+set protocols mpls traffic-eng autoroute redistribute isis
+set protocols mpls traffic-eng autoroute redistribute eigrp
+set protocols mpls traffic-eng autoroute redistribute rip
+
+set protocols mpls traffic-eng autoroute destination
+set protocols mpls traffic-eng autoroute destination metric delay
+set protocols mpls traffic-eng autoroute destination metric hoplimit
+set protocols mpls traffic-eng autoroute destination metric te
+set protocols mpls traffic-eng autoroute destination metric te delay
+set protocols mpls traffic-eng autoroute destination metric te hoplimit
+set protocols mpls traffic-eng autoroute destination metric te reoptimize
+set protocols mpls traffic-eng autoroute destination metric te reoptimize delay
+set protocols mpls traffic-eng autoroute destination metric te reoptimize hoplimit
+
+set protocols mpls traffic-eng area 0 authentication-key key-string
+set protocols mpls traffic-eng area 0 authentication-key key-string encrypt-type
+set protocols mpls traffic-eng area 0 bfd
+set protocols mpls traffic-eng area 0 bfd min-tx-interval 600
+set protocols mpls traffic-eng area 0 bfd min-rx-interval 100
+set protocols mpls traffic-eng area 0 bfd multiplier 4
+set protocols mpls traffic-eng area 0 bfd lsp LSPNAME
+set protocols mpls traffic-eng area 0 bfd lsp LSPNAME min-tx-interval 600
+set protocols mpls traffic-eng area 0 bfd lsp LSPNAME min-rx-interval 100
+set protocols mpls traffic-eng area 0 bfd lsp LSPNAME multiplier 4
+set protocols mpls traffic-eng area 0 bfd lsp LSPNAME required
+set protocols mpls traffic-eng area 0 bfd lsp LSPNAME required min-tx-interval 600
+set protocols mpls traffic-eng area 0 bfd lsp LSPNAME required min-rx-interval 100
+set protocols mpls traffic-eng area 0 bfd lsp LSPNAME required multiplier 4
+
+set protocols mpls traffic-eng area 0 interface ge-0/0/0 bandwidth
+set protocols mpls traffic-eng area 0 interface ge-0/0/0 bandwidth-percent 50
+set protocols mpls traffic-eng area 0 interface ge-0/0/0 bandwidth remaining
+set protocols mpls traffic-eng area 0 interface ge-0/0/0 bandwidth remaining ratio
+set protocols mpls traffic-eng area 0 interface ge-0/0/0 bandwidth remaining percent
+set protocols mpls traffic-eng area 0 interface ge-0/0/0 bandwidth remaining percent ratio
+
+set protocols mpls traffic-eng area 0 interface ge-0/0/1 bandwidth
+set protocols mpls traffic-eng area 0 interface ge-0/0/1 bandwidth-percent 50
+set protocols mpls traffic-eng area 0 interface ge-0/0/1 bandwidth remaining
+set protocols mpls traffic-eng area 0 interface ge-0/0/1 bandwidth remaining ratio
+set protocols mpls traffic-eng area 0 interface ge-0/0/1 bandwidth remaining percent
+set protocols mpls traffic-eng area 0 interface ge-0/0/1 bandwidth remaining percent ratio
+
+set system services mpls lsr-id 4.4.4.4
+set protocols mpls ldp ipv4-family
+set protocols mpls ldp auto-frr lsp-trigger all
+
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.5.1/24
+set interfaces ge-0/0/0 unit 0 family mpls
+set protocols mpls ldp interface ge-0/0/0
+
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.4.1/24
+set interfaces ge-0/0/1 unit 0 family mpls
+set protocols ospf area 0 network 10.1.4.0/24

@@ -1,0 +1,15 @@
+set system host-name CE1
+#
+set vlans vlan-2 vlan-id 2
+#
+set protocols cfm interface ge-0/0/1
+set protocols cfm interface ge-0/0/1 layer2-cfm mpls
+set protocols cfm interface ge-0/0/1 ccm-send enable
+set protocols cfm interface ge-0/0/1 remote-mep 1 ccm-receive enable
+#
+set protocols cfm maintenance-domain md1
+set protocols cfm maintenance-domain md1 maintenance-association ma1
+set protocols cfm maintenance-domain md1 maintenance-association ma1 mapping vlan 2
+set protocols cfm maintenance-domain md1 maintenance-association ma1 mep 2 interface ge-0/0/1 direction outward
+set protocols cfm maintenance-domain md1 maintenance-association ma1 mep 2 test-id 1 loss-measurement dual-ended continual
+#

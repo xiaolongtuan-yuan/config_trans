@@ -1,0 +1,42 @@
+#
+ sysname NPE1
+#
+vlan batch 10
+#
+ igmp-snooping enable
+#
+ mpls lsr-id 1.1.1.1
+ mpls
+#
+ mpls l2vpn
+#
+vsi btv static
+ pwsignal ldp
+  vsi-id 1
+  peer 2.2.2.2
+ igmp-snooping enable
+ igmp-snooping proxy
+ igmp-snooping proxy router-protocol-pass
+#
+mpls ldp
+#
+isis 1
+ is-level level-1
+ network-entity 49.0010.0100.1001.00
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 11.11.11.1 255.255.255.252
+ isis enable 1
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/2.1
+ vlan-type dot1q 10
+ l2 binding vsi btv
+#
+interface LoopBack0
+ ip address 1.1.1.1 255.255.255.255
+ isis enable 1
+#
+return

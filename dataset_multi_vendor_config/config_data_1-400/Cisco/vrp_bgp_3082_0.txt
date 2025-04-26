@@ -1,0 +1,45 @@
+hostname DeviceA
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 10.1.2.1 255.255.255.0
+
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 2.2.2.10 255.255.255.0
+
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+
+router bgp 100
+ bgp router-id 1.1.1.1
+ neighbor 2.2.2.2 remote-as 100
+ neighbor 2.2.2.2 update-source Loopback0
+ neighbor 3.3.3.3 remote-as 100
+ neighbor 3.3.3.3 update-source Loopback0
+ address-family ipv4
+  no synchronization
+  neighbor 2.2.2.2 activate
+  neighbor 3.3.3.3 activate
+  neighbor 2.2.2.2 next-hop-self
+  neighbor 3.3.3.3 next-hop-self
+ exit-address-family
+
+router ospf 1
+ network 1.1.1.1 0.0.0.0 area 0
+ network 10.1.0.0 0.0.255.255 area 0
+
+ip prefix-list np-by-rp-ip seq 10 permit 0.0.0.0/0
+
+route-map np-by-rp permit 10
+ match ip address prefix-list np-by-rp-ip
+
+ip route-policy np-by-rp
+ description Route Policy for Next-Hop Recursive Lookup
+ route-map np-by-rp permit 10
+
+end

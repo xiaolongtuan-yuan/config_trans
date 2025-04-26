@@ -1,0 +1,54 @@
+#
+sysname UPE
+#
+ip vpn-instance vpn1
+ ipv6-family
+  route-distinguisher 100:1
+  apply-label per-instance
+  vpn-target 2:2 export-extcommunity evpn
+  vpn-target 2:2 import-extcommunity evpn
+  evpn mpls routing-enable
+#
+mpls lsr-id 1.1.1.1
+#
+mpls
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip binding vpn-instance vpn1
+ ipv6 enable
+ ipv6 address 2001:DB8:20::1/64
+#
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+#
+bgp 100
+ peer 2.2.2.2 as-number 100
+ peer 2.2.2.2 connect-interface LoopBack1
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 2.2.2.2 enable
+ #
+ ipv6-family vpn-instance vpn1
+  import-route direct
+  advertise l2vpn evpn
+ #
+ l2vpn-family evpn
+  undo policy vpn-target
+  peer 2.2.2.2 enable
+#
+ospf 1          
+ area 0.0.0.0
+  network 1.1.1.1 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+#
+return

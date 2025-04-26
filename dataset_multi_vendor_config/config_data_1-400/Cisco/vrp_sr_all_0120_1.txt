@@ -1,0 +1,36 @@
+hostname DeviceB
+
+mpls label protocol ldp
+mpls ip
+
+router isis
+ net 10.0000.0000.0002.00
+ is-type level-1
+ metric-style wide
+ loop-free-alternate
+ ti-lfa
+ segment-routing mpls
+ segment-routing global-block 16000 23999
+ segment-routing mpls traffic-eng
+ segment-routing mpls avoid-ti-lfa
+ segment-routing mpls rib-update-delay 10000
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ isis network point-to-point
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.2.1.1 255.255.255.0
+ isis network point-to-point
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 10.5.1.1 255.255.255.0
+ isis network point-to-point
+
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255
+ isis network point-to-point
+ isis prefix-sid 20

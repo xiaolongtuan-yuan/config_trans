@@ -1,0 +1,48 @@
+#
+sysname DeviceC
+#
+multicast routing-enable
+#
+interface GigabitEthernet1/0/0
+ undo portswitch
+ undo shutdown
+ ip address 10.1.5.1 255.255.255.0
+ pim dm
+ igmp enable
+ igmp static-group 225.1.1.1
+#
+interface GigabitEthernet1/0/1
+ undo portswitch
+ undo shutdown
+ ip address 10.1.2.2 255.255.255.0
+ pim dm
+#
+ospf 1
+ area 0.0.0.0
+  network 10.1.2.0 0.0.0.255
+  network 10.1.5.0 0.0.0.255
+#
+emdi
+ emdi channel-group IPTV-channel
+  emdi channel 1 source 10.1.4.100 group 225.1.1.1 pt 33 clock-rate 90kHz
+ emdi lpu-group _default_
+  emdi bind slot all
+ emdi lpu-group IPTV-lpu
+  emdi bind slot all
+ emdi bind channel-group IPTV-channel lpu-group IPTV-lpu
+ emdi bind channel-group IPTV-channel lpu-group IPTV-lpu outbound
+#
+telemetry
+ #
+ sensor-group emdimonitor
+  sensor-path huawei-emdi:emdi/emdi-telem-reps/emdi-telem-rep
+  sensor-path huawei-emdi:emdi/emdi-telem-rtps/emdi-telem-rtp
+#
+ destination-group Monitor
+  ipv4-address 10.1.7.2 port 10001 protocol grpc no-tls
+ #
+ subscription EMDI
+  sensor-group emdimonitor
+  destination-group Monitor
+#
+return

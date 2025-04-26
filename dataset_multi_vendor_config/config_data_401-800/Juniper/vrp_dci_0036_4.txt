@@ -1,0 +1,17 @@
+set system host-name CE2
+
+set interfaces ge-1/0/0 unit 0 family inet6 address 2001:DB8:2::2/64
+set interfaces ge-1/0/0 unit 0 family inet6 enable
+
+set interfaces lo0 unit 1 family inet6 address 2001:DB8:5::5/128
+set interfaces lo0 unit 1 family inet6 enable
+
+set routing-options autonomous-system 65420
+set routing-options router-id 5.5.5.5
+
+set protocols bgp group EBGP_AS100 type external
+set protocols bgp group EBGP_AS100 peer-as 100
+set protocols bgp group EBGP_AS100 neighbor 2001:DB8:2::1
+
+set protocols bgp group EBGP_AS100 family inet6 unicast
+set protocols bgp group EBGP_AS100 family inet6 unicast redistribute connected

@@ -1,0 +1,30 @@
+set system host-name PE3
+
+set routing-instances vpn1 instance-type vrf
+set routing-instances vpn1 route-distinguisher 100:1
+set routing-instances vpn1 vrf-target target:1:1
+set routing-instances vpn1 vrf-target target:1:1 import
+set routing-instances vpn1 vrf-target target:1:1 export
+set routing-instances vpn1 protocols bgp family inet unicast
+set routing-instances vpn1 interface ge-1/0/0.0
+
+set interfaces ge-1/0/0 unit 0 family inet address 172.16.1.2/24
+set interfaces ge-1/0/0 unit 0 routing-instance vpn1
+
+set interfaces ge-2/0/0 unit 0 family inet address 40.1.1.1/24
+set protocols mpls interface ge-2/0/0
+set protocols mpls ldp interface ge-2/0/0
+set protocols mpls ldp discovery hello-interval 5
+
+set interfaces lo0 unit 1 family inet address 1.1.1.9/32
+set protocols ospf area 0 interface lo0.1
+set protocols ospf area 0 interface ge-2/0/0
+
+set protocols bgp group external type external
+set protocols bgp group external neighbor 6.6.6.9 peer-as 300
+set protocols bgp group external neighbor 6.6.6.9 local-address 1.1.1.9
+set protocols bgp group external neighbor 6.6.6.9 ebgp-multihop 10
+set protocols bgp group external family inet unicast
+set protocols bgp group external family inet-vpn
+set protocols bgp group external neighbor 6.6.6.9 send-community both
+set protocols bgp routing-instances vpn1 neighbor 172.16.1.1 peer-as 65410

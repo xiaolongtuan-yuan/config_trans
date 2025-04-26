@@ -1,0 +1,43 @@
+hostname PE2
+!
+ip vrf vpna
+ rd 200:2
+ export map vpn-target
+ import map vpn-target
+!
+mpls label protocol ldp
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.162.1.2 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip vrf forwarding vpna
+ ip address 10.2.1.2 255.255.255.0
+!
+interface Loopback1
+ ip address 2.2.2.2 255.255.255.255
+!
+router bgp 200
+ neighbor 6.6.6.6 remote-as 100
+ neighbor 6.6.6.6 update-source Loopback1
+ !
+ address-family ipv4 unicast
+  neighbor 6.6.6.6 activate
+  no synchronization
+ !
+ address-family vpnv4
+  neighbor 6.6.6.6 activate
+  neighbor 6.6.6.6 send-community both
+ !
+ address-family vpnv4 vrf vpna
+  neighbor 10.2.1.1 remote-as 65002
+!
+router ospf 1
+ network 10.162.1.0 0.0.0.255 area 0
+ network 2.2.2.2 0.0.0.0 area 0
+!
+end

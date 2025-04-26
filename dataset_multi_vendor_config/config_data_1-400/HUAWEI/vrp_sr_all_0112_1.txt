@@ -1,0 +1,32 @@
+#
+sysname P1
+#
+mpls lsr-id 2.2.2.9
+#               
+mpls            
+#               
+segment-routing 
+ ipv4 adjacency local-ip-addr 10.2.1.1 remote-ip-addr 10.2.1.2 sid 330002
+ ipv4 adjacency local-ip-addr 10.1.1.2 remote-ip-addr 10.1.1.1 sid 330003
+#               
+isis 1          
+ is-level level-1
+ cost-style wide
+ network-entity 10.0000.0000.0002.00
+ segment-routing mpls
+#               
+interface GigabitEthernet1/0/0
+ undo shutdown  
+ ip address 10.1.1.2 255.255.255.0
+ isis enable 1  
+#               
+interface GigabitEthernet2/0/0
+ undo shutdown  
+ ip address 10.2.1.1 255.255.255.0
+ isis enable 1  
+#               
+interface LoopBack1
+ ip address 2.2.2.9 255.255.255.255
+ isis enable 1  
+#
+return

@@ -1,0 +1,29 @@
+set system host-name PE1
+
+set protocols oam ethernet cfm global
+set protocols mpls label-switched-path ldp
+set protocols ldp interface all
+set protocols ldp router-id lo0.0
+
+set interfaces ge-1/0/1.1 encapsulation vlan-ccc
+set interfaces ge-1/0/1 unit 1 vlan-id 1
+set interfaces ge-1/0/1.1 family mpls
+set interfaces ge-1/0/1.1 mpls-static label-switched-path ldp
+set interfaces ge-1/0/1.1 gigether-options 802.3ad xconnect 2.2.2.2
+
+set interfaces ge-1/0/2 unit 0 family inet address 192.168.1.2/24
+set interfaces ge-1/0/2 mpls
+set protocols ldp interface ge-1/0/2
+
+set interfaces lo0 unit 0 family inet address 1.1.1.1/24
+
+set protocols ospf area 0.0.0.0 interface lo0.0
+set protocols ospf area 0.0.0.0 interface ge-1/0/2.0
+
+set protocols connectivity-fault-management ma md1 ma ma1 mep 1 interface ge-1/0/1.1
+set protocols connectivity-fault-management ma md1 ma ma1 mep 1 ccm-router-id 1
+set protocols connectivity-fault-management ma md1 ma ma1 mep 1 remote-mep 2
+set protocols connectivity-fault-management ma md1 ma ma1 mep 1 ccm-enable
+set protocols connectivity-fault-management ma md1 ma ma1 mep 1 remote-mep-ccm-enable 2
+set protocols connectivity-fault-management ma md1 ma ma1 mep 1 ccm-send-interval test-id 1
+set protocols connectivity-fault-management ma md1 ma ma1 mep 1 loss-measurement test-id 3 one-way-delay

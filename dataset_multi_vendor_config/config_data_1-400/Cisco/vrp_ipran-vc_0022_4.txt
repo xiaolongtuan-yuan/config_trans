@@ -1,0 +1,38 @@
+hostname RSG2
+!
+mpls ip
+!
+mpls ldp
+!
+interface CPOS1/0/1
+ no shutdown
+ cem 1
+!
+interface CPOS-Trunk1
+ no shutdown
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.40.1.2 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.30.1.2 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface Serial1/2:1
+ encapsulation frame-relay
+ frame-relay interface-dlci 5
+ frame-relay interface-dlci 3
+!
+interface Loopback0
+ ip address 5.5.5.5 255.255.255.255
+!
+router ospf 1
+ network 4.4.4.4 0.0.0.0 area 0
+ network 10.40.1.0 0.0.0.255 area 0
+ network 10.30.1.0 0.0.0.255 area 0
+!

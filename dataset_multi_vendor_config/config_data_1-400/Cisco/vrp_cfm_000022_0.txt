@@ -1,0 +1,35 @@
+hostname DeviceA
+
+vlan 2,3,4
+
+ethernet cfm
+
+interface GigabitEthernet1/0/0
+ switchport mode trunk
+ switchport trunk allowed vlan 2-4
+
+interface GigabitEthernet1/0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 2-4
+
+interface GigabitEthernet1/0/2
+ switchport mode trunk
+ switchport trunk allowed vlan 2-4
+
+ethernet cfm md md1 level 6
+ ethernet cfm ma ma1
+  ethernet cfm ma vlan 2
+ ethernet cfm ma ma2
+  ethernet cfm ma vlan 3
+
+ethernet cfm md md2 level 4
+ ethernet cfm ma ma3
+  ethernet cfm ma vlan 4
+  ethernet cfm mep 1 interface gigabitethernet 1/0/1 inward
+  ethernet cfm mep 1 ccm-send enable
+  ethernet cfm remote-mep 2
+  ethernet cfm remote-mep 2 ccm-receive enable
+  ethernet cfm remote-mep 3
+  ethernet cfm remote-mep 3 ccm-receive enable
+
+exit

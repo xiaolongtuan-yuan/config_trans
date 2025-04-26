@@ -1,0 +1,81 @@
+hostname PE1
+!
+ip igmp snooping
+!
+mpls label protocol ldp
+!
+mpls l2vpn
+!
+l2 vfi mtv3 manual
+ vpn id 3
+ neighbor 2.2.2.2 pw-id 3
+  igmp snooping
+!
+l2 vfi utv2 manual
+ vpn id 2
+ neighbor 2.2.2.2 pw-id 2
+!
+l2 vfi utv1 manual
+ vpn id 1
+ neighbor 2.2.2.2 pw-id 1
+!
+mpls ldp
+ neighbor 2.2.2.2 targeted ldp
+!
+interface GigabitEthernet1/0/0.1
+ encapsulation dot1q 11
+ xconnect vfi utv1
+  multicast static-group 226.0.0.1
+   exit
+!
+interface GigabitEthernet1/0/0.2
+ encapsulation dot1q 22
+ xconnect vfi utv2
+  multicast static-group 226.0.0.1
+   exit
+!
+interface GigabitEthernet1/0/0.3
+ encapsulation dot1q 3
+ xconnect vfi mtv3
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.0.1 255.255.255.252
+ mpls ip
+!
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+!
+mpls l2vpn
+ multicast routing instance 1
+  vrf mtv3
+   import route-target
+    route-target export 1:1
+    route-target import 1:1
+   !
+   route-target
+    route-target export 1:1
+    route-target import 1:1
+   !
+  !
+  vrf utv2
+   import route-target
+    route-target export 2:2
+    route-target import 2:2
+   !
+   route-target
+    route-target export 2:2
+    route-target import 2:2
+   !
+  !
+  vrf utv1
+   import route-target
+    route-target export 3:3
+    route-target import 3:3
+   !
+   route-target
+    route-target export 3:3
+    route-target import 3:3
+   !
+  !
+ !

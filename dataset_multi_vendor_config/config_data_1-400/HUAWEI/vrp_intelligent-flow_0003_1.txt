@@ -1,0 +1,21 @@
+#
+slot 1
+ intelligent-flow enable slot
+#
+acl number 3333
+ rule 5 permit ip source 10.0.0.0 24
+#
+traffic classifier c1
+ if-match acl 3333
+#
+traffic behavior b1
+ intelligent-flow elephant-flow-burst af1 color green elephant-flow-steady af2 color green other-flow af3 color green
+#        
+traffic policy p1
+ share-mode
+ statistic enable
+ classifier c1 behavior b1
+#
+interface GigabitEthernet1/0/1
+ traffic-policy p1 inbound
+#

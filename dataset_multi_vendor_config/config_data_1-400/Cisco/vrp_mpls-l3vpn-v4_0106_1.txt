@@ -1,0 +1,46 @@
+hostname PE1
+
+ip vrf vpn1
+ rd 100:1
+ route-target export 1:1
+ route-target import 1:1
+
+mpls label protocol ldp
+
+mpls ldp router-id Loopback1 force
+
+router isis 1
+ net 10.0000.0000.0001.00
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip vrf forwarding vpn1
+ ip address 10.1.1.2 255.255.255.252
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.10.1.1 255.255.255.252
+ mpls ip
+ mpls ldp autoconfig
+ router isis 1
+
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+ router isis 1
+
+router bgp 100
+ neighbor 3.3.3.3 remote-as 100
+ neighbor 3.3.3.3 update-source Loopback1
+
+ address-family ipv4
+  no synchronization
+  neighbor 3.3.3.3 activate
+
+ address-family vpnv4
+  bgp distance bgp 20 200
+  neighbor 3.3.3.3 activate
+
+ address-family vpnv4 vrf vpn1
+  neighbor 10.1.1.1 remote-as 65410
+
+Return

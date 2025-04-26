@@ -1,0 +1,33 @@
+set system host-name P1
+
+set interfaces lo0 unit 0 family inet address 2.2.2.2/32
+
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.1.2/24
+set interfaces ge-0/0/1 unit 0 family mpls
+
+set interfaces ge-0/0/2 unit 0 family inet address 10.2.1.1/24
+set interfaces ge-0/0/2 unit 0 family mpls
+
+set protocols mpls label-mode ldp
+
+set protocols mpls traffic-eng router-id lo0.0
+set protocols mpls traffic-eng area 0.0.0.0
+
+set protocols mpls traffic-eng tunnels Tunnel1 to 4.4.4.4
+set protocols mpls traffic-eng tunnels Tunnel1 bandwidth 10000k
+set protocols mpls traffic-eng tunnels Tunnel1 metric 1
+set protocols mpls traffic-eng tunnels Tunnel1 source lo0.0
+set protocols mpls traffic-eng tunnels Tunnel1 autoroute announce
+
+set protocols mpls traffic-eng tunnels Tunnel2 to 4.4.4.4
+set protocols mpls traffic-eng tunnels Tunnel2 bandwidth 10000k
+set protocols mpls traffic-eng tunnels Tunnel2 metric 1
+set protocols mpls traffic-eng tunnels Tunnel2 source lo0.0
+set protocols mpls traffic-eng tunnels Tunnel2 autoroute announce
+
+set protocols ospf router-id 2.2.2.2
+set protocols ospf area 0.0.0.0 interface lo0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/2.0
+
+set protocols mpls traffic-eng interfaces ge-0/0/2 bandwidth 20000k

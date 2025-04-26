@@ -1,0 +1,56 @@
+#
+ sysname PE1
+#
+ vlan batch 10
+#
+igmp-snooping enable
+#
+ mpls lsr-id 1.1.1.1
+ mpls
+#
+mpls l2vpn
+#
+vsi v123 static
+ pwsignal ldp
+  vsi-id 123
+  peer 2.2.2.2 upe
+  peer 3.3.3.3 upe
+igmp-snooping enable
+igmp-snooping proxy
+igmp-snooping version 3
+l2-multicast source-lifetime 100
+#
+mpls ldp
+#
+interface Vlanif10
+ l2 binding vsi v123
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ portswitch
+ port link-type access
+ port default vlan 10
+igmp-snooping static-router-port vlan 10
+#
+interface GigabitEthernet2/0/0
+undo shutdown
+ip address 10.1.1.1 255.255.255.252
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet3/0/0
+undo shutdown
+ ip address 10.1.2.1 255.255.255.252
+ mpls
+ mpls ldp
+#
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+#
+ospf 1
+ area 0.0.0.0
+  network 1.1.1.1 0.0.0.0
+  network 10.1.1.0 0.0.0.3
+  network 10.1.2.0 0.0.0.3
+#
+return

@@ -1,0 +1,32 @@
+hostname DeviceA
+!
+ip cef
+!
+interface GigabitEthernet1/0/0
+ description LAN connection
+ no shutdown
+ ip address 192.168.1.1 255.255.255.0
+!
+interface GigabitEthernet2/0/0
+ description WAN connection
+ no shutdown
+ ipv6 address 2001:db8:1::1/64
+!
+router isis
+ net 49.0000.0000.0001.00
+!
+ipv6 unicast-routing
+!
+router isis
+ is-type level-1
+ metric-style wide
+!
+interface GigabitEthernet1/0/0
+ ip router isis
+ ip router isis red
+!
+interface GigabitEthernet2/0/0
+ ipv6 router isis
+ ipv6 router isis blue
+!
+end

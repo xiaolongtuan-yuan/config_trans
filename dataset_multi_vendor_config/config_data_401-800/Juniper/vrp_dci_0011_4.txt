@@ -1,0 +1,29 @@
+set system host-name DCI-PE1
+
+set routing-instances vpn1 instance-type vrf
+set routing-instances vpn1 route-distinguisher 100:1
+set routing-instances vpn1 vrf-target target:111:1
+
+set protocols mpls interface ge-2/0/0
+set protocols mpls interface lo0.1
+
+set interfaces ge-1/0/0 unit 0 family inet address 192.168.20.1/24
+set interfaces ge-1/0/0 unit 0 vrf-table-label
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.1.1/24
+set interfaces lo0 unit 1 family inet address 1.1.1.1/32
+
+set protocols mpls interface ge-2/0/0
+set protocols mpls interface lo0.1
+
+set protocols bgp group internal type internal
+set protocols bgp group internal local-address 1.1.1.1
+set protocols bgp group internal neighbor 3.3.3.3
+set protocols bgp group internal family inet unicast
+set protocols bgp group internal family inet-vpn unicast
+set protocols bgp group internal family inet-vpn vpn1
+
+set protocols ospf area 0 interface lo0.1
+set protocols ospf area 0 interface ge-2/0/0
+set protocols ospf traffic-engineering
+
+set policy-options policy-statement te-lsp1 then load-balance per-packet

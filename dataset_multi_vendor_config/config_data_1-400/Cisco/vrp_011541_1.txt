@@ -1,0 +1,26 @@
+hostname CE2
+!
+vlan 2
+!
+ethernet cfm
+ cfm version 0
+ cfm domain default
+  service cfm
+!
+interface GigabitEthernet1/0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 2
+ no shutdown
+!
+ethernet cfm
+ mep domain md3
+  mep ma ma3
+   mep interface GigabitEthernet1/0/1
+   mep id 4 mep-direction transmit
+   ccm-send mep-id 4 enable
+   mep id 3 mep-direction receive
+   ccm-receive mep-id 3 enable
+   mep test 1 mep-src-id 4 mep-dst-id 3
+   loss-measurement dual-ended test-id 1
+!
+end

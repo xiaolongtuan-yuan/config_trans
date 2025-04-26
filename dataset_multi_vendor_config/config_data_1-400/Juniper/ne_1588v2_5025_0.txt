@@ -1,0 +1,27 @@
+set system host-name CE1
+
+set protocols ptp domain 1
+set protocols ptp device-type boundary-clock
+
+set interfaces ge-2/0/0 unit 0 family inet address 172.16.0.2/24
+set interfaces ge-2/0/0 unit 0 disable false
+set interfaces ge-2/0/0 unit 0 ptp clock-domain 1
+set interfaces ge-2/0/0 unit 0 ptp delay-mechanism pdelay
+set interfaces ge-2/0/0 unit 0 ptp min-pdelay-req-interval 10
+set interfaces ge-2/0/0 unit 0 ptp announce receipt-timeout 10
+set interfaces ge-2/0/0 unit 0 ptp udp-egress source-ip 172.16.0.2
+set interfaces ge-2/0/0 unit 0 ptp udp-egress destination-ip 172.16.0.1
+set interfaces ge-2/0/0 unit 0 ptp udp-egress destination-mac 00:e0:fc:11:11:11
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.10.0.1/24
+set interfaces ge-1/0/0 unit 0 disable false
+set interfaces ge-1/0/0 unit 0 ptp clock-domain 1
+set interfaces ge-1/0/0 unit 0 ptp delay-mechanism pdelay
+set interfaces ge-1/0/0 unit 0 ptp min-pdelay-req-interval 10
+set interfaces ge-1/0/0 unit 0 ptp announce-drop enable
+set interfaces ge-1/0/0 unit 0 ptp udp-egress source-ip 10.10.0.1
+set interfaces ge-1/0/0 unit 0 ptp udp-egress destination-ip 10.10.0.2
+set interfaces ge-1/0/0 unit 0 ptp udp-egress destination-mac 00:e0:fc:33:11:11
+
+set protocols ospf area 0.0.0.0 interface ge-2/0/0.0
+set protocols ospf area 0.0.0.0 interface ge-1/0/0.0

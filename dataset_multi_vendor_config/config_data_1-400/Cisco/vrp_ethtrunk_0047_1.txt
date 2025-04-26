@@ -1,0 +1,42 @@
+hostname PE1
+!
+interface Port-channel10
+ no switchport
+ ip address 10.1.1.1 255.255.255.0
+ mpls ip
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ channel-group 10 mode active
+!
+interface GigabitEthernet2/0/1
+ no shutdown
+!
+interface Loopback1
+ ip address 1.1.1.9 255.255.255.255
+!
+mpls ldp router-id Loopback1 force
+!
+mpls ldp neighbor 2.2.2.9 targeted
+!
+mpls l2vpn
+!
+vfi ldp1 manual
+ vpn-id 2
+!
+mpls ldp
+!
+mpls label protocol ldp
+!
+router ospf 1
+ router-id 1.1.1.9
+ network 1.1.1.9 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+!
+bfd
+!
+bfd discriminator local 1
+ bfd discriminator remote 2
+ bfd echo 2.2.2.9 source 1.1.1.9
+!
+end

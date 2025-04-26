@@ -1,0 +1,28 @@
+hostname PE2
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.2.1.2 255.255.255.0
+
+router bgp 200
+ neighbor 10.2.1.1 remote-as 200
+ neighbor 10.2.1.1 activate
+
+address-family ipv6
+ neighbor 10.2.1.1 activate
+ no synchronization
+
+vrf definition vpna
+
+address-family ipv6 vrf vpna
+ neighbor 10.2.1.1 activate
+
+ip flow-export destination 10.2.1.1
+
+route-map FlowSpec1 deny 10
+ match ipv6 source-port 159
+
+ip access-list extended FlowSpec1
+ permit tcp any any eq 159
+
+end

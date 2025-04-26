@@ -1,0 +1,62 @@
+#
+sysname RSG
+#
+evpn vpn-instance evrf1 bd-mode
+ route-distinguisher 100:3
+ vpn-target 1:1 export-extcommunity
+ vpn-target 1:1 import-extcommunity
+#
+mpls lsr-id 4.4.4.4
+#
+mpls
+#
+bridge-domain 10
+ evpn binding vpn-instance evrf1
+#
+mpls ldp
+#
+isis 1
+ is-level level-1
+ network-entity 10.0000.0000.0004.00
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.2.4.2 255.255.255.0
+ isis enable 1
+ mpls
+ mpls ldp       
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip address 10.3.4.2 255.255.255.0
+ isis enable 1
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/3.1 mode l2
+ encapsulation dot1q vid 100
+ bridge-domain 10
+#
+interface LoopBack1
+ ip address 4.4.4.4 255.255.255.255
+ isis enable 1
+#
+bgp 100
+ peer 2.2.2.2 as-number 100
+ peer 2.2.2.2 connect-interface LoopBack1
+ peer 3.3.3.3 as-number 100
+ peer 3.3.3.3 connect-interface LoopBack1
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 2.2.2.2 enable
+  peer 3.3.3.3 enable
+ #
+ l2vpn-family evpn
+  undo policy vpn-target
+  peer 2.2.2.2 enable
+  peer 3.3.3.3 enable
+#
+evpn source-address 4.4.4.4
+#
+return

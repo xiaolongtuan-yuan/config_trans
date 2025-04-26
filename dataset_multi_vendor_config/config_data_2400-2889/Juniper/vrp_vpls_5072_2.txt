@@ -1,0 +1,24 @@
+set system host-name PE3
+
+setprotocols ldp
+set protocols mpls
+
+set forwarding-plane vfi vSi1
+set forwarding-plane vfi vSi1 vpi 10
+set forwarding-plane vfi vSi1 rd 2:2
+set forwarding-plane vfi vSi1 import-target 2:2
+set forwarding-plane vfi vSi1 export-target 2:2
+
+set interfaces ge-1/0/2 unit 0 family mpls mpls-ip
+set interfaces ge-1/0/3.0 encapsulation dot1q 10
+set interfaces ge-1/0/3.0 unit 0 family ethernet-switching vlan 10
+set interfaces ge-1/0/3Unit0 family mpls encapsulation mpls-l2vlan
+
+set routing-options router-id 3.3.3.3
+set protocols bgp group ibgp neighbor 1.1.1.1 remote-as 100 update-source Loopback0
+set routing-options bgp group ibgp advertisement-interval 60
+
+set protocols ospf 100 area 0 interface ge-1/0/2.0
+set protocols ospf 100 area 0 network 10.1.3.0/24
+set protocols ospf 100 area 0 network 3.3.3.3/32
+

@@ -1,0 +1,32 @@
+#
+sysname DeviceB
+#
+vlan batch 100
+#
+ip pool pool1 server
+ gateway 10.10.10.1 255.255.255.0
+ section 0 10.10.10.1 10.10.10.100
+ server identifier ip 10.10.10.100
+ remote-backup-profile service1
+#
+remote-backup-service service1
+ peer 10.10.10.1 source 10.10.10.2 port 10000
+#
+remote-backup-profile service1
+ service-type dhcp-server
+ backup-id 1 remote-backup-service service1
+ peer-backup hot
+ vrrp-id 1 interface Vlanif100
+#
+interface Vlanif100
+ ip address 10.10.10.2 255.255.255.0
+ vrrp vrid 1 virtual-ip 10.10.10.100
+ dhcp server enable
+#
+interface GigabitEthernet1/0/1
+ portswitch
+ undo shutdown
+ port link-type trunk
+ port trunk allow-pass vlan 100
+#
+return

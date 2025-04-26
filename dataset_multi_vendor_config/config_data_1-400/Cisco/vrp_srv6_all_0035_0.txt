@@ -1,0 +1,38 @@
+hostname PE1
+
+ipv6 unicast-routing
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:10::1/96
+ ipv6 ospf 1 area 0
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.1.2 255.255.255.0
+
+interface Loopback1
+ ipv6 enable
+ ipv6 address 2001:DB8:1::1/128
+ ipv6 ospf 1 area 0
+
+router ospf 1
+ router-id 1.1.1.1
+ passive-interface GigabitEthernet2/0/0
+ passive-interface Loopback1
+ network 192.168.1.0 0.0.0.255 area 0
+ network 2001:DB8:10::/96 area 0
+
+router bgp 100
+ bgp router-id 1.1.1.1
+ neighbor 192.168.1.1 remote-as 200
+ neighbor 2001:DB8:2::2 remote-as 100
+ neighbor 2001:DB8:2::2 update-source Loopback1
+ address-family ipv4 unicast
+  neighbor 192.168.1.1 activate
+  neighbor 2001:DB8:2::2 activate
+  network 192.168.1.0 mask 255.255.255.0
+  segment-routing mpls
+  segment-routing mpls use-nearest
+ exit-address-family

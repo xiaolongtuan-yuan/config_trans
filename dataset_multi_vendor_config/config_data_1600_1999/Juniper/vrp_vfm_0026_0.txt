@@ -1,0 +1,22 @@
+set system host-name SSH_Server
+
+set aaa authentication new-model
+set system login user client001 authentication plain-text-password "@%@%.OuC6Vo7Z,A'y~/KB&,vmd@%@%"
+set system login user client001 level 3
+
+set interfaces ge-0/0/0 unit 0 family inet address 10.137.217.223/16
+
+set interfaces lo0 unit 0 family inet address 10.1.1.1/32
+
+set system services ssh source-interface lo0
+set system services ssh protocol-version v2
+set system services ssh enable
+
+set system services sftp enable
+
+set system login user client001 service-type ssh
+set system login user client001 authentication-type password
+set system login user client001 service-type sftp
+set system login user client001 sftp-directory "/home"
+
+commit

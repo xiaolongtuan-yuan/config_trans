@@ -1,0 +1,25 @@
+#
+sysname DeviceC
+#
+multicast routing-enable
+#
+interface GigabitEthernet1/0/0
+ undo portswitch
+ undo shutdown
+ ip address 10.1.5.1 255.255.255.0
+ pim dm
+ igmp enable
+ igmp static-group 225.1.1.1
+#
+interface GigabitEthernet1/0/1
+ undo portswitch
+ undo shutdown
+ ip address 10.1.2.2 255.255.255.0
+ pim dm
+#
+ospf 1
+ area 0.0.0.0
+  network 10.1.2.0 0.0.0.255
+  network 10.1.5.0 0.0.0.255
+#
+return

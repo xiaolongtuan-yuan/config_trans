@@ -1,0 +1,46 @@
+sysname PE2
+!
+ip vrf vpn1
+ rd 100:2
+ route-target export 1:1
+ route-target import 1:1
+!
+mpls ldp router-id Loopback0
+!
+mpls ip
+!
+router isis 1
+ net 10.0000.0000.0002.00
+!
+interface GigabitEthernet1/0/0
+ no shut
+ vrf forwarding vpn1
+ ip address 10.2.1.2 255.255.255.252
+!
+interface GigabitEthernet2/0/0
+ no shut
+ ip address 10.20.1.1 255.255.255.252
+ isis enable 1
+ mpls ip
+ mpls ldp
+!
+interface Loopback1
+ ip address 2.2.2.2 255.255.255.255
+ isis enable 1
+!
+router bgp 100
+ neighbor 4.4.4.4 remote-as 100
+ neighbor 4.4.4.4 update-source Loopback1
+ !
+ address-family ipv4 unicast
+  neighbor 4.4.4.4 activate
+  no synchronization
+ !
+ address-family vpnv4
+  redistribute connected
+  neighbor 4.4.4.4 activate
+ !
+ address-family vpnv4 vrf vpn1
+  neighbor 10.2.1.1 remote-as 65410
+!
+end

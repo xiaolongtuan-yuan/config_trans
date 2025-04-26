@@ -1,0 +1,48 @@
+#
+ sysname LSRA
+#
+ mpls lsr-id 1.1.1.1
+#
+ mpls
+  mpls te
+  mpls te cspf
+  mpls rsvp-te
+#
+interface Eth-Trunk1
+ ip address 10.1.1.1 255.255.255.0
+ mpls
+ mpls te
+ mpls rsvp-te
+ mpls rsvp-te authentication cipher O'W3[_\M"`!./a!1$H@GYA!!
+ mpls rsvp-te authentication handshake
+ mpls rsvp-te authentication window-size 32
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ eth-trunk 1
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ eth-trunk 1
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ eth-trunk 1
+#
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+#
+interface Tunnel1
+ ip address unnumbered interface LoopBack1
+ tunnel-protocol mpls te
+ destination 3.3.3.3
+ mpls te tunnel-id 1
+#
+ospf 1
+ opaque-capability enable
+ area 0.0.0.0
+  mpls-te enable
+  network 1.1.1.1 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+#
+return

@@ -1,0 +1,46 @@
+hostname P
+
+mpls label protocol ldp
+mpls ip
+
+mpls traffic-eng tunnels
+
+mpls traffic-eng router-id Loopback1
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 172.16.1.2 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 172.17.1.1 255.255.255.0
+ mpls ip
+
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255
+
+router isis
+ is-type level-2-only
+ net 10.0000.0000.0002.00
+ metric-style wide
+ mpls traffic-eng router-id Loopback1
+ segment-routing mpls
+
+mpls ldp router-id Loopback1 force
+
+mpls ldp advertise-labels for 3.3.3.9/32
+
+mpls traffic-eng area 0
+
+mpls traffic-eng autoroute announce
+
+mpls traffic-eng logging
+
+mpls traffic-eng forwarding adjacency-type neighbor
+
+mpls traffic-eng segment-routing
+
+segment-routing global-block 160000 161000
+
+segment-routing mpls

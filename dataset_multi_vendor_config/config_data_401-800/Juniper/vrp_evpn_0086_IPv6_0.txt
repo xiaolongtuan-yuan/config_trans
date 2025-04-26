@@ -1,0 +1,32 @@
+set system host-name UPE
+
+set routing-instances vpn1 instance-type vrf
+set routing-instances vpn1 route-distinguisher 100:1
+set routing-instances vpn1 vrf-target target:2:2
+
+set protocols mpls interface all
+set protocols ldp interface all
+set protocols ldp router-id 1.1.1.1
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-1/0/0 unit 0 family mpls
+set protocols mpls interface ge-1/0/0
+set protocols ldp interface ge-1/0/0
+
+set interfaces ge-2/0/0 unit 0 family inet6 address 2001:DB8:20::1/64
+set interfaces ge-2/0/0 unit 0 vrf vpn1
+
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+
+set routing-options autonomous-system 100
+
+set protocols bgp group internal type internal
+set protocols bgp group internal local-address 1.1.1.1
+set protocols bgp group internal neighbor 2.2.2.2
+
+set protocols bgp group internal family inet unicast
+set protocols bgp group internal family inet6 unicast
+set protocols bgp group internal family evpn signaling
+
+set protocols ospf area 0 interface lo0.0
+set protocols ospf area 0 interface ge-1/0/0.0

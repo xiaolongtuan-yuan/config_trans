@@ -1,0 +1,44 @@
+hostname PE3
+!
+ip vrf vpn1
+ rd 100:3
+ route-target export 111:1
+ route-target import 111:1
+!
+bfd template single-hop MPLS_BFD
+!
+mpls label protocol ldp
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.20.1.2 255.255.255.252
+ mpls ip
+ mpls ldp autoconfig
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip vrf forwarding vpn1
+ ip address 10.2.1.2 255.255.255.252
+!
+interface Loopback1
+ ip address 3.3.3.3 255.255.255.255
+!
+router bgp 100
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 update-source Loopback1
+ !
+ address-family ipv4
+  no synchronization
+  neighbor 1.1.1.1 activate
+ !
+ address-family vpnv4
+  neighbor 1.1.1.1 activate
+ !
+ address-family ipv4 vrf vpn1
+  neighbor 10.2.1.1 remote-as 65410
+!
+router ospf 1
+ network 3.3.3.3 0.0.0.0 area 0
+ network 10.20.1.0 0.0.0.3 area 0
+!
+end

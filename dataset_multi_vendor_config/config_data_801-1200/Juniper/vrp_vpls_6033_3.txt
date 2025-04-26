@@ -1,0 +1,17 @@
+set system host-name SPE1
+set protocols ldp interface all
+set protocols ldp router-id 1.1.1.9
+set protocols mpls interface all
+set routing-instances vfi-v100 instance-type vpls
+set routing-instances vfi-v100 vpls vfi-id 100
+set routing-instances vfi-v100 protocols vpls neighbor 3.3.3.9 pw-id 300
+set routing-instances vfi-v100 protocols vpls neighbor 4.4.4.9 pw-id 200
+set routing-instances vfi-v100 protocols vpls mac-withdraw
+set interfaces ge-0/0/0 unit 0 family inet address 10.10.1.1/24
+set interfaces ge-0/0/0 unit 0 family mpls
+set interfaces ge-0/0/1 unit 0 family inet address 10.10.3.1/24
+set interfaces ge-0/0/1 unit 0 family mpls
+set interfaces lo0 unit 1 family inet address 1.1.1.9/32
+set protocols ospf area 0 interface lo0.1
+set protocols ospf area 0 interface ge-0/0/0.0
+set protocols ospf area 0 interface ge-0/0/1.0

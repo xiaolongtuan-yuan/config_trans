@@ -1,0 +1,29 @@
+#
+ sysname DeviceA
+#
+mpls lsr-id 1.1.1.9
+#
+mpls
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack1
+ ip address 1.1.1.9 255.255.255.255
+#
+ospf 1
+ area 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+  network 1.1.1.9 0.0.0.0
+#
+nqa test-instance admin lspping
+ test-type lspping
+ destination-address ipv4 3.3.3.9 lsp-masklen 32
+ start daily 10:00:00 to 10:30:00  
+#
+return

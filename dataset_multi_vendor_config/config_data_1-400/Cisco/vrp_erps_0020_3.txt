@@ -1,0 +1,77 @@
+hostname DeviceD
+
+vlan 10, 20, 100-200, 300-400
+
+spanning-tree vlan 10, 100-200 root primary
+
+spanning-tree vlan 20, 300-400 root primary
+
+erps ring 1
+
+control-vlan 10
+
+protected-instance 1
+
+version 2
+
+wtr-timer 6
+
+guard-timer 100
+
+tc-notify erps ring 2
+
+tc-protection interval 200
+
+tc-protection threshold 60
+
+erps ring 2
+
+control-vlan 20
+
+protected-instance 2
+
+version 2
+
+wtr-timer 6
+
+guard-timer 100
+
+sub-ring
+
+tc-notify erps ring 1
+
+tc-protection interval 200
+
+tc-protection threshold 60
+
+interface GigabitEthernet1/0/1
+
+switchport mode trunk
+
+switchport trunk allowed vlan 10, 100-200
+
+no shutdown
+
+erps ring 1
+
+interface GigabitEthernet1/0/2
+
+switchport mode trunk
+
+switchport trunk allowed vlan 10, 100-200, 300-400
+
+no shutdown
+
+erps ring 1
+
+interface GigabitEthernet1/0/3
+
+switchport mode trunk
+
+switchport trunk allowed vlan 20, 100-200
+
+no shutdown
+
+erps ring 2
+
+exit

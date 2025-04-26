@@ -1,0 +1,65 @@
+#
+sysname UPE1
+#
+ip vpn-instance vpna
+ ipv4-family
+  route-distinguisher 100:1
+  apply-label per-instance
+  vpn-target 1:1 import-extcommunity
+  vpn-target 1:1 export-extcommunity
+#
+mpls lsr-id 1.1.1.1
+#
+mpls
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 172.16.3.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 172.16.2.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ip binding vpn-instance vpna
+ ip address 10.1.1.2 255.255.255.0
+#
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+#
+bgp 100
+ router-id 1.1.1.1
+ peer 3.3.3.3 as-number 100
+ peer 3.3.3.3 connect-interface LoopBack1
+ peer 4.4.4.4 as-number 100
+ peer 4.4.4.4 connect-interface LoopBack1
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 3.3.3.3 enable
+  peer 4.4.4.4 enable
+ #
+ ipv4-family vpnv4
+  policy vpn-target
+  peer 3.3.3.3 enable
+  peer 4.4.4.4 enable
+ #
+ ipv4-family vpn-instance vpna
+  import-route direct
+  auto-frr
+  peer 10.1.1.1 as-number 65410
+#
+ospf 1
+ area 0.0.0.0
+  network 1.1.1.1 0.0.0.0
+  network 172.16.2.0 0.0.0.255
+  network 172.16.3.0 0.0.0.255
+# 
+return

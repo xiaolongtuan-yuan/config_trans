@@ -1,0 +1,39 @@
+set routing-instances vpn1 instance-type virtual-router
+set routing-instances vpn1 route-distinguisher 100:1
+set routing-instances vpn1 vrf-import target:2:2
+set routing-instances vpn1 vrf-export target:2:2
+set routing-instances vpn1 routing-options static route 0.0.0.0/0 next-hop null0
+
+set protocols mpls label-protocol ldp
+
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.2/24
+set interfaces ge-0/0/0 unit 0 family mpls
+set interfaces ge-0/0/1 unit 0 family inet address 10.2.1.1/24
+set interfaces ge-0/0/1 unit 0 family mpls
+set interfaces lo0 unit 0 family inet address 2.2.2.2/32
+
+set protocols isis level 2 net 10.0000.0000.0002.00
+set protocols isis interface ge-0/0/0.0 family mpls
+set protocols isis interface ge-0/0/1.0 family mpls
+set protocols isis interface lo0.0 family mpls
+
+set protocols bgp group 1 neighbor 1.1.1.1 remote-as 100
+set protocols bgp group 1 neighbor 1.1.1.1 update-source lo0.0
+set protocols bgp group 1 neighbor 3.3.3.3 remote-as 100
+set protocols bgp group 1 neighbor 3.3.3.3 update-source lo0.0
+
+set protocols bgp group 1 family inet unicast
+set protocols bgp group 1 neighbor 1.1.1.1 activate
+set protocols bgp group 1 neighbor 3.3.3.3 activate
+
+set protocols bgp group 1 family inet-vpn vpnv4
+set protocols bgp group 1 neighbor 1.1.1.1 activate
+set protocols bgp group 1 neighbor 3.3.3.3 activate
+
+set protocols bgp group 1 family evpn
+set protocols bgp group 1 neighbor 1.1.1.1 send-community extended
+set protocols bgp group 1 neighbor 1.1.1.1 route-map reoriginate import
+set protocols bgp group 1 neighbor 3.3.3.3 advertise route-reoriginated
+
+set protocols ospf area 0 network 2.2.2.2/32
+set protocols ospf area 0 network 10.1.1.0/24

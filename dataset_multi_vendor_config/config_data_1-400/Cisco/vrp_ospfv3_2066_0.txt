@@ -1,0 +1,29 @@
+hostname DeviceS
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:1000::1/24
+ ipv6 ospf cost 5
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:1001::1/24
+ ipv6 ospf cost 15
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:1002::1/24
+ ipv6 ospf cost 10
+
+ipv6 router ospf 1
+ router-id 1.1.1.1
+ bfd all-interfaces enable
+ bfd all-interfaces frr-binding
+ bfd frr
+  loop-free-alternate
+ area 0.0.0.1
+
+end

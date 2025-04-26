@@ -1,0 +1,19 @@
+hostname CE3
+
+ipv6 unicast-routing
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:1::1/64
+
+router bgp 65410
+ bgp router-id 10.10.10.10
+ neighbor 2001:db8:1::2 remote-as 100
+ no synchronization
+ address-family ipv6 unicast
+  neighbor 2001:db8:1::2 activate
+  import ipv6 unicast direct
+ exit-address-family
+
+end

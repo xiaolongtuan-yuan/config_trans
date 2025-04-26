@@ -1,0 +1,75 @@
+#
+sysname HUAWEI
+#
+ip pool pool1 bas local
+ gateway 172.30.0.1 255.255.255.0
+ section 0 172.30.0.2 172.30.0.200
+ excluded-ip-address 172.30.0.8
+#
+aaa
+ authentication-scheme local_auth
+  authentication-mode local
+ authorization-scheme default
+ accounting-scheme default
+#
+radius-server host <IP_address> auth-port 1812 acct-port 1813
+#
+domain default
+ authentication-scheme local_auth
+ accounting-scheme default
+#
+local-aaa-server
+ user local-user password cipher <password> authentication-type local
+#
+interface GigabitEthernet1/0/2
+ port link-type access
+ port default vlan <VLAN_ID>
+ voice vlan <VLAN_ID>
+ authentication event fail action next-method
+ authentication event server-dead action authorize voice
+ authentication event server-alive action reinitialize
+ authentication host-mode multi-auth
+ authentication order mab dot1x
+ authentication priority mab dot1x
+ authentication port-control auto
+ mac-authentication
+ dot1x pae authenticator
+ dot1x timeout tx-period 3
+ dot1x max-reauth-req 3
+ dot1x max-req 3
+ dot1x max-start 3
+ dot1x reauthentication
+ dot1x critical eapol
+ dot1x timeout quiet-period 5
+ dot1x timeout server-timeout 10
+ dot1x timeout supp-timeout 5
+ dot1x max-req-retries 3
+ dot1x auth-fail vlan <VLAN_ID>
+ dot1x auth-fail max-attempts 3
+ dot1x auth-fail action authorize vlan <VLAN_ID>
+#
+dhcp enable
+dhcp snooping enable
+dhcp snooping trust
+dhcp snooping vlan <VLAN_ID>
+ip arp inspect enable
+ip arp inspect vlan <VLAN_ID>
+#
+mac-address static 00e0-fc12-3456 vlan <VLAN_ID> interface GigabitEthernet1/0/2
+#
+aaa
+ authentication-scheme LOCAL
+  authentication-mode local
+ authorization-scheme LOCAL
+ accounting-scheme LOCAL
+#
+radius-server host <IP_address> auth-port 1812 acct-port 1813 key <shared_key>
+radius-server attribute 6 auth-type pap
+#
+user-group LOCAL
+ user 172.30.0.8@printer password cipher %^%#4*RHO=w*}.d\>j09'Z:%=:co~p\w9'G-^|-zR'N4%^%#
+#
+authentication-scheme LOCAL_LOCAL
+ authentication-mode local
+ authorization-scheme LOCAL
+

@@ -1,0 +1,29 @@
+#
+ sysname PE1
+#
+ vlan batch 100 200
+#
+ bpdu-tunnel stp group-mac 0100-5e00-0011
+#
+ stp enable
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ portswitch
+ port trunk allow-pass vlan 100
+ bpdu-tunnel stp vlan 100
+ stp disable
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ portswitch
+ port trunk allow-pass vlan 200
+ bpdu-tunnel stp vlan 200
+ stp disable
+#
+interface GigabitEthernet1/0/3
+ undo shutdown
+ portswitch
+ port trunk allow-pass vlan 100 200
+#
+return

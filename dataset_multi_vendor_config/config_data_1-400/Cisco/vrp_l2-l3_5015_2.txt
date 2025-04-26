@@ -1,0 +1,42 @@
+hostname NPE
+
+mpls label protocol ldp
+
+mpls ip
+
+mpls ldp router-id Loopback1 force
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.2.2.2 255.255.255.0
+ mpls ip
+
+interface Virtual-Ethernet2/0/0
+ vrf forwarding 1
+ mtu 1500
+
+interface Virtual-Ethernet2/0/0.1
+ encapsulation dot1Q 1
+ xconnect 1.1.1.9 101 encapsulation mpls
+
+interface Virtual-Ethernet2/0/1
+ vrf forwarding 1
+ mtu 1500
+
+interface Virtual-Ethernet2/0/1.1
+ encapsulation dot1Q 1
+ ip address 10.10.1.2 255.255.255.0
+
+interface Loopback1
+ ip address 3.3.3.9 255.255.255.255
+
+router ospf 1
+ router-id 3.3.3.9
+ network 3.3.3.9 0.0.0.0 area 0
+ network 10.2.2.0 0.0.0.255 area 0
+
+router ospf 2
+ router-id 3.3.3.9
+ network 10.10.1.0 0.0.0.255 area 0
+
+end

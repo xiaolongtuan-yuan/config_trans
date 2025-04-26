@@ -1,0 +1,64 @@
+hostname PE1
+!
+vlan 10
+vlan 100
+!
+spanning-tree vlan 10,100
+!
+erps ring 1
+ control-vlan 100
+ protect-instance 0
+ version 2
+ sub-ring
+!
+mpls ldp router-id Loopback1
+!
+mpls ip
+!
+mpls l2vpn
+!
+pseudowire-class s1
+ encapsulation ldp
+!
+vfi s1 manual
+ vpn id 10
+ neighbor 2.2.2.2 pw-id 10
+ neighbor 3.3.3.3 pw-id 10
+!
+mpls ldp
+!
+interface GigabitEthernet1/0/0
+ switchport
+ no shutdown
+ switchport mode trunk
+ switchport trunk allowed vlan 100
+ spanning-tree disable
+ erps ethernet-ring 1
+ erps ethernet-ring vpls-subinterface enable
+!
+interface GigabitEthernet1/0/0.10
+ encapsulation dot1q 10
+ xconnect vfi s1
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 10.3.1.1 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+!
+router ospf 1
+ area 0
+ network 1.1.1.1 0.0.0.0
+ network 10.1.1.0 0.0.0.255
+ network 10.3.1.0 0.0.0.255
+!
+end

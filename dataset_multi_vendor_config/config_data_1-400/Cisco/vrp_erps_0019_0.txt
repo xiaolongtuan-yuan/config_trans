@@ -1,0 +1,38 @@
+hostname DeviceA
+
+vlan 10
+vlan 20
+vlan 100-200
+vlan 300-400
+
+spanning-tree region instance 1 vlan 10 100-200
+spanning-tree region instance 2 vlan 20 300-400
+
+erps ring 1
+control-vlan 10
+protected-instance 1
+wtr-timer 6
+guard-timer 100
+
+erps ring 2
+control-vlan 20
+protected-instance 2
+wtr-timer 6
+guard-timer 100
+
+interface GigabitEthernet1/0/1
+switchport mode trunk
+switchport trunk allowed vlan 10,20,100-200,300-400
+no shutdown
+spanning-tree portfast disable
+erps ring 1
+erps ring 2 rpl owner
+
+interface GigabitEthernet1/0/2
+switchport mode trunk
+switchport trunk allowed vlan 10,20,100-200,300-400
+no shutdown
+spanning-tree portfast disable
+erps ring 1
+erps ring 2
+

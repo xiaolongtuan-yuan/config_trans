@@ -1,0 +1,31 @@
+set system host-name DeviceA
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-1/0/0 unit 0 description "GigabitEthernet1/0/0"
+
+set interfaces ge-1/0/1 unit 0 family inet address 10.1.2.1/24
+set interfaces ge-1/0/1 unit 0 description "GigabitEthernet1/0/1"
+
+set interfaces ge-1/0/2 unit 0 family inet address 2.2.2.10/24
+set interfaces ge-1/0/2 unit 0 description "GigabitEthernet1/0/2"
+
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+set interfaces lo0 unit 0 description "Loopback0"
+
+set routing-options autonomous-system 100
+
+set protocols bgp group internal type internal
+set protocols bgp group internal local-address 1.1.1.1
+set protocols bgp group internal neighbor 2.2.2.2
+set protocols bgp group internal neighbor 3.3.3.3
+
+set protocols ospf area 0 interface lo0.0
+set protocols ospf area 0 interface ge-1/0/0.0
+set protocols ospf area 0 interface ge-1/0/1.0
+
+set policy-options prefix-list np-by-rp-ip 0.0.0.0/0
+
+set policy-options policy-statement np-by-rp term 10 from prefix-list np-by-rp-ip
+set policy-options policy-statement np-by-rp term 10 then accept
+
+set routing-options policy-options apply-groups np-by-rp

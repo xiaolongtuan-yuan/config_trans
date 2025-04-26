@@ -1,0 +1,39 @@
+#
+sysname DeviceB
+#
+multicast routing-enable  
+#
+isis 1
+ network-entity 10.0000.0000.0002.00 
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 192.168.7.1 255.255.255.0
+ pim sm
+ isis enable 1 
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 192.168.2.2 255.255.255.0
+ pim sm
+ multicast boundary 239.2.0.0 16
+ isis enable 1 
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip address 192.168.4.1 255.255.255.0
+ pim sm
+ isis enable 1 
+#
+interface LoopBack1
+ ip address 2.2.2.2 255.255.255.255
+ pim sm
+ isis enable 1 
+#
+pim
+ c-bsr admin-scope
+ c-bsr group 239.2.0.0 255.255.0.0
+ c-bsr LoopBack1
+ c-rp LoopBack1
+#
+return

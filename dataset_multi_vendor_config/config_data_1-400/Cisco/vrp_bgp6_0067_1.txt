@@ -1,0 +1,40 @@
+hostname DeviceB
+
+bfd all-interfaces
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:8::2/64
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:9::1:1/64
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:7::1/64
+
+router bgp 200
+ bgp router-id 2.2.2.2
+ neighbor 2001:db8:8::1 remote-as 100
+ neighbor 2001:db8:8::1 bfd minimum-interval 100 multiplier 4
+ neighbor 2001:db8:8::1 bfd fast-detect
+ neighbor 2001:db8:9::1:2 remote-as 200
+
+ address-family ipv4 unicast
+  no synchronization
+
+ address-family ipv6 unicast
+  no synchronization
+  network 2001:db8:7::/64
+  neighbor 2001:db8:8::1 activate
+  neighbor 2001:db8:8::1 route-policy 10 export
+  neighbor 2001:db8:9::1:2 activate
+
+route-map 10 permit 10
+ set metric 100
+
+end

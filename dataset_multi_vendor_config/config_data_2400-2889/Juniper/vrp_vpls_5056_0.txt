@@ -1,0 +1,25 @@
+set system host-name UPE
+set protocols bfd
+setprotocols mpls label-protocol ldp
+set protocols mpls ldp router-id Loopback0
+set protocols mpls l2vpn
+set interfaces pseudo-wire-class vsi1 encapsulation ldp
+set vfi vsi1 manual vpdn-id 1
+set vfi vsi1 neighbor 2.2.2.2 pw-class vsi1
+set vfi vsi1 neighbor 3.3.3.3 pw-class vsi1
+set vfi vsi1 redundancy master main-interface GigabitEthernet1/0/0 backup-interface GigabitEthernet1/0/2 preferred-peer 2.2.2.2 secondary-peer 3.3.3.3
+set interfaces ge-1/0/0 unit 10 family dot1q
+set interfaces ge-1/0/0 unit 10 family ethernet-switching virtual-template pw-class vsi1
+set interfaces ge-1/0/1 family inet address 192.168.10.1/24
+set interfaces ge-1/0/1 family mpls ip
+set interfaces ge-1/0/1 family mpls ldp
+set interfaces ge-1/0/2 family inet address 192.168.20.1/24
+set interfaces ge-1/0/2 family mpls ip
+set interfaces ge-1/0/2 family mpls ldp
+set interfaces lo0 family inet address 1.1.1.1/32
+set routing-options protocols ospf 1 network 1.1.1.1.0.0.0.0 area 0
+set routing-options protocols ospf 1 network 192.168.10.0.0.0.255 area 0
+set routing-options protocols ospf 1 network 192.168.20.0.0.0.255 area 0
+set protocols bfd template vsi1 pw-template vsi1
+set protocols bfd template vsi1 discriminator-local 104
+set protocols bfd template vsi1 discriminator-remote 401

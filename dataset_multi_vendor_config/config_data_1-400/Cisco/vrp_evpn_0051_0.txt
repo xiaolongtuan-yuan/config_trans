@@ -1,0 +1,61 @@
+hostname NPE1
+
+ip vrf evpna
+ rd 1.1.1.100:10
+ route-target export 10:10
+ route-target import 10:10
+
+mpls ldp router-id Loopback0
+
+mpls label protocol ldp
+
+mpls l2vpn
+
+mpls ldp
+
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 192.168.14.1 255.255.255.0
+ mpls ip
+
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+
+interface Loopback100
+ ip address 1.1.1.100 255.255.255.255
+
+interface GigabitEthernet1/0/1.1
+ encapsulation dot1q 100
+ xconnect 2.2.2.2 1 encapsulation mpls
+
+router bgp 100
+ neighbor 2.2.2.100 remote-as 65001
+ neighbor 2.2.2.100 ebgp-multihop 255
+ neighbor 2.2.2.100 update-source Loopback100
+
+ address-family ipv4
+  no synchronization
+  neighbor 2.2.2.100 activate
+
+ address-family l2vpn evpn
+  neighbor 2.2.2.100 activate
+  neighbor 2.2.2.100 send-community extended
+
+router ospf 1
+ router-id 1.1.1.1
+ network 1.1.1.1 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+
+router ospf 100
+ router-id 1.1.1.100
+ network 1.1.1.100 0.0.0.0 area 1
+ network 192.168.14.0 0.0.0.255 area 1
+
+evpn source-interface Loopback100
+
+end

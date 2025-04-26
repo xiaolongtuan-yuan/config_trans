@@ -1,0 +1,42 @@
+hostname PE2
+!
+ip vrf vpnc
+ rd 1:100
+ route-target export 3:100
+ route-target import 1:100
+ route-target import 2:100
+!
+mpls label protocol ldp
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls ip
+!
+interface Loopback1
+ ip address 2.2.2.2 255.255.255.255
+!
+router bgp 100
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 update-source Loopback1
+ !
+ address-family ipv4
+  neighbor 1.1.1.1 activate
+  neighbor 1.1.1.1 route-map test in
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 1.1.1.1 activate
+  neighbor 1.1.1.1 route-map test in
+ exit-address-family
+!
+route-map test permit 10
+ match extcommunity 1
+!
+route-map test deny 20
+!
+ip extcommunity-list standard 1
+ permit rt 1:100
+!
+ip route 1.1.1.1 255.255.255.255 GigabitEthernet1/0/0 10.1.1.1
+

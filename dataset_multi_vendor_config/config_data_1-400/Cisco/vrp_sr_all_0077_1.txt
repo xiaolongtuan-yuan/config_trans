@@ -1,0 +1,69 @@
+hostname P1
+
+mpls ldp router-id Loopback0 force
+
+mpls ip
+
+mpls label protocol ldp
+
+mpls ldp discovery targeted-hello accept
+
+mpls ldp discovery targeted-hello no-peer-proxy
+
+mpls ldp discovery targeted-hello accept acl ipv4 permit host 10.12.1.2
+
+mpls ldp discovery targeted-hello accept acl ipv4 permit host 10.11.1.1
+
+mpls ldp discovery targeted-hello accept acl ipv4 permit sid 330002
+
+mpls ldp discovery targeted-hello accept acl ipv4 permit sid 330003
+
+router isis
+
+net 49.0002.0000.0000.0002.00
+
+is-type level-1
+
+mpls ldp
+
+interface GigabitEthernet1/0/0
+
+no shutdown
+
+ip address 10.11.1.2 255.255.255.0
+
+isis network point-to-point
+
+isis circuit-type level-1
+
+isis enable
+
+mpls ldp
+
+interface GigabitEthernet2/0/0
+
+no shutdown
+
+ip address 10.12.1.1 255.255.255.0
+
+isis network point-to-point
+
+isis circuit-type level-1
+
+isis enable
+
+mpls ldp
+
+interface Loopback1
+
+ip address 2.2.2.9 255.255.255.255
+
+no shutdown
+
+isis network point-to-point
+
+isis circuit-type level-1
+
+isis enable
+
+end

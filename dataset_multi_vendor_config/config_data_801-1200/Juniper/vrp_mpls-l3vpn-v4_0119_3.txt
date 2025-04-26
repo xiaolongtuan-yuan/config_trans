@@ -1,0 +1,32 @@
+set system host-name ASBR2
+
+# MPLS and LDP Configuration
+set protocols mpls interface ge-0/0/0.0
+set protocols mpls interface ge-0/0/1.0
+set protocols ldp transport-address interface lo0.0
+set protocols ldp interface ge-0/0/0.0
+set protocols ldp interface ge-0/0/1.0
+
+# Interface GigabitEthernet1/0/0
+set interfaces ge-0/0/0 unit 0 family inet address 10.162.1.1/24
+set interfaces ge-0/0/0 unit 0 family mpls
+
+# Interface GigabitEthernet2/0/0
+set interfaces ge-0/0/1 unit 0 family inet address 192.168.1.2/24
+set interfaces ge-0/0/1 unit 0 family mpls
+
+# Interface Loopback1
+set interfaces lo0 unit 0 family inet address 10.33.3.9/32
+
+# BGP Configuration
+set protocols bgp group EXTERNAL neighbor 192.168.1.1 peer-as 100
+set protocols bgp group EXTERNAL neighbor 192.168.1.1 family inet unicast
+set protocols bgp group EXTERNAL neighbor 192.168.1.1 family inet-vpn unicast
+set protocols bgp group INTERNAL neighbor 10.34.4.9 peer-as 200
+set protocols bgp group INTERNAL local-address 10.33.3.9
+set protocols bgp group INTERNAL neighbor 10.34.4.9 family inet unicast
+set protocols bgp group INTERNAL neighbor 10.34.4.9 family inet-vpn unicast
+
+# OSPF Configuration
+set protocols ospf area 0.0.0.0 interface lo0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.0

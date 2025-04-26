@@ -1,0 +1,15 @@
+set system host-name CR
+
+set firewall family inet filter acl-2001 term allow-traffic from source-address 10.10.10.0/24
+set firewall family inet filter acl-2001 term allow-traffic then accept
+
+set forwarding-options forwarding-table export policy-p1
+
+set policy-options policy-statement policy-p1 term set-next-hop from route-filter 0.0.0.0/0
+set policy-options policy-statement policy-p1 term set-next-hop then next-hop 192.168.11.2
+set policy-options policy-statement policy-p1 term set-next-hop then accept
+
+set interfaces ge-2/0/2 unit 0 family inet address 192.168.10.2/24
+set interfaces ge-2/0/2 unit 0 family inet filter input acl-2001
+set interfaces ge-2/0/2 unit 0 family inet forwarding-options policy policy-p1
+set interfaces ge-2/0/2 disable

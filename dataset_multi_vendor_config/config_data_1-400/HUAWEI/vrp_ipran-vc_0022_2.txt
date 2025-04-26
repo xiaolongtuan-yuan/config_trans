@@ -1,0 +1,59 @@
+#
+sysname Master2
+#
+bfd
+#
+mpls lsr-id 3.3.3.3
+#
+mpls
+#
+mpls l2vpn
+#
+mpls ldp
+ #
+ ipv4-family    
+#
+virtual-cluster-access
+ role master
+ admin 3.3.3.3
+#
+isis 65534
+ description auto-generated for virtual-cluster-access
+ is-level level-2
+ cost-style wide
+ virtual-cluster-access enable
+ network-entity 00.38ba.103a.2c03.00
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.10.1.2 255.255.255.0
+ isis enable 65534
+ mpls
+ virtual-cluster-access enable
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.30.1.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.70.1.2 255.255.255.0
+#
+interface LoopBack0
+ ip address 3.3.3.3 255.255.255.255
+ isis enable 65534
+#
+interface Remote-Ap2
+ mpls l2vc encapsulation cesopsn-basic 5.5.5.5 5 tdm-encapsulation-number 16 jitter-buffer 32 idle-code fa
+ bind ap ip 1.1.1.1 interface Serial1/0/1:1
+#               
+ospf 1
+ opaque-capability enable
+ area 0.0.0.0
+  network 10.30.1.0 0.0.0.255
+  network 10.70.1.0 0.0.0.255  
+  network 3.3.3.3 0.0.0.0
+#
+return

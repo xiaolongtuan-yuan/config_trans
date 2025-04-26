@@ -1,0 +1,20 @@
+set system host-name PE2
+set protocols mpls ip
+set protocols mpls ldp router-id lo0
+set interfaces ge-0/0/1.0 unit 1 family inet address 1.1.1.1/24
+set interfaces ge-0/0/1.0 unit 1 encapsulation dot1q 1
+set interfaces ge-0/0/1.0 unit 1 mpls l2vc 1.1.1.1 1001 encapsulation mpls
+set interfaces ge-0/0/2 unit 0 family inet address 192.168.1.2/24
+set interfaces ge-0/0/2 unit 0 family inet mpls
+set interfaces ge-0/0/2 unit 0 family inet mpls ldp autoconfig
+set interfaces lo0 unit 0 family inet address 2.2.2.2/24
+set protocols ospf 1 area 0.0.0.0 network 1.1.1.1/32
+set protocols ospf 1 area 0.0.0.0 network 192.168.1.0/24
+set protocols cfm md md1
+set protocols cfm md md1 ma ma1
+set protocols cfm md md1 ma ma1 mep 2 interface ge-0/0/1.1 inward
+set protocols cfm md md1 ma ma1 mep 2 ccm-send mep-id 2
+set protocols cfm md md1 ma ma1 remote-mep 1
+set protocols cfm md md1 ma ma1 remote-mep ccm-receive mep-id 1
+set protocols cfm md md1 ma ma1 test-id 1 mep 2 delay-measure two-way receive test-id 1
+set protocols cfm md md1 ma ma1 test-id 2 mep 2 remote-mep 1 delay-measure two-way continual send test-id 2 interval 30000

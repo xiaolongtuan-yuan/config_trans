@@ -1,0 +1,45 @@
+#
+slot 1
+ ip netstream sampler to slot self
+#
+ sysname P
+#
+ ip netstream mpls-aware label-and-ip
+ ip netstream export version 9
+ ip netstream sampler fix-packets 10000 inbound
+ ip netstream sampler fix-packets 10000 outbound 
+ ip netstream export source 172.16.2.1
+ ip netstream export host 172.16.2.2 9001
+#
+mpls lsr-id 2.2.2.9
+#
+mpls
+ lsp-trigger all
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/0
+ ip address 172.16.1.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet2/0/0
+ ip address 172.16.3.1 255.255.255.0
+ ip netstream inbound
+ ip netstream outbound
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet3/0/0
+ ip address 172.16.2.1 255.255.255.0
+#
+interface LoopBack1
+ ip address 2.2.2.9 255.255.255.255
+#
+ospf 1
+ area 0.0.0.0
+  network 172.16.1.0 0.0.0.255
+  network 172.17.1.0 0.0.0.255
+  network 2.2.2.9 0.0.0.0
+#
+return

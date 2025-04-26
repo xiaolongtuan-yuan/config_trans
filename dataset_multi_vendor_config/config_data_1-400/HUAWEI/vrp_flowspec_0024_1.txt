@@ -1,0 +1,28 @@
+#
+sysname PE1
+#
+ip vpn-instance vpna
+ ipv6-family
+  route-distinguisher 2:2
+  apply-label per-instance
+  vpn-target 2:2 export-extcommunity
+  vpn-target 2:2 import-extcommunity
+#               
+interface GigabitEthernet1/0/0
+ undo shutdown  
+ ip binding vpn-instance vpna
+ ipv6 enable    
+ ipv6 address 2001:db8:1::2/64
+#               
+bgp 200         
+ #
+ ipv4-family unicast
+  undo synchronization
+ #              
+ vpn-instance vpna
+  peer 2001:db8:1::1 as-number 200
+ #              
+ ipv6-flow vpn-instance vpna
+  peer 2001:db8:1::1 enable
+#               
+return

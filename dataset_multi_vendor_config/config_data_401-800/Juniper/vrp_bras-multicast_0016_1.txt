@@ -1,0 +1,22 @@
+set system host-name BRAS
+set routing-options multicast
+set system authentication-order radius password
+set system accounting events exec start-stop
+set system radius-server 10.1.4.15 secret "radius-secret" source-address 10.1.4.1
+set system radius-server 10.1.4.15 authentication-port 1812
+set system radius-server 10.1.4.15 accounting-port 1813
+set interfaces ge-1/0/1 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-1/0/1 unit 0 family inet pim sparse-mode
+set interfaces ge-1/0/2 unit 1 vlan-id 10
+set interfaces ge-1/0/2 unit 1 family inet address 10.1.3.1/24
+set interfaces ge-1/0/2 unit 1 family inet pim sparse-mode
+set interfaces ge-1/0/3 unit 0 family inet address 10.1.4.1/24
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+set interfaces lo0 unit 0 family inet pim sparse-mode
+set protocols ospf area 0 interface ge-1/0/1.0
+set protocols ospf area 0 interface ge-1/0/2.1
+set protocols ospf area 0 interface ge-1/0/3.0
+set protocols ospf area 0 interface lo0.0
+set protocols pim rp static address 1.1.1.1
+set protocols pim bsr-candidate interface lo0
+set protocols pim rp-candidate interface lo0

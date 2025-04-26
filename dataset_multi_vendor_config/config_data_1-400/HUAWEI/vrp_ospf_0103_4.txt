@@ -1,0 +1,26 @@
+#
+ sysname DeviceE
+#
+router id 5.5.5.5
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.2.1.2 255.255.255.252
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.3.1.1 255.255.255.252
+#
+interface LoopBack0
+ ip address 5.5.5.5 255.255.255.255
+#
+bgp 20
+ router-id 5.5.5.5
+ peer 10.2.1.1 as-number 10
+#
+ipv4-family unicast
+  undo synchronization
+  network 10.3.1.0 255.255.255.252
+  peer 10.2.1.1 enable
+#
+return

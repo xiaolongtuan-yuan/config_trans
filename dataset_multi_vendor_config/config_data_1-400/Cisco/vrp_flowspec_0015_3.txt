@@ -1,0 +1,26 @@
+hostname DeviceD
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+interface Loopback1
+ ip address 4.4.4.4 255.255.255.255
+router bgp 200
+ bgp router-id 4.4.4.4
+ neighbor 2.2.2.2 remote-as 200
+ neighbor 2.2.2.2 update-source Loopback1
+ !
+ address-family ipv4
+  neighbor 2.2.2.2 activate
+  no synchronization
+ exit-address-family
+ !
+ address-family ipv6
+  neighbor 2.2.2.2 activate
+ exit-address-family
+router ospf 1
+ network 4.4.4.4 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+flow-route ipv6 FlowSpec2
+ match source-port 170
+ set traffic-rate 10000
+end

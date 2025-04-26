@@ -1,0 +1,29 @@
+hostname PE1
+
+mpls ip
+mpls label protocol ldp
+mpls ldp router-id Loopback0 force
+mpls ldp discovery targeted-hello accept
+mpls ldp neighbor 3.3.3.3 targeted-hello accept
+
+network-clock synchronization enable
+network-clock synchronization slot 1 subslot 1
+network-clock synchronization recover
+network-clock synchronization recover domain 1
+network-clock synchronization recover priority 1
+
+controller T1 1/0/1
+cablelength long 0db
+channel-group 1 timeslots 1-31
+
+interface Serial1/0/1:1
+ clock source line primary
+ mpls tdm neighbor 3.3.3.3 100 control-word
+ ip address 10.1.1.1 255.255.255.0
+
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.255
+
+router ospf 1
+ network 2.2.2.2 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0

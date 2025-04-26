@@ -1,0 +1,27 @@
+hostname P
+!
+ipv6 unicast-routing
+!
+router isis 1
+ isis circuit-type level-1
+ isis cost-style wide
+ isis net 10.0000.0000.0002.00
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:20::1/64
+ isis ipv6 enable 1
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:10::2/64
+ isis ipv6 enable 1
+!
+interface Loopback1
+ ipv6 enable
+ ipv6 address 2001:DB8:2::2/128
+ isis ipv6 enable 1
+!
+end

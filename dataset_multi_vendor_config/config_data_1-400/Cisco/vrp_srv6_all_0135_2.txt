@@ -1,0 +1,60 @@
+hostname PE2
+
+ip vrf vpn1
+ rd 200:1
+ route-target export 1:1
+ route-target import 1:1
+
+ipv6 source-route
+ source-route ipv6 2001:DB8:3::3
+ locator-set PE2 2001:DB8:130::/64 sid 32
+ opcode ::200 end-dt4
+ vrf vpn1
+ vni evpn
+
+router isis 1
+ is-type level-1
+ metric-style wide
+ net 10.0000.0000.0003.00
+
+ipv6 unicast-routing
+ segment-routing global-block 2001:DB8::/32
+ segment-routing locator-set PE2
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:20::2/64
+ ipv6 router isis 1
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ vrf forwarding vpn1
+ ip address 10.2.1.1 255.255.255.0
+
+interface Loopback1
+ ipv6 enable
+ ipv6 address 2001:DB8:3::3/128
+ ipv6 router isis 1
+
+router bgp 100
+ bgp router-id 3.3.3.3
+ neighbor 2001:DB8:1::1 remote-as 100
+ neighbor 2001:DB8:1::1 update-source Loopback1
+
+ address-family ipv4 unicast
+  no synchronization
+
+ address-family vpnv4
+  neighbor 10.2.1.2 remote-as 65420
+  import route direct
+  advertise l2vpn evpn
+  segment-routing vni PE2 evpn
+  segment-routing vni best-effort evpn
+
+ address-family l2vpn evpn
+  no advertise vpn-target
+  neighbor 2001:DB8:1::1 activate
+  neighbor 2001:DB8:1::1 advertise encap-type srv6
+
+exit

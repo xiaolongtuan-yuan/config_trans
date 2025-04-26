@@ -1,0 +1,22 @@
+hostname DeviceA
+!
+ipv6 unicast-routing
+!
+bfd
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:1::1/64
+!
+ipv6 route ::/0 2001:db8:1::2
+ bfd interval 250 min_rx 250 multiplier 3
+!
+bfd template local-remote
+ discriminator local 10
+ discriminator remote 20
+!
+bfd peer 2001:db8:1::2 template local-remote
+!
+end
+

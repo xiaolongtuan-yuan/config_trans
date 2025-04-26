@@ -1,0 +1,51 @@
+hostname NPE
+
+mpls label protocol ldp
+
+mpls ldp router-id Loopback1 force
+
+mpls ldp discovery targeted-hello accept
+
+interface Global-VE1
+
+bridge-domain 1
+
+interface Global-VE1.1
+
+encapsulation dot1q 1
+
+xconnect 1.1.1.9 101 encapsulation mpls
+
+interface Global-VE2
+
+bridge-domain 2
+
+interface Global-VE2.1
+
+encapsulation dot1q 1
+
+ip address 10.10.1.2 255.255.255.0
+
+interface GigabitEthernet2/0/0
+
+no shutdown
+
+ip address 10.2.2.2 255.255.255.0
+
+mpls ip
+
+interface Loopback1
+
+ip address 3.3.3.9 255.255.255.255
+
+router ospf 1
+
+network 3.3.3.9 0.0.0.0 area 0
+
+network 10.2.2.0 0.0.0.255 area 0
+
+router ospf 2
+
+network 10.10.1.0 0.0.0.255 area 0
+
+end

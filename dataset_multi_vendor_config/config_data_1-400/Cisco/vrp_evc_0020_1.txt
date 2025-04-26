@@ -1,0 +1,39 @@
+hostname PE2
+
+mpls ldp router-id loopback0
+
+mpls ip
+
+mpls l2vpn xconnect context ldp1
+
+member vfi ldp1
+
+neighbor 1.1.1.9 pw-id 2
+
+interface GigabitEthernet1/0/1
+
+no shutdown
+
+interface GigabitEthernet1/0/1.10
+
+encapsulation dot1q 10
+
+xconnect vfi ldp1
+
+interface GigabitEthernet1/0/2
+
+no shutdown
+
+ip address 10.1.1.2 255.255.255.0
+
+mpls ip
+
+mpls ldp
+
+router ospf 1
+
+network 2.2.2.9 0.0.0.0 area 0
+
+network 10.1.1.0 0.0.0.255 area 0
+
+end

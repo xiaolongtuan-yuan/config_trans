@@ -1,0 +1,35 @@
+hostname PE2
+
+mpls label protocol ldp
+mpls ip
+
+interface GigabitEthernet1/0/2
+no shutdown
+ip address 172.16.34.4 255.255.255.0
+mpls ip
+mpls ldp autoconfig
+mpls ldp discovery transport-address 4.4.4.4
+
+interface GigabitEthernet1/0/1
+no shutdown
+
+interface GigabitEthernet1/0/1.1
+encapsulation dot1q 10
+xconnect vfi ldp1
+
+interface GigabitEthernet1/0/3
+no shutdown
+ip address 172.16.45.4 255.255.255.0
+mpls ip
+mpls ldp autoconfig
+mpls ldp discovery transport-address 4.4.4.4
+
+interface Loopback1
+ip address 4.4.4.4 255.255.255.255
+
+router ospf 1
+network 4.4.4.4 0.0.0.0 area 0
+network 172.16.34.0 0.0.0.255 area 0
+network 172.16.45.0 0.0.0.255 area 0
+
+end

@@ -1,0 +1,29 @@
+set system host-name DeviceA
+
+set vlans vlan2 vlan-id 2
+set vlans vlan3 vlan-id 3
+set vlans vlan4 vlan-id 4
+
+set protocols oam ethernet connectivity-fault-management
+
+set interfaces ge-1/0/0 unit 0 family ethernet-switching vlan members [vlan2 vlan3 vlan4]
+set interfaces ge-1/0/0 unit 0 family ethernet-switching interface-mode trunk
+
+set interfaces ge-1/0/1 unit 0 family ethernet-switching vlan members [vlan2 vlan3 vlan4]
+set interfaces ge-1/0/1 unit 0 family ethernet-switching interface-mode trunk
+
+set interfaces ge-1/0/2 unit 0 family ethernet-switching vlan members [vlan2 vlan3 vlan4]
+set interfaces ge-1/0/2 unit 0 family ethernet-switching interface-mode trunk
+
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 level 6
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 vlan vlan2
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma2 vlan vlan3
+
+set protocols oam ethernet connectivity-fault-management maintenance-domain md2 level 4
+set protocols oam ethernet connectivity-fault-management maintenance-domain md2 maintenance-association ma3 vlan vlan4
+set protocols oam ethernet connectivity-fault-management maintenance-domain md2 maintenance-association ma3 mep 1 interface ge-1/0/1 direction inward
+set protocols oam ethernet connectivity-fault-management maintenance-domain md2 maintenance-association ma3 mep 1 ccm-send enable
+set protocols oam ethernet connectivity-fault-management maintenance-domain md2 maintenance-association ma3 remote-mep 2
+set protocols oam ethernet connectivity-fault-management maintenance-domain md2 maintenance-association ma3 remote-mep 2 ccm-receive enable
+set protocols oam ethernet connectivity-fault-management maintenance-domain md2 maintenance-association ma3 remote-mep 3
+set protocols oam ethernet connectivity-fault-management maintenance-domain md2 maintenance-association ma3 remote-mep 3 ccm-receive enable

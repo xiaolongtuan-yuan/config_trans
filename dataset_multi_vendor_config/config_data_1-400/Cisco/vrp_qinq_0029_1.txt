@@ -1,0 +1,25 @@
+hostname PE2
+
+interface GigabitEthernet1/0/1
+ no shutdown
+
+interface GigabitEthernet1/0/1.1
+ ip address 10.1.1.2 255.255.255.0
+ encapsulation dot1q 10 second-dot1q 100
+ arp broadcast enable
+
+interface GigabitEthernet1/0/1.2
+ ip address 10.10.1.2 255.255.255.0
+ encapsulation dot1q 20 second-dot1q 100
+ arp broadcast enable
+
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 192.168.1.1 255.255.255.0
+
+router ospf 1
+ network 10.1.1.0 0.0.0.255 area 0
+ network 192.168.1.0 0.0.0.255 area 0
+ network 10.10.1.0 0.0.0.255 area 0
+
+end

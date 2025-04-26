@@ -1,0 +1,30 @@
+hostname DeviceB
+vlan 10
+interface GigabitEthernet 1/0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 10
+interface GigabitEthernet 1/0/1
+ no shutdown
+interface GigabitEthernet 1/0/2
+ switchport mode trunk
+ switchport trunk allowed vlan 10
+interface GigabitEthernet 1/0/2
+ no shutdown
+ip sla 1
+ udp-jitter 5678 source-ip 00e0.fc12.3456 dest-ip 00e0.fc12.3457 dest-port 1234
+ frequency 10
+ threshold 1000
+policy-map test
+ class class-default
+  police cir 10000 bc 10000
+  conform-action transmit
+  exceed-action drop
+  violate-action drop
+interface GigabitEthernet 1/0/1
+ service-policy input test
+ip sla schedule 1 start-time now life forever
+ track 1 ip sla 1 reachability
+interface GigabitEthernet 1/0/1
+ ip sla monitor 1
+interface Vlan10
+ ip address <IP_ADDRESS> <SUBNET_MASK>

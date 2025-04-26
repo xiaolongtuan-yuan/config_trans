@@ -1,0 +1,15 @@
+set system host-name DeviceA
+
+set security authentication-key-chains key-chain Huawei key 1 secret "051C0A1B010E5E5D137D2F3B164D2C4F516337226A2B2C297D1B1C1D"
+set security authentication-key-chains key-chain Huawei key 1 start-time "2009-12-24.11:00" duration 3600
+set security authentication-key-chains key-chain Huawei key 1 accept-time "2009-12-24.11:00" duration 3600
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.20.1.1/24
+
+set routing-options autonomous-system 100
+set routing-options router-id 1.1.1.1
+set protocols bgp group EBGP-200 type external
+set protocols bgp group EBGP-200 peer-as 200
+set protocols bgp group EBGP-200 neighbor 10.20.1.2
+set protocols bgp group EBGP-200 authentication-key "Huawei"
+set protocols bgp group EBGP-200 family inet unicast

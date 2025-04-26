@@ -1,0 +1,70 @@
+hostname PE1
+!
+router mvpn 1.1.1.1
+!
+ip vrf ng
+ rd 1:1
+ label vpn-per-instance
+ route-target export 1:1
+ route-target import 1:1
+ multicast routing-enable
+ mvpn
+  sender-enable
+  c-multicast signaling bgp
+  import msdp
+  spt-only mode
+  ipmsi-tunnel
+   mldp
+!
+mpls ldp
+ router-id 1.1.1.1
+!
+interface GigabitEthernet1/0/1
+ no shutdown 
+ ip address 10.0.2.3 255.255.255.0
+ mpls 
+ mpls ldp
+!
+interface GigabitEthernet1/0/2
+ no shutdown 
+ ip vrf forwarding ng
+ ip address 10.0.6.3 255.255.255.0
+ ip pim sparse-mode
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+!
+router bgp 100
+ neighbor 2.2.2.2 remote-as 100
+ neighbor 2.2.2.2 update-source Loopback0
+ !
+ address-family ipv4 unicast
+  synchronization
+  network 1.1.1.1 mask 255.255.255.255
+  neighbor 2.2.2.2 activate
+ !
+ address-family ipv4 multicast mvpn
+  import vpn-target
+  neighbor 2.2.2.2 activate
+ !
+ address-family vpnv4 unicast
+  import vpn-target
+  neighbor 2.2.2.2 activate
+ !
+ address-family vpnv4 vrf ng
+  import-route ospf 2
+!
+router ospf 1
+ area 0.0.0.0
+  network 10.0.2.0 0.0.0.255
+  network 1.1.1.1 0.0.0.0
+!
+router ospf 2 vrf ng
+ area 0.0.0.1
+  network 10.0.6.0 0.0.0.255
+!
+ip pim vrf ng
+ rp-address 10.0.6.3
+ source-lifetime 60
+!
+end

@@ -1,0 +1,53 @@
+#
+sysname DeviceE
+#
+multicast routing-enable
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 192.168.5.1 255.255.255.0
+ pim sm
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ip address 192.168.4.2 255.255.255.0
+ pim bsr-boundary
+ pim sm
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 192.168.6.2 255.255.255.0
+ pim bsr-boundary
+ pim sm
+#
+interface LoopBack0
+ ip address 3.3.3.3 255.255.255.255
+ pim sm
+#
+pim
+ c-bsr LoopBack0
+ c-rp LoopBack0
+# 
+ospf 1
+ import-route BGP
+ area 0.0.0.0
+  network 192.168.4.0 0.0.0.255
+  network 192.168.5.0 0.0.0.255
+  network 3.3.3.3 0.0.0.0
+#
+bgp 200
+ router-id 3.3.3.3
+ peer 192.168.6.1 as-number 100
+ peer 192.168.6.1 ebgp-max-hop 255
+ #
+ ipv4-family unicast
+  import-route ospf 1
+  peer 192.168.6.1 enable
+#
+msdp
+ peer 192.168.4.1 connect-interface GigabitEthernet3/0/0
+ peer 192.168.4.1 mesh-group group1
+ peer 192.168.6.1 connect-interface GigabitEthernet1/0/1
+ peer 192.168.6.1 mesh-group group1
+#
+return

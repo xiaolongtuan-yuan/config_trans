@@ -1,0 +1,41 @@
+set system host-name DeviceA
+
+set system radius-server 192.168.7.249 port 1645 secret %^%#clY:%[]x='-RMNJus[s/VJ:3YBq3<..|.{'xgbp+%^%
+set system radius-options accounting-port 1646
+set system radius-options authentication-order password
+set system accounting events interactive
+
+set interfaces vt1 encapsulation ppp
+set interfaces vt1 ppp-options chap default
+
+set interfaces ge-0/0/1 unit 0 description "Access Interface"
+set interfaces ge-0/0/1.1 encapsulation ethernet-bridge
+set interfaces ge-0/0/1.1 vlan-id 1
+set interfaces ge-0/0/1.1 family bridge interface-mode access
+set bridge-domains bd1 vlan-id 1
+set bridge-domains bd1 interface ge-0/0/1.1
+set bridge-domains bd1 mac-learning disable
+set bridge-domains bd1 subscriber-loop-detection disable
+set bridge-domains bd1 no-mac-flush-on-topology-change
+
+set routing-instances isp1 instance-type vrf
+set routing-instances isp1 route-distinguisher 100:1
+set routing-instances isp1 vrf-target export target:100:100
+set routing-instances isp1 vrf-target import target:100:100
+
+set interfaces ge-1/0/1 unit 0 family inet address 10.1.1.1/24
+
+set system services dhcp-local-server group pool1 interface ge-0/0/1.1
+set access address-assignment pool pool1 family inet network 10.82.0.0/24
+set access address-assignment pool pool1 family inet range range1 low 10.82.0.2
+set access address-assignment pool pool1 family inet range range1 high 10.82.0.200
+set access address-assignment pool pool1 family inet dhcp-attributes router 10.82.0.1
+set access address-assignment pool pool1 family inet dhcp-attributes name-server 192.168.7.252
+
+set system authentication-order radius
+set system login user admin class super-user
+
+set system domain-name default0
+set system domain-name default1
+set system domain-name default_admin
+set system domain-name isp1

@@ -1,0 +1,32 @@
+hostname P2
+!
+mpls label protocol ldp
+!
+mpls traffic-eng tunnels
+!
+router isis
+ net 49.0000.0000.0000.0004.00
+ is-type level-1
+ metric-style wide
+ segment-routing mpls
+ segment-routing global-block 16000 23999
+ fast-reroute per-prefix
+  per-prefix-alternate fast-reroute
+  per-prefix-alternate ti-lfa
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 172.18.1.2 255.255.255.0
+ isis network point-to-point
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 172.19.1.1 255.255.255.0
+ isis network point-to-point
+!
+interface LoopBack1
+ ip address 4.4.4.9 255.255.255.255
+ isis network point-to-point
+ isis prefix-sid 40
+!
+end

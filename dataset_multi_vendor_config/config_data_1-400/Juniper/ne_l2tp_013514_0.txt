@@ -1,0 +1,30 @@
+set system host-name DeviceA
+
+set protocols l2tp enable
+
+set system aaa authentication-order radius
+set system aaa radius-server 10.0.0.249 secret "050803150C1E"
+set system aaa accounting-order radius
+set system aaa accounting-server 10.0.0.249 secret "050803150C1E"
+
+set interfaces pptp-pool pptp-server username lac1 password "000A0B1A2B3C4D"
+
+set interfaces ge-0/0/0 unit 100 family inet address 10.0.0.1/24
+set interfaces ge-0/0/0 unit 100 pppoe-options pppoe-server username lac1 password "000A0B1A2B3C4D"
+set interfaces ge-0/0/0 unit 100 family inet address 10.0.0.1/24
+set pppoe-options pppoe-server bind Virtual-Template1
+set pppoe-options pppoe-server user-vlan 100
+
+set routing-instances vrf1 instance-type virtual-router
+set routing-instances vrf1 route-distinguisher 100:1
+set routing-instances vrf1 routing-options route-target import 100:1
+set routing-instances vrf1 routing-options route-target export 100:1
+
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+set routing-instances vrf1 interface lo0.0
+
+set protocols l2tp l2tp-class lac1 password "08090A1B2C3D4E"
+set protocols l2tp l2tp-class lac1 tunnel-destination 3.3.3.3
+set protocols l2tp l2tp-class lac1 tunnel-source lo0
+
+set routing-instances vrf1 routing-options static route 3.3.3.3/32 next-hop 10.0.0.2

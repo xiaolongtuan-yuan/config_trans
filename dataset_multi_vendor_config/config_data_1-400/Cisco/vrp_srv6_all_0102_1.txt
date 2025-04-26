@@ -1,0 +1,24 @@
+hostname P
+ipv6 cef
+ipv6 segment-routing
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:10::2/96
+interface Loopback1
+ ipv6 enable
+ ipv6 address 2001:DB8:2::2/128
+router isis
+ isis router-id 10.0.0.2
+ is-type level-1
+ net 49.0001.0000.0000.0002.00
+ address-family ipv6 unicast
+  segment-routing mpls
+ exit-address-family
+interface GigabitEthernet1/0/0
+ ipv6 router isis
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:10::2/96
+write memory

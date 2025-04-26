@@ -1,0 +1,44 @@
+set system host-name NPE1
+
+set routing-instances evpna instance-type vrf
+set routing-instances evpna route-distinguisher 1.1.1.100:10
+set routing-instances evpna vrf-target target:10:10
+
+set protocols mpls interface lo0.0
+set protocols mpls interface ge-1/0/1.0
+set protocols mpls interface ge-1/0/2.0
+
+set protocols ldp interface lo0.0
+set protocols ldp interface ge-1/0/1.0
+set protocols ldp interface ge-1/0/2.0
+
+set interfaces ge-1/0/1 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-1/0/1 unit 0 family mpls
+
+set interfaces ge-1/0/2 unit 0 family inet address 192.168.14.1/24
+set interfaces ge-1/0/2 unit 0 family mpls
+
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+
+set interfaces lo100 unit 0 family inet address 1.1.1.100/32
+
+set interfaces ge-1/0/1 unit 1 vlan-id 100
+set interfaces ge-1/0/1 unit 1 family ccc
+set protocols l2circuit interface ge-1/0/1.1 neighbor 2.2.2.2 virtual-circuit-id 1
+
+set routing-options autonomous-system 100
+
+set protocols bgp group EBGP_65001 type external
+set protocols bgp group EBGP_65001 peer-as 65001
+set protocols bgp group EBGP_65001 neighbor 2.2.2.100 multihop ttl 255
+set protocols bgp group EBGP_65001 neighbor 2.2.2.100 local-address 1.1.1.100
+set protocols bgp group EBGP_65001 family inet unicast
+set protocols bgp group EBGP_65001 family evpn signaling
+
+set protocols ospf area 0 interface lo0.0
+set protocols ospf area 0 interface ge-1/0/1.0
+
+set protocols ospf area 1 interface lo100.0
+set protocols ospf area 1 interface ge-1/0/2.0
+
+set protocols evpn source-interface lo100.0

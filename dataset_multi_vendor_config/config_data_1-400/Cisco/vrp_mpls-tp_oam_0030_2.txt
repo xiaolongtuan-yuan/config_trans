@@ -1,0 +1,36 @@
+hostname LSRC
+
+mpls label protocol ldp
+
+interface GigabitEthernet1/0/0
+no shut
+ip address 3.2.1.2 255.255.255.0
+mpls ip
+
+interface GigabitEthernet1/0/0.1
+encapsulation dot1q 1
+xconnect 1.1.1.1 30000 encapsulation mpls
+mpls label protocol ldp
+mpls label protocol ldp
+
+interface Loopback1
+ip address 3.3.3.3 255.255.255.255
+
+interface Tunnel20
+ip unnumbered Loopback1
+tunnel mode mpls traffic-eng
+tunnel destination 1.1.1.1
+tunnel mpls traffic-eng path-option 1 explicit name lsp1
+tunnel mpls traffic-eng autoroute announce
+tunnel mpls traffic-eng autoroute destination 1.1.1.1
+tunnel mpls traffic-eng autoroute metric absolute 1
+mpls traffic-eng binding to-lsp 1.1.1.1 lsp1
+mpls traffic-eng reserved-for-binding
+
+ip route 1.1.1.1 255.255.255.255 3.2.1.1
+ip route 2.2.2.2 255.255.255.255 3.2.1.1
+
+mpls traffic-eng tunnel destination 1.1.1.1
+mpls traffic-eng tunnel mpls-tp meg test
+mpls traffic-eng tunnel mpls-tp meg test mep 2 mep-ida 1.1.1.1 vc 30000
+

@@ -1,0 +1,54 @@
+hostname PE1
+
+mpls lsr-id 1.1.1.9
+
+mpls label protocol ldp
+
+mpls l2vpn
+
+vsi a2
+ pwsignal ldp
+  vsi-id 2
+  peer 3.3.3.9 tnl-policy policy1
+
+ip explicit-path name path2pe2
+ next-label 16300
+ next-label 16200
+
+mpls ldp
+ interface GigabitEthernet1/0/0
+  ip address 10.10.1.1 255.255.255.0
+
+interface GigabitEthernet2/0/0
+ no shutdown
+
+interface GigabitEthernet2/0/0.1
+ encapsulation dot1Q 10
+ xconnect vsi a2
+
+interface Loopback1
+ ip address 1.1.1.9 255.255.255.255
+
+interface Tunnel10
+ ip unnumbered Loopback1
+ tunnel mode mpls traffic-eng
+ tunnel destination 3.3.3.9
+ tunnel mpls traffic-eng autoroute announce
+ tunnel mpls traffic-eng path-option 10 explicit name path2pe2
+
+router ospf 1
+ mpls traffic-eng area
+ segment-routing mpls
+ segment-routing global-block 16000 47999
+ network 1.1.1.9 0.0.0.0 area 0
+ network 10.10.1.0 0.0.0.255 area 0
+
+tunnel-te policy policy1
+ destination 3.3.3.9
+ tunnel mode mpls traffic-eng
+ tunnel mpls traffic-eng autoroute announce
+ tunnel mpls traffic-eng bandwidth 1000000
+ tunnel mpls traffic-eng path-option 10 explicit name path2pe2
+
+end
+

@@ -1,0 +1,23 @@
+set system host-name PE2
+
+set protocols mpls interface ge-1/0/2
+set protocols mpls interface lo0.1
+set protocols ldp router-id 3.3.3.3
+set protocols ldp interface ge-1/0/2
+
+set interfaces ge-1/0/1 unit 0 family ethernet-switching interface-mode trunk
+set interfaces ge-1/0/1 unit 1 vlan-id 10
+set interfaces ge-1/0/1 unit 1 encapsulation vlan-ccc
+set interfaces ge-1/0/1 unit 1 family mpls static-mpls-label 100
+set interfaces ge-1/0/1 unit 1 family mpls neighbor 1.1.1.1
+
+set interfaces ge-1/0/2 unit 0 family inet address 10.2.1.2/30
+set interfaces ge-1/0/2 unit 0 family mpls
+
+set interfaces lo0 unit 1 family inet address 3.3.3.3/32
+
+set protocols ospf area 0.0.0.0 interface ge-1/0/2.0 interface-type p2p
+set protocols ospf area 0.0.0.0 interface lo0.1 passive
+
+set protocols cfm domain ma1 association ma1 level 6 vlan-id 10
+set protocols cfm domain ma1 association ma1 mep local-mep 32 interface ge-1/0/1.1

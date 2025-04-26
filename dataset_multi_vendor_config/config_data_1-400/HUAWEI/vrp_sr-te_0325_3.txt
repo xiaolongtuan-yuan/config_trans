@@ -1,0 +1,21 @@
+#
+sysname Controller
+#
+pce-server
+ source-address 10.2.1.2
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ip address 10.2.1.2 255.255.255.0
+#
+bgp 100
+ peer 10.2.1.1 as-number 100
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 10.2.1.1 enable
+ #
+ link-state-family unicast
+  peer 10.2.1.1 enable
+#
+return

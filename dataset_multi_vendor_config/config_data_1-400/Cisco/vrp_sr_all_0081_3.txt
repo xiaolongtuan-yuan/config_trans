@@ -1,0 +1,45 @@
+hostname P2
+
+mpls ldp router-id Loopback0
+
+mpls label protocol ldp
+
+mpls ip
+
+mpls ldp advertise-labels for 10.13.1.2/32
+
+mpls ldp advertise-labels for 10.14.1.1/32
+
+router isis
+
+ net 49.0000.0000.0000.0004.00
+
+ is-type level-1
+
+ segment-routing mpls
+
+ metric-style wide
+
+interface GigabitEthernet1/0/0
+
+ no shutdown
+
+ ip address 10.13.1.2 255.255.255.0
+
+ isis network point-to-point
+
+interface GigabitEthernet2/0/0
+
+ no shutdown
+
+ ip address 10.14.1.1 255.255.255.0
+
+ isis network point-to-point
+
+interface Loopback1
+
+ ip address 4.4.4.9 255.255.255.255
+
+ isis network point-to-point
+
+end

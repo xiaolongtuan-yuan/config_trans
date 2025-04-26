@@ -1,0 +1,23 @@
+set system host-name CE
+
+set vlans vlan10 vlan-id 10
+set vlans vlan100 vlan-id 100
+
+set protocols rstp vlan-group vlan10-100 vlan [10 100]
+
+set protocols erps ring 1 control-vlan 100
+set protocols erps ring 1 protected-instance 0
+set protocols erps ring 1 version 2
+set protocols erps ring 1 sub-ring
+
+set interfaces ge-1/0/0 unit 0 family ethernet-switching vlan members [10 100]
+set interfaces ge-1/0/0 unit 0 family ethernet-switching port-mode trunk
+set interfaces ge-1/0/0 disable false
+set protocols rstp interface ge-1/0/0 bpdu-filter
+set protocols erps ring 1 interface ge-1/0/0
+
+set interfaces ge-2/0/0 unit 0 family ethernet-switching vlan members [10 100]
+set interfaces ge-2/0/0 unit 0 family ethernet-switching port-mode trunk
+set interfaces ge-2/0/0 disable true
+set protocols rstp interface ge-2/0/0 bpdu-filter
+set protocols erps ring 1 interface ge-2/0/0 rpl-owner

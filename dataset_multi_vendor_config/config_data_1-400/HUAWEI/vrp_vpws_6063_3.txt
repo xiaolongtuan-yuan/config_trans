@@ -1,0 +1,49 @@
+#
+sysname ASBR1
+#
+mpls lsr-id 2.2.2.9
+#
+mpls
+#
+mpls l2vpn
+#
+mpls ldp
+#               
+interface GigabitEthernet1/0/0
+ undo shutdown  
+ ip address 10.10.1.2 255.255.255.0
+ mpls           
+ mpls ldp       
+#               
+interface GigabitEthernet2/0/0
+ undo shutdown  
+#               
+interface LoopBack1
+ ip address 2.2.2.9 255.255.255.255
+#               
+mpls l2vpn vpn1 encapsulation ethernet
+ route-distinguisher 100:1
+ vpn-target 1:1 import-extcommunity
+ vpn-target 1:1 export-extcommunity
+ ce ce2 id 2 range 10 default-offset 0
+  connection ce-offset 1 interface GigabitEthernet2/0/0
+#               
+bgp 100         
+ peer 1.1.1.9 as-number 100
+ peer 1.1.1.9 connect-interface LoopBack1
+ #              
+ ipv4-family unicast
+  undo synchronization
+  peer 1.1.1.9 enable
+ #              
+ l2vpn-ad-family
+  policy vpn-target
+  peer 1.1.1.9 enable
+  peer 1.1.1.9 signaling vpws
+#               
+ospf 1          
+ area 0.0.0.0   
+  network 2.2.2.9 0.0.0.0
+  network 10.10.1.0 0.0.0.255
+#               
+return

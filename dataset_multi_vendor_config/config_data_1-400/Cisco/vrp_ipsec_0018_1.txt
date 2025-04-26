@@ -1,0 +1,40 @@
+hostname DeviceB
+!
+crypto isakmp policy 1
+ encr aes
+ authentication pre-share
+ group 2
+ lifetime 28800
+crypto isakmp key %^%^<}j/@XSE9JZT5]2"T#]2"T<}j/@XSE9JZT5>%^%^ address 0.0.0.0
+!
+crypto ipsec transform-set proposal2 esp-sha256-hmac 
+ mode transport
+!
+crypto ipsec profile sa2
+ set transform-set proposal2 
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8::2/64
+ ospfv3 1 ipv4 area 0.0.0.1
+ ospfv3 1 ipv6 area 0.0.0.1
+!
+router ospfv3 1
+ router-id 2.2.2.2
+ !
+ address-family ipv4 unicast
+  redistribute connected
+  redistribute static
+  redistribute ospfv3 1 subnets
+  network 0.0.0.0 255.255.255.255 area 0.0.0.1
+ exit-address-family
+ !
+ address-family ipv6 unicast
+  redistribute connected
+  redistribute static
+  redistribute ospfv3 1 subnets
+  network ::/0 area 0.0.0.1
+ exit-address-family
+!
+end

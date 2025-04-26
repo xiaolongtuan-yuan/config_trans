@@ -1,0 +1,31 @@
+#
+ sysname CE2
+#
+ mpls lsr-id 5.5.5.9
+ mpls
+#
+mpls ldp
+#
+interface Gigabitethernet1/0/0
+ undo shutdown
+ ip address 21.1.1.2 255.255.255.0
+ mpls
+ mpls ldp
+ mpls ldp transport-address interface
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 20.1.1.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack1
+ ip address 5.5.5.9 255.255.255.255
+#
+ospf 1
+ area 0.0.0.0
+  network 5.5.5.9 0.0.0.0
+  network 21.1.1.0 0.0.0.255
+  network 20.1.1.0 0.0.0.255
+#
+return

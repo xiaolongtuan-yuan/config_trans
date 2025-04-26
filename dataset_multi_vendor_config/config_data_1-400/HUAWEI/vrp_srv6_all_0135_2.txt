@@ -1,0 +1,60 @@
+#
+sysname PE2
+#
+ip vpn-instance vpn1
+ ipv4-family
+  route-distinguisher 200:1
+  vpn-target 1:1 export-extcommunity evpn
+  vpn-target 1:1 import-extcommunity evpn
+#
+segment-routing ipv6
+ encapsulation source-address 2001:DB8:3::3
+ locator PE2 ipv6-prefix 2001:DB8:130:: 64 static 32
+ opcode ::200 end-dt4 vpn-instance vpn1 evpn
+#
+isis 1
+ is-level level-1
+ cost-style wide
+ network-entity 10.0000.0000.0003.00
+ #
+ ipv6 enable topology ipv6
+ segment-routing ipv6 locator PE2
+ #
+#
+interface GigabitEthernet1/0/0
+ undo shutdown  
+ ipv6 enable
+ ipv6 address 2001:DB8:20::2/64
+ isis ipv6 enable 1
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip binding vpn-instance vpn1
+ ip address 10.2.1.1 255.255.255.0
+#
+interface LoopBack1
+ ipv6 enable
+ ipv6 address 2001:DB8:3::3/128
+ isis ipv6 enable 1
+#
+bgp 100
+ router-id 3.3.3.3
+ peer 2001:DB8:1::1 as-number 100
+ peer 2001:DB8:1::1 connect-interface LoopBack1
+ #
+ ipv4-family unicast
+  undo synchronization
+ #
+ ipv4-family vpn-instance vpn1
+  import-route direct
+  advertise l2vpn evpn
+  segment-routing ipv6 locator PE2 evpn
+  segment-routing ipv6 best-effort evpn
+  peer 10.2.1.2 as-number 65420
+ #
+ l2vpn-family evpn
+  undo policy vpn-target
+  peer 2001:DB8:1::1 enable
+  peer 2001:DB8:1::1 advertise encap-type srv6
+#
+return

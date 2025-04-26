@@ -1,0 +1,31 @@
+hostname GW2
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.30.2 255.255.255.0
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.50.1 255.255.255.0
+
+interface Loopback1
+ ip address 7.7.7.7 255.255.255.255
+
+router bgp 65420
+ neighbor 6.6.6.6 remote-as 65420
+ neighbor 6.6.6.6 update-source Loopback1
+ neighbor 192.168.30.1 remote-as 100
+ !
+ address-family ipv4
+  no synchronization
+  network 7.7.7.7 mask 255.255.255.255
+  redistribute ospf 1
+  neighbor 6.6.6.6 activate
+  neighbor 192.168.30.1 activate
+ exit-address-family
+
+router ospf 1
+ redistribute bgp 65420 subnets
+ network 7.7.7.7 0.0.0.0 area 0
+ network 192.168.50.0 0.0.0.255 area 0
+

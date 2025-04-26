@@ -1,0 +1,48 @@
+hostname UPE2
+!
+vlan 10
+!
+ip igmp snooping
+!
+mpls label protocol ldp
+!
+mpls l2transport
+!
+pseudowire-class btv
+ encapsulation ldp
+!
+vfi btv manual
+ vpn id 1
+ neighbor 2.2.2.2 pw-id upe
+ neighbor 6.6.6.6 pw-id upe
+ ip igmp snooping
+ ip igmp snooping proxy
+ ip igmp snooping proxy router-ports all
+!
+mpls ldp
+!
+router isis
+ net 49.0004.0400.4004.00.00
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.11.13.1 255.255.255.252
+ mpls ip
+ mpls ldp
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 10.11.12.2 255.255.255.252
+ mpls ip
+ mpls ldp
+!
+interface GigabitEthernet1/0/2.1
+ encapsulation dot1Q 10
+ xconnect vfi btv
+ mpls l2transport static-group 225.0.0.1
+!
+interface Loopback0
+ ip address 4.4.4.4 255.255.255.255
+ router isis 1
+!
+end

@@ -1,0 +1,40 @@
+#
+sysname MASG
+#
+bfd
+ mpls-passive
+#
+mpls lsr-id 5.5.5.5
+#
+mpls
+#
+mpls ldp
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.4.1.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack0
+ ip address 5.5.5.5 255.255.255.255
+#
+bgp 200
+ peer 4.4.4.4 as-number 200
+ peer 4.4.4.4 connect-interface LoopBack0
+ #
+ ipv4-family unicast
+  network 5.5.5.5 255.255.255.255
+  peer 4.4.4.4 enable
+  peer 4.4.4.4 route-policy policy1 export
+  peer 4.4.4.4 label-route-capability
+#
+ospf 2
+ area 0.0.0.0
+  network 5.5.5.5 0.0.0.0
+  network 10.4.1.0 0.0.0.255
+#
+route-policy policy1 permit node 1
+ apply mpls-label
+#
+return

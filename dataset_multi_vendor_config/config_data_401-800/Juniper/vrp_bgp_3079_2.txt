@@ -1,0 +1,29 @@
+set system host-name DeviceC
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.10.1.2/24
+set interfaces ge-2/0/0 unit 0 family inet address 10.10.2.2/24
+set interfaces ge-3/0/0 unit 0 family inet address 10.10.3.2/24
+
+set routing-options autonomous-system 300
+set routing-options router-id 3.3.3.3
+
+set protocols bgp group neighbor-100 type external
+set protocols bgp group neighbor-100 peer-as 100
+set protocols bgp group neighbor-100 neighbor 10.10.1.1
+
+set protocols bgp group neighbor-200 type external
+set protocols bgp group neighbor-200 peer-as 200
+set protocols bgp group neighbor-200 neighbor 10.10.2.1
+
+set protocols bgp group neighbor-400 type external
+set protocols bgp group neighbor-400 peer-as 400
+set protocols bgp group neighbor-400 neighbor 10.10.3.1
+
+set policy-options policy-statement dampen-policy term 10 from prefix-list prefix-a
+set policy-options policy-statement dampen-policy term 10 then damping 10 1000 2000 5000
+
+set policy-options policy-statement dampen-policy term 20 from prefix-list prefix-b
+set policy-options policy-statement dampen-policy term 20 then damping 10 800 3000 10000
+
+set policy-options prefix-list prefix-a 8.0.0.0/8
+set policy-options prefix-list prefix-b 9.1.1.0/24

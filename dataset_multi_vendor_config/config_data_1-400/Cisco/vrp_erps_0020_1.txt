@@ -1,0 +1,25 @@
+hostname DeviceB
+
+vlan 10
+vlan 100-200
+
+spanning-tree vlan 10,100-200 root primary
+
+erps 1
+ control-vlan 10
+ protected-ring 1 instance 1
+ wtr-timer 6000
+ guard-timer 10000
+
+interface GigabitEthernet1/0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 10,100-200
+ no shutdown
+ erps ring 1 role owner
+
+interface GigabitEthernet1/0/2
+ switchport mode trunk
+ switchport trunk allowed vlan 10,100-200
+ no shutdown
+ erps ring 1
+

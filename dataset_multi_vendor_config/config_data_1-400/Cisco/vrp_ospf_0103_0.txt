@@ -1,0 +1,29 @@
+hostname DeviceA
+
+router ospf 1
+ router-id 1.1.1.1
+ network 1.1.1.1 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.3 area 0
+ network 10.1.2.0 0.0.0.3 area 0
+ passive-interface default
+
+router bgp 10
+ bgp router-id 1.1.1.1
+ neighbor 2.2.2.2 remote-as 10
+ neighbor 2.2.2.2 update-source Loopback0
+ neighbor 3.3.3.3 remote-as 10
+ neighbor 3.3.3.3 update-source Loopback0
+ neighbor 4.4.4.4 remote-as 10
+ neighbor 4.4.4.4 update-source Loopback0
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.252
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.1.2.1 255.255.255.252
+
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+

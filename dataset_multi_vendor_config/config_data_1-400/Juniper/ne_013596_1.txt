@@ -1,0 +1,18 @@
+set system login authentication-order radius
+set system login radius-server 192.168.8.249 secret "070C285E0C1E" port 1812
+set system accounting-events accounting-start-stop radius-server 192.168.8.249 secret "070C285E0C1E" port 1813
+set system accounting-events accounting-update newinfo
+
+set system login radius-server 192.168.8.249 secret "070C285E0C1E" port 1812
+set system accounting-events accounting-start-stop radius-server 192.168.8.249 secret "070C285E0C1E" port 1813
+
+set interfaces ge-0/0/6 unit 0 family inet address 192.168.1.1/24
+set interfaces ge-0/0/6 unit 0 encapsulation ethernet-bridge
+set interfaces ge-0/0/6.0 vlan-id 3
+
+set interfaces ge-0/0/6 disable
+set interfaces ge-0/0/6.0 unit 0 family inet address 192.168.1.1/24
+set interfaces ge-0/0/6.0 encapsulation ethernet-bridge
+set interfaces ge-0/0/6.0 vlan-id 3
+
+set routing-options static route 11.11.11.0/24 next-hop 192.168.1.2

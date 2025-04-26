@@ -1,0 +1,38 @@
+set system host-name Device1
+set routing-instances evrf1 instance-type virtual-router
+set routing-instances evrf1 route-distinguisher 10:1
+set routing-instances evrf1 vrf-export 11:1
+set routing-instances evrf1 vrf-import 11:1
+!
+set protocols evpn vpn-instance evrf1 bridge-domain 10 vxlan vni 10 split-horizon-mode
+set protocols evpn vpn-instance evrf1 bridge-domain 10 evpn binding vpn-instance evrf1
+!
+set interfaces ge-0/0/0 unit 0 family inet address 192.168.40.2/24
+set interfaces ge-0/0/0 unit 0 family mpls
+!
+set interfaces ge-0/0/0.0 unit 10 family ethernet-switching vlan-id 10
+set interfaces ge-0/0/0.0 unit 10 family ethernet-switching bridge-domain 10
+!
+set interfaces lo0 unit 0 family inet address 5.5.5.5/32
+!
+set interfaces nve.1 unit 0 family mpls source-interface lo0.0
+set interfaces nve.1 unit 0 family mpls mcast-group 239.1.1.1
+set interfaces nve.1 unit 0 family mpls vni 10
+!
+set protocols bgp group external type external
+set protocols bgp group external local-address 5.5.5.5
+set protocols bgp group external peer-as 65410
+set protocols bgp group external neighbor 4.4.4.4
+set protocols bgp group external neighbor 4.4.4.4 update-source lo0.0
+set protocols bgp group external family inet unicast
+set protocols bgp group external neighbor 4.4.4.4 activate
+set protocols bgp group external neighbor 6.6.6.6
+set protocols bgp group external neighbor 6.6.6.6 update-source lo0.0
+set protocols bgp group external family l2vpn evpn
+set protocols bgp group external neighbor 6.6.6.6 activate
+set protocols bgp group external neighbor 6.6.6.6 advertise encapsulation-type vxlan
+!
+set protocols ospf area 0.0.0.0 network 5.5.5.5/32
+set protocols ospf area 0.0.0.0 network 192.168.40.0/24
+set protocols ospf area 0.0.0.0 mpls-te enable
+!

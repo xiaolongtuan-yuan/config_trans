@@ -1,0 +1,13 @@
+hostname CE4
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 172.16.2.1 255.255.255.0
+router bgp 65420
+ neighbor 172.16.2.2 remote-as 300
+ neighbor 172.16.2.2 activate
+ !
+ address-family ipv4 unicast
+  no synchronization
+  redistribute connected
+  neighbor 172.16.2.2 activate
+ exit-address-family

@@ -1,0 +1,112 @@
+hostname PE1
+
+mpls label protocol ldp
+
+mpls l2vpn
+
+vsi context bvsi1
+
+vsi-id 100
+
+pwsignal ldp
+
+peer 2.2.2.2
+
+peer 3.3.3.3
+
+pbb backbone-source-mac 00e0.fc00.1234
+
+exit
+
+vsi context ivsi1
+
+vsi-id 10
+
+pwsignal ldp
+
+pbb i-tag 100
+
+pbb backbone-destination-mac 00e0.fc34.5678 static
+
+pbb binding b-vsi bvsi1
+
+exit
+
+vsi context ivsi2
+
+vsi-id 20
+
+pwsignal ldp
+
+pbb i-tag 101
+
+pbb backbone-destination-mac 00e0.fc12.3456 static
+
+pbb binding b-vsi bvsi1
+
+exit
+
+interface GigabitEthernet1/0/0
+
+no shutdown
+
+exit
+
+interface GigabitEthernet1/0/0.1
+
+encapsulation dot1Q 10
+
+xconnect vsi ivsi1
+
+exit
+
+interface GigabitEthernet1/0/0.2
+
+encapsulation dot1Q 20
+
+xconnect vsi ivsi2
+
+exit
+
+interface GigabitEthernet2/0/0
+
+no shutdown
+
+ip address 10.1.1.1 255.255.255.0
+
+mpls ip
+
+mpls ldp
+
+exit
+
+interface GigabitEthernet3/0/0
+
+no shutdown
+
+ip address 10.2.1.1 255.255.255.0
+
+mpls ip
+
+mpls ldp
+
+exit
+
+interface Loopback0
+
+ip address 1.1.1.1 255.255.255.255
+
+exit
+
+router ospf 1
+
+network 1.1.1.1 0.0.0.0 area 0
+
+network 10.1.1.0 0.0.0.255 area 0
+
+network 10.2.1.0 0.0.0.255 area 0
+
+exit
+
+return
+

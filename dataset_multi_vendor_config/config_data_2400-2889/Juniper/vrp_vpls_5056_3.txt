@@ -1,0 +1,60 @@
+set system name NPE1
+
+set protocols bfd all-interfaces
+
+set interfaces po1 unit 0 family iso channel-group 1 mode passive
+set interfaces ge-1/0/1 unit 0 family iso channel-group 1 mode passive
+set vlans vsi1 vlan-id 10
+set forwarding-options l2转发 vsi vsi1 vfi-id 1 remote-peer 2.2.2.2 vpls-id 1
+
+set protocols mpls ip
+set protocols mpls l2vpn
+
+set interfaces po1 unit 0 family inet address 5.5.5.5/24
+
+set interfaces ge-1/0/1 unit 0 family dot1q encapsulation 10
+set vlans vsi1 interface ge-1/0/1.10
+set interfaces lo0 unit 0 family inet address 4.4.4.4/32
+
+set routing-options static route 0.0.0.0/0 next-hop 5.5.5.6
+
+set protocols ospf 1 area 0 interface ge-1/0/3
+set protocols ospf 1 area 0 interface lo0
+set protocols ospf 1 area 0 network 192.168.30.0/24
+set protocols ospf 1 area 0 network 192.168.60.0/24
+
+set interfaces ge-1/0/3 unit 0 family inet address 192.168.60.1/24
+set interfaces ge-1/0/3 unit 0 family mpls ip
+set protocols mpls ldp interface ge-1/0/3
+
+commit
+set system name NPE1
+
+set protocols bfd all-interfaces
+
+set interfaces po1 unit 0 family iso channel-group 1 mode passive
+set interfaces ge-1/0/1 unit 0 family iso channel-group 1 mode passive
+set vlans vsi1 vlan-id 10
+set forwarding-options l2转发 vsi vsi1 vfi-id 1 remote-peer 2.2.2.2 vpls-id 1
+
+set protocols mpls ip
+set protocols mpls l2vpn
+
+set interfaces po1 unit 0 family inet address 5.5.5.5/24
+
+set interfaces ge-1/0/1 unit 0 family dot1q encapsulation 10
+set vlans vsi1 interface ge-1/0/1.10
+set interfaces lo0 unit 0 family inet address 4.4.4.4/32
+
+set routing-options static route 0.0.0.0/0 next-hop 5.5.5.6
+
+set protocols ospf 1 area 0 interface ge-1/0/3
+set protocols ospf 1 area 0 interface lo0
+set protocols ospf 1 area 0 network 192.168.30.0/24
+set protocols ospf 1 area 0 network 192.168.60.0/24
+
+set interfaces ge-1/0/3 unit 0 family inet address 192.168.60.1/24
+set interfaces ge-1/0/3 unit 0 family mpls ip
+set protocols mpls ldp interface ge-1/0/3
+
+commit

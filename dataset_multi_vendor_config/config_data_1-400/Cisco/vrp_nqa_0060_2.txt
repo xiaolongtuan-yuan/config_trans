@@ -1,0 +1,29 @@
+sysname DeviceC
+
+vlan 10
+
+interface GigabitEthernet 1/0/1
+switchport mode trunk
+no shutdown
+switchport trunk allowed vlan 10
+
+interface GigabitEthernet 1/0/2
+switchport mode trunk
+no shutdown
+switchport trunk allowed vlan 10
+
+ip sla responder udp-echo 1234
+
+ip sla 1
+udp-echo 10.0.0.1 1234 source-ip 10.0.0.2 source-port 5678
+threshold 500
+timeout 2000
+frequency 5
+tag test-flow
+
+ip sla schedule 1 life forever start-time now
+
+interface GigabitEthernet 1/0/1
+ip sla monitor responder 1
+
+return

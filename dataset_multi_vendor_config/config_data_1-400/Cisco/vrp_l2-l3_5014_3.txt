@@ -1,0 +1,18 @@
+hostname CE2
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.10.2.1 255.255.255.0
+
+router bgp 65020
+ neighbor 10.10.2.2 remote-as 100
+ !
+ address-family ipv4 unicast
+  neighbor 10.10.2.2 activate
+  neighbor 10.10.2.2 next-hop-self
+  neighbor 10.10.2.2 route-map DIRECT in
+ exit-address-family
+
+ip route 0.0.0.0 0.0.0.0 10.10.2.2
+
+end

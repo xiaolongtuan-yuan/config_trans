@@ -1,0 +1,23 @@
+set system host-name PE
+set routing-instances vpna instance-type virtual-router
+set routing-instances vpna route-distinguisher 100:1
+set routing-instances vpna vrf-import 111:1
+set routing-instances vpna vrf-export 111:1
+set routing-instances vpnb instance-type virtual-router
+set routing-instances vpnb route-distinguisher 100:2
+set routing-instances vpnb vrf-import 222:2
+set routing-instances vpnb vrf-export 222:2
+set firewall family inet filter acl-2001 term 1 from routing-instance vpna
+set firewall family inet filter acl-2001 term 1 then accept
+set firewall family inet filter acl-2001 term 2 from routing-instance vpnb
+set firewall family inet filter acl-2001 term 2 then discard
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-0/0/0 unit 0 routing-instance vpna
+set interfaces ge-0/0/1 unit 0 family inet address 10.2.1.1/24
+set interfaces ge-0/0/1 unit 0 routing-instance vpnb
+set system login user vty-0-4 authentication plain-text-password "$1c$`g=H/qo%;7$b6Za%2'[D!0blsOXF=.3QCNC-f)co,[aeE.`e`-<"
+set system login user vty-0-4 class super-user
+set system login user vty-0-4 level super-user
+set system login user vty-16-20 authentication plain-text-password ""
+set system login user vty-16-20 class super-user
+set system login user vty-16-20 level super-user

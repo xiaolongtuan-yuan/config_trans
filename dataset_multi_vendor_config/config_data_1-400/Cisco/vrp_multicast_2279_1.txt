@@ -1,0 +1,40 @@
+hostname Device B
+!
+access-list frracl permit ip host 10.0.5.100 225.1.0.0 0.0.0.255
+!
+router isis
+ net 10.0000.0000.0002.00
+ is-type level-1
+!
+ip multicast-routing
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 192.168.8.2 255.255.255.0
+ ip pim sparse-mode
+ isis network point-to-point
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 192.168.10.2 255.255.255.0
+ ip pim sparse-mode
+ isis network point-to-point
+!
+interface GigabitEthernet1/0/3
+ no shutdown
+ ip address 192.168.11.1 255.255.255.0
+ ip pim sparse-mode
+ isis network point-to-point
+ ip igmp static-group 225.1.0.0 10.0.5.100
+!
+ip pim rp-address 192.168.8.2
+ip pim rp-address 192.168.10.2
+ip pim rp-address 192.168.11.1
+!
+ip pim rp-candidate GigabitEthernet1/0/1
+ip pim rp-candidate GigabitEthernet1/0/2
+ip pim rp-candidate GigabitEthernet1/0/3
+!
+ip pim rpf-policy frracl
+!
+end

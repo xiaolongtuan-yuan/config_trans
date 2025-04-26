@@ -1,0 +1,27 @@
+set system host-name Spoke2
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.3.10/24
+
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.2.1/24
+
+set interfaces gr-0/0/0 unit 0 tunnel source 10.1.3.10
+set interfaces gr-0/0/0 unit 0 family inet address 172.16.1.3/24
+set interfaces gr-0/0/0 unit 0 encapsulation gre
+set interfaces gr-0/0/0 unit 0 multipoint
+set security ipsec vpn ipsec-profile-name bind-interface gr-0/0/0.0
+
+set protocols ospf area 0.0.0.0 interface ge-2/0/0.0
+set protocols ospf area 0.0.0.0 interface gr-0/0/0.0
+set protocols ospf area 0.0.0.0 router-id 172.16.1.3
+set protocols ospf area 0.0.0.1 interface ge-1/0/0.0
+set protocols ospf area 0.0.0.1 router-id 10.1.3.10
+
+set protocols bgp group Spoke2_Group type external
+set protocols bgp group Spoke2_Group local-address 172.16.1.3
+set protocols bgp group Spoke2_Group neighbor 172.16.1.1 peer-as 100
+set protocols bgp group Spoke2_Group family inet unicast
+set protocols bgp group Spoke2_Group export OSPF-to-BGP
+set protocols bgp group Spoke2_Group import none
+
+set policy-options policy-statement OSPF-to-BGP term 1 from protocol ospf
+set policy-options policy-statement OSPF-to-BGP term 1 then accept

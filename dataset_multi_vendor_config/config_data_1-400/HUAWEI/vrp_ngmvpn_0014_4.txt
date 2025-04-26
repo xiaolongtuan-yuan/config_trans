@@ -1,0 +1,29 @@
+#
+sysname CE3
+#
+multicast routing-enable
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 192.168.3.2 255.255.255.0
+ pim sm
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.1.5.1 255.255.255.0
+ pim sm
+ igmp enable
+ igmp version 3
+#
+interface LoopBack1
+ ip address 6.6.6.6 255.255.255.255
+#
+bgp 65003
+ peer 192.168.3.1 as-number 100
+ #
+ ipv4-family unicast
+  undo synchronization
+  import-route direct
+  peer 192.168.3.1 enable
+#
+return

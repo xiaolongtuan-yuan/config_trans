@@ -1,0 +1,64 @@
+hostname PE1
+
+ip multicast-routing
+
+ip vrf BLUE
+ rd 100:1
+ route-target export 100:1
+ route-target import 100:1
+ mdt default 239.0.0.0
+
+mpls ldp router-id Loopback1 force
+
+mpls ip
+
+mpls ldp
+
+interface GigabitEthernet1/0/0
+ no switchport
+ no shutdown
+ ip address 192.168.1.1 255.255.255.0
+ ip pim sparse-mode
+ mpls ip
+ mpls ldp autoconfig
+
+interface GigabitEthernet2/0/0
+ no switchport
+ no shutdown
+ ip vrf forwarding BLUE
+ ip address 10.1.2.2 255.255.255.0
+ ip pim sparse-mode
+
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+ ip pim sparse-mode
+
+interface Tunnel0
+ ip vrf forwarding BLUE
+ ip address 1.1.1.1 255.255.255.255
+
+router bgp 100
+ neighbor 3.3.3.3 remote-as 100
+ neighbor 3.3.3.3 update-source Loopback1
+
+ address-family ipv4
+  neighbor 3.3.3.3 activate
+
+ address-family vpnv4
+  neighbor 3.3.3.3 activate
+
+ address-family vpnv4 vrf BLUE
+  import route-target
+  neighbor 3.3.3.3 activate
+
+router ospf 1
+ network 1.1.1.1 0.0.0.0 area 0
+ network 192.168.1.0 0.0.0.255 area 0
+
+router ospf 2 vrf BLUE
+ redistribute bgp 100 subnets
+ network 10.1.2.0 0.0.0.255 area 0
+
+ip pim rp-address 4.4.4.4 group-list 239.0.0.0/8
+
+end

@@ -1,0 +1,20 @@
+#
+ sysname DeviceA
+#
+ bfd
+#
+interface Eth-Trunk1
+ ip address 10.1.1.1 255.255.255.0
+#
+interface Gigabitethernet1/0/0
+ undo shutdown
+ eth-trunk 1
+#
+interface Gigabitethernet2/0/0
+ undo shutdown
+ eth-trunk 1
+#
+bfd atob bind peer-ip 10.1.1.2 interface Eth-Trunk 1
+ discriminator local 10
+ discriminator remote 20
+return

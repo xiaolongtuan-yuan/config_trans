@@ -1,0 +1,35 @@
+set system host-name PE2
+
+set protocols cfm version ieee
+set protocols cfm enable
+
+set protocols mpls interface ge-1/0/2
+set protocols mpls interface ge-1/0/2 mpls-label-protocol ldp
+set protocols ldp router-id 1.1.1.1
+
+set protocols l2circuit neighbor 2.2.2.2 interface ge-1/0/1.1
+set protocols l2circuit neighbor 2.2.2.2 encapsulation-type mpls
+set protocols l2vpn vpls vpls-id 1
+set protocols l2vpn vpls neighbor 2.2.2.2 signaling protocol ldp
+
+set interfaces ge-1/0/1 unit 1 family ethernet-switching vlan-id 2
+set interfaces ge-1/0/1 unit 1 encapsulation vlan-ccc
+
+set interfaces ge-1/0/2 unit 0 family inet address 10.1.1.2/24
+set protocols mpls interface ge-1/0/2
+set protocols ldp interface ge-1/0/2
+set interfaces ge-1/0/2 unit 0 family mpls
+
+set interfaces lo0 unit 0 family inet address 1.1.1.1/24
+
+set protocols ospf area 0 interface lo0.0
+set protocols ospf area 0 interface ge-1/0/2
+
+set protocols cfm domain md1 level 3
+set protocols cfm domain md1 service ma1 mep 1 interface ge-1/0/1.1 direction inward mep-id 1
+set protocols cfm domain md1 service ma1 mep 2 interface ge-1/0/1.1 direction inward mep-id 2
+set protocols cfm domain md1 service ma1 continuity-check interval 3.3ms
+set protocols cfm domain md1 service ma1 mep 2 peer-ip 2.2.2.2
+
+set protocols cfm domain md1 service ma1 mep 2 continuity-check
+set protocols cfm domain md1 service ma1 test test-id 1 peer-ip 2.2.2.2 direction receive

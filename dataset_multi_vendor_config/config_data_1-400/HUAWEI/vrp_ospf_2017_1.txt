@@ -1,0 +1,53 @@
+#
+ sysname DeviceB
+#
+ router id 2.2.2.2
+#
+ multicast routing-enable
+#
+ mpls lsr-id 2.2.2.2
+ mpls
+  mpls te
+  mpls rsvp-te
+  mpls te cspf
+#
+ospf 1
+ opaque-capability enable
+ enable traffic-adjustment
+ local-mt enable
+ area 0.0.0.0
+  network 10.0.0.0 0.0.0.255
+  network 10.0.1.0 0.0.0.255
+  network 2.2.2.2 0.0.0.0
+  mpls-te enable
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.0.0.2 255.255.255.0
+ pim sm
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.0.1.2 255.255.255.0
+ pim sm
+ mpls
+ mpls te
+ mpls rsvp-te
+#
+interface LoopBack0
+ ip address 2.2.2.2 255.255.255.255
+ pim sm
+#
+interface Tunnel10
+ ip address unnumbered interface LoopBack0
+ tunnel-protocol mpls te
+ destination 4.4.4.4
+ mpls te tunnel-id 100
+ mpls te igp shortcut ospf
+ mpls te igp metric relative -10
+#
+pim
+ C-BSR LoopBack0
+ C-RP LoopBack0
+#
+return

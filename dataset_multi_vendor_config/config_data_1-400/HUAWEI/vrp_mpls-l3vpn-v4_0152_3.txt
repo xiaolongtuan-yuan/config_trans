@@ -1,0 +1,44 @@
+#
+ sysname ASBR2
+#
+mpls lsr-id 3.3.3.9
+#
+mpls
+ lsp-trigger bgp-label-route
+#
+mpls ldp
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.162.1.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 192.168.1.2 255.255.255.0
+ mpls
+#
+interface LoopBack1
+ ip address 3.3.3.9 255.255.255.255
+#
+bgp 200
+ peer 192.168.1.1 as-number 100
+ #
+ ipv4-family unicast
+  undo synchronization
+  network 4.4.4.9 255.255.255.255
+  peer 192.168.1.1 enable
+  peer 192.168.1.1 route-policy policy1 export
+  peer 192.168.1.1 label-route-capability
+#
+ospf 1
+ import-route bgp
+ area 0.0.0.0
+  network 3.3.3.9 0.0.0.0
+  network 10.162.1.0 0.0.0.255
+#
+route-policy policy1 permit node 1
+ apply mpls-label
+#
+return

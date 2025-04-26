@@ -1,0 +1,32 @@
+set system host-name DeviceB
+
+set protocols bfd traceoptions file bfd.log
+set protocols bfd traceoptions flag all
+
+set interfaces ge-2/0/0 unit 0 family inet6 address 2001:db8:8::2/64
+set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:9::1:1/64
+set interfaces ge-3/0/0 unit 0 family inet6 address 2001:db8:7::1/64
+
+set routing-options autonomous-system 200
+set routing-options router-id 2.2.2.2
+
+set protocols bgp group EBGP-PEER1 type external
+set protocols bgp group EBGP-PEER1 peer-as 100
+set protocols bgp group EBGP-PEER1 neighbor 2001:db8:8::1
+set protocols bgp group EBGP-PEER1 bfd-liveness-detection minimum-interval 100
+set protocols bgp group EBGP-PEER1 bfd-liveness-detection multiplier 4
+set protocols bgp group EBGP-PEER1 bfd-liveness-detection session-mode automatic
+
+set protocols bgp group EBGP-PEER2 type external
+set protocols bgp group EBGP-PEER2 peer-as 200
+set protocols bgp group EBGP-PEER2 neighbor 2001:db8:9::1:2
+
+set policy-options policy-statement 10 term 1 then metric 100
+
+set protocols bgp group EBGP-PEER1 export 10
+set protocols bgp group EBGP-PEER1 family inet6 unicast
+set protocols bgp group EBGP-PEER2 family inet6 unicast
+set protocols bgp group EBGP-PEER1 neighbor 2001:db8:8::1 family inet6 unicast
+set protocols bgp group EBGP-PEER2 neighbor 2001:db8:9::1:2 family inet6 unicast
+
+set routing-options rib inet6.0 static route 2001:db8:7::/64 discard

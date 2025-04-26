@@ -1,0 +1,33 @@
+hostname CE-Rb
+
+ip multicast-routing
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.110.9.1 255.255.255.0
+ ip pim sparse-mode
+ ip igmp join-group 224.0.0.1
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.110.4.2 255.255.255.0
+ ip pim sparse-mode
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 10.110.12.1 255.255.255.0
+ ip pim sparse-mode
+
+interface Loopback1
+ ip address 7.7.7.7 255.255.255.255
+ ip pim sparse-mode
+
+ip pim bsr-candidate Loopback1
+ip pim rp-candidate Loopback1
+
+router rip
+ version 2
+ network 10.0.0.0
+ redistribute connected
+
+end

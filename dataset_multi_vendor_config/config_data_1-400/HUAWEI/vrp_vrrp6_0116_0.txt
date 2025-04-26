@@ -1,0 +1,24 @@
+#
+ sysname DeviceA
+#
+ospfv3 1
+ router-id 1.1.1.1
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8::1/64
+ vrrp6 vrid 1 virtual-ip FE80::1 link-local
+ vrrp6 vrid 1 virtual-ip 2001:DB8::100
+ vrrp6 vrid 1 priority 120
+ vrrp6 vrid 2 virtual-ip FE80::2 link-local
+ vrrp6 vrid 2 virtual-ip 2001:DB8::60
+ ospfv3 1 area 0.0.0.0
+ #
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:1::1/64
+ ospfv3 1 area 0.0.0.0
+#
+return

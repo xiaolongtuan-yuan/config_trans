@@ -1,0 +1,76 @@
+#
+ sysname PE1
+#
+multicast mvpn 1.1.1.1
+#
+ip vpn-instance ng
+ ipv4-family
+  route-distinguisher 1:1
+  apply-label per-instance
+  vpn-target 1:1 export-extcommunity
+  vpn-target 1:1 import-extcommunity
+  multicast routing-enable
+  mvpn
+   sender-enable
+   c-multicast signaling bgp
+   import msdp
+   spt-only mode
+   ipmsi-tunnel
+    mldp
+#
+mpls lsr-id 1.1.1.1
+#
+mpls
+#
+mpls ldp
+ mldp p2mp
+#
+interface GigabitEthernet1/0/1
+ undo shutdown 
+ ip address 10.0.2.3 255.255.255.0
+ mpls 
+ mpls ldp
+#
+interface GigabitEthernet1/0/2
+ undo shutdown 
+ ip binding vpn-instance ng
+ ip address 10.0.6.3 255.255.255.0
+ pim sm
+#
+interface LoopBack0
+ ip address 1.1.1.1 255.255.255.255
+#
+bgp 100
+ peer 2.2.2.2 as-number 100
+ peer 2.2.2.2 connect-interface LoopBack0
+ #
+ ipv4-family unicast
+  undo synchronization
+  network 1.1.1.1 255.255.255.255
+  peer 2.2.2.2 enable
+ #
+ ipv4-family mvpn
+  policy vpn-target
+  peer 2.2.2.2 enable
+ #
+ ipv4-family vpnv4
+  policy vpn-target
+  peer 2.2.2.2 enable
+ #
+ ipv4-family vpn-instance ng
+  import-route ospf 2
+#
+ospf 1
+ area 0.0.0.0
+  network 10.0.2.0 0.0.0.255
+  network 1.1.1.1 0.0.0.0
+#
+ospf 2 vpn-instance ng
+ area 0.0.0.1
+  network 10.0.6.0 0.0.0.255
+#
+pim vpn-instance ng
+ static-rp 10.0.6.3
+ source-lifetime 60
+#
+return

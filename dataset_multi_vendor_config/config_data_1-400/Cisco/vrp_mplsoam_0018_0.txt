@@ -1,0 +1,33 @@
+hostname LSRA
+
+mpls label protocol ldp
+
+mpls traffic-eng tunnels
+
+interface Tunnel10
+ ip unnumbered Loopback1
+ tunnel mode mpls traffic-eng
+ tunnel destination 3.3.3.3
+ tunnel mpls traffic-eng autoroute announce
+ tunnel mpls traffic-eng priority 7 7
+ tunnel mpls traffic-eng bandwidth 1000
+ tunnel mpls traffic-eng path-option 10 explicit name path1
+ tunnel mpls traffic-eng path-option 20 explicit name path2
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 2.1.1.1 255.255.255.0
+ mpls ip
+
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+
+ip route 2.2.2.2 255.255.255.255 2.1.1.2
+ip route 3.3.3.3 255.255.255.255 2.1.1.2
+
+mpls oam
+ bidirectional-tunnel 10
+  discovery
+   frequency 10
+   protocol ldp
+

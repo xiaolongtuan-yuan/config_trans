@@ -1,0 +1,34 @@
+#
+sysname P2
+#
+mpls lsr-id 4.4.4.9
+#               
+mpls            
+#               
+segment-routing 
+#               
+interface GigabitEthernet1/0/0
+ undo shutdown  
+ ip address 172.18.1.2 255.255.255.0
+ ospf enable 1 area 0.0.0.0  
+#               
+interface GigabitEthernet2/0/0
+ undo shutdown  
+ ip address 172.19.1.1 255.255.255.0
+ ospf enable 1 area 0.0.0.0 
+#               
+interface LoopBack1
+ ip address 4.4.4.9 255.255.255.255
+ ospf enable 1 area 0.0.0.0  
+ ospf prefix-sid index 40
+#               
+ospf 1          
+ opaque-capability enable
+ segment-routing mpls
+ segment-routing global-block 16000 23999
+ frr
+  loop-free-alternate
+  ti-lfa enable
+ area 0.0.0.0
+#
+return

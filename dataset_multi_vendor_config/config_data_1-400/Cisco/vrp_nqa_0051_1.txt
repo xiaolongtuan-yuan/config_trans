@@ -1,0 +1,39 @@
+hostname DeviceB
+
+vlan 10
+
+interface GigabitEthernet1/0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 10
+ no shutdown
+
+interface GigabitEthernet1/0/2.1
+ encapsulation dot1Q 10
+ ip address 10.1.1.2 255.255.255.0
+
+arp 10.1.1.1 00e0.fc12.3456 arpa
+ interface GigabitEthernet1/0/2.1
+
+ip sla 1
+ icmp-echo 10.1.1.1 source-ip 10.1.1.2
+ frequency 5
+ timeout 1000
+ threshold 2
+ size 64
+ tag admin
+ request-data-size 0
+ history hours-of-statistics-kept 2
+ history distributions-of-statistics-kept 2
+ history buckets-of-statistics-kept 2
+ history filter all
+ history filter all
+ history filter all
+ history enhanced
+ history filter all
+ history filter all
+ history filter all
+ history filter all
+
+ip sla schedule 1 life forever start-time now
+
+end

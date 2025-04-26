@@ -1,0 +1,38 @@
+set system host-name PE2
+
+set routing-instances red instance-type vrf
+set routing-instances red route-distinguisher 1:1
+set routing-instances red vrf-target export target:1:1
+set routing-instances red vrf-target import target:1:1
+set routing-instances red protocols mvpn
+set routing-instances red protocols mvpn multicast-routing
+set routing-instances red protocols mvpn sender-site
+set routing-instances red protocols mvpn c-multicast-signaling bgp
+set routing-instances red protocols mvpn ip-mroute-cache
+
+set protocols mpls interface all
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.2/24
+set interfaces ge-1/0/0 unit 0 family mpls
+
+set interfaces ge-1/0/2 unit 0 family inet address 10.1.2.1/24
+set interfaces ge-1/0/2 unit 0 family inet vrf red
+set interfaces ge-1/0/2 unit 0 family inet pim sparse-mode
+
+set interfaces lo0 unit 0 family inet address 2.2.2.2/32
+
+set routing-options autonomous-system 100
+
+set protocols bgp group IBGP type internal
+set protocols bgp group IBGP local-address 2.2.2.2
+set protocols bgp group IBGP neighbor 1.1.1.1
+set protocols bgp group IBGP family inet unicast
+set protocols bgp group IBGP family vpnv4 unicast
+set protocols bgp group IBGP family inet-vpn unicast
+
+set routing-instances red protocols bgp group EBGP type external
+set routing-instances red protocols bgp group EBGP family inet unicast
+set routing-instances red protocols bgp group EBGP export connected
+
+set protocols ospf area 0 interface ge-1/0/0.0
+set protocols ospf area 0 interface lo0.0

@@ -1,0 +1,59 @@
+hostname PE1
+
+ip multicast-routing
+
+ip vrf VPNA
+ rd 200:1
+ address-family ipv4
+  route-target export 3:3
+  route-target import 3:3
+  exit-address-family
+
+bfd
+
+mpls label protocol ldp
+mpls ldp router-id Loopback1
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip vrf forwarding VPNA
+ ip address 192.168.1.2 255.255.255.0
+ ip pim sparse-mode
+
+interface Loopback1
+ ip address 2.2.2.2 255.255.255.255
+
+router bgp 100
+ neighbor 4.4.4.4 remote-as 100
+ neighbor 4.4.4.4 update-source Loopback1
+
+ address-family ipv4
+  no synchronization
+  neighbor 4.4.4.4 activate
+ exit-address-family
+
+ address-family ipv4 multicast
+  neighbor 4.4.4.4 activate
+ exit-address-family
+
+ address-family vpnv4
+  neighbor 4.4.4.4 activate
+ exit-address-family
+
+ address-family ipv4 vrf VPNA
+  redistribute ospf 2
+ exit-address-family
+
+router ospf 1
+ network 2.2.2.2 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+
+router ospf 2 vrf VPNA
+ import vrf VPNA from bgp
+ network 192.168.1.0 0.0.0.255 area 0
+

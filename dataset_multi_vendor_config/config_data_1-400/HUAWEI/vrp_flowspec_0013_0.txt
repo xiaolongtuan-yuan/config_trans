@@ -1,0 +1,28 @@
+#
+sysname DeviceA
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.3.1.2 255.255.255.0
+#
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+#
+bgp 100
+ router-id 1.1.1.1
+ peer 3.3.3.3 as-number 100
+ peer 3.3.3.3 connect-interface LoopBack1
+ #
+ ipv4-family unicast
+  undo synchronization 
+  peer 3.3.3.3 enable
+ #
+ ipv4-family flow
+  peer 3.3.3.3 enable
+#
+ospf 1
+ area 0.0.0.0
+  network 1.1.1.1 0.0.0.0
+  network 10.3.1.0 0.0.0.255
+#
+return

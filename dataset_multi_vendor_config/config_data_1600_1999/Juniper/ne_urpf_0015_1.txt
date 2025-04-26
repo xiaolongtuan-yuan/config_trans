@@ -1,0 +1,15 @@
+set system host-name routerB
+
+set firewall family inet filter acl2010 term permit_ip from source-address 10.1.1.0/24
+set firewall family inet filter acl2010 term permit_ip then accept
+
+set policy-options policy-map policy1 term classifier1 from filter acl2010
+set policy-options policy-map policy1 term classifier1 then police 2000000
+
+set interfaces ge-0/0/0 unit 0 family inet address 172.19.139.2/30
+set interfaces ge-0/0/0 unit 0 family inet filter input acl2010
+
+set interfaces ge-0/0/0 unit 0 family inet address 172.19.139.2/30
+
+set routing-options secure-route-mode
+set routing-options urpf strict

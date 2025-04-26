@@ -1,0 +1,32 @@
+set system host-name PE1
+
+set protocols ldp enable
+setprotocols ldp router-id loopback0
+set protocols ldp discovery transport-address lo0
+
+set interfaces ge-0/0/0 unit 0 family ethernet-switching
+set interfaces ge-0/0/0.1 encapsulation dot1q 10
+set interfaces ge-0/0/0.1 vlan-membership static 10
+set interfaces ge-0/0/0.1 unit 0 family ip address 3.3.3.9/24
+set interfaces ge-0/0/0.1 unit 0 family mpls
+set interfaces ge-0/0/0.1 unit 0 family mpls traffic-eng tunnels
+
+set interfaces ge-2/0/0 unit 0 family inet address 10.1.1.1/24
+set protocols mpls traffic-eng tunnels
+set protocols mpls traffic-eng tunnels max-reservable-bandwidth 5000
+set protocols mpls traffic-eng tunnels bc0-traffic-bandwidth 4000
+set protocols mpls traffic-eng rsvp-te
+
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+
+set interfaces tun10 unit 0 family ip address 3.3.3.9/32
+set interfaces tun10 unit 0 family mpls
+set interfaces tun10 unit 0 family mpls traffic-eng tunnels priority 7 7
+set interfaces tun10 unit 0 family mpls traffic-eng bandwidth 2000
+set interfaces tun10 unit 0 family mpls traffic-eng tunnel-id 101
+
+set routing-options router ospf 1 area 0 network 1.1.1.9/32 area 0
+set routing-options router ospf 1 area 0 network 10.1.1.0/24 area 0
+set routing-options router ospf 1 mpls traffic-eng area
+
+set policies tunnel-policy policy1 seq 1 tunnel select-seq return

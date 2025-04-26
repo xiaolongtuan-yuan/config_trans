@@ -1,0 +1,43 @@
+#
+sysname PE2
+#
+tunnel-selector s1 permit node 10
+ apply tunnel-policy p1
+#
+mpls lsr-id 3.3.3.9
+#               
+mpls            
+#               
+segment-routing 
+ tunnel-prefer segment-routing
+#               
+isis 1          
+ is-level level-1
+ cost-style wide
+ network-entity 10.0000.0000.0003.00
+ segment-routing mpls
+ segment-routing global-block 160000 161000
+#               
+interface GigabitEthernet1/0/0
+ undo shutdown  
+ ip address 172.17.1.1 255.255.255.0
+ isis enable 1  
+#               
+interface LoopBack1
+ ip address 3.3.3.9 255.255.255.255
+ isis enable 1  
+ isis prefix-sid index 30
+#               
+bgp 100         
+ peer 1.1.1.9 as-number 100
+ peer 1.1.1.9 connect-interface LoopBack1
+ #              
+ ipv4-family unicast
+  undo synchronization
+  unicast-route recursive-lookup tunnel tunnel-selector s1
+  peer 1.1.1.9 enable
+#
+tunnel-policy p1
+ tunnel select-seq sr-lsp load-balance-number 1
+#
+return

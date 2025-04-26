@@ -1,0 +1,35 @@
+hostname CE2
+
+router ospf 1
+ router-id 3.3.3.3
+ redistribute bgp 65410 subnets
+ network 2001:DB8:1::2/64 area 0.0.0.0
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:1::2/64
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:3::1/64
+ ipv6 ospf 1 area 0.0.0.0
+
+interface Loopback1
+ ip address 3.3.3.3 255.255.255.255
+
+router bgp 65410
+ neighbor 2001:DB8:1::1 remote-as 100
+
+ address-family ipv4
+  neighbor 2001:DB8:1::1 activate
+  no synchronization
+ exit-address-family
+
+ address-family ipv6
+  neighbor 2001:DB8:1::1 activate
+  no synchronization
+  redistribute ospfv3 1 metric 500
+ exit-address-family
+

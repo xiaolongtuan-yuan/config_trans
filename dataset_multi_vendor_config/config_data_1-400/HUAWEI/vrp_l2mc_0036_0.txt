@@ -1,0 +1,24 @@
+#
+sysname DeviceA
+#
+vlan batch 3
+#
+igmp-snooping enable
+#
+#
+vlan 3
+igmp-snooping enable
+#
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ portswitch
+ port trunk allow-pass vlan 3
+#
+interface  GigabitEthernet1/0/2
+ undo shutdown
+ portswitch
+ port trunk allow-pass vlan 3
+ l2-multicast static-group group-address 225.0.0.1 vlan 3
+#
+return

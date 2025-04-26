@@ -1,0 +1,37 @@
+hostname Device C
+!
+router isis
+ net-entity
+  10.0000.0000.0001.00
+ !
+ lsp-refresh-interval 3
+!
+ip route 10.0.5.0 255.255.255.0 192.168.10.2 
+!
+ip multicast-routing
+!
+interface GigabitEthernet1/0/3
+ no shutdown
+ ip address 192.168.14.1 255.255.255.0 
+ ip pim sparse-mode
+ isis circuit-type level-1
+ ip igmp static-group 225.1.0.0 source 11.11.11.11 
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 192.168.10.1 255.255.255.0
+ ip pim sparse-mode
+ isis circuit-type level-1
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 192.168.9.2 255.255.255.0
+ ip pim sparse-mode
+ isis circuit-type level-1
+!
+ip pim
+ bsr-candidate GigabitEthernet1/0/1
+ rp-candidate GigabitEthernet1/0/1
+ rpf-failure-frr
+!
+end

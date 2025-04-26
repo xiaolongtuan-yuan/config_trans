@@ -1,0 +1,20 @@
+set system host-name DeviceA
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.20.2.1/24
+set interfaces ge-1/0/0 unit 0 description "GigabitEthernet1/0/0"
+
+set interfaces ge-2/0/0 unit 0 family inet address 10.20.1.1/24
+set interfaces ge-2/0/0 unit 0 description "GigabitEthernet2/0/0"
+
+set routing-options autonomous-system 100
+set routing-options router-id 1.1.1.1
+
+set protocols bgp group EBGP_AS200 type external
+set protocols bgp group EBGP_AS200 peer-as 200
+set protocols bgp group EBGP_AS200 neighbor 10.20.1.2
+set protocols bgp group EBGP_AS200 neighbor 10.20.1.2 ebgp-multihop 255
+set protocols bgp group EBGP_AS200 neighbor 10.20.1.2 bfd-liveness-detection minimum-interval 100 multiplier 4
+set protocols bgp group EBGP_AS200 neighbor 10.20.2.2
+set protocols bgp group EBGP_AS200 neighbor 10.20.2.2 ebgp-multihop 255
+
+set protocols bgp group EBGP_AS200 family inet unicast

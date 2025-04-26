@@ -1,0 +1,114 @@
+hostname PE1
+
+ipv6 unicast-routing
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:10::1/64
+ ipv6 ospf 1 area 0
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip vrf forwarding vpn1
+ ip address 10.1.1.1 255.255.255.0
+
+interface Loopback1
+ ipv6 enable
+ ipv6 address 2001:DB8:1::1/128
+ ipv6 ospf 1 area 0
+
+router bgp 100
+ bgp router-id 1.1.1.1
+ neighbor 2001:DB8:3::3 remote-as 100
+ neighbor 2001:DB8:3::3 update-source Loopback1
+ neighbor 10.1.1.2 remote-as 65410
+
+ address-family ipv4 unicast
+  network 10.1.1.0 mask 255.255.255.0
+
+ address-family vpnv4
+  neighbor 10.1.1.2 activate
+
+ address-family vpnv6 unicast
+  import route-target
+  export route-target
+  advertise l2vpn evpn
+  neighbor 2001:DB8:3::3 activate
+
+l2vpn
+ bridge group evpn
+  bridge-domain evpn
+   interface GigabitEthernet2/0/0
+    vrf vpn1
+    exit
+   exit
+  exit
+
+mpls ldp router-id Loopback1 force
+
+mpls traffic-eng tunnels
+
+mpls traffic-eng router-id Loopback1
+
+mpls traffic-eng area 0
+
+mpls traffic-eng level 2
+
+mpls traffic-eng level 2 router-id Loopback1
+
+mpls traffic-eng autoroute announce
+
+mpls traffic-eng segment-routing
+
+mpls traffic-eng segment-routing global-block 1 32
+
+mpls traffic-eng segment-routing global-block 2001:DB8:100::/64
+
+mpls traffic-eng segment-routing global-index 100
+
+mpls traffic-eng segment-routing ipv6 locator PE1
+
+mpls traffic-eng segment-routing ipv6 locator PE1 explicit-null
+
+mpls traffic-eng segment-routing set-label-mode per-prefix
+
+mpls traffic-eng segment-routing prefix-sid-map 2001:DB8:100::/64 index 100
+
+mpls traffic-eng segment-routing prefix-sid-map 2001:DB8:100::/64 index 100 explicit-null
+
+mpls traffic-eng segment-routing prefix-sid-map 2001:DB8:1::1/128 index 100 explicit-null
+
+mpls traffic-eng segment-routing prefix-sid-map 2001:DB8:1::1/128 index 100
+
+mpls traffic-eng segment-routing prefix-sid-map 10.1.1.1/32 index 100
+
+mpls traffic-eng segment-routing prefix-sid-map 10.1.1.1/32 index 100 explicit-null
+
+mpls traffic-eng segment-routing prefix-sid-map 10.1.1.1/32 index 100 explicit-null
+
+mpls traffic-eng segment-routing prefix-sid-map 10.1.1.1/32 index 100
+
+mpls traffic-eng segment-routing prefix-sid-map 2001:DB8:3::3/128 index 100 explicit-null
+
+mpls traffic-eng segment-routing prefix-sid-map 2001:DB8:3::3/128 index 100
+
+mpls traffic-eng segment-routing prefix-sid-map 2001:DB8:3::3/128 index 100 explicit-null
+
+mpls traffic-eng segment-routing prefix-sid-map 2001:DB8:3::3/128 index 100
+
+mpls traffic-eng segment-routing prefix-sid-map 2001:DB8:10::1/128 index 100 explicit-null
+
+mpls traffic-eng segment-routing prefix-sid-map 2001:DB8:10::1/128 index 100
+
+mpls traffic-eng segment-routing prefix-sid-map 2001:DB8:10::1/128 index 100 explicit-null
+
+mpls traffic-eng segment-routing prefix-sid-map 2001:DB8:10::1/128 index 100
+
+ospf 1
+ router-id 1.1.1.1
+ auto-cost reference-bandwidth 100000
+ area 0 nssa
+  no-summary
+
+end

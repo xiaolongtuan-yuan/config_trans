@@ -1,0 +1,93 @@
+hostname NPE4
+
+spanning-tree vlan 1 priority 4096
+spanning-tree mode rapid-pvst
+spanning-tree region RG1
+
+mpls label protocol ldp
+
+mpls l2vpn
+
+pseudowire-class pw2
+ encapsulation mpls
+ exit
+
+pseudowire-class pw1
+ encapsulation mpls
+ exit
+
+vrf definition m1
+ rd 10:1
+ route-target export 10:1
+ route-target import 10:1
+ exit
+
+vrf definition s1
+ rd 100:1
+ route-target export 100:1
+ route-target import 100:1
+ exit
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.7.1.2 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+ exit
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.9.1.2 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+ exit
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 10.5.2.1 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+ exit
+
+interface Loopback1
+ ip address 5.5.5.5 255.255.255.255
+ exit
+
+router ospf 1
+ router-id 5.5.5.5
+ passive-interface default
+ no passive-interface GigabitEthernet1/0/0
+ no passive-interface GigabitEthernet2/0/0
+ no passive-interface GigabitEthernet3/0/0
+ network 5.5.5.5 0.0.0.0 area 0
+ network 10.5.2.0 0.0.0.255 area 0
+ network 10.7.1.0 0.0.0.255 area 0
+ network 10.9.1.0 0.0.0.255 area 0
+ exit
+
+mpls ldp router-id Loopback1 force
+
+vfi m1 manual
+ vpn id 10
+ neighbor 3.3.3.3 encapsulation mpls
+  pw-class pw2
+  exit
+ neighbor 4.4.4.4 encapsulation mpls
+  pw-class pw1
+  exit
+ exit
+
+vfi s1 manual
+ vpn id 100
+ neighbor 3.3.3.3 encapsulation mpls
+  pw-class pw2
+  exit
+ neighbor 6.6.6.6 encapsulation mpls
+  pw-class pw1
+  exit
+ exit
+
+mpls ldp autoconfig area 0.0.0.0
+
+return
+

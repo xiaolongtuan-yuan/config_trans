@@ -1,0 +1,22 @@
+set system host-name PE2
+
+set protocols ldp router-id loopback1 force
+
+set protocols mpls
+
+set interfaces gigabit-ethernet2/0/0 unit 0 family inet address 10.30.1.2 255.255.255.0
+set interfaces gigabit-ethernet2/0/0.1 unit 0 encapsulation dot1q 10
+set interfaces gigabit-ethernet2/0/0.1 family mpls
+set vlans vfi1 interface gigabit-ethernet2/0/0.1
+
+set interfaces gigabit-ethernet1/0/0 unit 0 family inet address 4.4.4.4/32
+
+set protocols bgp group external peer 1.1.1.1 as 100
+set protocols bgp group internal peer 3.3.3.3 as 200
+
+set protocols bgp group external activate
+set protocols bgp group internal next-hop-self
+
+set routing-options router ospf 1 network 4.4.4.4/32 area 0
+set routing-options router ospf 1 network 10.30.1.0/24 area 0
+

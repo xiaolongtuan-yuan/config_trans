@@ -1,0 +1,62 @@
+hostname PE2
+!
+router evpn
+ vpn-instance evrf1
+  bridge-domain bd-mode
+  route-distinguisher 200:1
+  tnl-policy srbe
+  vpn-target export-extcommunity 1:1
+  vpn-target import-extcommunity 1:1
+ exit
+!
+mpls ldp router-id Loopback0 force
+!
+mpls ldp
+ !
+ bridge-domain 10
+  evpn binding vpn-instance evrf1
+ exit
+!
+segment-routing global-block 153616 153800
+!
+router isis 1
+ net 49.0001.1111.1111.3333.00
+ segment-routing mpls
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+!
+interface GigabitEthernet1/0/0.1
+ encapsulation dot1Q 10
+ rewrite ingress tag pop 1 symmetric
+ bridge-domain 10
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.2.1.2 255.255.255.0
+ isis enable 1
+!
+interface Loopback1
+ ip address 3.3.3.3 255.255.255.255
+ isis enable 1
+!
+router bgp 100
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 update-source Loopback1
+ !
+ address-family ipv4 unicast
+  no synchronization
+  neighbor 1.1.1.1 activate
+ exit-address-family
+ !
+ address-family l2vpn evpn
+  advertise vpn-target
+  neighbor 1.1.1.1 activate
+ exit-address-family
+!
+tunnel-policy srbe
+ tunnel select-seq sr-lsp load-balance-number 1
+!
+evpn source-interface Loopback1
+!
+end

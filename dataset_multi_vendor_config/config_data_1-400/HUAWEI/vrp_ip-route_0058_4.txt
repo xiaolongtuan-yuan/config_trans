@@ -1,0 +1,20 @@
+#
+sysname DeviceD
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:2001::2/64
+#
+bgp 100
+ router-id 2.2.2.2
+ peer 2001:db8:2001::1 as-number 100
+ #
+ ipv4-family unicast
+  undo synchronization 
+ #
+ ipv6-family unicast
+  undo synchronization 
+  peer 2001:db8:2001::1 enable
+#
+return

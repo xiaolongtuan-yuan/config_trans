@@ -1,0 +1,21 @@
+hostname CE1
+
+vlan 2
+
+cfm
+cfm version 0
+
+interface GigabitEthernet1/0/1
+ switchport
+ no shutdown
+ switchport trunk allowed vlan 2
+
+cfm md md3
+ ma ma3
+  mep mep-id 3 interface GigabitEthernet1/0/1 md md3
+  mep ccm-send mep-id 3
+  remote-mep mep-id 4
+  remote-mep ccm-receive mep-id 4
+  cfm test-id 1 mep 3 remote-mep 4
+  cfm loss-measure dual-ended test-id 1
+

@@ -1,0 +1,25 @@
+hostname DeviceA
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.20.1.1 255.255.255.0
+ tunnel mode gre
+ tunnel source 10.20.1.1
+ tunnel destination 10.21.1.2
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:3::1/64
+!
+interface Tunnel1
+ ipv6 enable
+ ipv6 address 2001:DB8:4::1/64
+ tunnel mode gre
+ tunnel source 10.20.1.1
+ tunnel destination 10.21.1.2
+!
+router ospf 1
+ network 10.20.1.0 0.0.0.255 area 0
+!
+ipv6 route 2001:DB8:2::/64 Tunnel1
+!

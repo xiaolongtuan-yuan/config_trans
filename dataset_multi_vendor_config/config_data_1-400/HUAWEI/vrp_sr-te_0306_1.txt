@@ -1,0 +1,52 @@
+#
+sysname P1
+#
+mpls lsr-id 10.31.2.9
+#
+mpls
+ mpls te
+#
+segment-routing
+#
+isis 1
+ is-level level-2
+ cost-style wide
+ bgp-ls enable level-2
+ network-entity 11.2222.2222.2222.00
+ traffic-eng level-2
+ segment-routing mpls
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.23.3 255.255.255.0
+ isis enable 1
+ mpls
+ mpls te
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.7.2.10 255.255.255.0
+ isis enable 1
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.20.34.3 255.255.255.0
+ isis enable 1
+ mpls
+ mpls te
+#
+interface LoopBack0
+ ip address 10.31.2.9 255.255.255.255
+ isis enable 1
+#
+bgp 100
+ peer 10.7.2.9 as-number 100
+ #               
+ ipv4-family unicast 
+  undo synchronization 
+  peer 10.7.2.9 enable
+ # 
+ link-state-family unicast 
+  peer 10.7.2.9 enable
+#
+return

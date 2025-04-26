@@ -1,0 +1,25 @@
+set system host-name SSH-Server
+
+set firewall family inet filter acl-2000 term term-5 from source-address 10.248.103.0/24
+set firewall family inet filter acl-2000 term term-5 then accept
+
+set system login user huawei123 class super-user
+set system login user huawei123 authentication ssh-rsa "AAAAB3NzaC1yc2EAAAABJQAAAQEAxHbcqV6qqnb1+jQQ0qFLptxWS1xRFfDe6DuMaX2eRUCx3fp2eBA1bgUfHd7eCO05CfHfC443oNBwlj/39Obi8kSRIQSlXOU1KIP8DNYtwU/N23p/YDHzbgOVvN6dSr+Ua2Er7m2Hehzdo2XoGuWokqhnuMpA7O7zykXs7rM6tdf+hh/992o6GHBD9IbJe9mG6WoAmDkBmedXzBqJeeGb2wbGg9hBTIgVQqZNhthGcVlLUlPJlZQi1ZOL3C/cVIOXqnVOqqxHk6nlWcMRo0PxOAegtyzsBETnvcEO2xVw6zF0WVFvU60C99THB+GpuHuRdWzvUNCZpsjmCwkg+4RFGQ=="
+
+set interfaces ge-0/0/0 unit 0 family inet address 10.248.103.194/24
+
+set system services ssh root-login allow
+set system services ssh connection-limit 5
+set system services ssh rate-limit 10
+set system services ssh interface ge-0/0/0
+
+set system services ssh access-address 10.248.103.194
+set firewall family inet filter acl-2000 term term-allow from protocol tcp
+set firewall family inet filter acl-2000 term term-allow from port ssh
+set firewall family inet filter acl-2000 term term-allow then accept
+set system services ssh allowed-address 10.248.103.0/24
+
+set system login user huawei123 full-name "SSH User"
+set system login user huawei123 uid 1001
+set system login user huawei123 home-directory /var/home/huawei123
+set system login user huawei123 class super-user

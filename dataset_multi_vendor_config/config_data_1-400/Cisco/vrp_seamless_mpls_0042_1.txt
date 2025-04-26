@@ -1,0 +1,47 @@
+hostname AGG
+!
+mpls label protocol ldp
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.2.1.1 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.255
+!
+router bgp 100
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 update-source Loopback0
+ neighbor 3.3.3.3 remote-as 100
+ neighbor 3.3.3.3 update-source Loopback0
+ !
+ address-family ipv4 unicast
+  neighbor 1.1.1.1 activate
+  neighbor 1.1.1.1 route-policy policy1 export
+  neighbor 1.1.1.1 next-hop-self
+  neighbor 3.3.3.3 activate
+  neighbor 3.3.3.3 route-policy policy1 export
+  neighbor 3.3.3.3 next-hop-self
+  neighbor 1.1.1.1 send-label
+  neighbor 3.3.3.3 send-label
+ exit-address-family
+!
+router ospf 1
+ router-id 2.2.2.2
+ area 0
+  network 2.2.2.2 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+!
+route-policy policy1 permit node 1
+ if-match label
+ apply label
+!
+end

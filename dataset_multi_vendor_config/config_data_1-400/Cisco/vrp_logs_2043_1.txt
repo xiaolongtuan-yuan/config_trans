@@ -1,0 +1,25 @@
+sysname Device
+
+logging host 10.1.1.1 transport udp port 514 facility local2
+logging host 10.1.1.2 transport udp port 514 facility local2
+logging host 10.2.1.1 transport udp port 514 facility local4
+logging host 10.2.1.2 transport udp port 514 facility local4
+logging source-interface GigabitEthernet1/0/0
+
+aaa new-model
+aaa authentication login default group tacacs+ local
+aaa authorization exec default group tacacs+ local
+
+tacacs-server host 10.1.1.1
+tacacs-server host 10.1.1.2
+tacacs-server key <tacacs_secret_key>
+
+logging source-interface GigabitEthernet1/0/0
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.3.1.1 255.255.255.0
+
+ip route 10.1.1.0 255.255.255.0 172.16.0.2
+ip route 10.2.1.0 255.255.255.0 172.16.0.2
+

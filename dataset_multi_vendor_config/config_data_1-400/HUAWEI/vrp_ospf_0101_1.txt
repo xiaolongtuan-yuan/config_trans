@@ -1,0 +1,22 @@
+#
+ sysname DeviceB
+#
+router id 2.2.2.2
+#
+ bfd
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 192.168.1.2 255.255.255.0
+ ospf timer dead 30
+ ospf smart-discover 
+#
+ospf 1
+ bfd all-interfaces enable
+ spf-schedule-interval intelligent-timer 3000 200 500
+ lsa-arrival-interval intelligent-timer 3000 200 500
+ lsa-originate-interval intelligent-timer 3000 200 500
+ area 0.0.0.0
+  network 192.168.1.0 0.0.0.255
+#
+return

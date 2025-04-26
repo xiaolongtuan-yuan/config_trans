@@ -1,0 +1,27 @@
+hostname P
+!
+ipv6 unicast-routing
+!
+router isis
+ isis router-id 10.0.0.2
+ is-type level-1
+ metric-style wide
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:20::1/64
+ isis network point-to-point
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:10::2/64
+ isis network point-to-point
+!
+interface Loopback1
+ ipv6 enable
+ ipv6 address 2001:DB8:2::2/128
+ isis network point-to-point
+!
+end

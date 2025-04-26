@@ -1,0 +1,35 @@
+#
+ sysname CE-Rb
+#
+ multicast routing-enable
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.110.9.1 255.255.255.0 
+ pim sm
+ igmp enable
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.110.4.2 255.255.255.0 
+ pim sm
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ip address 10.110.12.1 255.255.255.0
+ pim sm
+#
+ interface loopback 1
+ ip address 7.7.7.7 32
+ pim sm
+#       
+pim
+ c-bsr Loopback1 
+ c-rp Loopback1
+#
+rip 2
+ network 10.0.0.0 
+ network 10.0.0.0
+ import-route direct
+#
+return

@@ -1,0 +1,13 @@
+set system host-name PE
+set protocols ldp interface gigabit-ethernet1/0/0
+set interfaces ge-1/0/0 unit 0 family inet address 10.2.1.2/24
+set interfaces ge-2/0/0 unit 0 family inet address 10.3.1.1/24
+set interfaces lo0 unit 0 family inet address 3.3.3.9/32
+set routing-options routers ospf 1 area 0 network 3.3.3.9/32
+set routing-options routers ospf 1 area 0 network 10.2.1.0/24
+set routing-options routers ospf 1 area 0 network 10.3.1.0/24
+set forwarding l2-circuit label-engine mpls-label-proto ldp
+set forwarding l2circuit 200 encap mpls neighbor 1.1.1.9 peer-ip 100
+set protocols ldp mpls enable interface gigabit-ethernet1/0/0
+setprotocols mpls ldp neighbor 1.1.1.9
+set protocols mpls ldp neighbor 5.5.5.9

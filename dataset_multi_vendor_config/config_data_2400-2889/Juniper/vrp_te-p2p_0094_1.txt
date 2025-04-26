@@ -1,0 +1,21 @@
+set system host-name LSRB
+
+set protocols ldp
+set mpls traffic-eng tunnels
+
+set routing-options routers isis router-id 2.2.2.9
+
+set interface ge-0/0/0 unit 0 family inet address 10.1.1.2/32
+set interface ge-0/0/0 unit 0 family inet mpls ip
+set interface ge-0/0/0 unit 0 family inet isis network point-to-point;
+set interface ge-0/0/0 unit 0 family inet isis circuit-type level-2-only;
+
+set interface ge-0/0/1 unit 0 family inet address 10.2.1.1/32
+set interface ge-0/0/1 unit 0 family inet mpls ip
+set interface ge-0/0/1 unit 0 family mpls traffic-eng bandwidth 100000
+set interface ge-0/0/1 unit 0 family isis network point-to-point
+set interface ge-0/0/1 unit 0 family isis circuit-type level-2-only
+
+set interface lo0 unit 0 family inet address 2.2.2.9/32
+set interface lo0 unit 0 family inet isis network point-to-point
+set interface lo0 unit 0 family inet isis circuit-type level-2-only

@@ -1,0 +1,25 @@
+interface Loopback0
+ ip address 10.1.1.1 255.255.255.255
+
+grpc
+ server
+  bind source-interface Loopback0
+  port 50051
+
+telemetry
+ destination-group destination1
+  address-family ipv4 10.20.2.1 port 10001
+  protocol grpc
+  encoding self-describing-gpb
+  transport-tls
+  no-tls
+
+ sensor-group sensor1
+  sensor-path huawei-eai-service:eai-service/resource-prediction-datas/resource-prediction-data
+
+ subscription subscription1
+  sensor-group-id sensor1
+  destination-id destination1
+
+intelligent-anomaly-detection
+intelligent-resource-prediction

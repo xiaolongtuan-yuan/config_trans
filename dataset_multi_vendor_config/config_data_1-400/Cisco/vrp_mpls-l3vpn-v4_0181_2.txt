@@ -1,0 +1,38 @@
+hostname ASBR1
+
+mpls label protocol ldp
+mpls ip
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.10.1.1 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.21.1.1 255.255.255.0
+ mpls ip
+
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255
+
+router bgp 100
+ neighbor 1.1.1.9 remote-as 100
+ neighbor 1.1.1.9 update-source Loopback1
+ neighbor 10.21.1.2 remote-as 200
+
+ address-family ipv4 unicast
+  neighbor 1.1.1.9 activate
+  neighbor 10.21.1.2 activate
+ exit-address-family
+
+ address-family ipv4 labeled-unicast
+  neighbor 1.1.1.9 activate
+  neighbor 10.21.1.2 activate
+ exit-address-family
+
+router ospf 1
+ area 0
+  network 2.2.2.9 0.0.0.0 area 0
+  network 10.10.1.0 0.0.0.255 area 0
+

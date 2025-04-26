@@ -1,0 +1,50 @@
+hostname P1
+mpls ldp router-id Loopback0
+mpls ldp discovery transport-address GigabitEthernet1/0/0
+mpls ldp discovery transport-address GigabitEthernet2/0/0
+mpls ldp igp sync
+mpls label protocol ldp
+mpls ldp advertise-labels for 2.2.2.9/32
+mpls traffic-eng tunnels
+mpls traffic-eng router-id Loopback0
+mpls traffic-eng area 0
+mpls traffic-eng level-1
+mpls traffic-eng level-2
+mpls traffic-eng path-option 10 explicit name path1
+mpls traffic-eng path-option 20 explicit name path2
+mpls traffic-eng autoroute announce
+mpls traffic-eng fast-reroute
+mpls traffic-eng fast-reroute include-tunnel
+mpls traffic-eng fast-reroute per-prefix
+mpls traffic-eng fast-reroute per-prefix tiebreaker node-protect
+mpls traffic-eng fast-reroute per-prefix tiebreaker bandwidth
+mpls traffic-eng fast-reroute per-prefix tiebreaker adjacency
+mpls traffic-eng fast-reroute per-prefix tiebreaker srlg
+mpls traffic-eng fast-reroute per-prefix tiebreaker lowest-metric
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255
+ isis network point-to-point
+ isis metric 10
+ isis lsp-interval 5
+ isis cost 10
+ isis level-1
+ isis level-2
+ isis segment-routing prefix-sid index 20
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 172.16.1.2 255.255.255.0
+ isis network point-to-point
+ isis metric 10
+ isis lsp-interval 5
+ isis cost 10
+ isis level-1
+ isis level-2
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 172.17.1.1 255.255.255.0
+ isis network point-to-point
+ isis metric 10
+ isis lsp-interval 5
+ isis cost 10
+ isis level-1
+ isis level-2

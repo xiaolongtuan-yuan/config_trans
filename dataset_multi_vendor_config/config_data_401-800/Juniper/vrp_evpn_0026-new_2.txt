@@ -1,0 +1,46 @@
+set system host-name PE3
+
+set routing-options autonomous-system 100
+set routing-options router-id 4.4.4.4
+
+set protocols bgp group IBGP peer-as 100
+set protocols bgp group IBGP neighbor 3.3.3.3
+set protocols bgp group IBGP local-address lo0.1
+set protocols bgp group IBGP multihop ttl 2
+set protocols bgp group IBGP family inet unicast
+set protocols bgp group IBGP family evpn signaling
+set protocols bgp group IBGP export next-hop-self
+
+set protocols ospf area 0 interface lo0.1
+set protocols ospf area 0 interface ge-1/0/0.0
+set protocols ospf area 0 interface ae10.0
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.3.1.2/24
+set interfaces ge-1/0/0 unit 0 family mpls
+set interfaces ge-1/0/0 unit 0 family mpls ldp
+
+set interfaces ge-2/0/0 ether-options 802.3ad ae10
+
+set interfaces lo0 unit 1 family inet address 4.4.4.4/32
+
+set interfaces ae10 description "To Access Switch"
+set interfaces ae10 unit 0 family ethernet-switching vlan members all
+
+set protocols evpn router-id 4.4.4.4
+set protocols evpn neighbor 3.3.3.3
+
+set protocols mpls interface lo0.1
+set protocols mpls ldp interface lo0.1
+
+set bridge-domains BD10 vlan-id 10
+set bridge-domains BD10 mtu 1500
+set bridge-domains BD10 routing-interface irb.10
+set bridge-domains BD10 protocols evpn instance-type evpn
+set bridge-domains BD10 protocols evpn route-distinguisher auto
+set bridge-domains BD10 protocols evpn vrf-target target:1:1
+
+set routing-instances evpna instance-type vrf
+set routing-instances evpna interface irb.10
+set routing-instances evpna route-distinguisher 4.4.4.4:1
+set routing-instances evpna vrf-target target:1:1
+set routing-instances evpna routing-options static route 0.0.0.0/0 next-hop 10.3.1.1

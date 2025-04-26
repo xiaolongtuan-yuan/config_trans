@@ -1,0 +1,50 @@
+set system host-name LSRc
+set forwarding ldp router-id loopback0
+set forwarding label protocol ldp
+set interfaces ge-1/0/1 unit 0 family inet address 10.1.2.2/24
+set interfaces ge-1/0/1 unit 0 family mpls traffic-eng tunneled-traffic
+set interfaces ge-1/0/2 unit 0 family inet address 10.1.3.2/24
+set interfaces ge-1/0/2 unit 0 family mpls traffic-eng tunneled-traffic
+set interfaces lo0 unit 0 family inet address 3.3.3.9/32
+set routing-instances inst1 instance-type vrf
+set routing-instances inst1 vrf-target target:export:65000:1
+set forwarding-options mpls label-mode per-packet
+set protocols ldp peer-group default
+set interfaces ge-1/0/1 unit 0 family mpls traffic-eng tunnel
+set interfaces ge-1/0/2 unit 0 family mpls traffic-eng tunnel
+set routing-instances inst1 vrf-import import-target:65000:1
+set routing-instances inst1 vrf-export export-target:65000:1
+set policies from ldp-tunnel-policy
+set policy ldp-tunnel-policy term 1 from protocol ldp
+set policy ldp-tunnel-policy term 1 then select route-instance inst1
+set forwarding-options mpls traffic-eng tunnels enable-tunneling
+set forwarding-options mpls traffic-eng constraints bandwidth 1000 path-pe-link-fast-reroute
+set routing-instances inst1 vrf-table-label
+set interfaces ge-1/0/1 unit 0 family inet6 address 2001:db8::2/64
+set interfaces ge-1/0/2 unit 0 family inet6 address 2001:db9::2/64
+set protocols ldp interface ge-1/0/1.0
+set protocols ldp interface ge-1/0/2.0
+set routing-options autonomous-system 490000
+set policies from mpls-te-policy
+set policy mpls-te-policy term 1 from protocol bgp match vrf inst1
+set policy mpls-te-policy term 1 then route dscp af1
+set protocols bgp group bgp-group1 peer-as 65000 local-address ge-1/0/1.0
+set protocols bgp group bgp-group1 export mpls-te-policy
+set interfaces lo0 unit 0 family inet6 address ::1/128
+set routing-instances inst1 vrf-table-label
+set policies from te-policy
+set policy te-policy term 1 from protocol mpls-ldp
+set policy te-policy term 1 then select route-instance inst1
+set forwarding-options mpls traffic-eng bandwidth 1000 path-pe-link-fast-reroute
+set routing-instances instance-name vrf-table-label
+set interfaces ge-1/0/1 unit 0 family inet6 address 2001:db8::3/64
+set interfaces ge-1/0/2 unit 0 family inet6 address 2001:db9::3/64
+set routing-instances instance-name vrf-target export target:65000:3
+set routing-instances default vrf-table-label
+set policies from mpls-lsp-policy
+set policy mpls-lsp-policy term 1 from protocol bgp match vrf default
+set policy mpls-lsp-policy term 1 then route dscp af2
+set interfaces lo1 unit 0 family inet6 address 3001:db8::2/64
+set forwarding-options mpls label-switched-paths optimize equal-cost
+set protocols bgp group bgp-group2 peer-as 65000 local-address ge-1/0/2.0
+set protocols bgp group bgp-group2 export mpls-lsp-policy

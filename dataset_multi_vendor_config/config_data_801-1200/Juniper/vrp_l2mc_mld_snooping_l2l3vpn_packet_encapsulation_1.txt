@@ -1,0 +1,22 @@
+set system host-name UPE
+
+set protocols mpls label-switched-path to 2.2.2.2
+set protocols ldp transport-address 1.1.1.1
+set protocols ldp interface all
+
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+
+set interfaces ge-1/0/0 flexible-vlan-tagging
+set interfaces ge-1/0/0 unit 1 vlan-id 10
+set interfaces ge-1/0/0 unit 1 family ethernet-switching interface-mode trunk
+set routing-instances vsi1 instance-type virtual-switch
+set routing-instances vsi1 interface ge-1/0/0.1
+
+set interfaces ge-1/0/1 unit 0 family inet address 172.16.1.2/24
+set interfaces ge-1/0/1 unit 0 family mpls
+
+set protocols ospf area 0.0.0.0 interface lo0.0
+set protocols ospf area 0.0.0.0 interface ge-1/0/1.0
+set protocols ospf router-id 1.1.1.1
+
+set protocols mpls ldp neighbor 2.2.2.2 targeted

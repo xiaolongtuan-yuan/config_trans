@@ -1,0 +1,28 @@
+hostname DeviceC
+
+bfd all-interfaces
+
+interface GigabitEthernet1/0/2
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:6::1/64
+
+interface GigabitEthernet2/0/3
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:3::2/64
+
+interface GigabitEthernet3/0/3
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:4::2/64
+
+bfd all-interfaces
+ interval 100 min_rx 100 min_tx 100 multiplier 3
+
+ipv6 route 2001:db8:5::/64 GigabitEthernet2/0/3 2001:db8:3::1
+ipv6 route 2001:db8:5::/64 GigabitEthernet3/0/3 2001:db8:4::1
+ipv6 route 2001:db8:1::/64 GigabitEthernet2/0/3 2001:db8:3::1
+ipv6 route 2001:db8:2::/64 GigabitEthernet3/0/3 2001:db8:4::1
+
+end

@@ -1,0 +1,25 @@
+hostname UPE
+!
+mpls ldp router-id Loopback0 force
+!
+mpls ip
+!
+mpls l2vpn
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ xconnect 1.1.1.1 1 encapsulation mpls
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 10.1.1.3 255.255.255.0
+ mpls ip
+!
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.255
+!
+router ospf 1
+ network 2.2.2.2 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+!
+end

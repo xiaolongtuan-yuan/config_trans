@@ -1,0 +1,24 @@
+set system host-name DeviceE
+set interfaces ge-3/0/1 unit 0 family inet address 1.1.2.1/24
+set interfaces ge-3/0/2 unit 0 family inet address 1.1.1.1/24
+set routing-options autonomous-system 200
+set protocols bgp peer-group TEST
+set protocols bgp peer-group TEST peer-address 1.1.1.2
+set protocols bgp peer-group TEST import route-map ROUTE-RULE-IN
+set interfaces ge-3/0/1 unit 0 family inet unicast-routing
+set interfaces ge-3/0/2 unit 0 family inet unicast-routing
+set routing-options routes Serverset route-server-client
+set routing-instances Serverset instance-type vrf
+set routing-instances Serverset vlan-id 10
+set policy-options routing-instance Serverset ruleset rule-set-IN term TERM_IN from protocol direct
+set policy-options routing-instance Serverset ruleset rule-set-IN term TERM_IN then accept
+set policy-options routing-instance Serverset ruleset rule-set-OUT term TERM_OUT from protocol bgp peer-group TEST
+set policy-options routing-instance Serverset ruleset rule-set-OUT term TERM_OUT then set metric 100
+set policy-options routing-instance Serverset ruleset rule-set-OUT term TERM_OUT then set weight 50
+set policy-options routing-instances Serverset route-server-client routing-options static route 2.2.2.0/24 next-hop self
+set policy-options routing-instances Serverset route-server-client routing-options static route 3.3.3.0/24 next-hop self
+set routing-options router-id ge-3/0/1.0
+set system login user admin group super-user
+set protocols bgp neighbor 1.1.1.2 peer-group TEST
+set protocols static route 2.2.2.0/24 next-hop self
+set protocols static route 3.3.3.0/24 next-hop self

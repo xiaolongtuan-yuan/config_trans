@@ -1,0 +1,32 @@
+hostname BRAS2
+
+interface GigabitEthernet1/0/0
+ ip address 10.1.4.1 255.255.255.0
+
+interface GigabitEthernet3/0/0.100
+ encapsulation dot1Q 600
+ ip address 10.10.10.10 255.255.255.0
+ standby version 2
+ standby 3 ip 10.10.10.2
+ standby 3 priority 120
+ standby 3 preempt
+ standby 3 track bfd discriminator 3 force
+ standby 3 track bfd atob
+
+interface Loopback1
+ ip address 2.2.2.2 255.255.255.255
+
+router ospf 4
+ redistribute connected subnets
+ network 10.1.4.0 0.0.0.255 area 0
+ network 2.2.2.0 0.0.0.255 area 0
+
+bfd template atob
+ discriminator local 3
+ discriminator remote 2
+
+bfd peer 10.10.10.1 source-ip 10.10.10.10
+ bfd template atob
+
+end
+

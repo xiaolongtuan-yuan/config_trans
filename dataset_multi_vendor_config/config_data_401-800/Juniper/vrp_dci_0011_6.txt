@@ -1,0 +1,43 @@
+set system host-name DCI-PE2
+
+set routing-instances vpn1 instance-type vrf
+set routing-instances vpn1 route-distinguisher 200:1
+set routing-instances vpn1 vrf-target target:111:1
+
+set protocols mpls interface all
+set protocols ldp interface all
+
+set interfaces ge-1/0/0 unit 0 family inet address 192.168.30.1/24
+set interfaces ge-1/0/0 vrf vpn1
+
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.10.2/24
+set protocols mpls interface ge-2/0/0
+
+set interfaces lo0 unit 1 family inet address 3.3.3.3/32
+
+set interfaces lt-0/0/10 unit 0 family inet
+set interfaces lt-0/0/10 unit 0 tunnel source 3.3.3.3
+set interfaces lt-0/0/10 unit 0 tunnel destination 1.1.1.1
+set interfaces lt-0/0/10 unit 0 tunnel mpls traffic-engineering tunnel-id 100
+
+set routing-options autonomous-system 100
+
+set protocols bgp group internal type internal
+set protocols bgp group internal local-address 3.3.3.3
+set protocols bgp group internal neighbor 1.1.1.1
+
+set protocols bgp group internal family inet unicast
+set protocols bgp group internal family inet-vpn unicast
+set protocols bgp group internal family inet-vpn unicast extended-community
+
+set routing-instances vpn1 protocols bgp group external type external
+set routing-instances vpn1 protocols bgp group external peer-as 65420
+set routing-instances vpn1 protocols bgp group external neighbor 192.168.30.2
+
+set protocols ospf area 0 interface lo0.1
+set protocols ospf area 0 interface ge-2/0/0
+set protocols ospf area 0 interface lt-0/0/10
+set protocols ospf traffic-engineering
+
+set protocols mpls traffic-engineering auto-bw
+set protocols mpls traffic-engineering load-balance 1

@@ -1,0 +1,28 @@
+#
+sysname DeviceC
+#
+isis 1
+ network-entity 10.0000.0000.0003.00 
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 172.17.1.1 255.255.255.0
+ isis enable 1
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 192.168.11.1 255.255.255.0
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ip address 192.168.21.1 255.255.255.0
+ isis enable 1
+#
+ospf 1
+ area 0.0.0.0
+  network 192.168.11.0 0.0.0.255
+  network 192.168.21.0 0.0.0.255
+ area 0.0.0.2
+  network 172.17.1.0 0.0.0.255
+#
+return

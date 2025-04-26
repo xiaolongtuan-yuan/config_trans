@@ -1,0 +1,35 @@
+sysname P2
+#
+mpls lsr-id 3.3.3.9
+#
+mpls
+  mpls te
+mpls rsvp-te
+mpls te cspf
+#
+interface GigabitEthernet3/0/3
+undo shutdown
+ ip address 10.1.3.2 255.255.255.0
+ mpls
+  mpls te
+ mpls rsvp-te
+#
+interface GigabitEthernet4/0/0
+undo shutdown
+ ip address 10.1.5.1 255.255.255.0
+ mpls
+  mpls te
+ mpls rsvp-te
+#
+interface LoopBack1
+ ip address 3.3.3.9 255.255.255.255
+#
+ospf 1
+ opaque-capability enable
+  area 0.0.0.0
+  network 3.3.3.9 0.0.0.0
+  network 10.1.3.0 0.0.0.255
+  network 10.1.5.0 0.0.0.255
+  mpls-te enable
+#
+return

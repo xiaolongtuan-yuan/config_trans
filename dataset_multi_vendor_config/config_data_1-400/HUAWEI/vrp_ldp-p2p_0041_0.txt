@@ -1,0 +1,27 @@
+#
+sysname LSRA
+#
+mpls lsr-id 1.1.1.9
+#
+mpls
+  lsp-trigger all
+#
+mpls ldp
+ #
+ ipv4-family
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.252
+ mpls
+ mpls ldp
+#
+interface LoopBack1
+ ip address 1.1.1.9 255.255.255.255
+#
+ospf 1
+ area 0.0.0.0
+  network 1.1.1.9 0.0.0.0
+  network 10.1.1.0 0.0.0.3
+#
+return

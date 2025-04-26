@@ -1,0 +1,28 @@
+hostname DeviceC
+
+ipv6 unicast-routing
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:2::1/64
+ ipv6 ospf 1 area 0.0.0.0
+ tunnel mode gre ipv6
+ tunnel source 2001:DB8:2::1
+ tunnel destination 2001:DB8:1::1
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:4::1/64
+
+interface Tunnel1
+ ipv6 enable
+ ipv6 address 2001:DB8:5::2/64
+ tunnel mode gre ipv6
+ tunnel source 2001:DB8:2::1
+ tunnel destination 2001:DB8:1::1
+
+ipv6 route 2001:DB8:3::/64 Tunnel1
+
+end

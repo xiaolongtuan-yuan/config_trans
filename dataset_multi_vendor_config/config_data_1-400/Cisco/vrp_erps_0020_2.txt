@@ -1,0 +1,30 @@
+hostname DeviceC
+
+vlan 20
+vlan 300-400
+
+spanning-tree vlan 20,300-400 priority root primary
+
+erps 2
+ control-vlan 20
+ protected-instance 2
+ wtr-timer 6
+ guard-timer 100
+ version 2
+ sub-ring
+
+interface GigabitEthernet1/0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 20,300-400
+ no shutdown
+ spanning-tree portfast trunk
+ erps 2 owner
+
+interface GigabitEthernet1/0/2
+ switchport mode trunk
+ switchport trunk allowed vlan 20,300-400
+ no shutdown
+ spanning-tree portfast trunk
+ erps 2
+
+end

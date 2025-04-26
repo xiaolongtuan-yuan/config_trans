@@ -1,0 +1,31 @@
+hostname PE3
+!
+router isis
+ is-type level-1
+ net 49.0000.0000.0004.00
+!
+ipv6 unicast-routing
+!
+interface Loopback5
+ ipv6 enable
+ ipv6 address 2001:DB08:4::2/128
+ isis ipv6 enable
+!
+interface GigabitEthernet2/0/1
+ ipv6 address 2001:DB08:3::2/64
+ ipv6 enable
+ isis ipv6 enable
+!
+l2tp-class huawei1
+ encapsulation l2tpv3
+ hashing sha1
+ no authentication
+!
+pseudowire-class a456
+ encapsulation l2tpv3
+ protocol l2tpv3 huawei1
+!
+interface GigabitEthernet1/0/1.4
+ encapsulation dot1q 4
+ xconnect 2001:DB08:1::2 456 pw-class a456
+!

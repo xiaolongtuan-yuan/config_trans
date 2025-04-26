@@ -1,0 +1,48 @@
+hostname DeviceA
+
+aaa new-model
+aaa authentication login default group radius
+aaa authentication ppp default group radius
+aaa authorization network default group radius
+aaa accounting network default start-stop group radius
+
+aaa group server radius radius1
+ server 10.20.20.1 auth-port 1812 acct-port 1813
+ key 7 073C2D2A0D5E1C0D0B
+
+interface Virtual-Template1
+ ppp authentication chap
+
+interface GigabitEthernet2/0/0
+ no shutdown
+
+interface GigabitEthernet2/0/0.100
+ pppoe enable group Virtual-Template1
+ no shutdown
+ encapsulation dot1Q 100
+ bridge-group 1
+ bridge-group 1 subscriber-loop-control
+ bridge-group 1 spanning-disabled
+ bridge-group 1 block-unknown-source
+ no bridge-group 1 source-learning
+ no bridge-group 1 unicast-flooding
+ bridge-group 1 spanning-disabled
+ bridge-group 1 block-unknown-source
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.38.160.1 255.255.255.0
+
+vpdn enable
+vpdn-group group1
+ accept-dialin
+  protocol l2tp
+  virtual-template 1
+ no l2tp tunnel authentication
+ l2tp tunnel password 7 072A5C090A504B5D5F131D0F0C
+
+username vpdnuser@huawei.com password 7 072A5C090A504B5D5F131D0F0C
+radius-server host 10.20.20.1 auth-port 1812 acct-port 1813
+radius-server key 7 073C2D2A0D5E1C0D0B
+
+end

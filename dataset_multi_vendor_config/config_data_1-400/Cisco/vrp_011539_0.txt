@@ -1,0 +1,38 @@
+hostname PE1
+
+cfm version standard
+cfm
+
+mpls ldp router-id Loopback0 force
+mpls ip
+mpls l2vpn
+mpls label protocol ldp
+
+interface GigabitEthernet1/0/1.1
+ encapsulation dot1Q 2
+ xconnect vfi ldp1
+
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls ip
+ mpls ldp
+
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.0
+
+router ospf 1
+ network 2.2.2.2 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+
+cfm md md1
+ ma ma1
+  service-instance 1 ethernet
+  encapsulation dot1q 2
+  xconnect vfi ldp1
+  mep 1 interface GigabitEthernet1/0/1.1
+  mep ccm-enable
+  mep remote-mep-id 2 remote-interface GigabitEthernet1/0/1.1
+  mep crosscheck-enable
+  delay-measurement two-way send 1 interval 1000 count 20
+

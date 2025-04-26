@@ -1,0 +1,40 @@
+hostname P2
+!
+mpls ldp router-id Loopback1 force
+!
+mpls label protocol ldp
+!
+mpls traffic-eng tunnels
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 172.18.1.2 255.255.255.0
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 172.19.1.1 255.255.255.0
+!
+interface Loopback1
+ ip address 4.4.4.9 255.255.255.255
+!
+router ospf 1
+ router-id 4.4.4.9
+ area 0
+!
+mpls traffic-eng router-id Loopback1
+!
+mpls traffic-eng area 0
+!
+mpls traffic-eng segment-routing
+!
+mpls traffic-eng segment-routing global-block 16000 23999
+!
+mpls traffic-eng fast-reroute
+!
+mpls traffic-eng fast-reroute loop-free-alternate
+!
+mpls traffic-eng fast-reroute tie-lfa enable
+!
+mpls traffic-eng opaque-lsa-capability
+!
+end

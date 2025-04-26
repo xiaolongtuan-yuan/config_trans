@@ -1,0 +1,42 @@
+hostname ASBR1
+!
+mpls ldp router-id Loopback0
+!
+mpls ip
+!
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 10.16.1.1 255.255.255.0
+ mpls ip
+ mpls ldp auto-config
+!
+interface GigabitEthernet0/0/1
+ no shutdown
+ ip address 192.168.1.1 255.255.255.0
+ mpls ip
+!
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.255
+!
+router bgp 100
+ neighbor 192.168.1.2 remote-as 200
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 update-source Loopback0
+ !
+ address-family ipv4 unicast
+  no synchronization
+  neighbor 192.168.1.2 activate
+  neighbor 1.1.1.1 activate
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 1.1.1.1 activate
+  neighbor 192.168.1.2 activate
+ exit-address-family
+!
+router ospf 1
+ area 0
+ network 2.2.2.2 0.0.0.0
+ network 10.16.1.0 0.0.0.255
+!
+end

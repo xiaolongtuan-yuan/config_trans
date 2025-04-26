@@ -1,0 +1,44 @@
+hostname DeviceD
+
+interface GigabitEthernet1/0/0
+ ip address 172.16.0.2 255.255.255.0 
+ no shutdown
+
+interface GigabitEthernet2/0/0
+ ip address 172.17.1.2 255.255.255.0 
+ no shutdown
+
+interface GigabitEthernet3/0/0
+ ip address 192.168.1.1 255.255.255.0
+ no shutdown
+ ip route 172.17.1.3 255.255.255.0 gigabitethernet 3/0/0
+
+interface GigabitEthernet4/0/0
+ ip address 192.168.2.1 255.255.255.0 
+ no shutdown
+
+ip flow-export destination 192.168.2.2 3000
+ip flow-export source GigabitEthernet4/0/0
+ip flow-export version 9
+
+ip flow-cache timeout active 1
+ip flow-cache timeout inactive 15
+
+ip flow ingress layer2-switched vlan 1000
+
+access-list 100 permit ip any any
+
+ip flow monitor netflow-monitor input
+ip flow monitor netflow-monitor output
+
+ip flow monitor netflow-monitor record netflow-record
+ match ipv4 source address
+ collect interface input
+
+interface GigabitEthernet3/0/0
+ ip flow monitor netflow-monitor input
+
+interface GigabitEthernet4/0/0
+ ip flow monitor netflow-monitor input
+
+end

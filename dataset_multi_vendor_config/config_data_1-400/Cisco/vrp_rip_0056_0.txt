@@ -1,0 +1,21 @@
+hostname DeviceA
+!
+bfd all-interfaces
+!
+interface gigabitethernet1/0/0
+ no shutdown
+ ip address 2.2.2.1 255.255.255.0
+!
+interface gigabitethernet2/0/0
+ no shutdown
+ ip address 3.3.3.1 255.255.255.0
+!
+router rip
+ version 2
+ network 2.0.0.0
+ network 3.0.0.0
+!
+bfd all-interfaces
+ interval min-tx 100 min-rx 100 multiplier 10
+!
+end

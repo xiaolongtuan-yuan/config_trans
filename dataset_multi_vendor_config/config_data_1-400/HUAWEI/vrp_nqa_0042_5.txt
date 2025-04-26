@@ -1,0 +1,36 @@
+#
+ sysname U-PE2
+#
+ mpls lsr-id 5.5.5.9
+ mpls
+#
+ mpls l2vpn
+#
+ mpls ldp
+#
+ mpls ldp remote-peer 3.3.3.9
+ remote-ip 3.3.3.9
+#
+ interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.4.1.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+ pw-template wwt
+ peer-address 3.3.3.9
+ control-word
+#
+ interface GigabitEthernet2/0/0
+ undo shutdown
+ mpls l2vc 3.3.3.9 pw-template wwt 200   
+#
+ interface LoopBack0
+ ip address 5.5.5.9 255.255.255.255
+#
+ ospf 1
+ area 0.0.0.0
+ network 5.5.5.9 0.0.0.0
+ network 10.4.1.0 0.0.0.255
+#
+ return

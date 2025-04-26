@@ -1,0 +1,43 @@
+set system host-name HUAWEI
+
+set system authentication-order [ radius password ]
+
+set system radius-server 192.168.7.249 secret "vS%796FO7%C~pB%CR=q;j}gSCqR-X6+P!.DYI@"
+set system radius-server 192.168.7.249 authentication-port 1645
+set system radius-server 192.168.7.249 accounting-port 1646
+
+set interfaces ge-0/0/2 unit 2 encapsulation ethernet-bridge vlan-id 2
+
+set interfaces pp0 unit 0 encapsulation ppp-over-ether
+set interfaces pp0 unit 0 pppoe-options underlying-interface ge-0/0/2.0 # 若需要从bridge中demux，请根据实际拓扑调整
+set interfaces pp0 unit 0 pppoe-options idle-timeout 600
+set interfaces pp0 unit 0 ppp-options chap require both
+
+set access profile isp1 authentication-order radius
+set access profile isp1 accounting order radius
+
+set firewall family inet filter p1 term 1 from source-address 10.0.0.0/8   # 示例，根据实际ACL修改
+set firewall family inet filter p1 term 1 then accept
+
+set interfaces pp0 unit 0 family inet filter input p1
+set interfaces pp0 unit 0 family inet filter output p1
+
+set interfaces ge-0/0/1 unit 0 family inet address 192.168.7.1/24
+
+set interfaces lo0 unit 1 family inet address 10.1.2.2/32
+
+set policy-options policy-statement REDIST-CONNECTED term 1 from protocol direct
+set policy-options policy-statement REDIST-CONNECTED term 1 then accept
+
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.0 interface lo0.1 passive
+set protocols ospf export REDIST-CONNECTED
+
+set system services dhcp-local-server group pool1 interface ge-0/0/1.0
+set system services dhcp pool 10.82.0.0/24 address-range low 10.82.0.2 high 10.82.0.200
+set system services dhcp pool 10.82.0.0/24 default-router 10.82.0.1
+set system services dhcp pool 10.82.0.0/24 domain-name-server 192.168.7.252
+
+set access address-assignment pool pool1 family inet network 10.82.0.0/24
+set access address-assignment pool pool1 family inet range r1 low 10.82.0.2
+set access address-assignment pool pool1 family inet range r1 high 10.82.0.200

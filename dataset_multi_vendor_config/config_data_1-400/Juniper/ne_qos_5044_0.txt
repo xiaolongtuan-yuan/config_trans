@@ -1,0 +1,35 @@
+set interfaces ge-1/0/0 unit 1 vlan-id 1 family inet address 10.192.168.1/24
+set interfaces ge-1/0/0 unit 1 family inet filter input qos1
+
+set interfaces ge-2/0/0 unit 1 vlan-id 2 family inet address 10.2.1.1/24
+set interfaces ge-2/0/0 unit 1 family inet filter input qos2
+
+set interfaces ge-3/0/0 unit 11 vlan-id 11 family inet address 10.192.167.2/24
+set interfaces ge-3/0/0 unit 11 family inet filter input qos1
+set interfaces ge-3/0/0 unit 11 family inet filter output qos1
+set interfaces ge-3/0/0 unit 11 family mpls
+set protocols mpls interface ge-3/0/0.11
+
+set class-of-service classifiers ieee-802.1 classifier-map qos-cos
+set class-of-service rewrite-rules ieee-802.1 rewrite-map qos-cos
+
+set class-of-service forwarding-classes queue qos1 forwarding-class high
+set class-of-service forwarding-classes queue qos2 forwarding-class low
+
+set firewall filter qos1 term match-cos-5 from cos 5
+set firewall filter qos1 term match-cos-5 then forwarding-class high
+set firewall filter qos1 term match-cos-5 then priority high
+set firewall filter qos1 term default then accept
+
+set firewall filter qos2 term match-cos-5 from cos 5
+set firewall filter qos2 term match-cos-5 then forwarding-class low
+set firewall filter qos2 term match-cos-5 then priority low
+set firewall filter qos2 term default then accept
+
+set protocols mpls ldp interface ge-3/0/0.11
+set protocols mpls ldp interface ge-1/0/0.1
+set protocols mpls ldp interface ge-2/0/0.1
+
+set protocols class-of-service scheduler-maps qos-scheduler
+set class-of-service schedulers qos1 transmit-rate percent 100 priority strict-high
+set class-of-service schedulers qos2 transmit-rate percent 100

@@ -1,0 +1,34 @@
+set interfaces lo0 unit 0 family inet address 4.4.4.4/32
+set interfaces lo0 unit 24 family inet address 4.4.4.4/32
+
+set interfaces ge-2/0/1 unit 0 family inet
+set interfaces ge-2/0/2 unit 0 family inet
+
+set interfaces ml-24 unit 0 family inet address 172.16.1.2/24
+set interfaces ml-24 unit 0 family mpls
+
+set interfaces t1-2/0/3 encapsulation ppp
+set interfaces t1-2/0/3 multilink-group ml-24
+set interfaces t1-2/0/3 enable
+
+set services aps interface t1-2/0/3 working-interface t1-2/0/3
+set services aps interface t1-2/0/3 protect-interface t1-2/0/4
+set services aps interface t1-2/0/3 neighbor 5.5.5.5
+set services aps interface t1-2/0/3 authentication-key hmac-sha1 "$9$%^%#'d;Ykv]v5U4q.%+'D8m{YlN#D&uX:CS](*\.b$%^%#"
+
+set protocols isis level 1
+set protocols isis level 2 disable
+set protocols isis network-entity 49.4444.4444.4444.4444.00
+set protocols isis level 1 wide-metrics-only
+set protocols isis spf-options initial-delay 1
+set protocols isis spf-options secondary-delay 1
+set protocols isis spf-options holddown 50
+set protocols isis traffic-engineering
+set protocols isis traffic-engineering router-id 4.4.4.4
+set protocols isis interface all passive
+delete protocols isis interface ge-2/0/1 passive
+delete protocols isis interface ge-2/0/2 passive
+
+set protocols mpls interface all
+set protocols mpls traffic-engineering
+set protocols mpls traffic-engineering router-id 4.4.4.4

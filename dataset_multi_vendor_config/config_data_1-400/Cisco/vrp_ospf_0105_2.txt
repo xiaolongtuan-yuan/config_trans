@@ -1,0 +1,59 @@
+hostname PE2
+!
+ip vrf vpn1
+ rd 100:2
+ route-target export 1:1
+ route-target import 1:1
+!
+mpls label protocol ldp
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip vrf forwarding vpn1
+ ip address 172.16.2.2 255.255.255.0
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.20.1.2 255.255.255.0
+ mpls ip
+ mpls ldp
+!
+interface Loopback1
+ ip address 3.3.3.9 255.255.255.255
+!
+interface Loopback10
+ ip vrf forwarding vpn1
+ ip address 6.6.6.6 255.255.255.255
+!
+router bgp 100
+ neighbor 1.1.1.9 remote-as 100
+ neighbor 1.1.1.9 update-source Loopback1
+ !
+ address-family ipv4 unicast
+  no synchronization
+  neighbor 1.1.1.9 activate
+ !
+ address-family vpnv4
+  neighbor 1.1.1.9 activate
+  neighbor 1.1.1.9 send-community both
+ !
+ address-family ipv4 vrf vpn1
+  import-route direct
+  import-route ospf 100
+!
+router ospf 1
+ router-id 22.22.22.22
+ vrf vpn1
+ redistribute bgp 100 subnets
+ area 0.0.0.0
+  network 3.3.3.9 0.0.0.0
+  network 10.20.1.0 0.0.0.255
+!
+router ospf 100 vrf vpn1
+ router-id 22.22.22.22
+ redistribute bgp 100 subnets
+ area 0.0.0.0
+  network 172.16.2.0 0.0.0.255
+  sham-link 6.6.6.6 5.5.5.5 cost 1
+!
+end

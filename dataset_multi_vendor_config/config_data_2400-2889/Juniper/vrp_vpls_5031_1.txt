@@ -1,0 +1,30 @@
+set system host-name PE1
+set protocols mpls label protocol ldp
+set protocols mpls ip
+setprotocols mpls ldp router-id loopback0 force
+set protocols mpls ldp neighbor 3.3.3.9 target
+
+set interfaces ge-0/0/0 unit 1 family ethernet-switching
+set interfaces ge-0/0/0 unit 1 encapsulation dot1q 10
+set interfaces ge-0/0/0 unit 1 fdb connect vfi a2
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.10.1.1/24
+set interfaces ge-1/0/0 unit 0 family mpls ip
+set interfaces ge-1/0/0 unit 0 family mpls traffic-eng tunnels
+set interfaces ge-1/0/0 unit 0 family mpls traffic-eng router-id loopback0
+
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+
+set interfaces tunnel10 unit 0 family inet unnumbered interface lo0
+set interfaces tunnel10 unit 0 tunnel mpls traffic-eng mode tunnel
+set interfaces tunnel10 unit 0 tunnel mpls traffic-eng destination 3.3.3.9
+set interfaces tunnel10 unit 0 tunnel mpls traffic-eng tunnel-id 100
+set protocols mpls traffic-eng auto-discovery advertise
+
+set routing-options router ospf 1
+set routing-options router ospf 1 area 0 network 1.1.1.9/32
+set routing-options router ospf 1 area 0 network 10.10.1.0/24
+
+set forwarding vlans vfi a2
+set forwarding vlans vfi a2 vlan-id 2
+set forwarding vlans vfi a2 neighbor 3.3.3.9 pw-id 2

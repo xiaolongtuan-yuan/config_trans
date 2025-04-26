@@ -1,0 +1,26 @@
+set system host-name PE1
+
+set protocols mpls ldp
+set protocols mpls l2vpn
+set vlans vfi1 auto-discovery bgp route-target-import 1:1
+set vlans vfi1 route-target-export 1:1
+set vlans vfi1 id 1
+set vlans vfi1 default-override false
+
+set interfaces ge-0/0/0 unit 0 family mpls
+set interfaces ge-0/0/0.1 unit 0 family dot1q-tunnel 10
+set interfaces ge-0/0/0.1 unit 0 ethernet-vpn vfi vfi1
+set routing-instances vfi1 interface ge-0/0/0
+set routing-options router-id lo0.0
+
+set interfaces ge-1/0/0 family inet address 10.10.1.1/24
+set interfaces ge-1/0/0 family mpls
+set interfaces ge-1/0/0 family mpls label-switched-path lo0.0 force
+
+set protocols bgp group external router-id 2.2.2.2 as 100 peer-ip 2.2.2.2 update-source lo0.0
+set protocols bgp group external-bgp neighbor 4.4.4.4 as 200 ebgp-multihop 255 update-source lo0.0
+
+set protocols bgp aggregate-addresses synchronization no
+
+set protocols ospf area 0 network 1.1.1.1/32
+set protocols ospf area 0 network 10.10.1.0/24 

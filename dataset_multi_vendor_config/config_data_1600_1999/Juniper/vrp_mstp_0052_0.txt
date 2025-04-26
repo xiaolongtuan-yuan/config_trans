@@ -1,0 +1,30 @@
+set system host-name UPE1
+
+set protocols mpls label-protocol ldp
+
+set protocols l2vpn
+set protocols l2vpn pseudowire-class pwsignal
+set protocols l2vpn pseudowire-class pwsignal encapsulation ldp
+
+set routing-instances s1 instance-type virtual-router
+set routing-instances s1 l2vpn xconnect group s1 p2p s1
+set routing-instances s1 l2vpn xconnect group s1 p2p s1 interface ge-0/0/0.1 encapsulation vlan rewrite ingress tag pop 1 symmetric bridge-domain 100
+set routing-instances s1 l2vpn xconnect group s1 p2p s1 neighbor 2.2.2.2 pw-id 100
+set routing-instances s1 l2vpn xconnect group s1 p2p s1 neighbor 3.3.3.3 pw-id 100
+
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-0/0/0 unit 0 family mpls
+set interfaces ge-0/0/0 unit 0 mpls ldp autoconfig
+
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.2.1/24
+set interfaces ge-0/0/1 unit 0 family mpls
+set interfaces ge-0/0/1 unit 0 mpls ldp autoconfig
+
+set interfaces ge-0/0/0.1 encapsulation vlan-id 10
+set interfaces ge-0/0/0.1 l2vpn xconnect group s1
+
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+
+set protocols ospf area 0.0.0.0 network 1.1.1.1/32
+set protocols ospf area 0.0.0.0 network 10.1.1.0/24
+set protocols ospf area 0.0.0.0 network 10.1.2.0/24

@@ -1,0 +1,55 @@
+set system host-name P2
+
+set interfaces lo0 unit 0 family inet address 3.3.3.3/32
+
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.2.1/24
+
+set interfaces ge-0/0/1 unit 0 family inet
+set interfaces ge-0/0/2 unit 0 family inet
+set interfaces ge-0/0/3 unit 0 family inet
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.4.2/24
+
+set interfaces ge-1/0/1 unit 0 family ethernet-switching
+set interfaces ge-1/0/2 unit 0 family ethernet-switching
+set chassis aggregated-devices ethernet device-count 1
+set interfaces ae1 aggregated-ether-options link-speed 1g
+set interfaces ae1 aggregated-ether-options lacp active
+set interfaces ge-1/0/1 ether-options 802.3ad ae1
+set interfaces ge-1/0/2 ether-options 802.3ad ae1
+
+set interfaces ge-1/0/3 unit 0 family inet
+set interfaces ge-1/0/4 unit 0 family inet
+set interfaces ge-1/0/5 unit 0 family inet
+set interfaces ge-1/0/6 unit 0 family inet
+set interfaces ge-1/0/7 unit 0 family inet
+
+set interfaces ae1 unit 0 family inet address 10.1.3.2/24
+set interfaces ae1 unit 0 vlan-id 100
+
+set protocols isis interface lo0.0
+set protocols isis net 10.0000.0000.0004.00
+
+set protocols mpls interface all
+set protocols mpls interface lo0.0
+set protocols mpls ldp interface all
+set protocols mpls ldp interface lo0.0
+set protocols mpls ldp session-protection
+set protocols mpls ldp igp-synchronization
+set protocols mpls ldp discovery hello-hold-time 30000
+set protocols mpls ldp discovery hello-interval 5000
+set protocols mpls ldp discovery targeted-hello hold-time 30000
+set protocols mpls ldp discovery targeted-hello interval 5000
+set protocols mpls ldp discovery targeted-hello accept
+set protocols mpls ldp discovery targeted-hello transmit
+
+set protocols mpls traffic-engineering mpls-forwarding
+set protocols mpls traffic-engineering auto-bandwidth
+set protocols mpls traffic-engineering logging bandwidth-changes
+set protocols mpls traffic-engineering logging periodic
+set protocols mpls traffic-engineering reoptimize-events
+set protocols mpls traffic-engineering timers
+set protocols mpls traffic-engineering topology mldp p2mp
+set protocols mpls traffic-engineering topology mldp p2mp advanced-topology
+
+set protocols bfd interface all

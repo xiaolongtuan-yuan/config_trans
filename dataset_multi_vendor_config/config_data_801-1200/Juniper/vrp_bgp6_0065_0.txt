@@ -1,0 +1,18 @@
+set system host-name DeviceA
+
+set interfaces ge-0/0/0 unit 0 family inet6 address 2001:db8:8::1/64
+set interfaces ge-0/0/1 unit 0 family inet6 address 2001:db8:10::2/64
+
+set routing-options router-id 1.1.1.1
+
+set protocols bgp group external type external
+set protocols bgp group external peer-as 65009
+set protocols bgp group external neighbor 2001:db8:10::1
+set protocols bgp group external family inet6 unicast
+
+set policy-options policy-statement export-v6 term 1 from route-filter 2001:db8:8::/64 exact
+set policy-options policy-statement export-v6 term 1 then accept
+set policy-options policy-statement export-v6 term 2 from route-filter 2001:db8:10::/64 exact
+set policy-options policy-statement export-v6 term 2 then accept
+
+set protocols bgp group external export export-v6

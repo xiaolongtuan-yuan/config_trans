@@ -1,0 +1,66 @@
+# 
+sysname ABR1 
+# 
+mpls lsr-id 3.3.3.3 
+# 
+mpls 
+# 
+mpls ldp 
+ mldp p2mp 
+ mldp recursive-fec 
+ ipv4-family 
+# 
+isis 1 
+ is-level level-2 
+ cost-style wide 
+ network-entity 10.0000.0000.000a.00 
+#
+interface GigabitEthernet1/0/1 
+ undo shutdown 
+ ip address 10.1.2.2 255.255.255.0 
+ isis enable 1 
+ mpls 
+ mpls ldp 
+# 
+interface GigabitEthernet1/0/2
+ undo shutdown 
+ ip address 10.1.3.1 255.255.255.0 
+ mpls 
+ mpls ldp 
+# 
+interface Virtual-Template0
+ ppp authentication-mode auto
+#
+interface LoopBack0
+ ip address 3.3.3.3 255.255.255.255
+ isis enable 1
+#
+interface NULL0
+#
+route-policy policy1 permit node 1
+ apply mpls-label
+# 
+bgp 1.0
+ peer 10.1.3.2 as-number 65535.65535
+ peer 2.2.2.2 as-number 1.0
+ peer 2.2.2.2 connect-interface LoopBack0
+ #
+ ipv4-family unicast
+  undo synchronization
+  network 3.3.3.3 255.255.255.255
+  peer 10.1.3.2 enable
+  peer 2.2.2.2 enable
+  peer 2.2.2.2 route-policy policy1 export
+  peer 2.2.2.2 label-route-capability
+ #
+ ipv4-family mvpn
+  undo policy vpn-target
+  peer 10.1.3.2 enable
+  peer 2.2.2.2 enable
+ #
+ ipv4-family vpnv4
+  undo policy vpn-target
+  peer 10.1.3.2 enable
+  peer 2.2.2.2 enable
+#
+return

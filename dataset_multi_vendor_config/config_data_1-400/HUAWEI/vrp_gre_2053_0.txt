@@ -1,0 +1,29 @@
+#
+sysname DeviceA
+#
+ospfv3 1
+ router-id 1.1.1.1
+ area 0.0.0.0  
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:1::1/64
+ ospfv3 1 area 0.0.0.0
+ binding tunnel gre 
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:3::1/64
+#
+interface Tunnel1
+ ipv6 enable
+ ipv6 address 2001:DB8:5::1/64
+ tunnel-protocol gre ipv6
+ source 2001:DB8:1::1
+ destination 2001:DB8:2::1    
+#
+ipv6 route-static 2001:DB8:4:: 64 Tunnel1 
+#
+return

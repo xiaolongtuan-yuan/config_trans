@@ -1,0 +1,38 @@
+set system host-name RR
+
+set protocols mpls lsr-id 3.3.3.3
+set protocols mpls interface ge-1/0/0.0
+set protocols mpls interface ge-2/0/0.0
+set protocols mpls interface ge-3/0/0.0
+set protocols ldp interface ge-1/0/0.0
+set protocols ldp interface ge-2/0/0.0
+set protocols ldp interface ge-3/0/0.0
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.2/24
+set interfaces ge-1/0/0 unit 0 family mpls
+
+set interfaces ge-2/0/0 unit 0 family inet address 10.2.1.2/24
+set interfaces ge-2/0/0 unit 0 family mpls
+
+set interfaces ge-3/0/0 unit 0 family inet address 10.3.1.1/24
+set interfaces ge-3/0/0 unit 0 family mpls
+
+set interfaces lo0 unit 1 family inet address 3.3.3.3/32
+
+set protocols bgp group RR type internal
+set protocols bgp group RR local-address 3.3.3.3
+set protocols bgp group RR peer-as 100
+set protocols bgp group RR neighbor 1.1.1.1 family inet unicast
+set protocols bgp group RR neighbor 1.1.1.1 family evpn
+set protocols bgp group RR neighbor 1.1.1.1 route-reflector-client
+set protocols bgp group RR neighbor 2.2.2.2 family inet unicast
+set protocols bgp group RR neighbor 2.2.2.2 family evpn
+set protocols bgp group RR neighbor 2.2.2.2 route-reflector-client
+set protocols bgp group RR neighbor 4.4.4.4 family inet unicast
+set protocols bgp group RR neighbor 4.4.4.4 family evpn
+set protocols bgp group RR neighbor 4.4.4.4 route-reflector-client
+
+set protocols ospf area 0.0.0.0 interface lo0.1
+set protocols ospf area 0.0.0.0 interface ge-1/0/0.0
+set protocols ospf area 0.0.0.0 interface ge-2/0/0.0
+set protocols ospf area 0.0.0.0 interface ge-3/0/0.0

@@ -1,0 +1,25 @@
+#
+sysname CE1
+#
+vlan batch 10
+#
+vlan 10
+#
+interface Vlanif10
+ ip address 192.168.1.11 255.255.255.0
+#
+interface Eth-Trunk10
+ portswitch
+ port link-type trunk
+ port trunk allow-pass vlan 10
+ mode lacp-static
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ eth-trunk 10
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ eth-trunk 10
+#
+return

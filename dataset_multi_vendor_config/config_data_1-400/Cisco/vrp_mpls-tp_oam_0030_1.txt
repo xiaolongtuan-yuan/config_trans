@@ -1,0 +1,33 @@
+hostname LSRB
+
+mpls label protocol ldp
+
+interface GigabitEthernet1/0/0
+no shutdown
+ip address 2.1.1.2 255.255.255.0
+mpls ip
+
+interface GigabitEthernet2/0/0
+no shutdown
+ip address 3.2.1.1 255.255.255.0
+mpls ip
+
+interface Loopback1
+ip address 2.2.2.2 255.255.255.255
+
+ip route 1.1.1.1 255.255.255.255 2.1.1.1
+ip route 3.3.3.3 255.255.255.255 3.2.1.2
+
+mpls traffic-eng tunnels
+mpls traffic-eng area 0
+
+mpls label protocol ldp
+mpls ldp router-id Loopback1 force
+
+mpls traffic-eng passive-interface default
+
+mpls traffic-eng interface GigabitEthernet1/0/0
+mpls traffic-eng interface GigabitEthernet2/0/0
+
+mpls traffic-eng forwarding adj-criteria prefix-lsp-prefix 20 next-address strict ipv4 unicast 3.2.1.2 out-label 40
+mpls traffic-eng forwarding adj-criteria prefix-lsp-prefix 16 next-address strict ipv4 unicast 2.1.1.1 out-label 20

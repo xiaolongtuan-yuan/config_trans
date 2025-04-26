@@ -1,0 +1,37 @@
+set system host-name DeviceD
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.20.3.2/24
+set interfaces ge-1/0/0 unit 0 description "GigabitEthernet1/0/0"
+
+set interfaces ge-2/0/0 unit 0 family inet address 10.0.2.2/24
+set interfaces ge-2/0/0 unit 0 description "GigabitEthernet2/0/0"
+
+set interfaces ge-3/0/0 unit 0 family inet address 10.0.3.1/24
+set interfaces ge-3/0/0 unit 0 description "GigabitEthernet3/0/0"
+
+set interfaces lo0 unit 0 family inet address 4.4.4.4/32
+
+set routing-options autonomous-system 200
+
+set protocols bgp group IBGP type internal
+set protocols bgp group IBGP local-address 4.4.4.4
+set protocols bgp group IBGP neighbor 2.2.2.2
+
+set protocols bgp group EBGP type external
+set protocols bgp group EBGP peer-as 400
+set protocols bgp group EBGP neighbor 10.20.3.1
+
+set policy-options policy-statement set-default-low term 10 from protocol bgp
+set policy-options policy-statement set-default-low term 10 from prefix-list default
+set policy-options policy-statement set-default-low term 10 then local-preference 80
+
+set policy-options policy-statement set-default-low term 20 then accept
+
+set policy-options prefix-list default 0.0.0.0/0
+
+set policy-options as-path-group 10 ".*400.*"
+set policy-options as-path-group 10 ".*400[0-9]+.*"
+
+set protocols ospf area 0.0.0.0 interface lo0.0
+set protocols ospf area 0.0.0.0 interface ge-2/0/0.0
+set protocols ospf area 0.0.0.0 interface ge-3/0/0.0

@@ -1,0 +1,45 @@
+set system host-name Device1
+
+set routing-instances evrf1 instance-type evpn
+set routing-instances evrf1 route-distinguisher 10:1
+set routing-instances evrf1 vrf-target target:11:1
+set routing-instances evrf1 protocols evpn encapsulation vxlan
+set routing-instances evrf1 protocols evpn default-gateway no-gateway-community
+
+set bridge-domains bd10 vlan-id 10
+set bridge-domains bd10 vxlan vni 10
+set bridge-domains bd10 routing-interface irb.10
+
+set interfaces ge-1/0/0 unit 0 family ethernet-switching vlan members 10
+set interfaces ge-1/0/0.1 encapsulation vlan-bridge
+set interfaces ge-1/0/0.1 vlan-id 10
+set interfaces ge-1/0/0.1 family bridge interface-mode trunk
+set interfaces ge-1/0/0.1 family bridge vlan-id-list 10
+
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.40.2/24
+
+set interfaces lo0 unit 0 family inet address 5.5.5.5/32
+
+set protocols evpn encapsulation vxlan
+set protocols evpn multicast-mode ingress-replication
+set protocols evpn vni-options vni 10 vrf-target target:11:1
+set protocols evpn vni-options vni 10 ingress-replication remote-ip 239.1.1.1
+
+set routing-options autonomous-system 65410
+
+set protocols bgp group ibgp type internal
+set protocols bgp group ibgp local-address 5.5.5.5
+set protocols bgp group ibgp neighbor 4.4.4.4
+
+set protocols bgp group ebgp type external
+set protocols bgp group ebgp peer-as 65420
+set protocols bgp group ebgp neighbor 6.6.6.6
+set protocols bgp group ebgp multihop ttl 255
+set protocols bgp group ebgp local-address 5.5.5.5
+
+set protocols bgp group ibgp family inet unicast
+set protocols bgp group ebgp family inet unicast
+set protocols bgp group ebgp family evpn signaling
+
+set protocols ospf area 0 interface lo0.0
+set protocols ospf area 0 interface ge-2/0/0.0

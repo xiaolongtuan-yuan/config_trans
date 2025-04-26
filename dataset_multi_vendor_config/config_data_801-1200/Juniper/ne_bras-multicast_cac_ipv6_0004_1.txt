@@ -1,0 +1,27 @@
+set system host-name BRAS
+
+set routing-options rib inet6.0 protocols static multipath
+
+set system authentication-order [radius password]
+set system radius-server <radius-server-ip> secret <your-secret>
+
+set protocols pim rp local address <rp-address>
+set protocols pim interface ge-1/0/0 mode sparse
+set protocols pim interface ge-1/0/1 mode sparse
+
+set protocols mld interface ge-1/0/1 group FF1E::1
+set protocols mld interface ge-1/0/1 group FF1E::2
+
+set interfaces demux0 unit 0 family inet ppp pppoe
+set interfaces ppp0 encapsulation mppp
+set interfaces ppp0 unit 0 family inet
+set interfaces ppp0 unit 0 ppp-options chap
+
+set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:1::1/64
+
+set interfaces ge-1/0/1 unit 1 family inet6 address autoconf
+set vlans vlan133 interface ge-1/0/1.1
+
+set routing-options rib inet6.0 static route 2001:db8:1::/64 next-hop ge-1/0/0
+
+set access address-assignment pool pool-name family inet6 prefix-delegation

@@ -1,0 +1,41 @@
+hostname PE2
+!
+mpls label protocol ldp
+!
+mpls traffic-eng tunnels
+!
+router isis
+ net 10.0000.0000.0003.00
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.2.1.2 255.255.255.0
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.4.1.2 255.255.255.0
+!
+interface Loopback1
+ ip address 3.3.3.9 255.255.255.255
+!
+interface Loopback2
+ ip address 10.8.8.8 255.255.255.255
+!
+interface Loopback3
+ ip address 10.9.9.9 255.255.255.255
+!
+router bgp 100
+ neighbor 1.1.1.9 remote-as 100
+ neighbor 1.1.1.9 update-source Loopback1
+!
+address-family ipv4
+ network 10.8.8.8 mask 255.255.255.255
+ network 10.9.9.9 mask 255.255.255.255
+ neighbor 1.1.1.9 activate
+ exit-address-family
+!
+address-family ipv4 flowspec
+ neighbor 1.1.1.9 activate
+ exit-address-family
+!
+end

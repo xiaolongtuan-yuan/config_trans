@@ -1,0 +1,30 @@
+hostname LSRB
+!
+mpls label protocol ldp
+!
+mpls traffic-eng tunnels
+!
+router isis
+ isis router-id 2.2.2.9
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls ip
+ isis network point-to-point
+ isis circuit-type level-2-only
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.2.1.1 255.255.255.0
+ mpls ip
+ mpls traffic-eng bandwidth 100000
+ isis network point-to-point
+ isis circuit-type level-2-only
+!
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255
+ isis network point-to-point
+ isis circuit-type level-2-only
+!
+end

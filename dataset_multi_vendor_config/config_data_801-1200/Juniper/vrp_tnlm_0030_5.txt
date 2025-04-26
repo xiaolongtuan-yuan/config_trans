@@ -1,0 +1,27 @@
+# 设置设备的hostname
+set system host-name CE4
+
+# 配置GigabitEthernet1/0/0接口
+set interfaces ge-1/0/0 unit 0 family inet address 10.4.1.1/30
+
+# 激活接口
+delete interfaces ge-1/0/0 disable
+
+# 配置Loopback1接口
+set interfaces lo0 unit 1 family inet address 6.6.6.6/32
+
+# 配置BGP
+set protocols bgp group external type external
+set protocols bgp group external peer-as 100
+set protocols bgp group external neighbor 10.4.1.2
+
+# 启用邻居
+set protocols bgp group external neighbor 10.4.1.2 family inet unicast
+
+# 配置redistribute connected，相当于发送连接路由
+set policy-options policy-statement redistribute-connected term 1 from protocol direct
+set policy-options policy-statement redistribute-connected term 1 then accept
+set protocols bgp group external export redistribute-connected
+
+# 不同步 (Juniper默认行为，无需配置，但可以提及)
+# Juniper 默认没有同步的概念，因此无需额外配置。

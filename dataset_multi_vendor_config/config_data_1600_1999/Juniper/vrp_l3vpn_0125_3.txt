@@ -1,0 +1,29 @@
+set system host-name Server
+
+# Interfaces Configuration
+set interfaces ge-0/0/0 unit 0 family inet address 10.2.3.2/24
+set interfaces ge-0/0/0 unit 1 family inet address 10.2.1.2/24
+set interfaces ge-0/0/0 unit 2 family inet address 10.2.2.2/24
+set interfaces lo0 unit 0 family inet address 4.4.4.4/32
+
+# BGP Configuration
+set protocols bgp group external-peer type external
+set protocols bgp group external-peer local-address 4.4.4.4
+set protocols bgp group external-peer peer-as 200
+set protocols bgp group external-peer family inet unicast
+set protocols bgp group external-peer family inet unicast network 33.33.33.33/32
+set protocols bgp group external-peer family inet unicast redistribute connected
+set protocols bgp group external-peer peer 10.2.3.1 activate
+
+# OSPF Configuration
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.1
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.2
+set protocols ospf area 0.0.0.0 interface lo0.0
+set protocols ospf area 0.0.0.0 network 10.2.1.0/24
+set protocols ospf area 0.0.0.0 network 10.2.2.0/24
+set protocols ospf area 0.0.0.0 network 4.4.4.4/32
+
+# Static Route Configuration
+set routing-options static route 33.33.33.33/32 next-hop null0
+
+commit

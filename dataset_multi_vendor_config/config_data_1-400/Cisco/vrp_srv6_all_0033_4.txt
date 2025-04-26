@@ -1,0 +1,31 @@
+hostname CE2
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:22::2/64
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:33::2/64
+
+interface Loopback1
+ ipv6 enable
+ ipv6 address 22::22/128
+
+router bgp 65420
+ bgp router-id 10.12.1.1
+ neighbor 2001:DB8:22::1 remote-as 100
+ neighbor 2001:DB8:33::1 remote-as 100
+ address-family ipv4 unicast
+  no synchronization
+ exit-address-family
+ address-family ipv6 unicast
+  no synchronization
+  import ipv6 unicast direct
+  neighbor 2001:DB8:22::1 activate
+  neighbor 2001:DB8:33::1 activate
+ exit-address-family
+
+end

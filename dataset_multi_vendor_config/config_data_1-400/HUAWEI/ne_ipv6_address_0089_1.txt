@@ -1,0 +1,28 @@
+#  
+sysname Device                                                          
+#
+radius-server group rd1
+ radius-server authentication 10.6.55.55 1550 weight 0
+ radius-server accounting 10.6.55.55 1551 weight 0
+ radius-server shared-key-cipher %^%#vS%796FO7%C~pB%CR=q;j}gSCqR-X6+P!.DYI@)%^%#
+#
+dhcpv6-server group group1
+ dhcpv6-server destination 2001:DB82::2:2
+#
+ipv6 prefix pre1 remote
+ link-address 2001:DB81::1/46
+#
+ipv6 pool pool1 bas remote
+ prefix pre1
+ dhcpv6-server group group1
+#
+interface GigabitEthernet1/0/1.1
+ statistic enable
+ ipv6 enable
+ ipv6 address auto link-local
+#
+interface GigabitEthernet1/0/3
+ ipv6 enable
+ ipv6 address 2001:DB82::2:1/64
+#
+return

@@ -1,0 +1,31 @@
+set system host-name PE2
+
+set interfaces lo0 unit 0 family inet address 192.168.3.3/32
+
+set interfaces ge-0/0/0 unit 0 family inet address 10.2.2.2/24
+set interfaces ge-0/0/0 unit 0 family mpls
+
+set interfaces so-1/0/1 framing cpos
+set interfaces so-1/0/1 e1 1 timeslots 1-31
+set interfaces so-1/0/1 e1 2 timeslots 1-31
+
+set interfaces so-1/0/1:1 encapsulation tdm
+set interfaces so-1/0/1:1 unit 0 family tdm
+
+set interfaces so-1/0/1:2 encapsulation tdm
+set interfaces so-1/0/1:2 unit 0 family tdm
+
+set routing-options router-id 192.168.3.3
+
+set protocols ospf area 0 interface lo0.0 passive
+set protocols ospf area 0 interface ge-0/0/0.0
+
+set protocols mpls interface ge-0/0/0.0
+set protocols ldp interface ge-0/0/0.0
+set protocols ldp transport-address 192.168.3.3
+set protocols ldp neighbor 192.168.2.2
+
+
+set protocols l2circuit neighbor 192.168.2.2 interface so-1/0/1:1.0 virtual-circuit-id 100 encapsulation-type satop control-word dejitter-buffer-size 8
+set protocols l2circuit neighbor 192.168.2.2 interface so-1/0/1:2.0 virtual-circuit-id 200 encapsulation-type satop control-word dejitter-buffer-size 8
+

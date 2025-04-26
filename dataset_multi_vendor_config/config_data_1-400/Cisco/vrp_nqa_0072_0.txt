@@ -1,0 +1,26 @@
+hostname DeviceA
+
+interface GigabitEthernet1/0/0
+ ip address 10.1.1.11 255.255.255.0
+ no shutdown
+
+interface GigabitEthernet2/0/0
+ ip address 10.1.2.1 255.255.255.0
+ no shutdown
+
+ip sla 1
+ icmp-echo 10.1.1.10 source-ip 10.1.2.1
+ frequency 600
+ threshold 200
+ timeout 1000
+ tag admin
+
+ip sla schedule 1 life forever start-time now
+
+ip ftp source-interface GigabitEthernet2/0/0
+ip ftp username ftp
+ip ftp password %^%#`P'|9L1x62lN*b+C~wMTT|$EA7+z0XOFC_,B$M+"%^%#
+ip ftp server 10.1.2.8
+ip ftp filename test1
+
+end

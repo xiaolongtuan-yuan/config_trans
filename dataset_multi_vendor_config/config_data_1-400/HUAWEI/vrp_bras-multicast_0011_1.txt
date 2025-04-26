@@ -1,0 +1,65 @@
+#
+sysname PE2
+#
+multicast mvpn 2.2.2.2
+#
+ip vpn-instance red
+ ipv4-family
+  route-distinguisher 1:1
+  apply-label per-instance
+  vpn-target 1:1 export-extcommunity
+  vpn-target 1:1 import-extcommunity
+  multicast routing-enable
+  mvpn
+   sender-enable
+   c-multicast signaling bgp
+   ipmsi-tunnel
+    mldp
+#
+mpls lsr-id 2.2.2.2
+#
+mpls
+#
+mpls ldp
+ mldp p2mp
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip binding vpn-instance red
+ ip address 10.1.2.1 255.255.255.0
+ pim sm
+#
+interface LoopBack0
+ ip address 2.2.2.2 255.255.255.255
+#
+bgp 100
+ peer 1.1.1.1 as-number 100
+ peer 1.1.1.1 connect-interface LoopBack0
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 1.1.1.1 enable
+ #
+ ipv4-family mvpn
+  policy vpn-target
+  peer 1.1.1.1 enable
+ #
+ ipv4-family vpnv4
+  policy vpn-target
+  peer 1.1.1.1 enable
+ #
+ ipv4-family vpn-instance red
+  import-route direct
+#
+ospf 1
+ area 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+  network 2.2.2.2 0.0.0.0
+#
+return

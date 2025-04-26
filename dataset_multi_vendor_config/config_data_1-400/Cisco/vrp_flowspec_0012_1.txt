@@ -1,0 +1,35 @@
+hostname DeviceB
+
+interface GigabitEthernet0/1/0
+ no shutdown
+ ip address 10.10.1.2 255.255.255.0
+
+interface GigabitEthernet0/2/0
+ no shutdown
+ ip address 10.2.1.1 255.255.255.0
+
+interface GigabitEthernet0/3/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+
+interface Loopback1
+ ip address 2.2.2.2 255.255.255.255
+
+router bgp 200
+ neighbor 10.2.1.2 remote-as 200
+ neighbor 10.10.1.1 remote-as 100
+
+ address-family ipv4
+  neighbor 10.2.1.2 activate
+  neighbor 10.10.1.1 activate
+  no synchronization
+ exit-address-family
+
+ address-family ipv4 flow
+  neighbor 10.2.1.2 activate
+  neighbor 10.2.1.2 route-map RM-NO-VALIDATION out
+ exit-address-family
+
+route-map RM-NO-VALIDATION permit 10
+ set peer-validation disable
+

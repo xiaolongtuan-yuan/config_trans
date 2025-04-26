@@ -1,0 +1,26 @@
+set system host-name DeviceA
+set system domain-name isp1
+set access profile radius-auth-profile accounting order radius
+set access profile radius-auth-profile authentication-order radius
+set access radius-server 10.20.20.1 secret ...
+set access radius-server 10.20.20.1 port accounting 1813
+set access radius-server 10.20.20.1 port authentication 1812
+
+set interfaces ge-2/0/0 unit 100 family ethernet-switching vlan-id 100
+set interfaces ge-2/0/0 unit 100 family pppoe pppoe-server
+set interfaces ge-2/0/0 unit 100 family pppoe server-group name1
+set access route-filter ppp_in term 1 then policy-import POLICY-IN
+set access route-filter ppp_out term 1 then policy-export POLICY-OUT
+
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+
+set interfaces ge-1/0/1 unit 0 family inet address 11.11.11.1/24
+set interfaces ge-1/0/2 unit 0 family inet address 12.12.12.1/24
+
+set routing-options static route 3.3.3.3/32 next-hop 11.11.11.2
+set routing-options static route 4.4.4.4/32 next-hop 12.12.12.2
+
+set services l2tp version 2
+set access profile l2tp-profile
+set access profile l2tp-profile authentication-order radius
+set services l2tp tunnel password ...

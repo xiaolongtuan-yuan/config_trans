@@ -1,0 +1,31 @@
+set system host-name Router
+
+set system aaa radius-server 192.168.7.249 secret "%^%#`E)v.Q@BHVzxxZ;ij{>&_M0!TGP7YRA@8a7mq<\/%^%#"
+set system login authentication-order radius
+set system authentication-order radius
+
+set system aaa radius-server 192.168.7.249 dynamic-client-key "%^%#`E)v.Q@BHVzxxZ;ij{>&_M0!TGP7YRA@8a7mq<\/%^%#"
+
+set interfaces ge-0/0/2.0 unit 0 family ethernet-switching vlan members 100
+set interfaces ge-0/0/2.0 unit 0 family inet address 10.82.1.1/24
+set interfaces ge-0/0/2.0 unit 0 dot1x authenticator
+set dot1x authenticator re-authentication-interval 1800
+set dot1x authenticator quiet-period 15
+set dot1x authenticator server-timeout 20
+
+set system services dhcp pool pool4 network 10.82.1.0/24
+set system services dhcp pool pool4 default-router 10.82.1.1
+set system services dhcp pool pool4 dns-server 192.168.7.252
+
+set dot1x authenticator re-authentication-timeout 20
+set dot1x authenticator retransmit-interval 20
+set dot1x authenticator retransmit-count 3
+set dot1x authenticator keep-alive retransmit-count 2
+set dot1x authenticator keep-alive retransmit-interval 15
+
+set system aaa authentication-scheme auth4
+set system aaa accounting-scheme acct4
+set system aaa domain isp4
+set system aaa radius-server-group rd4
+set system aaa dot1x-template 4
+set system aaa ip-pool pool4

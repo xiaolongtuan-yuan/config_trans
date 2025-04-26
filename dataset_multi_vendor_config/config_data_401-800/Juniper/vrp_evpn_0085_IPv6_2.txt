@@ -1,0 +1,36 @@
+set system host-name NPE
+
+set routing-instances vpn1 instance-type vrf
+set routing-instances vpn1 route-distinguisher 100:1
+set routing-instances vpn1 vrf-target target:2:2
+set routing-instances vpn1 protocols mpls
+
+set routing-options router-id 3.3.3.3
+
+set protocols mpls interface all
+set protocols mpls label-switched-path ldp
+
+set protocols isis interface lo0.0
+set protocols isis level 1 disable
+set protocols isis level 2 wide-metrics-only
+set protocols isis net 10.0000.0000.0003.00
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.2.1.2/24
+set interfaces ge-1/0/0 unit 0 family mpls
+
+set interfaces ge-2/0/0 unit 0 family inet6 address 2001:DB8:30::1/64
+set interfaces ge-2/0/0 unit 0 vrf-table-label
+
+set interfaces lo0 unit 0 family inet address 3.3.3.3/32
+
+set routing-options autonomous-system 100
+
+set protocols bgp group internal type internal
+set protocols bgp group internal local-address 3.3.3.3
+set protocols bgp group internal neighbor 2.2.2.2
+
+set policy-options policy-statement SPE term 10 from prefix-list default
+set policy-options policy-statement SPE term 10 then accept
+set policy-options policy-statement SPE term 20 then accept
+
+set policy-options prefix-list default ::/0

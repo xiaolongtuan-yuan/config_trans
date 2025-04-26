@@ -1,0 +1,21 @@
+#
+sysname CE1
+#
+multicast routing-enable
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 172.16.1.1 255.255.255.0
+ pim sm
+#
+interface GigabitEthernet1/0/2 
+ undo shutdown
+ ip address 192.168.1.2 255.255.255.0
+ pim sm
+#
+ospf 2
+ area 0.0.0.0
+  network 172.16.1.0 0.0.0.255
+  network 192.168.1.0 0.0.0.255
+#
+return

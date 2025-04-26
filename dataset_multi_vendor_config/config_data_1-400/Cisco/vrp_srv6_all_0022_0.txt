@@ -1,0 +1,53 @@
+hostname PE1
+
+evpn vpn-instance evrf1
+ route-distinguisher 100:1
+ segment-routing ipv6 best-effort
+ vpn-target 1:1 export-extcommunity
+ vpn-target 1:1 import-extcommunity
+
+evpl instance 1 srv6-mode
+ evpn binding vpn-instance evrf1
+ local-service-id 100 remote-service-id 200
+ segment-routing ipv6 locator PE1
+
+segment-routing ipv6
+ encapsulation source-address 2001:DB8:1::1
+ locator PE1 ipv6-prefix 2001:DB8:11::/64 static 32
+
+router isis
+ net 10.0000.0000.0001.00
+ is-type level-1
+ metric-style wide
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:10::1/64
+ isis ipv6 enable
+
+interface GigabitEthernet2/0/0.1
+ encapsulation dot1q 1
+ evpl instance 1
+
+interface Loopback1
+ ipv6 enable
+ ip address 1.1.1.1 255.255.255.255
+ ipv6 address 2001:DB8:1::1/128
+ isis ipv6 enable
+
+router bgp 100
+ bgp router-id 1.1.1.1
+ neighbor 2001:DB8:3::3 remote-as 100
+ neighbor 2001:DB8:3::3 update-source Loopback1
+
+ address-family ipv4 unicast
+  no synchronization
+
+ address-family l2vpn evpn
+  neighbor 2001:DB8:3::3 activate
+  neighbor 2001:DB8:3::3 send-community
+  neighbor 2001:DB8:3::3 advertise encap-type srv6
+
+evpn source-interface Loopback1
+

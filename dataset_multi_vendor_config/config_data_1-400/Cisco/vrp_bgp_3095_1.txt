@@ -1,0 +1,31 @@
+hostname DeviceB
+!
+interface GigabitEthernet3/0/1
+ no shutdown
+ ip address 172.16.1.2 255.255.255.0
+!
+interface GigabitEthernet3/0/2
+ no shutdown
+ ip address 172.16.2.1 255.255.255.0
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 172.16.3.1 255.255.255.0
+!
+router bgp 65009
+ bgp router-id 2.2.2.2
+ neighbor 172.16.1.1 remote-as 65008
+ neighbor 172.16.2.2 remote-as 65009
+ neighbor 172.16.3.2 remote-as 65009
+ !
+ address-family ipv4
+  synchronization
+  network 172.16.1.0 mask 255.255.255.0
+  network 172.16.2.0 mask 255.255.255.0
+  network 172.16.3.0 mask 255.255.255.0
+  neighbor 172.16.1.1 activate
+  neighbor 172.16.2.2 activate
+  neighbor 172.16.3.2 activate
+ exit-address-family
+!
+end

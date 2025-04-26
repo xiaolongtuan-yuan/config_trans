@@ -1,0 +1,29 @@
+hostname LSRC
+!
+mpls label protocol ldp
+!
+mpls traffic-eng tunnels
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 3.2.1.2 255.255.255.0
+ mpls ip
+!
+interface Loopback1
+ ip address 3.3.3.3 255.255.255.255
+!
+interface Tunnel200
+ ip unnumbered Loopback1
+ tunnel mode mpls traffic-eng
+ tunnel destination 1.1.1.1
+ tunnel mpls traffic-eng autoroute announce
+ tunnel mpls traffic-eng priority 7 7
+ tunnel mpls traffic-eng bandwidth 100000
+ tunnel mpls traffic-eng path-option 1 explicit name PATH1
+ tunnel mpls traffic-eng record-route
+ tunnel mpls traffic-eng passive
+!
+ip route 1.1.1.1 255.255.255.255 3.2.1.1
+ip route 2.2.2.2 255.255.255.255 3.2.1.1
+!
+end

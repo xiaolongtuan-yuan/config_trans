@@ -1,0 +1,36 @@
+hostname PE3
+!
+ip vrf vpn1
+ rd 100:1
+ route-target export 1:1
+ route-target import 1:1
+!
+ipv6 unicast-routing
+!
+mpls label protocol ldp
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ vrf forwarding vpn1
+ ipv6 enable
+ ipv6 address 2001:db8:1::2/64
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 40.1.1.1 255.255.255.0
+ mpls ip
+ mpls ldp discovery
+!
+interface Loopback1
+ ip address 1.1.1.9 255.255.255.255
+!
+router bgp 100
+ neighbor 6.6.6.9 remote-as 100
+ neighbor 6.6.6.9 update-source Loopback1
+ !
+ address-family ipv4
+  no synchronization
+  network 1.1.1.9 mask 255.255.255.255
+  network 40.1.1.0 mask 255.255.255.0
+  neighbor 6.6.6.9 activate
+  neighbor 6.6.6.9 next-hop-self

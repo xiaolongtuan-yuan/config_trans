@@ -1,0 +1,26 @@
+set system host-name-host-name PE1
+
+set protocols ldp enable
+set protocols ldp router-id lo0:1
+set protocols ldp discovery force
+
+set forwarding-vlan ip
+set interfaces ge-1/0/0 unit 1 encapsulation dot1q 10
+set interfaces ge-1/0/0 unit 1 family vlan tagged-vlan 1
+
+set vrfs vfi_bgp1 vni 1
+set vrfs vfi_bgp1 route-distinguisher 192.168.1.1:1
+set vrfs vfi_bgp1 export target:import target 100:1
+
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.1.1/30
+set protocols mpls ip interface ge-2/0/0 unit 0
+
+set forwarding-plane lo0 unit 0 family inet address 1.1.1.9/32
+
+set routing-options autonomous-system 100
+set routing-options neighbors 3.3.3.9 peer-type external
+set routing-options protocols bgp group Peers type external local-address 1.1.1.9 neighbor 3.3.3.9 send-community both signaling l2vpn
+set routing-options protocols ospf area 0 network 1.1.1.9/32
+set routing-options protocols ospf area 0 network 192.168.1.0/24
+
+commit

@@ -1,0 +1,22 @@
+set system host-name PE1
+set protocols ldp interface all
+set interfaces ge-1/0/0 unit 0 family inet
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.1.1/24
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+set routing-instances vpn1 instance-type l2vpn
+set routing-instances vpn1 interface ge-1/0/0
+set routing-instances vpn1 route-distinguisher 100:1
+set routing-instances vpn1 vrf-target import 200:1
+set routing-instances vpn1 vrf-target export 200:1
+set protocols bgp group internal type internal
+set protocols bgp group internal neighbor 3.3.3.9
+set protocols bgp group internal neighbor 3.3.3.9 local-address 1.1.1.9
+set protocols bgp group internal family inet unicast
+set protocols bgp group internal family l2vpn signaling
+set protocols ospf area 0 interface lo0.0
+set protocols ospf area 0 interface ge-2/0/0.0
+set protocols oam ethernet connectivity-fault-management mep 1 interface ge-1/0/0 direction inward
+set protocols oam ethernet connectivity-fault-management mep 1 continuity-check interval 100
+set protocols oam ethernet connectivity-fault-management mep 1 continuity-check enable
+set protocols oam ethernet connectivity-fault-management remote-mep 2
+set protocols oam ethernet connectivity-fault-management remote-mep 2 continuity-check enable

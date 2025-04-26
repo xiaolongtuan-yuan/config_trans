@@ -1,0 +1,19 @@
+hostname DeviceD
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.3.2 255.255.255.0
+!
+router bgp 200
+ bgp router-id 4.4.4.4
+ neighbor 192.168.3.1 remote-as 200
+ !
+ address-family ipv4 unicast
+  no synchronization
+  neighbor 192.168.3.1 activate
+ exit-address-family
+!
+router ospf 1
+ network 192.168.3.0 0.0.0.255 area 0
+!
+end

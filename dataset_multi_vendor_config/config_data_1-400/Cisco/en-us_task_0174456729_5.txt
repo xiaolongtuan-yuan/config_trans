@@ -1,0 +1,28 @@
+hostname DeviceF
+
+mpls ip
+
+segment-routing mpls
+
+router isis
+ isis instance 1
+  net 49.0000.0000.0006.00
+  metric-style wide
+  segment-routing mpls
+  segment-routing global-block 16000 23999
+  is-type level-1
+  exit
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.6.1.2 255.255.255.0
+ isis network point-to-point
+ exit
+
+interface Loopback1
+ ip address 6.6.6.9 255.255.255.255
+ isis network point-to-point
+ isis prefix-sid absolute index 60
+ exit
+
+end

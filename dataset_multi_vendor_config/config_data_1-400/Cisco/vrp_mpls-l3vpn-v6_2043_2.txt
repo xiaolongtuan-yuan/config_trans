@@ -1,0 +1,25 @@
+hostname P2
+!
+mpls label protocol ldp
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls ip
+ mpls traffic-eng tunnels
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.4.1.1 255.255.255.0
+ mpls ip
+ mpls traffic-eng tunnels
+!
+interface Loopback1
+ ip address 4.4.4.9 255.255.255.255
+!
+router ospf 1
+ mpls traffic-eng area 0
+ network 4.4.4.9 0.0.0.0 area 0
+ network 10.4.1.0 0.0.0.255 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+!

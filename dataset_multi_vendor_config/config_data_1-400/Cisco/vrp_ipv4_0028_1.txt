@@ -1,0 +1,49 @@
+hostname DeviceB
+
+ip vrf r1
+ rd 100:1
+ route-target export 100:1
+ route-target import 100:1
+
+ip vrf r2
+ rd 100:2
+ route-target export 100:2
+ route-target import 100:2
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip vrf forwarding r1
+ ip address 192.168.1.11 255.255.255.0
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip vrf forwarding r2
+ ip address 192.168.1.12 255.255.255.0
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip vrf forwarding r1
+ ip address 10.1.1.1 255.255.255.0
+
+interface GigabitEthernet4/0/0
+ no shutdown
+ ip vrf forwarding r2
+ ip address 10.2.1.1 255.255.255.0
+
+router bgp 200
+ bgp router-id 1.1.1.1
+ no synchronization
+
+ address-family ipv4
+  no synchronization
+  network 0.0.0.0 mask 0.0.0.0
+  neighbor 192.168.1.1 remote-as 100
+
+ address-family vpnv4
+  neighbor 192.168.1.1 activate
+  neighbor 192.168.1.1 send-community both
+
+ip route vrf r1 0.0.0.0 0.0.0.0 192.168.1.1
+ip route vrf r2 0.0.0.0 0.0.0.0 192.168.1.1
+
+end

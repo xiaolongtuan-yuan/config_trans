@@ -1,0 +1,26 @@
+#
+ sysname DeviceB
+#
+acl number 2000
+ rule 5 deny source 192.168.4.0 0.0.0.255
+ rule 10 permit
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 192.168.1.2 255.255.255.0
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 192.168.2.1 255.255.255.0
+#
+rip 100
+ default-cost 3
+ network 192.168.1.0
+ filter-policy 2000 export
+ import-route rip 200
+#
+rip 200
+ network 192.168.2.0
+ import-route rip 100
+#
+return

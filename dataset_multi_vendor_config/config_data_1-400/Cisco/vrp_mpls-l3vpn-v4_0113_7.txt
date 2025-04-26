@@ -1,0 +1,257 @@
+sysname PE2
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.40.1.2 255.255.255.0
+ mpls ip
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.2.1.2 255.255.255.0
+!
+interface Loopback1
+ ip address 2.2.2.2 255.255.255.255
+!
+router ospf 1
+ router-id 2.2.2.2
+ network 10.40.1.0 0.0.0.255 area 0
+ network 2.2.2.2 0.0.0.0 area 0
+!
+router bgp 200
+ bgp router-id 2.2.2.2
+ neighbor 6.6.6.6 remote-as 200
+ neighbor 6.6.6.6 update-source Loopback1
+ !
+ address-family ipv4 unicast
+  no synchronization
+  neighbor 6.6.6.6 activate
+ exit-address-family
+ !
+ address-family vpnv4
+  redistribute connected
+  neighbor 6.6.6.6 activate
+ exit-address-family
+ !
+ address-family ipv4 vrf vpna
+  neighbor 10.2.1.1 remote-as 65002
+ exit-address-family
+!
+mpls ldp
+!
+mpls ip
+!
+mpls bgp vpnv4
+!
+mpls ldp vpn-instance vpna
+!
+mpls ldp router-id Loopback1
+!
+mpls ldp bindings all advertise-to vpnv4
+!
+mpls ldp advertise-label all
+!
+mpls ldp label advertise vpn-instance vpna
+!
+mpls ldp auto-config
+!
+mpls ldp session protection
+!
+mpls ldp discovery vpn-instance vpna
+!
+mpls ldp session protection trap
+!
+mpls ldp session protection delay 30
+!
+mpls ldp session protection ignore-config
+!
+mpls ldp session protection active
+!
+mpls ldp session protection acl 100
+!
+mpls ldp session protection duration 120
+!
+mpls ldp session protection delay 10
+!
+mpls ldp session protection acl 200
+!
+mpls ldp session protection trap peer-up
+!
+mpls ldp session protection trap peer-down
+!
+mpls ldp session protection trap peer-update
+!
+mpls ldp session protection trap peer-neighbor
+!
+mpls ldp session protection trap peer-neighbor-up
+!
+mpls ldp session protection trap peer-neighbor-down
+!
+mpls ldp session protection trap peer-neighbor-update
+!
+mpls ldp session protection trap peer-neighbor-igp
+!
+mpls ldp session protection trap peer-neighbor-igp-up
+!
+mpls ldp session protection trap peer-neighbor-igp-down
+!
+mpls ldp session protection trap peer-neighbor-igp-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-mld
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-mld-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-mld-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-mld-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-mld-pim
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-mld-pim-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-mld-pim-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-mld-pim-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-mld-pim-igmp
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-mld-pim-igmp-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-mld-pim-igmp-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-mld-pim-igmp-update
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-mld-pim-igmp-snoop
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-mld-pim-igmp-snoop-up
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-mld-pim-igmp-snoop-down
+!
+mpls ldp session protection trap peer-neighbor-igp-ospf-bgp-isis-rip-eigrp-static-dynamic-multicast-unicast-nat-stateful-qos-policy-tunnel-rlfa-tunnel-mld-pim-igmp-snoop

@@ -1,0 +1,34 @@
+hostname DeviceB
+vlan 10
+vlan 20
+vlan 100-200
+vlan 300-400
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+spanning-tree vlan 10,100-200 root primary
+spanning-tree vlan 20,300-400 root primary
+erps ethernet-ring 1
+control-vlan 10
+instance 1 vlan 10,100-200
+wtr-timer 6
+guard-timer 100
+erps ethernet-ring 2
+control-vlan 20
+instance 2 vlan 20,300-400
+wtr-timer 6
+guard-timer 100
+interface GigabitEthernet1/0/1
+switchport mode trunk
+switchport trunk allowed vlan 10,20,100-200,300-400
+no shutdown
+spanning-tree portfast
+erps ethernet-ring 1
+erps ethernet-ring 2
+interface GigabitEthernet1/0/2
+switchport mode trunk
+switchport trunk allowed vlan 10,20,100-200,300-400
+no shutdown
+spanning-tree portfast
+erps ethernet-ring 1 rpl owner
+erps ethernet-ring 2
+exit

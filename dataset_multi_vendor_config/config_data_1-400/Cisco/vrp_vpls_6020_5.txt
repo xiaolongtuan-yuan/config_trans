@@ -1,0 +1,62 @@
+hostname PE2
+
+mpls label protocol ldp
+
+mpls ip
+
+mpls l2transport
+
+vtp mode transparent
+
+interface GigabitEthernet1/0/0.1
+
+ no shutdown
+
+ encapsulation dot1q 10
+
+ xconnect vfi vsi1
+
+interface GigabitEthernet2/0/0
+
+ no shutdown
+
+ ip address 10.20.1.1 255.255.255.0
+
+ mpls ip
+
+ mpls ldp
+
+interface Loopback1
+
+ ip address 3.3.3.3 255.255.255.255
+
+router bgp 100
+
+ neighbor 2.2.2.2 remote-as 100
+
+ neighbor 2.2.2.2 update-source Loopback1
+
+ neighbor 4.4.4.4 remote-as 100
+
+ neighbor 4.4.4.4 update-source Loopback1
+
+ address-family l2vpn vpls
+
+  neighbor 2.2.2.2 activate
+
+  neighbor 2.2.2.2 send-community both
+
+  neighbor 2.2.2.2 signaling vpls
+
+  neighbor 4.4.4.4 activate
+
+  neighbor 4.4.4.4 send-community both
+
+  neighbor 4.4.4.4 signaling vpls
+
+router ospf 1
+
+ network 2.2.2.2 0.0.0.0 area 0
+
+ network 10.20.1.0 0.0.0.255 area 0
+

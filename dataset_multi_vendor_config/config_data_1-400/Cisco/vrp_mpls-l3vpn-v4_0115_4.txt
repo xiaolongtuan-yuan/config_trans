@@ -1,0 +1,48 @@
+hostname ASBR2
+!
+mpls ip
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.162.1.1 255.255.255.0
+ mpls ip
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.2.2 255.255.255.0
+ mpls ip
+!
+interface Loopback1
+ ip address 10.33.3.9 255.255.255.255
+!
+interface Loopback2
+ ip address 10.33.3.10 255.255.255.255
+!
+router bgp 200
+ neighbor 10.32.2.10 remote-as 100
+ neighbor 10.32.2.10 update-source Loopback2
+ neighbor 10.32.2.10 ebgp-multihop 3
+ neighbor 10.34.4.9 remote-as 200
+ neighbor 10.34.4.9 update-source Loopback1
+ !
+ address-family ipv4 unicast
+  no synchronization
+  neighbor 10.32.2.9 activate
+  neighbor 10.34.4.9 activate
+ exit-address-family
+ !
+ address-family vpnv4
+  no advertise vpnv4 unicast
+  neighbor 10.34.4.9 activate
+  neighbor 10.32.2.9 activate
+ exit-address-family
+!
+router ospf 1
+ network 10.33.3.9 0.0.0.0 area 0
+ network 10.162.1.0 0.0.0.255 area 0
+!
+router ospf 2
+ network 10.33.3.10 0.0.0.0 area 0
+ network 192.168.2.0 0.0.0.255 area 0
+!
+end

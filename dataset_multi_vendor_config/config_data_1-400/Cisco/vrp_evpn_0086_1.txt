@@ -1,0 +1,45 @@
+hostname SPE
+mpls label protocol ldp
+mpls ldp router-id Loopback1 force
+mpls ip
+mpls ldp router-id Loopback1
+router isis
+ net 49.0000.0000.0000.0002.00
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.2.1.1 255.255.255.0
+ isis enable
+ mpls ip
+ mpls ldp autoconfig
+interface Loopback1
+ ip address 2.2.2.2 255.255.255.255
+ isis enable
+router bgp 100
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 update-source Loopback1
+ neighbor 3.3.3.3 remote-as 100
+ neighbor 3.3.3.3 update-source Loopback1
+ !
+ address-family ipv4
+  no synchronization
+  neighbor 1.1.1.1 activate
+  neighbor 3.3.3.3 activate
+ exit-address-family
+ !
+ address-family l2vpn evpn
+  neighbor 1.1.1.1 activate
+  neighbor 1.1.1.1 route-reflector-client
+  neighbor 1.1.1.1 next-hop-self
+  neighbor 3.3.3.3 activate
+  neighbor 3.3.3.3 route-reflector-client
+  neighbor 3.3.3.3 next-hop-self
+ exit-address-family
+router ospf 1
+ network 2.2.2.2 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+end

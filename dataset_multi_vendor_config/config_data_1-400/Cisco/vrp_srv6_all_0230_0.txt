@@ -1,0 +1,45 @@
+hostname UPE
+
+ip vrf vpna
+ rd 100:1
+ route-target export 111:1
+ route-target import 111:1
+
+mpls label protocol ldp
+
+mpls ldp router-id Loopback1
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.2.1 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+ isis enable 1
+ dcn
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip vrf forwarding vpna
+ ip address 10.1.1.1 255.255.255.0
+
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+ isis enable 1
+
+router bgp 100
+ bgp router-id 1.1.1.1
+ neighbor 2.2.2.2 remote-as 100
+ neighbor 2.2.2.2 update-source Loopback1
+
+ address-family ipv4 unicast
+  neighbor 2.2.2.2 activate
+  no synchronization
+
+ address-family vpnv4
+  neighbor 2.2.2.2 activate
+  neighbor 2.2.2.2 send-community both
+
+ address-family vpnv4 vrf vpna
+  neighbor 10.1.1.2 remote-as 65410
+  neighbor 10.1.1.2 activate
+

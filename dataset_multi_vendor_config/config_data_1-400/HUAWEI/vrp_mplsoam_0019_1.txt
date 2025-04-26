@@ -1,0 +1,33 @@
+#
+ sysname LSRB
+#
+ mpls lsr-id 2.2.2.2
+ mpls
+  mpls te
+  mpls oam
+#
+ bidirectional static-cr-lsp transit lsp1
+  forward in-label 20 nexthop 3.2.1.2 out-label 40
+  backward in-label 16 nexthop 2.1.1.1 out-label 20
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 2.1.1.2 255.255.255.0
+ mpls
+ mpls te
+ ais enable
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 3.2.1.1 255.255.255.0
+ mpls
+ mpls te
+ ais enable
+#
+interface LoopBack1
+ ip address 2.2.2.2 255.255.255.255
+#
+ ip route-static 1.1.1.1 255.255.255.255 2.1.1.1
+ ip route-static 3.3.3.3 255.255.255.255 3.2.1.2
+#
+return

@@ -1,0 +1,60 @@
+#
+sysname LNS
+#
+interface gigabitEthernet1/0/1.1
+ vlan-type dot1q 1
+ ip address 10.0.0.1 255.255.255.0
+#
+ l2tp enable
+#
+ multicast routing-enable
+#
+interface Virtual-Template 1
+ ppp authentication-mode auto
+ igmp enable
+ pim sm
+ multicast authorization-enable
+#
+interface gigabitEthernet1/0/2.1
+ vlan-type dot1q 1
+ ip address 10.3.0.1 255.255.255.0
+ pim sm
+#
+l2tp-group 1
+ allow l2tp virtual-template 1 remote LAC
+ tunnel password cipher  %^%#bG-/,h7b-.BS5mJu(V+1{DiH(W&UJ-mXOKYPkHX+%^%#
+ tunnel name LNS
+#
+lns-group group1
+ bind slot 1
+ bind source gigabitEthernet1/0/1.1
+#
+ip pool 1 bas local
+ gateway 192.168.1.1 255.255.255.0
+ section 0 192.168.1.2 192.168.1.100
+#
+local-aaa-server
+ user vpdnuser@test.com password cipher %^%#t:S^-wfw*+peAOU&7}"PeE2""l\lAGooewIcY,G&%^%# authentication-type P block fail-times 3 interval 5
+ #
+pim
+ c-bsr gigabitEthernet1/0/2.1
+ c-rp  gigabitEthernet1/0/2.1
+#
+aaa
+multicast-list list2 group-address 225.1.1.1
+ multicast-profile profile2
+  multicast-list name list2
+# 
+ authentication-scheme w1
+  authentication-mode local
+#
+ accounting-scheme w1
+  accounting-mode none
+#
+ domain test.com
+  authentication-scheme w1
+  accounting-scheme w1
+  ip-pool 1
+  multicast-profile profile2
+#
+return

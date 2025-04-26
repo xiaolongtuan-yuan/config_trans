@@ -1,0 +1,15 @@
+access-list 3333 permit ip 10.0.0.0 0.0.0.255
+class-map match-all c1
+  match access-group 3333
+policy-map b1
+  class af1
+    set ip dscp green
+  class af2
+    set ip dscp green
+  class af3
+    set ip dscp green
+policy-map p1
+  class c1
+    set dscp green
+interface GigabitEthernet1/0/1
+  service-policy input p1

@@ -1,0 +1,32 @@
+hostname PE2
+!
+spanning-tree mode legacy
+spanning-tree vlan 1-10 root primary
+spanning-tree vlan 11-20 root secondary
+!
+bridge-domain 10
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ switchport
+ spanning-tree disable
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+ switchport
+ spanning-tree portfast
+ spanning-tree vlan 1-10 cost 20000
+!
+interface GigabitEthernet1/0/2.1
+ encapsulation dot1q 1-20
+ bridge-domain 10
+!
+interface GigabitEthernet1/0/3
+ no shutdown
+ switchport
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/3.1
+ encapsulation dot1q 1-20
+ bridge-domain 10
+!

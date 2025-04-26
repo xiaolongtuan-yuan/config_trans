@@ -1,0 +1,25 @@
+# 设置主机名
+set system host-name LSRA
+
+# 启用MPLS
+set protocols mpls interface all
+
+# 设置MPLS标签协议为LDP
+set protocols ldp interface all
+
+# 配置POS1/0/0接口
+set interfaces pos-1/0/0 unit 0 family inet address 10.1.1.1/24
+set protocols mpls interface pos-1/0/0.0
+set protocols ldp interface pos-1/0/0.0
+
+# 配置Null0接口（Juniper中通常不需要显式配置一个无IP的null接口）
+
+# 配置Loopback1接口
+set interfaces lo0 unit 1 family inet address 1.1.1.9/32
+
+# 配置OSPF
+set protocols ospf area 0.0.0.0 interface lo0.1
+set protocols ospf area 0.0.0.0 interface pos-1/0/0.0
+
+# 合并输出最终的Juniper配置：
+show | display set

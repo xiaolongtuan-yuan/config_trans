@@ -1,0 +1,31 @@
+hostname UPE
+
+mpls ldp router-id Loopback1 force
+
+mpls ip
+
+mpls l2vpn
+
+mpls ldp
+
+mpls ldp neighbor 3.3.3.9
+
+interface GigabitEthernet1/0/0
+no shutdown
+
+interface GigabitEthernet1/0/0.10
+encapsulation dot1q 10
+xconnect 3.3.3.9 101 encapsulation mpls
+
+interface GigabitEthernet2/0/0
+no shutdown
+ip address 10.2.1.1 255.255.255.0
+mpls ip
+
+interface Loopback1
+ip address 1.1.1.9 255.255.255.255
+
+router ospf 1
+network 1.1.1.9 0.0.0.0 area 0
+network 10.2.1.0 0.0.0.255 area 0
+

@@ -1,0 +1,19 @@
+hostname DeviceA
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.10.1.1 255.255.255.0
+
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+
+router bgp 100
+ bgp router-id 1.1.1.1
+ neighbor 10.10.1.2 remote-as 200
+ !
+ address-family ipv4 unicast
+  synchronization
+  neighbor 10.10.1.2 activate
+ exit-address-family
+
+end

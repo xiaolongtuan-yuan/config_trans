@@ -1,0 +1,43 @@
+set system host-name PE2
+
+set routing-instances evrf1 instance-type vrf
+set routing-instances evrf1 route-distinguisher 10:1
+set routing-instances evrf1 vrf-target target:11:1
+
+set protocols mpls interface lo0.1
+set protocols mpls interface ge-2/0/0.0
+set protocols mpls interface ge-3/0/0.0
+set protocols mpls label-switched-path ldp
+
+set bridge-domains bd10 vlan-id 10
+set bridge-domains bd10 interface ge-1/0/0.1
+set bridge-domains bd10 interface ge-2/0/0.1
+set bridge-domains bd10 mtu 1500
+
+set interfaces ge-1/0/0 unit 1 vlan-id 10
+set interfaces ge-1/0/0 unit 1 family bridge interface-mode access
+set interfaces ge-1/0/0 unit 1 family bridge bridge-domain bd10
+
+set interfaces ge-2/0/0 unit 0 family inet address 10.2.1.1/24
+set interfaces ge-2/0/0 unit 0 family mpls
+
+set interfaces ge-3/0/0 unit 0 family inet address 10.3.1.1/24
+set interfaces ge-3/0/0 unit 0 family mpls
+
+set interfaces lo0 unit 1 family inet address 2.2.2.2/32
+
+set routing-options autonomous-system 100
+set routing-options router-id 2.2.2.2
+
+set protocols bgp group ibgp type internal
+set protocols bgp group ibgp local-address 2.2.2.2
+set protocols bgp group ibgp neighbor 1.1.1.1
+set protocols bgp group ibgp neighbor 3.3.3.3
+set protocols bgp group ibgp family inet unicast
+set protocols bgp group ibgp family l2vpn evpn
+
+set protocols ospf area 0 interface lo0.1
+set protocols ospf area 0 interface ge-2/0/0.0
+set protocols ospf area 0 interface ge-3/0/0.0
+
+set protocols evpn vrf evrf1 source-interface lo0.1

@@ -1,0 +1,44 @@
+set system host-name DeviceB
+
+# VLAN 配置
+set vlans vlan10 vlan-id 10
+set vlans vlan20 vlan-id 20
+set vlans vlan100 vlan-id 100
+set vlans vlan200 vlan-id 200
+set vlans vlan300 vlan-id 300
+set vlans vlan400 vlan-id 400
+
+# STP 配置
+set protocols spanning-tree mode rapid-pvst
+set protocols spanning-tree extend-system-id
+set protocols spanning-tree vlan 10 root primary
+set protocols spanning-tree vlan 100-200 root primary
+set protocols spanning-tree vlan 20 root primary
+set protocols spanning-tree vlan 300-400 root primary
+
+# ERPS 配置 - Ethernet Ring Protection Switching (ERPS)
+set protocols erps ring 1 control-vlan 10
+set protocols erps ring 1 protected-instance 1
+set protocols erps ring 1 wtr-timer 6
+set protocols erps ring 1 guard-timer 100
+
+set protocols erps ring 2 control-vlan 20
+set protocols erps ring 2 protected-instance 2
+set protocols erps ring 2 wtr-timer 6
+set protocols erps ring 2 guard-timer 100
+
+# 接口配置 - GigabitEthernet1/0/1
+set interfaces ge-0/0/1 unit 0 family ethernet-switching port-mode trunk
+set interfaces ge-0/0/1 unit 0 family ethernet-switching vlan members [10 20 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200]
+set protocols spanning-tree interface ge-0/0/1 unit 0 portfast
+set protocols erps ring 1 interface ge-0/0/1 unit 0
+set protocols erps ring 2 interface ge-0/0/1 unit 0
+
+# 接口配置 - GigabitEthernet1/0/2
+set interfaces ge-0/0/2 unit 0 family ethernet-switching port-mode trunk
+set interfaces ge-0/0/2 unit 0 family ethernet-switching vlan members [10 20 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200]
+set protocols spanning-tree interface ge-0/0/2 unit 0 portfast
+set protocols erps ring 1 interface ge-0/0/2 unit 0 rpl-owner
+set protocols erps ring 2 interface ge-0/0/2 unit 0
+
+commit

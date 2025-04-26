@@ -1,0 +1,32 @@
+hostname CSG2
+!
+mpls label protocol ldp
+!
+mpls l2vpn
+!
+mpls ldp
+!
+router isis
+ isis circuit-type level-1
+ isis network-entity 49.0001.0000.0000.0000.00
+ isis traffic-eng level-2-only
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+!
+interface GigabitEthernet1/0/1.1100
+ encapsulation dot1q 1100
+ xconnect 1.1.1.1 1 encapsulation mpls
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 192.168.1.2 255.255.255.0
+ isis network point-to-point
+ mpls ip
+ mpls ldp
+!
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.255
+ isis network point-to-point
+!
+end

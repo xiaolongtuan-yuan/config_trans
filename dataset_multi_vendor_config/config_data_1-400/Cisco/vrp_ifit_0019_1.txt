@@ -1,0 +1,47 @@
+hostname P
+
+ptp clock-domain 1
+ptp clock-domain device-type boundary-clock
+ptp clock-domain local clock-class 185
+ptp clock-domain bits0 on
+ptp clock-domain priority 1
+
+network-clock input-source bits0
+network-clock input-source bits0 priority 1
+network-clock input-source ptp
+network-clock input-source ptp priority 1
+network-clock input-source bits0 2mhz
+
+router isis
+ is-level 1
+ metric-style wide
+ net-entity 10.0000.0000.0002.00
+
+ipv6 unicast-routing
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:10::2/96
+ ipv6 router isis 1
+ ptp domain 1
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:20::1/96
+ ipv6 router isis 1
+ ptp domain 1
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:40::4/96
+ ptp domain 1
+
+interface Loopback1
+ ipv6 enable
+ ipv6 address 2001:db8:2::2/64
+ ipv6 router isis 1
+
+end

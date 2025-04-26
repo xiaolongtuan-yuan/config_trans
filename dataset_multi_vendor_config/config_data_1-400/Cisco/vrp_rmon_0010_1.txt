@@ -1,0 +1,19 @@
+hostname Device
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.2.2.1 255.255.255.0
+!
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 10.3.3.1 255.255.255.0
+!
+ip route 10.1.1.0 255.255.255.0 10.2.2.2
+!
+snmp-server community public RO
+snmp-server host 10.1.1.1 public
+!
+rmon event 1 log trap public description "Alarm of interface" owner userA
+rmon alarm 1 ifInOctets.3 5 absolute rising-threshold 1000 1 falling-threshold 100 1 owner userA
+!
+end

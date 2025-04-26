@@ -1,0 +1,17 @@
+hostname CE2
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.2.1.2 255.255.255.0
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.4.1.1 255.255.255.0
+
+router bgp 65410
+ neighbor 10.2.1.1 remote-as 100
+
+router ospf 1
+ redistribute bgp 65410 subnets
+ network 10.4.1.0 0.0.0.255 area 0
+

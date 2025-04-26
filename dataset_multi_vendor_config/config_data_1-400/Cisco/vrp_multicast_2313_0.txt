@@ -1,0 +1,47 @@
+hostname LAC
+
+interface gigabitEthernet1/0/2.1
+ encapsulation dot1q 1
+ ip address 10.0.0.2 255.255.255.0
+
+l2tp enable
+l2tp-class LAC
+ password 7 %^%#F`'0X6\)->M"l83`dW(K<lKE&1PT-%Y>i|YSvR@P%^%#
+ ip address 10.0.0.1 255.255.255.0
+ tunnel source gigabitEthernet1/0/2.1
+
+interface Virtual-Template1
+ ppp authentication chap
+ ppp authorization bba group radius
+ ppp ipcp dns request
+ ppp ipcp route default
+
+interface gigabitEthernet1/0/1.1
+ encapsulation dot1Q 400
+ pppoe enable group global
+ pppoe-server bind Virtual-Template1
+ pppoe-client dial-pool-number 1
+
+aaa new-model
+aaa authentication login default local
+aaa authorization network default local
+aaa accounting delay-start
+
+radius-server host 10.0.0.1 auth-port 1812 acct-port 1813 key %^%#&K_>:lR[r~<z\R~hytY5b01K21v1C9N]oyOJR]G@%^%#
+
+vpdn enable
+vpdn-group LAC
+ request-dialin
+  protocol l2tp
+  virtual-template 1
+
+username vpdnuser@test.com password 7 %^%#&K_>:lR[r~<z\R~hytY5b01K21v1C9N]oyOJR]G@%^%#
+username vpdnuser@test.com authentication-type pap
+username vpdnuser@test.com authorization-type group radius
+
+ip local pool LAC 10.0.0.1 10.0.0.1
+
+radius-server attribute 44 include-in-access-req format %h
+radius-server attribute 44 include-in-accounting-req format %h
+
+radius-server vsa send accounting

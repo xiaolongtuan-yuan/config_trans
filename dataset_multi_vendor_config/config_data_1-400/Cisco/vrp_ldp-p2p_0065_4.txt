@@ -1,0 +1,20 @@
+hostname LSRE
+
+mpls label protocol ldp
+
+mpls ldp router-id Loopback1 force
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.4.1.2 255.255.255.0
+ mpls ip
+
+interface Loopback1
+ ip address 5.5.5.5 255.255.255.255
+
+router isis
+ net 49.0005.0000.0000.0005.00
+ is-type level-2-only
+ isis enable Loopback1
+
+end

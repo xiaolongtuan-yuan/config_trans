@@ -1,0 +1,35 @@
+hostname DeviceA
+
+controller cpos1/0/0
+ no shutdown
+ aps group 1
+ aps working
+ cpos-trunk 0
+
+controller cpos2/0/0
+ no shutdown
+ aps group 1
+ aps protect
+ aps mode 1+1 unidirectional
+ aps revertive-timer 6
+ cpos-trunk 0
+
+interface cpos-trunk0
+ no shutdown
+ tdm-group 1 timeslots 1-15
+ tdm-group 2 timeslots 17-31
+
+interface multilink1
+ no shutdown
+
+interface serial0/1:1
+ no shutdown
+ encapsulation ppp
+ multilink-group 1
+
+interface serial0/2:2
+ no shutdown
+ encapsulation ppp
+ multilink-group 1
+
+end

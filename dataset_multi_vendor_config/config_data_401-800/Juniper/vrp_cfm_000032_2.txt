@@ -1,0 +1,44 @@
+set system host-name PE1
+set protocols mpls interface all
+set protocols ldp interface lo0.0
+set protocols ldp router-id 1.1.1.9
+
+set interfaces ge-1/0/0 unit 10 vlan-id 10
+set interfaces ge-1/0/0 unit 10 family bridge interface-mode trunk
+set interfaces ge-1/0/0 unit 10 family bridge vlan-id-list 10
+set interfaces ge-1/0/0 unit 10 family bridge vlan-id-list 10 vlan-id 10
+set interfaces ge-1/0/0 unit 10 family bridge vlan-id-list 10 vlan-id 10 vfi bgp1
+
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.1.1/24
+set protocols mpls interface ge-2/0/0.0
+
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+
+set routing-options autonomous-system 100
+set protocols bgp group internal type internal
+set protocols bgp group internal local-address 1.1.1.9
+set protocols bgp group internal neighbor 3.3.3.9
+set protocols bgp group internal family l2vpn signaling
+set protocols bgp group internal family l2vpn vpls
+set protocols bgp group internal family l2vpn vpls signaling-protocol ldp
+
+set protocols ospf area 0 interface lo0.0
+set protocols ospf area 0 interface ge-2/0/0.0
+
+set routing-instances bgp1 instance-type vpls
+set routing-instances bgp1 interface ge-1/0/0.10
+set routing-instances bgp1 vpn-id 1
+set routing-instances bgp1 protocols vpls site-range 5
+set routing-instances bgp1 protocols vpls site 1 site-identifier 1
+set routing-instances bgp1 protocols vpls site 1 interface ge-1/0/0.10
+set routing-instances bgp1 protocols vpls site 1 vlan-id 10
+set routing-instances bgp1 protocols vpls site 1 vlan-id 10 vfi bgp1
+set routing-instances bgp1 protocols vpls site 1 vlan-id 10 vfi bgp1 vpn-id 1
+set routing-instances bgp1 protocols vpls site 1 vlan-id 10 vfi bgp1 vpn-id 1 route-target import 100:1
+set routing-instances bgp1 protocols vpls site 1 vlan-id 10 vfi bgp1 vpn-id 1 route-target export 100:1
+
+set protocols oam ethernet connectivity-fault-management maintenance-domain bgp1
+set protocols oam ethernet connectivity-fault-management maintenance-association ma1
+set protocols oam ethernet connectivity-fault-management maintenance-association ma1 mep 1 interface ge-1/0/0.10 direction inward
+set protocols oam ethernet connectivity-fault-management maintenance-association ma1 mep 1 continuity-check
+set protocols oam ethernet connectivity-fault-management maintenance-association ma1 mep 2 remote-mep

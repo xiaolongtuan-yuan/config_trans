@@ -1,0 +1,26 @@
+set system host-name DeviceA
+
+set interfaces ge-1/0/0 unit 0 family inet address 172.16.0.1/16
+set interfaces ge-1/0/0 unit 0 description "GigabitEthernet1/0/0"
+
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.0.1/24
+set interfaces ge-2/0/0 unit 0 description "GigabitEthernet2/0/0"
+
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+set interfaces lo0 unit 0 description "Loopback0"
+
+set routing-options autonomous-system 65008
+
+set protocols bgp group EBGP-65009 type external
+set protocols bgp group EBGP-65009 peer-as 65009
+set protocols bgp group EBGP-65009 neighbor 192.168.0.2
+set protocols bgp group EBGP-65009 export EXPORT-BGP
+set protocols bgp group EBGP-65009 import IMPORT-BGP
+
+set policy-options policy-statement EXPORT-BGP term 1 from protocol direct
+set policy-options policy-statement EXPORT-BGP term 1 then accept
+
+set policy-options policy-statement IMPORT-BGP term 1 from protocol bgp
+set policy-options policy-statement IMPORT-BGP term 1 then accept
+
+set routing-options router-id 1.1.1.1

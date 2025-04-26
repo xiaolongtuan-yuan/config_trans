@@ -1,0 +1,22 @@
+hostname DeviceA
+
+interface Port-channel1
+ ipv6 enable
+ ipv6 address 2001:DB8:1::1/64
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ channel-group 1 mode on
+
+interface GigabitEthernet3/0/1
+ no shutdown
+ channel-group 1 mode on
+
+bfd template single-hop AtoB
+ interval min-tx 10 min-rx 10
+
+interface Port-channel1
+ bfd interval 10 min_rx 10
+ bfd neighbor 2001:DB8:1::2
+
+end

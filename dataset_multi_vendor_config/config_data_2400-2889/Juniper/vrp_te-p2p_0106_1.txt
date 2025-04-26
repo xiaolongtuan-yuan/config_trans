@@ -1,0 +1,26 @@
+set system host-name LSRB
+set protocols mpls ldp
+set protocols mpls traffic-eng tunnels auto announce
+set protocols mpls traffic-eng tunnels auto destination
+
+set protocols ospf 1 area 0
+set protocols ospf 1 router-id 2.2.2.2
+set protocols ospf network 3.1.1.0/24 area 0
+set protocols ospf network 3.2.1.0/24 area 0
+set protocols mpls traffic-eng passive-interface default
+set protocols mpls traffic-eng fast-rsvp
+
+set interfaces ge-0/0/0 unit 0 family inet address 3.2.1.1/24
+set interfaces ge-0/0/0-unit-0 mpls traffic-eng tunnels
+set interfaces ge-0/0/0-unit-0 mpls traffic-eng rsvp
+
+set interfaces ge-0/0/1 unit 0 family inet address 3.1.1.1/24
+set interfaces ge-0/0/1_unit_0 mpls traffic-eng tunnels
+set interfaces ge-0/0/1_unit_0 mpls traffic-eng rsvp
+
+set interfaces ge-0/0/2 unit 0 family inet address 2.1.1.1/24
+set interfaces ge-0/0/2-unit-0 mpls traffic-eng tunnels
+set interfaces ge-0/0/2-unit-0 mpls traffic-eng rsvp
+
+set interfaces lo0 unit 0 family inet address 2.2.2.2/32
+

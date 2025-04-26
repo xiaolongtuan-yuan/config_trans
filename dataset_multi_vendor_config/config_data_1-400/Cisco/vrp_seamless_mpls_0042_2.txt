@@ -1,0 +1,43 @@
+hostname AGG_ASBR
+
+mpls ldp
+
+router isis
+ isis router-id 3.3.3.3
+ net 10.0001.0030.0300.3003.00
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.2.1.2 255.255.255.0
+ mpls ip
+ isis network point-to-point
+ mpls ldp autoconfig
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.3.1.1 255.255.255.0
+ mpls ip
+
+interface Loopback0
+ ip address 3.3.3.3 255.255.255.255
+ isis network point-to-point
+
+router bgp 100
+ bgp log-neighbor-changes
+ neighbor 2.2.2.2 remote-as 100
+ neighbor 2.2.2.2 update-source Loopback0
+ neighbor 10.3.1.2 remote-as 200
+
+ address-family ipv4
+  neighbor 2.2.2.2 activate
+  neighbor 2.2.2.2 route-map policy1 out
+  neighbor 2.2.2.2 send-label
+  neighbor 10.3.1.2 activate
+  neighbor 10.3.1.2 route-map policy1 out
+  neighbor 10.3.1.2 send-label
+
+route-map policy1 permit 10
+ match mpls-label
+ set mpls-label
+
+end

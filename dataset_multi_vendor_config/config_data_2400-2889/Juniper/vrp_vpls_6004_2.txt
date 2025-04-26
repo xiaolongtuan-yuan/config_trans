@@ -1,0 +1,20 @@
+set system host-name PE1
+
+set protocols ldp
+set protocols l2vpn vfi a2
+set forwarding-vlan vlan-forwarding manual
+
+set interfaces ge-0/0/0 unit 1 family ether-options encapsulation dot1q 10
+set interfaces ge-0/0/0 unit 1 family lp interface lo0
+set interfaces ge-0/0/0.1 encapsulation dot1q 10
+set vlans vfi-a2 address-family ipv4 untagged ge-0/0/0.1
+
+set interfaces ge-1/0/0 unit 0 family ethernet-switching
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+
+set routing-options router ospf 1 area 0 network 1.1.1.9.0.0.0.0
+set routing-options router ospf 1 area 0 network 192.168.10.0.255.255.255.0
+
+set interfaces ge-0/0/0 unit 1 family ipmpls pw-id 100
+set protocols ldp interface ge-0/0/0.1
+''' 

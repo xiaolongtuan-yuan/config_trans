@@ -1,0 +1,62 @@
+#
+sysname PE1
+#
+stp instance 0 priority 0
+stp enable
+#
+stp region-configuration
+ region-name RG1
+#
+mpls lsr-id 1.1.1.1
+#
+mpls
+#
+mpls l2vpn
+#
+vsi m1 static
+ pwsignal ldp
+  vsi-id 100
+  peer 2.2.2.2
+  peer 2.2.2.2 pw pw1
+    stp enable
+    stp cost 2
+ admin-vsi
+#
+vsi s1 static
+ pwsignal ldp
+  vsi-id 10
+  peer 3.3.3.3
+#
+mpls ldp
+#
+#
+ mpls ldp remote-peer 2.2.2.2
+ remote-ip 2.2.2.2
+ undo remote-ip pwe3
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ portswitch
+ stp enable
+ stp vpls-subinterface enable
+ stp instance 0 cost 2
+#
+interface GigabitEthernet1/0/0.1
+ vlan-type dot1q 10
+ l2 binding vsi s1
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+#
+ospf 1
+ area 0.0.0.0
+  network 1.1.1.1 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+#
+return

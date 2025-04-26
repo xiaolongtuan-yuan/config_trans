@@ -1,0 +1,21 @@
+set system host-name ASBR1
+set protocols mpls ldp
+set protocols mpls ip
+set interfaces ge-0/0/0 unit 0 family mpls
+set interfaces ge-1/0/0 unit 0 family mpls
+set interfaces lo0 unit 0 family inet address 2.2.2.2/32
+set interfaces ge-0/0/0 unit 0 family inet address 10.20.1.1/24
+set interfaces ge-1/0/0 unit 0 family inet address 10.10.1.2/24
+set routing-options routers bgp 100
+set routing-options routers bgp peer 1.1.1.1 as 100 update-source lo0
+set routing-options routers bgp peer 10.20.1.2 as 200 update-source ge-0/0/0 unit 0
+set protocols bgp group internal peer 1.1.1.1 active
+set protocols bgp group-policy internal policy policy1 export
+set protocols bgp group-policy internal send-label
+set protocols bgp group-policy external policy policy2 export
+set protocols bgp group-policy external send-label
+set routing-options router-id lo0.0
+set protocol ospf area 0 interface ge-0/0/0.0
+set protocol ospf area 0 interface ge-1/0/0.0
+set forwardingNewLabel pmap policy pmap1 permit 10 match mpls experimental topmos
+set forwardingNewLabel pmap policy pmap2 permit 10 set mpls label imposition

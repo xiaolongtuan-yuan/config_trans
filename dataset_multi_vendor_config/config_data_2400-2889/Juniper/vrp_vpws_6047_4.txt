@@ -1,0 +1,29 @@
+set system host-name PE2
+
+set protocols ldp enable
+
+set protocols ldp local-address loopback0
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.30.1.2 255.255.255.0
+set interfaces ge-1/0/0 unit 0 family mpls ip
+
+set interfaces ge-2/0/0 unit 0 family mpls ldp
+set interfaces ge-2/0/0 unit 0 family mpls lacp
+set interfaces ge-2/0/0 unit 0 family mpls transport vcid 100 remote-peer 1.1.1.1
+
+set interfaces lo0 unit 0 family inet address 4.4.4.4/32
+
+set routing-options router-id lo0.0
+set protocols bgp group external peer 1.1.1.1 as 100
+set protocols bgp group external ebgp-multihop 255
+set protocols bgp group external update-source lo0.0
+setprotocols bgp group internal peer 3.3.3.3 as 200
+set protocols bgp group internal update-source lo0.0
+
+set routing-options address-family inet synchronize false
+set routing-options neighbor 1.1.1.1 activate
+set routing-options neighbor 3.3.3.3 activate
+set routing-options neighbor 3.3.3.3 capabilities dynamic-label-binding
+
+set protocols ospf area 0 interface lo0.0
+set protocols ospf area 0 interface ge-1/0/0-unit-0

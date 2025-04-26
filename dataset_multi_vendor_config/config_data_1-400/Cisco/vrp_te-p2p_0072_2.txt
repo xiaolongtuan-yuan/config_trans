@@ -1,0 +1,57 @@
+hostname P2
+
+bfd
+
+mpls label protocol ldp
+
+mpls ldp router-id Loopback0 force
+
+mpls traffic-eng tunnels
+
+router isis
+
+net 49.0001.0000.0000.0003.00
+
+metric-style wide
+
+address-family ipv4 unicast
+
+interface GigabitEthernet1/0/0
+
+no shutdown
+
+ip address 10.4.1.1 255.255.255.252
+
+mpls ip
+
+mpls traffic-eng tunnels
+
+router isis
+
+mpls traffic-eng level-2
+
+interface GigabitEthernet2/0/0
+
+no shutdown
+
+ip address 10.2.1.2 255.255.255.252
+
+mpls ip
+
+mpls traffic-eng tunnels
+
+router isis
+
+mpls traffic-eng level-2
+
+interface Loopback1
+
+ip address 3.3.3.3 255.255.255.255
+
+router isis
+
+mpls ldp router-id Loopback1 force
+
+mpls traffic-eng tunnels
+
+return

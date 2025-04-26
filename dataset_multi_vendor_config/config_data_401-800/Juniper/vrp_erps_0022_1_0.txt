@@ -1,0 +1,38 @@
+set system host-name PE1
+set vlans vlan10 vlan-id 10
+set vlans vlan100 vlan-id 100
+set protocols rstp vlan 10
+set protocols rstp vlan 100
+set protocols erps ring 1 control-vlan 100
+set protocols erps ring 1 protect-instance 0
+set protocols erps ring 1 version 2
+set protocols erps ring 1 sub-ring
+set protocols mpls interface lo0.1
+set protocols mpls interface ge-1/0/0.0
+set protocols mpls interface ge-2/0/0.0
+set protocols mpls interface ge-3/0/0.0
+set protocols ldp interface lo0.1
+set protocols ldp interface ge-1/0/0.0
+set protocols ldp interface ge-2/0/0.0
+set protocols ldp interface ge-3/0/0.0
+set protocols l2vpn
+set protocols l2vpn pseudowire-class s1 encapsulation ldp
+set protocols l2vpn vfi s1 manual vpn-id 10
+set protocols l2vpn vfi s1 manual neighbor 2.2.2.2 pw-id 10
+set protocols l2vpn vfi s1 manual neighbor 3.3.3.3 pw-id 10
+set interfaces ge-1/0/0 unit 0 family ethernet-switching vlan members 100
+set interfaces ge-1/0/0 unit 0 family ethernet-switching port-mode trunk
+set interfaces ge-1/0/0 unit 0 disable spanning-tree
+set interfaces ge-1/0/0 unit 0 protocols erps ethernet-ring 1
+set interfaces ge-1/0/0 unit 0 protocols erps ethernet-ring vpls-subinterface enable
+set interfaces ge-1/0/0 unit 10 vlan-id 10
+set interfaces ge-1/0/0 unit 10 family inet address 10.1.1.1/24
+set interfaces ge-1/0/0 unit 10 protocols l2vpn vfi s1
+set interfaces ge-2/0/0 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-2/0/0 unit 0 family mpls
+set interfaces ge-3/0/0 unit 0 family inet address 10.3.1.1/24
+set interfaces ge-3/0/0 unit 0 family mpls
+set interfaces lo0 unit 1 family inet address 1.1.1.1/32
+set protocols ospf area 0 interface lo0.1
+set protocols ospf area 0 interface ge-2/0/0.0
+set protocols ospf area 0 interface ge-3/0/0.0

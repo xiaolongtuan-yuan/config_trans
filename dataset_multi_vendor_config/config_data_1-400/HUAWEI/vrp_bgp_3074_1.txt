@@ -1,0 +1,27 @@
+#
+sysname DeviceB
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 172.16.1.1 255.255.255.0
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+#
+bgp 65009
+ router-id 2.2.2.2
+ peer 172.16.1.2 as-number 65009
+ peer 10.1.1.2 as-number 65008
+ #
+ ipv4-family unicast
+  undo synchronization 
+  network 172.16.1.0 255.255.255.0
+  peer 172.16.1.2 enable
+  peer 10.1.1.2 enable
+  peer 10.1.1.2 route-policy 10 export
+#
+route-policy 10 permit node 10
+ apply cost 100
+#
+return

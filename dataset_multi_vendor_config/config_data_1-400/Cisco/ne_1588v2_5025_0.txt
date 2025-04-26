@@ -1,0 +1,28 @@
+hostname CE1
+
+ptp domain 1
+ptp device-type bc
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 172.16.0.2 255.255.255.0
+ ptp clock-domain 1
+ ptp delay-mechanism pdelay
+ ptp announce receipt-timeout 10
+ ptp min_pdelay_req_interval 10
+ ptp udp-egress source-ip 172.16.0.2 destination-ip 172.16.0.1
+ ptp udp-egress destination-mac 00e0.fc11.1111
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.10.0.1 255.255.255.0
+ ptp clock-domain 1
+ ptp delay-mechanism pdelay
+ ptp min_pdelay_req_interval 10
+ ptp announce-drop enable
+ ptp udp-egress source-ip 10.10.0.1 destination-ip 10.10.0.2
+ ptp udp-egress destination-mac 00e0.fc33.1111
+
+router ospf 1
+ network 172.16.0.0 0.0.0.255 area 0
+ network 10.10.0.0 0.0.0.255 area 0

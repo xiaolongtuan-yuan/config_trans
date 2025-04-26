@@ -1,0 +1,42 @@
+#
+sysname DeviceA
+#               
+interface GigabitEthernet1/0/0
+ undo shutdown  
+ ip address 10.1.1.1 255.255.255.0
+#               
+interface GigabitEthernet1/0/1
+ undo shutdown  
+ ip address 10.1.2.1 255.255.255.0
+#          
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip address 2.2.2.10 255.255.255.0
+#               
+interface LoopBack0
+ ip address 1.1.1.1 255.255.255.255
+#               
+bgp 100         
+ router-id 1.1.1.1
+ peer 2.2.2.2 as-number 100
+ peer 2.2.2.2 connect-interface LoopBack0
+ peer 3.3.3.3 as-number 100
+ peer 3.3.3.3 connect-interface LoopBack0
+ #              
+ ipv4-family unicast
+  undo synchronization
+  nexthop recursive-lookup route-policy np-by-rp
+  peer 2.2.2.2 enable
+  peer 3.3.3.3 enable
+#               
+ospf 1          
+ area 0.0.0.0   
+  network 1.1.1.1 0.0.0.0
+  network 10.1.0.0 0.0.255.255
+#               
+route-policy np-by-rp permit node 10
+ if-match ip-prefix np-by-rp-ip
+#               
+ip ip-prefix np-by-rp-ip index 10 permit 0.0.0.0 32
+#               
+return

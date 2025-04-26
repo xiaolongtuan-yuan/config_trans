@@ -1,0 +1,35 @@
+#
+sysname PE3
+#
+stp instance 1 root secondary
+stp instance 2 root primary
+stp pathcost-standard legacy
+stp enable
+#
+stp region-configuration
+ region-name RG1
+ instance 1 vlan 1 to 10
+ instance 2 vlan 11 to 20
+#
+bridge-domain 10
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ portswitch
+ stp enable
+ stp root-protection
+#
+interface GigabitEthernet1/0/1.1 mode l2
+ encapsulation dot1q vid 1 to 20
+ bridge-domain 10
+#
+interface GigabitEthernet1/0/2
+ undo shutdown
+ portswitch
+ stp enable
+#
+interface GigabitEthernet1/0/2.1 mode l2
+ encapsulation dot1q vid 1 to 20
+ bridge-domain 10
+#
+return

@@ -1,0 +1,41 @@
+#
+sysname Tail
+#
+ip vpn-instance vpna
+ ipv4-family
+  route-distinguisher 500:1
+  vpn-target 111:1 export-extcommunity
+  vpn-target 111:1 import-extcommunity
+#               
+segment-routing ipv6
+ encapsulation source-address 5::5
+ locator as1 ipv6-prefix 2001:db8:15:: 64 static 32
+  opcode ::1 end
+  opcode ::100 end-dt4 vpn-instance vpna
+#               
+isis 1          
+ is-level level-1
+ cost-style wide
+ network-entity 10.0000.0000.0005.00
+ #              
+ ipv6 enable topology ipv6
+ segment-routing ipv6 locator as1 auto-sid-disable
+ #              
+#               
+interface GigabitEthernet1/0/1
+ undo shutdown  
+ ipv6 enable    
+ ipv6 address 2001:db8:4::2/96
+ isis ipv6 enable 1
+#               
+interface GigabitEthernet1/0/2
+ undo shutdown  
+ ip binding vpn-instance vpna    
+ ip address 10.5.1.2 255.255.255.252
+#               
+interface LoopBack1
+ ipv6 enable    
+ ipv6 address 5::5/64
+ isis ipv6 enable 1
+#               
+return

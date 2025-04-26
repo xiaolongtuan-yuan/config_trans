@@ -1,0 +1,18 @@
+set system host-name ASBR1
+set protocols mpls ip
+setprotocols mpls l2transport
+set inet-vm vrf-definition bgp-ad1 rd 100:1
+set inet-vm vrf-definition bgp-ad1 route-target export 200:1
+set inet-vm vrf-definition bgp-ad1 route-target import 200:1
+set protocols mpls ldp
+set interfaces gigabit-ethernet2/0/0 unit 10 encapsulation dot1q 10 connect-vlan vrf bgp-ad1
+set interfaces gigabit-ethernet1/0/0 unit 0 family inet address 10.10.1.2/24
+set interfaces gigabit-ethernet1/0/0 unit 0 unit 0 family mpls ip
+set interfaces gigabit-ethernet1/0/0 unit 0 unit 0 family mpls ldp
+setinterfaces loopback1 unit 0 family inet address 2.2.2.2/32
+set routing-options router bgp 100
+set routing-options router bgp 100 peer 1.1.1.1 as 100
+set routing-options router bgp 100 peer 1.1.1.1 update-source loopback1
+set inet-vm vrf bgp-ad1 activate
+set protocols ospf area 0 interface gigabit-ethernet1/0/0.0
+set protocols ospf area 0 interface loopback1.0

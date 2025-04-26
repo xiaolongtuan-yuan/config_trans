@@ -1,0 +1,31 @@
+# 设置设备主机名
+set system host-name DeviceB
+
+# 配置IKE策略
+set security ike policy ike-policy-2 mode main
+set security ike policy ike-policy-2 proposals aes-256-cbc
+set security ike policy ike-policy-2 pre-shared-key ascii-text "$9$<密钥>"  # Juniper中要使用'key'设置预共享密钥格式
+
+# 配置IKE网关
+set security ike gateway ike-gate address <peer IP>
+set security ike gateway ike-gate external-interface ge-0/0/1
+set security ike gateway ike-gate ike-policy ike-policy-2
+
+# 配置IPsec策略
+set security ipsec policy ipsec-policy-2 proposals esp-sha256-hmac
+
+# 配置IPsec VPN用于point-to-point
+set security ipsec vpn ipsec-vpn bind-interface st0.0
+set security ipsec vpn ipsec-vpn ike gateway ike-gate
+set security ipsec vpn ipsec-vpn ike ipsec-policy ipsec-policy-2
+
+# 配置接口
+set interfaces ge-0/0/1 unit 0 family inet6 address 2001:db8::2/64
+set interfaces ge-0/0/1 unit 0 family inet6 interface-mode point-to-point
+set interfaces st0 unit 0 family inet6
+
+# 使能IPv6单播路由
+set routing-options autonomous-system <AS_number>
+
+# 配置OSPFv3
+set protocols ospf3 area 0.0.0.1 virtual-link <neighbor router-id> router-id 2.2.2.2 neighbor <neighbor router's IPv6 address>

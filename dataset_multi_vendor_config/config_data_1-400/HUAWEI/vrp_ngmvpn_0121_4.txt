@@ -1,0 +1,26 @@
+#
+sysname CE2
+#
+multicast routing-enable
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.3.2 255.255.255.0
+ pim sm
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.1.4.1 255.255.255.0
+ pim sm
+ igmp enable
+ igmp static-group 228.0.0.1 source 10.1.1.15
+ #
+ospf 2
+ area 0.0.0.0
+  network 10.1.3.0 0.0.0.255
+  network 10.1.4.0 0.0.0.255
+#
+pim
+ static-rp 10.1.4.1
+#
+return

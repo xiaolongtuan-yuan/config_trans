@@ -1,0 +1,66 @@
+hostname LSRC
+mpls label protocol ldp
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.2.1.2 255.255.255.252
+ mpls ip
+
+interface Loopback1
+ ip address 3.3.3.3 255.255.255.255
+
+interface Tunnel20
+ ip unnumbered Loopback1
+ tunnel mode mpls traffic-eng
+ tunnel destination 1.1.1.1
+ tunnel mpls traffic-eng path-option 1 explicit name Tunnel10
+
+mpls traffic-eng autotunnel primary
+mpls traffic-eng autoroute announce
+mpls traffic-eng logging oam
+mpls traffic-eng logging bandwidth-change 3
+mpls traffic-eng logging path-change 3
+
+mpls traffic-eng tunnel-id 200
+
+ip explicit-path name Tunnel10
+ next-address 10.2.1.1
+ exit
+
+mpls traffic-eng load-balancing
+
+mpls traffic-eng reoptimize timers periodic 300
+
+mpls traffic-eng fast-reroute
+
+mpls oam
+ interface Tunnel20
+  mode proactive bfd
+  frequency 3
+  reply-mode control-channel
+  react-alert off
+
+mpls oam
+ interface Tunnel20
+  mode proactive bfd
+  frequency 3
+  reply-mode control-channel
+  react-alert off
+  timeout 3
+
+mpls oam
+ lsp-name Tunnel10
+  mode proactive bfd
+  frequency 3
+  reply-mode control-channel
+  react-alert off
+
+mpls oam
+ lsp-name Tunnel10
+  mode proactive bfd
+  frequency 3
+  reply-mode control-channel
+  react-alert off
+  timeout 3
+
+end

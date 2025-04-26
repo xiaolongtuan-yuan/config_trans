@@ -1,0 +1,23 @@
+set system host-name DeviceD
+
+set routing-options multicast
+
+set firewall family inet filter acl-2001 term 1 from source-address 232.1.1.0/24
+set firewall family inet filter acl-2001 term 1 then accept
+
+set protocols isis interface ge-0/0/0 unit 0 family inet address 192.168.4.2/24
+set protocols isis interface ge-0/0/0 unit 0 family inet address 192.168.4.2/24
+set protocols isis interface ge-0/0/0 unit 0 pim sparse-mode
+
+set protocols isis interface ge-0/0/1 unit 0 family inet address 192.168.1.2/24
+set protocols isis interface ge-0/0/1 unit 0 pim sparse-mode
+
+set protocols isis interface ge-0/0/2 unit 0 family inet address 10.110.5.1/24
+set protocols isis interface ge-0/0/2 unit 0 pim sparse-mode
+
+set protocols isis interface ge-0/0/3 unit 0 family inet address 10.110.4.1/24
+set protocols isis interface ge-0/0/3 unit 0 pim bsr-border
+set protocols isis interface ge-0/0/3 unit 0 pim sparse-mode
+
+set protocols pim ssm-policy 2001
+set protocols pim static-rp 192.168.4.1

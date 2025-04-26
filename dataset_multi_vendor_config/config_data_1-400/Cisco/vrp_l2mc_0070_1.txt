@@ -1,0 +1,54 @@
+hostname PE2
+
+ip igmp snooping
+
+mpls label protocol ldp
+
+mpls l2vpn
+
+vsi mtv3 static
+ pwsignal ldp
+  vsi-id 3
+  peer 1.1.1.1
+ ip igmp snooping
+
+vsi utv2 static
+ pwsignal ldp
+  vsi-id 2
+  peer 1.1.1.1
+
+vsi utv1 static
+ pwsignal ldp
+  vsi-id 1
+  peer 1.1.1.1
+
+mpls ldp
+
+mpls ldp neighbor 1.1.1.1
+
+router isis
+ net 49.0020.0200.2002.00
+ is-type level-1
+
+interface GigabitEthernet1/0/0.1
+ encapsulation dot1Q 11
+ xconnect vfi utv1
+
+interface GigabitEthernet1/0/0.2
+ encapsulation dot1Q 22
+ xconnect vfi utv2
+
+interface GigabitEthernet1/0/0.3
+ encapsulation dot1Q 3
+ xconnect vfi mtv3
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.1.2 255.255.255.252
+ isis enable
+ mpls ip
+
+interface Loopback1
+ ip address 2.2.2.2 255.255.255.255
+ isis enable
+

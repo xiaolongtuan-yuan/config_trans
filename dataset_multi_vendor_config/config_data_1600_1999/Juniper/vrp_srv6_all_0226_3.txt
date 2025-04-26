@@ -1,0 +1,15 @@
+set system host-name Tail
+set routing-instances vpna routing-options route-distinguisher 500:1
+set routing-instances vpna routing-options vpn-target 111:1 export-extcommunity
+set routing-instances vpna routing-options vpn-target 111:1 import-extcommunity
+set protocols mpls segment-routing
+set interfaces ge-0/0/0 unit 0 family inet6 address 2001:db8:3::2/96
+set interfaces ge-0/0/1 unit 0 family inet address 10.5.1.2/30
+set interfaces lo0 unit 0 family inet6 address 5::5/128
+set protocols isis area 0.0.0.0 interface ge-0/0/0.0
+set protocols isis area 0.0.0.0 interface lo0.0
+set protocols isis net 10.0000.0000.0004.00
+set protocols isis level 1 metric-style wide
+set protocols isis address-family ipv6
+set protocols isis segment-routing mpls
+commit

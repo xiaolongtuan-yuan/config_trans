@@ -1,0 +1,43 @@
+hostname Device
+
+aaa new-model
+
+radius server rd1
+ address ipv4 10.6.55.55 auth-port 1550 acct-port 1551
+ key %^%#vS%796FO7%C~pB%CR=q;j}gSCqR-X6+P!.DYI@)%^%#
+
+ipv6 unicast-routing
+
+ipv6 dhcp pool pool1
+ dns-server 2001:db82::2:2
+
+ipv6 dhcp relay destination 2001:db82::2:2
+
+ipv6 route 2001:db81::/64 GigabitEthernet1/0/1.1
+
+ipv6 dhcp pool pool1
+ prefix-delegation pool pre1 lifetime infinite infinite
+ dns-server 2001:db82::2:2
+
+aaa authentication login default group rd1
+aaa authorization exec default group rd1
+aaa accounting exec default start-stop group rd1
+
+radius-server host 10.6.55.55 auth-port 1550 acct-port 1551 key %^%#vS%796FO7%C~pB%CR=q;j}gSCqR-X6+P!.DYI@)%^%#
+radius-server vsa send accounting
+
+aaa authentication dot1x default group rd1
+
+interface GigabitEthernet1/0/1.1
+ ipv6 address autoconfig
+ ipv6 enable
+ ipv6 nd managed-config-flag
+ ipv6 nd other-config-flag
+ ipv6 nd prefix 2001:db81::/64
+ ipv6 dhcp server pool1
+
+interface GigabitEthernet1/0/3
+ ipv6 address 2001:DB82::2:1/64
+ ipv6 enable
+
+end

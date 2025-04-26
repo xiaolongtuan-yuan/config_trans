@@ -1,0 +1,50 @@
+#
+sysname PE1
+#
+vlan batch 20
+#
+igmp-snooping enable
+igmp-snooping send-query enable
+#
+mpls lsr-id 1.1.1.1
+#
+mpls
+#
+mpls l2vpn
+#
+vsi v123 static
+ pwsignal ldp
+  vsi-id 123
+  peer 3.3.3.3
+ igmp-snooping enable
+ igmp-snooping version 3
+ igmp-snooping static-router-port remote-peer 3.3.3.3
+#
+mpls ldp
+#
+mpls ldp remote-peer pe2
+ remote-ip 3.3.3.3
+#
+interface Gigabitethernet1/0/2
+ undo shutdown
+#
+interface Gigabitethernet1/0/2.1
+ encapsulation dot1q-termination
+ dot1q termination vid 20
+ l2 binding vsi v123
+#
+interface Gigabitethernet1/0/1
+ undo shutdown
+ ip address 192.168.12.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+#
+ospf 1
+ area 0.0.0.0
+  network 1.1.1.1 0.0.0.0
+  network 192.168.12.0 0.0.0.255
+#
+return

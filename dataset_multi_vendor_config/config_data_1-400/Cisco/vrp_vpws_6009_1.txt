@@ -1,0 +1,47 @@
+Hostname: PE2
+
+mpls ldp
+mpls ldp router-id Loopback0
+mpls ip
+
+interface Serial2/0/1:1
+encapsulation ppp
+ppp multilink
+ppp multilink group 1
+no shutdown
+
+interface Serial2/0/1:1.1
+encapsulation ppp
+ppp multilink
+ppp multilink group 1
+ppp multilink fragment delay 10
+ppp multilink fragment threshold 1000
+no shutdown
+
+interface GigabitEthernet2/0/0
+no shutdown
+ip address 10.2.2.2 255.255.255.0
+mpls ip
+
+interface Loopback0
+ip address 192.168.3.3 255.255.255.255
+
+router ospf 1
+area 0
+network 192.168.3.3 0.0.0.0 area 0
+network 10.2.2.0 0.0.0.255 area 0
+
+mpls l2vpn
+mpls l2vpn pw-template 3to1
+neighbor 192.168.2.2 pw-id 100
+neighbor 192.168.2.2 pw-id 200
+neighbor 192.168.2.2 pw-id 300
+neighbor 192.168.2.2 pw-id 400
+
+mpls l2vc 100 pw-class 3to1
+mpls l2vc 200 pw-class 3to1
+mpls l2vc 300 pw-class 3to1
+mpls l2vc 400 pw-class 3to1
+
+mpls lsr-id 192.168.3.3
+mpls ip

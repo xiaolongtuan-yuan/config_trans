@@ -1,0 +1,37 @@
+#
+sysname DeviceB
+#
+acl number 2002
+ rule 5 permit source 172.16.2.0 0.0.0.255
+#
+isis 1
+ is-level level-2
+ network-entity 10.0000.0000.0002.00
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 192.168.1.2 255.255.255.0
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 192.168.2.2 255.255.255.0
+ isis enable 1
+#
+ospf 1
+ import-route isis 1 route-policy isis2ospf
+ area 0.0.0.0
+  network 192.168.1.0 0.0.0.255
+#
+route-policy isis2ospf permit node 10
+ if-match ip-prefix prefix-a
+ apply cost 100
+#
+route-policy isis2ospf permit node 20
+ if-match acl 2002
+ apply tag 20
+#
+route-policy isis2ospf permit node 30
+#
+ip ip-prefix prefix-a index 10 permit 172.16.1.0 24
+#
+return

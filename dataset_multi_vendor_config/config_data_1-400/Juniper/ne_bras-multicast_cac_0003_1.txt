@@ -1,0 +1,28 @@
+set system host-name BRAS
+
+set protocols multicast-routing
+
+set system services dhcp pool bas_local network 10.0.0.0/16
+set system services dhcp pool bas_local default-router 10.0.0.1
+
+set system authentication-order none
+set system accounting-order none
+
+set system domain-name ipv4
+set system authentication-order local
+set system accounting-order local
+set system services dhcp pool ipv4 domain-name ipv4
+
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.1.1/24
+set protocols pim interface ge-0/0/1
+
+set interfaces ge-0/0/2 unit 0 family inet address 10.1.2.1/24
+set protocols pim interface ge-0/0/2
+
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.0.1/24
+set protocols pim interface ge-0/0/0
+set protocols igmp-snooping interface ge-0/0/0 group 224.0.0.0
+
+set forwarding-options multicast no-tunnel
+set forwarding-options multicast rp 10.0.0.1
+set forwarding-options multicast policy bas-policy output bandwidth 30000 level-1 20000

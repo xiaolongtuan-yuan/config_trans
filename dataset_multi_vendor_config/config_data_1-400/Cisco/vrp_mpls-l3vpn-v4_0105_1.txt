@@ -1,0 +1,43 @@
+hostname PE1
+
+ip vrf vpn1
+ rd 100:1
+ route-target export 1:1
+ route-target import 1:1
+
+mpls label protocol ldp
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip vrf forwarding vpn1
+ ip address 10.1.1.2 255.255.255.0
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 20.1.1.1 255.255.255.0
+ mpls ip
+
+interface Loopback1
+ ip address 1.1.1.9 255.255.255.255
+
+router ospf 1
+ network 1.1.1.9 0.0.0.0 area 0
+ network 20.1.1.0 0.0.0.255 area 0
+
+router bgp 100
+ neighbor 3.3.3.9 remote-as 100
+ neighbor 3.3.3.9 update-source Loopback1
+
+ address-family ipv4
+  neighbor 3.3.3.9 activate
+  neighbor 3.3.3.9 next-hop-self
+
+ address-family vpnv4
+  neighbor 3.3.3.9 activate
+  neighbor 3.3.3.9 send-community
+
+ address-family vpnv4 vrf vpn1
+  neighbor 10.1.1.1 remote-as 600
+  neighbor 10.1.1.1 route-reflector-client
+
+end

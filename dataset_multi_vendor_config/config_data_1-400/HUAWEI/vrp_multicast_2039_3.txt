@@ -1,0 +1,53 @@
+#
+ sysname DeviceD
+#
+ ipv6
+#
+ multicast ipv6 routing-enable
+#
+acl ipv6 number 2000
+ rule 5 permit source 2001:db8:5::5 64
+#
+acl ipv6 number 2001
+ rule 5 permit source 2001:db8:3::2 64
+#
+acl ipv6 number 3000
+ rule 5 permit ipv6 source 2001:db8:3::2 128 destination ff00:: 8
+#
+acl ipv6 number 3001
+ rule 5 permit ipv6 source 2001:db8:5::5 64 destination ff0e::1 64
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:2::2/64
+ ospfv3 1 area 0.0.0.0
+ pim ipv6 sm
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:3::2/64
+ ospfv3 1 area 0.0.0.0
+ pim ipv6 sm
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:4::1/64
+ ospfv3 1 area 0.0.0.0
+ pim ipv6 sm
+#
+ospfv3 1
+ router-id 4.4.4.4
+ area 0.0.0.0
+#
+pim-ipv6
+ bsr-policy 2001
+ register-policy 3001
+ source-policy 2000
+ c-bsr 2001:db8:3::2
+ crp-policy 3000
+ c-rp 2001:db8:3::2
+#
+return

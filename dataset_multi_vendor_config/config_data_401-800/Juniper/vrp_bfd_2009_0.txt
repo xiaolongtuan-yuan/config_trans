@@ -1,0 +1,23 @@
+set system host-name DeviceA
+
+set routing-options static
+
+set interfaces ge-1/0/0 unit 0 family inet address 192.168.2.1/24
+set interfaces ge-1/0/0 unit 0 description "GigabitEthernet1/0/0"
+
+set interfaces ge-2/0/0 unit 1 vlan-id 100
+set interfaces ge-2/0/0 unit 1 family inet address 10.1.1.1/24
+set interfaces ge-2/0/0 unit 1 description "GigabitEthernet2/0/0.1"
+
+set protocols vrrp group 1 interface ge-2/0/0.1
+set protocols vrrp group 1 virtual-address 10.1.1.100
+set protocols vrrp group 1 priority 160
+set protocols vrrp group 1 preempt
+set protocols vrrp group 1 track bfd-session
+
+set protocols bfd interface ge-2/0/0.1
+set protocols bfd interface ge-2/0/0.1 minimum-interval 100
+set protocols bfd interface ge-2/0/0.1 multiplier 3
+
+set protocols ospf area 0 interface ge-1/0/0.0
+set protocols ospf area 0 interface ge-2/0/0.1

@@ -1,0 +1,38 @@
+hostname DeviceB
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:9:1::1/64
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:10::1/64
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:9:3::1/64
+
+router bgp 65009
+ bgp router-id 2.2.2.2
+ neighbor 2001:db8:9:1::2 remote-as 65009
+ neighbor 2001:db8:9:3::2 remote-as 65009
+ neighbor 2001:db8:10::2 remote-as 65008
+ no synchronization
+
+address-family ipv4
+ no synchronization
+ exit-address-family
+
+address-family ipv6
+ network 2001:db8:9:1::/64
+ network 2001:db8:9:3::/64
+ network 2001:db8:10::/64
+ neighbor 2001:db8:9:1::2 activate
+ neighbor 2001:db8:9:3::2 activate
+ neighbor 2001:db8:10::2 activate
+ exit-address-family
+
+end

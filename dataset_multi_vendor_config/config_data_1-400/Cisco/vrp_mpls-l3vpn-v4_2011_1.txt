@@ -1,0 +1,26 @@
+hostname P1
+
+mpls label protocol ldp
+mpls ip
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 20.1.1.2 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 30.1.1.1 255.255.255.0
+ mpls ip
+
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255
+
+router ospf 1
+ mpls traffic-eng area
+ area 0
+  mpls traffic-eng router-id Loopback1
+  network 2.2.2.9 0.0.0.0 area 0
+  network 20.1.1.0 0.0.0.255 area 0
+  network 30.1.1.0 0.0.0.255 area 0
+

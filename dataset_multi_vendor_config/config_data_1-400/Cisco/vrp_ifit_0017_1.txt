@@ -1,0 +1,44 @@
+hostname P1
+#
+ptp domain 1
+ptp clock-source local clock-class 185
+ptp clock-source bits0 on
+#
+clock source bits0 synchronization enable
+clock source bits0 priority 1
+clock source ptp synchronization enable
+clock source ptp priority 1
+clock bits-type bits0 2mhz
+#
+mpls label protocol ldp
+mpls ldp router-id Loopback1
+#
+router isis
+ net 10.0000.0000.0002.00
+ is-type level-1
+ metric-style wide
+#
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 172.16.1.2 255.255.255.0
+ isis network point-to-point
+ mpls ip
+ ptp enable
+#
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 172.17.1.1 255.255.255.0
+ isis network point-to-point
+ mpls ip
+ ptp enable
+#
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 172.18.1.1 255.255.255.0
+ ptp enable
+#
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255
+ isis network point-to-point
+#
+end

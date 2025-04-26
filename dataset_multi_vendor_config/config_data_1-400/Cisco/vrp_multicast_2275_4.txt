@@ -1,0 +1,20 @@
+hostname CE2
+
+ip multicast-routing
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.110.3.2 255.255.255.0
+ ip pim sparse-mode
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.110.4.1 255.255.255.0
+ ip pim sparse-mode
+ ip igmp join-group 225.0.0.1
+
+router ospf 2
+ network 10.110.3.0 0.0.0.255 area 0
+ network 10.110.4.0 0.0.0.255 area 0
+
+end

@@ -1,0 +1,44 @@
+#
+sysname PE1
+#
+bfd
+#
+mpls lsr-id 10.21.2.9
+#
+mpls
+ mpls te
+#
+segment-routing
+#
+isis 1
+ is-level level-2
+ cost-style wide
+ network-entity 11.1111.1111.1111.00
+ traffic-eng level-2
+ segment-routing mpls
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.23.2 255.255.255.0
+ isis enable 1
+ mpls
+ mpls te
+#
+interface LoopBack0
+ ip address 10.21.2.9 255.255.255.255
+ isis enable 1
+#
+interface Tunnel10
+ ip address unnumbered interface LoopBack0
+ tunnel-protocol mpls te
+ destination 10.41.2.9
+ mpls te signal-protocol segment-routing
+ mpls te tunnel-id 1
+#
+bfd pe1tope2 bind mpls-te interface Tunnel10
+ discriminator local 12
+ discriminator remote 21
+ min-tx-interval 100
+ min-rx-interval 100
+#
+return

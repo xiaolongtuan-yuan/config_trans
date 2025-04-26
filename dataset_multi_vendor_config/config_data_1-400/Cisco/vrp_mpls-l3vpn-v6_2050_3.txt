@@ -1,0 +1,40 @@
+hostname ASBR2
+
+mpls label protocol ldp
+
+mpls ip
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.1.2 255.255.255.0
+ mpls ip
+
+interface Loopback1
+ ip address 3.3.3.3 255.255.255.255
+
+router bgp 200
+ neighbor 192.168.1.1 remote-as 100
+ neighbor 4.4.4.4 remote-as 200
+ neighbor 4.4.4.4 update-source Loopback1
+
+ address-family ipv4
+  neighbor 192.168.1.1 activate
+  neighbor 4.4.4.4 activate
+  no synchronization
+
+ address-family vpnv6
+  neighbor 4.4.4.4 activate
+  neighbor 192.168.1.1 activate
+  no address-family vpnv6 vrf default policy vpn-target
+
+router ospf 1
+ network 3.3.3.3 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+
+end

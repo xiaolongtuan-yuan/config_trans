@@ -1,0 +1,40 @@
+#
+ sysname S-PE
+#
+ mpls lsr-id 3.3.3.9
+ mpls
+#
+ mpls l2vpn
+#
+ mpls switch-l2vc 5.5.5.9 200 between 1.1.1.9 100 encapsulation ethernet
+#
+mpls ldp
+#
+ mpls ldp remote-peer 1.1.1.9
+ remote-ip 1.1.1.9
+#
+ mpls ldp remote-peer 5.5.5.9
+ remote-ip 5.5.5.9
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.2.1.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.3.1.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack0
+ ip address 3.3.3.9 255.255.255.255
+#
+ospf 1
+ area 0.0.0.0
+  network 3.3.3.9 0.0.0.0
+  network 10.2.1.0 0.0.0.255
+  network 10.3.1.0 0.0.0.255
+#
+return

@@ -1,0 +1,17 @@
+set system host-name PE2
+
+set interfaces ae1 aggregated-ether-options link-speed 1g
+set interfaces ae1 aggregated-ether-options lacp active
+set interfaces ae1 aggregated-ether-options lacp port-priority 100
+set interfaces ae1 unit 0 family ethernet-switching interface-mode trunk
+set interfaces ae1 unit 0 family ethernet-switching vlan members all
+
+set interfaces ge-1/0/1 ether-options 802.3ad ae1
+set interfaces ge-1/0/1 disable false
+
+set interfaces ge-2/0/1 ether-options 802.3ad ae1
+set interfaces ge-2/0/1 disable false
+
+set interfaces ge-3/0/0 ether-options 802.3ad ae1
+set interfaces ge-3/0/0 disable false
+set interfaces ge-3/0/0 aggregated-ether-options lacp port-priority 150

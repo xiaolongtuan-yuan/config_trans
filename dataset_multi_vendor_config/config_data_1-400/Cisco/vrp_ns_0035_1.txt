@@ -1,0 +1,29 @@
+ip flow-export source GigabitEthernet2/0/0
+ip flow-export version 9
+ip flow-export destination 172.16.2.2 9001
+ip flow-sampler NetFlowSampler
+ mode random 1 out-of 10000
+ip flow-capture NetFlowCapture
+mpls ldp router-id Loopback1 force
+mpls ldp discovery targeted-hello accept
+mpls ldp discovery targeted-hello send
+mpls ldp advertise-labels for 2.2.2.9 32
+router ospf 1
+ area 0
+ network 172.16.1.0 0.0.0.255 area 0
+ network 172.17.1.0 0.0.0.255 area 0
+ network 2.2.2.9 0.0.0.0 area 0
+interface GigabitEthernet1/0/0
+ ip address 172.16.1.2 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet2/0/0
+ ip address 172.16.3.1 255.255.255.0
+ ip flow ingress
+ ip flow egress
+ mpls ip
+
+interface GigabitEthernet3/0/0
+ ip address 172.16.2.1 255.255.255.0
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255

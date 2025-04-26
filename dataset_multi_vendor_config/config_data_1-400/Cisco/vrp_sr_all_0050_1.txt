@@ -1,0 +1,57 @@
+hostname P1
+
+mpls ldp router-id Loopback1 force
+
+mpls label protocol ldp
+
+mpls ip
+
+mpls traffic-eng tunnels
+
+segment-routing mpls
+
+router isis
+
+is-type level-1
+
+metric-style wide
+
+net 10.0000.0000.0002.00
+
+segment-routing mpls
+
+segment-routing global-block 160000 161000
+
+frr prefix-sid
+
+frr precompute ti-lfa
+
+frr precompute loop-free-alternate
+
+interface GigabitEthernet1/0/0
+
+no shutdown
+
+ip address 172.16.1.2 255.255.255.0
+
+isis network point-to-point
+
+interface GigabitEthernet2/0/0
+
+no shutdown
+
+ip address 172.17.1.1 255.255.255.0
+
+isis network point-to-point
+
+interface Loopback1
+
+ip address 2.2.2.9 255.255.255.255
+
+isis network point-to-point
+
+isis metric-style wide
+
+isis segment-routing prefix-sid
+
+end

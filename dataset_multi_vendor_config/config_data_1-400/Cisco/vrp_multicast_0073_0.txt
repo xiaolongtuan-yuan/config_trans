@@ -1,0 +1,54 @@
+hostname DeviceB
+!
+ip multicast-routing
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.2.1 255.255.255.0
+ ip pim bsr-border
+ ip pim sparse-mode
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.1.2 255.255.255.0
+ ip pim sparse-mode
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 192.168.6.1 255.255.255.0
+ ip pim bsr-border
+ ip pim sparse-mode
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+ ip pim sparse-mode
+!
+ip pim rp-candidate Loopback0
+ip pim bsr-candidate Loopback0
+!
+router ospf 1
+ redistribute bgp 100 subnets
+ network 192.168.1.0 0.0.0.255 area 0
+ network 1.1.1.1 0.0.0.0 area 0
+!
+router bgp 100
+ bgp router-id 1.1.1.1
+ neighbor 192.168.2.2 remote-as 200
+ neighbor 192.168.6.2 remote-as 200
+ neighbor 192.168.2.2 ebgp-multihop 255
+ neighbor 192.168.6.2 ebgp-multihop 255
+ !
+ address-family ipv4
+  redistribute ospf 1
+  neighbor 192.168.2.2 activate
+  neighbor 192.168.6.2 activate
+  neighbor 192.168.2.2 timers 0 0
+ exit-address-family
+!
+msdp
+ peer 192.168.2.2 connect-interface GigabitEthernet1/0/0
+ peer 192.168.2.2 mesh-group group1
+ peer 192.168.6.2 connect-interface GigabitEthernet1/0/1
+ peer 192.168.6.2 mesh-group group1
+!
+end

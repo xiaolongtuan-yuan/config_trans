@@ -1,0 +1,35 @@
+hostname RR1
+!
+interface GigabitEthernet3/0/2
+ no shutdown
+ ip address 172.16.6.2 255.255.255.0
+!
+interface GigabitEthernet3/0/3
+ no shutdown
+ ip address 172.16.5.2 255.255.255.0
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 172.16.3.2 255.255.255.0
+!
+router bgp 65508
+ bgp router-id 5.5.5.5
+ neighbor 172.16.3.1 remote-as 65009
+ neighbor 172.16.5.1 remote-as 65009
+ neighbor 172.16.6.1 remote-as 65009
+ !
+ address-family ipv4
+  network 172.16.6.0 mask 255.255.255.0
+  network 172.16.5.0 mask 255.255.255.0
+  network 172.16.3.0 mask 255.255.255.0
+  no synchronization
+  redistribute connected
+  neighbor 172.16.3.1 activate
+  neighbor 172.16.3.1 route-reflector-client
+  neighbor 172.16.5.1 activate
+  neighbor 172.16.5.1 advertise-best-external
+  neighbor 172.16.6.1 activate
+  neighbor 172.16.6.1 advertise-best-external
+ exit-address-family
+!
+end

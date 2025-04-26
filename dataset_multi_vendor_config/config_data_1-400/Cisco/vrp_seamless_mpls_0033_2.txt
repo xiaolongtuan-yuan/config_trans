@@ -1,0 +1,46 @@
+hostname AGG_ASBR
+
+mpls ldp router-id Loopback1 force
+
+mpls ip
+
+router isis 1
+ net 10.0000.0000.0000.0020.00
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.2.1.2 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+ mpls ldp router-id Loopback1
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.3.1.1 255.255.255.0
+ mpls ip
+
+interface Loopback1
+ ip address 3.3.3.3 255.255.255.255
+ ip router isis 1
+
+router bgp 100
+ neighbor 2.2.2.2 remote-as 100
+ neighbor 2.2.2.2 update-source Loopback1
+ neighbor 10.3.1.2 remote-as 200
+ neighbor 10.3.1.2 update-source GigabitEthernet2/0/0
+
+ address-family ipv4
+  neighbor 2.2.2.2 activate
+  neighbor 2.2.2.2 route-policy policy1 out
+  neighbor 2.2.2.2 send-label
+  neighbor 10.3.1.2 activate
+  neighbor 10.3.1.2 route-policy policy1 out
+  neighbor 10.3.1.2 send-label
+ exit-address-family
+
+route-policy policy1
+ if mpls-label
+  set mpls-label
+ endif
+
+end

@@ -1,0 +1,38 @@
+hostname NPE1
+!
+vlan 10
+!
+ip igmp snooping
+!
+mpls label protocol ldp
+!
+mpls l2vpn
+!
+vsi btv static
+ pwsignal ldp
+  vsi-id 1
+  peer 2.2.2.2
+ ip igmp snooping
+ ip igmp snooping proxy
+ ip igmp snooping proxy router-protocol-pass
+!
+mpls ldp
+!
+router isis
+ net 49.0010.0100.1001.00
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 11.11.11.1 255.255.255.252
+ mpls ip
+ mpls ldp
+!
+interface GigabitEthernet1/0/2.1
+ encapsulation dot1Q 10
+ xconnect vfi btv
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+ router isis 1
+!
+end

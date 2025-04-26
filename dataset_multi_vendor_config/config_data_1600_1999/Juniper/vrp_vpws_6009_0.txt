@@ -1,0 +1,19 @@
+set system host-name PE1
+set protocols mpls lsr-id 192.168.2.2
+set protocols mpls
+set protocols l2vpn
+set protocols ldp
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-1/0/0 unit 0 family mpls
+set interfaces lo0 unit 0 family inet address 192.168.2.2/32
+set protocols ospf area 0.0.0.0 interface ge-1/0/0.0
+set protocols ospf area 0.0.0.0 interface lo0.0
+set protocols ospf area 0.0.0.0 network 10.1.1.0/24
+set protocols ospf area 0.0.0.0 network 192.168.2.2/32
+set protocols l2circuit neighbor 192.168.3.3 pseudowire 1 vc-type ethernet
+set interfaces at-2/0/1 encapsulation ppp
+set interfaces at-2/0/2 encapsulation ppp
+set interfaces at-2/0/1 unit 0 family inet address 10.1.1.1/30
+set interfaces at-2/0/2 unit 0 family inet address 10.1.1.5/30
+set protocols l2circuit neighbor 192.168.3.3 pseudowire 1 interface at-2/0/1.0 encapsulation mpls
+set protocols l2circuit neighbor 192.168.3.3 pseudowire 2 interface at-2/0/2.0 encapsulation mpls

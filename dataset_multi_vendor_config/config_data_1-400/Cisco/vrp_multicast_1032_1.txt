@@ -1,0 +1,55 @@
+hostname DeviceB
+
+ip multicast-routing
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.1.2 255.255.255.0
+ ip pim sparse-mode
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.2.1 255.255.255.0
+ ip pim sparse-mode
+
+interface GigabitEthernet3/0/0
+ no shutdown
+ ip address 192.168.3.1 255.255.255.0
+ ip pim sparse-mode
+
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.255
+ ip pim sparse-mode
+
+router bgp 200
+ neighbor 192.168.1.1 remote-as 100
+ neighbor 192.168.3.2 remote-as 200
+ neighbor 192.168.2.2 remote-as 200
+
+ address-family ipv4
+  neighbor 192.168.1.1 activate
+  neighbor 192.168.3.2 activate
+  neighbor 192.168.2.2 activate
+  neighbor 192.168.1.1 route-map Direct import
+  neighbor 192.168.3.2 route-map Direct import
+  neighbor 192.168.2.2 route-map Direct import
+
+ address-family ipv4 multicast
+  neighbor 192.168.1.1 activate
+  neighbor 192.168.3.2 activate
+  neighbor 192.168.2.2 activate
+  network 2.2.2.2 255.255.255.255
+
+router ospf 1
+ network 192.168.3.0 0.0.0.255 area 0
+ network 192.168.2.0 0.0.0.255 area 0
+ network 2.2.2.2 0.0.0.0 area 0
+
+ip pim bsr-candidate loopback 0
+ip pim rp-address 2.2.2.2 group-list 1
+
+ip msdp peer 192.168.1.1 connect-interface GigabitEthernet1/0/0
+
+access-list 1 permit 2.2.2.2
+
+end

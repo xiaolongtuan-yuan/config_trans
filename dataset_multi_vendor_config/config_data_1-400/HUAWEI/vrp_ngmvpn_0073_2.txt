@@ -1,0 +1,53 @@
+#
+ sysname ASBR1
+#
+mpls lsr-id 2.2.2.2
+#
+mpls
+#
+mpls ldp
+ mldp p2mp
+ mldp recursive-fec
+#
+interface GigabitEthernet1/0/2 
+ undo shutdown
+ ip address 10.1.2.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/4
+ undo shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack0
+ ip address 2.2.2.2 255.255.255.255
+bgp 100
+ peer 10.1.2.2 as-number 200
+ peer 1.1.1.1 as-number 100
+ peer 1.1.1.1 connect-interface LoopBack0
+ #
+ ipv4-family unicast
+  undo synchronization
+  peer 10.1.2.2 enable
+  peer 1.1.1.1 enable
+ #
+ ipv4-family mvpn
+  undo policy vpn-target
+  peer 10.1.2.2 enable
+  peer 1.1.1.1 enable
+ #
+ ipv4-family vpnv4
+  undo policy vpn-target
+  peer 10.1.2.2 enable
+  peer 1.1.1.1 enable
+#
+ospf 1
+ area 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+  network 2.2.2.2 0.0.0.0
+#
+ip route-static 3.3.3.3 255.255.255.255 10.1.2.2
+#
+return

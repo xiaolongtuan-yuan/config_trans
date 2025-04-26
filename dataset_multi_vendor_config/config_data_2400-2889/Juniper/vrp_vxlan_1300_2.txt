@@ -1,0 +1,68 @@
+router bgp 100
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 update-source loopback0
+ !
+ address-family l2vpn evpn
+  advertise evpn
+ !
+ bridge-domain 2set system host-name Device3
+
+set protocols isis level 1 net 10.0000.0000.0003.00
+
+set routing-instances vpn1 instance-type vrf
+set routing-instances vpn1 route-distinguisher 22:22
+set routing-instances vpn1 vrf-target target:11:1
+set routing-instances vpn1 vrf-import import-target:11:1
+set routing-instances vpn1 vrf-export export-target:11:1
+
+set interfaces vlan unit 20 family inet address 10.2.1.1/24
+set interfaces vlan unit 20 vrf vpn1
+set interfaces vlan unit 20 arp-collect enable
+set interfaces vlan unit 20 arp-distribute-gateway enable
+
+set interfaces ge-1/0/0 unit 0 family inet address 192.168.3.1/24
+set protocols isis interface ge-1/0/0
+
+set interfaces ge-1/0/1 unit 1 encapsulation vlan-bridge
+set interfaces ge-1/0/1 unit 1 vlan-id 20
+set bridge-domains 20 vlan-id 20
+
+set interfaces lo0 unit 0 family inet address 3.3.3.3/32
+set protocols isis interface lo0.0
+
+set interfaces nve0 source-interface lo0.0
+set interfaces nve0 virtual-network-identifier 20
+set interfaces nve0 member vni 20 protocol bgp
+
+set protocols bgp group EVPN type external
+set protocols bgp group EVPN neighbor 1.1.1.1 peer-as 100
+set protocols bgp group EVPN neighbor 1.1.1.1 local-address lo0.0
+set protocols bgp group EVPN family evpn signaling
+set protocols bgp group EVPN advertise-vni
+
+set routing-options bridge-domains 20 vxlan vni 20
+set routing-options bridge-domains 20 evpn-binding vpn-instance evrf3
+
+set routing-instances evrf3 instance-type evpn
+set routing-instances evrf3 route-distinguisher 20:1
+set routing-instances evrf3 vrf-import import-target:11:1
+set routing-instances evrf3 vrf-export export-target:11:1
+
+set routing-options vpn-instance vpn1
+set routing-options vpn-instance vpn1 route-distinguisher 22:22
+set routing-options vpn-instance vpn1 import-target 11:1
+set routing-options vpn-instance vpn1 export-target 11:1
+set routing-options vpn-instance vpn1 vxlan vni 5010
+0
+ vxlan vni 20
+  bd-mode
+  router-evpn-instance evr3
+   import-extended evpn
+   export-extended evpn
+ !
+ evpnInstance.evr3
+  rd 20:1
+  import eVPN
+  export eVPN
+!
+ip vxlan vni 5010

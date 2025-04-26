@@ -1,0 +1,24 @@
+hostname PE2
+
+router isis
+ is-type level-1
+ net 49.0000.0000.0003.00
+
+interface Loopback4
+ ip address 3.3.3.3 255.255.255.255
+ isis network point-to-point
+
+interface GigabitEthernet2/0/1
+ ip address 192.168.14.2 255.255.255.0
+ isis network point-to-point
+
+l2tp-class huawei
+ password 7 13151B1F595F5C0B1C
+
+pseudowire-class huawei
+ encapsulation l2tpv3
+ protocol l2tpv3 huawei
+
+interface GigabitEthernet1/0/1.4
+ encapsulation dot1q 2
+ xconnect 1.1.1.1 1000 pw-class huawei

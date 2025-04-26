@@ -1,0 +1,36 @@
+#
+sysname LSRA
+#
+mpls lsr-id 3.3.3.9
+#
+mpls
+#
+mpls ldp
+ #
+ ipv4-family
+  outbound peer 4.4.4.9 fec ip-prefix prefix1
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.1.2.2 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface GigabitEthernet1/0/3
+ undo shutdown
+ ip address 10.1.3.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+interface LoopBack0
+ ip address 3.3.3.9 255.255.255.255
+#
+ospf 1
+ area 0.0.0.0
+  network 3.3.3.9 0.0.0.0
+  network 10.1.2.0 0.0.0.255
+  network 10.1.3.0 0.0.0.255
+#
+ip ip-prefix prefix1 index 10 permit 1.1.1.9 32
+#
+return

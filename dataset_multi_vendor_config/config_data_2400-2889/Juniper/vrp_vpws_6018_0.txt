@@ -1,0 +1,32 @@
+set system host-name CE1
+
+interface vlan 2
+ chassis fwd-ingress
+ address-family inet
+  address 10.1.1.3/24
+ exit-address-family
+exit-interface
+
+interface ge-0/0/0
+ stop
+ switchport
+ switchport trunk allowed-vlan 2
+exit-interface
+
+interface ge-0/0/1
+ stop
+ switchport
+ switchport trunk allowed-vlan 2
+exit-interface
+
+set protocols bfd all-interfaces
+setprotocols bfd templates single-hop CE1 discriminator local 51 remote 15
+set protocols bfd templates single-hop CE2 discriminator local 52 remote 25
+
+interface vlan 2
+ bfd echo to CE2
+exit-interface
+
+interface vlan 2
+ bfd echo from CE2
+exit-interface

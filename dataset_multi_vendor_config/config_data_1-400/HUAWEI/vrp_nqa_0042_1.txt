@@ -1,0 +1,42 @@
+#
+ sysname U-PE1
+#
+ mpls lsr-id 1.1.1.9
+ mpls
+#
+ mpls l2vpn
+#
+ mpls ldp
+#
+ mpls ldp remote-peer 3.3.3.9
+ remote-ip 3.3.3.9  
+#
+ pw-template wwt
+ peer-address 3.3.3.9
+ control-word
+#
+ interface GigabitEthernet1/0/0
+ undo shutdown
+ mpls l2vc 3.3.3.9 pw-template wwt 100   
+#
+ interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls
+ mpls ldp
+#
+ interface LoopBack0
+ ip address 1.1.1.9 255.255.255.255
+#
+ nqa test-instance test pwe3ping
+ test-type pwe3ping
+ local-pw-id 100
+ local-pw-type ppp
+ remote-pw-id 200
+#
+ ospf 1
+ area 0.0.0.0
+ network 10.1.1.0 0.0.0.255
+ network 1.1.1.9 0.0.0.0
+#
+ return

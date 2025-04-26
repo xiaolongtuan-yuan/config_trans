@@ -1,0 +1,25 @@
+set system host-name RR
+set protocols mpls interface all
+set protocols ldp interface lo0.0
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.2/24
+set interfaces ge-1/0/0 unit 0 family mpls
+set interfaces ge-2/0/0 unit 0 family inet address 10.2.1.2/24
+set interfaces ge-2/0/0 unit 0 family mpls
+set interfaces ge-3/0/0 unit 0 family inet address 10.3.1.2/24
+set interfaces ge-3/0/0 unit 0 family mpls
+set interfaces lo0 unit 0 family inet address 3.3.3.3/32
+set routing-options autonomous-system 100
+set protocols bgp group IBGP type internal
+set protocols bgp group IBGP local-address 3.3.3.3
+set protocols bgp group IBGP neighbor 1.1.1.1
+set protocols bgp group IBGP neighbor 2.2.2.2
+set protocols bgp group IBGP neighbor 4.4.4.4
+set protocols bgp group IBGP family inet unicast
+set protocols bgp group IBGP family evpn signaling
+set protocols bgp group IBGP neighbor 1.1.1.1 route-reflector-client
+set protocols bgp group IBGP neighbor 2.2.2.2 route-reflector-client
+set protocols bgp group IBGP neighbor 4.4.4.4 route-reflector-client
+set protocols ospf area 0 interface lo0.0
+set protocols ospf area 0 interface ge-1/0/0.0
+set protocols ospf area 0 interface ge-2/0/0.0
+set protocols ospf area 0 interface ge-3/0/0.0

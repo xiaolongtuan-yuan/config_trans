@@ -1,0 +1,50 @@
+hostname PE-AGG
+!
+ip igmp snooping
+ip igmp snooping querier
+ip igmp snooping version 3
+!
+mpls label protocol ldp
+!
+mpls l2vpn
+!
+vfi ldp1 manual
+ vpn id 1
+ neighbor 1.1.1.9 pw-id ldp
+!
+vfi ldp2 manual
+ vpn id 2
+ neighbor 1.1.1.9 pw-id ldp
+ ip igmp snooping
+ ip igmp snooping version 3
+ ip igmp snooping querier
+!
+mpls ldp
+!
+router isis
+ net 49.0020.0200.1009.00
+ is-type level-2-only
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 10.1.1.2 255.255.255.252
+ isis network point-to-point
+ mpls ip
+ mpls ldp autoconfig
+!
+interface GigabitEthernet1/0/2
+ no shutdown
+!
+interface GigabitEthernet1/0/2.1
+ encapsulation dot1q 7
+ bridge-domain 1
+!
+interface GigabitEthernet1/0/2.2
+ encapsulation dot1q 8
+ bridge-domain 2
+!
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255
+ isis network point-to-point
+!
+end

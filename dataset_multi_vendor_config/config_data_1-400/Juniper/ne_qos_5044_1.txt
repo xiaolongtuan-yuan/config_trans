@@ -1,0 +1,34 @@
+set interfaces ge-0/0/3 unit 1 vlan-id 11
+set interfaces ge-0/0/3 unit 1 family inet address 10.192.167.3/24
+set interfaces ge-0/0/3 unit 1 family mpls
+
+set interfaces ge-0/0/4 unit 1 vlan-id 22
+set interfaces ge-0/0/4 unit 1 family inet address 10.192.169.4/24
+set interfaces ge-0/0/4 unit 1 family mpls
+
+set protocols mpls interface ge-0/0/3.1
+set protocols mpls interface ge-0/0/4.1
+
+set protocols ldp interface ge-0/0/3.1
+set protocols ldp interface ge-0/0/4.1
+
+set class-of-service interfaces ge-0/0/3 unit 1 classifiers ieee-802.1p default
+set class-of-service interfaces ge-0/0/4 unit 1 classifiers ieee-802.1p default
+
+set class-of-service drop-profiles wred-yellow fill-level low 50
+set class-of-service drop-profiles wred-yellow fill-level high 50
+set class-of-service drop-profiles wred-yellow drop-probability 100
+
+set class-of-service schedulers network-8cos-enhance transmit-rate 120000
+set class-of-service schedulers network-8cos-enhance maximum-rate 200000
+set class-of-service schedulers network-8cos-enhance drop-profiles-map loss-priority low protocol any wred-yellow
+
+set class-of-service schedulers user-queue-network transmit-rate 4000000
+set class-of-service schedulers user-queue-network maximum-rate 8000000
+set class-of-service schedulers user-queue-network priority low
+
+set class-of-service forwarding-classes network-8cos
+set class-of-service scheduler-maps network-8cos-map forwarding-class network-8cos scheduler network-8cos-enhance
+
+set class-of-service interfaces ge-0/0/3 unit 1 scheduler-map network-8cos-map
+set class-of-service interfaces ge-0/0/4 unit 1 scheduler-map network-8cos-map

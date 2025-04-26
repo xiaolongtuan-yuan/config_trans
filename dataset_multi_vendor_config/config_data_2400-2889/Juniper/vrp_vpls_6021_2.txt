@@ -1,0 +1,15 @@
+set system host-name ASBR1
+set protocols ldp peer 1.1.1.1 remote-as 100
+set interfaces ge-2/0/0 unit 0 family inet address 10.10.1.2 255.255.255.252
+set vlans vlan1 auto-discovery bgp
+set vlans vlan1 vpi 1 vp-id 1:1
+set routing-instances vpni instance-type vl
+set routing-instances vpni routing-options route-target both 1:1
+set forwarding-interfaces ge-2/0/0.10 unit 0 family dot1q 10
+set interfaces ge-1/0/0 vlan/member vlan1
+set routing-options router-id 2.2.2.2
+set routing-options neighbors 1.1.1.1 terse update-source lo0
+set protocols bgp group external type internal peering-type external
+set protocols bgp group external local-as 100
+set protocols ospf area 0 interface ge-2/0/0.0.0.0.3
+set protocols ospf area 0 interface lo0.0.0.0.0

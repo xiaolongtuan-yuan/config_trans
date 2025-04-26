@@ -1,0 +1,33 @@
+#
+sysname DeviceE
+#
+ bfd
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:2000::1 255.255.255.0
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:2001::1 255.255.255.0
+#
+interface GigabitEthernet3/0/0
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:2002::1 255.255.255.0
+#
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ipv6 enable
+ ipv6 address 2001:db8:3000::1 255.255.255.0
+ ospfv3 cost 5
+#
+ospfv3 1
+ router-id 4.4.4.4
+ bfd all-interfaces enable
+ bfd all-interfaces frr-binding
+ area 0.0.0.1
+#
+return
