@@ -1,0 +1,159 @@
+{
+  "hostname DeviceC": {
+    "template": "hostname [parameter1]",
+    "command": "hostname DeviceC",
+    "explanation": "设置设备的主机名为 'DeviceC'",
+    "parameters": [
+      {
+        "name": "host name",
+        "type": "string",
+        "explanation": "主机名"
+      }
+    ]
+  },
+  "interface GigabitEthernet1/0/0": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet1/0/0",
+    "explanation": "配置接口 'GigabitEthernet1/0/0'",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "接口名"
+      }
+    ],
+    "no shutdown": {
+      "template": "no shutdown",
+      "command": "no shutdown",
+      "explanation": "启用接口（默认情况下接口是关闭的）",
+      "parameters": []
+    },
+    "ip address 192.168.1.3 255.255.255.0": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 192.168.1.3 255.255.255.0",
+      "explanation": "配置接口的 IPv4 地址为 192.168.1.3，子网掩码为 255.255.255.0",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4 地址"
+        },
+        {
+          "name": "subnet mask",
+          "type": "IPv4",
+          "explanation": "子网掩码"
+        }
+      ]
+    },
+    "ip ospf dead-interval 30": {
+      "template": "ip ospf dead-interval [parameter1]",
+      "command": "ip ospf dead-interval 30",
+      "explanation": "设置OSPF的死亡间隔时间为30秒",
+      "parameters": [
+        {
+          "name": "dead interval",
+          "type": "integer",
+          "explanation": "死亡间隔时间（秒）"
+        }
+      ]
+    },
+    "ip ospf hello-interval 10": {
+      "template": "ip ospf hello-interval [parameter1]",
+      "command": "ip ospf hello-interval 10",
+      "explanation": "设置OSPF的Hello间隔时间为10秒",
+      "parameters": [
+        {
+          "name": "hello interval",
+          "type": "integer",
+          "explanation": "Hello间隔时间（秒）"
+        }
+      ]
+    }
+  },
+  "router ospf 1": {
+    "template": "router ospf [parameter1]",
+    "command": "router ospf 1",
+    "explanation": "配置OSPF进程1",
+    "parameters": [
+      {
+        "name": "process id",
+        "type": "integer",
+        "explanation": "OSPF进程ID"
+      }
+    ],
+    "bfd all-interfaces": {
+      "template": "bfd all-interfaces",
+      "command": "bfd all-interfaces",
+      "explanation": "在所有接口上启用BFD（双向转发检测）",
+      "parameters": []
+    },
+    "timers throttle spf 3000 2000 5000": {
+      "template": "timers throttle spf [parameter1] [parameter2] [parameter3]",
+      "command": "timers throttle spf 3000 2000 5000",
+      "explanation": "设置SPF计算的时间间隔，初始延迟3000毫秒，最小间隔2000毫秒，最大间隔5000毫秒",
+      "parameters": [
+        {
+          "name": "initial delay",
+          "type": "integer",
+          "explanation": "初始延迟（毫秒）"
+        },
+        {
+          "name": "minimum interval",
+          "type": "integer",
+          "explanation": "最小间隔（毫秒）"
+        },
+        {
+          "name": "maximum interval",
+          "type": "integer",
+          "explanation": "最大间隔（毫秒）"
+        }
+      ]
+    },
+    "timers lsa arrival-interval 3000": {
+      "template": "timers lsa arrival-interval [parameter1]",
+      "command": "timers lsa arrival-interval 3000",
+      "explanation": "设置LSA到达的最小时间间隔为3000毫秒",
+      "parameters": [
+        {
+          "name": "arrival interval",
+          "type": "integer",
+          "explanation": "到达间隔（毫秒）"
+        }
+      ]
+    },
+    "timers lsa originate-interval 3000": {
+      "template": "timers lsa originate-interval [parameter1]",
+      "command": "timers lsa originate-interval 3000",
+      "explanation": "设置LSA生成的最小时间间隔为3000毫秒",
+      "parameters": [
+        {
+          "name": "originate interval",
+          "type": "integer",
+          "explanation": "生成间隔（毫秒）"
+        }
+      ]
+    },
+    "network 192.168.1.0 0.0.0.255 area 0": {
+      "template": "network [parameter1] [parameter2] area [parameter3]",
+      "command": "network 192.168.1.0 0.0.0.255 area 0",
+      "explanation": "将网络192.168.1.0/24加入到OSPF区域0",
+      "parameters": [
+        {
+          "name": "network address",
+          "type": "IPv4",
+          "explanation": "网络地址"
+        },
+        {
+          "name": "wildcard mask",
+          "type": "IPv4",
+          "explanation": "通配符掩码"
+        },
+        {
+          "name": "area id",
+          "type": "integer",
+          "explanation": "区域ID"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,220 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name LSRB",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        },
+        "set system login user [parameter1] privilege [parameter2] class [parameter3]": {
+            "template": "set system login user [parameter1] privilege [parameter2] class [parameter3]",
+            "command": "set system login user admin privilege 15 class superuser",
+            "explanation": "配置系统登录用户的权限等级和类别。",
+            "parameters": [
+                {
+                    "name": "username",
+                    "type": "string",
+                    "explanation": "登录用户名。"
+                },
+                {
+                    "name": "privilege-level",
+                    "type": "integer",
+                    "explanation": "用户的权限等级。"
+                },
+                {
+                    "name": "user-class",
+                    "type": "string",
+                    "explanation": "用户的类别，例如superuser。"
+                }
+            ]
+        },
+        "set system logging file-messages [parameter1]": {
+            "template": "set system logging file-messages [parameter1]",
+            "command": "set system logging file-messages critical",
+            "explanation": "配置系统日志文件的记录级别。",
+            "parameters": [
+                {
+                    "name": "log-level",
+                    "type": "string",
+                    "explanation": "日志记录级别，例如critical。"
+                }
+            ]
+        },
+        "set system services ssh root-login [parameter1]": {
+            "template": "set system services ssh root-login [parameter1]",
+            "command": "set system services ssh root-login disabled",
+            "explanation": "配置SSH服务的root登录状态。",
+            "parameters": [
+                {
+                    "name": "root-login-status",
+                    "type": "string",
+                    "explanation": "root登录状态，例如disabled。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols ldp router-id [parameter1] force": {
+            "template": "set protocols ldp router-id [parameter1] force",
+            "command": "set protocols ldp router-id loopback1 force",
+            "explanation": "配置LDP协议的router-id，并强制使用指定的loopback接口。",
+            "parameters": [
+                {
+                    "name": "router-id",
+                    "type": "string",
+                    "explanation": "LDP协议的router-id，通常为loopback接口的IP地址。"
+                }
+            ]
+        },
+        "set protocols isis network [parameter1]": {
+            "template": "set protocols isis network [parameter1]",
+            "command": "set protocols isis network point-to-point",
+            "explanation": "配置ISIS协议的网络类型为点对点。",
+            "parameters": [
+                {
+                    "name": "network-type",
+                    "type": "string",
+                    "explanation": "网络类型，例如point-to-point。"
+                }
+            ]
+        },
+        "set protocols ldp interface [parameter1]": {
+            "template": "set protocols ldp interface [parameter1]",
+            "command": "set protocols ldp interface ge-0/0/0",
+            "explanation": "在指定接口上启用LDP协议。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces lo0 unit 0 family inet address 10.1.1.2/24",
+            "explanation": "配置环回接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如lo0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family mpls": {
+            "template": "set interfaces [parameter1] unit [parameter2] family mpls",
+            "command": "set interfaces ge-0/0/0 unit 0 family mpls",
+            "explanation": "在接口上启用MPLS协议族。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                }
+            ]
+        }
+    },
+    "set mpls": {
+        "template": "set mpls",
+        "set mpls traffic-eng tunnels": {
+            "template": "set mpls traffic-eng tunnels",
+            "command": "set mpls traffic-eng tunnels",
+            "explanation": "启用MPLS流量工程隧道。",
+            "parameters": []
+        }
+    },
+    "set security": {
+        "template": "set security",
+        "set security policies from-zone [parameter1] to-zone [parameter2] policy [parameter3] match-source [parameter4]": {
+            "template": "set security policies from-zone [parameter1] to-zone [parameter2] policy [parameter3] match-source [parameter4]",
+            "command": "set security policies from-zone Trust to-zone Untrust policy any match-source anywhere",
+            "explanation": "配置从Trust区域到Untrust区域的安全策略，允许任何来源的流量。",
+            "parameters": [
+                {
+                    "name": "from-zone",
+                    "type": "string",
+                    "explanation": "源区域名称，例如Trust。"
+                },
+                {
+                    "name": "to-zone",
+                    "type": "string",
+                    "explanation": "目标区域名称，例如Untrust。"
+                },
+                {
+                    "name": "policy",
+                    "type": "string",
+                    "explanation": "策略名称，例如any。"
+                },
+                {
+                    "name": "match-source",
+                    "type": "string",
+                    "explanation": "匹配的源地址，例如anywhere。"
+                }
+            ]
+        },
+        "set security zones security-zone [parameter1] interface [parameter2]": {
+            "template": "set security zones security-zone [parameter1] interface [parameter2]",
+            "command": "set security zones security-zone Trust interface ge-0/0/0.0",
+            "explanation": "将接口分配到指定的安全区域。",
+            "parameters": [
+                {
+                    "name": "security-zone",
+                    "type": "string",
+                    "explanation": "安全区域名称，例如Trust。"
+                },
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0.0。"
+                }
+            ]
+        }
+    },
+    "set service": {
+        "template": "set service",
+        "set service tcp-established-timeout [parameter1]": {
+            "template": "set service tcp-established-timeout [parameter1]",
+            "command": "set service tcp-established-timeout 1800",
+            "explanation": "配置TCP已建立连接的超时时间。",
+            "parameters": [
+                {
+                    "name": "timeout",
+                    "type": "integer",
+                    "explanation": "超时时间，单位为秒。"
+                }
+            ]
+        }
+    }
+}

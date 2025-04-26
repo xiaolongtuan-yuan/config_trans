@@ -1,0 +1,196 @@
+{
+    "hostname [parameter1]": {
+        "template": "hostname [parameter1]",
+        "command": "hostname CPE",
+        "explanation": "设置设备的主机名为 'CPE'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "bridge-domain [parameter1]": {
+        "template": "bridge-domain [parameter1]",
+        "command": "bridge-domain 10",
+        "explanation": "创建或配置桥接域 10",
+        "parameters": [
+            {
+                "name": "bridge-domain id",
+                "type": "integer",
+                "explanation": "桥接域 ID"
+            }
+        ],
+        "vxlan vni [parameter1] split-horizon": {
+            "template": "vxlan vni [parameter1] split-horizon",
+            "command": "vxlan vni 10 split-horizon",
+            "explanation": "在桥接域 10 中配置 VXLAN VNI 10 并启用 split-horizon 功能",
+            "parameters": [
+                {
+                    "name": "VXLAN VNI",
+                    "type": "integer",
+                    "explanation": "VXLAN 网络标识符"
+                }
+            ]
+        }
+    },
+    "router isis": {
+        "template": "router isis",
+        "command": "router isis",
+        "explanation": "进入 IS-IS 路由配置模式",
+        "parameters": [],
+        "net [parameter1]": {
+            "template": "net [parameter1]",
+            "command": "net 20.0000.0000.0001.00",
+            "explanation": "配置 IS-IS 网络实体标题 (NET)",
+            "parameters": [
+                {
+                    "name": "NET",
+                    "type": "string",
+                    "explanation": "网络实体标题"
+                }
+            ]
+        },
+        "frr": {
+            "template": "frr",
+            "command": "frr",
+            "explanation": "启用快速重路由 (FRR) 功能",
+            "parameters": []
+        }
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/1",
+        "explanation": "配置接口 'GigabitEthernet1/0/1'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.1.1.2 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 10.1.1.2，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "isis enable [parameter1]": {
+            "template": "isis enable [parameter1]",
+            "command": "isis enable 1",
+            "explanation": "在接口上启用 IS-IS 进程 1",
+            "parameters": [
+                {
+                    "name": "IS-IS process id",
+                    "type": "integer",
+                    "explanation": "IS-IS 进程 ID"
+                }
+            ]
+        },
+        "ethertype [parameter1]": {
+            "template": "ethertype [parameter1]",
+            "command": "ethertype eompls",
+            "explanation": "配置接口的以太网类型为 EoMPLS",
+            "parameters": [
+                {
+                    "name": "ethertype",
+                    "type": "string",
+                    "explanation": "以太网类型"
+                }
+            ]
+        },
+        "xconnect [parameter1] [parameter2] encapsulation [parameter3]": {
+            "template": "xconnect [parameter1] [parameter2] encapsulation [parameter3]",
+            "command": "xconnect 3.3.3.3 10 encapsulation mpls",
+            "explanation": "配置接口的跨连接，目标 IP 为 3.3.3.3，VC ID 为 10，封装类型为 MPLS",
+            "parameters": [
+                {
+                    "name": "peer ip address",
+                    "type": "IPv4",
+                    "explanation": "对等体 IP 地址"
+                },
+                {
+                    "name": "VC ID",
+                    "type": "integer",
+                    "explanation": "虚拟电路 ID"
+                },
+                {
+                    "name": "encapsulation type",
+                    "type": "string",
+                    "explanation": "封装类型"
+                }
+            ]
+        },
+        "encapsulation dot1Q [parameter1]": {
+            "template": "encapsulation dot1Q [parameter1]",
+            "command": "encapsulation dot1Q 10",
+            "explanation": "配置子接口的封装类型为 dot1Q，VLAN ID 为 10",
+            "parameters": [
+                {
+                    "name": "VLAN ID",
+                    "type": "integer",
+                    "explanation": "VLAN 标识符"
+                }
+            ]
+        },
+        "bridge-domain [parameter1]": {
+            "template": "bridge-domain [parameter1]",
+            "command": "bridge-domain 10",
+            "explanation": "将子接口绑定到桥接域 10",
+            "parameters": [
+                {
+                    "name": "bridge-domain id",
+                    "type": "integer",
+                    "explanation": "桥接域 ID"
+                }
+            ]
+        },
+        "source-interface [parameter1]": {
+            "template": "source-interface [parameter1]",
+            "command": "source-interface Loopback1",
+            "explanation": "配置 NVE 接口的源接口为 'Loopback1'",
+            "parameters": [
+                {
+                    "name": "source interface",
+                    "type": "string",
+                    "explanation": "源接口"
+                }
+            ]
+        },
+        "member vni [parameter1] mcast-group [parameter2]": {
+            "template": "member vni [parameter1] mcast-group [parameter2]",
+            "command": "member vni 10 mcast-group 239.1.1.1",
+            "explanation": "配置 NVE 接口的成员 VNI 为 10，并指定多播组地址为 239.1.1.1",
+            "parameters": [
+                {
+                    "name": "VNI",
+                    "type": "integer",
+                    "explanation": "虚拟网络标识符"
+                },
+                {
+                    "name": "multicast group address",
+                    "type": "IPv4",
+                    "explanation": "多播组地址"
+                }
+            ]
+        }
+    }
+}

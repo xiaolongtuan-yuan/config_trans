@@ -7,7 +7,6 @@
 import json
 from pathlib import Path
 
-
 def convert_txt_to_json(directory):
     folder = Path(directory)
     txt_files = list(folder.rglob('*.txt'))
@@ -21,9 +20,9 @@ def convert_txt_to_json(directory):
                 json.loads(content)
                 with open(json_file, 'w', encoding='utf-8') as f:
                     f.write(content)
-        except json.JSONDecodeError:
-        print(txt_file)
-        continue
+            except json.JSONDecodeError:
+                print(txt_file)
+                continue
 
 
 # 转换Json_config/Cisco目录下的txt文件为json

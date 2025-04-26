@@ -1,0 +1,314 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name DeviceA",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        },
+        "set system services dhcp pool [parameter1] network [parameter2]/[parameter3]": {
+            "template": "set system services dhcp pool [parameter1] network [parameter2]/[parameter3]",
+            "command": "set system services dhcp pool pool1 network 10.10.10.0/24",
+            "explanation": "配置DHCP池的网络地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "pool-name",
+                    "type": "string",
+                    "explanation": "DHCP池的名称。"
+                },
+                {
+                    "name": "network-address",
+                    "type": "string",
+                    "explanation": "DHCP池的网络地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "网络地址的子网掩码位数。"
+                }
+            ]
+        },
+        "set system services dhcp pool [parameter1] default-router [parameter2]": {
+            "template": "set system services dhcp pool [parameter1] default-router [parameter2]",
+            "command": "set system services dhcp pool pool1 default-router 10.10.10.1",
+            "explanation": "配置DHCP池的默认网关。",
+            "parameters": [
+                {
+                    "name": "pool-name",
+                    "type": "string",
+                    "explanation": "DHCP池的名称。"
+                },
+                {
+                    "name": "default-router",
+                    "type": "string",
+                    "explanation": "DHCP池的默认网关地址。"
+                }
+            ]
+        },
+        "set system services dhcp pool [parameter1] dns-server [parameter2]": {
+            "template": "set system services dhcp pool [parameter1] dns-server [parameter2]",
+            "command": "set system services dhcp pool pool1 dns-server 10.10.10.100",
+            "explanation": "配置DHCP池的DNS服务器地址。",
+            "parameters": [
+                {
+                    "name": "pool-name",
+                    "type": "string",
+                    "explanation": "DHCP池的名称。"
+                },
+                {
+                    "name": "dns-server",
+                    "type": "string",
+                    "explanation": "DHCP池的DNS服务器地址。"
+                }
+            ]
+        },
+        "set system services dhcp-local-server group [parameter1] interface [parameter2]": {
+            "template": "set system services dhcp-local-server group [parameter1] interface [parameter2]",
+            "command": "set system services dhcp-local-server group dhcp-group interface vlan.100",
+            "explanation": "配置DHCP本地服务器组的接口。",
+            "parameters": [
+                {
+                    "name": "group-name",
+                    "type": "string",
+                    "explanation": "DHCP本地服务器组的名称。"
+                },
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "DHCP本地服务器组的接口名称。"
+                }
+            ]
+        }
+    },
+    "set vlans": {
+        "template": "set vlans",
+        "set vlans [parameter1] vlan-id [parameter2]": {
+            "template": "set vlans [parameter1] vlan-id [parameter2]",
+            "command": "set vlans vlan100 vlan-id 100",
+            "explanation": "配置VLAN的ID。",
+            "parameters": [
+                {
+                    "name": "vlan-name",
+                    "type": "string",
+                    "explanation": "VLAN的名称。"
+                },
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN的ID号。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces vlan unit 100 family inet address 10.10.10.1/24",
+            "explanation": "配置VLAN接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如vlan。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] virtual-address": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] virtual-address",
+            "command": "set interfaces vlan unit 100 family inet address 10.10.10.100 vrrp-group 1 virtual-address",
+            "explanation": "配置VRRP组的虚拟地址。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如vlan。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "VRRP组的虚拟地址。"
+                },
+                {
+                    "name": "vrrp-group",
+                    "type": "integer",
+                    "explanation": "VRRP组的编号。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] priority [parameter5]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] priority [parameter5]",
+            "command": "set interfaces vlan unit 100 family inet address 10.10.10.100 vrrp-group 1 priority 200",
+            "explanation": "配置VRRP组的优先级。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如vlan。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "VRRP组的虚拟地址。"
+                },
+                {
+                    "name": "vrrp-group",
+                    "type": "integer",
+                    "explanation": "VRRP组的编号。"
+                },
+                {
+                    "name": "priority",
+                    "type": "integer",
+                    "explanation": "VRRP组的优先级。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt",
+            "command": "set interfaces vlan unit 100 family inet address 10.10.10.100 vrrp-group 1 preempt",
+            "explanation": "启用VRRP组的抢占功能。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如vlan。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "VRRP组的虚拟地址。"
+                },
+                {
+                    "name": "vrrp-group",
+                    "type": "integer",
+                    "explanation": "VRRP组的编号。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt-delay [parameter5]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt-delay [parameter5]",
+            "command": "set interfaces vlan unit 100 family inet address 10.10.10.100 vrrp-group 1 preempt-delay 600",
+            "explanation": "配置VRRP组的抢占延迟时间。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如vlan。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "VRRP组的虚拟地址。"
+                },
+                {
+                    "name": "vrrp-group",
+                    "type": "integer",
+                    "explanation": "VRRP组的编号。"
+                },
+                {
+                    "name": "preempt-delay",
+                    "type": "integer",
+                    "explanation": "VRRP组的抢占延迟时间，单位为秒。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family ethernet-switching vlan members [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching vlan members [parameter3]",
+            "command": "set interfaces ge-1/0/1 unit 0 family ethernet-switching vlan members vlan100",
+            "explanation": "配置接口的VLAN成员。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "vlan-members",
+                    "type": "string",
+                    "explanation": "接口所属的VLAN名称。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family ethernet-switching port-mode [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family ethernet-switching port-mode [parameter3]",
+            "command": "set interfaces ge-1/0/1 unit 0 family ethernet-switching port-mode trunk",
+            "explanation": "配置接口的端口模式为trunk。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "port-mode",
+                    "type": "string",
+                    "explanation": "接口的端口模式，例如trunk。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] disable": {
+            "template": "set interfaces [parameter1] disable",
+            "command": "set interfaces ge-1/0/1 disable",
+            "explanation": "禁用指定接口。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/1。"
+                }
+            ]
+        }
+    }
+}

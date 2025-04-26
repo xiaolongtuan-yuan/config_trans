@@ -1,0 +1,141 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name DeviceD",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family inet6 address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet6 address [parameter3]/[parameter4]",
+            "command": "set interfaces ge-1/0/1 unit 0 family inet6 address 2001:db8:2::1/64",
+            "explanation": "配置接口的IPv6地址及前缀长度。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ipv6-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv6地址。"
+                },
+                {
+                    "name": "prefix-length",
+                    "type": "integer",
+                    "explanation": "IPv6地址的前缀长度。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols bfd interface [parameter1] family inet6 peer-ipv6 [parameter2] source-ipv6 [parameter3]": {
+            "template": "set protocols bfd interface [parameter1] family inet6 peer-ipv6 [parameter2] source-ipv6 [parameter3]",
+            "command": "set protocols bfd interface ge-1/0/2 family inet6 peer-ipv6 2001:db8:3::2 source-ipv6 2001:db8:1::1",
+            "explanation": "配置BFD协议的接口、IPv6对等地址及源地址。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/2。"
+                },
+                {
+                    "name": "peer-ipv6",
+                    "type": "string",
+                    "explanation": "BFD对等体的IPv6地址。"
+                },
+                {
+                    "name": "source-ipv6",
+                    "type": "string",
+                    "explanation": "BFD源地址的IPv6地址。"
+                }
+            ]
+        },
+        "set protocols bfd discriminator local [parameter1] remote [parameter2]": {
+            "template": "set protocols bfd discriminator local [parameter1] remote [parameter2]",
+            "command": "set protocols bfd discriminator local 10 remote 20",
+            "explanation": "配置BFD协议的本地和远程标识符。",
+            "parameters": [
+                {
+                    "name": "local-discriminator",
+                    "type": "integer",
+                    "explanation": "BFD本地标识符。"
+                },
+                {
+                    "name": "remote-discriminator",
+                    "type": "integer",
+                    "explanation": "BFD远程标识符。"
+                }
+            ]
+        }
+    },
+    "set routing-options": {
+        "template": "set routing-options",
+        "set routing-options static route [parameter1] next-hop [parameter2] interface [parameter3]": {
+            "template": "set routing-options static route [parameter1] next-hop [parameter2] interface [parameter3]",
+            "command": "set routing-options static route 2001:db8:6::/64 next-hop 2001:db8:1::2 interface ge-1/0/2",
+            "explanation": "配置静态路由的下一跳地址及出接口。",
+            "parameters": [
+                {
+                    "name": "route",
+                    "type": "string",
+                    "explanation": "目的网络地址及前缀长度。"
+                },
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "下一跳的IPv6地址。"
+                },
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "出接口名称。"
+                }
+            ]
+        },
+        "set routing-options static route [parameter1] next-hop [parameter2] preference [parameter3] track [parameter4]": {
+            "template": "set routing-options static route [parameter1] next-hop [parameter2] preference [parameter3] track [parameter4]",
+            "command": "set routing-options static route 2001:db8:6::/64 next-hop 2001:db8:1::2 preference 40 track bfd-session aa",
+            "explanation": "配置静态路由的下一跳地址、优先级及跟踪BFD会话。",
+            "parameters": [
+                {
+                    "name": "route",
+                    "type": "string",
+                    "explanation": "目的网络地址及前缀长度。"
+                },
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "下一跳的IPv6地址。"
+                },
+                {
+                    "name": "preference",
+                    "type": "integer",
+                    "explanation": "路由的优先级。"
+                },
+                {
+                    "name": "track",
+                    "type": "string",
+                    "explanation": "跟踪的BFD会话名称。"
+                }
+            ]
+        }
+    }
+}

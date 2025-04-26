@@ -1,0 +1,274 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name DeviceA",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set routing-options": {
+        "template": "set routing-options",
+        "set routing-options instance vrf [parameter1] routing-table export vrf-target [parameter2]": {
+            "template": "set routing-options instance vrf [parameter1] routing-table export vrf-target [parameter2]",
+            "command": "set routing-options instance vrf vpna routing-table export vrf-target target:111:1",
+            "explanation": "配置VRF实例的路由表导出策略。",
+            "parameters": [
+                {
+                    "name": "vrf-name",
+                    "type": "string",
+                    "explanation": "VRF实例的名称。"
+                },
+                {
+                    "name": "vrf-target",
+                    "type": "string",
+                    "explanation": "VRF目标，用于标识路由的导出目标。"
+                }
+            ]
+        },
+        "set routing-options instance vrf [parameter1] routing-table import vrf-target [parameter2]": {
+            "template": "set routing-options instance vrf [parameter1] routing-table import vrf-target [parameter2]",
+            "command": "set routing-options instance vrf vpna routing-table import vrf-target target:111:1",
+            "explanation": "配置VRF实例的路由表导入策略。",
+            "parameters": [
+                {
+                    "name": "vrf-name",
+                    "type": "string",
+                    "explanation": "VRF实例的名称。"
+                },
+                {
+                    "name": "vrf-target",
+                    "type": "string",
+                    "explanation": "VRF目标，用于标识路由的导入目标。"
+                }
+            ]
+        },
+        "set routing-options bgp group [parameter1] remote-as [parameter2] local-address [parameter3]": {
+            "template": "set routing-options bgp group [parameter1] remote-as [parameter2] local-address [parameter3]",
+            "command": "set routing-options bgp group vrf1_neighbor remote-as 100 local-address loopback0",
+            "explanation": "配置BGP组的远程AS号和本地地址。",
+            "parameters": [
+                {
+                    "name": "group-name",
+                    "type": "string",
+                    "explanation": "BGP组的名称。"
+                },
+                {
+                    "name": "remote-as",
+                    "type": "integer",
+                    "explanation": "远程AS号。"
+                },
+                {
+                    "name": "local-address",
+                    "type": "string",
+                    "explanation": "本地地址，用于BGP会话。"
+                }
+            ]
+        },
+        "set routing-options rib-groups [parameter1] import [parameter2]": {
+            "template": "set routing-options rib-groups [parameter1] import [parameter2]",
+            "command": "set routing-options rib-groups default-rip-route import all",
+            "explanation": "配置RIB组的导入策略。",
+            "parameters": [
+                {
+                    "name": "rib-group",
+                    "type": "string",
+                    "explanation": "RIB组的名称。"
+                },
+                {
+                    "name": "import-policy",
+                    "type": "string",
+                    "explanation": "导入策略，指定哪些路由被导入。"
+                }
+            ]
+        },
+        "set routing-options rib-groups [parameter1] route-group [parameter2] unicast-import [parameter3] unicast-export [parameter4] unicast-auto-discover [parameter5]": {
+            "template": "set routing-options rib-groups [parameter1] route-group [parameter2] unicast-import [parameter3] unicast-export [parameter4] unicast-auto-discover [parameter5]",
+            "command": "set routing-options rib-groups vpna-unicast route-group vpna-unicast-rib unicast-import all unicast-export accept-all unicast-auto-discover true",
+            "explanation": "配置RIB组的单播路由导入导出策略及自动发现。",
+            "parameters": [
+                {
+                    "name": "rib-group",
+                    "type": "string",
+                    "explanation": "RIB组的名称。"
+                },
+                {
+                    "name": "route-group",
+                    "type": "string",
+                    "explanation": "路由组的名称。"
+                },
+                {
+                    "name": "unicast-import",
+                    "type": "string",
+                    "explanation": "单播路由导入策略。"
+                },
+                {
+                    "name": "unicast-export",
+                    "type": "string",
+                    "explanation": "单播路由导出策略。"
+                },
+                {
+                    "name": "unicast-auto-discover",
+                    "type": "boolean",
+                    "explanation": "是否启用单播路由自动发现。"
+                }
+            ]
+        },
+        "set routing-options mpls traffic-eng tunnels segment-routing global-block [parameter1]": {
+            "template": "set routing-options mpls traffic-eng tunnels segment-routing global-block [parameter1]",
+            "command": "set routing-options mpls traffic-eng tunnels segment-routing global-block 200000-201000",
+            "explanation": "配置MPLS流量工程隧道的段路由全局块。",
+            "parameters": [
+                {
+                    "name": "global-block",
+                    "type": "string",
+                    "explanation": "段路由的全局块范围。"
+                }
+            ]
+        },
+        "set routing-options mpls traffic-eng router-id [parameter1]": {
+            "template": "set routing-options mpls traffic-eng router-id [parameter1]",
+            "command": "set routing-options mpls traffic-eng router-id loopback0",
+            "explanation": "配置MPLS流量工程的路由器ID。",
+            "parameters": [
+                {
+                    "name": "router-id",
+                    "type": "string",
+                    "explanation": "路由器的ID，用于MPLS流量工程。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols mpls label-distribution-protocol [parameter1]": {
+            "template": "set protocols mpls label-distribution-protocol [parameter1]",
+            "command": "set protocols mpls label-distribution-protocol ldp",
+            "explanation": "配置MPLS的标签分发协议。",
+            "parameters": [
+                {
+                    "name": "protocol",
+                    "type": "string",
+                    "explanation": "标签分发协议，例如LDP。"
+                }
+            ]
+        },
+        "set protocols mpls ldp router-id [parameter1]": {
+            "template": "set protocols mpls ldp router-id [parameter1]",
+            "command": "set protocols mpls ldp router-id loopback0",
+            "explanation": "配置LDP协议的路由器ID。",
+            "parameters": [
+                {
+                    "name": "router-id",
+                    "type": "string",
+                    "explanation": "路由器的ID，用于LDP协议。"
+                }
+            ]
+        },
+        "set protocols isis net [parameter1]": {
+            "template": "set protocols isis net [parameter1]",
+            "command": "set protocols isis net 49.0005.0000.0000.0c0c.00",
+            "explanation": "配置ISIS协议的网络实体标题。",
+            "parameters": [
+                {
+                    "name": "net",
+                    "type": "string",
+                    "explanation": "网络实体标题，用于ISIS协议。"
+                }
+            ]
+        },
+        "set protocols bgp group [parameter1] activate": {
+            "template": "set protocols bgp group [parameter1] activate",
+            "command": "set protocols bgp group vrf1_neighbor activate",
+            "explanation": "激活BGP组的邻居。",
+            "parameters": [
+                {
+                    "name": "group-name",
+                    "type": "string",
+                    "explanation": "BGP组的名称。"
+                }
+            ]
+        },
+        "set protocols bgp group [parameter1] send-community [parameter2]": {
+            "template": "set protocols bgp group [parameter1] send-community [parameter2]",
+            "command": "set protocols bgp group vrf1_neighbor send-community both",
+            "explanation": "配置BGP组的邻居发送社区属性。",
+            "parameters": [
+                {
+                    "name": "group-name",
+                    "type": "string",
+                    "explanation": "BGP组的名称。"
+                },
+                {
+                    "name": "send-community",
+                    "type": "string",
+                    "explanation": "发送社区属性的类型，例如both。"
+                }
+            ]
+        },
+        "set protocols mpls traffic-eng tunnels segment-routing area [parameter1]": {
+            "template": "set protocols mpls traffic-eng tunnels segment-routing area [parameter1]",
+            "command": "set protocols mpls traffic-eng tunnels segment-routing area 0",
+            "explanation": "配置MPLS流量工程隧道的段路由区域。",
+            "parameters": [
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "段路由的区域号。"
+                }
+            ]
+        }
+    },
+    "set routing-instances": {
+        "template": "set routing-instances",
+        "set routing-instances [parameter1] instance-type [parameter2]": {
+            "template": "set routing-instances [parameter1] instance-type [parameter2]",
+            "command": "set routing-instances vpna instance-type level-2-only",
+            "explanation": "配置路由实例的类型。",
+            "parameters": [
+                {
+                    "name": "instance-name",
+                    "type": "string",
+                    "explanation": "路由实例的名称。"
+                },
+                {
+                    "name": "instance-type",
+                    "type": "string",
+                    "explanation": "路由实例的类型，例如level-2-only。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family [parameter3]",
+            "command": "set interfaces ge-0/0/0 unit 0 family mpls",
+            "explanation": "配置接口的MPLS协议族。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "family",
+                    "type": "string",
+                    "explanation": "协议族，例如mpls。"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,358 @@
+{
+    "sysname [parameter1]": {
+        "template": "sysname [parameter1]",
+        "command": "sysname HUAWEI",
+        "explanation": "设置设备的主机名为 'HUAWEI'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "ip pool [parameter1] bas local": {
+        "template": "ip pool [parameter1] bas local",
+        "command": "ip pool pool1 bas local",
+        "explanation": "创建并进入IP地址池 'pool1'，用于宽带接入服务器 (BAS) 的本地地址分配",
+        "parameters": [
+            {
+                "name": "pool name",
+                "type": "string",
+                "explanation": "IP地址池的名称"
+            }
+        ],
+        "gateway [parameter1] [parameter2]": {
+            "template": "gateway [parameter1] [parameter2]",
+            "command": "gateway 172.30.0.1 255.255.255.0",
+            "explanation": "设置地址池的网关地址和子网掩码",
+            "parameters": [
+                {
+                    "name": "gateway address",
+                    "type": "IPv4",
+                    "explanation": "网关的IPv4地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "section [parameter1] [parameter2] [parameter3]": {
+            "template": "section [parameter1] [parameter2] [parameter3]",
+            "command": "section 0 172.30.0.2 172.30.0.200",
+            "explanation": "定义地址池的分配段，从172.30.0.2到172.30.0.200",
+            "parameters": [
+                {
+                    "name": "section id",
+                    "type": "integer",
+                    "explanation": "分配段的标识号"
+                },
+                {
+                    "name": "start address",
+                    "type": "IPv4",
+                    "explanation": "起始IP地址"
+                },
+                {
+                    "name": "end address",
+                    "type": "IPv4",
+                    "explanation": "结束IP地址"
+                }
+            ]
+        },
+        "excluded-ip-address [parameter1]": {
+            "template": "excluded-ip-address [parameter1]",
+            "command": "excluded-ip-address 172.30.0.8",
+            "explanation": "排除地址池中的特定IP地址172.30.0.8，不进行分配",
+            "parameters": [
+                {
+                    "name": "excluded ip address",
+                    "type": "IPv4",
+                    "explanation": "要排除的IP地址"
+                }
+            ]
+        }
+    },
+    "aaa": {
+        "template": "aaa",
+        "command": "aaa",
+        "explanation": "进入AAA配置模式",
+        "parameters": [],
+        "authentication-scheme [parameter1]": {
+            "template": "authentication-scheme [parameter1]",
+            "command": "authentication-scheme default",
+            "explanation": "进入默认的身份验证方案配置",
+            "parameters": [
+                {
+                    "name": "scheme name",
+                    "type": "string",
+                    "explanation": "身份验证方案的名称"
+                }
+            ],
+            "method radius local": {
+                "template": "method radius local",
+                "command": "method radius local",
+                "explanation": "设置身份验证方法为先尝试RADIUS，失败后再使用本地认证",
+                "parameters": []
+            }
+        },
+        "accounting-scheme [parameter1]": {
+            "template": "accounting-scheme [parameter1]",
+            "command": "accounting-scheme default",
+            "explanation": "进入默认的计费方案配置",
+            "parameters": [
+                {
+                    "name": "scheme name",
+                    "type": "string",
+                    "explanation": "计费方案的名称"
+                }
+            ],
+            "method radius local": {
+                "template": "method radius local",
+                "command": "method radius local",
+                "explanation": "设置计费方法为先尝试RADIUS，失败后再使用本地计费",
+                "parameters": []
+            }
+        }
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/2",
+        "explanation": "进入GigabitEthernet1/0/2接口的配置模式",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名称"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "port link-type [parameter1]": {
+            "template": "port link-type [parameter1]",
+            "command": "port link-type access",
+            "explanation": "设置接口的链路类型为接入模式",
+            "parameters": [
+                {
+                    "name": "link type",
+                    "type": "string",
+                    "explanation": "链路类型，如 'access' 或 'trunk'"
+                }
+            ]
+        },
+        "port default vlan [parameter1]": {
+            "template": "port default vlan [parameter1]",
+            "command": "port default vlan 100",
+            "explanation": "设置接口的默认VLAN为100",
+            "parameters": [
+                {
+                    "name": "vlan id",
+                    "type": "integer",
+                    "explanation": "VLAN标识号"
+                }
+            ]
+        },
+        "vlan-type dot1q [parameter1]": {
+            "template": "vlan-type dot1q [parameter1]",
+            "command": "vlan-type dot1q 100",
+            "explanation": "设置子接口的VLAN类型为802.1Q，VLAN ID为100",
+            "parameters": [
+                {
+                    "name": "vlan id",
+                    "type": "integer",
+                    "explanation": "VLAN标识号"
+                }
+            ]
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 172.30.0.2 255.255.255.0",
+            "explanation": "配置接口的IPv4地址为172.30.0.2，子网掩码为255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "authentication-scheme [parameter1]": {
+            "template": "authentication-scheme [parameter1]",
+            "command": "authentication-scheme default",
+            "explanation": "应用默认的身份验证方案到接口",
+            "parameters": [
+                {
+                    "name": "scheme name",
+                    "type": "string",
+                    "explanation": "身份验证方案的名称"
+                }
+            ]
+        },
+        "ip helper-address [parameter1]": {
+            "template": "ip helper-address [parameter1]",
+            "command": "ip helper-address 172.30.0.1",
+            "explanation": "配置DHCP中继地址为172.30.0.1，用于转发DHCP请求",
+            "parameters": [
+                {
+                    "name": "helper address",
+                    "type": "IPv4",
+                    "explanation": "中继服务器的IPv4地址"
+                }
+            ]
+        }
+    },
+    "acl [parameter1]": {
+        "template": "acl [parameter1]",
+        "command": "acl 2000",
+        "explanation": "创建或进入ACL编号为2000的配置",
+        "parameters": [
+            {
+                "name": "acl number",
+                "type": "integer",
+                "explanation": "访问控制列表的编号"
+            }
+        ],
+        "rule permit ip source [parameter1] [parameter2]": {
+            "template": "rule permit ip source [parameter1] [parameter2]",
+            "command": "rule permit ip source 172.30.0.8 0.0.0.0",
+            "explanation": "允许源地址为172.30.0.8的IP流量通过",
+            "parameters": [
+                {
+                    "name": "source address",
+                    "type": "IPv4",
+                    "explanation": "源IP地址"
+                },
+                {
+                    "name": "wildcard bits",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                }
+            ]
+        },
+        "rule deny ip": {
+            "template": "rule deny ip",
+            "command": "rule deny ip",
+            "explanation": "拒绝所有IP流量",
+            "parameters": []
+        }
+    },
+    "radius-server shared-key cipher [parameter1]": {
+        "template": "radius-server shared-key cipher [parameter1]",
+        "command": "radius-server shared-key cipher <password>",
+        "explanation": "配置RADIUS服务器的共享密钥，用于加密通信",
+        "parameters": [
+            {
+                "name": "shared key",
+                "type": "string",
+                "explanation": "共享密钥，以密文形式"
+            }
+        ]
+    },
+    "radius-server [parameter1] auth-port [parameter2] acct-port [parameter3]": {
+        "template": "radius-server [parameter1] auth-port [parameter2] acct-port [parameter3]",
+        "command": "radius-server 172.30.0.8 auth-port 1812 acct-port 1813",
+        "explanation": "配置RADIUS服务器的IP地址、认证端口和计费端口",
+        "parameters": [
+            {
+                "name": "server ip address",
+                "type": "IPv4",
+                "explanation": "RADIUS服务器的IPv4地址"
+            },
+            {
+                "name": "authentication port",
+                "type": "integer",
+                "explanation": "认证端口号，通常为1812"
+            },
+            {
+                "name": "accounting port",
+                "type": "integer",
+                "explanation": "计费端口号，通常为1813"
+            }
+        ]
+    },
+    "local-user [parameter1] password cipher [parameter2]": {
+        "template": "local-user [parameter1] password cipher [parameter2]",
+        "command": "local-user 172.30.0.8 password cipher <password>",
+        "explanation": "配置本地用户 '172.30.0.8' 的密码，密码以密文形式存储",
+        "parameters": [
+            {
+                "name": "username",
+                "type": "string",
+                "explanation": "本地用户名"
+            },
+            {
+                "name": "password",
+                "type": "string",
+                "explanation": "密码，以密文形式"
+            }
+        ]
+    },
+    "local-user [parameter1] privilege level [parameter2]": {
+        "template": "local-user [parameter1] privilege level [parameter2]",
+        "command": "local-user 172.30.0.8 privilege level 15",
+        "explanation": "设置本地用户 '172.30.0.8' 的权限级别为15，最高级别",
+        "parameters": [
+            {
+                "name": "username",
+                "type": "string",
+                "explanation": "本地用户名"
+            },
+            {
+                "name": "privilege level",
+                "type": "integer",
+                "explanation": "权限级别，范围通常为0-15"
+            }
+        ]
+    },
+    "dhcp enable": {
+        "template": "dhcp enable",
+        "command": "dhcp enable",
+        "explanation": "全局启用DHCP服务",
+        "parameters": []
+    },
+    "ip dhcp snooping enable": {
+        "template": "ip dhcp snooping enable",
+        "command": "ip dhcp snooping enable",
+        "explanation": "启用DHCP Snooping功能，用于防止DHCP欺骗",
+        "parameters": []
+    },
+    "ip dhcp snooping trust interface [parameter1]": {
+        "template": "ip dhcp snooping trust interface [parameter1]",
+        "command": "ip dhcp snooping trust interface GigabitEthernet1/0/2.1",
+        "explanation": "配置接口GigabitEthernet1/0/2.1为信任接口，允许转发DHCP消息",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名称"
+            }
+        ]
+    },
+    "ip dhcp snooping rate-limit unicast threshold [parameter1] burst [parameter2]": {
+        "template": "ip dhcp snooping rate-limit unicast threshold [parameter1] burst [parameter2]",
+        "command": "ip dhcp snooping rate-limit unicast threshold 100 burst 10",
+        "explanation": "设置DHCP Snooping的单播数据包速率限制，阈值为100，突发量为10",
+        "parameters": [
+            {
+                "name": "threshold",
+                "type": "integer",
+                "explanation": "单播数据包的速率限制阈值"
+            },
+            {
+                "name": "burst",
+                "type": "integer",
+                "explanation": "允许的突发数据包数量"
+            }
+        ]
+    }
+}

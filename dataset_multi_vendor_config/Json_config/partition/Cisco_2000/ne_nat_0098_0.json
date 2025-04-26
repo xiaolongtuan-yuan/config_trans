@@ -1,0 +1,207 @@
+{
+    "hostname [parameter1]": {
+        "template": "hostname [parameter1]",
+        "command": "hostname CGN1",
+        "explanation": "设置设备的主机名为 'CGN1'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "ip nat session maximum [parameter1]": {
+        "template": "ip nat session maximum [parameter1]",
+        "command": "ip nat session maximum 6",
+        "explanation": "设置NAT会话的最大数量为6",
+        "parameters": [
+            {
+                "name": "maximum session number",
+                "type": "integer",
+                "explanation": "NAT会话的最大数量"
+            }
+        ]
+    },
+    "ip access-list extended [parameter1]": {
+        "template": "ip access-list extended [parameter1]",
+        "command": "ip access-list extended ACL-3001",
+        "explanation": "创建一个名为 'ACL-3001' 的扩展访问控制列表",
+        "parameters": [
+            {
+                "name": "access-list name",
+                "type": "string",
+                "explanation": "访问控制列表的名称"
+            }
+        ],
+        "permit ip [parameter1] [parameter2]": {
+            "template": "permit ip [parameter1] [parameter2]",
+            "command": "permit ip 192.168.10.0 0.0.0.255",
+            "explanation": "允许来自192.168.10.0/24网络的IP流量",
+            "parameters": [
+                {
+                    "name": "source network",
+                    "type": "IPv4",
+                    "explanation": "源网络地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                }
+            ]
+        }
+    },
+    "class-map match-all [parameter1]": {
+        "template": "class-map match-all [parameter1]",
+        "command": "class-map match-all CLASSIFIER1",
+        "explanation": "创建一个名为 'CLASSIFIER1' 的类映射，要求所有条件匹配",
+        "parameters": [
+            {
+                "name": "class-map name",
+                "type": "string",
+                "explanation": "类映射的名称"
+            }
+        ],
+        "match access-group [parameter1]": {
+            "template": "match access-group [parameter1]",
+            "command": "match access-group ACL-3001",
+            "explanation": "匹配访问控制列表 'ACL-3001' 的流量",
+            "parameters": [
+                {
+                    "name": "access-group name",
+                    "type": "string",
+                    "explanation": "访问控制列表的名称"
+                }
+            ]
+        }
+    },
+    "policy-map [parameter1]": {
+        "template": "policy-map [parameter1]",
+        "command": "policy-map POLICY1",
+        "explanation": "创建一个名为 'POLICY1' 的策略映射",
+        "parameters": [
+            {
+                "name": "policy-map name",
+                "type": "string",
+                "explanation": "策略映射的名称"
+            }
+        ],
+        "class [parameter1]": {
+            "template": "class [parameter1]",
+            "command": "class CLASSIFIER1",
+            "explanation": "应用类映射 'CLASSIFIER1'",
+            "parameters": [
+                {
+                    "name": "class-map name",
+                    "type": "string",
+                    "explanation": "类映射的名称"
+                }
+            ],
+            "nat instance [parameter1]": {
+                "template": "nat instance [parameter1]",
+                "command": "nat instance 1",
+                "explanation": "应用NAT实例1",
+                "parameters": [
+                    {
+                        "name": "nat instance number",
+                        "type": "integer",
+                        "explanation": "NAT实例的编号"
+                    }
+                ]
+            }
+        }
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet 2/0/0",
+        "explanation": "配置接口 'GigabitEthernet 2/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 192.168.10.1 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 192.168.10.1，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "service-policy input [parameter1]": {
+            "template": "service-policy input [parameter1]",
+            "command": "service-policy input POLICY1",
+            "explanation": "在接口的输入方向应用策略映射 'POLICY1'",
+            "parameters": [
+                {
+                    "name": "policy-map name",
+                    "type": "string",
+                    "explanation": "策略映射的名称"
+                }
+            ]
+        },
+        "ip nat outside": {
+            "template": "ip nat outside",
+            "command": "ip nat outside",
+            "explanation": "配置接口为NAT的外部接口",
+            "parameters": []
+        }
+    },
+    "ip nat inside source list [parameter1] interface [parameter2] overload": {
+        "template": "ip nat inside source list [parameter1] interface [parameter2] overload",
+        "command": "ip nat inside source list ACL-3001 interface Loopback 0 overload",
+        "explanation": "配置NAT，将来自访问控制列表 'ACL-3001' 的内部流量通过 'Loopback 0' 接口进行NAT转换，并使用overload模式",
+        "parameters": [
+            {
+                "name": "access-list name",
+                "type": "string",
+                "explanation": "访问控制列表的名称"
+            },
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ]
+    },
+    "ip route [parameter1] [parameter2] [parameter3]": {
+        "template": "ip route [parameter1] [parameter2] [parameter3]",
+        "command": "ip route 0.0.0.0 0.0.0.0 service-engine 1/0/0",
+        "explanation": "配置默认路由，将所有流量通过 'service-engine 1/0/0' 接口转发",
+        "parameters": [
+            {
+                "name": "destination network",
+                "type": "IPv4",
+                "explanation": "目标网络地址"
+            },
+            {
+                "name": "subnet mask",
+                "type": "IPv4",
+                "explanation": "子网掩码"
+            },
+            {
+                "name": "next-hop interface",
+                "type": "string",
+                "explanation": "下一跳接口名"
+            }
+        ]
+    }
+}

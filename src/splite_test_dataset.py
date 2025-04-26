@@ -70,7 +70,7 @@ if __name__ == '__main__':
     error_file_list = json.load(open( f'../dataset_multi_vendor_config/error_file_record/error_cisco.json'))
     error_device_list = [file_name.split('.')[0] for file_name in error_file_list]
 
-    test_filenames= json.load(open( f'../syntactic_check/error_info/config_summary.json'))['test_config']['config']
+    test_filenames= json.load(open( f'../syntactic_check/config_data_400/error_info/config_summary.json'))['test_config']['config']
     finished = 0
     for test_filename in tqdm(test_filenames):
         test_filename = test_filename.split('.')[0]

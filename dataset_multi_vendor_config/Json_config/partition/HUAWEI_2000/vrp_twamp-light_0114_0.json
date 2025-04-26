@@ -1,0 +1,292 @@
+{
+    "sysname [parameter1]": {
+        "template": "sysname [parameter1]",
+        "command": "sysname DeviceA",
+        "explanation": "设置设备的主机名为 'DeviceA'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "mpls": {
+        "template": "mpls",
+        "command": "mpls",
+        "explanation": "启用MPLS功能",
+        "parameters": []
+    },
+    "mpls lsr-id [parameter1]": {
+        "template": "mpls lsr-id [parameter1]",
+        "command": "mpls lsr-id 10.0.0.1",
+        "explanation": "设置MPLS的LSR ID为10.0.0.1",
+        "parameters": [
+            {
+                "name": "LSR ID",
+                "type": "IPv4",
+                "explanation": "MPLS的LSR ID"
+            }
+        ]
+    },
+    "mpls ldp": {
+        "template": "mpls ldp",
+        "command": "mpls ldp",
+        "explanation": "启用MPLS LDP功能",
+        "parameters": [],
+        "outbound peer all split-horizon": {
+            "template": "outbound peer all split-horizon",
+            "command": "outbound peer all split-horizon",
+            "explanation": "配置LDP对所有对等体启用出站标签分发和分割水平",
+            "parameters": []
+        },
+        "accept target-hello all": {
+            "template": "accept target-hello all",
+            "command": "accept target-hello all",
+            "explanation": "接受所有目标Hello消息",
+            "parameters": []
+        },
+        "ipv4-family": {
+            "template": "ipv4-family",
+            "command": "ipv4-family",
+            "explanation": "进入IPv4地址族视图",
+            "parameters": []
+        }
+    },
+    "mpls ldp remote-peer [parameter1]": {
+        "template": "mpls ldp remote-peer [parameter1]",
+        "command": "mpls ldp remote-peer 10.0.0.2",
+        "explanation": "配置LDP远程对等体为10.0.0.2",
+        "parameters": [
+            {
+                "name": "remote peer",
+                "type": "IPv4",
+                "explanation": "远程对等体的IP地址"
+            }
+        ],
+        "mpls ldp timer hello-hold [parameter1]": {
+            "template": "mpls ldp timer hello-hold [parameter1]",
+            "command": "mpls ldp timer hello-hold 45",
+            "explanation": "设置LDP Hello保持时间为45秒",
+            "parameters": [
+                {
+                    "name": "hello-hold time",
+                    "type": "integer",
+                    "explanation": "Hello保持时间，单位秒"
+                }
+            ]
+        },
+        "mpls ldp timer keepalive-hold [parameter1]": {
+            "template": "mpls ldp timer keepalive-hold [parameter1]",
+            "command": "mpls ldp timer keepalive-hold 45",
+            "explanation": "设置LDP Keepalive保持时间为45秒",
+            "parameters": [
+                {
+                    "name": "keepalive-hold time",
+                    "type": "integer",
+                    "explanation": "Keepalive保持时间，单位秒"
+                }
+            ]
+        },
+        "remote-ip [parameter1]": {
+            "template": "remote-ip [parameter1]",
+            "command": "remote-ip 10.0.0.2",
+            "explanation": "设置远程对等体的IP地址为10.0.0.2",
+            "parameters": [
+                {
+                    "name": "remote IP",
+                    "type": "IPv4",
+                    "explanation": "远程对等体的IP地址"
+                }
+            ]
+        }
+    },
+    "ospf [parameter1] router-id [parameter2]": {
+        "template": "ospf [parameter1] router-id [parameter2]",
+        "command": "ospf 1 router-id 10.0.0.1",
+        "explanation": "启用OSPF进程1，并设置路由器ID为10.0.0.1",
+        "parameters": [
+            {
+                "name": "OSPF process ID",
+                "type": "integer",
+                "explanation": "OSPF进程ID"
+            },
+            {
+                "name": "router ID",
+                "type": "IPv4",
+                "explanation": "路由器ID"
+            }
+        ],
+        "area [parameter1]": {
+            "template": "area [parameter1]",
+            "command": "area 0.0.0.1",
+            "explanation": "进入OSPF区域0.0.0.1的配置视图",
+            "parameters": [
+                {
+                    "name": "area ID",
+                    "type": "IPv4",
+                    "explanation": "OSPF区域ID"
+                }
+            ],
+            "network [parameter1] [parameter2]": {
+                "template": "network [parameter1] [parameter2]",
+                "command": "network 3.0.0.0 0.0.0.3",
+                "explanation": "在OSPF区域0.0.0.1中宣告网络3.0.0.0，掩码0.0.0.3",
+                "parameters": [
+                    {
+                        "name": "network address",
+                        "type": "IPv4",
+                        "explanation": "网络地址"
+                    },
+                    {
+                        "name": "wildcard mask",
+                        "type": "IPv4",
+                        "explanation": "通配符掩码"
+                    }
+                ]
+            }
+        }
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface loopback0",
+        "explanation": "进入loopback0接口的配置视图",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.0.0.1 255.255.255.255",
+            "explanation": "配置loopback0接口的IPv4地址为10.0.0.1，子网掩码为255.255.255.255",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "vlan-type dot1q [parameter1]": {
+            "template": "vlan-type dot1q [parameter1]",
+            "command": "vlan-type dot1q 31",
+            "explanation": "配置接口的VLAN类型为dot1q，VLAN ID为31",
+            "parameters": [
+                {
+                    "name": "VLAN ID",
+                    "type": "integer",
+                    "explanation": "VLAN ID"
+                }
+            ]
+        },
+        "mtu [parameter1]": {
+            "template": "mtu [parameter1]",
+            "command": "mtu 9500",
+            "explanation": "设置接口的MTU为9500字节",
+            "parameters": [
+                {
+                    "name": "MTU size",
+                    "type": "integer",
+                    "explanation": "MTU大小，单位字节"
+                }
+            ]
+        },
+        "mpls": {
+            "template": "mpls",
+            "command": "mpls",
+            "explanation": "在接口上启用MPLS功能",
+            "parameters": []
+        },
+        "mpls ldp": {
+            "template": "mpls ldp",
+            "command": "mpls ldp",
+            "explanation": "在接口上启用MPLS LDP功能",
+            "parameters": []
+        },
+        "mpls l2vc [parameter1] [parameter2] control-word [parameter3]": {
+            "template": "mpls l2vc [parameter1] [parameter2] control-word [parameter3]",
+            "command": "mpls l2vc 10.0.0.2 26 control-word raw",
+            "explanation": "配置MPLS L2VC，远端IP为10.0.0.2，VC ID为26，控制字为raw",
+            "parameters": [
+                {
+                    "name": "remote IP",
+                    "type": "IPv4",
+                    "explanation": "远端IP地址"
+                },
+                {
+                    "name": "VC ID",
+                    "type": "integer",
+                    "explanation": "VC ID"
+                },
+                {
+                    "name": "control word",
+                    "type": "string",
+                    "explanation": "控制字类型"
+                }
+            ]
+        }
+    },
+    "nqa twamp-light": {
+        "template": "nqa twamp-light",
+        "command": "nqa twamp-light",
+        "explanation": "进入NQA TWAMP Light配置视图",
+        "parameters": [],
+        "responder": {
+            "template": "responder",
+            "command": "responder",
+            "explanation": "配置NQA TWAMP Light的响应器",
+            "parameters": [],
+            "test-session [parameter1] local-ip [parameter2] remote-ip [parameter3] local-port [parameter4] remote-port [parameter5] interface [parameter6]": {
+                "template": "test-session [parameter1] local-ip [parameter2] remote-ip [parameter3] local-port [parameter4] remote-port [parameter5] interface [parameter6]",
+                "command": "test-session 1 local-ip 192.168.1.1 remote-ip 192.168.2.2 local-port 6000 remote-port 6000 interface GigabitEthernet1/0/0.1",
+                "explanation": "配置NQA TWAMP Light的测试会话1，本地IP为192.168.1.1，远端IP为192.168.2.2，本地端口为6000，远端端口为6000，接口为GigabitEthernet1/0/0.1",
+                "parameters": [
+                    {
+                        "name": "test session ID",
+                        "type": "integer",
+                        "explanation": "测试会话ID"
+                    },
+                    {
+                        "name": "local IP",
+                        "type": "IPv4",
+                        "explanation": "本地IP地址"
+                    },
+                    {
+                        "name": "remote IP",
+                        "type": "IPv4",
+                        "explanation": "远端IP地址"
+                    },
+                    {
+                        "name": "local port",
+                        "type": "integer",
+                        "explanation": "本地端口"
+                    },
+                    {
+                        "name": "remote port",
+                        "type": "integer",
+                        "explanation": "远端端口"
+                    },
+                    {
+                        "name": "interface",
+                        "type": "string",
+                        "explanation": "接口名"
+                    }
+                ]
+            }
+        }
+    },
+    "return": {
+        "template": "return",
+        "command": "return",
+        "explanation": "退出当前视图并返回到用户视图",
+        "parameters": []
+    }
+}

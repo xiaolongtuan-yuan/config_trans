@@ -1,0 +1,241 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name DeviceE",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces ge-1/0/0 unit 0 family inet address 10.20.2.1/24",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] description [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] description [parameter3]",
+            "command": "set interfaces ge-1/0/0 unit 0 description \"Interface GigabitEthernet1/0/0\"",
+            "explanation": "配置接口的描述信息。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "description",
+                    "type": "string",
+                    "explanation": "接口的描述信息。"
+                }
+            ]
+        }
+    },
+    "set routing-options": {
+        "template": "set routing-options",
+        "set routing-options autonomous-system [parameter1]": {
+            "template": "set routing-options autonomous-system [parameter1]",
+            "command": "set routing-options autonomous-system 300",
+            "explanation": "配置设备的自治系统号。",
+            "parameters": [
+                {
+                    "name": "autonomous-system",
+                    "type": "integer",
+                    "explanation": "设备的自治系统号，用于BGP等路由协议。"
+                }
+            ]
+        },
+        "set routing-options static route [parameter1]/[parameter2] [parameter3]": {
+            "template": "set routing-options static route [parameter1]/[parameter2] [parameter3]",
+            "command": "set routing-options static route 10.1.1.0/24 discard",
+            "explanation": "配置静态路由，丢弃匹配的流量。",
+            "parameters": [
+                {
+                    "name": "network",
+                    "type": "string",
+                    "explanation": "目标网络地址。"
+                },
+                {
+                    "name": "prefix-length",
+                    "type": "integer",
+                    "explanation": "网络前缀长度。"
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "explanation": "对匹配流量的操作，例如discard。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols bgp group [parameter1] type [parameter2]": {
+            "template": "set protocols bgp group [parameter1] type [parameter2]",
+            "command": "set protocols bgp group EBGP-AS200 type external",
+            "explanation": "配置BGP组的类型为外部。",
+            "parameters": [
+                {
+                    "name": "group",
+                    "type": "string",
+                    "explanation": "BGP组的名称。"
+                },
+                {
+                    "name": "type",
+                    "type": "string",
+                    "explanation": "BGP组的类型，例如external。"
+                }
+            ]
+        },
+        "set protocols bgp group [parameter1] peer-as [parameter2]": {
+            "template": "set protocols bgp group [parameter1] peer-as [parameter2]",
+            "command": "set protocols bgp group EBGP-AS200 peer-as 200",
+            "explanation": "配置BGP组的对等体自治系统号。",
+            "parameters": [
+                {
+                    "name": "group",
+                    "type": "string",
+                    "explanation": "BGP组的名称。"
+                },
+                {
+                    "name": "peer-as",
+                    "type": "integer",
+                    "explanation": "对等体的自治系统号。"
+                }
+            ]
+        },
+        "set protocols bgp group [parameter1] neighbor [parameter2]": {
+            "template": "set protocols bgp group [parameter1] neighbor [parameter2]",
+            "command": "set protocols bgp group EBGP-AS200 neighbor 10.20.2.2",
+            "explanation": "配置BGP组的邻居地址。",
+            "parameters": [
+                {
+                    "name": "group",
+                    "type": "string",
+                    "explanation": "BGP组的名称。"
+                },
+                {
+                    "name": "neighbor",
+                    "type": "string",
+                    "explanation": "邻居的IP地址。"
+                }
+            ]
+        },
+        "set protocols bgp group [parameter1] family inet [parameter2]": {
+            "template": "set protocols bgp group [parameter1] family inet [parameter2]",
+            "command": "set protocols bgp group EBGP-AS200 family inet unicast",
+            "explanation": "配置BGP组的地址族为IPv4单播。",
+            "parameters": [
+                {
+                    "name": "group",
+                    "type": "string",
+                    "explanation": "BGP组的名称。"
+                },
+                {
+                    "name": "family",
+                    "type": "string",
+                    "explanation": "地址族类型，例如inet。"
+                },
+                {
+                    "name": "type",
+                    "type": "string",
+                    "explanation": "地址族的具体类型，例如unicast。"
+                }
+            ]
+        },
+        "set protocols bgp group [parameter1] export [parameter2]": {
+            "template": "set protocols bgp group [parameter1] export [parameter2]",
+            "command": "set protocols bgp group EBGP-AS200 export default-originate",
+            "explanation": "配置BGP组导出默认路由。",
+            "parameters": [
+                {
+                    "name": "group",
+                    "type": "string",
+                    "explanation": "BGP组的名称。"
+                },
+                {
+                    "name": "export",
+                    "type": "string",
+                    "explanation": "导出的策略名称。"
+                }
+            ]
+        }
+    },
+    "set policy-options": {
+        "template": "set policy-options",
+        "set policy-options policy-statement [parameter1] term [parameter2] then [parameter3]": {
+            "template": "set policy-options policy-statement [parameter1] term [parameter2] then [parameter3]",
+            "command": "set policy-options policy-statement default-originate term 1 then accept",
+            "explanation": "配置策略语句的条款动作。",
+            "parameters": [
+                {
+                    "name": "policy-statement",
+                    "type": "string",
+                    "explanation": "策略语句的名称。"
+                },
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "策略条款的编号。"
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "explanation": "条款的动作，例如accept。"
+                }
+            ]
+        },
+        "set policy-options policy-statement [parameter1] then default-action [parameter2]": {
+            "template": "set policy-options policy-statement [parameter1] then default-action [parameter2]",
+            "command": "set policy-options policy-statement default-originate then default-action accept",
+            "explanation": "配置策略语句的默认动作。",
+            "parameters": [
+                {
+                    "name": "policy-statement",
+                    "type": "string",
+                    "explanation": "策略语句的名称。"
+                },
+                {
+                    "name": "default-action",
+                    "type": "string",
+                    "explanation": "默认动作，例如accept。"
+                }
+            ]
+        }
+    }
+}

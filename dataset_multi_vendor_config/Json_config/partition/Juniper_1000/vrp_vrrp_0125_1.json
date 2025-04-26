@@ -1,0 +1,143 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name DeviceB",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4] standby [parameter5] ip [parameter6]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4] standby [parameter5] ip [parameter6]",
+            "command": "set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.2/24 standby 1 ip 10.1.1.1",
+            "explanation": "配置接口的IPv4地址及子网掩码，并设置备用IP地址。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                },
+                {
+                    "name": "standby",
+                    "type": "integer",
+                    "explanation": "备用IP地址的标识号。"
+                },
+                {
+                    "name": "standby-ip",
+                    "type": "string",
+                    "explanation": "备用IP地址。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet dhcp": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet dhcp",
+            "command": "set interfaces ge-0/0/0 unit 0 family inet dhcp",
+            "explanation": "配置接口使用DHCP自动获取IPv4地址。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces ge-0/0/1 unit 0 family inet address 192.168.2.1/24",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-0/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        }
+    },
+    "set routing-options": {
+        "template": "set routing-options",
+        "set routing-options static route [parameter1]/[parameter2] next-hop [parameter3]": {
+            "template": "set routing-options static route [parameter1]/[parameter2] next-hop [parameter3]",
+            "command": "set routing-options static route 0.0.0.0/0 next-hop <next-hop-ip>",
+            "explanation": "配置静态路由，指定默认路由的下一跳地址。",
+            "parameters": [
+                {
+                    "name": "destination",
+                    "type": "string",
+                    "explanation": "目标网络地址。"
+                },
+                {
+                    "name": "prefix-length",
+                    "type": "integer",
+                    "explanation": "目标网络的前缀长度。"
+                },
+                {
+                    "name": "next-hop-ip",
+                    "type": "string",
+                    "explanation": "下一跳的IP地址。"
+                }
+            ]
+        },
+        "set routing-options ospf area [parameter1] interface [parameter2]": {
+            "template": "set routing-options ospf area [parameter1] interface [parameter2]",
+            "command": "set routing-options ospf area 0 interface ge-0/0/0.0",
+            "explanation": "配置OSPF区域及接口。",
+            "parameters": [
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "OSPF区域号。"
+                },
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称及单元号，例如ge-0/0/0.0。"
+                }
+            ]
+        }
+    }
+}

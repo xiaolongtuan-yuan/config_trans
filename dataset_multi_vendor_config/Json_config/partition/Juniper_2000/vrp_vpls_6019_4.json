@@ -1,0 +1,304 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name PE2",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols mpls": {
+            "template": "set protocols mpls",
+            "command": "set protocols mpls",
+            "explanation": "启用MPLS协议。",
+            "parameters": []
+        },
+        "set protocols l2vpn": {
+            "template": "set protocols l2vpn",
+            "command": "set protocols l2vpn",
+            "explanation": "启用L2VPN协议。",
+            "parameters": []
+        },
+        "set protocols bgp group neighbor [parameter1] as [parameter2]": {
+            "template": "set protocols bgp group neighbor [parameter1] as [parameter2]",
+            "command": "set protocols bgp group neighbor 1.1.1.9 as 100",
+            "explanation": "配置BGP邻居及其AS号。",
+            "parameters": [
+                {
+                    "name": "neighbor-ip",
+                    "type": "string",
+                    "explanation": "BGP邻居的IP地址。"
+                },
+                {
+                    "name": "as-number",
+                    "type": "integer",
+                    "explanation": "邻居的AS号。"
+                }
+            ]
+        },
+        "set protocols bgp group neighbor [parameter1] update-source [parameter2]": {
+            "template": "set protocols bgp group neighbor [parameter1] update-source [parameter2]",
+            "command": "set protocols bgp group neighbor 1.1.1.9 update-source lo0.0",
+            "explanation": "配置BGP更新源接口。",
+            "parameters": [
+                {
+                    "name": "neighbor-ip",
+                    "type": "string",
+                    "explanation": "BGP邻居的IP地址。"
+                },
+                {
+                    "name": "update-source",
+                    "type": "string",
+                    "explanation": "用于BGP更新的源接口。"
+                }
+            ]
+        },
+        "set protocols ospf area [parameter1] interface [parameter2]": {
+            "template": "set protocols ospf area [parameter1] interface [parameter2]",
+            "command": "set protocols ospf area 0 interface ge-1/0/0.0",
+            "explanation": "配置OSPF区域及接口。",
+            "parameters": [
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "OSPF区域号。"
+                },
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称及单元号。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family mpls": {
+            "template": "set interfaces [parameter1] unit [parameter2] family mpls",
+            "command": "set interfaces gigabit-ethernet1/0/0 unit 0 family mpls",
+            "explanation": "配置接口的MPLS家族。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family ip address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family ip address [parameter3]/[parameter4]",
+            "command": "set interfaces gigabit-ethernet1/0/0 unit 0 family ip address 192.168.10.2/30",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family mpls ldp auto-config": {
+            "template": "set interfaces [parameter1] unit [parameter2] family mpls ldp auto-config",
+            "command": "set interfaces gigabit-ethernet1/0/0 unit 0 family mpls ldp auto-config",
+            "explanation": "启用接口的MPLS LDP自动配置。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] encapsulation dot1q [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] encapsulation dot1q [parameter3]",
+            "command": "set interfaces gigabit-ethernet2/0/0 unit 1 encapsulation dot1q 10",
+            "explanation": "配置接口的VLAN封装类型及VLAN ID。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号。"
+                },
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN ID。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family vfi [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family vfi [parameter3]",
+            "command": "set interfaces gigabit-ethernet2/0/0 unit 1 family vfi bgp-1",
+            "explanation": "配置接口的VFI家族。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号。"
+                },
+                {
+                    "name": "vfi-name",
+                    "type": "string",
+                    "explanation": "VFI名称。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family vfi [parameter3] vrf-id [parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family vfi [parameter3] vrf-id [parameter4]",
+            "command": "set interfaces gigabit-ethernet2/0/0 unit 1 family vfi bgp-1 vrf-id 100:1",
+            "explanation": "配置VFI的VRF ID。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号。"
+                },
+                {
+                    "name": "vfi-name",
+                    "type": "string",
+                    "explanation": "VFI名称。"
+                },
+                {
+                    "name": "vrf-id",
+                    "type": "string",
+                    "explanation": "VRF ID。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces lo0 unit 0 family inet address 3.3.3.9/32",
+            "explanation": "配置环回接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family l2vlan protocol [parameter3]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family l2vlan protocol [parameter3]",
+            "command": "set interfaces gigabit-ethernet2/0/0 unit 1 family l2vlan protocol vxlan",
+            "explanation": "配置接口的L2VLAN协议为VXLAN。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号。"
+                },
+                {
+                    "name": "protocol",
+                    "type": "string",
+                    "explanation": "L2VLAN协议类型。"
+                }
+            ]
+        }
+    },
+    "set routing-options": {
+        "template": "set routing-options",
+        "set routing-options router-id [parameter1]": {
+            "template": "set routing-options router-id [parameter1]",
+            "command": "set routing-options router-id 3.3.3.9",
+            "explanation": "配置路由器的ID。",
+            "parameters": [
+                {
+                    "name": "router-id",
+                    "type": "string",
+                    "explanation": "路由器的ID。"
+                }
+            ]
+        },
+        "set routing-options static route [parameter1]/[parameter2] next-hop [parameter3]": {
+            "template": "set routing-options static route [parameter1]/[parameter2] next-hop [parameter3]",
+            "command": "set routing-options static route 0.0.0.0/0 next-hop 1.1.1.9",
+            "explanation": "配置静态路由。",
+            "parameters": [
+                {
+                    "name": "destination",
+                    "type": "string",
+                    "explanation": "目标网络地址。"
+                },
+                {
+                    "name": "prefix-length",
+                    "type": "integer",
+                    "explanation": "目标网络的掩码长度。"
+                },
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "下一跳地址。"
+                }
+            ]
+        }
+    }
+}

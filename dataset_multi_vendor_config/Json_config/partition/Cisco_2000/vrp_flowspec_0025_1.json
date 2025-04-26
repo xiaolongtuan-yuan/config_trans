@@ -1,0 +1,247 @@
+{
+    "hostname [parameter1]": {
+        "template": "hostname [parameter1]",
+        "command": "hostname PE1",
+        "explanation": "设置设备的主机名为 'PE1'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "ip vrf [parameter1]": {
+        "template": "ip vrf [parameter1]",
+        "command": "ip vrf vpna",
+        "explanation": "创建一个名为 'vpna' 的 VRF 实例",
+        "parameters": [
+            {
+                "name": "vrf name",
+                "type": "string",
+                "explanation": "VRF 实例名称"
+            }
+        ],
+        "rd [parameter1]": {
+            "template": "rd [parameter1]",
+            "command": "rd 2:2",
+            "explanation": "为 VRF 实例 'vpna' 设置路由区分符为 2:2",
+            "parameters": [
+                {
+                    "name": "route distinguisher",
+                    "type": "string",
+                    "explanation": "路由区分符"
+                }
+            ]
+        },
+        "route-target export [parameter1]": {
+            "template": "route-target export [parameter1]",
+            "command": "route-target export 2:2",
+            "explanation": "为 VRF 实例 'vpna' 设置导出的路由目标为 2:2",
+            "parameters": [
+                {
+                    "name": "route target",
+                    "type": "string",
+                    "explanation": "路由目标"
+                }
+            ]
+        },
+        "route-target import [parameter1]": {
+            "template": "route-target import [parameter1]",
+            "command": "route-target import 2:2",
+            "explanation": "为 VRF 实例 'vpna' 设置导入的路由目标为 2:2",
+            "parameters": [
+                {
+                    "name": "route target",
+                    "type": "string",
+                    "explanation": "路由目标"
+                }
+            ]
+        }
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "配置接口 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip vrf forwarding [parameter1]": {
+            "template": "ip vrf forwarding [parameter1]",
+            "command": "ip vrf forwarding vpna",
+            "explanation": "将接口 'GigabitEthernet1/0/0' 关联到 VRF 实例 'vpna'",
+            "parameters": [
+                {
+                    "name": "vrf name",
+                    "type": "string",
+                    "explanation": "VRF 实例名称"
+                }
+            ]
+        },
+        "ipv6 enable": {
+            "template": "ipv6 enable",
+            "command": "ipv6 enable",
+            "explanation": "在接口 'GigabitEthernet1/0/0' 上启用 IPv6",
+            "parameters": []
+        },
+        "ipv6 address [parameter1]": {
+            "template": "ipv6 address [parameter1]",
+            "command": "ipv6 address 2001:db8:1::2/64",
+            "explanation": "为接口 'GigabitEthernet1/0/0' 配置 IPv6 地址 2001:db8:1::2/64",
+            "parameters": [
+                {
+                    "name": "ipv6 address",
+                    "type": "IPv6",
+                    "explanation": "IPv6 地址"
+                }
+            ]
+        }
+    },
+    "router bgp [parameter1]": {
+        "template": "router bgp [parameter1]",
+        "command": "router bgp 200",
+        "explanation": "配置 BGP 进程，AS 号为 200",
+        "parameters": [
+            {
+                "name": "AS number",
+                "type": "integer",
+                "explanation": "AS 号"
+            }
+        ],
+        "no synchronization": {
+            "template": "no synchronization",
+            "command": "no synchronization",
+            "explanation": "禁用 BGP 同步",
+            "parameters": []
+        },
+        "address-family ipv4": {
+            "template": "address-family ipv4",
+            "command": "address-family ipv4",
+            "explanation": "进入 IPv4 地址族配置模式",
+            "parameters": [],
+            "no synchronization": {
+                "template": "no synchronization",
+                "command": "no synchronization",
+                "explanation": "在 IPv4 地址族下禁用 BGP 同步",
+                "parameters": []
+            },
+            "exit-address-family": {
+                "template": "exit-address-family",
+                "command": "exit-address-family",
+                "explanation": "退出 IPv4 地址族配置模式",
+                "parameters": []
+            }
+        },
+        "address-family ipv4 vrf [parameter1]": {
+            "template": "address-family ipv4 vrf [parameter1]",
+            "command": "address-family ipv4 vrf vpna",
+            "explanation": "进入 VRF 'vpna' 的 IPv4 地址族配置模式",
+            "parameters": [
+                {
+                    "name": "vrf name",
+                    "type": "string",
+                    "explanation": "VRF 实例名称"
+                }
+            ],
+            "neighbor [parameter1] remote-as [parameter2]": {
+                "template": "neighbor [parameter1] remote-as [parameter2]",
+                "command": "neighbor 2001:db8:1::1 remote-as 200",
+                "explanation": "配置 BGP 邻居 2001:db8:1::1，远程 AS 号为 200",
+                "parameters": [
+                    {
+                        "name": "neighbor ip",
+                        "type": "IPv6",
+                        "explanation": "邻居的 IPv6 地址"
+                    },
+                    {
+                        "name": "remote AS number",
+                        "type": "integer",
+                        "explanation": "远程 AS 号"
+                    }
+                ]
+            },
+            "exit-address-family": {
+                "template": "exit-address-family",
+                "command": "exit-address-family",
+                "explanation": "退出 VRF 'vpna' 的 IPv4 地址族配置模式",
+                "parameters": []
+            }
+        },
+        "address-family ipv6 vrf [parameter1]": {
+            "template": "address-family ipv6 vrf [parameter1]",
+            "command": "address-family ipv6 vrf vpna",
+            "explanation": "进入 VRF 'vpna' 的 IPv6 地址族配置模式",
+            "parameters": [
+                {
+                    "name": "vrf name",
+                    "type": "string",
+                    "explanation": "VRF 实例名称"
+                }
+            ],
+            "neighbor [parameter1] activate": {
+                "template": "neighbor [parameter1] activate",
+                "command": "neighbor 2001:db8:1::1 activate",
+                "explanation": "激活与邻居 2001:db8:1::1 的 IPv6 BGP 会话",
+                "parameters": [
+                    {
+                        "name": "neighbor ip",
+                        "type": "IPv6",
+                        "explanation": "邻居的 IPv6 地址"
+                    }
+                ]
+            },
+            "exit-address-family": {
+                "template": "exit-address-family",
+                "command": "exit-address-family",
+                "explanation": "退出 VRF 'vpna' 的 IPv6 地址族配置模式",
+                "parameters": []
+            }
+        }
+    },
+    "ip flow-export ipv6 flow-spec destination-prefix [parameter1]": {
+        "template": "ip flow-export ipv6 flow-spec destination-prefix [parameter1]",
+        "command": "ip flow-export ipv6 flow-spec destination-prefix 2001:db8:1::/64",
+        "explanation": "配置 IPv6 流规范导出，目的前缀为 2001:db8:1::/64",
+        "parameters": [
+            {
+                "name": "destination prefix",
+                "type": "IPv6",
+                "explanation": "目的前缀"
+            }
+        ]
+    },
+    "ip flow-export ipv6 flow-spec source-port [parameter1]": {
+        "template": "ip flow-export ipv6 flow-spec source-port [parameter1]",
+        "command": "ip flow-export ipv6 flow-spec source-port 159",
+        "explanation": "配置 IPv6 流规范导出，源端口为 159",
+        "parameters": [
+            {
+                "name": "source port",
+                "type": "integer",
+                "explanation": "源端口"
+            }
+        ]
+    },
+    "ip flow-export ipv6 flow-spec action [parameter1]": {
+        "template": "ip flow-export ipv6 flow-spec action [parameter1]",
+        "command": "ip flow-export ipv6 flow-spec action deny",
+        "explanation": "配置 IPv6 流规范导出，动作为拒绝",
+        "parameters": [
+            {
+                "name": "action",
+                "type": "string",
+                "explanation": "动作"
+            }
+        ]
+    }
+}
