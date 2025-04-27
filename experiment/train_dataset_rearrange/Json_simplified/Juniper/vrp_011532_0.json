@@ -1,0 +1,151 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name PE1",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces lo0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 1.1.1.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "vlan-id [parameter3]": {
+                "template": "vlan-id [parameter3]",
+                "command": "vlan-id 1",
+                "explanation": "Configure VLAN IDs for interface units.",
+                "parameters": [
+                    {
+                        "name": "vlan-id",
+                        "type": "integer",
+                        "explanation": "VLAN ID, used to identify VLAN."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols ospf area [parameter1]": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0.0.0.0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface lo0.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ],
+            "interface-type [parameter3]": {
+                "template": "interface-type [parameter3]",
+                "command": "interface-type p2p",
+                "explanation": "Configures the OSPF area interface type as a point-to-point.",
+                "parameters": [
+                    {
+                        "name": "interface-type",
+                        "type": "string",
+                        "explanation": "Type of interface, e.g. p2p."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols l2vpn circuit-cross-connect [parameter1]": {
+        "template": "set protocols l2vpn circuit-cross-connect [parameter1]",
+        "command": "set protocols l2vpn circuit-cross-connect cc1",
+        "explanation": "The command configures a Layer 2 VPN (L2VPN) circuit cross-connect, linking `[parameter1]` (e.g., interface or VLAN) to another endpoint for point-to-point Ethernet connectivity.",
+        "parameters": [
+            {
+                "name": "ccc-name",
+                "type": "string",
+                "explanation": "Name of the circuit cross-connection."
+            }
+        ],
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-0/0/1.1",
+            "explanation": "The command `interface [parameter2]` in Junos enters configuration mode for the specified network interface identified by `[parameter2]`.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-0/0/1.1."
+                }
+            ]
+        },
+        "neighbor [parameter2]": {
+            "template": "neighbor [parameter2]",
+            "command": "neighbor 2.2.2.2",
+            "explanation": "The command `neighbor [parameter2]` specifies a BGP neighbor by its IP address or hostname, enabling configuration of BGP peering sessions with that specific neighbor.",
+            "parameters": [
+                {
+                    "name": "neighbor",
+                    "type": "string",
+                    "explanation": "Neighbor's IP address."
+                }
+            ],
+            "vc-id [parameter3]": {
+                "template": "vc-id [parameter3]",
+                "command": "vc-id 1001",
+                "explanation": "The command `vc-id [parameter3]` in Junos assigns a Virtual Circuit Identifier (VC-ID) to a Layer 2 VPN or pseudowire, uniquely identifying the virtual circuit.",
+                "parameters": [
+                    {
+                        "name": "vc-id",
+                        "type": "integer",
+                        "explanation": "Virtual circuit identifier."
+                    }
+                ]
+            }
+        }
+    }
+}

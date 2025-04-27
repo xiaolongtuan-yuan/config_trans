@@ -52,8 +52,8 @@ if __name__ == '__main__':
     将原始json command json转换为command tree
     '''
     for vendor in ['HUAWEI']:
-        source_dir = f'../experiment/train_dataset/command_tree/{vendor}'
-        save_dir = f'../experiment/train_dataset/command_tree/{vendor}'
+        source_dir = f'./experiment/train_dataset_rearrange/command_tree/{vendor}'
+        save_dir = f'./experiment/train_dataset_rearrange/command_tree/{vendor}'
 
         for filename in tqdm(os.listdir(source_dir)):
             if filename.endswith('.json'):

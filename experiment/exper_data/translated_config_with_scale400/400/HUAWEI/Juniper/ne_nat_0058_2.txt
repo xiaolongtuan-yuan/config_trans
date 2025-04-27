@@ -1,13 +1,7 @@
 set system host-name DeviceB
-set protocols ospf area 1 interface GigabitEthernet
-set chassis fpc [parameter1] pic [parameter2] controller [parameter3] no-shutdown
-set system telemetry destination-group 2.2.2.2
-set interfaces 2.2.2.2 ipv4-address 2.2.2.2
-set interfaces 2.2.2.2 family inet address none/255.255.255.0
-set interfaces 2.2.2.2 ipv4-address 3.3.3.1
-set protocols ospf area 0.0.0.0 interface GigabitEthernet
-set system services dhcp pool 2.2.2.0
-set services nat pool 2.2.2.0 range 2.2.2.0
-set services nat pool 2.2.2.0 address-netmask 0.0.0.255
-set services nat pool 2.2.2.0 range 3.3.3.0
-set system radius-server [parameter1] retry none
+set interfaces GigabitEthernet unit [parameter2] family ethernet-switching vlan members none
+set interfaces GigabitEthernet family inet address 2.2.2.0/0.0.0.255 tunnel family inet address 2.2.2.2/none
+set interfaces GigabitEthernet unit 0.0.0.0
+set interfaces GigabitEthernet family inet address 3.3.3.0/0.0.0.255
+set interfaces GigabitEthernet family inet address none/255.255.255.0 tunnel family inet address 3.3.3.1/none
+set protocols oam cfm maintenance-domain [parameter1] maintenance-association [parameter2] test-id [parameter3] mep [parameter4] remote-mep [parameter5] delay-measurement two-way send interval none

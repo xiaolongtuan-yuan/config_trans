@@ -1,20 +1,24 @@
 sysname DeviceA
-acl number 2001
- rule none deny source 1.1.1.1 none
-acl number 2002
- rule none deny source 1.1.1.2 none
-traffic classifier class1
 acl 2001
-traffic classifier class2
+ rule permit ip source 1.1.1.1 none
 acl 2002
+ rule permit ip source 1.1.1.2 none
+traffic classifier class1
+traffic classifier 2001 operator [parameter2]
+ if-match acl 2001
+ if-match acl 2002
+traffic classifier class2
 qppb local-policy policy1
- traffic-policy none input
-traffic behavior 5000000
- car cir 2000000 cbs none green transmit red drop
-qos-profile 5000000
- car cir 5000000 cbs none green transmit red transmit
- user-queue cir none pir 6000000
+ qos-local-id none behavior class1
+qppb local-policy 6000000
+ qos-local-id none behavior transmit
+ qos-local-id none behavior class2
+qppb local-policy 2000000
+ qos-local-id none behavior drop
 interface GigabitEthernet1/0/0
- undo shutdown
- ip address 1.1.1.3 255.255.255.0
- e1 none none
+ traffic-policy none input
+ policy-based-route policy1 permit node none map-instance none
+ qinq termination pe-vid none ce-vid none to none
+ospf [parameter1] router-id [parameter2]
+ undo silent-interface none
+ip address 1.1.1.3 255.255.255.0

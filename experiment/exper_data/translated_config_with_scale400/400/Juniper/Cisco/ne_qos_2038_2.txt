@@ -1,17 +1,12 @@
 hostname DeviceC
-route-map ge-1/0/0 permit [parameter2]
- set interface ge-1/0/0
-controller E1 0
+interface ge-1/0/0
+interface 0
 ip address 10.20.1.1 24
-bridge internal protocol none
-radius-server type internal
-router bgp 10.20.1.2
- address-family 10.20.1.2
-  neighbor 10.20.1.2 route-reflector-client
- address-family inet unicast
-vrf definition connected
- route-target export connected
+bridge internal protocol internal
+bridge inet protocol unicast
+bridge none protocol connected
 router ospf 0
- network 0 [parameter2] area [parameter3]
-interface ge-1/0/0.0
-mpls ldp neighbor 100
+ network none none area 0
+ no passive-interface ge-1/0/0.0
+router bgp 100
+ neighbor 100 remote-as none

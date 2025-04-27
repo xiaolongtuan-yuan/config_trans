@@ -16,12 +16,14 @@ def merge_nodes(existing_node: dict, new_node: dict):
     for key, val in new_node.items():
         # 如果在 existing_node 中没有这个 key，直接添加
         if key not in existing_node:
-            existing_node[key] = val
+            filtered_val = filter_valid_nodes(val)
+            if filtered_val:
+                existing_node[key] = filtered_val
         else:
             # 若都为 dict，则需要递归合并，否则跳过（只保留第一次）
             if isinstance(existing_node[key], dict) and isinstance(val, dict):
                 merge_nodes(existing_node[key], val)
-            # 其余情况按照“保留第一次出现”的原则，不覆盖 existing_node[key]
+            # 其余情况按照"保留第一次出现"的原则，不覆盖 existing_node[key]
     return existing_node
 
 
@@ -44,6 +46,9 @@ def simplify_json(input_dict: dict) -> dict:
             # print('sub_dict:', json.dumps(sub_dict, indent=4, ensure_ascii=False))
             if not isinstance(sub_dict, dict):
                 # print('不是字典-----------------')
+                continue
+            required_fields = ["template", "command", "explanation", "parameters"]
+            if not all(field in sub_dict for field in required_fields):
                 continue
 
             # 拿到该节点的 template，作为新 key
@@ -95,27 +100,6 @@ def simplify_json(input_dict: dict) -> dict:
     # print('解析模型：', input_dict)
     result = _simplify(input_dict)
     return result
-
-
-def merge_models(config1, config2):
-    """
-    递归地将 config2 中不存在于 config1 的节点合并到 config1 中。
-    如果 key 存在于 config1 且对应子节点都是字典，则继续合并其子节点；
-    如果 key 不存在于 config1，则将 config2[key] 直接插入到 config1；
-    如果 key 都存在，但对应的值不是字典，则保持 config1 原值不变（即不覆盖）。
-    """
-    for key, value in config2.items():
-        if key not in config1:
-            # 如果 config1 中没有该键，直接插入
-            config1[key] = value
-        else:
-            # 如果 config1 中已经存在这个 key，
-            # 且双方都是 dict，则递归合并子节点
-            if isinstance(value, dict) and isinstance(config1[key], dict):
-                merge_models(config1[key], value)
-            # 如果不是 dict，则不覆盖，保持原值。
-            # 所以这里什么都不做即可
-    return config1
 
 
 def get_json_filenames(folder_path):
@@ -180,17 +164,42 @@ def check_juniper_config(config_model: dict) -> bool:
     return _check_commands(config_model)
 
 
+def filter_valid_nodes(node: dict) -> dict:
+    """
+    递归过滤，只保留属性齐全（template、command、explanation、parameters）的节点。
+    """
+    if not isinstance(node, dict):
+        return node
+    required_fields = ["template", "command", "explanation", "parameters"]
+    # 只保留属性齐全的节点
+    if all(field in node for field in required_fields):
+        filtered = {}
+        for k, v in node.items():
+            if isinstance(v, dict):
+                child = filter_valid_nodes(v)
+                if child and isinstance(child, dict) and all(field in child for field in required_fields):
+                    filtered[k] = child
+                elif not isinstance(v, dict):
+                    filtered[k] = v
+            else:
+                filtered[k] = v
+        return filtered
+    else:
+        return None
+
+
 if __name__ == "__main__":
     vendors = ["Juniper", "Cisco", "HUAWEI"]
+    # vendors = ["HUAWEI"]
     project_root = Path(__file__).parent.parent
 
     # simplify the device configuration model
     for vendor in vendors:
         if vendor == 'Juniper':
-            folder_path = str(project_root / 'experiment/train_dataset/command_tree/{}_subdivided'.format(vendor))
+            folder_path = str(project_root / 'experiment/train_dataset_rearrange/command_tree/{}_subdivided'.format(vendor))
         else:
-            folder_path = str(project_root / 'experiment/train_dataset/command_tree/{}'.format(vendor))
-        save_path = str(project_root / 'experiment/train_dataset/Json_simplified/{}'.format(vendor))
+            folder_path = str(project_root / 'experiment/train_dataset_rearrange/command_tree/{}'.format(vendor))
+        save_path = str(project_root / 'experiment/train_dataset_rearrange/Json_simplified/{}'.format(vendor))
         os.makedirs(save_path, exist_ok=True)
         json_files = get_json_filenames(folder_path)
         i = 0

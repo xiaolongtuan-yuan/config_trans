@@ -1,0 +1,216 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name PE2",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set protocols mpls interface [parameter1]": {
+        "template": "set protocols mpls interface [parameter1]",
+        "command": "set protocols mpls interface ge-1/0/0",
+        "explanation": "Enables the MPLS protocol on the specified interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ]
+    },
+    "set protocols ldp transport-address [parameter1]": {
+        "template": "set protocols ldp transport-address [parameter1]",
+        "command": "set protocols ldp transport-address 3.3.3.9",
+        "explanation": "Configures the transfer address for the LDP protocol.",
+        "parameters": [
+            {
+                "name": "transport-address",
+                "type": "string",
+                "explanation": "the transfer address of the LDP protocol."
+            }
+        ]
+    },
+    "set protocols ldp interface [parameter1]": {
+        "template": "set protocols ldp interface [parameter1]",
+        "command": "set protocols ldp interface ge-2/0/0",
+        "explanation": "Enables the LDP protocol on the specified interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g. g-0/0/0."
+            }
+        ]
+    },
+    "set protocols ldp targeted-session [parameter1]": {
+        "template": "set protocols ldp targeted-session [parameter1]",
+        "command": "set protocols ldp targeted-session 1.1.1.9",
+        "explanation": "Configures the LDP target session.",
+        "parameters": [
+            {
+                "name": "target-address",
+                "type": "string",
+                "explanation": "Target address, e.g. 4.4.4.4.4."
+            }
+        ]
+    },
+    "set protocols ldp targeted-hello accept": {
+        "template": "set protocols ldp targeted-hello accept",
+        "command": "set protocols ldp targeted-hello accept",
+        "explanation": "Please accept the LDP target hello message."
+    },
+    "set protocols l2circuit neighbor [parameter1]": {
+        "template": "set protocols l2circuit neighbor [parameter1]",
+        "command": "set protocols l2circuit neighbor 1.1.1.9",
+        "explanation": "Configures a Layer 2 Circuit (L2Circuit) neighbor with the specified IP address (`[parameter1]`) for point-to-point pseudowire connectivity.",
+        "parameters": [
+            {
+                "name": "neighbor-ip",
+                "type": "string",
+                "explanation": "Neighbor's IP address."
+            }
+        ],
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-1/0/0.0",
+            "explanation": "This command configures a Layer 2 Circuit (L2Circuit) by specifying a neighbor device (`parameter1`) and associating it with a local interface (`parameter2`) for pseudowire establishment.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "interface name."
+                }
+            ],
+            "virtual-circuit-id [parameter3]": {
+                "template": "virtual-circuit-id [parameter3]",
+                "command": "virtual-circuit-id 101",
+                "explanation": "The L2 circuit is equipped with neighbours, interfaces and virtual circuit ID.",
+                "parameters": [
+                    {
+                        "name": "virtual-circuit-id",
+                        "type": "integer",
+                        "explanation": "Virtual circuit identifier."
+                    }
+                ],
+                "encapsulation-type [parameter4]": {
+                    "template": "encapsulation-type [parameter4]",
+                    "command": "encapsulation-type mpls",
+                    "explanation": "Configure L2VPN neighbours, interfaces, virtual circuit ID and containment types.",
+                    "parameters": [
+                        {
+                            "name": "encapsulation-type",
+                            "type": "string",
+                            "explanation": "Cover type, e.g. vlan."
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "set protocols ospf area [parameter1]": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0.0.0.0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface lo0.1",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        }
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family ethernet-switching port-mode [parameter3]": {
+                "template": "family ethernet-switching port-mode [parameter3]",
+                "command": "family ethernet-switching port-mode trunk",
+                "explanation": "Configure the interface 's port mode is trunk.",
+                "parameters": [
+                    {
+                        "name": "port-mode",
+                        "type": "string",
+                        "explanation": "Port mode, for example, trunk."
+                    }
+                ]
+            },
+            "encapsulation [parameter3]": {
+                "template": "encapsulation [parameter3]",
+                "command": "encapsulation vlan-ccc",
+                "explanation": "The command `encapsulation [parameter3]` sets the Layer 2 encapsulation type (e.g., Ethernet, PPP, Frame Relay) on a Junos interface.",
+                "parameters": [
+                    {
+                        "name": "encapsulation",
+                        "type": "string",
+                        "explanation": "Cover type, e.g. vlan-ccc."
+                    }
+                ],
+                "vlan-id [parameter4]": {
+                    "template": "vlan-id [parameter4]",
+                    "command": "vlan-id 20",
+                    "explanation": "The command `vlan-id [parameter4]` assigns a specific VLAN identifier (VLAN ID) to an interface or VLAN configuration in Junos OS.",
+                    "parameters": [
+                        {
+                            "name": "vlan-id",
+                            "type": "integer",
+                            "explanation": "VLAN ID."
+                        }
+                    ]
+                }
+            },
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.2.2.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    }
+}

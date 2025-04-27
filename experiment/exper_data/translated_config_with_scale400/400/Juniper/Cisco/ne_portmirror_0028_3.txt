@@ -1,17 +1,16 @@
 hostname CE1
-vlan vlan10
+vlan 10
  name vlan10
  name vlan30
-interface 10
- switchport trunk allowed vlan add 10
- switchport trunk allowed vlan add 30
+vlan 30
+interface ge-1/0/1
+interface 0
  switchport mode access
- no shutdown
+ switchport trunk allowed vlan vlan30
+router ospf [parameter1]
+ no passive-interface none
+interface ge-1/0/2
  switchport mode trunk
-route-map ge-1/0/1 permit [parameter2]
- set interface ge-1/0/1
- set interface ge-1/0/2
- set interface ge-1/0/3
-controller E1 0
-vpdn-group switching
- protocol switching
+ switchport trunk allowed vlan vlan10
+interface ge-1/0/3
+mpls traffic-eng tunnel-select switching none

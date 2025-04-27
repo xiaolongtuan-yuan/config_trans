@@ -62,8 +62,8 @@ def check_filename(file_name):
 
 if __name__ == '__main__':
     # 删除目录../experiment/test_dataset
-    if os.path.exists('../experiment/test_dataset'):
-        shutil.rmtree('../experiment/test_dataset')
+    # if os.path.exists('../experiment/test_dataset'):
+    #     shutil.rmtree('../experiment/test_dataset')
     for vendor in ['Cisco', 'HUAWEI', 'Juniper']:
         os.makedirs(f'../experiment/test_dataset/text_config/{vendor}', exist_ok=True)
         os.makedirs(f'../experiment/test_dataset/command_tree/{vendor}', exist_ok=True)

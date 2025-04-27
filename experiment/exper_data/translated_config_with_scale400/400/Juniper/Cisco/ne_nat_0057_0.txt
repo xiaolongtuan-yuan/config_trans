@@ -1,20 +1,18 @@
 hostname NATA
-route-map ge-0/0/0 permit [parameter2]
- set interface ge-0/0/0
-controller E1 0
+interface ge-0/0/0
+interface 0
 ip address 192.168.10.1 24
 crypto ipsec transform-set trust none none
-interface ge-0/0/0 none
-ip ssh client none authorized-service all
+crypto ipsec transform-set ge-0/0/0 none none
+crypto ipsec transform-set all none none
 crypto ipsec transform-set untrust none none
-interface ge-0/0/1 none
-ip nat pool address-group1 11.11.11.101 none netmask none
+crypto ipsec transform-set ge-0/0/1 none none
+ip nat inside source list none pool address-group1
+ip nat inside source list none pool 11.11.11.101
 ip dhcp pool 11.11.11.105
-ip access-list extended OUTBOUND
- permit none none none trust
- permit none none none untrust
-interface NAT-INSIDE
- ipv6 traffic-policy NAT-INSIDE inbound
-access-list none permit ip none 192.168.10.0 none none
-ip nat inside source static network none 24 none
-ip nat pool address-group1 none none netmask none
+ip vrf forwarding OUTBOUND
+ip vrf forwarding trust
+ip vrf forwarding untrust
+ip vrf forwarding NAT-INSIDE
+ip vrf forwarding 24
+ip vrf forwarding address-group1

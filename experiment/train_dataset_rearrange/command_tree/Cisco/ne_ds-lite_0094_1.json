@@ -1,0 +1,207 @@
+{
+    "hostname DS-Lite": {
+        "template": "hostname [parameter1]",
+        "command": "hostname DS-Lite",
+        "explanation": "Sets the device 's hostname 'DS-Lite '",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "Host Name"
+            }
+        ]
+    },
+    "license boot level ds-lite": {
+        "template": "license boot level [parameter1]",
+        "command": "license boot level ds-lite",
+        "explanation": "Set the license level at startup to 'ds-lite'",
+        "parameters": [
+            {
+                "name": "license level",
+                "type": "string",
+                "explanation": "Licence Level"
+            }
+        ]
+    },
+    "ipv6 access-list 3500": {
+        "template": "ipv6 access-list [parameter1]",
+        "command": "ipv6 access-list 3500",
+        "explanation": "Create an IPv6 Access Control List with 3500",
+        "parameters": [
+            {
+                "name": "access list number",
+                "type": "integer",
+                "explanation": "ACL number"
+            }
+        ],
+        "permit ipv6 2001:DB8:2::/64 any": {
+            "template": "permit ipv6 [parameter1] [parameter2]",
+            "command": "permit ipv6 2001:DB8:2::/64 any",
+            "explanation": "Allow traffic from specified IPv6 prefix to any destination",
+            "parameters": [
+                {
+                    "name": "source prefix",
+                    "type": "IPv6 prefix",
+                    "explanation": "Source IPv6 Prefix"
+                },
+                {
+                    "name": "destination",
+                    "type": "string",
+                    "explanation": "Destination, this is \"any\" for anywhere."
+                }
+            ]
+        }
+    },
+    "ip vrf forwarding DS-Lite": {
+        "template": "ip vrf forwarding [parameter1]",
+        "command": "ip vrf forwarding DS-Lite",
+        "explanation": "Configure VRF forwarding, VRF name 'DS-Lite'",
+        "parameters": [
+            {
+                "name": "vrf name",
+                "type": "string",
+                "explanation": "Name of VRF"
+            }
+        ],
+        "rd 1:1": {}
+    },
+    "ipv6 unicast-routing": {
+        "template": "ipv6 unicast-routing",
+        "command": "ipv6 unicast-routing",
+        "explanation": "Enable IPv6 solo router",
+        "parameters": []
+    },
+    "interface GigabitEthernet2/0/2": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet2/0/2",
+        "explanation": "Configure interface 'GigabitEthernet2/0/2'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "Interface Name"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "Enable interface (the interface is closed by default)",
+            "parameters": []
+        },
+        "ipv6 enable": {
+            "template": "ipv6 enable",
+            "command": "ipv6 enable",
+            "explanation": "Enable IPv6 functionality for interfaces",
+            "parameters": []
+        },
+        "ipv6 address 2001:DB8:1::2:1/64": {
+            "template": "ipv6 address [parameter1]",
+            "command": "ipv6 address 2001:DB8:1::2:1/64",
+            "explanation": "Configure interface IPv6 address 2001:DB8:1:2:1/64",
+            "parameters": [
+                {
+                    "name": "ipv6 address",
+                    "type": "IPv6 with mask",
+                    "explanation": "IPv6 Address and Prefix Length"
+                }
+            ]
+        },
+        "ipv6 traffic-policy p1 inbound": {
+            "template": "ipv6 traffic-policy [parameter1] inbound",
+            "command": "ipv6 traffic-policy p1 inbound",
+            "explanation": "Apply IPv6 traffic policy 'p1 ' on interface in the direction of entry station",
+            "parameters": [
+                {
+                    "name": "policy name",
+                    "type": "string",
+                    "explanation": "The name of the traffic policy"
+                }
+            ]
+        }
+    },
+    "ipv6 route 2001:DB8::1/128 GigabitEthernet2/0/2 2001:DB8:2::1": {
+        "template": "ipv6 route [parameter1] [parameter2] [parameter3]",
+        "command": "ipv6 route 2001:DB8::1/128 GigabitEthernet2/0/2 2001:DB8:2::1",
+        "explanation": "Configure a static IPv6 route with targets 2001: DB8: 1/128, interface with GigabitEthernet2/0/2, next to 2001:DB8:2:1",
+        "parameters": [
+            {
+                "name": "destination",
+                "type": "IPv6 with mask",
+                "explanation": "Target network"
+            },
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Out interface."
+            },
+            {
+                "name": "next hop",
+                "type": "IPv6",
+                "explanation": "Next Jump IPv6 Address"
+            }
+        ]
+    },
+    "class-map match-all c1": {
+        "template": "class-map match-all [parameter1]",
+        "command": "class-map match-all c1",
+        "explanation": "Create a class map 'c1 ', matching all conditions",
+        "parameters": [
+            {
+                "name": "class map name",
+                "type": "string",
+                "explanation": "Name of class map"
+            }
+        ],
+        "match access-group 3500": {
+            "template": "match access-group [parameter1]",
+            "command": "match access-group 3500",
+            "explanation": "Match specified access control list 3500",
+            "parameters": [
+                {
+                    "name": "access list number",
+                    "type": "integer",
+                    "explanation": "ACL number"
+                }
+            ]
+        }
+    },
+    "policy-map p1": {
+        "template": "policy-map [parameter1]",
+        "command": "policy-map p1",
+        "explanation": "Create a policy map 'p1 '",
+        "parameters": [
+            {
+                "name": "policy map name",
+                "type": "string",
+                "explanation": "Name of the policy map"
+            }
+        ],
+        "class c1": {
+            "template": "class [parameter1]",
+            "command": "class c1",
+            "explanation": "Specify class map 'c1 '",
+            "parameters": [
+                {
+                    "name": "class map name",
+                    "type": "string",
+                    "explanation": "Name of class map"
+                }
+            ],
+            "set ip next-hop 2001:DB8:2::1": {
+                "template": "set ip next-hop [parameter1]",
+                "command": "set ip next-hop 2001:DB8:2::1",
+                "explanation": "Set IP next to 2001: DB8:2:1",
+                "parameters": [
+                    {
+                        "name": "next hop",
+                        "type": "IPv6",
+                        "explanation": "Next Jump IPv6 Address"
+                    }
+                ]
+            }
+        }
+    },
+    "ipv6 router isis": {},
+    "ip route 2001:DB8:2::/64 GigabitEthernet2/0/2": {},
+    "end": {}
+}

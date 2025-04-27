@@ -1,20 +1,13 @@
 set system host-name routerB
-set protocols ospf area Eth-Trunk1 interface Eth-Trunk1
-set protocols ospf area Eth-Trunk1 interface GigabitEthernet2/0/0
-set protocols ospf area Eth-Trunk1 interface GigabitEthernet2/0/2
-set protocols ospf area Eth-Trunk1 interface GigabitEthernet3/0/0
-set protocols ospf area Eth-Trunk1 interface GigabitEthernet4/0/0
-set system telemetry destination-group 10.40.1.2
-set interfaces 10.40.1.2 ipv4-address 10.40.1.2
-set interfaces 10.40.1.2 family inet address none/255.255.255.0
-set interfaces 10.40.1.2 ipv4-address 10.30.1.2
-set interfaces 10.40.1.2 ipv4-address 10.50.1.1
-set interfaces 10.40.1.2 ether-options 802.3ad 1
-set chassis fpc [parameter1] pic [parameter2] controller [parameter3] no-shutdown
-set routing-options static route 10.1.1.0/GigabitEthernet2/0/0 none
-set routing-instances 10.1.1.0 routing-options static route 10.1.1.0/255.255.255.0 next-hop 10.30.1.1
-set routing-instances 10.1.1.0 routing-options static route 10.1.1.0/255.255.255.0 next-hop 10.40.1.1
-set routing-instances 10.1.1.0 routing-options static route 10.1.1.0/255.255.255.0 next-hop 10.50.1.2
-set routing-options static route 10.1.1.0/Eth-Trunk1 none
-set routing-options static route 10.20.1.0/GigabitEthernet2/0/2 none
-set system radius-server [parameter1] retry none
+set interfaces Eth-Trunk1 unit 10.40.1.2
+set interfaces Eth-Trunk1 family inet address none/255.255.255.0 tunnel family inet address 10.40.1.2/none
+set interfaces GigabitEthernet2/0/0 unit 10.40.1.2 family ethernet-switching vlan members none
+set interfaces GigabitEthernet2/0/0 family inet address none/255.255.255.0 tunnel family inet address 10.30.1.2/none
+set interfaces GigabitEthernet2/0/2 unit 10.40.1.2
+set interfaces GigabitEthernet2/0/2 family inet address none/255.255.255.0 tunnel family inet address 10.50.1.1/none
+set interfaces GigabitEthernet3/0/0 ether-options 802.3ad 1
+set interfaces GigabitEthernet4/0/0
+set routing-options static route 10.1.1.0/255.255.255.0 10.30.1.1
+set routing-options static route 10.1.1.0/255.255.255.0 10.40.1.1
+set routing-options static route 10.20.1.0/255.255.255.0 10.50.1.2
+set system radius-server [parameter1] accounting-port none

@@ -1,0 +1,125 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DeviceA",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set policy-options policy-statement [parameter1]": {
+        "template": "set policy-options policy-statement [parameter1]",
+        "command": "set policy-options policy-statement aaa",
+        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "name of the policy statement."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term 5",
+            "explanation": "This command fragment configures a routing policy by defining a term within a policy statement, where `[parameter1]` is the policy name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "The term number of the policy statement."
+                }
+            ],
+            "from source-address [parameter3]/[parameter4]": {
+                "template": "from source-address [parameter3]/[parameter4]",
+                "command": "from source-address 10.100.0.11/32",
+                "explanation": "This command fragment specifies a source IP address range using CIDR notation, where `[parameter3]` is the IP address and `[parameter4]` is the subnet mask length.",
+                "parameters": [
+                    {
+                        "name": "source-address",
+                        "type": "string",
+                        "explanation": "Matches the source IP address."
+                    },
+                    {
+                        "name": "prefix-length",
+                        "type": "integer",
+                        "explanation": "Source IP address prefix length."
+                    }
+                ]
+            },
+            "then accept next-hop [parameter3]": {
+                "template": "then accept next-hop [parameter3]",
+                "command": "then accept next-hop Tunnel30",
+                "explanation": "The command sets the next-hop address for the matching traffic to the value specified in `[parameter3]` and accepts the packet for forwarding.",
+                "parameters": [
+                    {
+                        "name": "next-hop",
+                        "type": "string",
+                        "explanation": "The next jump address for the package."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.100.0.10/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "family inet policy-route [parameter3]": {
+                "template": "family inet policy-route [parameter3]",
+                "command": "family inet policy-route aaa",
+                "explanation": "The command `family inet policy-route [parameter3]` configures policy-based routing (PBR) for IPv4 traffic, specifying routing policies defined by `[parameter3]`.",
+                "parameters": [
+                    {
+                        "name": "policy-route",
+                        "type": "string",
+                        "explanation": "Name of the strategic route."
+                    }
+                ]
+            }
+        }
+    },
+    "commit": {
+        "template": "commit",
+        "command": "commit",
+        "explanation": "Submits configuration changes."
+    }
+}

@@ -1,0 +1,262 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name Hub1",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set firewall family inet filter [parameter1]": {
+        "template": "set firewall family inet filter [parameter1]",
+        "command": "set firewall family inet filter ACL2000",
+        "explanation": "This command fragment configures an IPv4 firewall filter named `[parameter1]` in Junos OS, defining rules to control traffic based on specified conditions.",
+        "parameters": [
+            {
+                "name": "filter",
+                "type": "string",
+                "explanation": "Firewall filter name."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term 1",
+            "explanation": "This command fragment creates a term within an IPv4 firewall filter, where `[parameter1]` is the filter name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "string",
+                    "explanation": "Filter term name."
+                }
+            ],
+            "from source-address [parameter3]/[parameter4]": {
+                "template": "from source-address [parameter3]/[parameter4]",
+                "command": "from source-address 192.168.0.0/24",
+                "explanation": "Configures the source address conditions for access to the control list.",
+                "parameters": [
+                    {
+                        "name": "source-address",
+                        "type": "string",
+                        "explanation": "Source IP address."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Number of subnet masks in source IP address."
+                    }
+                ]
+            },
+            "then [parameter3]": {
+                "template": "then [parameter3]",
+                "command": "then accept",
+                "explanation": "Configure firewall filter terminologies and accept all traffic.",
+                "parameters": [
+                    {
+                        "name": "action",
+                        "type": "string",
+                        "explanation": "Action, accept indicates acceptance of traffic."
+                    }
+                ]
+            }
+        }
+    },
+    "set policy-options policy-statement [parameter1]": {
+        "template": "set policy-options policy-statement [parameter1]",
+        "command": "set policy-options policy-statement ROUTE-MAP-1",
+        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "name of the policy statement."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term 1",
+            "explanation": "This command fragment configures a routing policy by defining a term within a policy statement, where `[parameter1]` is the policy name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "The term number of the policy statement."
+                }
+            ],
+            "then [parameter3]": {
+                "template": "then [parameter3]",
+                "command": "then accept",
+                "explanation": "Configure the action of the policy statement as accepted.",
+                "parameters": [
+                    {
+                        "name": "action",
+                        "type": "string",
+                        "explanation": "Execute actions such as accept."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.1.1.10/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "tunnel source [parameter3]": {
+                "template": "tunnel source [parameter3]",
+                "command": "tunnel source ge-1/0/0",
+                "explanation": "Configure tunnel source interfaces.",
+                "parameters": [
+                    {
+                        "name": "source-interface",
+                        "type": "string",
+                        "explanation": "Name of tunnel source interface, e.g. lo0.0."
+                    }
+                ]
+            },
+            "tunnel mode [parameter3]": {
+                "template": "tunnel mode [parameter3]",
+                "command": "tunnel mode gre",
+                "explanation": "The command `tunnel mode [parameter3]` in Junos sets the encapsulation mode for a tunnel interface, specifying the tunneling protocol (e.g., GRE, IPsec).",
+                "parameters": [
+                    {
+                        "name": "mode",
+                        "type": "string",
+                        "explanation": "Tunnel patterns, like gre."
+                    }
+                ]
+            }
+        }
+    },
+    "set security ipsec vpn [parameter1]": {
+        "template": "set security ipsec vpn [parameter1]",
+        "command": "set security ipsec vpn <profile-name>",
+        "explanation": "This command configures an IPsec VPN in Junos by setting specific parameters (e.g., name, IKE gateway, IPsec policy) under the `security ipsec vpn` hierarchy.",
+        "parameters": [
+            {
+                "name": "vpn-profile",
+                "type": "string",
+                "explanation": "IPSec VPN configuration name."
+            }
+        ],
+        "bind-interface [parameter2]": {
+            "template": "bind-interface [parameter2]",
+            "command": "bind-interface gr-0/0/0",
+            "explanation": "Tie IPSec VPN to the specified interface.",
+            "parameters": [
+                {
+                    "name": "bind-interface",
+                    "type": "string",
+                    "explanation": "Tie interface names, e.g. g-1/0/0."
+                }
+            ]
+        }
+    },
+    "set protocols ospf area [parameter1]": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface gr-0/0/0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        }
+    },
+    "set protocols ospf export [parameter1]": {
+        "template": "set protocols ospf export [parameter1]",
+        "command": "set protocols ospf export ROUTE-MAP-1",
+        "explanation": "Configure the strategy of the OSF guide path.",
+        "parameters": [
+            {
+                "name": "export-policy",
+                "type": "string",
+                "explanation": "The policy name for the route."
+            }
+        ]
+    },
+    "set protocols ospf import [parameter1]": {
+        "template": "set protocols ospf import [parameter1]",
+        "command": "set protocols ospf import ROUTE-MAP-2",
+        "explanation": "Configure the OSPF import route map.",
+        "parameters": [
+            {
+                "name": "route-map",
+                "type": "string",
+                "explanation": "Route map name."
+            }
+        ]
+    },
+    "set routing-options static route [parameter1]/[parameter2] [parameter3]": {
+        "template": "set routing-options static route [parameter1]/[parameter2] [parameter3]",
+        "command": "set routing-options static route 172.16.1.0/24 discard",
+        "explanation": "Configures the static route and specifies the next jump to discard.",
+        "parameters": [
+            {
+                "name": "route",
+                "type": "string",
+                "explanation": "Target network address."
+            },
+            {
+                "name": "subnet-mask",
+                "type": "integer",
+                "explanation": "bits of subnet mask."
+            },
+            {
+                "name": "next-hop",
+                "type": "string",
+                "explanation": "Next jump address, like Discard."
+            }
+        ]
+    }
+}

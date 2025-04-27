@@ -1,0 +1,305 @@
+{
+    "set routing-options multicast asm-override-ssm": {
+        "template": "set routing-options multicast asm-override-ssm",
+        "command": "set routing-options multicast asm-override-ssm",
+        "explanation": "The command explanation is: Configure routing options to enable ASM (Any-Source Multicast) to cover SSM (Source-Specific Multicast)."
+    },
+    "set protocols pim rp local [parameter1]": {
+        "template": "set protocols pim rp local [parameter1]",
+        "command": "set protocols pim rp local 10.0.0.1",
+        "explanation": "Configure the RP (Rendezvous Point) address for PIM (Protocol Independent Multicast).",
+        "parameters": [
+            {
+                "name": "rp-address",
+                "type": "string",
+                "explanation": "The IP address of the RP (Rendezvous Point)."
+            }
+        ]
+    },
+    "set protocols pim interface [parameter1]": {
+        "template": "set protocols pim interface [parameter1]",
+        "command": "set protocols pim interface ge-2/0/0",
+        "explanation": "This command enables Protocol Independent Multicast (PIM) on a specified network interface (`[parameter1]`) for multicast routing in Junos OS.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "mode [parameter2]": {
+            "template": "mode [parameter2]",
+            "command": "mode sparse",
+            "explanation": "Configure the mode of PIM protocol on the specified interface.",
+            "parameters": [
+                {
+                    "name": "mode",
+                    "type": "string",
+                    "explanation": "PIM models, for example, sparse-dense."
+                }
+            ]
+        }
+    },
+    "set protocols igmp interface [parameter1]": {
+        "template": "set protocols igmp interface [parameter1]",
+        "command": "set protocols igmp interface ge-1/0/0.0",
+        "explanation": "This command enables IGMP (Internet Group Management Protocol) on a specified network interface (`[parameter1]`) for multicast group management.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "interface name."
+            }
+        ],
+        "version [parameter2]": {
+            "template": "version [parameter2]",
+            "command": "version 3",
+            "explanation": "Configures the version of the IGMP protocol on the specified interface.",
+            "parameters": [
+                {
+                    "name": "version",
+                    "type": "integer",
+                    "explanation": "IGMP protocol version number."
+                }
+            ]
+        }
+    },
+    "set protocols igmp-snooping vlan [parameter1]": {
+        "template": "set protocols igmp-snooping vlan [parameter1]",
+        "command": "set protocols igmp-snooping vlan 1",
+        "explanation": "This command enables IGMP snooping for a specific VLAN (`[parameter1]`), allowing the switch to manage multicast traffic efficiently within that VLAN.",
+        "parameters": [
+            {
+                "name": "vlan",
+                "type": "string",
+                "explanation": "VLAN name, for example."
+            }
+        ],
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-1/0/0.0",
+            "explanation": "This command enables IGMP snooping on a specific VLAN (`[parameter1]`) and configures it to listen for multicast traffic on a designated interface (`[parameter2]`).",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-3/0/0.0."
+                }
+            ]
+        }
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "vlan-id [parameter3]": {
+                "template": "vlan-id [parameter3]",
+                "command": "vlan-id 100",
+                "explanation": "Configure VLAN IDs for interface units.",
+                "parameters": [
+                    {
+                        "name": "vlan-id",
+                        "type": "integer",
+                        "explanation": "VLAN ID, used to identify VLAN."
+                    }
+                ]
+            },
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 0.0.0.0/0",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set firewall family inet filter [parameter1]": {
+        "template": "set firewall family inet filter [parameter1]",
+        "command": "set firewall family inet filter huawei-qos-filter",
+        "explanation": "This command fragment configures an IPv4 firewall filter named `[parameter1]` in Junos OS, defining rules to control traffic based on specified conditions.",
+        "parameters": [
+            {
+                "name": "filter",
+                "type": "string",
+                "explanation": "Firewall filter name."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term match-huawei",
+            "explanation": "This command fragment creates a term within an IPv4 firewall filter, where `[parameter1]` is the filter name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "string",
+                    "explanation": "Filter term name."
+                }
+            ],
+            "from destination-address [parameter3]/[parameter4]": {
+                "template": "from destination-address [parameter3]/[parameter4]",
+                "command": "from destination-address 239.0.0.0/24",
+                "explanation": "The command filters traffic based on the specified destination IP address range defined by `[parameter3]` (IP address) and `[parameter4]` (subnet mask or prefix length).",
+                "parameters": [
+                    {
+                        "name": "destination-address",
+                        "type": "string",
+                        "explanation": "Destination address."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "\"Subnet mask bit length.\""
+                    }
+                ]
+            },
+            "then forwarding-class [parameter3]": {
+                "template": "then forwarding-class [parameter3]",
+                "command": "then forwarding-class huawei-class",
+                "explanation": "Configure the firewall filter action and set up a forward class.",
+                "parameters": [
+                    {
+                        "name": "forwarding-class",
+                        "type": "string",
+                        "explanation": "Forward class name."
+                    }
+                ]
+            }
+        }
+    },
+    "set class-of-service forwarding-classes class [parameter1]": {
+        "template": "set class-of-service forwarding-classes class [parameter1]",
+        "command": "set class-of-service forwarding-classes class huawei-class",
+        "explanation": "Configure the forwarding class.",
+        "parameters": [
+            {
+                "name": "class-name",
+                "type": "string",
+                "explanation": "Forwarding class name."
+            }
+        ]
+    },
+    "set class-of-service schedulers [parameter1]": {
+        "template": "set class-of-service schedulers [parameter1]",
+        "command": "set class-of-service schedulers huawei-scheduler",
+        "explanation": "The command `set class-of-service schedulers [parameter1]` configures a scheduler for traffic classes, defining parameters like bandwidth, priority, and buffer size for QoS management.",
+        "parameters": [
+            {
+                "name": "scheduler-name",
+                "type": "string",
+                "explanation": "**Scheduler name.**"
+            }
+        ],
+        "transmit-rate percentage [parameter2]": {
+            "template": "transmit-rate percentage [parameter2]",
+            "command": "transmit-rate percentage 100",
+            "explanation": "The command `transmit-rate percentage [parameter2]` sets the maximum transmission rate as a percentage of the interface's total bandwidth, with `[parameter2]` specifying the percentage value.",
+            "parameters": [
+                {
+                    "name": "percentage",
+                    "type": "integer",
+                    "explanation": "Transmission rate percentage."
+                }
+            ]
+        },
+        "buffer-size percent [parameter2]": {
+            "template": "buffer-size percent [parameter2]",
+            "command": "buffer-size percent 100",
+            "explanation": "The command `buffer-size percent [parameter2]` sets the percentage of the total buffer space allocated to a specific queue or traffic class.",
+            "parameters": [
+                {
+                    "name": "percent",
+                    "type": "integer",
+                    "explanation": "Buffer size percentage."
+                }
+            ]
+        }
+    },
+    "set class-of-service scheduler-maps [parameter1]": {
+        "template": "set class-of-service scheduler-maps [parameter1]",
+        "command": "set class-of-service scheduler-maps huawei-map",
+        "explanation": "The command configures a scheduler map named `[parameter1]` in Junos, defining how traffic classes are mapped to specific scheduling and queuing behaviors.",
+        "parameters": [
+            {
+                "name": "scheduler-map-name",
+                "type": "string",
+                "explanation": "Scheduler map name."
+            }
+        ],
+        "forwarding-class [parameter2]": {
+            "template": "forwarding-class [parameter2]",
+            "command": "forwarding-class huawei-class",
+            "explanation": "The command `forwarding-class [parameter2]` assigns a packet to a specific forwarding class (`[parameter2]`) for differentiated handling in Junos traffic management.",
+            "parameters": [
+                {
+                    "name": "forwarding-class",
+                    "type": "string",
+                    "explanation": "**Forwarding class name.**"
+                }
+            ],
+            "scheduler [parameter3]": {
+                "template": "scheduler [parameter3]",
+                "command": "scheduler huawei-scheduler",
+                "explanation": "The `scheduler [parameter3]` command in Junos configures a scheduling policy for system processes, specifying parameters like priority, CPU allocation, and memory limits.",
+                "parameters": [
+                    {
+                        "name": "scheduler-name",
+                        "type": "string",
+                        "explanation": "**Scheduler name.**"
+                    }
+                ]
+            }
+        }
+    },
+    "set class-of-service interface [parameter1]": {
+        "template": "set class-of-service interface [parameter1]",
+        "command": "set class-of-service interface ge-1/0/0.100",
+        "explanation": "The command configures Class of Service (CoS) settings on a specific network interface (`[parameter1]`) to manage traffic prioritization and quality of service (QoS).",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "The command explanation is: **Interface name.**"
+            }
+        ],
+        "scheduler-map [parameter2]": {
+            "template": "scheduler-map [parameter2]",
+            "command": "scheduler-map huawei-map",
+            "explanation": "The `scheduler-map [parameter2]` command in Junos assigns a predefined scheduler map (specified by `[parameter2]`) to a traffic control profile for managing bandwidth and priority scheduling.",
+            "parameters": [
+                {
+                    "name": "scheduler-map-name",
+                    "type": "string",
+                    "explanation": "Scheduler map name."
+                }
+            ]
+        }
+    }
+}

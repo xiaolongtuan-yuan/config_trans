@@ -1,0 +1,252 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DeviceA",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set system radius-server [parameter1]": {
+        "template": "set system radius-server [parameter1]",
+        "command": "set system radius-server 10.20.20.1",
+        "explanation": "Configures a RADIUS server with the specified parameters, such as IP address, port, and shared secret, for network authentication and accounting purposes.",
+        "parameters": [
+            {
+                "name": "radius-server-ip",
+                "type": "string",
+                "explanation": "IP address of RADIUS server."
+            }
+        ],
+        "port [parameter2]": {
+            "template": "port [parameter2]",
+            "command": "port 1812",
+            "explanation": "Configures the RADIUS server with `[parameter1]` as the server address and `[parameter2]` as the port number for authentication and accounting communication.",
+            "parameters": [
+                {
+                    "name": "port",
+                    "type": "integer",
+                    "explanation": "Port number for the RADIGUS server."
+                }
+            ],
+            "secret [parameter3]": {
+                "template": "secret [parameter3]",
+                "command": "secret <shared-key>",
+                "explanation": "Configure the IP address, port and shared key of the RADIUS server.",
+                "parameters": [
+                    {
+                        "name": "secret",
+                        "type": "string",
+                        "explanation": "Share key for RADIGUS server."
+                    }
+                ]
+            }
+        }
+    },
+    "set system accounting destination radius server [parameter1]": {
+        "template": "set system accounting destination radius server [parameter1]",
+        "command": "set system accounting destination radius server 10.20.20.1",
+        "explanation": "This command configures the Junos device to send accounting data to a specified RADIUS server identified by `[parameter1]` for system accounting purposes.",
+        "parameters": [
+            {
+                "name": "radius-server",
+                "type": "string",
+                "explanation": "IP address of RADIUS server."
+            }
+        ],
+        "port [parameter2]": {
+            "template": "port [parameter2]",
+            "command": "port 1813",
+            "explanation": "The command `port [parameter2]` in Junos specifies the physical port or interface to be configured or referenced, where `[parameter2]` defines the specific port number or identifier.",
+            "parameters": [
+                {
+                    "name": "port",
+                    "type": "integer",
+                    "explanation": "Port number for the RADIGUS server."
+                }
+            ],
+            "secret [parameter3]": {
+                "template": "secret [parameter3]",
+                "command": "secret <shared-key>",
+                "explanation": "The command `secret [parameter3]` in Junos configures a secret key or password, where `[parameter3]` specifies the actual secret value to be used.",
+                "parameters": [
+                    {
+                        "name": "secret",
+                        "type": "string",
+                        "explanation": "Share key with RADIGUS server."
+                    }
+                ]
+            }
+        }
+    },
+    "set services l2tp enable": {
+        "template": "set services l2tp enable",
+        "command": "set services l2tp enable",
+        "explanation": "Enables the L2TP service."
+    },
+    "set services l2tp tunnel secret [parameter1]": {
+        "template": "set services l2tp tunnel secret [parameter1]",
+        "command": "set services l2tp tunnel secret <tunnel-password>",
+        "explanation": "Configure shared keys for L2TP tunnels.",
+        "parameters": [
+            {
+                "name": "secret",
+                "type": "string",
+                "explanation": "L2TP tunnel shared key."
+            }
+        ]
+    },
+    "set services l2tp tunnel source [parameter1]": {
+        "template": "set services l2tp tunnel source [parameter1]",
+        "command": "set services l2tp tunnel source ge-1/0/0",
+        "explanation": "Configure the source interface for the L2TP tunnel.",
+        "parameters": [
+            {
+                "name": "source",
+                "type": "string",
+                "explanation": "Name of source interface for L2TP tunnel."
+            }
+        ]
+    },
+    "set services l2tp tunnel destination [parameter1]": {
+        "template": "set services l2tp tunnel destination [parameter1]",
+        "command": "set services l2tp tunnel destination 10.38.160.2",
+        "explanation": "Configure the IP address of the destination of the L2TP tunnel.",
+        "parameters": [
+            {
+                "name": "destination",
+                "type": "string",
+                "explanation": "The IP address of the L2TP tunnel destination."
+            }
+        ]
+    },
+    "set access profile [parameter1]": {
+        "template": "set access profile [parameter1]",
+        "command": "set access profile default-auth-profile",
+        "explanation": "This command fragment sets an access profile in Junos, defining a named profile (parameter1) to configure security policies, authentication, or authorization settings for network access.",
+        "parameters": [
+            {
+                "name": "profile-name",
+                "type": "string",
+                "explanation": "Accesses the name of the profile."
+            }
+        ],
+        "authentication-order [parameter2]": {
+            "template": "authentication-order [parameter2]",
+            "command": "authentication-order radius",
+            "explanation": "Configures the authentication order for access to the profile.",
+            "parameters": [
+                {
+                    "name": "authentication-method",
+                    "type": "string",
+                    "explanation": "Method of authentication, e.g. none."
+                }
+            ]
+        },
+        "radius-server [parameter2]": {
+            "template": "radius-server [parameter2]",
+            "command": "radius-server 10.20.20.1",
+            "explanation": "The command `radius-server [parameter2]` configures a RADIUS server with specific attributes or settings defined by `[parameter2]` for authentication, authorization, or accounting.",
+            "parameters": [
+                {
+                    "name": "radius-server",
+                    "type": "string",
+                    "explanation": "IP address of RADIGUS server."
+                }
+            ]
+        },
+        "ppp-options [parameter2]": {
+            "template": "ppp-options [parameter2]",
+            "command": "ppp-options chap",
+            "explanation": "The `ppp-options [parameter2]` command in Junos configures specific Point-to-Point Protocol (PPP) settings, where `[parameter2]` defines the desired PPP feature or behavior.",
+            "parameters": [
+                {
+                    "name": "ppp-options",
+                    "type": "string",
+                    "explanation": "PPP options, for example, Chap."
+                }
+            ]
+        }
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.38.160.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "encapsulation [parameter3]": {
+                "template": "encapsulation [parameter3]",
+                "command": "encapsulation ppp-over-ether",
+                "explanation": "Configure the envelope type of the interface.",
+                "parameters": [
+                    {
+                        "name": "encapsulation",
+                        "type": "string",
+                        "explanation": "Cover type, e.g., pp."
+                    }
+                ]
+            },
+            "tunnel source [parameter3]": {
+                "template": "tunnel source [parameter3]",
+                "command": "tunnel source ge-1/0/0",
+                "explanation": "Configure tunnel source interfaces.",
+                "parameters": [
+                    {
+                        "name": "source-interface",
+                        "type": "string",
+                        "explanation": "Name of tunnel source interface, e.g. lo0.0."
+                    }
+                ]
+            },
+            "tunnel destination [parameter3]": {
+                "template": "tunnel destination [parameter3]",
+                "command": "tunnel destination 10.38.160.2",
+                "explanation": "Configure the tunnel destination address.",
+                "parameters": [
+                    {
+                        "name": "destination-address",
+                        "type": "string",
+                        "explanation": "Tunnel destination address."
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,401 @@
+{
+    "set system host-name PE2": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name PE2",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces ge-0/0/1.0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/1.0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 1": {
+            "template": "unit [parameter2]",
+            "command": "unit 1",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "encapsulation mpls": {
+                "template": "encapsulation [parameter3]",
+                "command": "encapsulation mpls",
+                "explanation": "Configure the envelope type of the interface.",
+                "parameters": [
+                    {
+                        "name": "encapsulation",
+                        "type": "string",
+                        "explanation": "Cover type, e.g., pp."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-0/0/2": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/2",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 192.168.1.1/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 192.168.1.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "family mpls": {
+                "template": "family [parameter3]",
+                "command": "family mpls",
+                "explanation": "Enables the MPLS protocol on the interface.",
+                "parameters": [
+                    {
+                        "name": "family",
+                        "type": "string",
+                        "explanation": "Protocol, for example."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces lo0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces lo0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address 2.2.2.2/24": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 2.2.2.2/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols ospf area 0.0.0.0": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0.0.0.0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface lo0.0": {
+            "template": "interface [parameter2]",
+            "command": "interface lo0.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        },
+        "interface ge-0/0/2.0": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-0/0/2.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        }
+    },
+    "set protocols l2vpn": {
+        "template": "set protocols [parameter1]",
+        "command": "set protocols l2vpn",
+        "explanation": "Enables RSTP protocol.",
+        "parameters": [
+            {
+                "name": "protocol",
+                "type": "string",
+                "explanation": "Enables the protocol name, such as rstp."
+            }
+        ]
+    },
+    "set protocols l2vpn cfm": {
+        "template": "set protocols [parameter1] [parameter2]",
+        "command": "set protocols l2vpn cfm",
+        "explanation": "Enables CFM in the L2VPN protocol.",
+        "parameters": [
+            {
+                "name": "protocol",
+                "type": "string",
+                "explanation": "Protocol name, e.g. I2vpn."
+            },
+            {
+                "name": "feature",
+                "type": "string",
+                "explanation": "Functional name, for example, cfm."
+            }
+        ],
+        "md md1": {
+            "template": "md [parameter3]",
+            "command": "md md1",
+            "explanation": "The `md [parameter3]` command in Junos initiates a manual failover in a chassis cluster, where `[parameter3]` specifies the node to become the primary.",
+            "parameters": [
+                {
+                    "name": "md",
+                    "type": "string",
+                    "explanation": "Maintains domain names."
+                }
+            ]
+        }
+    },
+    "set protocols l2vpn cfm md md1": {
+        "template": "set protocols l2vpn cfm md [parameter1]",
+        "command": "set protocols l2vpn cfm md md1",
+        "explanation": "The command sets the Maintenance Domain (MD) level for Connectivity Fault Management (CFM) in Layer 2 VPN (L2VPN) protocols, where `[parameter1]` specifies the MD level (0-7).",
+        "parameters": [
+            {
+                "name": "md",
+                "type": "string",
+                "explanation": "Maintains the name of the domain."
+            }
+        ],
+        "ma ma1": {
+            "template": "ma [parameter2]",
+            "command": "ma ma1",
+            "explanation": "The command fragment `ma [parameter2]` in Junos likely refers to `monitor interface` or `monitor traffic` with `[parameter2]` specifying the interface or filter details.",
+            "parameters": [
+                {
+                    "name": "ma",
+                    "type": "string",
+                    "explanation": "Maintains the name of the association."
+                }
+            ],
+            "mep 2": {
+                "template": "mep [parameter3]",
+                "command": "mep 2",
+                "explanation": "The command `mep [parameter3]` in Junos configures a Maintenance End Point (MEP) for Ethernet OAM, where `[parameter3]` specifies the MEP identifier.",
+                "parameters": [
+                    {
+                        "name": "mep",
+                        "type": "integer",
+                        "explanation": "Maintains the ID of the endpoint."
+                    }
+                ],
+                "interface ge-0/0/1.0": {
+                    "template": "interface [parameter4]",
+                    "command": "interface ge-0/0/1.0",
+                    "explanation": "The command `interface [parameter4]` in Junos configures or selects the network interface specified by `[parameter4]` for further configuration or operational commands.",
+                    "parameters": [
+                        {
+                            "name": "interface",
+                            "type": "string",
+                            "explanation": "Name of interface associated with MEP."
+                        }
+                    ]
+                },
+                "ccm-send enable": {
+                    "template": "ccm-send [parameter4]",
+                    "command": "ccm-send enable",
+                    "explanation": "The `ccm-send` command in Junos configures the transmission of Continuity Check Messages (CCMs) in Ethernet OAM, with `[parameter4]` specifying the interval or frequency of CCMs.",
+                    "parameters": [
+                        {
+                            "name": "ccm-send",
+                            "type": "string",
+                            "explanation": "Enables or disables CCM sending functions."
+                        }
+                    ]
+                }
+            },
+            "remote-mep 1": {
+                "template": "remote-mep [parameter3]",
+                "command": "remote-mep 1",
+                "explanation": "The command `remote-mep [parameter3]` in Junos configures a remote Maintenance End Point (MEP) for Ethernet OAM, specifying the MEP ID for connectivity monitoring.",
+                "parameters": [
+                    {
+                        "name": "remote-mep",
+                        "type": "integer",
+                        "explanation": "Remotely maintains the ID of the endpoint."
+                    }
+                ],
+                "ccm-receive enable": {
+                    "template": "ccm-receive [parameter4]",
+                    "command": "ccm-receive enable",
+                    "explanation": "The `ccm-receive` command in Junos enables the reception of Continuity Check Messages (CCMs) for Ethernet OAM, with `[parameter4]` specifying the VLAN or interface.",
+                    "parameters": [
+                        {
+                            "name": "ccm-receive",
+                            "type": "string",
+                            "explanation": "Enables or disables the reception of CCM."
+                        }
+                    ]
+                }
+            },
+            "test-id 1": {
+                "template": "test-id [parameter3]",
+                "command": "test-id 1",
+                "explanation": "The command `test-id [parameter3]` initiates a diagnostic test or operation in Junos, where `[parameter3]` specifies the test type or identifier.",
+                "parameters": [
+                    {
+                        "name": "test-id",
+                        "type": "integer",
+                        "explanation": "Test ID."
+                    }
+                ],
+                "mep 2": {
+                    "template": "mep [parameter4]",
+                    "command": "mep 2",
+                    "explanation": "The command `mep [parameter4]` in Junos configures a Maintenance End Point (MEP) for Ethernet OAM, where `[parameter4]` specifies the MEP identifier.",
+                    "parameters": [
+                        {
+                            "name": "mep",
+                            "type": "integer",
+                            "explanation": "Maintains the ID of the endpoint."
+                        }
+                    ]
+                }
+            },
+            "delay-measure one-way receive test-id 1": {
+                "template": "delay-measure one-way receive test-id [parameter3]",
+                "command": "delay-measure one-way receive test-id 1",
+                "explanation": "The command configures one-way delay measurement for received traffic using a specified test ID and optional parameters to monitor network performance.",
+                "parameters": [
+                    {
+                        "name": "test-id",
+                        "type": "integer",
+                        "explanation": "Test ID."
+                    }
+                ]
+            },
+            "test-id 3": {
+                "template": "test-id [parameter3]",
+                "command": "test-id 3",
+                "explanation": "The command `test-id [parameter3]` initiates a diagnostic test on a Junos device, where `[parameter3]` specifies the test identifier or type to be executed.",
+                "parameters": [
+                    {
+                        "name": "test-id",
+                        "type": "integer",
+                        "explanation": "Test ID."
+                    }
+                ],
+                "mep 2": {
+                    "template": "mep [parameter4]",
+                    "command": "mep 2",
+                    "explanation": "The command `mep [parameter4]` in Junos configures a Maintenance End Point (MEP) for Ethernet OAM, where `[parameter4]` specifies the MEP identifier.",
+                    "parameters": [
+                        {
+                            "name": "mep",
+                            "type": "integer",
+                            "explanation": "Maintains the ID of the endpoint."
+                        }
+                    ],
+                    "remote-mep 1": {
+                        "template": "remote-mep [parameter5]",
+                        "command": "remote-mep 1",
+                        "explanation": "The command `remote-mep [parameter5]` in Junos configures a remote Maintenance End Point (MEP) for Ethernet OAM, specifying the MEP ID for connectivity monitoring.",
+                        "parameters": [
+                            {
+                                "name": "remote-mep",
+                                "type": "integer",
+                                "explanation": "Remotely maintains the ID of the endpoint."
+                            }
+                        ]
+                    }
+                }
+            },
+            "delay-measure one-way continual send test-id 3": {
+                "template": "delay-measure one-way continual send test-id [parameter3]",
+                "command": "delay-measure one-way continual send test-id 3",
+                "explanation": "The command initiates continuous one-way delay measurement for a specific test ID, sending packets to measure network latency with optional parameters for configuration.",
+                "parameters": [
+                    {
+                        "name": "test-id",
+                        "type": "integer",
+                        "explanation": "Test ID."
+                    }
+                ],
+                "interval 1000": {
+                    "template": "interval [parameter4]",
+                    "command": "interval 1000",
+                    "explanation": "The command `interval [parameter4]` sets the time interval (in seconds) for periodic operations, such as OSPF hello packets or BGP keepalive messages.",
+                    "parameters": [
+                        {
+                            "name": "interval",
+                            "type": "integer",
+                            "explanation": "Sends between, in milliseconds."
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

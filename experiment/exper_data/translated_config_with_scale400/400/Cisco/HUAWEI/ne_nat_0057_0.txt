@@ -1,16 +1,11 @@
 sysname NATA
-route-policy INSIDE_ACL permit node [parameter2]
- if-match ip-prefix INSIDE_ACL
-ospf 192.168.10.0
-acl number 192.168.10.0
- network 192.168.10.0 none
- rule none permit source none 0.0.0.255
+acl INSIDE_ACL
+ rule permit ip source 192.168.10.0 0.0.0.255
 nat ip-pool address-group1
- nat bind acl INSIDE_ACL instance none
-ip pool 11.11.11.105 local
-ip pool 255.255.255.0 none none
+ section INSIDE_ACL 11.11.11.105 mask 255.255.255.0
 interface GigabitEthernet2/0/0
- ip address 192.168.10.1 255.255.255.0
- undo shutdown
+ip address 192.168.10.1 255.255.255.0
 nat instance [parameter1] id [parameter2]
- nat server global none inside none
+ nat server protocol none global none inside none
+ospf [parameter1] router-id [parameter2]
+ undo silent-interface none

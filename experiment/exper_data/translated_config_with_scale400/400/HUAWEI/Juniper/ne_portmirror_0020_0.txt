@@ -1,11 +1,8 @@
 set system host-name routerA
-set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet1/0/0
-set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet2/0/0
-set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet1/0/1
-set chassis fpc [parameter1] pic [parameter2] controller [parameter3] no-shutdown
-set system telemetry destination-group 7.1.1.1
-set interfaces 7.1.1.1 ipv4-address 7.1.1.1
-set interfaces 7.1.1.1 family inet address none/255.255.255.0
-set interfaces 7.1.1.1 ipv4-address 1.1.1.1
-set interfaces 7.1.1.1 ipv4-address 2.2.2.2
-set system radius-server [parameter1] retry none
+set interfaces GigabitEthernet1/0/0 unit [parameter2] family ethernet-switching vlan members none
+set interfaces GigabitEthernet1/0/0 family inet address none/255.255.255.0 tunnel family inet address 7.1.1.1/none
+set interfaces GigabitEthernet2/0/0 unit [parameter2]
+set interfaces GigabitEthernet2/0/0 family inet address none/255.255.255.0 tunnel family inet address 1.1.1.1/none
+set interfaces GigabitEthernet1/0/1 unit [parameter2]
+set interfaces GigabitEthernet1/0/1 family inet address none/255.255.255.0 tunnel family inet address 2.2.2.2/none
+set protocols bgp group [parameter1] multihop ttl none

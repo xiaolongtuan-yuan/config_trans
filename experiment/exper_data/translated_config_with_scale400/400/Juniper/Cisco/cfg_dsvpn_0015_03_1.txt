@@ -1,32 +1,26 @@
 hostname Spoke1
-route-map ge-1/0/0 permit [parameter2]
- set interface ge-1/0/0
- set interface ge-2/0/0
- set interface gr-0/0/0
-controller E1 0
+interface ge-1/0/0
+interface 0
 ip address 10.1.2.10 24
-ip address 192.168.1.1 24
 interface ge-2/0/0
+ip address 192.168.1.1 24
+interface gr-0/0/0
  tunnel source ge-0/0/1
  tunnel destination 172.16.1.1
- ip policy route-map ospf-to-bgp
- interface ge-1/0/0
 ip address 172.16.1.2 24
 router bgp 200
- address-family unicast
-  neighbor 172.16.1.1 route-reflector-client
-  neighbor 172.16.1.3 route-reflector-client
-bridge bgp-group protocol none
-radius-server type external
-ptp clock-domain 172.16.1.2
- local-ip 172.16.1.2
+bridge bgp-group protocol external
+bridge unicast protocol 172.16.1.1
+bridge unicast protocol 172.16.1.3
+bridge unicast protocol 172.16.1.2
+bridge none protocol ospf-to-bgp
 router ospf 0.0.0.0
- network 0.0.0.0 [parameter2] area [parameter3]
-  network none none area 0.0.0.1
-interface ge-1/0/0
- ipv6 traffic-policy ospf-to-bgp inbound
- ipv6 traffic-policy 1 inbound
-router ospf
-access-list none accept none none none
-mpls ldp neighbor 100
+ network none none area 0.0.0.0
+ no passive-interface ge-2/0/0
+ network none none area 0.0.0.1
+ no passive-interface ge-1/0/0
+ip route ospf-to-bgp none 1
+ip route ospf none none
+ip route accept none none
+mpls ldp neighbor 100 targeted-hello accept
 mpls ldp neighbor 300 targeted-hello accept

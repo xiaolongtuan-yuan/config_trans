@@ -42,7 +42,7 @@ class ConfigMatcher:
         para_match = self._param_semantic_match(command_node, ranked_candidates, subtree_templates)
         # 5. 整合
         match_result = self._integrate_commands(ranked_candidates, para_match)
-        return match_result
+        return match_result, best_root
 
     def _module_ranking(self, command_node, src_root, src_root_semantic):
         # 只用src_root_semantic与目标库所有根节点做匹配
@@ -196,7 +196,7 @@ def _build_mapping_template_library_experiment(vendors, template_path, config_mo
         for target_vendor in vendors:
             if vendor == target_vendor:
                 continue
-            # if (vendor == 'Cisco') or (target_vendor == 'Cisco'):
+            # if not ((vendor == 'Cisco') and (target_vendor == 'Juniper')):
             #    continue
             command_mapping = {}
             module_match_dict = {}  # 新增：记录模块匹配信息
@@ -208,21 +208,14 @@ def _build_mapping_template_library_experiment(vendors, template_path, config_mo
                 if src_root is None:
                     raise ValueError(f"未能在源config_model中找到{template}的根节点")
                 src_root_semantic = torch.tensor(command_templates[vendor][src_root]['semantic_features'], dtype=torch.float32).unsqueeze(0).cuda()
-                # 获取目标根节点及相似度
-                best_root, similarity = configuration_matchers[target_vendor].module_match_with_score(
-                    src_root, src_root_semantic
-                )
-                # 记录映射
-                module_match_dict[template] = {
-                    "src_root": src_root,
-                    "tgt_best_root": best_root,
-                    "similarity": float(similarity)
-                }
-                matched_configuration = configuration_matchers[target_vendor].find_best_match(
+                # 获取目标根节点及相似度        
+                matched_configuration, best_root = configuration_matchers[target_vendor].find_best_match(
                     command_node_with_template,
                     src_root,
                     src_root_semantic
                 )
+                # 记录映射
+                module_match_dict[src_root] = best_root
                 if not command_mapping.get(template):
                     command_mapping[template] = matched_configuration
             save_json_file(command_mapping, save_path.format(vendor, target_vendor))
@@ -254,7 +247,8 @@ def build_command2root(tree, root_key=None, mapping=None):
     for key, value in tree.items():
         if key in ['template', 'command', 'explanation', 'parameters']:
             continue
-        mapping[key] = root_key if root_key else key
+        if key not in mapping:
+            mapping[key] = root_key if root_key else key
         if isinstance(value, dict):
             build_command2root(value, root_key if root_key else key, mapping)
     return mapping

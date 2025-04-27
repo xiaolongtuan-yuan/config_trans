@@ -1,0 +1,163 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DeviceA",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set firewall policer [parameter1]": {
+        "template": "set firewall policer [parameter1]",
+        "command": "set firewall policer p1",
+        "explanation": "The command `set firewall policer [parameter1]` creates or configures a firewall policer named `[parameter1]` to control traffic bandwidth and burst limits.",
+        "parameters": [
+            {
+                "name": "policer-name",
+                "type": "string",
+                "explanation": "_Other Organiser"
+            }
+        ],
+        "if-exceeding bandwidth-limit [parameter2]": {
+            "template": "if-exceeding bandwidth-limit [parameter2]",
+            "command": "if-exceeding bandwidth-limit 10000k",
+            "explanation": "The command sets a bandwidth limit threshold on an interface, triggering an action (e.g., discard or mark) when traffic exceeds the specified `[parameter2]` value.",
+            "parameters": [
+                {
+                    "name": "bandwidth-limit",
+                    "type": "string",
+                    "explanation": "Bandwidth limit value, in k (thousands of bits per second)."
+                }
+            ]
+        },
+        "if-exceeding burst-size-limit [parameter2]": {
+            "template": "if-exceeding burst-size-limit [parameter2]",
+            "command": "if-exceeding burst-size-limit 150000",
+            "explanation": "The command `if-exceeding burst-size-limit [parameter2]` sets the maximum burst size allowed for traffic exceeding a specified rate, where `[parameter2]` defines the burst size limit.",
+            "parameters": [
+                {
+                    "name": "burst-size-limit",
+                    "type": "integer",
+                    "explanation": "Sudden size limit value."
+                }
+            ]
+        }
+    },
+    "set firewall filter [parameter1]": {
+        "template": "set firewall filter [parameter1]",
+        "command": "set firewall filter f1",
+        "explanation": "The command `set firewall filter [parameter1]` creates or modifies a firewall filter named `[parameter1]` in Junos OS for packet filtering and traffic control.",
+        "parameters": [
+            {
+                "name": "filter-name",
+                "type": "string",
+                "explanation": "Filter name."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term t1",
+            "explanation": "The command `term [parameter2]` in Junos defines a specific condition or action within a firewall filter or policy, identified by `[parameter2]`.",
+            "parameters": [
+                {
+                    "name": "term-name",
+                    "type": "string",
+                    "explanation": "condition name."
+                }
+            ],
+            "then policer [parameter3]": {
+                "template": "then policer [parameter3]",
+                "command": "then policer p1",
+                "explanation": "The command fragment `then policer [parameter3]` applies a traffic policing action to matching traffic, using the policer named `[parameter3]` to enforce rate limits.",
+                "parameters": [
+                    {
+                        "name": "policer-name",
+                        "type": "string",
+                        "explanation": "_Other Organiser"
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/1/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.10.1.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "vlan-id [parameter3]": {
+                "template": "vlan-id [parameter3]",
+                "command": "vlan-id 100",
+                "explanation": "Configure VLAN IDs for interface units.",
+                "parameters": [
+                    {
+                        "name": "vlan-id",
+                        "type": "integer",
+                        "explanation": "VLAN ID, used to identify VLAN."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols ospf area [parameter1]": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-0/1/0.0",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        }
+    }
+}

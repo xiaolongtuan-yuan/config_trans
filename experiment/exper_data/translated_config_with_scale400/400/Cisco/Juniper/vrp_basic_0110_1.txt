@@ -1,11 +1,7 @@
 set system host-name client001
-set protocols oam ethernet connectivity-fault-management md GigabitEthernet0/0/0 ma GigabitEthernet0/0/0 mep GigabitEthernet0/0/0 interface GigabitEthernet0/0/0
-set system telemetry destination-group 10.1.2.2
-set interfaces 10.1.2.2 ipv4-address 10.1.2.2
-set interfaces 10.1.2.2 family inet address none/255.255.255.0
-set chassis fpc [parameter1] pic [parameter2] controller [parameter3] no-shutdown
-set system login user 2048 authentication public-keys generate rsa modulus 2048
-delete security ssh protocol-version 2
-set interfaces vlan unit 4
-set protocols ssh
-set system login authentication-order none none
+set interfaces GigabitEthernet0/0/0 unit 10.1.2.2 family ethernet-switching vlan members none
+set interfaces GigabitEthernet0/0/0 family inet address none/255.255.255.0 tunnel family inet address 10.1.2.2/none
+set system services ssh hostkey-algorithm 2048
+set system services ssh protocol-version 2
+set interfaces vlan unit 4 family inet address ssh/none
+set system login user [parameter1] authentication plain-text-password none

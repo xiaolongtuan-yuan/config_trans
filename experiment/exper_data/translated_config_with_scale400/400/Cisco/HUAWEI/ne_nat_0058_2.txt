@@ -1,11 +1,14 @@
 sysname DeviceB
 interface GigabitEthernet3/0/0
- undo shutdown
- ip address 2.2.2.2 255.255.255.0
- network 2.2.2.0 0.0.0.255
- ip address 3.3.3.1 255.255.255.0
- network 3.3.3.0 0.0.0.255
- interface GigabitEthernet2/0/0
+ospf [parameter1] router-id [parameter2]
+ undo silent-interface none
+ip address 2.2.2.2 255.255.255.0
 ospf 1
+ ma 1
+  map mpls l2vc 1 none
+  test-id none mep none remote-mep none peer-ip 0.0.0.255
+  delay-measure one-way continual send test-id none interval 0
+cfm md 2.2.2.0
 interface GigabitEthernet2/0/0
- e1 none none
+ qinq termination pe-vid none ce-vid none to none
+ip address 3.3.3.1 255.255.255.0

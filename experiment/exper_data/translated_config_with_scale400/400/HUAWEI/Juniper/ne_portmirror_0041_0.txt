@@ -1,15 +1,12 @@
 set system host-name Device
 set vlans 10 vlan-id 10
-set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet1/0/0
-set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet2/0/0
-set protocols ospf area GigabitEthernet1/0/0 interface GigabitEthernet3/0/0
-set system ports auxiliary none
-set interfaces 10 unit 10 family ethernet-switching native-vlan-id 10
-set interfaces 10 unit 2
-set interfaces 10 ipv4-address 10.10.1.1
-set interfaces 10 family inet address none/255.255.255.0
-set interfaces 10 ipv4-address 10.1.1.2
-set system telemetry destination-group 10.10.1.1
-set system accounting events 1 server 1 port 1
-set system accounting events 1 server 1 port 2
-set system radius-server [parameter1] retry none
+set interfaces GigabitEthernet1/0/0 aggregated-ether-options link-speed none
+set interfaces GigabitEthernet1/0/0 unit 1 family ethernet-switching native-vlan-id 10
+set interfaces GigabitEthernet1/0/0 vlan-id 10
+set interfaces GigabitEthernet1/0/0 clock-rate 2
+set interfaces GigabitEthernet2/0/0 unit 1
+set interfaces GigabitEthernet2/0/0 family inet address none/255.255.255.0 tunnel family inet address 10.10.1.1/none
+set interfaces GigabitEthernet3/0/0 unit 1
+set interfaces GigabitEthernet3/0/0 family inet address none/255.255.255.0 tunnel family inet address 10.1.1.2/none
+set interfaces GigabitEthernet3/0/0 unit 2
+set system radius-server [parameter1] accounting-port none

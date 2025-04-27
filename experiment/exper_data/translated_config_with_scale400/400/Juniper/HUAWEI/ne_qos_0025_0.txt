@@ -1,30 +1,18 @@
 sysname DeviceA
-interface class1-policer
- port-queue class1-policer pq shaping pir percentage 6000000
- mpls
-  bandwidth max-reservable-bandwidth 5000000
-  bandwidth max-reservable-bandwidth 2000000
- port-queue class2-policer pq shaping pir percentage none
- ip policy-based-route class1
- rule none permit ip source 1.1.1.1 none
- ip address 1.1.1.3 24
- ip policy-based-route class2
- rule none permit ip source 1.1.1.2 none
- ip policy-based-route default
- e1 0 none
-ip dhcp snooping rate-limit unicast threshold none burst 62500
-ip dhcp snooping rate-limit unicast threshold none burst 125000
-diffserv domain green
-traffic behavior forward
- 8021p-inbound none phb none green
- 8021p-inbound none phb none yellow
-traffic behavior discard
- 8021p-inbound none phb none red
-ip pool policy1 bas local
-acl number 1.1.1.1
- rule none deny accept
-flexe group ge-1/0/0
- binding interface ge-1/0/0
-policy-based-route policy1 permit node none map-instance none
 traffic behavior class1-policer
+ car cir none pir none cbs 5000000 pbs 62500 green none yellow none red forward
+ car cir none pir 6000000 green pass yellow pass red pass service-class none color green
+ car cir none pir none cbs 2000000 pbs 62500 green none yellow none red forward
 traffic behavior class2-policer
+ car cir none pir none cbs none pbs 125000 green none yellow none red forward
+ car cir none pir none green pass yellow pass red pass service-class none color yellow
+ car cir none pir none cbs none pbs none green none yellow none red forward
+ car cir none pir none green pass yellow pass red pass service-class none color red
+ car cir none pir none cbs none pbs none green none yellow none red discard
+ip route-static 1.1.1.1 32 class1-policer preference class1
+ip route-static 1.1.1.2 32 class2-policer preference class2
+ip route-static none none none preference default
+interface ge-1/0/0
+ e1 0 none
+interface policy1
+ip address 1.1.1.3 24

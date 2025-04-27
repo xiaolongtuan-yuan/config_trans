@@ -74,8 +74,8 @@ def process_command_tree_error_line(source_path, target_path, vendor_error_info)
 
 if __name__ == '__main__':
     # 删除目录../experiment/test_dataset
-    if os.path.exists('../experiment/train_dataset'):
-        shutil.rmtree('../experiment/train_dataset')
+    # if os.path.exists('../experiment/train_dataset'):
+    #     shutil.rmtree('../experiment/train_dataset')
     for vendor in ['Cisco', 'HUAWEI', 'Juniper']:
         os.makedirs(f'../experiment/train_dataset/text_config/{vendor}', exist_ok=True)
         os.makedirs(f'../experiment/train_dataset/command_tree/{vendor}', exist_ok=True)

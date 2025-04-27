@@ -1,12 +1,10 @@
 hostname DeviceB
 interface GigabitEthernet
- no shutdown
- interface GigabitEthernet
+ no bridge-group none unicast-flooding
+ ipv6 router isis 1
+ switchport access vlan 0.0.0.0
 ip address 2.2.2.2 255.255.255.0
-router ospf 1
- area 0.0.0.0 nssa no-summary
-ip access-list extended 2.2.2.0
- permit ip 2.2.2.0 0.0.0.255 any
- permit ip 3.3.3.0 0.0.0.255 any
+ip address 2.2.2.0 0.0.0.255
+ip address 3.3.3.0 0.0.0.255
 ip address 3.3.3.1 255.255.255.0
-return
+crypto isakmp policy none

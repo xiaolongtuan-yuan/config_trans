@@ -1,0 +1,170 @@
+{
+    "set system host-name DS-Lite": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DS-Lite",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set firewall family inet6 filter DS-Lite-ACL": {
+        "template": "set firewall family inet6 filter [parameter1]",
+        "command": "set firewall family inet6 filter DS-Lite-ACL",
+        "explanation": "This command fragment configures an IPv6 firewall filter named `[parameter1]` within the `inet6` address family in Junos OS.",
+        "parameters": [
+            {
+                "name": "filter",
+                "type": "integer",
+                "explanation": "Firewall filter number."
+            }
+        ],
+        "term 1": {
+            "template": "term [parameter2]",
+            "command": "term 1",
+            "explanation": "This command fragment configures a term within an IPv6 firewall filter, where `[parameter1]` is the filter name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "The term number of the filter condition."
+                }
+            ],
+            "from source-address 2001:DB8:2::/64": {
+                "template": "from source-address [parameter3]",
+                "command": "from source-address 2001:DB8:2::/64",
+                "explanation": "The command filters traffic based on the specified source IP address (`[parameter3]`) in a Junos policy or rule.",
+                "parameters": [
+                    {
+                        "name": "source-address",
+                        "type": "string",
+                        "explanation": "Source IPv6 address and prefix length."
+                    }
+                ]
+            },
+            "then accept": {
+                "template": "then [parameter3]",
+                "command": "then accept",
+                "explanation": "Configure IPv6 firewall filter actions and accept matching traffic.",
+                "parameters": [
+                    {
+                        "name": "action",
+                        "type": "string",
+                        "explanation": "Process actions for matching traffic, for example."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces ge-0/0/1": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet6 filter input DS-Lite-ACL": {
+                "template": "family inet6 filter input [parameter3]",
+                "command": "family inet6 filter input DS-Lite-ACL",
+                "explanation": "The command configures an IPv6 firewall filter (`family inet6 filter`) to process incoming traffic (`input`) with the specified filter name (`[parameter3]`).",
+                "parameters": [
+                    {
+                        "name": "filter-name",
+                        "type": "string",
+                        "explanation": "Name of firewall filter."
+                    }
+                ]
+            },
+            "family inet6 mtu 1500": {
+                "template": "family inet6 mtu [parameter3]",
+                "command": "family inet6 mtu 1500",
+                "explanation": "The command sets the Maximum Transmission Unit (MTU) size for IPv6 (inet6) family interfaces to the value specified by `[parameter3]`.",
+                "parameters": [
+                    {
+                        "name": "mtu",
+                        "type": "integer",
+                        "explanation": "Maximum transfer unit size."
+                    }
+                ]
+            }
+        }
+    },
+    "set routing-instances DS-Lite1": {
+        "template": "set routing-instances [parameter1]",
+        "command": "set routing-instances DS-Lite1",
+        "explanation": "This command fragment configures a routing instance named `[parameter1]` in Junos, allowing for separate routing tables and protocols within that instance.",
+        "parameters": [
+            {
+                "name": "routing-instance",
+                "type": "string",
+                "explanation": "Name of route example, e.g. net."
+            }
+        ],
+        "instance-type virtual-router": {
+            "template": "instance-type [parameter2]",
+            "command": "instance-type virtual-router",
+            "explanation": "Configure the type of route example that is a virtual router.",
+            "parameters": [
+                {
+                    "name": "instance-type",
+                    "type": "string",
+                    "explanation": "Type of route example, e.g. virtual-router."
+                }
+            ]
+        },
+        "route-distinguisher 100:1": {
+            "template": "route-distinguisher [parameter2]",
+            "command": "route-distinguisher 100:1",
+            "explanation": "Configure routers for example.",
+            "parameters": [
+                {
+                    "name": "route-distinguisher",
+                    "type": "string",
+                    "explanation": "Routers, used to distinguish between different VPN routes."
+                }
+            ]
+        },
+        "vrf-import 100:1": {
+            "template": "vrf-import [parameter2]",
+            "command": "vrf-import 100:1",
+            "explanation": "Configure the VRF import policy for route examples.",
+            "parameters": [
+                {
+                    "name": "vrf-import",
+                    "type": "string",
+                    "explanation": "VRF import strategy identification."
+                }
+            ]
+        },
+        "vrf-export 100:1": {
+            "template": "vrf-export [parameter2]",
+            "command": "vrf-export 100:1",
+            "explanation": "Configure the VRF export policy for route examples.",
+            "parameters": [
+                {
+                    "name": "vrf-export",
+                    "type": "string",
+                    "explanation": "VRF export policy identification."
+                }
+            ]
+        }
+    }
+}

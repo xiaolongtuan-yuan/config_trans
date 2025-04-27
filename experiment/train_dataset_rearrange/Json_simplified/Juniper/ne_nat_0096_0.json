@@ -1,0 +1,255 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name NATA",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set routing-options static route [parameter1]/[parameter2]": {
+        "template": "set routing-options static route [parameter1]/[parameter2]",
+        "command": "set routing-options static route 0.0.0.0/0",
+        "explanation": "This command configures a static route in Junos, where `[parameter1]` is the destination network and `[parameter2]` is the subnet mask.",
+        "parameters": [
+            {
+                "name": "destination",
+                "type": "string",
+                "explanation": "Target network address."
+            },
+            {
+                "name": "prefix-length",
+                "type": "integer",
+                "explanation": "Prefix length of target network."
+            }
+        ],
+        "next-hop [parameter3]": {
+            "template": "next-hop [parameter3]",
+            "command": "next-hop 2.2.2.2",
+            "explanation": "Configures static routers.",
+            "parameters": [
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "Next jump address."
+                }
+            ]
+        }
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 192.168.10.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set security nat source pool [parameter1]": {
+        "template": "set security nat source pool [parameter1]",
+        "command": "set security nat source pool NAT_POOL",
+        "explanation": "This command configures a source NAT pool named `[parameter1]` in Junos, defining a range of IP addresses used for translating private source IPs to public IPs.",
+        "parameters": [
+            {
+                "name": "pool-name",
+                "type": "string",
+                "explanation": "Name of NAT source pool."
+            }
+        ],
+        "address [parameter2]/[parameter3]": {
+            "template": "address [parameter2]/[parameter3]",
+            "command": "address 192.168.10.0/24",
+            "explanation": "The command assigns an IP address (`parameter2`) with a subnet mask (`parameter3`) to an interface in Junos OS.",
+            "parameters": [
+                {
+                    "name": "address",
+                    "type": "string",
+                    "explanation": "NAT pool address range."
+                },
+                {
+                    "name": "prefix-length",
+                    "type": "integer",
+                    "explanation": "prefix length for address range."
+                }
+            ]
+        }
+    },
+    "set security nat source rule-set [parameter1]": {
+        "template": "set security nat source rule-set [parameter1]",
+        "command": "set security nat source rule-set NAT_RULES",
+        "explanation": "This command configures a source NAT rule set in Junos, defining a collection of rules for translating source IP addresses in traffic matching specified criteria.",
+        "parameters": [
+            {
+                "name": "rule-set-name",
+                "type": "string",
+                "explanation": "Name of the NAT rule book."
+            }
+        ],
+        "from zone [parameter2]": {
+            "template": "from zone [parameter2]",
+            "command": "from zone trust",
+            "explanation": "Configure the source safety area for the NAT ruleset application.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "Name of the source security area."
+                }
+            ]
+        },
+        "to zone [parameter2]": {
+            "template": "to zone [parameter2]",
+            "command": "to zone untrust",
+            "explanation": "Configure the purpose safe area for the NAT ruleset application.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "The name of the destination security area."
+                }
+            ]
+        },
+        "rule [parameter2]": {
+            "template": "rule [parameter2]",
+            "command": "rule 1",
+            "explanation": "This command configures a source NAT rule within a specified rule-set, defining how traffic matching the rule is translated before leaving the network.",
+            "parameters": [
+                {
+                    "name": "rule-name",
+                    "type": "string",
+                    "explanation": "Name of the NAT rule."
+                }
+            ],
+            "match source-address [parameter3]/[parameter4]": {
+                "template": "match source-address [parameter3]/[parameter4]",
+                "command": "match source-address 192.168.10.0/24",
+                "explanation": "Configures the source address that the NAT rules match.",
+                "parameters": [
+                    {
+                        "name": "source-address",
+                        "type": "string",
+                        "explanation": "Matches the source address."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "_Other Organiser"
+                    }
+                ]
+            },
+            "then source-nat pool [parameter3]": {
+                "template": "then source-nat pool [parameter3]",
+                "command": "then source-nat pool NAT_POOL",
+                "explanation": "Configures the address pool that you want to use for the NAT conversion.",
+                "parameters": [
+                    {
+                        "name": "pool-name",
+                        "type": "string",
+                        "explanation": "Name of the address pool used for the source NAT conversion."
+                    }
+                ]
+            }
+        }
+    },
+    "set firewall family inet filter [parameter1]": {
+        "template": "set firewall family inet filter [parameter1]",
+        "command": "set firewall family inet filter route-map-policy1",
+        "explanation": "This command fragment configures an IPv4 firewall filter named `[parameter1]` in Junos OS, defining rules to control traffic based on specified conditions.",
+        "parameters": [
+            {
+                "name": "filter",
+                "type": "string",
+                "explanation": "Firewall filter name."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term 10",
+            "explanation": "This command fragment creates a term within an IPv4 firewall filter, where `[parameter1]` is the filter name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "string",
+                    "explanation": "Filter term name."
+                }
+            ],
+            "from source-address [parameter3]/[parameter4]": {
+                "template": "from source-address [parameter3]/[parameter4]",
+                "command": "from source-address 0.0.0.0/0",
+                "explanation": "Configures the source address conditions for access to the control list.",
+                "parameters": [
+                    {
+                        "name": "source-address",
+                        "type": "string",
+                        "explanation": "Source IP address."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Number of subnet masks in source IP address."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols ospf area [parameter1]": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-1/0/2",
+            "explanation": "Configure interfaces in the OSPF area.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0.0."
+                }
+            ]
+        }
+    }
+}

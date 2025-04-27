@@ -1,23 +1,22 @@
 sysname Spoke1
 interface GigabitEthernet1/0/0
- ip address 10.1.2.10 255.255.255.0
  source Loopback0
- binding tunnel none gre
- interface Loopback0
+ tunnel-protocol none gre
+ip address 10.1.2.10 255.255.255.0
 ipsec profile <IPSEC_PROFILE_NAME>
 interface Loopback0
- ip address 192.168.1.1 255.255.255.255
- interface Tunnel0
+ip address 192.168.1.1 255.255.255.255
 interface Tunnel0
- ip address 172.16.1.2 255.255.255.0
  source GigabitEthernet1/0/0
- network 172.16.1.0 0.0.0.255
- ip address 0 none
- network 192.168.1.0 0.0.0.255
- network 10.1.2.0 0.0.0.255
- ip address 1 none
+ip address 172.16.1.2 255.255.255.0
 ospf 1
-bgp 172.16.1.2
- router-id 172.16.1.2
- router-id 10.1.2.10
-ospf 2
+ ma 1
+  map mpls l2vc 1 none
+  test-id none mep none remote-mep none peer-ip 0.0.0.255
+  delay-measure one-way continual send test-id none interval 0
+  map mpls l2vc 2 none
+  delay-measure one-way continual send test-id none interval 1
+cfm md 172.16.1.2
+ ma 1
+  test-id none mep none remote-mep none peer-ip 172.16.1.2
+  test-id none mep none remote-mep none peer-ip 10.1.2.10

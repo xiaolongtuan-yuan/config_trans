@@ -1,0 +1,300 @@
+{
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/3",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 1",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "vlan-id [parameter3]": {
+                "template": "vlan-id [parameter3]",
+                "command": "vlan-id 11",
+                "explanation": "Configure VLAN IDs for interface units.",
+                "parameters": [
+                    {
+                        "name": "vlan-id",
+                        "type": "integer",
+                        "explanation": "VLAN ID, used to identify VLAN."
+                    }
+                ]
+            },
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.192.167.3/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols mpls interface [parameter1]": {
+        "template": "set protocols mpls interface [parameter1]",
+        "command": "set protocols mpls interface ge-0/0/3.1",
+        "explanation": "Enables the MPLS protocol on the specified interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ]
+    },
+    "set protocols ldp interface [parameter1]": {
+        "template": "set protocols ldp interface [parameter1]",
+        "command": "set protocols ldp interface ge-0/0/3.1",
+        "explanation": "Enables the LDP protocol on the specified interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g. g-0/0/0."
+            }
+        ]
+    },
+    "set class-of-service interfaces [parameter1]": {
+        "template": "set class-of-service interfaces [parameter1]",
+        "command": "set class-of-service interfaces ge-0/0/3",
+        "explanation": "The command configures Class of Service (CoS) settings on the specified interface `[parameter1]` to manage traffic prioritization and quality of service (QoS).",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-0/0/3."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 1",
+            "explanation": "The command `unit [parameter2]` in Junos creates or configures a logical interface unit, where `[parameter2]` specifies the unit number (e.g., `unit 0`).",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "classifiers ieee-802.1p [parameter3]": {
+                "template": "classifiers ieee-802.1p [parameter3]",
+                "command": "classifiers ieee-802.1p default",
+                "explanation": "The command `classifiers ieee-802.1p [parameter3]` configures a traffic classifier based on IEEE 802.1p priority values to classify and prioritize traffic.",
+                "parameters": [
+                    {
+                        "name": "classifier",
+                        "type": "string",
+                        "explanation": "Catalogue type, e.g., eee-802.1p."
+                    }
+                ]
+            },
+            "scheduler-map [parameter3]": {
+                "template": "scheduler-map [parameter3]",
+                "command": "scheduler-map network-8cos-map",
+                "explanation": "The `scheduler-map [parameter3]` command in Junos assigns a predefined scheduler map (specified by `[parameter3]`) to control traffic prioritization and bandwidth allocation on an interface.",
+                "parameters": [
+                    {
+                        "name": "scheduler-map",
+                        "type": "string",
+                        "explanation": "Scheduler map name."
+                    }
+                ]
+            }
+        }
+    },
+    "set class-of-service drop-profiles [parameter1]": {
+        "template": "set class-of-service drop-profiles [parameter1]",
+        "command": "set class-of-service drop-profiles wred-yellow",
+        "explanation": "The command configures a CoS drop profile named `[parameter1]`, defining packet drop behavior based on queue fill levels for traffic prioritization and congestion management.",
+        "parameters": [
+            {
+                "name": "drop-profile",
+                "type": "string",
+                "explanation": "Drops the name of the profile file, such as wred-yellow."
+            }
+        ],
+        "fill-level low [parameter2]": {
+            "template": "fill-level low [parameter2]",
+            "command": "fill-level low 50",
+            "explanation": "The command `fill-level low [parameter2]` in Junos sets the buffer fill threshold to a low level, triggering specific actions when the buffer reaches this threshold.",
+            "parameters": [
+                {
+                    "name": "fill-level",
+                    "type": "integer",
+                    "explanation": "% of low filling level."
+                }
+            ]
+        },
+        "fill-level high [parameter2]": {
+            "template": "fill-level high [parameter2]",
+            "command": "fill-level high 50",
+            "explanation": "The command `fill-level high [parameter2]` in Junos sets a high threshold for buffer or queue fill level, triggering specific actions when exceeded.",
+            "parameters": [
+                {
+                    "name": "fill-level",
+                    "type": "integer",
+                    "explanation": "Percentage of high filling level."
+                }
+            ]
+        },
+        "drop-probability [parameter2]": {
+            "template": "drop-probability [parameter2]",
+            "command": "drop-probability 100",
+            "explanation": "The `drop-probability [parameter2]` command in Junos sets the probability of packet drop for a specific traffic class in a random early detection (RED) profile.",
+            "parameters": [
+                {
+                    "name": "drop-probability",
+                    "type": "integer",
+                    "explanation": "Percentage of probability of throwing away a package."
+                }
+            ]
+        }
+    },
+    "set class-of-service schedulers [parameter1]": {
+        "template": "set class-of-service schedulers [parameter1]",
+        "command": "set class-of-service schedulers network-8cos-enhance",
+        "explanation": "The command `set class-of-service schedulers [parameter1]` configures a scheduler for traffic classes, defining parameters like bandwidth, priority, and buffer management for [parameter1].",
+        "parameters": [
+            {
+                "name": "scheduler-name",
+                "type": "string",
+                "explanation": "Scheduler name."
+            }
+        ],
+        "transmit-rate [parameter2]": {
+            "template": "transmit-rate [parameter2]",
+            "command": "transmit-rate 120000",
+            "explanation": "The `transmit-rate [parameter2]` command in Junos sets the maximum transmission rate for traffic on an interface, limiting it to the specified value in bits per second.",
+            "parameters": [
+                {
+                    "name": "transmit-rate",
+                    "type": "integer",
+                    "explanation": "Transfer rate, in bps."
+                }
+            ]
+        },
+        "maximum-rate [parameter2]": {
+            "template": "maximum-rate [parameter2]",
+            "command": "maximum-rate 200000",
+            "explanation": "The command `maximum-rate [parameter2]` sets the maximum bandwidth limit for a specific interface or traffic class to the value specified in `[parameter2]`.",
+            "parameters": [
+                {
+                    "name": "maximum-rate",
+                    "type": "integer",
+                    "explanation": "Maximum rate, in bps."
+                }
+            ]
+        },
+        "drop-profiles-map loss-priority [parameter2]": {
+            "template": "drop-profiles-map loss-priority [parameter2]",
+            "command": "drop-profiles-map loss-priority low",
+            "explanation": "The command `drop-profiles-map loss-priority [parameter2]` associates a specific loss priority (e.g., low, medium, high) with a drop profile in Junos for traffic management.",
+            "parameters": [
+                {
+                    "name": "loss-priority",
+                    "type": "string",
+                    "explanation": "Throw the package priority."
+                }
+            ],
+            "protocol [parameter3] [parameter4]": {
+                "template": "protocol [parameter3] [parameter4]",
+                "command": "protocol any wred-yellow",
+                "explanation": "The command `protocol [parameter3] [parameter4]` configures a specific protocol with `parameter3` as the protocol type and `parameter4` as its associated settings or options.",
+                "parameters": [
+                    {
+                        "name": "protocol",
+                        "type": "string",
+                        "explanation": "Type of agreement."
+                    },
+                    {
+                        "name": "profile",
+                        "type": "string",
+                        "explanation": "Drop the package profile."
+                    }
+                ]
+            }
+        },
+        "priority [parameter2]": {
+            "template": "priority [parameter2]",
+            "command": "priority low",
+            "explanation": "The command `priority [parameter2]` sets the priority level for a routing protocol or interface, influencing its selection in routing decisions or failover scenarios.",
+            "parameters": [
+                {
+                    "name": "priority",
+                    "type": "string",
+                    "explanation": "Priority level."
+                }
+            ]
+        }
+    },
+    "set class-of-service forwarding-classes [parameter1]": {
+        "template": "set class-of-service forwarding-classes [parameter1]",
+        "command": "set class-of-service forwarding-classes network-8cos",
+        "explanation": "Configure the service category forward category.",
+        "parameters": [
+            {
+                "name": "forwarding-class",
+                "type": "string",
+                "explanation": "Forward class names for different flow categories."
+            }
+        ]
+    },
+    "set class-of-service scheduler-maps [parameter1]": {
+        "template": "set class-of-service scheduler-maps [parameter1]",
+        "command": "set class-of-service scheduler-maps network-8cos-map",
+        "explanation": "This command configures a scheduler map named `[parameter1]` in Junos, defining how traffic classes are mapped to specific scheduling and queuing behaviors.",
+        "parameters": [
+            {
+                "name": "scheduler-map",
+                "type": "string",
+                "explanation": "Scheduler map name."
+            }
+        ],
+        "forwarding-class [parameter2]": {
+            "template": "forwarding-class [parameter2]",
+            "command": "forwarding-class network-8cos",
+            "explanation": "The command `forwarding-class [parameter2]` assigns a packet to a specific forwarding class (`parameter2`) for differentiated handling in traffic queuing and scheduling.",
+            "parameters": [
+                {
+                    "name": "forwarding-class",
+                    "type": "string",
+                    "explanation": "Forward class name."
+                }
+            ],
+            "scheduler [parameter3]": {
+                "template": "scheduler [parameter3]",
+                "command": "scheduler network-8cos-enhance",
+                "explanation": "The `scheduler [parameter3]` command in Junos configures a scheduling policy for system processes, specifying parameters like priority, CPU allocation, or process scheduling behavior.",
+                "parameters": [
+                    {
+                        "name": "scheduler",
+                        "type": "string",
+                        "explanation": "Scheduler name."
+                    }
+                ]
+            }
+        }
+    }
+}

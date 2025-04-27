@@ -1,27 +1,22 @@
 set system host-name NATA
-set system services dhcp pool 6 range 6 to none/0
-set services service-set 1 redundancy service-location 1
-set services service-set 1 redundancy location slot 0
-set services ds-lite instance group1 service-instance-group group1
-set services ds-lite instance group1 id 1
-set services ds-lite instance group1 outbound any address-group address-group1
-set services ds-lite instance group1 address-group address-group1 group-id 1
-set services ds-lite instance group1 address-pool 3001
-set services nat nat64 instance nat1
-set chassis fpc 1024 pic 1024 flexe-client 1024 flexe-group 1024 flexe-type 1024 port-id 1024
-set chassis fpc 1024 pic 1024 controller [parameter3] no-shutdown
-set chassis redundancy group 1
-set ip local-pool 1 range 11.11.11.101 11.11.11.105
-set services nat pool full-cone address-netmask full-cone
-set access class 3001 acl-name 3001
-set security nat source rule-set 1
-set policy-options policy-statement 1 rule 1
-set policy-options policy-statement 1 term policy1 from source-address 192.168.10.0/0.0.0.255
+set system license licenses 0
+set services service-set group1 redundancy service-location 1
+set services service-set group1 redundancy location slot 0
+set security nat destination pool 1
+set security nat destination pool 1024
+set system services dhcp pool 1 range 11.11.11.101 to none/1
+set system services dhcp pool 1 range 11.11.11.101 to 11.11.11.105
+set security nat destination pool address-group1
+set security nat destination pool full-cone
+set access class 192.168.10.0 acl-name 3001
+set access class 192.168.10.0 acl-name 0.0.0.255
 set class-of-service classifiers traffic none classifier1
+set class-of-service classifiers traffic none 3001
 set class-of-service classifiers traffic none behavior1
-set protocols ospf area GigabitEthernet interface GigabitEthernet
-set system telemetry destination-group 192.168.10.1
-set interfaces 192.168.10.1 ipv4-address 192.168.10.1
-set interfaces 192.168.10.1 family inet address none/255.255.255.0
-set security policies from-zone policy1 to-zone inbound policy policy1
-set system radius-server [parameter1] retry none
+set class-of-service classifiers traffic none nat1
+set policy-options policy-statement behavior1 term policy1 from filter classifier1
+set interfaces GigabitEthernet unit [parameter2] family ethernet-switching vlan members none
+set interfaces GigabitEthernet unit [parameter2] family inet policy input policy1
+set interfaces GigabitEthernet unit [parameter2] family inet policy-route inbound
+set interfaces GigabitEthernet family inet address none/255.255.255.0 tunnel family inet address 192.168.10.1/none
+set protocols bgp group [parameter1] multihop ttl none

@@ -1,0 +1,192 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name BRAS",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set system authentication-order [parameter1]": {
+        "template": "set system authentication-order [parameter1]",
+        "command": "set system authentication-order radius",
+        "explanation": "Configure the authentication order of the system.",
+        "parameters": [
+            {
+                "name": "authentication-method",
+                "type": "string",
+                "explanation": "Authentication methods, such as Radius."
+            }
+        ]
+    },
+    "set system radius-server [parameter1]": {
+        "template": "set system radius-server [parameter1]",
+        "command": "set system radius-server 10.0.0.1",
+        "explanation": "Configures a RADIUS server with the specified parameters, such as IP address, port, and shared secret, for network authentication and accounting purposes.",
+        "parameters": [
+            {
+                "name": "radius-server-ip",
+                "type": "string",
+                "explanation": "IP address of RADIUS server."
+            }
+        ],
+        "secret [parameter2]": {
+            "template": "secret [parameter2]",
+            "command": "secret \"radius-secret\"",
+            "explanation": "Configure IP addresses and shared keys for RADIGUS servers.",
+            "parameters": [
+                {
+                    "name": "secret",
+                    "type": "string",
+                    "explanation": "A shared key to communicating with the RADIGUS server."
+                }
+            ]
+        }
+    },
+    "set routing-options multicast": {
+        "template": "set routing-options multicast",
+        "command": "set routing-options multicast",
+        "explanation": "Enables multicast routers."
+    },
+    "set routing-options static route [parameter1]": {
+        "template": "set routing-options static route [parameter1]",
+        "command": "set routing-options static route 10.0.0.0/16",
+        "explanation": "This command configures a static route in the routing table, where `[parameter1]` specifies the destination network prefix and its next-hop or discard/ reject behavior.",
+        "parameters": [
+            {
+                "name": "route",
+                "type": "string",
+                "explanation": "Target network address."
+            }
+        ],
+        "next-hop [parameter2]": {
+            "template": "next-hop [parameter2]",
+            "command": "next-hop 10.0.0.1",
+            "explanation": "This command configures a static route in Junos, where `[parameter1]` is the destination network and `[parameter2]` specifies the next-hop IP address for forwarding traffic.",
+            "parameters": [
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "Next jump address."
+                }
+            ]
+        }
+    },
+    "set routing-options multicast mroute [parameter1]": {
+        "template": "set routing-options multicast mroute [parameter1]",
+        "command": "set routing-options multicast mroute 10.0.0.0/16",
+        "explanation": "The command configures a static multicast route (mroute) in Junos, specifying the multicast group or source address in `[parameter1]` for routing multicast traffic.",
+        "parameters": [
+            {
+                "name": "mroute",
+                "type": "string",
+                "explanation": "The target network address and subnet mask for multicast routing."
+            }
+        ],
+        "to [parameter2]": {
+            "template": "to [parameter2]",
+            "command": "to 10.0.0.1",
+            "explanation": "The command `to [parameter2]` in Junos specifies the destination or target for an operation, such as routing or forwarding, to the value provided in `[parameter2]`.",
+            "parameters": [
+                {
+                    "name": "to",
+                    "type": "string",
+                    "explanation": "The next-hop address for multicast routing."
+                }
+            ]
+        }
+    },
+    "set firewall family inet filter [parameter1]": {
+        "template": "set firewall family inet filter [parameter1]",
+        "command": "set firewall family inet filter list1",
+        "explanation": "This command fragment configures an IPv4 firewall filter named `[parameter1]` in Junos OS, defining rules to control traffic based on specified conditions.",
+        "parameters": [
+            {
+                "name": "filter",
+                "type": "string",
+                "explanation": "Firewall filter name."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term permit1",
+            "explanation": "This command fragment creates a term within an IPv4 firewall filter, where `[parameter1]` is the filter name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "string",
+                    "explanation": "Filter term name."
+                }
+            ],
+            "from source-address [parameter3]": {
+                "template": "from source-address [parameter3]",
+                "command": "from source-address 225.1.1.1/32",
+                "explanation": "The command filters traffic based on the specified source IP address (`[parameter3]`) in a Junos policy or rule.",
+                "parameters": [
+                    {
+                        "name": "source-address",
+                        "type": "string",
+                        "explanation": "Source address."
+                    }
+                ]
+            },
+            "then [parameter3]": {
+                "template": "then [parameter3]",
+                "command": "then accept",
+                "explanation": "Configure firewall filter terminologies and accept all traffic.",
+                "parameters": [
+                    {
+                        "name": "action",
+                        "type": "string",
+                        "explanation": "Action, accept indicates acceptance of traffic."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/1",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.1.1.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            }
+        }
+    }
+}

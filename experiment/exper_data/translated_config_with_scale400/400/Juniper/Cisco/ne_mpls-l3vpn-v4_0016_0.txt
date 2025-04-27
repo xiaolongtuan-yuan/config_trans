@@ -1,23 +1,12 @@
 hostname CE1
-route-map ge-2/0/0 permit [parameter2]
- set interface ge-2/0/0
- set interface ge-1/0/0
-controller E1 0
+interface ge-2/0/0
+interface 0
 ip address 10.4.1.1 24
+interface ge-1/0/0
 ip address 10.1.1.1 24
-ip route 0 none none
-route-map 10.1.1.2 [parameter2] [parameter3]
- set ip next-hop 10.1.1.2
-bridge IBGP protocol none
-radius-server type external
-router bgp 100
- address-family unicast
-  neighbor 10.1.1.2 route-reflector-client
- permit exact none none 10.1.1.0
- network none mask 24
-interface BGP-NETWORKS
- ip policy route-map BGP-NETWORKS
- ipv6 traffic-policy BGP-NETWORKS inbound
- ipv6 traffic-policy 1 inbound
-ip access-list extended 10.1.1.0
-access-list none accept none none none
+ip route 10.1.1.0 exact 10.1.1.2
+bridge IBGP protocol external
+bridge 100 protocol 10.1.1.2
+bridge unicast protocol BGP-NETWORKS
+ip route 10.1.1.0 exact 1
+ip route accept none none

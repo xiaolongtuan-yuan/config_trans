@@ -1,0 +1,252 @@
+{
+    "hostname [parameter1]": {
+        "template": "hostname [parameter1]",
+        "command": "hostname HUAWEI",
+        "explanation": "Sets the device's hostname 'HUAWEI'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "Host Name"
+            }
+        ]
+    },
+    "radius-server host [parameter1] auth-port [parameter2] acct-port [parameter3] key [parameter4] [parameter5]": {
+        "template": "radius-server host [parameter1] auth-port [parameter2] acct-port [parameter3] key [parameter4] [parameter5]",
+        "command": "radius-server host 192.168.8.249 auth-port 1812 acct-port 1813 key 7 011E071F5D1E",
+        "explanation": "Configure host addresses, authentication ports, billing ports and keys for RADIUS servers",
+        "parameters": [
+            {
+                "name": "host address",
+                "type": "IPv4",
+                "explanation": "IP address of RADIUS server"
+            },
+            {
+                "name": "auth-port",
+                "type": "integer",
+                "explanation": "Authentication port number"
+            },
+            {
+                "name": "acct-port",
+                "type": "integer",
+                "explanation": "Fee port number"
+            },
+            {
+                "name": "key",
+                "type": "string",
+                "explanation": "Shared Key"
+            },
+            {
+                "name": "key type",
+                "type": "string",
+                "explanation": "Key Type"
+            }
+        ]
+    },
+    "ip dhcp pool [parameter1]": {
+        "template": "ip dhcp pool [parameter1]",
+        "command": "ip dhcp pool pool3",
+        "explanation": "Create DHCP pool called 'pool3'",
+        "parameters": [
+            {
+                "name": "pool name",
+                "type": "string",
+                "explanation": "Name of DHCP pool"
+            }
+        ],
+        "network [parameter1] [parameter2]": {
+            "template": "network [parameter1] [parameter2]",
+            "command": "network 10.82.2.0 255.255.255.0",
+            "explanation": "Configure the network address and subnet mask of the DHCP pool",
+            "parameters": [
+                {
+                    "name": "network address",
+                    "type": "IPv4",
+                    "explanation": "Chile"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "Subnet mask"
+                }
+            ]
+        },
+        "default-router [parameter1]": {
+            "template": "default-router [parameter1]",
+            "command": "default-router 10.82.2.1",
+            "explanation": "Configure Default Gateway Address",
+            "parameters": [
+                {
+                    "name": "gateway address",
+                    "type": "IPv4",
+                    "explanation": "Default gateway IP address"
+                }
+            ]
+        },
+        "dns-server [parameter1]": {
+            "template": "dns-server [parameter1]",
+            "command": "dns-server 192.168.8.252",
+            "explanation": "Configure DNS Server Address",
+            "parameters": [
+                {
+                    "name": "DNS server address",
+                    "type": "IPv4",
+                    "explanation": "IP address of the DNS server"
+                }
+            ]
+        },
+        "lease [parameter1] [parameter2]": {
+            "template": "lease [parameter1] [parameter2]",
+            "command": "lease 0 8",
+            "explanation": "Configure DHCP lease time",
+            "parameters": [
+                {
+                    "name": "days",
+                    "type": "integer",
+                    "explanation": "Number of lease days"
+                },
+                {
+                    "name": "hours",
+                    "type": "integer",
+                    "explanation": "Lease hours"
+                }
+            ]
+        }
+    },
+    "aaa new-model": {
+        "template": "aaa new-model",
+        "command": "aaa new-model",
+        "explanation": "Enable new AAA model"
+    },
+    "aaa authentication login [parameter1] [parameter2]": {
+        "template": "aaa authentication login [parameter1] [parameter2]",
+        "command": "aaa authentication login auth3 local",
+        "explanation": "Configure local authentication method 'auth3' for login authentication",
+        "parameters": [
+            {
+                "name": "authentication list",
+                "type": "string",
+                "explanation": "Authentication list name"
+            },
+            {
+                "name": "method",
+                "type": "string",
+                "explanation": "Method of accreditation"
+            }
+        ]
+    },
+    "aaa accounting network [parameter1] [parameter2] group [parameter3]": {
+        "template": "aaa accounting network [parameter1] [parameter2] group [parameter3]",
+        "command": "aaa accounting network acct3 start-stop group radius",
+        "explanation": "Configure network billing using 'acct3', start and stop billing, use RADIUS groups",
+        "parameters": [
+            {
+                "name": "accounting list",
+                "type": "string",
+                "explanation": "billing list name"
+            },
+            {
+                "name": "accounting mode",
+                "type": "string",
+                "explanation": "Fee model"
+            },
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "Group Name"
+            }
+        ]
+    },
+    "aaa group server radius [parameter1]": {
+        "template": "aaa group server radius [parameter1]",
+        "command": "aaa group server radius rd3",
+        "explanation": "Define RADIUS server group 'rd3 '",
+        "parameters": [
+            {
+                "name": "group name",
+                "type": "string",
+                "explanation": "Group Name"
+            }
+        ],
+        "server [parameter1] auth-port [parameter2] acct-port [parameter3]": {
+            "template": "server [parameter1] auth-port [parameter2] acct-port [parameter3]",
+            "command": "server 192.168.8.249 auth-port 1812 acct-port 1813",
+            "explanation": "Add RADIUS server address and its authentication and billing port",
+            "parameters": [
+                {
+                    "name": "server address",
+                    "type": "IPv4",
+                    "explanation": "Server IP Address"
+                },
+                {
+                    "name": "auth-port",
+                    "type": "integer",
+                    "explanation": "Authentication port number"
+                },
+                {
+                    "name": "acct-port",
+                    "type": "integer",
+                    "explanation": "Fee port number"
+                }
+            ]
+        }
+    },
+    "aaa authorization network [parameter1] group [parameter2]": {
+        "template": "aaa authorization network [parameter1] group [parameter2]",
+        "command": "aaa authorization network default group radius",
+        "explanation": "Configure the network to authorize the default RADIUS group",
+        "parameters": [
+            {
+                "name": "authorization list",
+                "type": "string",
+                "explanation": "Authorized List Name"
+            },
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "Group Name"
+            }
+        ]
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/1",
+        "explanation": "Configure interface 'GigabitEthernet1/0/1 '",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "Interface Name"
+            }
+        ],
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 192.168.8.1 255.255.255.0",
+            "explanation": "Configure interface IPv4 address and subnet mask",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IP address for interface"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "Subnet mask"
+                }
+            ]
+        }
+    },
+    "bridge-domain [parameter1]": {
+        "template": "bridge-domain [parameter1]",
+        "command": "bridge-domain 2",
+        "explanation": "Link service examples to bridge domain 2",
+        "parameters": [
+            {
+                "name": "bridge domain ID",
+                "type": "integer",
+                "explanation": "ID from Bridge Area"
+            }
+        ]
+    }
+}

@@ -1,24 +1,19 @@
 hostname CE2
-route-map ge-1/0/0 permit [parameter2]
- set interface ge-1/0/0
-controller E1 0
+interface ge-1/0/0
+interface 0
 ip address 10.2.1.1 24
-interface [parameter1]
- no shutdown
- ip policy route-map ADVERTISE_NETWORK
- ipv6 traffic-policy ADVERTISE_NETWORK inbound
- ipv6 traffic-policy 1 inbound
- ip policy route-map none
 router bgp 700
- address-family 10.2.1.2
-  neighbor 10.2.1.2 route-reflector-client
- address-family ipv4 unicast
-bridge BGP_GROUP protocol none
-radius-server type external
-vpdn-group [parameter1]
- accept-dialin
-mpls ldp neighbor 100
+ neighbor 100 remote-as none
+ neighbor none activate
+bridge BGP_GROUP protocol external
+bridge none protocol 10.2.1.2
+bridge none protocol ADVERTISE_NETWORK
+ip route ADVERTISE_NETWORK none 1
+router ospf [parameter1]
+ no passive-interface none
 vrf definition 10.2.1.0/24
- route-target export 10.2.1.0/24
+ route-target import 10.2.1.0/24
+router none
+crypto isakmp policy none
 route-map [parameter1] [parameter2] [parameter3]
  match extcommunity vpn-target none

@@ -1,0 +1,271 @@
+{
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 1",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "vlan-id [parameter3]": {
+                "template": "vlan-id [parameter3]",
+                "command": "vlan-id 1",
+                "explanation": "Configure VLAN IDs for interface units.",
+                "parameters": [
+                    {
+                        "name": "vlan-id",
+                        "type": "integer",
+                        "explanation": "VLAN ID, used to identify VLAN."
+                    }
+                ],
+                "family inet address [parameter4]/[parameter5]": {
+                    "template": "family inet address [parameter4]/[parameter5]",
+                    "command": "family inet address 10.192.168.1/24",
+                    "explanation": "Configure the VLAN ID and IPv4 addresses of the polymer interface.",
+                    "parameters": [
+                        {
+                            "name": "ip-address",
+                            "type": "string",
+                            "explanation": "The IPv4 address assigned to the interface."
+                        },
+                        {
+                            "name": "subnet-mask",
+                            "type": "integer",
+                            "explanation": "Bits of IPv4 subnet mask."
+                        }
+                    ]
+                }
+            },
+            "family inet filter input [parameter3]": {
+                "template": "family inet filter input [parameter3]",
+                "command": "family inet filter input qos1",
+                "explanation": "Configure the input filter for the interface.",
+                "parameters": [
+                    {
+                        "name": "filter-name",
+                        "type": "string",
+                        "explanation": "Filter name."
+                    }
+                ]
+            },
+            "family inet filter output [parameter3]": {
+                "template": "family inet filter output [parameter3]",
+                "command": "family inet filter output qos1",
+                "explanation": "The command applies an IPv4 firewall filter (`family inet filter`) to outgoing traffic (`output`) using the specified filter name (`[parameter3]`).",
+                "parameters": [
+                    {
+                        "name": "filter-name",
+                        "type": "string",
+                        "explanation": "Filter name, e.g. qos1."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols mpls interface [parameter1]": {
+        "template": "set protocols mpls interface [parameter1]",
+        "command": "set protocols mpls interface ge-3/0/0.11",
+        "explanation": "Enables the MPLS protocol on the specified interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ]
+    },
+    "set class-of-service classifiers ieee-802.1 classifier-map [parameter1]": {
+        "template": "set class-of-service classifiers ieee-802.1 classifier-map [parameter1]",
+        "command": "set class-of-service classifiers ieee-802.1 classifier-map qos-cos",
+        "explanation": "Configure IEEE 802.1 Catalogue Map.",
+        "parameters": [
+            {
+                "name": "classifier-map",
+                "type": "string",
+                "explanation": "Catalogue map names, such as qos-cos."
+            }
+        ]
+    },
+    "set class-of-service rewrite-rules ieee-802.1 rewrite-map [parameter1]": {
+        "template": "set class-of-service rewrite-rules ieee-802.1 rewrite-map [parameter1]",
+        "command": "set class-of-service rewrite-rules ieee-802.1 rewrite-map qos-cos",
+        "explanation": "Configure IEEE 802.1 rewrites the rule map.",
+        "parameters": [
+            {
+                "name": "rewrite-map",
+                "type": "string",
+                "explanation": "Rewrite rule map names, such as qos-cos."
+            }
+        ]
+    },
+    "set class-of-service forwarding-classes queue [parameter1]": {
+        "template": "set class-of-service forwarding-classes queue [parameter1]",
+        "command": "set class-of-service forwarding-classes queue qos1",
+        "explanation": "The command assigns a forwarding class to a specific queue, mapping traffic to the designated queue for differentiated Quality of Service (QoS) handling.",
+        "parameters": [
+            {
+                "name": "queue",
+                "type": "string",
+                "explanation": "Queue name, e.g. qos1."
+            }
+        ],
+        "forwarding-class [parameter2]": {
+            "template": "forwarding-class [parameter2]",
+            "command": "forwarding-class high",
+            "explanation": "The command `forwarding-class [parameter2]` assigns a packet to a specific forwarding class (parameter2) for differentiated handling in traffic queuing and scheduling.",
+            "parameters": [
+                {
+                    "name": "forwarding-class",
+                    "type": "string",
+                    "explanation": "Forward class names, such as high."
+                }
+            ]
+        }
+    },
+    "set firewall filter [parameter1]": {
+        "template": "set firewall filter [parameter1]",
+        "command": "set firewall filter qos1",
+        "explanation": "The command `set firewall filter [parameter1]` creates or configures a firewall filter named `[parameter1]` in Junos OS for traffic filtering and security policies.",
+        "parameters": [
+            {
+                "name": "filter-name",
+                "type": "string",
+                "explanation": "Filter name, e.g. qos1."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term match-cos-5",
+            "explanation": "The command fragment `term [parameter2]` in Junos defines a specific condition or rule within a firewall filter or policy, where `[parameter2]` specifies the term's name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "string",
+                    "explanation": "Terminology, such as match-cos-5."
+                }
+            ],
+            "from cos [parameter3]": {
+                "template": "from cos [parameter3]",
+                "command": "from cos 5",
+                "explanation": "The command `from cos [parameter3]` in Junos filters traffic based on the Class of Service (CoS) value specified by `[parameter3]`.",
+                "parameters": [
+                    {
+                        "name": "cos",
+                        "type": "integer",
+                        "explanation": "COS values, e.g. 5."
+                    }
+                ]
+            },
+            "then priority [parameter3]": {
+                "template": "then priority [parameter3]",
+                "command": "then priority high",
+                "explanation": "The command `then priority [parameter3]` in Junos sets the forwarding class priority for a packet, influencing its queuing and scheduling behavior based on the specified priority level.",
+                "parameters": [
+                    {
+                        "name": "priority",
+                        "type": "string",
+                        "explanation": "Priority settings, such as high."
+                    }
+                ]
+            },
+            "then [parameter3]": {
+                "template": "then [parameter3]",
+                "command": "then accept",
+                "explanation": "The `then [parameter3]` command in Junos specifies the action to take in a firewall filter or policy, such as `accept`, `discard`, or `reject`.",
+                "parameters": [
+                    {
+                        "name": "action",
+                        "type": "string",
+                        "explanation": "Action settings, for example."
+                    }
+                ]
+            },
+            "then forwarding-class [parameter3]": {
+                "template": "then forwarding-class [parameter3]",
+                "command": "then forwarding-class low",
+                "explanation": "The command `then forwarding-class [parameter3]` assigns traffic to a specific forwarding class (`[parameter3]`) for differentiated handling in Junos QoS policies.",
+                "parameters": [
+                    {
+                        "name": "forwarding-class",
+                        "type": "string",
+                        "explanation": "Forward class settings, such as low."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols mpls ldp interface [parameter1]": {
+        "template": "set protocols mpls ldp interface [parameter1]",
+        "command": "set protocols mpls ldp interface ge-3/0/0.11",
+        "explanation": "Enables the MPLS LDP protocol on the specified interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ]
+    },
+    "set protocols class-of-service scheduler-maps [parameter1]": {
+        "template": "set protocols class-of-service scheduler-maps [parameter1]",
+        "command": "set protocols class-of-service scheduler-maps qos-scheduler",
+        "explanation": "Configure the quality of service scheduler map.",
+        "parameters": [
+            {
+                "name": "scheduler-map",
+                "type": "string",
+                "explanation": "Scheduler map name."
+            }
+        ]
+    },
+    "set class-of-service schedulers [parameter1]": {
+        "template": "set class-of-service schedulers [parameter1]",
+        "command": "set class-of-service schedulers qos1",
+        "explanation": "The command `set class-of-service schedulers [parameter1]` configures a scheduler for traffic classes, defining parameters like bandwidth, priority, and buffer size for QoS management.",
+        "parameters": [
+            {
+                "name": "scheduler-name",
+                "type": "string",
+                "explanation": "The name of the scheduler."
+            }
+        ],
+        "transmit-rate percent [parameter2]": {
+            "template": "transmit-rate percent [parameter2]",
+            "command": "transmit-rate percent 100",
+            "explanation": "The command `transmit-rate percent [parameter2]` sets the maximum transmission rate as a percentage of the interface's total bandwidth, where `[parameter2]` specifies the percentage value.",
+            "parameters": [
+                {
+                    "name": "transmit-rate",
+                    "type": "integer",
+                    "explanation": "Percentage of transmission rate."
+                }
+            ],
+            "priority [parameter3]": {
+                "template": "priority [parameter3]",
+                "command": "priority strict-high",
+                "explanation": "The command `priority [parameter3]` sets the priority level for a routing protocol or interface, influencing its preference in route selection or failover scenarios.",
+                "parameters": [
+                    {
+                        "name": "priority",
+                        "type": "string",
+                        "explanation": "Priority settings, such as strict-high."
+                    }
+                ]
+            }
+        }
+    }
+}

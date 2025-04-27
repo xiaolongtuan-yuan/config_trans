@@ -175,7 +175,7 @@ if __name__ == '__main__':
     '''
     将原始json command json转换为command tree
     '''
-    juniper_model = load_json_file('../dataset_multi_vendor_config/config_model/scale388en/Juniper_388.json')
+    juniper_model = load_json_file('../dataset_multi_vendor_config/config_model/scale388en/Juniper.json')
     decompose_command_path = "../dataset_multi_vendor_config/config_command_node/commands/decompose_Juniper_commands.json"
     decompose_commands = load_json_file(decompose_command_path)
     translation_llm = LLM_Model('aliyun_deepseek-v3', endpoint_url="https://dashscope.aliyuncs.com/compatible-mode/v1")

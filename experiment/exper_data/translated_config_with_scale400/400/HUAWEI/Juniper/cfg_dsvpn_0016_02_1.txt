@@ -1,26 +1,17 @@
 set system host-name Spoke1
-set chassis redundancy group [parameter1] vrrp none
-set protocols ospf area 0.0.0.0 interface GigabitEthernet1/0/0
-set protocols ospf area 0.0.0.0 interface LoopBack0
-set protocols ospf area 0.0.0.0 interface Tunnel0 interface-type p2mp
-set system telemetry destination-group 10.1.2.10
-set interfaces 10.1.2.10 ipv4-address 10.1.2.10
-set interfaces 10.1.2.10 family inet address none/255.255.255.0
-set interfaces 10.1.2.10 tunnel source gre
-set interfaces 10.1.2.10 tunnel source LoopBack0
-set interfaces 10.1.2.10 ipv4-address 192.168.1.1
-set interfaces 10.1.2.10 family inet address none/255.255.255.255
-set interfaces 10.1.2.10 ipv4-address 172.16.1.2
-set interfaces 10.1.2.10 unit gre tunnel mode p2mp
-set interfaces 10.1.2.10 tunnel source GigabitEthernet1/0/0
-set system login user [parameter1] full-name "[parameter2] "
-set security ipsec policy <IPSEC_PROFILE_NAME>
+set interfaces GigabitEthernet1/0/0 unit 0.0.0.0 tunnel key gre
+set interfaces GigabitEthernet1/0/0 family inet address 172.16.1.0/0.0.0.255 tunnel family inet address 10.1.2.10/none
+set interfaces GigabitEthernet1/0/0 tunnel source LoopBack0
+set interfaces LoopBack0 unit 0.0.0.0
+set interfaces LoopBack0 family inet address 172.16.1.0/0.0.0.255 tunnel family inet address 192.168.1.1/none
+set interfaces Tunnel0 unit 0.0.0.0 tunnel key p2mp
+set interfaces Tunnel0 unit 0.0.0.0 tunnel encapsulation p2mp
+set interfaces Tunnel0 unit 0.0.0.0 pppoe-options service-policy control <IPSEC_PROFILE_NAME>
+set interfaces Tunnel0 family inet address 172.16.1.0/0.0.0.255 tunnel family inet address 172.16.1.2/none
+set interfaces Tunnel0 tunnel source GigabitEthernet1/0/0
+set interfaces Tunnel0 family inet address 192.168.1.0/0.0.0.255
+set interfaces Tunnel0 unit 0.0.0.1 family inet address 10.1.2.0/0.0.0.255 vrrp-group [parameter4] virtual-address none
+set interfaces Tunnel0 family inet address 10.1.2.0/0.0.0.255
 set routing-options router-id 172.16.1.2
-set system services dhcp pool 172.16.1.0
-set services nat pool 172.16.1.0 range 172.16.1.0
-set services nat pool 172.16.1.0 address-netmask 0.0.0.255
-set services nat pool 172.16.1.0 range 192.168.1.0
-set services nat pool 172.16.1.0 range 10.1.2.0
 set routing-options router-id 10.1.2.10
-set protocols ospf area 0.0.0.1
-set system radius-server [parameter1] retry none
+set system radius-server [parameter1] accounting-port none

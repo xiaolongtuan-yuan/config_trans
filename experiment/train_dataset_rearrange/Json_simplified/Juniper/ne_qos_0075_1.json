@@ -1,0 +1,245 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name HUAWEI",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set routing-options static route [parameter1]/[parameter2]": {
+        "template": "set routing-options static route [parameter1]/[parameter2]",
+        "command": "set routing-options static route 0.0.0.0/0",
+        "explanation": "This command configures a static route in Junos, where `[parameter1]` is the destination network and `[parameter2]` is the subnet mask.",
+        "parameters": [
+            {
+                "name": "destination",
+                "type": "string",
+                "explanation": "Target network address."
+            },
+            {
+                "name": "prefix-length",
+                "type": "integer",
+                "explanation": "Prefix length of target network."
+            }
+        ],
+        "next-hop [parameter3]": {
+            "template": "next-hop [parameter3]",
+            "command": "next-hop 10.1.99.1",
+            "explanation": "Configures static routers.",
+            "parameters": [
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "Next jump address."
+                }
+            ],
+            "preference [parameter4]": {
+                "template": "preference [parameter4]",
+                "command": "preference 70",
+                "explanation": "The command `preference [parameter4]` sets the administrative preference value for a routing protocol or route, influencing route selection in Junos OS.",
+                "parameters": [
+                    {
+                        "name": "preference",
+                        "type": "integer",
+                        "explanation": "The lower the priority, the higher the value."
+                    }
+                ]
+            }
+        }
+    },
+    "set firewall family inet filter [parameter1]": {
+        "template": "set firewall family inet filter [parameter1]",
+        "command": "set firewall family inet filter acl-3001",
+        "explanation": "This command fragment configures an IPv4 firewall filter named `[parameter1]` in Junos OS, defining rules to control traffic based on specified conditions.",
+        "parameters": [
+            {
+                "name": "filter",
+                "type": "string",
+                "explanation": "Firewall filter name."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term t1",
+            "explanation": "This command fragment creates a term within an IPv4 firewall filter, where `[parameter1]` is the filter name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "string",
+                    "explanation": "Filter term name."
+                }
+            ],
+            "from source-address [parameter3]/[parameter4]": {
+                "template": "from source-address [parameter3]/[parameter4]",
+                "command": "from source-address 10.1.40.0/24",
+                "explanation": "Configures the source address conditions for access to the control list.",
+                "parameters": [
+                    {
+                        "name": "source-address",
+                        "type": "string",
+                        "explanation": "Source IP address."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Number of subnet masks in source IP address."
+                    }
+                ]
+            },
+            "from destination-address [parameter3]/[parameter4]": {
+                "template": "from destination-address [parameter3]/[parameter4]",
+                "command": "from destination-address 10.1.40.0/24",
+                "explanation": "The command filters traffic based on the destination IP address range specified by `[parameter3]` (IP address) and `[parameter4]` (subnet mask or prefix length).",
+                "parameters": [
+                    {
+                        "name": "destination-address",
+                        "type": "string",
+                        "explanation": "destination network address."
+                    },
+                    {
+                        "name": "prefix-length",
+                        "type": "integer",
+                        "explanation": "prefix length of the destination network."
+                    }
+                ]
+            },
+            "then [parameter3]": {
+                "template": "then [parameter3]",
+                "command": "then accept",
+                "explanation": "Configure firewall filter terminologies and accept all traffic.",
+                "parameters": [
+                    {
+                        "name": "action",
+                        "type": "string",
+                        "explanation": "Action, accept indicates acceptance of traffic."
+                    }
+                ]
+            }
+        }
+    },
+    "set policy-options policy-statement [parameter1]": {
+        "template": "set policy-options policy-statement [parameter1]",
+        "command": "set policy-options policy-statement class-c1",
+        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "name of the policy statement."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term t1",
+            "explanation": "This command fragment configures a routing policy by defining a term within a policy statement, where `[parameter1]` is the policy name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "The term number of the policy statement."
+                }
+            ],
+            "from filter [parameter3]": {
+                "template": "from filter [parameter3]",
+                "command": "from filter acl-3001",
+                "explanation": "The command `from filter [parameter3]` in Junos specifies a source filter condition, applying the filter named `[parameter3]` to match traffic based on defined criteria.",
+                "parameters": [
+                    {
+                        "name": "filter",
+                        "type": "string",
+                        "explanation": "The name of the filter used to match."
+                    }
+                ]
+            },
+            "then next-hop [parameter3]": {
+                "template": "then next-hop [parameter3]",
+                "command": "then next-hop 10.1.99.5",
+                "explanation": "The command `then next-hop [parameter3]` in Junos sets the next-hop IP address for traffic matching a specific route or filter to the value specified in `[parameter3]`.",
+                "parameters": [
+                    {
+                        "name": "next-hop",
+                        "type": "string",
+                        "explanation": "Next jump IP address."
+                    }
+                ]
+            },
+            "then precedence [parameter3]": {
+                "template": "then precedence [parameter3]",
+                "command": "then precedence 1",
+                "explanation": "The command `then precedence [parameter3]` sets the IP precedence (priority) value in the packet header to the specified `[parameter3]` value (0-7) for traffic matching the filter.",
+                "parameters": [
+                    {
+                        "name": "precedence",
+                        "type": "integer",
+                        "explanation": "Priority value."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet service input [parameter3]": {
+                "template": "family inet service input [parameter3]",
+                "command": "family inet service input policy-p1",
+                "explanation": "The command configures the input service filter for IPv4 traffic, applying specific service rules defined by `[parameter3]` to incoming packets on the interface.",
+                "parameters": [
+                    {
+                        "name": "policy",
+                        "type": "string",
+                        "explanation": "Service policy name."
+                    }
+                ]
+            },
+            "family inet address [parameter3]": {
+                "template": "family inet address [parameter3]",
+                "command": "family inet address <appropriate-ip>",
+                "explanation": "The command `family inet address [parameter3]` configures an IPv4 address (`[parameter3]`) on an interface in Junos OS.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "IPv4 address."
+                    }
+                ]
+            }
+        }
+    },
+    "delete interfaces [parameter1]": {
+        "template": "delete interfaces [parameter1]",
+        "command": "delete interfaces ge-1/0/0",
+        "explanation": "The command fragment `delete interfaces [parameter1]` removes the configuration for the specified interface (`[parameter1]`) from the Junos device.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g. g-0/0/1."
+            }
+        ]
+    }
+}

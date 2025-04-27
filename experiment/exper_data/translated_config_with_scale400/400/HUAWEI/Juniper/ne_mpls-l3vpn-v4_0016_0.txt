@@ -1,15 +1,11 @@
 set system host-name CE1
-set protocols ospf area GigabitEthernet2/0/0 interface GigabitEthernet2/0/0
-set protocols ospf area GigabitEthernet2/0/0 interface GigabitEthernet1/0/0
-set chassis fpc [parameter1] pic [parameter2] controller [parameter3] no-shutdown
-set system telemetry destination-group 10.4.1.1 ipv4-address 100
-set interfaces 10.4.1.1 ipv4-address 10.4.1.1
-set interfaces 10.4.1.1 family inet address none/255.255.255.0
-set interfaces 10.4.1.1 ipv4-address 10.1.1.1
+set interfaces GigabitEthernet2/0/0 unit 10.4.1.1
+set interfaces GigabitEthernet2/0/0 family inet address none/255.255.255.0 tunnel family inet address 10.4.1.1/none
+set interfaces GigabitEthernet1/0/0 unit 10.4.1.1 family ethernet-switching vlan members none
+set interfaces GigabitEthernet1/0/0 family inet address none/255.255.255.0 tunnel family inet address 10.1.1.1/none
 set routing-options autonomous-system 600
-set protocols mpls ldp remote-peer 10.1.1.2
-set protocols bgp group [parameter1] family inet unicast
-set protocols bgp group [parameter1] neighbor [parameter2] activate
-set protocols bgp group [parameter1] import none
-set routing-options static route 0.0.0.0/0 none
-set routing-instances 0.0.0.0 routing-options static route 0.0.0.0/0 next-hop 10.1.1.2
+set routing-options autonomous-system 100
+set routing-options autonomous-system 10.1.1.2
+set routing-options static route 0.0.0.0/0 10.1.1.2
+set protocols bgp group [parameter1] family none none
+set protocols bgp group [parameter1] family inet none

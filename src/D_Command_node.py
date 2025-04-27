@@ -27,6 +27,8 @@ def parse_command_node(Command_nodes: dict, config_model: dict, embedding_model,
         if k in Command_nodes:
             # k已将在Command_nodes中了，我们的策略是保留depth最小的节点，保证语法正确性
             if Command_nodes[k]['structural_features']['command_depth'] <= depth:
+                # 跳过当前节点的处理，但递归处理子节点
+                parse_command_node(Command_nodes, sub_dict, embedding_model, parent_command + [str(k)], depth + 1)
                 continue
 
         template_key = sub_dict.get("template")

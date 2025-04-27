@@ -1,24 +1,19 @@
 set system host-name SSH_Server
 set system domain-name example.com
-set system login user [parameter1] authentication public-keys generate rsa modulus 2048
-set system login user [parameter1] authentication plain-text-password @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
-set system services ssh
-delete security ssh protocol-version 2
-set protocols ospf area LoopBack0 interface LoopBack0
-set protocols ospf area LoopBack0 interface GigabitEthernet0/0/0
-set system telemetry destination-group 10.1.1.1
-set interfaces 10.1.1.1 ipv4-address 10.1.1.1
-set interfaces 10.1.1.1 family inet address none/255.255.255.255
-set interfaces 10.1.1.1 ipv4-address 10.1.1.2
-set interfaces 10.1.1.1 family inet address none/255.255.0.0
-set aaa new-model
-set access profile client001
-set system login class client001 client user client001
-set system login class client001 authorization 15
+set system services ssh hostkey-algorithm 2048
+set system services ssh protocol-version 2
+set interfaces LoopBack0 unit 10.1.1.1
+set interfaces LoopBack0 family inet address none/255.255.255.255 tunnel family inet address 10.1.1.1/none
+set system services ftp password @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
+set services l2tp remote-access client pool low 15
 set system services client001
-set chassis fpc [parameter1] pic [parameter2] controller [parameter3] no-shutdown
-set system ports auxiliary 0
-set system ports console stop-bits 4
-set system services aaa authentication-order none none
-set system services ssh source-address none
+set interfaces GigabitEthernet0/0/0 unit 10.1.1.1 family ethernet-switching vlan members none
+set interfaces GigabitEthernet0/0/0 unit 10.1.1.1 family inet address none/255.255.0.0 vrrp-group [parameter4] virtual-address none
+set interfaces GigabitEthernet0/0/0 family inet address none/255.255.0.0 tunnel family inet address 10.1.1.2/none
+set system ports auxiliary 4
+set system login user [parameter1] class [parameter2] authentication ssh-rsa none
+set system login user [parameter1] uid none
+set system services ssh connection-limit none
+set system services ssh protocol-version none
 set system services ssh ciphers none none aes128-ctr
+set security ike policy [parameter1] proposals none

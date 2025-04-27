@@ -172,7 +172,9 @@ def main():
                 print(f"exper for {scale}, {source_vendor} to {target_vendor} translation without llm")
 
 
-                mapping_libraries = mapping_library_load(mapping_library_path, vendors, manual_mapping_path)
+                # mapping_libraries = mapping_library_load(mapping_library_path, vendors, manual_mapping_path)
+                mapping_libraries = mapping_library_load(mapping_library_path, vendors)
+
                 config_matchers = config_matchers_load(templates_path, vendors)
 
                 # translation_llm = Translation_Model('aliyun_deepseek-v3', config_model_dir=config_model_dir, vendors=vendors, endpoint_url="https://dashscope.aliyuncs.com/compatible-mode/v1")

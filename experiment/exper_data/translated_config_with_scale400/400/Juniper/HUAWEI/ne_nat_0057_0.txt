@@ -1,22 +1,19 @@
 sysname NATA
-flexe group ge-0/0/0
- binding interface ge-0/0/0
 interface ge-0/0/0
  e1 0 none
- ip address 192.168.10.1 24
- interface ge-0/0/1
-ip pool trust bas local
-ssh user none service-type all
-ip pool untrust bas local
- section none 11.11.11.101 11.11.11.105
-ip pool address-group1 none none
-acl number OUTBOUND
- rule OUTBOUND permit ip source none none
- rule NAT-INSIDE permit vpn-instance none
-nat ip-pool trust
-acl untrust
- rule permit ip source none untrust
-ip pool 192.168.10.0
- rule none permit ip source 192.168.10.0 none destination none none
- network none mask 24
-ip pool address-group1 local
+ip address 192.168.10.1 24
+info-center source default channel trust log level none
+info-center source default channel ge-0/0/0 log level none
+info-center source default channel all log level none
+info-center source default channel untrust log level none
+info-center source default channel ge-0/0/1 log level none
+nat ip-pool address-group1
+ section none 11.11.11.101 mask none
+ip pool 11.11.11.105 bas local
+ section none none 11.11.11.105
+evpn source-address OUTBOUND
+evpn source-address trust
+evpn source-address untrust
+evpn source-address NAT-INSIDE
+evpn source-address 24
+evpn source-address address-group1

@@ -1,0 +1,283 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DeviceA",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set firewall family inet filter [parameter1]": {
+        "template": "set firewall family inet filter [parameter1]",
+        "command": "set firewall family inet filter ac",
+        "explanation": "This command fragment configures an IPv4 firewall filter named `[parameter1]` in Junos OS, defining rules to control traffic based on specified conditions.",
+        "parameters": [
+            {
+                "name": "filter",
+                "type": "string",
+                "explanation": "Firewall filter name."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term dd",
+            "explanation": "This command fragment creates a term within an IPv4 firewall filter, where `[parameter1]` is the filter name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "string",
+                    "explanation": "Filter term name."
+                }
+            ],
+            "from dscp [parameter3]": {
+                "template": "from dscp [parameter3]",
+                "command": "from dscp af11",
+                "explanation": "Configure the matches for firewall filters.",
+                "parameters": [
+                    {
+                        "name": "dscp-value",
+                        "type": "string",
+                        "explanation": "DSCP values for matching traffic."
+                    }
+                ]
+            },
+            "then [parameter3]": {
+                "template": "then [parameter3]",
+                "command": "then accept",
+                "explanation": "Configure firewall filter terminologies and accept all traffic.",
+                "parameters": [
+                    {
+                        "name": "action",
+                        "type": "string",
+                        "explanation": "Action, accept indicates acceptance of traffic."
+                    }
+                ]
+            }
+        }
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2]": {
+            "template": "unit [parameter2]",
+            "command": "unit 0",
+            "explanation": "Configure the unit number of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit numbers that distinguish between multiple logical configurations under the same interface."
+                }
+            ],
+            "family inet address [parameter3]/[parameter4]": {
+                "template": "family inet address [parameter3]/[parameter4]",
+                "command": "family inet address 10.10.1.1/24",
+                "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+                "parameters": [
+                    {
+                        "name": "ip-address",
+                        "type": "string",
+                        "explanation": "The IPv4 address assigned to the interface."
+                    },
+                    {
+                        "name": "subnet-mask",
+                        "type": "integer",
+                        "explanation": "Bits of IPv4 subnet mask."
+                    }
+                ]
+            },
+            "family inet filter input [parameter3]": {
+                "template": "family inet filter input [parameter3]",
+                "command": "family inet filter input ac",
+                "explanation": "Configure the input filter for the interface.",
+                "parameters": [
+                    {
+                        "name": "filter-name",
+                        "type": "string",
+                        "explanation": "Filter name."
+                    }
+                ]
+            },
+            "family iso address [parameter3]": {
+                "template": "family iso address [parameter3]",
+                "command": "family iso address 10.0000.0000.0001.00",
+                "explanation": "The command `family iso address [parameter3]` configures an interface to support the ISO protocol family with the specified ISO network address `[parameter3]`.",
+                "parameters": [
+                    {
+                        "name": "iso-address",
+                        "type": "string",
+                        "explanation": "The ISO address assigned to the interface."
+                    }
+                ]
+            }
+        }
+    },
+    "set protocols isis level [parameter1]": {
+        "template": "set protocols isis level [parameter1]",
+        "command": "set protocols isis level 1",
+        "explanation": "Configure the level of the ISIS protocol.",
+        "parameters": [
+            {
+                "name": "level",
+                "type": "integer",
+                "explanation": "Level of IS-IS agreement, e.g. 2."
+            }
+        ]
+    },
+    "set protocols isis interface [parameter1]": {
+        "template": "set protocols isis interface [parameter1]",
+        "command": "set protocols isis interface ge-1/0/0",
+        "explanation": "Enables an IS-IS protocol on the specified interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., lo."
+            }
+        ]
+    },
+    "set protocols bgp group [parameter1]": {
+        "template": "set protocols bgp group [parameter1]",
+        "command": "set protocols bgp group EBGP",
+        "explanation": "This command configures a BGP group named [parameter1], defining a set of BGP peers with shared session parameters.",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP Group name."
+            }
+        ],
+        "type [parameter2]": {
+            "template": "type [parameter2]",
+            "command": "type external",
+            "explanation": "Configure the type of BGP group to be external.",
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "explanation": "Type of BGP group, for example, external."
+                }
+            ]
+        },
+        "family inet [parameter2]": {
+            "template": "family inet [parameter2]",
+            "command": "family inet unicast",
+            "explanation": "Configure the IPv4 solo address of the BGP group.",
+            "parameters": [
+                {
+                    "name": "address-family",
+                    "type": "string",
+                    "explanation": "Address community type."
+                }
+            ]
+        },
+        "export [parameter2]": {
+            "template": "export [parameter2]",
+            "command": "export ac",
+            "explanation": "Configure the strategy for BGP to guide the route.",
+            "parameters": [
+                {
+                    "name": "export-policy",
+                    "type": "string",
+                    "explanation": "The policy name for the route."
+                }
+            ]
+        }
+    },
+    "set policy-options policy-statement [parameter1]": {
+        "template": "set policy-options policy-statement [parameter1]",
+        "command": "set policy-options policy-statement ac",
+        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "name of the policy statement."
+            }
+        ],
+        "term [parameter2]": {
+            "template": "term [parameter2]",
+            "command": "term 10",
+            "explanation": "This command fragment configures a routing policy by defining a term within a policy statement, where `[parameter1]` is the policy name and `[parameter2]` is the term name.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "The term number of the policy statement."
+                }
+            ],
+            "from protocol [parameter3]": {
+                "template": "from protocol [parameter3]",
+                "command": "from protocol isis",
+                "explanation": "Configure the matching condition for the policy statement from the OSF protocol.",
+                "parameters": [
+                    {
+                        "name": "protocol",
+                        "type": "string",
+                        "explanation": "Matches the protocol name, for example."
+                    }
+                ]
+            },
+            "from level [parameter3]": {
+                "template": "from level [parameter3]",
+                "command": "from level 1",
+                "explanation": "The command `from level [parameter3]` in Junos specifies the minimum severity level of system log messages to be included in the output or configuration.",
+                "parameters": [
+                    {
+                        "name": "level",
+                        "type": "integer",
+                        "explanation": "The command explanation translates to: \"IS-IS level, for example, 1.\""
+                    }
+                ]
+            },
+            "from tag [parameter3]": {
+                "template": "from tag [parameter3]",
+                "command": "from tag 123",
+                "explanation": "The command `from tag [parameter3]` in Junos specifies a match condition in a routing policy or firewall filter, where traffic is matched based on the specified tag value.",
+                "parameters": [
+                    {
+                        "name": "tag",
+                        "type": "integer",
+                        "explanation": "Label value."
+                    }
+                ]
+            },
+            "then local-preference [parameter3]": {
+                "template": "then local-preference [parameter3]",
+                "command": "then local-preference 1",
+                "explanation": "The command sets the local preference value for a BGP route to `[parameter3]`, influencing the route selection process within the local autonomous system.",
+                "parameters": [
+                    {
+                        "name": "local-preference",
+                        "type": "integer",
+                        "explanation": "Local preference value."
+                    }
+                ]
+            },
+            "then [parameter3]": {
+                "template": "then [parameter3]",
+                "command": "then accept",
+                "explanation": "Configure the action of the policy statement as accepted.",
+                "parameters": [
+                    {
+                        "name": "action",
+                        "type": "string",
+                        "explanation": "Execute actions such as accept."
+                    }
+                ]
+            }
+        }
+    }
+}

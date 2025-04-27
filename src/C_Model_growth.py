@@ -34,7 +34,7 @@ def merge_nodes(existing_node: dict, new_node: dict):
             # 若都为 dict，则需要递归合并，否则跳过（只保留第一次）
             if isinstance(existing_node[key], dict) and isinstance(val, dict):
                 merge_nodes(existing_node[key], val)
-            # 其余情况按照“保留第一次出现”的原则，不覆盖 existing_node[key]
+            # 其余情况按照"保留第一次出现"的原则，不覆盖 existing_node[key]
     return existing_node
 
 def check_template_duplication(command:str, template_re_libary:dict):
@@ -86,6 +86,11 @@ def merge_models(config1, config2, vendor_command, template_used_statistic):
     for key, value in config2.items():
         if not isinstance(value, dict):
             continue
+        
+        required_fields = ["template", "command", "explanation", "parameters"]
+        if isinstance(value, dict):
+            if not all(field in value for field in required_fields):
+                continue  # 跳过缺少字段的节点
         command_line = value.get("command")
         if command_line:
             try:
@@ -205,11 +210,11 @@ if __name__ == "__main__":
 
     # 只处理前400条juniper数据-388条
     vendors = ['Cisco', "HUAWEI", "Juniper"]
-    # vendors = ['Cisco']
+    # vendors = ['HUAWEI']
     project_root = Path(__file__).parent.parent
     for vendor in vendors:
         print(vendor)
-        folder_path = str(project_root / f'experiment/train_dataset/Json_simplified/{vendor}')
+        folder_path = str(project_root / f'experiment/train_dataset_rearrange/Json_simplified/{vendor}')
         json_files = get_json_filenames(folder_path)
         template_used_statistic = {}
         vendor_model = {}

@@ -1,17 +1,13 @@
 hostname CE
-route-map ae100 permit [parameter2]
- set interface ae100
- set interface ge-1/0/1
- set interface ge-1/0/2
- set interface ge-1/0/3
-aaa accounting network none active group none
-controller E1 0
+interface ae100
+ dhcp select active
+interface 0
+ switchport trunk allowed vlan 100
+interface ge-1/0/1
+interface ge-1/0/2
+interface ge-1/0/3
 vlan 100
- name 100
  name VLAN100
 router ospf ae100
  no passive-interface ae100
-ptp clock-domain [parameter1]
- unicast-negotiate none
-interface ae100
- switchport trunk allowed vlan add 100
+ no passive-interface none

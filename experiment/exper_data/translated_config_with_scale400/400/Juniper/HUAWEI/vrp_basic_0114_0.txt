@@ -1,22 +1,18 @@
 sysname SSH_Server
 ip domain-name example.com
-ssh user none assign rsa-key rsa
+ssh user none publickey none rsa
 ssh client key-exchange group14-sha256
-ike proposal aes128-ctr
- encryption-algorithm aes256-ctr
+ssh user aes256-ctr service-type none
 ssh server version v2
-aaa
- local-user client001 service-type none
- local-user super-user service-type none
-local-user none password irreversible-cipher "@%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%"
-local-user none password cipher <encrypted-password>
+local-user client001 service-type ssh
+local-user super-user service-type ssh
+local-user "@%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%" service-type ssh
+local-user <encrypted-password> service-type ssh
 radius-server none auth-port password acct-port none
-ssh server compatibility enable
-user-interface vty insecure none
-flexe group lo0
- binding interface lo0
- binding interface ge-0/0/0
-interface 0
+user-interface con insecure
+interface lo0
  e1 0 none
- ip address 10.1.1.1 32
- ip address 10.1.1.2 16
+ip address 10.1.1.1 32
+interface ge-0/0/0
+ip address 10.1.1.2 16
+local-user none service-type ssh
