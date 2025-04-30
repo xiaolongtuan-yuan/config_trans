@@ -1,0 +1,16 @@
+set system host-name CE4
+
+set interfaces ge-0/0/0 unit 0 family inet address 172.16.2.1/24
+
+set protocols bgp group external-peers type external
+set protocols bgp group external-peers peer-as 100
+set protocols bgp group external-peers neighbor 172.16.2.2
+
+set protocols bgp group external-peers family inet unicast
+
+set protocols bgp group external-peers export export-connected
+
+set routing-options forwarding-table export export-connected
+
+set policy-options policy-statement export-connected from protocol direct
+set policy-options policy-statement export-connected then accept

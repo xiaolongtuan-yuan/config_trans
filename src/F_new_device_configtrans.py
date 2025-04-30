@@ -981,7 +981,7 @@ if __name__ == "__main__":
 
     # translation test
     file_name = 'ne_mpls-l3vpn-v4_0016_0'
-    source_config_dir = f'./experiment/test_dataset/command_tree/Cisco/{file_name}.json'
+    source_config_dir = f'./experiment/train_dataset/command_tree/Cisco/{file_name}.json'
     # experiment/test_dataset/command_tree/Cisco/ne_mpls-l3vpn-v4_0016_0.json
     source_vendor = 'Cisco'
     target_vendor = 'Juniper' # 'HUAWEI'
