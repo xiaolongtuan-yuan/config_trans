@@ -1,14 +1,15 @@
 hostname CE3
 interface ge-1/0/0
 interface 0
- service-policy none reject
-ip address 10.3.1.1 24
-router ospf [parameter1]
- no passive-interface none
+ ip address 10.3.1.1 24
+ no shutdown
 router bgp 800
- neighbor 100 remote-as none
-bridge BGP_GROUP protocol external
-bridge unicast protocol 10.3.1.2
-bridge none protocol ADVERTISE_NETWORK
+router bgp BGP_GROUP
+ address-family ipv4 unicast
+  redistribute external
+  redistribute ADVERTISE_NETWORK
+ neighbor 10.3.1.2 remote-as 100
+ address-family unicast
 ip route 10.3.1.0 exact 1
-ip route accept none none
+ip route none none accept
+ip route none none reject

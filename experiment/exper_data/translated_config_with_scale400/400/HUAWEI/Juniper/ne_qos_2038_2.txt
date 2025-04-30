@@ -1,8 +1,11 @@
 set system host-name DeviceC
-set interfaces GigabitEthernet1/0/0 unit [parameter2] family ethernet-switching vlan members none
-set interfaces GigabitEthernet1/0/0 family inet address 10.20.1.0/0.0.0.255 tunnel family inet address 10.20.1.1/none
-set interfaces GigabitEthernet1/0/0 unit 0.0.0.0
-set routing-options autonomous-system 100
-set protocols bgp group [parameter1] family none none
-set protocols bgp group [parameter1] family inet none
-set routing-options autonomous-system 10.20.1.2
+set interfaces GigabitEthernet1/0/0 disable
+set interfaces GigabitEthernet1/0/0 unit 10.20.1.1 family inet address 10.20.1.1/255.255.255.0
+set protocols bgp group 100 peer-as 100
+set protocols bgp group 100 neighbor 10.20.1.2
+set protocols bgp group 100 family inet unicast
+set protocols bgp group 100 export none
+set protocols bgp group 100 peer-as 10.20.1.2
+set protocols ospf area 1
+set routing-options router-id 0.0.0.0
+set routing-options router-id 0.0.0.255

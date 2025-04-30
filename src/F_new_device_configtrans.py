@@ -1,4 +1,6 @@
 # 从json解析配置到目标供应商配置
+import sys
+sys.path.append("/data/public/hrx/Repositories/config_trans")
 import os
 import types
 from concurrent.futures import ThreadPoolExecutor
@@ -13,7 +15,8 @@ import numpy as np
 import torch
 import warnings
 import re
-
+from src.D_Command_node import CommandNode # parse_command_node, build_command_node
+from src.E_command_match import ConfigMatcher
 
 warnings.filterwarnings("ignore", category=UserWarning, module="torch")
 
@@ -21,215 +24,6 @@ warnings.filterwarnings("ignore", category=UserWarning, module="torch")
 device = "cuda:0"  # 使用GPU 1
 project_root = Path(__file__).parent.parent
 
-
-# 同阶段4--CommandNode
-class CommandNode:
-    def __init__(self, structural_features, semantic_features, embedding_model):
-        # 结构特征
-        self.structural_features = {}
-
-        # 语义特征
-        self.semantic_features = {}
-
-        # 参数语义特征
-        self.paras_semantic_features = []
-
-        # 上下文拓扑特征
-        self._parse_context_topology(structural_features['parent_command'])
-
-        # 参数签名特征
-        self._build_param_signature(structural_features['params'])
-
-        # 深度特征
-        self._calculate_depth_levels(structural_features['depth'])
-
-        # 语义特征
-        self._generate_semantic_embedding(structural_features, semantic_features, embedding_model)
-
-        # 参数语义特征
-        self._generate_para_semantic_embedding(semantic_features, embedding_model)
-
-    def _parse_context_topology(self, parent_command):
-        """解析上下文拓扑关系"""
-        self.structural_features['context_topology'] = {
-            'parent_command': parent_command,  # 父节点命令
-        }
-
-    def _build_param_signature(self, params):
-        """构建参数特征签名"""
-        param_spec = {
-            'count': len(params),
-            'order': [p['type'] for p in params]
-            # 'constraints': []
-        }
-        '''
-        for p in params:
-            constraint = {}
-            if p.get('format'):
-                constraint['format'] = p['format']
-            if p.get('options'):
-                constraint['predefined'] = p['options']
-            param_spec['constraints'].append(constraint)
-        '''
-        self.structural_features['param_signature'] = param_spec
-
-    def _calculate_depth_levels(self, depth):
-        """# 计算物理/逻辑层级深度
-        physical_depth = template.count('/')  # 使用/表示层级
-        logical_depth = self._infer_logical_depth(template)"""
-        self.structural_features['command_depth'] = depth
-
-    def _generate_semantic_embedding(self, structural_features, semantic_features, embedding_model):
-        """生成语义嵌入向量"""
-        # 使用预训练模型获取基础语义(配置模板，命令，解释)
-        '''结构特征T_{s} ，包括了配置命令层级，参数数量，父视图配置命令
-           功能特征T_{f}，包括配置命令的模板，命令示例以及解释
-           参数合集特征T_{P}，汇总了所有配置参数的名称、类型与解释'''
-        structural_text = str(structural_features['depth']) + \
-                          str(len(structural_features['params'])) + \
-                          structural_features['parent_command']
-
-        function_text = semantic_features['template'] + \
-                       semantic_features['command'] +\
-                       semantic_features['explanation']
-
-        '''base_embedding = self._get_base_embedding(embedding_model,
-                                                  semantic_features['template']
-                                                  + semantic_features['command']
-                                                  + semantic_features['explanation'])'''
-
-        structural_embedding = self._get_base_embedding(embedding_model, structural_text)
-        function_embedding = self._get_base_embedding(embedding_model, function_text)
-
-        # 参数增强语义(所有参数的名字与解释)
-        param_text = ' '.join([p['name'] + p['explanation'] for p in semantic_features['parameters']])
-        param_embedding = self._get_param_embedding(embedding_model, param_text)
-
-        # 融合特征
-        self.semantic_features = self._fuse_embeddings(
-            structural_embedding, function_embedding, param_embedding
-        )
-
-    def _generate_para_semantic_embedding(self, semantic_features, embedding_model):
-        # 参数语义(单个参数的名字+完整配置命令解释)
-        for p in semantic_features['parameters']:
-            para_text = p['name'] + p['explanation'] + semantic_features['template']
-            self.paras_semantic_features.append(self._get_param_embedding(embedding_model, para_text).tolist())
-
-    # 语义嵌入向量   
-    def _get_base_embedding(self, embedding_model, text):
-        return torch.tensor(embedding_model.embed_query(text))
-
-    def _get_param_embedding(self, embedding_model, text):
-        return torch.tensor(embedding_model.embed_query(text))
-
-    def _fuse_embeddings(self, structure, function, param):
-        # 使用注意力机制融合特征
-        attention_weights = torch.softmax(torch.cat([structure, function, param]), dim=0)
-        return (structure * attention_weights[0] + function * attention_weights[1] + param * attention_weights[2]).tolist()
-
-# 同阶段5--ConfigMatcher
-class ConfigMatcher:
-    def __init__(self, target_command_templates, semantic_topk=3):
-        self.templates = target_command_templates  # 预加载的配置(节点)模板库
-        self.semantic_topk = semantic_topk  # 语义匹配top k纳入候选集
-
-    def find_best_match(self, command_node):
-        """执行多级匹配流程"""
-        # 第一阶段：基础语义匹配--功能匹配（计算对比所有配置节点语义嵌入排序）
-        ranked_candidates = self._semantic_ranking(command_node)
-        match_score = sum([sim[1] for sim in ranked_candidates]) / len(ranked_candidates)
-
-        # 第二阶段：参数语义匹配--组织/结构特征（计算对比候选集中所有参数嵌入）
-        para_match = self._param_semantic_match(command_node, ranked_candidates)
-
-        # 第三阶段：整合匹配的参数对，并延伸至命令
-        match_result = self._integrate_commands(ranked_candidates, para_match)
-
-        return match_result, match_score
-
-    def _semantic_ranking(self, command_node):
-        """语义特征排序"""
-        semantic_embedding = torch.tensor(command_node.semantic_features, dtype=torch.float32).unsqueeze(0).cuda()
-        target_embeddings = []
-
-        for template, target_node in self.templates.items():
-            if not 'semantic_features' in target_node:
-                continue
-            target_embedding = torch.tensor(target_node['semantic_features'], dtype=torch.float32).unsqueeze(0)
-            target_embeddings.append(target_embedding)
-
-        target_embeddings = torch.cat(target_embeddings, dim=0).cuda()
-
-        # 计算余弦相似度
-        norm_semantic = torch.norm(semantic_embedding, dim=1, keepdim=True)
-        norm_target = torch.norm(target_embeddings, dim=1, keepdim=True)
-        dot_product = torch.matmul(semantic_embedding, target_embeddings.T)
-        similarities = dot_product / (norm_semantic * norm_target.T)
-
-        similarities = similarities.squeeze(0).cpu().numpy()
-        template_list = list(self.templates.keys())
-        similarity_pairs = [(template, sim) for template, sim in zip(template_list, similarities)]
-
-        return sorted(similarity_pairs, key=lambda x: x[1], reverse=True)[:self.semantic_topk]
-
-    def _get_parent_commands(self, ranked_candidates):
-        # 按照配置视图层次，加入所有的父配置命令
-        ranked_candidates = [candidate_command[0] for candidate_command in ranked_candidates]  # 候选配置命令模板集合
-
-        # 获取所有的父配置命令，不需要递归了
-        def _parent_commands(candidate: list) -> list:
-            for command in candidate:
-                parent_commands = self.templates[command]['structural_features']['context_topology']['parent_command']
-                for parent_command in parent_commands:
-                    if parent_command not in candidate:
-                        candidate.append(parent_command)
-            return candidate
-
-        candidate = _parent_commands(ranked_candidates)  # 补全父配置命令之后候选集
-        return candidate
-
-    def _param_semantic_match(self, command_node, ranked_candidates):
-        """参数语义匹配"""
-        candidate = self._get_parent_commands(ranked_candidates)
-        para_match = []
-        # 为command中每个参数语义需求一个最佳参数匹配
-        for para_embedding in command_node.paras_semantic_features:
-            para_embedding = np.array(para_embedding).reshape(1, -1)
-            all_similarities = []
-            # 对比每一个命令中的参数语义
-            for candidate_command in candidate:
-                try:
-                    candidate_paras = self.templates[candidate_command]['parameter_features']  # list
-                except KeyError:
-                    continue
-                similarities = []
-                for index, candidate_para_embedding in enumerate(candidate_paras):
-                    candidate_para_embedding = np.array(candidate_para_embedding).reshape(1, -1)
-                    sim = cosine_similarity(para_embedding, candidate_para_embedding)
-                    similarities.append((candidate_command, sim, index))  # 配置模板，相似度，参数编号
-                # 保存每个配置命令中与当前待匹配参数最匹配的参数
-                # print(len(similarities))
-                if len(similarities) > 0:
-                    all_similarities.append(sorted(similarities, key=lambda x: x[1], reverse=True)[0])
-            if len(all_similarities) > 0:
-                para_match.append(sorted(all_similarities, key=lambda x: x[1], reverse=True)[0])
-        return para_match
-
-    def _integrate_commands(self, ranked_candidates, para_match):
-        # 带参数的配置命令映射
-        if para_match:
-            # print('command with parameters:')
-            match_list = []
-            for index, match_item in enumerate(para_match):
-                # print('[parameter{}]'.format(index+1), 'correspond [parameter{}] of command -- {}'.format(match_item[2]+1, match_item[0]))
-                match_list.append([index, match_item[2], match_item[0], self.templates[match_item[0]]['structural_features']['context_topology']['parent_command']])
-            return match_list
-        # 不带参数命令映射
-        else:
-            # print('command without parameters:')
-            # print('corespond command {}'.format(ranked_candidates[0][0]))
-            return [ranked_candidates[0][0], self.templates[ranked_candidates[0][0]]['structural_features']['context_topology']['parent_command']]
 
 # 同阶段3的insert_template
 # insert 'template' item into juniper config model
@@ -251,15 +45,41 @@ def insert_template(config_model: dict) -> dict:
     return config_model
 
 # 拆分出配置命令节点（不同于阶段4中，未做文本嵌入）
-def parse_command_node(Command_nodes: dict, config_model: dict, parent_command='system', depth=0):
+def build_command_node(Command_nodes: dict, config_model: dict):
+    for key in config_model.keys():
+        # 初始化模块
+        Command_nodes[key] = {}
+        # 建立根节点向量
+        # 首先是结构特征（包括depth/param_signature(count/order)/parent_command）
+        command_parameters = config_model[key]["parameters"] if config_model[key].get("parameters") else {}
+        structural_feature = {'depth': 0,
+                                'params': command_parameters,
+                                'parent_command': []}
+        # 其次为语义特征（包括template/command/explanation/parameters）
+        command_example = config_model[key]["command"] if config_model[key].get("command") else ''
+        command_explanation = config_model[key]["explanation"] if config_model[key].get("explanation") else ''
+        semantic_feature = {'template': config_model[key]['template'],
+                            'command': command_example,
+                            'explanation': command_explanation,
+                            'parameters': command_parameters}
+        Command_nodes[key][key] = {'structural_features': structural_feature,
+                                    'semantic_features': semantic_feature}
+        # 解析子树中的所有命令节点，行程模块
+        parse_command_node(Command_nodes[key], config_model[key], parent_command=[key], depth=1)
+
+    return Command_nodes
+
+def parse_command_node(Command_nodes: dict, config_model: dict, parent_command=[], depth=0):
+    # print(parent_command)
     for k, sub_dict in config_model.items():
-        # print(k, sub_dict)
         if not isinstance(sub_dict, dict):
             continue
 
         template_key = sub_dict.get("template")
-        if not template_key:
-            # 没有 template 就跳过
+        command_key = sub_dict.get("command")
+        explanation_key = sub_dict.get("explanation")
+        if not template_key:  # or not command_key or not explanation_key:
+            # 没有 template/command/explanation 就跳过, 要保证配置命令语义/结构的完整性
             continue
         else:
             # 逐个解析每个命令节点的数据项
@@ -275,16 +95,12 @@ def parse_command_node(Command_nodes: dict, config_model: dict, parent_command='
                                 'command': command_example,
                                 'explanation': command_explanation,
                                 'parameters': command_parameters}
-            # 创建命令节点
-            # command_node = CommandNode(structural_feature, semantic_feature, embedding_model)
-            Command_nodes[k] = {'structural_feature': structural_feature, 'semantic_feature': semantic_feature}
-            # print(k)
 
-        '''for child_k, child_v in sub_dict.items():
-            print(child_k, child_v)
-            if not isinstance(child_v, dict):
-                continue'''
-        Command_nodes = parse_command_node(Command_nodes, sub_dict, k, depth + 1)
+            if not sub_dict.get(k):
+                Command_nodes[k] = {'structural_features': structural_feature,
+                                    'semantic_features': semantic_feature}
+
+        parse_command_node(Command_nodes, sub_dict, parent_command + [str(k)], depth + 1)
     return Command_nodes
 
 
@@ -314,7 +130,7 @@ class Config_Translater:
         if vendor == 'Juniper':
             json_configuration = insert_template(json_configuration)
         commands_feature = {}  # 分拆每一条配置命令特征
-        commands_feature = parse_command_node(commands_feature, json_configuration)
+        commands_feature = build_command_node(commands_feature, json_configuration)
 
         # 阶段一：规则映射rule_mapping, rest_commands_feature是在映射库中不存在的配置命令
         rest_commands_feature, config_match = self.rule_mapping(commands_feature,
@@ -347,7 +163,7 @@ class Config_Translater:
         if vendor == 'Juniper':
             json_configuration = insert_template(json_configuration)
         commands_feature = {}  # 分拆每一条配置命令特征
-        commands_feature = parse_command_node(commands_feature, json_configuration)
+        commands_feature = build_command_node(commands_feature, json_configuration)
 
         # 阶段一：规则映射rule_mapping, rest_commands_feature是在映射库中不存在的配置命令
         rest_commands_feature, config_match = self.rule_mapping(commands_feature,
@@ -380,16 +196,18 @@ class Config_Translater:
         if vendor == 'Juniper':
             json_configuration = insert_template(json_configuration)
         commands_feature = {}  # 分拆每一条配置命令特征
-        commands_feature = parse_command_node(commands_feature, json_configuration)
+        commands_feature = build_command_node(commands_feature, json_configuration)
 
         # 阶段一：规则映射rule_mapping, rest_commands_feature是在映射库中不存在的配置命令
         rest_commands_feature, config_match = self.rule_mapping(commands_feature,
                                                                 config_match, vendor, target_vendor)
-
+        # print(f"rest_commands_feature: {rest_commands_feature}", '\n', config_match)
+        # print(json.dumps(config_match, indent=2, ensure_ascii=False))
         if not istatistics:
             # 阶段二：模糊映射fuzzy_mapping-->针对规则映射库未覆盖的配置命令
-            config_match = self.fuzzy_mapping(rest_commands_feature, config_match, vendor, target_vendor,  tau=0)
-
+            if len(rest_commands_feature) > 0:
+                  config_match = self.fuzzy_mapping(rest_commands_feature, config_match, vendor, target_vendor,  tau=0)
+            # print(f"config_match: {json.dumps(config_match, indent=2, ensure_ascii=False)}")
             # 映射规则使用统计
             map_rule_freq = {}
             for command, match in config_match.items():
@@ -399,10 +217,10 @@ class Config_Translater:
                     map_rule_freq[map_rule] = 1
                 else:
                     map_rule_freq[map_rule] += 1
-
+            # print(f"map_rule_freq: {map_rule_freq}")
             # 阶段四：配置命令编排，配置参数直接填充
             arranged_config = self.config_arranging(config_match, target_vendor)
-            # print(json.dumps(arranged_config, indent=4, ensure_ascii=False))
+            # print(json.dumps(arranged_config, indent=2, ensure_ascii=False))
 
             # 阶段五：参数映射
             target_config = self.parameter_mapping(arranged_config, vendor, target_vendor)
@@ -435,14 +253,16 @@ class Config_Translater:
         rest_commands_feature = {}  # 保存不包含在规则映射库中的配置命令
         specific_mapping_library = self.mapping_libraries['{}_{}'.format(vendor, target_vendor)]
         # 查找每一条配置在规则库里的映射关系
-        for command, feature in commands_feature.items():
-            # 不在配置映射库中
-            template = feature['semantic_feature']['template']
-            if template not in specific_mapping_library.keys():
-                rest_commands_feature[command] = feature
-                continue
-            # 在映射库中的配置命令
-            config_match[command] = {'template': template, 'match': specific_mapping_library[template]}
+        for key in commands_feature.keys():
+            for command, feature in commands_feature[key].items():
+                # 不在配置映射库中
+                template = feature['semantic_features']['template']
+                if template not in specific_mapping_library.keys():
+                    # print(template)
+                    rest_commands_feature[command] = {'feature': feature, 'root': key,'root_feature': commands_feature[key][key]} 
+                    continue
+                # 在映射库中的配置命令
+                config_match[command] = {'template': template, 'match': specific_mapping_library[template], 'root': key}
 
         return rest_commands_feature, config_match
 
@@ -450,32 +270,42 @@ class Config_Translater:
     def fuzzy_mapping(self, rest_commands_feature, config_match, vendor, target_vendor, tau=0.65):
         # 根据语义做模糊匹配
         filtered_commands_feature = []
-        for command, feature in rest_commands_feature.items():
-            structural_feature = feature['structural_feature']
-            semantic_feature = feature['semantic_feature']
+        for command, features in rest_commands_feature.items():
+            # structural_feature = features['feature']['structural_feature']
+            # semantic_feature = features['feature']['semantic_feature']
             # 创建命令节点，执行语义/参数嵌入
-            command_node = CommandNode(structural_feature, semantic_feature, self.embedding_model)
-            matched_result, match_score = self.config_matchers[target_vendor].find_best_match(command_node)
-            if match_score > tau:  # 匹配度大于阈值
-                template = feature['semantic_feature']['template']
+            Command_Node = CommandNode(features['feature']['structural_features'], features['feature']['semantic_features'], self.embedding_model)
+            command_node = {'structural_features': Command_Node.structural_features,
+                                    'semantic_features': Command_Node.semantic_features,
+                                    'parameter_features': Command_Node.paras_semantic_features}
+            # src_root, src_root_semantic留个接口，后面补上
+            Root_Node = CommandNode(features['root_feature']['structural_features'], features['root_feature']['semantic_features'], self.embedding_model)
+            root_node = {'structural_features': Root_Node.structural_features,
+                                    'semantic_features': Root_Node.semantic_features,
+                                    'parameter_features': Root_Node.paras_semantic_features}
+            root_semantic = torch.tensor(root_node['semantic_features'], dtype=torch.float32).unsqueeze(0).cuda()
+            src_root = features['root']
+            matched_result, best_root = self.config_matchers[target_vendor].find_best_match(vendor, command_node, src_root, root_semantic)
+            '''if match_score > tau:  # 匹配度大于阈值
+                template = features['semantic_feature']['template']
                 config_match[command] = {'template': template, 'match': matched_result}
                 # 补充现有的模板库
                 self.mapping_libraries['{}_{}'.format(vendor, target_vendor)][template] = matched_result
             else:
-                filtered_commands_feature.append(command)
-                matched_result = self.translation_llm.llm_command_mapping(command, vendor,
-                                                                          target_vendor)  # matched_result = str
-                result_node = {"structural_features": {'command_depth': structural_feature['depth'],
-                                                      'param_signature': {},
-                                                      'context_topology': {'parent_command': []}}}
+            filtered_commands_feature.append(command)
+            matched_result = self.translation_llm.llm_command_mapping(command, vendor,
+                                                                        target_vendor)  # matched_result = str
+            result_node = {"structural_features": {'command_depth': structural_feature['depth'],
+                                                    'param_signature': {},
+                                                    'context_topology': {'parent_command': []}}}
 
-                self.config_matchers[target_vendor].templates[matched_result] = result_node
-                template = feature['semantic_feature']['template']
-                config_match[command] = {'template': template, 'match': matched_result}
+            self.config_matchers[target_vendor].templates[matched_result] = result_node'''
+            template = features['feature']['semantic_features']['template']
+            config_match[command] = {'template': template, 'match': matched_result, 'root': src_root}
 
         return config_match
 
-    def fuzzy_mapping_for_statistic(self, rest_commands_feature, config_match, vendor, target_vendor, tau=0.65):
+    '''def fuzzy_mapping_for_statistic(self, rest_commands_feature, config_match, vendor, target_vendor, tau=0.65):
         # 根据语义做模糊匹配
         filtered_commands_feature = []
         for command, feature in rest_commands_feature.items():
@@ -500,7 +330,7 @@ class Config_Translater:
                 template = feature['semantic_feature']['template']
                 config_match[command] = {'template': template, 'match': matched_result}
 
-        return config_match, filtered_commands_feature
+        return config_match, filtered_commands_feature'''
 
     # 阶段三使用大模型做配置映射，保留接口，当前翻译流程关注前两阶段效果
     def LLMmodel_mapping(self, rest_commands_feature, config_match, vendor, target_vendor):
@@ -518,80 +348,80 @@ class Config_Translater:
             paras = self.para_extract(item_k, config_matches[item_k]['template'])
             arranged_command[item_k] = {'para': paras}
             # 如果是list需要遍历整合信息
-            if isinstance(item_v['match'][0], list):
-                for para_match in item_v['match']:  # 遍历每一个参数映射信息
-                    # 查找翻译命令的视图层级
-                    if len(para_match) == 4:
-                        translated_command = para_match[2]  # 翻译的配置命令
-                    elif len(para_match) == 2:
-                        translated_command = para_match[0]
-                    else:
-                        raise ValueError("para_match length error")
-                    # 配置命令节点
-                    try:
-                        command_node = self.config_matchers[target_vendor].templates[translated_command]  # 至少这这前面的不能随便改
-                    except KeyError:
-                        print(f"KeyError: {translated_command}")
-                        continue
-                    # 命令视图层级
-                    depth = command_node['structural_features']['command_depth']
-                    # 参数数量
-                    para_num = command_node['structural_features']['param_signature']['count']
-                    parent_commands = para_match[-1]
-                    # 如果不包含该层级
-                    if depth not in arranged_command[item_k].keys():
-                        para_placeholders = [0] if para_num == 0 else [
-                                                                          0] * para_num  # 为什么每一个参数映射信息都要有一个站位符呢？而且站位符的长度是目标命令的参数数量？
-                        if len(para_match) == 4:
-                            if not -1 in para_match:
-                                try:
-                                    para_placeholders[para_match[1]] = 1  # ==1表示目标命令的该位置被映射到了
-                                except IndexError:
-                                    print(f"IndexError: para_placeholders index out of range: {para_match}")
-                        arranged_command[item_k][depth] = {translated_command:
-                                                               {'para_num': para_num,
-                                                                'para_placeholders': para_placeholders,
-                                                                'para_match': self.match_and_extract(paras, para_num,
-                                                                                                     item_v['match'],
-                                                                                                     translated_command),
-                                                                'target_command': translated_command,
-                                                                'parent_node': parent_commands}
-                                                           }
-                    # 如果该层级中不包含这一配置命令
-                    elif translated_command not in arranged_command[item_k][depth].keys():
-                        # 参数填充占位符
-                        para_placeholders = [0] if para_num == 0 else [
-                                                                          0] * para_num
-                        if len(para_match) == 4:
-                            if not -1 in para_match:
-                                try:
-                                    para_placeholders[para_match[1]] = 1
-                                except IndexError:
-                                    print(f"IndexError: para_placeholders index out of range: {para_match}")
-                        arranged_command[item_k][depth].update({translated_command:
-                                                                    {'para_num': para_num,
-                                                                     'para_placeholders': para_placeholders,
-                                                                     'para_match': self.match_and_extract(paras,
-                                                                                                          para_num,
-                                                                                                          item_v[
-                                                                                                              'match'],
-                                                                                                          translated_command),
-                                                                     'target_command': translated_command,
-                                                                     'parent_node': parent_commands}
-                                                                })
-                    # 如果该层级包含这一配置命令
-                    else:
-                        if len(para_match) == 4:
-                            if not -1 in para_match:
-                                try:
-                                    arranged_command[item_k][depth][translated_command]['para_placeholders'][
-                                        para_match[1]] = 1
-                                except IndexError:
-                                    print(f"IndexError: para_placeholders index out of range: {para_match}")
-            # 都是list，没参数的只有两项，命令和父命令
-            else:
+            # if isinstance(item_v['match'], list):
+            for para_match in item_v['match']:  # 遍历每一个参数映射信息
                 # 查找翻译命令的视图层级
-                translated_command = item_v['match'][0]  # 纠正错误
+                '''if para_match[''] == 4:
+                    translated_command = para_match[2]  # 翻译的配置命令
+                elif len(para_match) == 2:
+                    translated_command = para_match[0]
+                else:
+                    raise ValueError("para_match length error")
+                # 配置命令节点'''
+                translated_command = para_match['trans_command']
+                root = para_match['root']
+                try:
+                    command_node = self.config_matchers[target_vendor].templates[root][translated_command]  # 至少这这前面的不能随便改
+                except KeyError:
+                    print(f"KeyError: {translated_command}")
+                    continue
+                # 命令视图层级
+                depth = command_node['structural_features']['command_depth']
+                # 参数数量
+                para_num = command_node['structural_features']['param_signature']['count']
+                parent_commands = para_match['parent_command']
+                # 如果不包含该层级
+                if depth not in arranged_command[item_k].keys():
+                    para_placeholders = [0] if para_num == 0 else [0] * para_num  # 为什么每一个参数映射信息都要有一个站位符呢？而且站位符的长度是目标命令的参数数量？
+                    if para_match['para_map']:
+                        if not -1 in para_match:
+                            try:
+                                para_placeholders[para_match['para_map'][1]] = 1  # ==1表示目标命令的该位置被映射到了
+                            except IndexError:
+                                print(f"IndexError: para_placeholders index out of range: {para_match}")
+                    # print(paras, para_num, item_v['match'], translated_command)
+                    arranged_command[item_k][depth] = {translated_command:
+                                                            {'para_num': para_num,
+                                                            'para_placeholders': para_placeholders,
+                                                            'para_match': self.match_and_extract(paras, para_num,
+                                                                                                    item_v['match'],
+                                                                                                    translated_command),
+                                                            'target_command': translated_command,
+                                                            'parent_node': parent_commands}
+                                                        }
+                # 如果该层级中不包含这一配置命令
+                elif translated_command not in arranged_command[item_k][depth].keys():
+                    # 参数填充占位符
+                    para_placeholders = [0] if para_num == 0 else [0] * para_num
+                    if para_match['para_map']:
+                        if not -1 in para_match:
+                            try:
+                                para_placeholders[para_match['para_map'][1]] = 1
+                            except IndexError:
+                                print(f"IndexError: para_placeholders index out of range: {para_match}")
+                    arranged_command[item_k][depth].update({translated_command:
+                                                                {'para_num': para_num,
+                                                                    'para_placeholders': para_placeholders,
+                                                                    'para_match': self.match_and_extract(paras,
+                                                                                                        para_num,
+                                                                                                        item_v[
+                                                                                                            'match'],
+                                                                                                        translated_command),
+                                                                    'target_command': translated_command,
+                                                                    'parent_node': parent_commands}
+                                                            })
+                # 如果该层级包含这一配置命令
+                else:
+                    if para_match['para_map']:
+                        if not -1 in para_match:
+                            try:
+                                arranged_command[item_k][depth][translated_command]['para_placeholders'][para_match['para_map'][1]] = 1
+                            except IndexError:
+                                print(f"IndexError: para_placeholders index out of range: {para_match}")
+            # 都是list，没参数的只有两项，命令和父命令
+            '''else:
+                # 查找翻译命令的视图层级
+                translated_command = item_v['match']['trans_command']  # 纠正错误
                 if not translated_command: # 空字符
                     continue
                 # 配置命令节点
@@ -615,7 +445,7 @@ class Config_Translater:
                                                                                              translated_command),
                                                         'target_command': translated_command,
                                                         'parent_node': parent_commands}
-                                                   }
+                                                   }'''
         return arranged_command
 
     def parameter_mapping_with_LLM_remapping(self, arranged_config: dict, vendor, target_vendor) -> dict:
@@ -683,7 +513,7 @@ class Config_Translater:
                                                    all_params, target_vendor)  # 补充父节点
                     target_commands = self.command_param_merge(target_commands, src_command,
                                                                int(depth), command, command_v)
-
+        # print(f"target_commands: {target_commands}")
         # 参数插入配置命令模板
         for src_command, translation in target_commands.items():
             # 遍历该需要翻译配置命令中每一层级的配置命令
@@ -733,18 +563,11 @@ class Config_Translater:
     def match_and_extract(self, paras: list, para_num: int,
                           para_match: list, target_template: str) -> list:
         result = ['none'] * para_num
-        if isinstance(para_match[0], list) and para_num > 0:
+        if para_num > 0:
             for item in para_match:
-                if isinstance(item, str):
-                    continue
                 # 检查最后一项是否匹配目标模板
-                if item[2] == target_template and (not -1 in item):
-                    # paras的第item[0]个参数是result的item[1]个参数
-                    try:
-                        result[item[1]] = paras[item[0]]
-                    except Exception as e:
-                        continue
-
+                if item['trans_command'] == target_template and item['para_map']:
+                    result[item['para_map'][1]] = paras[item['para_map'][0]]
         return result
 
     """
@@ -884,7 +707,7 @@ class Config_Translater:
                             newest_parent = deepcopy(command_v)
 
             if not newest_parent:
-                parent_node = self.config_matchers[target_vendor].templates[parent_command]
+                parent_node = self.config_matchers[target_vendor].templates[parent_commands[0]][parent_command]
                 parent_para_num = parent_node['structural_features']['param_signature']['count']
                 newest_parent = {'para_num': parent_para_num,
                                  'para_placeholders': [0] if parent_para_num == 0 else [0] * parent_para_num,
@@ -1105,11 +928,15 @@ def mapping_library_load(file_path, vendors, manual_mapping_path=None):
 
 
 # 配置匹配器加载
-def config_matchers_load(file_path, vendors, semantic_topk=3):
+def config_matchers_load(file_path, config_model_path, module_match_path, vendors, topk=3):
     config_matchers = {}
+    module_match = {}
     for vendor in vendors:
         command_templates = load_json_file(file_path.format(vendor))
-        config_matchers[vendor] = ConfigMatcher(command_templates, semantic_topk=semantic_topk)
+        config_model = load_json_file(config_model_path.format(vendor))
+        module_match = {vendor1:load_json_file(module_match_path.format(vendor1, vendor)) 
+                                for vendor1 in vendors if vendor1 != vendor}
+        config_matchers[vendor] = ConfigMatcher(vendor, command_templates, config_model, module_match, topk=topk)
     return config_matchers
 
 
@@ -1127,18 +954,17 @@ def process_juniper_json(json_config):
 if __name__ == "__main__":
     vendors = ["Cisco", "HUAWEI", "Juniper"]
     # mapping_library_path = str(project_root / 'dataset_multi_vendor_config/mapping_template_library_examined/{}_{}.json')
-    mapping_library_path = str(
-        project_root / 'dataset_multi_vendor_config/mapping_template_library/scale388en/{}_{}_388.json')
-
-    templates_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/scale388en/{}_388.json')
-    config_model_dir = str(project_root / 'dataset_multi_vendor_config/config_model/scale388en/{}_388.json')
-
+    mapping_library_path = f'./dataset_multi_vendor_config/mapping_template_library/scale400/{{}}_{{}}.json'
+    
+    templates_path = f'./dataset_multi_vendor_config/config_command_node/scale400/{{}}.json'
+    config_model_dir = f'./dataset_multi_vendor_config/config_model/scale400/{{}}.json'
+    module_match_path = './dataset_multi_vendor_config/mapping_template_library/scale400/{}_{}_module_match.json'
     # 加载规则映射库
     print('Mapping library loading.')
     mapping_libraries = mapping_library_load(mapping_library_path, vendors)
     # 加载配置匹配器
     print('Config matchers loading.')
-    config_matchers = config_matchers_load(templates_path, vendors)
+    config_matchers = config_matchers_load(templates_path, config_model_dir, module_match_path, vendors)
     # 文本嵌入模型加载
     print('Embedding model loading.')
     local_EMmodel_path = str(project_root / 'EmbeddingModel/MiniLM-L6-v2')
@@ -1146,26 +972,25 @@ if __name__ == "__main__":
                                             model_kwargs={"device": device})
 
     # 加载用于配置翻译的语言模型
-    translation_llm = Translation_Model('aliyun_deepseek-v3', config_model_dir=config_model_dir, vendors=vendors,
-                                        endpoint_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
-
+    # translation_llm = Translation_Model('aliyun_deepseek-v3', config_model_dir=config_model_dir, vendors=vendors,
+    #                                     endpoint_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
+    translation_llm = {}
     # 创建翻译器
     config_translater = Config_Translater(mapping_libraries, config_matchers,
                                           translation_llm, embedding_model)
 
     # translation test
     file_name = 'ne_mpls-l3vpn-v4_0016_0'
-    config_path = str(project_root / f'dataset_multi_vendor_config/test/{file_name}.json')
-
+    source_config_dir = f'./experiment/test_dataset/command_tree/Cisco/{file_name}.json'
+    # experiment/test_dataset/command_tree/Cisco/ne_mpls-l3vpn-v4_0016_0.json
     source_vendor = 'Cisco'
-    target_vendor = 'Juniper'
-    json_config = load_json_file(config_path)
-    if source_vendor == 'Juniper':
-        json_config = process_juniper_json(json_config)
+    target_vendor = 'Juniper' # 'HUAWEI'
+    json_config = load_json_file(source_config_dir)
     # 翻译Cisco配置到HUAWEI配置
 
-    translation_result, _, _, _ = config_translater.translation_without_llm(json_config, source_vendor, target_vendor)
-    print(f'Translation result of {target_vendor} is: \n{translation_result}')
+    trans_res, trans_mapping_info, trans_templates, map_rule_freq = config_translater.translation_without_llm(json_config, source_vendor, target_vendor)
+
+    print(f'Translation result of {target_vendor} is: \n{trans_res}')
 
     # save_path = str(
     #     project_root / f'dataset_multi_vendor_config/translation_config/{source_vendor}_{target_vendor}/{file_name}.txt')

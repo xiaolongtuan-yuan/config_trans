@@ -1,12 +1,17 @@
 hostname CE1
 interface ge-2/0/0
 interface 0
-ip address 10.4.1.1 24
+ ip address 10.4.1.1 24
 interface ge-1/0/0
-ip address 10.1.1.1 24
+ ip address 10.1.1.1 24
 ip route 10.1.1.0 exact 10.1.1.2
-bridge IBGP protocol external
-bridge 100 protocol 10.1.1.2
-bridge unicast protocol BGP-NETWORKS
+router bgp IBGP
+ address-family ipv4 unicast
+  redistribute external
+router bgp 100
+ neighbor 10.1.1.2 remote-as none
+ address-family ipv4 unicast
+  redistribute BGP-NETWORKS
+ address-family unicast
 ip route 10.1.1.0 exact 1
-ip route accept none none
+ip route none none accept

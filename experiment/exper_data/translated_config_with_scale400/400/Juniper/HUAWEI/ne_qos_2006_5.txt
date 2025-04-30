@@ -1,12 +1,18 @@
 sysname CE3
 interface ge-1/0/0
- e1 0 none
-ip address 10.3.1.1 24
-ospf [parameter1] router-id [parameter2]
- undo silent-interface none
+interface 0
+ ip address 10.3.1.1 24
+ undo shutdown
 bgp 65430
-bridge BGP-PEERS protocol external
-bridge 10.3.1.2 protocol 100
-bridge unicast protocol EXPORT-NETWORK
-ip route-static 10.3.1.0 24 exact preference 1
-ip route-static none accept none preference none
+service-instance-group BGP-PEERS
+service-instance-group external
+ service-location 100
+ service-location 10.3.1.2
+ service-location EXPORT-NETWORK
+ service-location unicast
+traffic policy EXPORT-NETWORK
+traffic policy 1
+traffic policy 10.3.1.0
+ classifier none behavior none precedence 24
+ classifier none behavior exact
+ classifier none behavior accept

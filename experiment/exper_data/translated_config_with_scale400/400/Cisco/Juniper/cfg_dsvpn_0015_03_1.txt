@@ -1,24 +1,20 @@
 set system host-name Spoke1
-set interfaces GigabitEthernet1/0/0 unit 10.1.2.10 tunnel destination 192.168.1.1
-set interfaces GigabitEthernet1/0/0 unit 10.1.2.10 tunnel key gre
-set interfaces GigabitEthernet1/0/0 unit 10.1.2.10 tunnel key 0
-set interfaces GigabitEthernet1/0/0 family inet address none/255.255.255.0 tunnel family inet address 10.1.2.10/none
-set interfaces GigabitEthernet1/0/0 tunnel source GigabitEthernet2/0/0
-set interfaces GigabitEthernet2/0/0 unit 10.1.2.10
-set interfaces GigabitEthernet2/0/0 family inet address none/255.255.255.0 tunnel family inet address 192.168.1.1/none
-set interfaces Tunnel0 unit 10.1.2.10 tunnel destination 172.16.1.1
-set interfaces Tunnel0 family inet address none/255.255.255.0 tunnel family inet address 172.16.1.2/none
-set interfaces Tunnel0 tunnel source GigabitEthernet1/0/0
-set routing-options autonomous-system 200
-set routing-options autonomous-system 172.16.1.2
-set routing-options autonomous-system 100
-set routing-options autonomous-system 300
-set protocols bgp group [parameter1] family inet none
-set routing-options autonomous-system ipv4
-set routing-options autonomous-system ospf
-set protocols ospf export 1
-set protocols ospf export 172.16.1.2
-set protocols ospf export 0.0.0.0
-set protocols ospf export 2
-set protocols ospf export 10.1.2.10
-set protocols ospf export 0.0.0.1
+set interfaces GigabitEthernet1/0/0 unit 0 family inet address 10.1.2.10/255.255.255.0
+set interfaces GigabitEthernet1/0/0 unit 0 tunnel source GigabitEthernet2/0/0
+set interfaces GigabitEthernet1/0/0 unit 0 tunnel destination 192.168.1.1
+set interfaces gre
+set interfaces GigabitEthernet2/0/0 unit 0 family inet address 192.168.1.1/255.255.255.0
+set interfaces Tunnel0 unit 0 family inet address 172.16.1.2/255.255.255.0
+set interfaces Tunnel0 unit 0 tunnel source GigabitEthernet1/0/0
+set interfaces Tunnel0 unit 0 tunnel destination 172.16.1.1
+set protocols bgp group 200 peer-as 200
+set protocols bgp group 200 export 172.16.1.2
+set protocols bgp group 200 neighbor 100
+set protocols bgp group 200 neighbor 300
+set protocols bgp group 200 family inet unicast
+set protocols bgp group 200 family ipv4 none
+set protocols bgp group 200 type ospf
+set protocols ospf area 1 network 192.168.1.0/0.0.0.255
+set protocols ospf area 0.0.0.0
+set protocols ospf area 2 network 10.1.2.0/0.0.0.255
+set protocols ospf area 0.0.0.1

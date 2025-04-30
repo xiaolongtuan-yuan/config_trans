@@ -1,15 +1,10 @@
 set system host-name Spoke1
-set interfaces GigabitEthernet1/0/0 unit 10.1.2.10 tunnel key gre
-set interfaces GigabitEthernet1/0/0 unit 10.1.2.10 tunnel family inet address <IPSEC_PROFILE_NAME>/none
-set interfaces GigabitEthernet1/0/0 family inet address none/255.255.255.0 tunnel family inet address 10.1.2.10/none
-set interfaces GigabitEthernet1/0/0 tunnel source Loopback0
+set interfaces GigabitEthernet1/0/0 unit 10.1.2.10 family inet address 10.1.2.10/255.255.255.0
+set interfaces GigabitEthernet1/0/0 unit 10.1.2.10 tunnel source Loopback0
+set interfaces gre unit 10.1.2.10 family inet address 192.168.1.1/255.255.255.255
 set interfaces Loopback0 unit 10.1.2.10
-set interfaces Loopback0 family inet address none/255.255.255.255 tunnel family inet address 192.168.1.1/none
-set interfaces Tunnel0 unit 10.1.2.10
-set interfaces Tunnel0 family inet address none/255.255.255.0 tunnel family inet address 172.16.1.2/none
-set interfaces Tunnel0 tunnel source GigabitEthernet1/0/0
-set protocols ospf export 1
-set protocols ospf export 172.16.1.2
-set protocols ospf export 0
-set protocols ospf export 2
-set protocols ospf export 10.1.2.10
+set interfaces Tunnel0 unit 10.1.2.10 family inet address 172.16.1.2/255.255.255.0
+set interfaces Tunnel0 unit 10.1.2.10 tunnel source GigabitEthernet1/0/0
+set protocols ospf area 1 network 172.16.1.0/0.0.0.255
+set protocols ospf area 0 network 192.168.1.0/0.0.0.255
+set protocols ospf area 2 network 10.1.2.0/0.0.0.255

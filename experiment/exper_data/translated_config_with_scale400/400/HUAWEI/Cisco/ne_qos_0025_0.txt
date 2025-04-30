@@ -1,23 +1,25 @@
 hostname DeviceA
-ipv6 access-list 2001
-ipv6 access-list 5
- permit ipv6 1.1.1.1 none
- permit ipv6 0 any
- permit ipv6 1.1.1.2 none
-ipv6 access-list 2002
-mpls traffic-eng router-id or
-mpls traffic-eng router-id 2001
-mpls traffic-eng router-id 2002
-mpls traffic-eng router-id behavior1
-mpls traffic-eng router-id green
-mpls traffic-eng router-id behavior2
-mpls traffic-eng router-id 2000
-mpls traffic-eng load-balancing number policy1
-mpls traffic-eng load-balancing number 5
-mpls traffic-eng load-balancing number 10
+ip access-list standard 2001
+ permit 1.1.1.1 0
+ip access-list standard 2002
+ permit 1.1.1.2 0
+class-map or
+ match access-group 2001
+ match access-group 2002
+interface be
+ monitor session none destination interface behavior1
+ service-policy green 5000
+ ip address 1.1.1.3 255.255.255.0
+ monitor session none destination interface behavior2
+ switchport access vlan 2000
+policy-map policy1
+policy-map behavior1
+ class class1
+  police cir none conform-action none exceed-action 5 violate-action none
+policy-map behavior2
+ class class2
+  police cir none conform-action none exceed-action 10 violate-action none
 interface GigabitEthernet1/0/0
- no bridge-group none unicast-flooding
- ipv6 traffic-policy policy1 inbound
- ip policy route-map inbound
-ip address 1.1.1.3 255.255.255.0
-crypto isakmp policy none
+ no shutdown
+ service-policy inbound policy1
+end

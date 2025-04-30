@@ -1,9 +1,10 @@
 set system host-name CE2
-set interfaces GigabitEthernet1/0/1 unit [parameter2] family ethernet-switching vlan members none
-set interfaces GigabitEthernet1/0/1 family inet address none/255.255.255.0 tunnel family inet address 10.1.2.1/none
-set routing-options autonomous-system 65420
-set routing-options autonomous-system 100
-set protocols bgp group [parameter1] family none none
-set protocols bgp group [parameter1] family inet none
-set routing-options autonomous-system 255.255.255.0
-set routing-options autonomous-system 10.1.2.2
+set interfaces GigabitEthernet1/0/1 enable
+set interfaces GigabitEthernet1/0/1 unit 10.1.2.1 family inet address 10.1.2.1/255.255.255.0
+set protocols bgp group 65420 peer-as 65420
+set protocols bgp group 65420 neighbor 100
+set protocols bgp group 65420 family inet none
+set protocols bgp group 65420 family inet unicast
+set protocols bgp group 65420 local-address 10.1.2.0
+set protocols bgp group 65420 family inet unicast prefix-limit 255.255.255.0
+set protocols bgp group 65420 neighbor 10.1.2.2

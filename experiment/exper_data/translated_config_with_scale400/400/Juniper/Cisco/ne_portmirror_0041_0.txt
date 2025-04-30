@@ -1,18 +1,17 @@
 hostname Device
+vlan vlan10
 vlan 10
- name vlan10
 interface ge-1/0/0
 interface 0
  switchport mode access
- switchport trunk allowed vlan vlan10
+ encapsulation dot1q vlan10
 interface ge-2/0/0
-ip address 10.10.1.1 24
+ ip address 10.10.1.1 24
 interface ge-3/0/0
-ip address 10.1.1.2 24
-monitor session none source interface ingress
-router ospf ge-1/0/0
- no passive-interface ge-1/0/0
- no passive-interface ge-2/0/0
- no passive-interface ge-3/0/0
-ip ssh source-interface ge-1/0/1
-ip ssh source-interface ge-1/0/2
+ ip address 10.1.1.2 24
+ monitor session none source interface ge-1/0/1 none
+ monitor session none source interface ge-1/0/2 none
+ip nat inside source list none pool ingress
+vlan ge-1/0/0
+vlan ge-2/0/0
+vlan ge-3/0/0

@@ -1,17 +1,16 @@
 sysname CE2
 interface ge-1/0/0
- e1 0 none
- ip policy-based-route none
- traffic-policy none none
-ip address 10.2.1.1 24
+interface 0
+ ip address 10.2.1.1 24
+ undo shutdown
 bgp 700
- peer 100 as-number none
- peer none as-number none
-bridge BGP_GROUP protocol external
-bridge 10.2.1.2 protocol ADVERTISE_NETWORK
-ip route-static ADVERTISE_NETWORK none none preference 1
-ospf [parameter1] router-id [parameter2]
- undo silent-interface none
-ip vpn-instance 10.2.1.0/24
- route-distinguisher 10.2.1.0/24
-aaa authorization-scheme none
+service-instance-group BGP_GROUP
+service-instance-group external
+ service-location 10.2.1.2
+ service-location 100
+ service-location ADVERTISE_NETWORK
+traffic policy ADVERTISE_NETWORK
+traffic policy 1
+traffic policy 10.2.1.0/24
+traffic policy none
+ classifier none behavior none

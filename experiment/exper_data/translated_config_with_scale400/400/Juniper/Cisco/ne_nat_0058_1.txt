@@ -1,22 +1,18 @@
 hostname NATA
 interface ge-1/0/1
 interface 0
-ip address 1.1.1.1 24
+ ip address 1.1.1.1 24
 vlan 1
 interface ge-2/0/0
-ip address 192.168.10.1 24
+ ip address 192.168.10.1 24
 interface ge-3/0/0
-ip address 2.2.2.1 24
-bridge-domain bd1
-ip vrf forwarding rs1
-ip vrf forwarding trust
-ip vrf forwarding untrust
-ip vrf forwarding r1
-ip vrf forwarding 24
-ip vrf forwarding interface
+ ip address 2.2.2.1 24
+hostname bd1
+access-list 24 permit ip host 192.168.10.0 any
+access-list none permit ip host interface any
 ip route 192.168.10.0 24 1
-ip route accept none 2.2.2.2
+ip route 0 none accept
 router ospf 0.0.0.0
  network 2.2.2.0 24 area 0.0.0.0
- no passive-interface ge-3/0/0.0
-ip route 0 none 2.2.2.2
+vlan ge-3/0/0.0
+ip route none none 2.2.2.2

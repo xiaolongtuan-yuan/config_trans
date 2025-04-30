@@ -1,19 +1,14 @@
 hostname CE2
 interface ge-1/0/0
 interface 0
-ip address 10.2.1.1 24
+ ip address 10.2.1.1 24
+ no shutdown
 router bgp 700
- neighbor 100 remote-as none
- neighbor none activate
-bridge BGP_GROUP protocol external
-bridge none protocol 10.2.1.2
-bridge none protocol ADVERTISE_NETWORK
+router bgp BGP_GROUP
+ address-family ipv4 unicast
+  redistribute external
+  redistribute ADVERTISE_NETWORK
+ neighbor 10.2.1.2 remote-as 100
 ip route ADVERTISE_NETWORK none 1
-router ospf [parameter1]
- no passive-interface none
-vrf definition 10.2.1.0/24
- route-target import 10.2.1.0/24
-router none
-crypto isakmp policy none
-route-map [parameter1] [parameter2] [parameter3]
- match extcommunity vpn-target none
+ip route 10.2.1.0/24 none none
+ip route none none none

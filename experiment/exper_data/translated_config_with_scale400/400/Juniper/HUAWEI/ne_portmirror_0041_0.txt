@@ -1,18 +1,18 @@
 sysname Device
-vlan vlan10
-vlan 10
+vlan batch vlan10 none
+vlan batch 10 none
 interface ge-1/0/0
- e1 0 none
+interface 0
  eth-trunk access
- vlan-type dot1q vlan10
+ port default vlan vlan10
 interface ge-2/0/0
-ip address 10.10.1.1 24
+ ip address 10.10.1.1 24
 interface ge-3/0/0
-ip address 10.1.1.2 24
-ssh server source-intf ingress
-ospf ge-1/0/0 router-id [parameter2]
- undo silent-interface ge-1/0/0
- undo silent-interface ge-2/0/0
- undo silent-interface ge-3/0/0
+ ip address 10.1.1.2 24
+traffic behavior ingress
+ car cir none pir none green pass yellow pass red pass service-class none color ingress
+vlan batch ge-1/0/0 none
+vlan batch ge-2/0/0 none
+vlan batch ge-3/0/0 none
 interface ge-1/0/1
 interface ge-1/0/2

@@ -1,14 +1,13 @@
 set system host-name NATA
-set security nat destination pool 255.255.255.0
-set policy-options prefix-list 100 any/none
-set security nat destination pool NATPOOL
-set security nat destination pool 1.1.1.100
-set interfaces GigabitEthernet2/0/0 unit [parameter2] family ethernet-switching vlan members none
-set interfaces GigabitEthernet2/0/0 family inet address none/255.255.255.0 tunnel family inet address 192.168.10.1/none
-set interfaces GigabitEthernet3/0/0 unit [parameter2]
-set interfaces GigabitEthernet3/0/0 family inet address none/255.255.255.0 tunnel family inet address 2.2.2.1/none
-set protocols ospf export 1
-set protocols ospf export 0
-set routing-options static route 0.0.0.0/0.0.0.0 2.2.2.2
-set protocols bgp group [parameter1] multihop ttl none
-set services nat pool [parameter1] address-netmask none
+set security nat source pool 255.255.255.0 address 1.1.1.101 to 1.1.1.105
+set security nat source rule-set 100 rule 100 match source-address any/0.0.0.255
+set security nat source pool NATPOOL address 1.1.1.101 to 100
+set security nat source pool NATPOOL address 1.1.1.101 to 1.1.1.100
+set interfaces GigabitEthernet2/0/0 enable
+set interfaces GigabitEthernet2/0/0 unit 192.168.10.1 family inet address 192.168.10.1/255.255.255.0
+set interfaces GigabitEthernet2/0/0 unit 192.168.10.1 family inet address 2.2.2.1/255.255.255.0
+set interfaces GigabitEthernet3/0/0 unit 192.168.10.1 family inet address none/none
+set protocols ospf area 1
+set protocols ospf area 0 network 2.2.2.0/0.0.0.255
+set routing-options static route 0.0.0.0/0.0.0.0 next-hop 2.2.2.2
+set security zones security-zone none

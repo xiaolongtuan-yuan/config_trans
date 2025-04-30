@@ -1,12 +1,13 @@
 hostname DeviceC
 interface ge-1/0/0
 interface 0
-ip address 10.20.1.1 24
-bridge internal protocol internal
-bridge inet protocol unicast
-bridge none protocol connected
+ ip address 10.20.1.1 24
+router bgp internal
+ address-family ipv4 unicast
+  redistribute internal
+ neighbor 10.20.1.2 remote-as 100
+ bgp router-id connected
+ address-family inet unicast
 router ospf 0
  network none none area 0
- no passive-interface ge-1/0/0.0
-router bgp 100
- neighbor 100 remote-as none
+vlan ge-1/0/0.0

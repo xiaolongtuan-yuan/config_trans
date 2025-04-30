@@ -208,14 +208,16 @@ if __name__ == "__main__":
             # save_json_file(template_used_statistic, str(project_root / f'statistic/statistic_res/{vendor}_template_used_statistic.json')) # 统计模版使用次数
     '''
 
-    # 只处理前400条juniper数据-388条
+    # 只处理前400条juniper数据
     vendors = ['Cisco', "HUAWEI", "Juniper"]
     # vendors = ['HUAWEI']
     project_root = Path(__file__).parent.parent
     for vendor in vendors:
         print(vendor)
-        folder_path = str(project_root / f'experiment/train_dataset_rearrange/Json_simplified/{vendor}')
-        json_files = get_json_filenames(folder_path)
+        folder_path = str(project_root / f'experiment/train_dataset/Json_simplified/{vendor}')
+        file_names_path = str(project_root / f'experiment/test_dataset/command_tree/Cisco')   # 只用测试集试试效果
+        json_files = get_json_filenames(file_names_path)
+        # print(len(json_files))
         template_used_statistic = {}
         vendor_model = {}
         vendor_command_re = {}

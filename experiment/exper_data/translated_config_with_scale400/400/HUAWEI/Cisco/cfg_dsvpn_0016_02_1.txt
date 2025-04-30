@@ -1,25 +1,23 @@
 hostname Spoke1
-interface GigabitEthernet1/0/0
- tunnel mode none gre
+interface [parameter1]
+ encapsulation dot1q none
+ ip address 10.1.2.10 255.255.255.0
+ tunnel source gre
  tunnel source LoopBack0
-ip address 10.1.2.10 255.255.255.0
 interface LoopBack0
-ip address 192.168.1.1 255.255.255.255
+ ip address 192.168.1.1 255.255.255.255
 interface Tunnel0
+ ip address 172.16.1.2 255.255.255.0
  tunnel mode p2mp
  tunnel source GigabitEthernet1/0/0
- isis network p2mp
+ tunnel source p2mp
+ service-policy none none
  tunnel protection ipsec profile <IPSEC_PROFILE_NAME>
- switchport access vlan 0.0.0.0
- switchport access vlan 0.0.0.1
- ip nhrp nhs none none
- ip nhrp nhs none nbma none
-ip address 172.16.1.2 255.255.255.0
 router ospf 1
  router-id 172.16.1.2
-ip address 172.16.1.0 0.0.0.255
-ip address 192.168.1.0 0.0.0.255
+ network 172.16.1.0 0.0.0.255 area 0.0.0.0
+ network 192.168.1.0 0.0.0.255 area 0.0.0.1
 router ospf 2
  router-id 10.1.2.10
-ip address 10.1.2.0 0.0.0.255
-crypto isakmp policy none
+ network 10.1.2.0 0.0.0.255 area none
+end

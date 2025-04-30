@@ -18,6 +18,37 @@ warnings.filterwarnings("ignore", category=UserWarning, module="torch")
 # depth_commmand-->配置命令层级
 # 输出---
 # Command_Nodes
+
+# 现在配置节点的结构是{Module: {node1:{}, node2:{}}}, 区别于之前扁平的形式
+
+def build_command_node(Command_nodes: dict, config_model: dict, embedding_model):
+    for key in tqdm(config_model.keys()):
+        # 初始化模块
+        Command_nodes[key] = {}
+        # 建立根节点向量
+        # 首先是结构特征（包括depth/param_signature(count/order)/parent_command）
+        command_parameters = config_model[key]["parameters"] if config_model[key].get("parameters") else {}
+        structural_feature = {'depth': 0,
+                                'params': command_parameters,
+                                'parent_command': []}
+        # 其次为语义特征（包括template/command/explanation/parameters）
+        command_example = config_model[key]["command"] if config_model[key].get("command") else ''
+        command_explanation = config_model[key]["explanation"] if config_model[key].get("explanation") else ''
+        semantic_feature = {'template': config_model[key]['template'],
+                            'command': command_example,
+                            'explanation': command_explanation,
+                            'parameters': command_parameters}
+
+        command_node = CommandNode(structural_feature, semantic_feature, embedding_model)
+        Command_nodes[key][key] = {'structural_features': command_node.structural_features,
+                                    'semantic_features': command_node.semantic_features,
+                                    'parameter_features': command_node.paras_semantic_features}
+        # 解析子树中的所有命令节点，行程模块
+        parse_command_node(Command_nodes[key], config_model[key], embedding_model, parent_command=[key], depth=1)
+
+    return Command_nodes
+
+
 def parse_command_node(Command_nodes: dict, config_model: dict, embedding_model, parent_command=[], depth=0):
     # print(parent_command)
     for k, sub_dict in config_model.items():
@@ -75,7 +106,7 @@ def parse_command_node(Command_nodes: dict, config_model: dict, embedding_model,
 
 
 class CommandNode:
-    def __init__(self, structural_features, semantic_features, embedding_model):
+    def __init__(self, structural_features, semantic_features, embedding_model, run_type='main'):
         # 结构特征
         self.structural_features = {}
 
@@ -138,13 +169,13 @@ class CommandNode:
            功能特征T_{f}，包括配置命令的模板，命令示例以及解释
            参数合集特征T_{P}，汇总了所有配置参数的名称、类型与解释'''
         structural_text = str(structural_features['depth']) + \
-                          str(len(structural_features['params'])) + \
-                          ' '.join(structural_features['parent_command'])
+                          str(len(structural_features['params']))  # + \
                           # structural_features['parent_command']
+                          # ' '.join(structural_features['parent_command'])
 
         function_text = semantic_features['template'] + \
-                       semantic_features['command'] +\
-                       semantic_features['explanation']
+                        semantic_features['command'] + \
+                        semantic_features['explanation']
         
         '''base_embedding = self._get_base_embedding(embedding_model,
                                                   semantic_features['template']
@@ -242,7 +273,8 @@ def main_experiment():
         # 加载供应商配置模型
         config_model = load_json_file(config_model_path)
         # 解析配置节点
-        Command_nodes = parse_command_node(Command_nodes, config_model, embedding_model)
+        # Command_nodes = parse_command_node(Command_nodes, config_model, embedding_model)
+        Command_nodes = build_command_node(Command_nodes, config_model, embedding_model)
         # 保存配置节点（json）
         save_json_file(Command_nodes, f"{save_dir}/{vendor}.json")
         node_num = len(Command_nodes.keys())

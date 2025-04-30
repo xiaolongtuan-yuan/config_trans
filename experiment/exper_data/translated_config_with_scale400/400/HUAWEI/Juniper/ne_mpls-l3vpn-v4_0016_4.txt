@@ -1,8 +1,9 @@
 set system host-name CE3
-set interfaces Gigabitethernet1/0/0 unit [parameter2] family ethernet-switching vlan members none
-set interfaces Gigabitethernet1/0/0 family inet address none/255.255.255.0 tunnel family inet address 10.3.1.1/none
-set routing-options autonomous-system 800
-set routing-options autonomous-system 100
-set protocols bgp group [parameter1] family none none
-set protocols bgp group [parameter1] family inet none
-set routing-options autonomous-system 10.3.1.2
+set interfaces Gigabitethernet1/0/0 disable
+set interfaces Gigabitethernet1/0/0 unit 10.3.1.1 family inet address 10.3.1.1/255.255.255.0
+set protocols bgp group 800 peer-as 800
+set protocols bgp group 800 neighbor 10.3.1.2
+set protocols bgp group 800 peer-as 100
+set protocols bgp group 800 family inet unicast
+set protocols bgp group 800 export none
+set protocols bgp group 800 peer-as 10.3.1.2

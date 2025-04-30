@@ -1,20 +1,18 @@
 sysname Device
-vlan 10
+vlan batch 10
 interface GigabitEthernet1/0/0
- mpls te bandwidth max-reservable-bandwidth none
- switch-mode access
+ portswitch
+ port-observing observe-index 1
+ source rx
+interface access
  port default vlan 10
- ma 1
-  mep mep-id 1 interface none rx
- port-mirroring to observe-index none 1
- source GigabitEthernet1/0/1
- source GigabitEthernet1/0/2
-ospf 1
+interface GigabitEthernet1/0/1
+ port-observing observe-index 1
+interface GigabitEthernet1/0/2
+ port-observing observe-index 1
 interface GigabitEthernet2/0/0
- e1 1 none
- source GigabitEthernet2/0/0
-ip address 10.10.1.1 255.255.255.0
+ ip address 10.10.1.1 255.255.255.0
+ port-observing observe-index 1
 interface GigabitEthernet3/0/0
- e1 1 none
- source GigabitEthernet3/0/0
-ip address 10.1.1.2 255.255.255.0
+ ip address 10.1.1.2 255.255.255.0
+ port-observing observe-index 1

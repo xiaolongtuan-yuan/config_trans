@@ -1,11 +1,11 @@
 hostname DeviceC
 interface GigabitEthernet1/0/0
- no bridge-group none unicast-flooding
- ipv6 router isis 1
- switchport access vlan 0.0.0.0
-ip address 10.20.1.1 255.255.255.0
+ no shutdown
+ ip address 10.20.1.1 255.255.255.0
 router bgp 100
- neighbor 10.20.1.2 remote-as 100
- neighbor 10.20.1.2 activate
- neighbor none activate
-ip address 10.20.1.0 0.0.0.255
+ neighbor 10.20.1.2 remote-as none
+ address-family ipv4 unicast
+  redistribute none
+ no synchronization
+router ospf 1
+ network 10.20.1.0 0.0.0.255 area 0.0.0.0

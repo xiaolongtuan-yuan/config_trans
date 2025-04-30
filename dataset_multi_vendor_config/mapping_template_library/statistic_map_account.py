@@ -6,6 +6,7 @@
 import json
 import os
 
+print(os.getcwd())
 
 def count_rules(obj):
     count = 0
@@ -17,7 +18,8 @@ def count_rules(obj):
 result = {}
 # 遍历different_scale目录下的json文件，统计每个文件中的规则数量
 # directory = "./different_scale"
-directory = "./scale388en"
+directory = "./scale400"
+
 for filename in os.listdir(directory):
     if filename.endswith(".json"):
         file_path = os.path.join(directory, filename)

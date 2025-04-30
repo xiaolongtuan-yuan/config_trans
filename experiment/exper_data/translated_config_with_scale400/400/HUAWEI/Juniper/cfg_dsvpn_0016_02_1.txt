@@ -1,17 +1,18 @@
 set system host-name Spoke1
-set interfaces GigabitEthernet1/0/0 unit 0.0.0.0 tunnel key gre
-set interfaces GigabitEthernet1/0/0 family inet address 172.16.1.0/0.0.0.255 tunnel family inet address 10.1.2.10/none
-set interfaces GigabitEthernet1/0/0 tunnel source LoopBack0
-set interfaces LoopBack0 unit 0.0.0.0
-set interfaces LoopBack0 family inet address 172.16.1.0/0.0.0.255 tunnel family inet address 192.168.1.1/none
-set interfaces Tunnel0 unit 0.0.0.0 tunnel key p2mp
-set interfaces Tunnel0 unit 0.0.0.0 tunnel encapsulation p2mp
-set interfaces Tunnel0 unit 0.0.0.0 pppoe-options service-policy control <IPSEC_PROFILE_NAME>
-set interfaces Tunnel0 family inet address 172.16.1.0/0.0.0.255 tunnel family inet address 172.16.1.2/none
-set interfaces Tunnel0 tunnel source GigabitEthernet1/0/0
-set interfaces Tunnel0 family inet address 192.168.1.0/0.0.0.255
-set interfaces Tunnel0 unit 0.0.0.1 family inet address 10.1.2.0/0.0.0.255 vrrp-group [parameter4] virtual-address none
-set interfaces Tunnel0 family inet address 10.1.2.0/0.0.0.255
+set interfaces [parameter1] disable
+set interfaces [parameter1] unit 10.1.2.10 family inet address 10.1.2.10/255.255.255.0
+set interfaces [parameter1] unit 10.1.2.10 tunnel source gre
+set interfaces [parameter1] unit 10.1.2.10 tunnel source LoopBack0
+set interfaces LoopBack0 unit 10.1.2.10 family inet address 192.168.1.1/255.255.255.255
+set interfaces Tunnel0 unit 10.1.2.10 family inet address 172.16.1.2/255.255.255.0
+set interfaces Tunnel0 unit 10.1.2.10 tunnel source p2mp
+set interfaces Tunnel0 unit 10.1.2.10 tunnel source GigabitEthernet1/0/0
+set interfaces Tunnel0 unit 10.1.2.10 family inet address none/none
+set interfaces Tunnel0 unit 10.1.2.10 family inet filter input <IPSEC_PROFILE_NAME>
+set interfaces Tunnel0 ether-options 802.3ad p2mp
 set routing-options router-id 172.16.1.2
+set routing-options router-id 0.0.0.0
+set routing-options router-id 0.0.0.255
 set routing-options router-id 10.1.2.10
-set system radius-server [parameter1] accounting-port none
+set routing-options router-id 0.0.0.1
+set protocols l2-learning global-mode none

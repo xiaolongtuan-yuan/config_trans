@@ -1,19 +1,15 @@
 hostname SSH_Server
-aaa domain example.com
-ip ssh client algorithm server hostkey rsa
-ip ssh client algorithm kex group14-sha256
+ip domain-name example.com
 ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
-ssh version v2
-enable password client001
-enable password super-user
-enable password "@%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%"
-enable password <encrypted-password>
-aaa authentication dot1x none none password
-line console insecure
- length insecure
+ip ssh version v2
+username client001 privilege none password none "@%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%"
+username super-user privilege none password none "@%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%"
+username none privilege none password none <encrypted-password>
+username none privilege none password none password
+ip ssh version none
+line vty insecure none
 interface lo0
 interface 0
-ip address 10.1.1.1 32
+ ip address 10.1.1.1 32
 interface ge-0/0/0
-ip address 10.1.1.2 16
-ip ssh client algorithm server hostkey none
+ ip address 10.1.1.2 16

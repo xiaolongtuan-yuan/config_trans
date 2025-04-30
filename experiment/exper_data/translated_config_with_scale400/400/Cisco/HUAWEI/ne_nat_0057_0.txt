@@ -1,11 +1,11 @@
 sysname NATA
-acl INSIDE_ACL
- rule permit ip source 192.168.10.0 0.0.0.255
-nat ip-pool address-group1
- section INSIDE_ACL 11.11.11.105 mask 255.255.255.0
+acl number INSIDE_ACL
+ rule none permit ip source 192.168.10.0 0.0.0.255
+nat instance address-group1 id none
+ nat address-group address-group1 group-id 11.11.11.101
+ nat address-group INSIDE_ACL group-id none 255.255.255.0 none
+  section none 11.11.11.101 11.11.11.105
 interface GigabitEthernet2/0/0
-ip address 192.168.10.1 255.255.255.0
-nat instance [parameter1] id [parameter2]
- nat server protocol none global none inside none
-ospf [parameter1] router-id [parameter2]
- undo silent-interface none
+ ip address 192.168.10.1 255.255.255.0
+ nat bind acl none instance none
+ undo shutdown

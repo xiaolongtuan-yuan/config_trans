@@ -1,21 +1,22 @@
 sysname Spoke1
 interface ge-1/0/0
- e1 0 none
+interface 0
+ ip address 10.1.2.10 24
  source lo0.0
- mpls l2vc none none control-word tdm-encapsulation-number gre
-ip address 10.1.2.10 24
+ port link-type gre
 interface lo0
-ip address 192.168.1.1 32
+ ip address 192.168.1.1 32
 interface gr-1/0/0
+ ip address 172.16.1.2 24
  source ge-1/0/0.0
- tunnel destination dynamic
-ip address 172.16.1.2 24
-ipsec policy <IPSEC_PROFILE_NAME> none isakmp
-ipsec policy ge-1/0/0.0 none isakmp
-ipsec policy gr-1/0/0.0 none isakmp
-ospf 0.0.0.0 router-id 172.16.1.2
-ospf 0.0.0.0 router-id 10.1.2.10
- undo silent-interface gr-1/0/0.0
- undo silent-interface lo0.0
-ospf 0.0.0.1 router-id none
- undo silent-interface ge-1/0/0.0
+ source dynamic
+ip route-static <IPSEC_PROFILE_NAME> none none
+ip route-static ge-1/0/0.0 none none
+ip route-static gr-1/0/0.0 none none
+ospf none router-id 172.16.1.2
+ospf none router-id 10.1.2.10
+ area 0.0.0.0
+ area 0.0.0.1
+vlan batch gr-1/0/0.0 none
+vlan batch lo0.0 none
+vlan batch ge-1/0/0.0 none

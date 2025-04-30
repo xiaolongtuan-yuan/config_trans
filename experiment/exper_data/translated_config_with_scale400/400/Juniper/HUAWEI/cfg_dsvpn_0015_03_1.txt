@@ -1,24 +1,29 @@
 sysname Spoke1
 interface ge-1/0/0
- e1 0 none
-ip address 10.1.2.10 24
+interface 0
+ ip address 10.1.2.10 24
 interface ge-2/0/0
-ip address 192.168.1.1 24
+ ip address 192.168.1.1 24
 interface gr-0/0/0
  source ge-0/0/1
- tunnel destination 172.16.1.1
-ip address 172.16.1.2 24
+ source 172.16.1.1
+ ip address 172.16.1.2 24
 bgp 200
- peer 100 as-number none
- peer 300 as-number none
-bridge bgp-group protocol external
-bridge 172.16.1.1 protocol ospf-to-bgp
-bridge 172.16.1.3 protocol ospf-to-bgp
-bridge 172.16.1.2 protocol ospf-to-bgp
-bridge unicast protocol ospf-to-bgp
-ospf 0.0.0.0 router-id none
- undo silent-interface ge-2/0/0
-ospf 0.0.0.1 router-id none
- undo silent-interface ge-1/0/0
-ip route-static ospf-to-bgp accept none preference 1
-ip route-static ospf accept none preference none
+service-instance-group bgp-group
+service-instance-group external
+ service-location 172.16.1.1
+ service-location 100
+ service-location 172.16.1.3
+ service-location 300
+ service-location 172.16.1.2
+ service-location ospf-to-bgp
+ service-location unicast
+ospf 0.0.0.0 router-id [parameter2]
+ area 0.0.0.0
+ area 0.0.0.1
+vlan batch ge-2/0/0 none
+vlan batch ge-1/0/0 none
+traffic policy ospf-to-bgp
+traffic policy 1
+ classifier none behavior ospf
+ classifier none behavior accept

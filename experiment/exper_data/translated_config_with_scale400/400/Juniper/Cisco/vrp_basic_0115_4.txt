@@ -1,9 +1,11 @@
 hostname CE2
 interface ge-0/0/1
 interface 0
-ip address 10.1.2.1 24
-bridge CE2_to_Peer protocol external
-bridge 100 protocol 10.1.2.2
-bridge none protocol 10.1.2.0/24
-router bgp [parameter1]
- neighbor none activate
+ ip address 10.1.2.1 24
+router bgp CE2_to_Peer
+ address-family ipv4 unicast
+  redistribute external
+router bgp 100
+ neighbor 10.1.2.2 remote-as none
+ address-family ipv4 unicast
+  network none mask 10.1.2.0/24

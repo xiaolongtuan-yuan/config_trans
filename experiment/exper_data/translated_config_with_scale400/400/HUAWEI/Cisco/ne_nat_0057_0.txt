@@ -1,25 +1,21 @@
 hostname NATA
-ip nat translation max-entries 0
-mls qos map cos-dscp 1 0
-service instance-group group1
-ip nat pool nat1 none 1 netmask full-cone
-ip nat pool address-group1 none 1 netmask full-cone
-ip dhcp pool 1
- network 11.11.11.105 none
-ip nat pool address-group1 none none netmask full-cone
-ipv6 access-list 3001
-ipv6 access-list 1
- permit ipv6 192.168.10.0 none
- permit ipv6 0.0.0.255 any
-mpls traffic-eng router-id classifier1
-mpls traffic-eng router-id 3001
-mpls traffic-eng router-id behavior1
-mpls traffic-eng router-id nat1
-mpls traffic-eng load-balancing number policy1
-mpls traffic-eng load-balancing number behavior1
+ip nat pool group1 11.11.11.101 11.11.11.105 netmask 6
+copy none 1
+copy none 0
+ip nat pool address-group1 11.11.11.101 11.11.11.105 netmask 1
+ip nat pool address-group1 none none netmask 3001
+ip nat pool none none none netmask full-cone
+ip access-list standard 3001
+ permit 192.168.10.0 0.0.0.255
+class-map classifier1
+ match access-group 3001
+interface nat1
+ monitor session none destination interface behavior1
+policy-map policy1
+policy-map behavior1
+ class classifier1
 interface GigabitEthernet
-interface none
- ipv6 traffic-policy policy1 inbound
- ip policy route-map inbound
- no bridge-group none unicast-flooding
-ip address 192.168.10.1 255.255.255.0
+ no shutdown
+ ip address 192.168.10.1 255.255.255.0
+ service-policy inbound policy1
+end

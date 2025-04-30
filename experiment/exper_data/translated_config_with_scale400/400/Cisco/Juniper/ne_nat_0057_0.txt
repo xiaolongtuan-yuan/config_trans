@@ -1,8 +1,7 @@
 set system host-name NATA
-set access class INSIDE_ACL acl-name INSIDE_ACL
-set access class INSIDE_ACL acl-name 0.0.0.255
-set security nat destination pool 255.255.255.0
-set security nat destination pool address-group1
-set interfaces GigabitEthernet2/0/0 unit 192.168.10.1 family ethernet-switching vlan members none
-set interfaces GigabitEthernet2/0/0 family inet address none/255.255.255.0 tunnel family inet address 192.168.10.1/none
-set services nat pool [parameter1] address-netmask none
+set security nat source rule-set INSIDE_ACL rule 192.168.10.0 match source-address 192.168.10.0/0.0.0.255
+set security nat source pool 255.255.255.0 address 11.11.11.101 to 11.11.11.105
+set security nat source pool address-group1
+set interfaces GigabitEthernet2/0/0 unit 192.168.10.1 family inet address 192.168.10.1/255.255.255.0
+set interfaces GigabitEthernet2/0/0 unit 192.168.10.1 family inet address none/none
+set interfaces GigabitEthernet2/0/0 enable

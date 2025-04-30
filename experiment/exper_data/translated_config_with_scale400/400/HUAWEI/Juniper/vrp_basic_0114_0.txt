@@ -1,19 +1,16 @@
 set system host-name SSH_Server
 set system domain-name example.com
 set system services ssh hostkey-algorithm 2048
+set system services ssh
 set system services ssh protocol-version 2
-set interfaces LoopBack0 unit 10.1.1.1
-set interfaces LoopBack0 family inet address none/255.255.255.255 tunnel family inet address 10.1.1.1/none
-set system services ftp password @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
-set services l2tp remote-access client pool low 15
+set interfaces LoopBack0 unit 10.1.1.1 family inet address 10.1.1.1/255.255.255.255
+set system authentication-order @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
+set system authentication-order 15
 set system services client001
-set interfaces GigabitEthernet0/0/0 unit 10.1.1.1 family ethernet-switching vlan members none
-set interfaces GigabitEthernet0/0/0 unit 10.1.1.1 family inet address none/255.255.0.0 vrrp-group [parameter4] virtual-address none
-set interfaces GigabitEthernet0/0/0 family inet address none/255.255.0.0 tunnel family inet address 10.1.1.2/none
-set system ports auxiliary 4
-set system login user [parameter1] class [parameter2] authentication ssh-rsa none
-set system login user [parameter1] uid none
-set system services ssh connection-limit none
-set system services ssh protocol-version none
+set interfaces GigabitEthernet0/0/0 unit 10.1.1.1 family inet address 10.1.1.2/255.255.0.0
+set interfaces GigabitEthernet0/0/0 disable
+set vlans 0 vlan-id 4
+set vlans 0 vlan-id none
+set vlans 0 interface none
 set system services ssh ciphers none none aes128-ctr
-set security ike policy [parameter1] proposals none
+set protocols l2-learning global-mode none
