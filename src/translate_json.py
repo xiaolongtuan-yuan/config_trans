@@ -37,16 +37,6 @@ def translate_command_tree(config_json):
 
     return config_json
 
-def process_juniper_json(json_config):
-    processed_json = {}
-    for k, v in json_config.items(): # 去除掉第一层 set xxx 命令
-        if 'template' in v:
-            return None
-        if isinstance(v, dict):
-            for command, info in v.items():
-                processed_json[command] = info
-    return processed_json
-
 if __name__ == '__main__':
     '''
     将原始json command json转换为command tree

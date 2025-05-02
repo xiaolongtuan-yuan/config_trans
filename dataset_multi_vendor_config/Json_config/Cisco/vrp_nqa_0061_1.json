@@ -1,370 +1,335 @@
 {
-  "sysname DeviceC": {
-    "template": "sysname [parameter1]",
-    "command": "sysname DeviceC",
-    "explanation": "设置设备的主机名为 'DeviceC'",
-    "parameters": [
-      {
-        "name": "host name",
-        "type": "string",
-        "explanation": "主机名"
-      }
-    ]
-  },
-  "interface GigabitEthernet1/0/1": {
-    "template": "interface [parameter1]",
-    "command": "interface GigabitEthernet1/0/1",
-    "explanation": "配置接口 'GigabitEthernet1/0/1'",
-    "parameters": [
-      {
-        "name": "interface name",
-        "type": "string",
-        "explanation": "接口名"
-      }
-    ],
-    "no shutdown": {
-      "template": "no shutdown",
-      "command": "no shutdown",
-      "explanation": "启用接口（默认情况下接口是关闭的）",
-      "parameters": []
-    },
-    "exit": {
-      "template": "exit",
-      "command": "exit",
-      "explanation": "退出当前配置模式",
-      "parameters": []
-    }
-  },
-  "interface GigabitEthernet1/0/1.1": {
-    "template": "interface [parameter1]",
-    "command": "interface GigabitEthernet1/0/1.1",
-    "explanation": "配置子接口 'GigabitEthernet1/0/1.1'",
-    "parameters": [
-      {
-        "name": "interface name",
-        "type": "string",
-        "explanation": "子接口名"
-      }
-    ],
-    "ip address 10.1.3.1 255.255.255.0": {
-      "template": "ip address [parameter1] [parameter2]",
-      "command": "ip address 10.1.3.1 255.255.255.0",
-      "explanation": "配置子接口的 IPv4 地址为 10.1.3.1，子网掩码为 255.255.255.0",
-      "parameters": [
-        {
-          "name": "ip address",
-          "type": "IPv4",
-          "explanation": "IPv4 地址"
-        },
-        {
-          "name": "subnet mask",
-          "type": "IPv4",
-          "explanation": "子网掩码"
-        }
-      ]
-    },
-    "exit": {
-      "template": "exit",
-      "command": "exit",
-      "explanation": "退出当前配置模式",
-      "parameters": []
-    }
-  },
-  "interface GigabitEthernet1/0/2": {
-    "template": "interface [parameter1]",
-    "command": "interface GigabitEthernet1/0/2",
-    "explanation": "配置接口 'GigabitEthernet1/0/2'",
-    "parameters": [
-      {
-        "name": "interface name",
-        "type": "string",
-        "explanation": "接口名"
-      }
-    ],
-    "no shutdown": {
-      "template": "no shutdown",
-      "command": "no shutdown",
-      "explanation": "启用接口（默认情况下接口是关闭的）",
-      "parameters": []
-    },
-    "ip address 10.1.2.2 255.255.255.0": {
-      "template": "ip address [parameter1] [parameter2]",
-      "command": "ip address 10.1.2.2 255.255.255.0",
-      "explanation": "配置接口的 IPv4 地址为 10.1.2.2，子网掩码为 255.255.255.0",
-      "parameters": [
-        {
-          "name": "ip address",
-          "type": "IPv4",
-          "explanation": "IPv4 地址"
-        },
-        {
-          "name": "subnet mask",
-          "type": "IPv4",
-          "explanation": "子网掩码"
-        }
-      ]
-    },
-    "exit": {
-      "template": "exit",
-      "command": "exit",
-      "explanation": "退出当前配置模式",
-      "parameters": []
-    }
-  },
-  "ip access-list extended TEST-FLOW": {
-    "template": "ip access-list extended [parameter1]",
-    "command": "ip access-list extended TEST-FLOW",
-    "explanation": "创建一个名为 'TEST-FLOW' 的扩展访问控制列表",
-    "parameters": [
-      {
-        "name": "access-list name",
-        "type": "string",
-        "explanation": "访问控制列表名"
-      }
-    ],
-    "permit ip host 10.1.1.1 host 10.1.3.2": {
-      "template": "permit ip host [parameter1] host [parameter2]",
-      "command": "permit ip host 10.1.1.1 host 10.1.3.2",
-      "explanation": "允许从主机 10.1.1.1 到主机 10.1.3.2 的 IP 流量",
-      "parameters": [
-        {
-          "name": "source ip",
-          "type": "IPv4",
-          "explanation": "源 IP 地址"
-        },
-        {
-          "name": "destination ip",
-          "type": "IPv4",
-          "explanation": "目的 IP 地址"
-        }
-      ]
-    },
-    "exit": {
-      "template": "exit",
-      "command": "exit",
-      "explanation": "退出当前配置模式",
-      "parameters": []
-    }
-  },
-  "class-map match-all TEST-FLOW": {
-    "template": "class-map match-all [parameter1]",
-    "command": "class-map match-all TEST-FLOW",
-    "explanation": "创建一个名为 'TEST-FLOW' 的类映射，匹配所有条件",
-    "parameters": [
-      {
-        "name": "class-map name",
-        "type": "string",
-        "explanation": "类映射名"
-      }
-    ],
-    "match access-group name TEST-FLOW": {
-      "template": "match access-group name [parameter1]",
-      "command": "match access-group name TEST-FLOW",
-      "explanation": "匹配访问控制列表 'TEST-FLOW' 的流量",
-      "parameters": [
-        {
-          "name": "access-group name",
-          "type": "string",
-          "explanation": "访问控制列表名"
-        }
-      ]
-    },
-    "exit": {
-      "template": "exit",
-      "command": "exit",
-      "explanation": "退出当前配置模式",
-      "parameters": []
-    }
-  },
-  "policy-map TEST-POLICY": {
-    "template": "policy-map [parameter1]",
-    "command": "policy-map TEST-POLICY",
-    "explanation": "创建一个名为 'TEST-POLICY' 的策略映射",
-    "parameters": [
-      {
-        "name": "policy-map name",
-        "type": "string",
-        "explanation": "策略映射名"
-      }
-    ],
-    "class TEST-FLOW": {
-      "template": "class [parameter1]",
-      "command": "class TEST-FLOW",
-      "explanation": "应用类映射 'TEST-FLOW'",
-      "parameters": [
-        {
-          "name": "class-map name",
-          "type": "string",
-          "explanation": "类映射名"
-        }
-      ],
-      "police cir 10000": {
-        "template": "police cir [parameter1]",
-        "command": "police cir 10000",
-        "explanation": "设置承诺信息速率（CIR）为 10000",
+    "sysname DeviceC": {
+        "template": "sysname [parameter1]",
+        "command": "sysname DeviceC",
+        "explanation": "设置设备的主机名为 'DeviceC'",
         "parameters": [
-          {
-            "name": "cir",
-            "type": "integer",
-            "explanation": "承诺信息速率"
-          }
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
         ]
-      },
-      "exit": {
-        "template": "exit",
-        "command": "exit",
-        "explanation": "退出当前配置模式",
-        "parameters": []
-      }
     },
-    "exit": {
-      "template": "exit",
-      "command": "exit",
-      "explanation": "退出当前配置模式",
-      "parameters": []
-    }
-  },
-  "interface GigabitEthernet1/0/1.1": {
-    "template": "interface [parameter1]",
-    "command": "interface GigabitEthernet1/0/1.1",
-    "explanation": "配置子接口 'GigabitEthernet1/0/1.1'",
-    "parameters": [
-      {
-        "name": "interface name",
-        "type": "string",
-        "explanation": "子接口名"
-      }
-    ],
-    "service-policy input TEST-POLICY": {
-      "template": "service-policy input [parameter1]",
-      "command": "service-policy input TEST-POLICY",
-      "explanation": "在输入方向应用策略映射 'TEST-POLICY'",
-      "parameters": [
-        {
-          "name": "policy-map name",
-          "type": "string",
-          "explanation": "策略映射名"
+    "interface GigabitEthernet1/0/1": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/1",
+        "explanation": "配置接口 'GigabitEthernet1/0/1'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "exit": {
+            "template": "exit",
+            "command": "exit",
+            "explanation": "退出当前配置模式",
+            "parameters": []
         }
-      ]
     },
-    "exit": {
-      "template": "exit",
-      "command": "exit",
-      "explanation": "退出当前配置模式",
-      "parameters": []
-    }
-  },
-  "nqa responder 1": {
-    "template": "nqa responder [parameter1]",
-    "command": "nqa responder 1",
-    "explanation": "配置 NQA 响应器实例 1",
-    "parameters": [
-      {
-        "name": "responder instance",
-        "type": "integer",
-        "explanation": "响应器实例号"
-      }
-    ],
     "interface GigabitEthernet1/0/1.1": {
-      "template": "interface [parameter1]",
-      "command": "interface GigabitEthernet1/0/1.1",
-      "explanation": "配置子接口 'GigabitEthernet1/0/1.1'",
-      "parameters": [
-        {
-          "name": "interface name",
-          "type": "string",
-          "explanation": "子接口名"
-        }
-      ],
-      "ip address 10.1.3.2 255.255.255.0": {
-        "template": "ip address [parameter1] [parameter2]",
-        "command": "ip address 10.1.3.2 255.255.255.0",
-        "explanation": "配置子接口的 IPv4 地址为 10.1.3.2，子网掩码为 255.255.255.0",
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/1.1",
+        "explanation": "配置子接口 'GigabitEthernet1/0/1.1'",
         "parameters": [
-          {
-            "name": "ip address",
-            "type": "IPv4",
-            "explanation": "IPv4 地址"
-          },
-          {
-            "name": "subnet mask",
-            "type": "IPv4",
-            "explanation": "子网掩码"
-          }
-        ]
-      },
-      "exit": {
-        "template": "exit",
-        "command": "exit",
-        "explanation": "退出当前配置模式",
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "子接口名"
+            }
+        ],
+        "service-policy input TEST-POLICY": {
+            "template": "service-policy input [parameter1]",
+            "command": "service-policy input TEST-POLICY",
+            "explanation": "在输入方向应用策略映射 'TEST-POLICY'",
+            "parameters": [
+                {
+                    "name": "policy-map name",
+                    "type": "string",
+                    "explanation": "策略映射名"
+                }
+            ]
+        },
+        "exit": {
+            "template": "exit",
+            "command": "exit",
+            "explanation": "退出当前配置模式",
+            "parameters": []
+        }
+    },
+    "interface GigabitEthernet1/0/2": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/2",
+        "explanation": "配置接口 'GigabitEthernet1/0/2'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address 10.1.2.2 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.1.2.2 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 10.1.2.2，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "exit": {
+            "template": "exit",
+            "command": "exit",
+            "explanation": "退出当前配置模式",
+            "parameters": []
+        }
+    },
+    "ip access-list extended TEST-FLOW": {
+        "template": "ip access-list extended [parameter1]",
+        "command": "ip access-list extended TEST-FLOW",
+        "explanation": "创建一个名为 'TEST-FLOW' 的扩展访问控制列表",
+        "parameters": [
+            {
+                "name": "access-list name",
+                "type": "string",
+                "explanation": "访问控制列表名"
+            }
+        ],
+        "permit ip host 10.1.1.1 host 10.1.3.2": {
+            "template": "permit ip host [parameter1] host [parameter2]",
+            "command": "permit ip host 10.1.1.1 host 10.1.3.2",
+            "explanation": "允许从主机 10.1.1.1 到主机 10.1.3.2 的 IP 流量",
+            "parameters": [
+                {
+                    "name": "source ip",
+                    "type": "IPv4",
+                    "explanation": "源 IP 地址"
+                },
+                {
+                    "name": "destination ip",
+                    "type": "IPv4",
+                    "explanation": "目的 IP 地址"
+                }
+            ]
+        },
+        "exit": {
+            "template": "exit",
+            "command": "exit",
+            "explanation": "退出当前配置模式",
+            "parameters": []
+        }
+    },
+    "class-map match-all TEST-FLOW": {
+        "template": "class-map match-all [parameter1]",
+        "command": "class-map match-all TEST-FLOW",
+        "explanation": "创建一个名为 'TEST-FLOW' 的类映射，匹配所有条件",
+        "parameters": [
+            {
+                "name": "class-map name",
+                "type": "string",
+                "explanation": "类映射名"
+            }
+        ],
+        "match access-group name TEST-FLOW": {
+            "template": "match access-group name [parameter1]",
+            "command": "match access-group name TEST-FLOW",
+            "explanation": "匹配访问控制列表 'TEST-FLOW' 的流量",
+            "parameters": [
+                {
+                    "name": "access-group name",
+                    "type": "string",
+                    "explanation": "访问控制列表名"
+                }
+            ]
+        },
+        "exit": {
+            "template": "exit",
+            "command": "exit",
+            "explanation": "退出当前配置模式",
+            "parameters": []
+        }
+    },
+    "policy-map TEST-POLICY": {
+        "template": "policy-map [parameter1]",
+        "command": "policy-map TEST-POLICY",
+        "explanation": "创建一个名为 'TEST-POLICY' 的策略映射",
+        "parameters": [
+            {
+                "name": "policy-map name",
+                "type": "string",
+                "explanation": "策略映射名"
+            }
+        ],
+        "class TEST-FLOW": {
+            "template": "class [parameter1]",
+            "command": "class TEST-FLOW",
+            "explanation": "应用类映射 'TEST-FLOW'",
+            "parameters": [
+                {
+                    "name": "class-map name",
+                    "type": "string",
+                    "explanation": "类映射名"
+                }
+            ],
+            "police cir 10000": {
+                "template": "police cir [parameter1]",
+                "command": "police cir 10000",
+                "explanation": "设置承诺信息速率（CIR）为 10000",
+                "parameters": [
+                    {
+                        "name": "cir",
+                        "type": "integer",
+                        "explanation": "承诺信息速率"
+                    }
+                ]
+            },
+            "exit": {
+                "template": "exit",
+                "command": "exit",
+                "explanation": "退出当前配置模式",
+                "parameters": []
+            }
+        },
+        "exit": {
+            "template": "exit",
+            "command": "exit",
+            "explanation": "退出当前配置模式",
+            "parameters": []
+        }
+    },
+    "nqa responder 1": {
+        "template": "nqa responder [parameter1]",
+        "command": "nqa responder 1",
+        "explanation": "配置 NQA 响应器实例 1",
+        "parameters": [
+            {
+                "name": "responder instance",
+                "type": "integer",
+                "explanation": "响应器实例号"
+            }
+        ],
+        "interface GigabitEthernet1/0/1.1": {
+            "template": "interface [parameter1]",
+            "command": "interface GigabitEthernet1/0/1.1",
+            "explanation": "配置子接口 'GigabitEthernet1/0/1.1'",
+            "parameters": [
+                {
+                    "name": "interface name",
+                    "type": "string",
+                    "explanation": "子接口名"
+                }
+            ],
+            "ip address 10.1.3.2 255.255.255.0": {
+                "template": "ip address [parameter1] [parameter2]",
+                "command": "ip address 10.1.3.2 255.255.255.0",
+                "explanation": "配置子接口的 IPv4 地址为 10.1.3.2，子网掩码为 255.255.255.0",
+                "parameters": [
+                    {
+                        "name": "ip address",
+                        "type": "IPv4",
+                        "explanation": "IPv4 地址"
+                    },
+                    {
+                        "name": "subnet mask",
+                        "type": "IPv4",
+                        "explanation": "子网掩码"
+                    }
+                ]
+            },
+            "exit": {
+                "template": "exit",
+                "command": "exit",
+                "explanation": "退出当前配置模式",
+                "parameters": []
+            }
+        },
+        "exit": {
+            "template": "exit",
+            "command": "exit",
+            "explanation": "退出当前配置模式",
+            "parameters": []
+        }
+    },
+    "nqa scheduler-group 1": {
+        "template": "nqa scheduler-group [parameter1]",
+        "command": "nqa scheduler-group 1",
+        "explanation": "配置 NQA 调度组实例 1",
+        "parameters": [
+            {
+                "name": "scheduler-group instance",
+                "type": "integer",
+                "explanation": "调度组实例号"
+            }
+        ],
+        "prober 1": {
+            "template": "prober [parameter1]",
+            "command": "prober 1",
+            "explanation": "配置探针实例 1",
+            "parameters": [
+                {
+                    "name": "prober instance",
+                    "type": "integer",
+                    "explanation": "探针实例号"
+                }
+            ]
+        },
+        "test 1": {
+            "template": "test [parameter1]",
+            "command": "test 1",
+            "explanation": "配置测试实例 1",
+            "parameters": [
+                {
+                    "name": "test instance",
+                    "type": "integer",
+                    "explanation": "测试实例号"
+                }
+            ]
+        },
+        "reflector 1": {
+            "template": "reflector [parameter1]",
+            "command": "reflector 1",
+            "explanation": "配置反射器实例 1",
+            "parameters": [
+                {
+                    "name": "reflector instance",
+                    "type": "integer",
+                    "explanation": "反射器实例号"
+                }
+            ]
+        },
+        "exit": {
+            "template": "exit",
+            "command": "exit",
+            "explanation": "退出当前配置模式",
+            "parameters": []
+        }
+    },
+    "return": {
+        "template": "return",
+        "command": "return",
+        "explanation": "返回到用户视图",
         "parameters": []
-      }
-    },
-    "exit": {
-      "template": "exit",
-      "command": "exit",
-      "explanation": "退出当前配置模式",
-      "parameters": []
     }
-  },
-  "nqa scheduler-group 1": {
-    "template": "nqa scheduler-group [parameter1]",
-    "command": "nqa scheduler-group 1",
-    "explanation": "配置 NQA 调度组实例 1",
-    "parameters": [
-      {
-        "name": "scheduler-group instance",
-        "type": "integer",
-        "explanation": "调度组实例号"
-      }
-    ],
-    "prober 1": {
-      "template": "prober [parameter1]",
-      "command": "prober 1",
-      "explanation": "配置探针实例 1",
-      "parameters": [
-        {
-          "name": "prober instance",
-          "type": "integer",
-          "explanation": "探针实例号"
-        }
-      ]
-    },
-    "test 1": {
-      "template": "test [parameter1]",
-      "command": "test 1",
-      "explanation": "配置测试实例 1",
-      "parameters": [
-        {
-          "name": "test instance",
-          "type": "integer",
-          "explanation": "测试实例号"
-        }
-      ]
-    },
-    "reflector 1": {
-      "template": "reflector [parameter1]",
-      "command": "reflector 1",
-      "explanation": "配置反射器实例 1",
-      "parameters": [
-        {
-          "name": "reflector instance",
-          "type": "integer",
-          "explanation": "反射器实例号"
-        }
-      ]
-    },
-    "exit": {
-      "template": "exit",
-      "command": "exit",
-      "explanation": "退出当前配置模式",
-      "parameters": []
-    }
-  },
-  "return": {
-    "template": "return",
-    "command": "return",
-    "explanation": "返回到用户视图",
-    "parameters": []
-  }
 }

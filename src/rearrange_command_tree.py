@@ -1,6 +1,51 @@
 import os
 import json
+from concurrent.futures import ThreadPoolExecutor
+
+from openai import OpenAI
 from tqdm import tqdm
+
+from src.en_translator import translate_Zh2Eng
+
+class LLM_Model:
+    def __init__(self, model_name: str, endpoint_url: str = 'https://api.deepseek.com/v1'):
+        if 'gpt' in model_name:
+            api_key = os.getenv("OPENAI_KEY")
+        elif 'aliyun' in model_name:
+            api_key = os.getenv("ALIYUN_API_KEY")
+            model_name = model_name.replace('aliyun_', '')
+        elif 'deepseek' in model_name:
+            api_key = os.getenv("DEEPSEEK_API_KEY")
+        else:
+            raise ValueError("Invalid model name")
+        self.model_name = model_name
+        self.llm_model = OpenAI(api_key=api_key, base_url=endpoint_url)
+        self.executor = ThreadPoolExecutor(max_workers=10)  # 添加线程池
+
+    def parse_command(self, command):
+        messages = [
+            {
+                "role": "user",
+                "content": open('../resource/command_parse_config_prompt.txt', 'r').read().replace('{command}', command),
+            }
+        ]
+        def _request():
+            for i in range(2):
+                try:
+                    response = self.llm_model.chat.completions.create(
+                        model=self.model_name,
+                        messages=messages,
+                        response_format={
+                            'type': 'json_object'
+                        }
+                    )
+                    parsed_command = json.loads(response.choices[0].message.content)
+                    return parsed_command
+                except Exception as e:
+                    print(f"第 {i + 1} 次尝试失败，错误信息: {str(e)}")
+            return ''
+
+        return self.executor.submit(_request)
 
 def parse_config(config_str):
     '''
@@ -41,28 +86,6 @@ def parse_config(config_str):
         # 将当前节点压入栈
         stack.append((indent, parent_dict[content]))
     return root
-
-
-def merge_tree_with_json(txt_tree, json_tree):
-    """
-    递归地将json_tree的属性填充到txt_tree的嵌套结构中。
-    以txt_tree的结构为准，json_tree只用于补充属性。
-    """
-    result = {}
-    for key, sub in txt_tree.items():
-        node = {}
-        # 只复制json_tree中与key同名的属性（如template、command、explanation、parameters等）
-        if key in json_tree and isinstance(json_tree[key], dict):
-            for attr in ["template", "command", "explanation", "parameters"]:
-                if attr in json_tree[key]:
-                    node[attr] = json_tree[key][attr]
-        # 递归处理子节点
-        if isinstance(sub, dict) and sub:
-            node.update(merge_tree_with_json(sub, json_tree.get(key, {})))
-        result[key] = node
-    return result
-
-
 def flatten_json_tree(json_tree):
     """
     将json_tree所有命令节点展平成{命令: 属性dict}的字典
@@ -77,67 +100,75 @@ def flatten_json_tree(json_tree):
     _flatten(json_tree)
     return flat
 
-def merge_tree_with_flat(txt_tree, flat_json):
+def merge_tree_with_flat(txt_tree, flat_json, filename):
     """
-    以txt_tree结构为准，递归为每个命令节点复制flat_json中的属性
+    以txt_tree结构为准，递归为每个命令节点复制flat_json中的属性,并翻译描述
     """
+    tasks = []
     result = {}
     for key, sub in txt_tree.items():
         node = flat_json.get(key, {})
-        if isinstance(sub, dict) and sub:
-            node = {**node, **merge_tree_with_flat(sub, flat_json)}
-        result[key] = node
-    return result
+        if key not in flat_json:
+            print(f"{key} not in {filename} flat_json")
+            future = llm_model.parse_command(key)
+            node_ref = node
+            tasks.append((future, node_ref))
 
-def get_device_name_from_tree(tree, vendor):
-    """
-    从txt_tree或json_tree中提取设备名
-    """
-    if vendor == 'Cisco':
-        for key in tree:
-            if key.startswith('hostname '):
-                return key.split(' ', 1)[1].strip()
-    elif vendor == 'HUAWEI':
-        for key in tree:
-            if key.startswith('sysname '):
-                return key.split(' ', 1)[1].strip()
-    return None
+        else:
+            explanation_key = node.get("explanation")
+            parameters_key = node.get("parameters")
+
+            if explanation_key:
+                node['explanation'] = translate_Zh2Eng(explanation_key)
+            if parameters_key:
+                for parameter in parameters_key:
+                    parameter['explanation'] = translate_Zh2Eng(parameter['explanation'])
+        if isinstance(sub, dict) and sub:
+            sub_node, sub_tasks = merge_tree_with_flat(sub, flat_json, filename)
+            node.update(sub_node)
+            tasks.extend(sub_tasks)
+
+        result[key] = node
+    return result, tasks
 
 def process_vendor(vendor):
-    txt_dir = f"./experiment/train_dataset/text_config/{vendor}"
-    json_dir = f"./experiment/train_dataset/command_tree/{vendor}"
-    save_dir = f"./experiment/train_dataset_rearrange/command_tree/{vendor}"
-    os.makedirs(save_dir, exist_ok=True)
-    for filename in tqdm(os.listdir(txt_dir)):
-        if not filename.endswith('.txt'):
-            continue
-        txt_path = os.path.join(txt_dir, filename)
-        json_name = filename.replace('.txt', '.json')
-        json_path = os.path.join(json_dir, json_name)
-        save_path = os.path.join(save_dir, json_name)
-        if not os.path.exists(json_path):
-            continue
-        # 读取txt
-        with open(txt_path, 'r', encoding='utf-8') as f:
-            txt_content = f.read()
-        txt_tree = parse_config(txt_content)
-        # 读取json
-        with open(json_path, 'r', encoding='utf-8') as f:
-            json_tree = json.load(f)
-        # 判断设备名是否一致
-        txt_dev = get_device_name_from_tree(txt_tree, vendor)
-        json_dev = get_device_name_from_tree(json_tree, vendor)
-        if txt_dev != json_dev:
-            print(f"设备名不一致，跳过: {filename} (txt: {txt_dev}, json: {json_dev})")
-            continue
-        # 合并
-        flat_json = flatten_json_tree(json_tree)
-        new_tree = merge_tree_with_flat(txt_tree, flat_json)
-        # 保存
+    tasks = []
+    for condif_dir in ['400', '1200', '2000', '2800']:
+        txt_dir = f"../experiment/test_dataset/test_data_{condif_dir}/text_config/{vendor}"
+        json_dir = f"../experiment/test_dataset/test_data_{condif_dir}/command_tree/{vendor}"
+        save_dir = f"../experiment/test_dataset/test_data_{condif_dir}/command_tree/{vendor}"
+        os.makedirs(save_dir, exist_ok=True)
+        for filename in tqdm(os.listdir(txt_dir)):
+            if not filename.endswith('.txt'):
+                continue
+            txt_path = os.path.join(txt_dir, filename)
+            json_name = filename.replace('.txt', '.json')
+            json_path = os.path.join(json_dir, json_name)
+            save_path = os.path.join(save_dir, json_name)
+            if not os.path.exists(json_path):
+                continue
+            # 读取txt
+            with open(txt_path, 'r', encoding='utf-8') as f:
+                txt_content = f.read()
+            txt_tree = parse_config(txt_content)
+            # 读取json
+            with open(json_path, 'r', encoding='utf-8') as f:
+                json_tree = json.load(f)
+            flat_json = flatten_json_tree(json_tree)
+            new_tree, merge_tasks = merge_tree_with_flat(txt_tree, flat_json, filename)
+            tasks.append((save_path, new_tree, merge_tasks))
+    for save_path, new_tree, merge_tasks in tqdm(tasks):
+        for future, node_ref in merge_tasks:
+            result = future.result()
+            if result:
+                node_ref.update(result)
         with open(save_path, 'w', encoding='utf-8') as f:
             json.dump(new_tree, f, ensure_ascii=False, indent=4)
+    # 保存
+
 
 if __name__ == '__main__':
-    for vendor in ['Cisco', 'HUAWEI']:
+    llm_model = LLM_Model('deepseek-chat')
+    for vendor in ['Cisco', 'HUAWEI', 'Juniper']:
         process_vendor(vendor)
 

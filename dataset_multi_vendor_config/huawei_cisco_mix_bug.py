@@ -23,13 +23,13 @@ def cisco_huawei_mix_bug(directory, error_key):
     return non_standard_files
 
 # 使用示例
-cisco_dir = 'config_data_1-400/Cisco'
+cisco_dir = 'config_data_400/Cisco'
 non_standard_files = cisco_huawei_mix_bug(cisco_dir, r'^sysname')
 with open("./error_file_record/error_cisco.json", 'w', encoding='utf-8') as f:
     json.dump(non_standard_files, f, ensure_ascii=False, indent=4)
 print("不符合Cisco标准的配置文件：", non_standard_files)
 
-huawei_dir = 'config_data_1-400/HUAWEI'
+huawei_dir = 'config_data_400/HUAWEI'
 non_standard_files = cisco_huawei_mix_bug(huawei_dir, r'^hostname')
 with open("./error_file_record/error_huawei.json", 'w', encoding='utf-8') as f:
     json.dump(non_standard_files, f, ensure_ascii=False, indent=4)

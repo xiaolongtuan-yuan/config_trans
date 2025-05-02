@@ -1,0 +1,22 @@
+set system host-name CE2
+
+set protocols pim interface all mode sparse
+
+set interfaces ge-1/0/0 unit 0 family inet address 192.168.2.2/24
+set protocols pim interface ge-1/0/0 mode sparse
+
+set interfaces ge-1/0/1 unit 0 family inet address 10.1.4.1/24
+set protocols pim interface ge-1/0/1 mode sparse
+set protocols igmp interface ge-1/0/1 version 3
+
+set interfaces lo0 unit 1 family inet address 5.5.5.5/32
+
+set protocols ospf area 0.0.0.0 interface lo0.1
+set protocols ospf area 0.0.0.0 interface ge-1/0/1
+set protocols ospf area 0.0.0.0 interface ge-1/0/0
+
+set protocols pim rp static address 1.1.1.1
+
+set interfaces ge-1/0/0 enable
+set interfaces ge-1/0/1 enable
+set interfaces lo0 enable

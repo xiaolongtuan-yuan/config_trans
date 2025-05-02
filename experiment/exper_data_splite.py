@@ -86,11 +86,11 @@ def delete_outdate_files(file_dir):
 
 
 def find_lable_path(device_name, vendor):
-    lable_base_dirs = ["config_data_1-400",
-                       "config_data_401-800",
-                       "config_data_801-1200",
-                       "config_data_1600_1999",
-                       "config_data_2400-2889"]
+    lable_base_dirs = ["config_data_400",
+                       "config_data_800",
+                       "config_data_1200",
+                       "config_data_2000",
+                       "config_data_2800"]
     for lable_base_dir in lable_base_dirs:
         file_path = os.path.join("../dataset_multi_vendor_config",lable_base_dir, vendor, f"{device_name}.txt")
         if os.path.exists(file_path):

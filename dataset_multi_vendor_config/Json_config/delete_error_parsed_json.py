@@ -7,6 +7,15 @@
 import json
 import os
 
+VALID_FIRST_WORDS = ['set', 'delete', 'rename', 'deactivate', 'activate', 'replace', 'commit']
+def juniper_config_filter(config):
+    for command in config.keys():
+        first_word = command.split()[0] if command else ''
+        if first_word not in VALID_FIRST_WORDS:
+            print("error junos command: ", command)
+            return False
+    return True
+
 vendors = ['Juniper', 'Cisco', 'HUAWEI']
 error_file_list = {}
 for vendor in vendors:
@@ -25,6 +34,10 @@ for vendor in vendors:
                     error_file_list[vendor].append(file_path)
                 if len(config) <= 0:
                     print("null json file: ", file_path)
+                    error_file_list[vendor].append(file_path)
+                # Add Juniper specific validation
+                if vendor == 'Juniper' and not juniper_config_filter(config):
+                    print("invalid Juniper command in file: ", file_path)
                     error_file_list[vendor].append(file_path)
             except json.JSONDecodeError as e:
                 print(f"Error decoding JSON from {file_path}: {e}")

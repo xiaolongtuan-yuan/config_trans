@@ -1,3 +1,4 @@
+import argparse
 import json
 import sys
 import time
@@ -162,19 +163,22 @@ if __name__ == "__main__":
     model_name = "deepseek-chat"
     client = load_client(model_name)
 
-    ## 配置加载
-    if len(sys.argv) != 3:
-        print("Usage: python 1LMM_Parse_Config.py <vendor> <config_path>")
-        sys.exit(1)
-    vendor = sys.argv[1]
-    config_path = sys.argv[2]
-    project_root = Path(__file__).parent.parent
+    parser = argparse.ArgumentParser(description="解析网络配置文件")
+    parser.add_argument('--vendor', type=str, default='Cisco', help='设备厂商')
+    parser.add_argument('--config_path', type=str, default='config_data_1200', help='配置文件路径')
+    args = parser.parse_args()
+    vendor = args.vendor
+    config_path = args.config_path
 
-    full_config_path =  str(project_root / 'dataset_multi_vendor_config/{}/{}'.format(config_path, vendor))
+    project_root = Path(__file__).parent.parent
+    if vendor == 'Juniper':
+        full_config_path =  str(project_root / 'dataset_multi_vendor_config/{}/{}'.format(config_path, vendor))
+    else:
+        full_config_path =  str(project_root / 'dataset_multi_vendor_config/config_data_400/{}'.format(vendor))
     ## 获取文件名
     txt_files = get_txt_filenames(full_config_path)
     print(txt_files[0])
-    test_filenames = json.load(open( f'../syntactic_check/error_info/config_summary.json'))['all_config']['config']
+    test_filenames = json.load(open( f'../syntactic_check/{config_path}/error_info/config_summary.json'))['test_config']['config']
     print(f"{len(test_filenames)}: {test_filenames[0]}")
     txt_files = [file for file in txt_files if file in test_filenames]
     print(len(txt_files))

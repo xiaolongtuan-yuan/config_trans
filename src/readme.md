@@ -1,17 +1,14 @@
 ```markdown
-nohup python -u A_LLM_Parse_Config.py HUAWEI config_data_1-400 > HUAWEI.log 2>&1 &
+nohup python -u A_LLM_Parse_Config.py --vendor HUAWEI --config_path config_data_1200 > HUAWEI1200.log 2>&1 &
+nohup python -u A_LLM_Parse_Config.py --vendor HUAWEI --config_path config_data_2000 > HUAWEI2000.log 2>&1 &
+nohup python -u A_LLM_Parse_Config.py --vendor HUAWEI --config_path config_data_2800 > HUAWEI2800.log 2>&1 &
 
-nohup python -u A_LLM_Parse_Config.py Cisco config_data_1-400 > Cisco.log 2>&1 &
+nohup python -u A_LLM_Parse_Config.py --vendor Cisco --config_path config_data_1200 > Cisco1200.log 2>&1 &
+nohup python -u A_LLM_Parse_Config.py --vendor Cisco --config_path config_data_2000 > Cisco2000.log 2>&1 &
+nohup python -u A_LLM_Parse_Config.py --vendor Cisco --config_path config_data_2800 > Cisco2800.log 2>&1 &
 
 ----------------
-nohup python -u A_LLM_Parse_Config.py Juniper config_data_1-400 > Juniper1_400.log 2>&1 &
-
-nohup python -u A_LLM_Parse_Config.py Juniper config_data_401-800 > Juniper401_800.log 2>&1 &
-
-nohup python -u A_LLM_Parse_Config.py Juniper config_data_801-1200 > Juniper801_1200.log 2>&1 &
-
-nohup python -u A_LLM_Parse_Config.py Juniper config_data_1600_1999 > Juniper1600_1999.log 2>&1 &
-
-nohup python -u A_LLM_Parse_Config.py Juniper config_data_2400-2889 > Juniper2400_2889.log 2>&1 &
-
+nohup python -u A_LLM_Parse_Config.py --vendor Juniper --config_path config_data_1200 > Juniper1200.log 2>&1 &
+nohup python -u A_LLM_Parse_Config.py --vendor Juniper --config_path config_data_2000 > Juniper2000.log 2>&1 &
+nohup python -u A_LLM_Parse_Config.py --vendor Juniper --config_path config_data_2800 > Juniper2800.log 2>&1 &
 ```

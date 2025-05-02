@@ -1,10 +1,10 @@
 import os
 import shutil
 range_num = 2000
-file_range = 'config_data_2400-2889'
-# file_name_path = 'config_trans/dataset_multi_vendor_config/config_data_1-400/Juniper/'
-# file_name_path = 'config_trans/dataset_multi_vendor_config/config_data_801-1200/Juniper/'
-# file_name_path = 'config_trans/dataset_multi_vendor_config/config_data_2400-2889/Juniper/'
+file_range = 'config_data_2800'
+# file_name_path = 'config_trans/dataset_multi_vendor_config/config_data_400/Juniper/'
+# file_name_path = 'config_trans/dataset_multi_vendor_config/config_data_1200/Juniper/'
+# file_name_path = 'config_trans/dataset_multi_vendor_config/config_data_2800/Juniper/'
 file_name_path = f'config_trans/dataset_multi_vendor_config/{file_range}/Juniper/'
 
 
@@ -32,7 +32,7 @@ for vendor in ['Cisco', 'HUAWEI','Juniper']:
 '''vendors = ['cisco', 'huawei','juniper']
 ture_vendors = ['Cisco', 'HUAWEI','Juniper']
 
-file_name_path = 'config_trans/dataset_multi_vendor_config/config_data_1600_1999/'
+file_name_path = 'config_trans/dataset_multi_vendor_config/config_data_2000/'
 
 for k in range(len(vendors)):
     for i in range(1600, 2000):

@@ -1,0 +1,14 @@
+set system host-name CE3
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.2.1.1/24
+set interfaces lo0 unit 1 family inet address 33.33.33.33/32
+
+set protocols bgp group bgp-group type external
+set protocols bgp group bgp-group peer-as 100
+set protocols bgp group bgp-group neighbor 10.2.1.2
+
+set protocols bgp group bgp-group family inet unicast
+set protocols bgp group bgp-group export export-loopback1
+
+set policy-options policy-statement export-loopback1 term 1 from route-filter 33.33.33.33/32 exact
+set policy-options policy-statement export-loopback1 term 1 then accept

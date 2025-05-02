@@ -1,0 +1,26 @@
+sysname DeviceA
+#
+acl number 2001
+ rule 5 permit source 1.1.1.1 0
+acl number 2002
+ rule 5 permit source 1.1.1.2 0
+#
+traffic classifier class1 operator or
+ if-match acl 2001
+traffic classifier class2 operator or
+ if-match acl 2002
+#
+traffic behavior behavior1
+ car cir 5000 pir 6000 green pass yellow pass red pass service-class be color green
+traffic behavior behavior2
+ car cir 2000 green pass red discard
+#
+traffic policy policy1
+ classifier class1 behavior behavior1 precedence 5
+ classifier class2 behavior behavior2 precedence 10
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 1.1.1.3 255.255.255.0
+ traffic-policy policy1 inbound
+

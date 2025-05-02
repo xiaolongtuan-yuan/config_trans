@@ -25,7 +25,7 @@ def test_parse_single_file(vendor, config_path, target_file):
 if __name__ == "__main__":
     # 直接为参数赋值
     vendor = "Juniper"
-    config_path = "config_data_801-1200"
+    config_path = "config_data_1200"
     target_file = "vrp_te-p2p_0139_0.txt"
 
     test_parse_single_file(vendor, config_path, target_file)
