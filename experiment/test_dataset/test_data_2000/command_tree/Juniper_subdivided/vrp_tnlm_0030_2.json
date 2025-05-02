@@ -1,0 +1,239 @@
+{
+    "set system host-name CE1": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name CE1",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "command": "set interfaces",
+        "explanation": "The `set interfaces` command in Junos configures or defines network interfaces, specifying attributes like IP addresses, VLANs, and other interface-specific parameters.",
+        "parameters": [],
+        "ge-0/0/0 unit 0 family inet address 10.1.1.1/30": {
+            "template": "interface_name unit unit_number family family_type address ip_address",
+            "command": "ge-0/0/0 unit 0 family inet address 10.1.1.1/30",
+            "explanation": "Configure an interface with a specific IP address and subnet mask",
+            "parameters": [
+                {
+                    "name": "unit_number",
+                    "type": "integer",
+                    "explanation": "The unit number for the interface configuration"
+                },
+                {
+                    "name": "family_type",
+                    "type": "string",
+                    "explanation": "The protocol family type (e.g., inet for IPv4)"
+                },
+                {
+                    "name": "ip_address",
+                    "type": "string",
+                    "explanation": "The IP address and subnet mask in CIDR notation"
+                }
+            ]
+        },
+        "lo0 unit 0 family inet address 3.3.3.3/32": {
+            "template": "interface unit unit family family address address",
+            "command": "lo0 unit 0 family inet address 3.3.3.3/32",
+            "explanation": "Configure an interface with a specific unit, family, and IP address",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "The unit number for the interface configuration"
+                },
+                {
+                    "name": "family",
+                    "type": "string",
+                    "explanation": "The protocol family (e.g., inet for IPv4)"
+                },
+                {
+                    "name": "address",
+                    "type": "string",
+                    "explanation": "The IP address and subnet mask in CIDR notation"
+                }
+            ]
+        }
+    },
+    "set routing-options autonomous-system 65410": {
+        "template": "set routing-options autonomous-system [parameter1]",
+        "command": "set routing-options autonomous-system 65410",
+        "explanation": "Autonomy system number with equipment.",
+        "parameters": [
+            {
+                "name": "autonomous-system",
+                "type": "integer",
+                "explanation": "Autonomy system number for equipment, used for route agreements such as BGP."
+            }
+        ]
+    },
+    "set policy-options policy-statement direct-import": {
+        "template": "set policy-options policy-statement [parameter1]",
+        "command": "set policy-options policy-statement direct-import",
+        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "name of the policy statement."
+            }
+        ],
+        "term 1 from protocol direct": {
+            "template": "term [parameter2] from protocol [parameter3]",
+            "command": "term 1 from protocol direct",
+            "explanation": "Configure a policy statement to import routes directly from a specified protocol",
+            "parameters": [
+                {
+                    "name": "term number",
+                    "type": "integer",
+                    "explanation": "The term number within the policy statement"
+                },
+                {
+                    "name": "protocol",
+                    "type": "string",
+                    "explanation": "The protocol from which routes are imported"
+                }
+            ]
+        },
+        "term 1 then accept": {
+            "template": "term [parameter2] then [parameter3]",
+            "command": "term 1 then accept",
+            "explanation": "Configure a policy statement to accept direct imports under a specific term",
+            "parameters": [
+                {
+                    "name": "term number",
+                    "type": "integer",
+                    "explanation": "The term number under the policy statement"
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "explanation": "The action to be taken (e.g., accept)"
+                }
+            ]
+        },
+        "term 2 then reject": {
+            "template": "term [parameter2] then [parameter3]",
+            "command": "term 2 then reject",
+            "explanation": "Configure policy options to set a policy statement with a specific term and action",
+            "parameters": [
+                {
+                    "name": "term number",
+                    "type": "integer",
+                    "explanation": "The term number within the policy statement"
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "explanation": "The action to be taken (e.g., accept, reject)"
+                }
+            ]
+        }
+    },
+    "set protocols bgp group external": {
+        "template": "set protocols bgp group [parameter1]",
+        "command": "set protocols bgp group external",
+        "explanation": "This command configures a BGP group named [parameter1], defining a set of BGP peers with shared session parameters.",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP Group name."
+            }
+        ],
+        "type external": {
+            "template": "type [parameter2]",
+            "command": "type external",
+            "explanation": "Configure BGP protocol group type",
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "explanation": "BGP group type"
+                }
+            ]
+        },
+        "local-address 10.1.1.1": {
+            "template": "local-address [parameter2]",
+            "command": "local-address 10.1.1.1",
+            "explanation": "Configure BGP protocol group with a local address",
+            "parameters": [
+                {
+                    "name": "local address",
+                    "type": "IPv4 address",
+                    "explanation": "Local IP address for BGP peering"
+                }
+            ]
+        },
+        "peer-as 100": {
+            "template": "peer-as [parameter2]",
+            "command": "peer-as 100",
+            "explanation": "Configure BGP protocol settings, specifying the group and peer AS number",
+            "parameters": [
+                {
+                    "name": "peer AS number",
+                    "type": "integer",
+                    "explanation": "Autonomous System number of the BGP peer"
+                }
+            ]
+        },
+        "family inet unicast": {
+            "template": "family [parameter2] [parameter3]",
+            "command": "family inet unicast",
+            "explanation": "Configure BGP protocol settings for a specific group and address family",
+            "parameters": [
+                {
+                    "name": "address family",
+                    "type": "string",
+                    "explanation": "Type of address family (e.g., inet)"
+                },
+                {
+                    "name": "sub-address family",
+                    "type": "string",
+                    "explanation": "Type of sub-address family (e.g., unicast)"
+                }
+            ]
+        }
+    },
+    "set protocols bgp group": {
+        "template": "set protocols bgp group",
+        "command": "set protocols bgp group",
+        "explanation": "The command `set protocols bgp group` configures a BGP group, defining a set of peers with shared BGP session parameters in Junos OS.",
+        "parameters": [],
+        "external neighbor 10.1.1.2": {
+            "template": "group_name neighbor neighbor_ip",
+            "command": "external neighbor 10.1.1.2",
+            "explanation": "Configure BGP protocol settings by specifying a group and its neighbor",
+            "parameters": [
+                {
+                    "name": "neighbor_ip",
+                    "type": "ip address",
+                    "explanation": "IP address of the BGP neighbor"
+                }
+            ]
+        },
+        "external neighbor 10.1.1.2 import direct-import": {
+            "template": "group_name neighbor neighbor_ip import import_policy",
+            "command": "external neighbor 10.1.1.2 import direct-import",
+            "explanation": "Configure BGP protocol to set import policy for a neighbor in a specific group",
+            "parameters": [
+                {
+                    "name": "neighbor_ip",
+                    "type": "string",
+                    "explanation": "IP address of the BGP neighbor"
+                },
+                {
+                    "name": "import_policy",
+                    "type": "string",
+                    "explanation": "Name of the import policy to apply"
+                }
+            ]
+        }
+    }
+}

@@ -10,7 +10,7 @@ import re
 from concurrent.futures import ThreadPoolExecutor
 from openai import OpenAI
 from tqdm import tqdm
-from en_translator import translate_Zh2Eng
+# from en_translator import translate_Zh2Eng
 
 def load_json_file(file_path):
     with open(file_path, 'r', encoding='utf-8') as json_file:
@@ -100,50 +100,61 @@ def subdivision_config(llm_model:LLM_Model,old_config_model:dict, decompose_comm
             paras = seg[1]
             begin = 0
             command_node = juniper_model
-            for k_part in range(len(segments)):
-                segment = segments[k_part]
-                segment_words = segment.split()
-                command_match = ' '.join(command_words[begin:begin+len(segment_words)])
-                command_node = command_node[segment]
-                if command_match not in sub_model:
-                    sub_model[command_match] = {"template": segment,
-                                          "command": command_match,
-                                          "explanation": command_node['explanation'],
-                                          "parameters": command_node['parameters']}
-                sub_model = sub_model[command_match]
-                begin += len(segment_words)
 
+            # 去除for循环，只划分segments[0]和剩余部分
+            segment = segments[0]
+            segment_words = segment.split()
+            command_match = ' '.join(command_words[begin:begin + len(segment_words)])
+            command_node = command_node[segment]
+            if command_match not in sub_model:
+                sub_model[command_match] = {"template": segment,
+                                            "command": command_match,
+                                            "explanation": command_node['explanation'],
+                                            "parameters": command_node['parameters']}
+            sub_model = sub_model[command_match]
+            begin += len(segment_words)
+
+            # 处理剩余部分
+            if len(segments) > 1:
+                remaining_segment = ' '.join(segments[1:])
+                if remaining_segment:
+                    remaining_words = command_words[begin:]
+                    command_match = ' '.join(remaining_words)
+                    if command_match not in sub_model:
+                        sub_model[command_match] = {"template": remaining_segment,
+                                                    "command": command_match,
+                                                    "explanation": detail['explanation'],
+                                                    "parameters": detail['parameters'][1:]}
         else:
             segments, paras = split_parameters(command_temp)
             command_node = juniper_model
             begin = 0
-            for k_part in range(len(segments)):
-                if len(segments) == 1:# 直接翻译原始的命令及解释
-                    node = {"template": command_temp,
-                                                "command": command,
-                                                "explanation": translate_Zh2Eng(detail['explanation']),
-                                                "parameters": detail['parameters']}
-                    sub_model[command] = node
-                    for param_node in node['parameters']:
-                        param_node['explanation'] = translate_Zh2Eng(param_node['explanation'])
-                    break
-
-                segment = segments[k_part]
+            if len(segments) == 1:  # 直接翻译原始的命令及解释
+                node = {"template": command_temp,
+                        "command": command,
+                        "explanation": detail['explanation'],
+                        "parameters": detail['parameters']}
+                sub_model[command] = node
+                for param_node in node['parameters']:
+                    param_node['explanation'] = param_node['explanation']
+            else:
+                # 处理第一个segment
+                segment = segments[0]
                 segment_words = segment.split()
                 command_match = ' '.join(command_words[begin:begin + len(segment_words)])
-                if command_match not in sub_model: # 添加新的命令
+                if command_match not in sub_model:
                     if segment in command_node:  # 不需要翻译
                         command_node = command_node[segment]
                         sub_model[command_match] = {"template": segment,
-                                                    "command": command_match,
-                                                    "explanation": command_node['explanation'],
-                                                    "parameters": command_node['parameters']}
-                    else:# 没有当前命令的解释，使用llm直接输出英文，并翻译参数名
+                                                  "command": command_match,
+                                                  "explanation": command_node['explanation'],
+                                                  "parameters": command_node['parameters']}
+                    else:  # 没有当前命令的解释，使用llm直接输出英文，并翻译参数名
                         try:
                             node = {"template": segment,
-                                                  "command": command_match,
-                                                  "explanation": "",
-                                                  "parameters": [detail['parameters'][i - 1] for i in paras[k_part]]}
+                                  "command": command_match,
+                                  "explanation": "",
+                                  "parameters": [detail['parameters'][i - 1] for i in paras[0]]}
                         except Exception as e:
                             print(f"error parameters paresed!")
                             continue
@@ -156,20 +167,21 @@ def subdivision_config(llm_model:LLM_Model,old_config_model:dict, decompose_comm
                         ]
                         node_refs.append(node)
                         tasks.append(llm_model.response(command_messges))
-
-                        for param_node in node['parameters']:
-                            param_node['explanation'] = translate_Zh2Eng(param_node['explanation'])
                 sub_model = sub_model[command_match]
                 begin += len(segment_words)
-    return tasks, node_refs, new_config
 
-def process_juniper_json(json_config):
-    processed_json = {}
-    for k, v in json_config.items(): # 去除掉第一层 set xxx 命令
-        if isinstance(v, dict):
-            for command, info in v.items():
-                processed_json[command] = info
-    return processed_json
+                # 处理剩余部分
+                if len(segments) > 1:
+                    remaining_segment = ' '.join(segments[1:])
+                    if remaining_segment:
+                        remaining_words = command_words[begin:]
+                        command_match = ' '.join(remaining_words)
+                        if command_match not in sub_model:
+                            sub_model[command_match] = {"template": remaining_segment,
+                                                      "command": command_match,
+                                                      "explanation": detail['explanation'],
+                                                      "parameters": detail['parameters'][1:]}
+    return tasks, node_refs, new_config
 
 if __name__ == '__main__':
     '''
@@ -180,27 +192,25 @@ if __name__ == '__main__':
     decompose_commands = load_json_file(decompose_command_path)
     translation_llm = LLM_Model('aliyun_deepseek-v3', endpoint_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
 
-    source_dir = '../experiment/test_dataset/command_tree/Juniper'
-    save_dir = '../experiment/test_dataset/command_tree/Juniper_subdivided'
-    os.makedirs(save_dir, exist_ok=True)
-    for filename in os.listdir(source_dir):
-        if filename.endswith('.json'):
-            save_path = os.path.join(save_dir, filename)
-            if os.path.exists(save_path):
-                continue
-            file_path = os.path.join(source_dir, filename)
-            old_config = load_json_file(file_path)
-            old_config = process_juniper_json(old_config)
+    for condif_dir in ['400', '1200', '2000', '2800']:
+        source_dir = f'../experiment/test_dataset/test_data_{condif_dir}/command_tree/Juniper'
+        save_dir = f'../experiment/test_dataset/test_data_{condif_dir}/command_tree/Juniper_subdivided'
+        os.makedirs(save_dir, exist_ok=True)
+        for filename in os.listdir(source_dir):
+            if filename.endswith('.json'):
+                save_path = os.path.join(save_dir, filename)
+                # if os.path.exists(save_path):
+                #     continue
+                file_path = os.path.join(source_dir, filename)
+                old_config = load_json_file(file_path)
+                if not old_config:
+                    continue
+                # 使用相同的细分规则处理每个配置文件
+                tasks, node_refs, subdivision_model = subdivision_config(translation_llm, old_config, decompose_commands, juniper_model)
+                for future, node in tqdm(zip(tasks, node_refs), total=len(tasks), desc="处理解释任务"):
+                    node['explanation'] = future.result()
 
-            if not old_config:
-                continue
-
-            # 使用相同的细分规则处理每个配置文件
-            tasks, node_refs, subdivision_model = subdivision_config(translation_llm, old_config, decompose_commands, juniper_model)
-            for future, node in tqdm(zip(tasks, node_refs), total=len(tasks), desc="处理解释任务"):
-                node['explanation'] = future.result()
-
-            # 保存细分后的配置文件
-            os.makedirs(os.path.dirname(save_path), exist_ok=True)
-            with open(save_path, 'w', encoding='utf-8') as f:
-                json.dump(subdivision_model, f, ensure_ascii=False, indent=4)
+                # 保存细分后的配置文件
+                os.makedirs(os.path.dirname(save_path), exist_ok=True)
+                with open(save_path, 'w', encoding='utf-8') as f:
+                    json.dump(subdivision_model, f, ensure_ascii=False, indent=4)
