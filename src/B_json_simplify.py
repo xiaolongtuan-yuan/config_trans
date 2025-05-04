@@ -146,7 +146,8 @@ def check_juniper_config(config_model: dict) -> bool:
     '''
     juniper的配置中，所有的command应该都是以set xxx开头
     '''
-    VALID_FIRST_WORDS = ['set', 'delete', 'rename', 'deactivate', 'activate','replace','commit']
+    VALID_FIRST_WORDS = ['set', 'delete', 'rename', 'deactivate', 'activate', 'replace', 'commit']
+
     def _check_commands(node: dict):
         for key, value in node.items():
             if key == 'command':
@@ -190,32 +191,27 @@ def filter_valid_nodes(node: dict) -> dict:
 
 if __name__ == "__main__":
     vendors = ["Juniper", "Cisco", "HUAWEI"]
-    # vendors = ["HUAWEI"]
+    train_dataset_dirs = ['experiment/test_dataset/test_data_400',
+                          'experiment/test_dataset/test_data_1200',
+                          'experiment/test_dataset/test_data_2000',
+                          'experiment/test_dataset/test_data_2800']
+
     project_root = Path(__file__).parent.parent
 
     # simplify the device configuration model
     for vendor in vendors:
-        if vendor == 'Juniper':
-            folder_path = str(project_root / 'experiment/train_dataset_rearrange/command_tree/{}_subdivided'.format(vendor))
-        else:
-            folder_path = str(project_root / 'experiment/train_dataset_rearrange/command_tree/{}'.format(vendor))
-        save_path = str(project_root / 'experiment/train_dataset_rearrange/Json_simplified/{}'.format(vendor))
-        os.makedirs(save_path, exist_ok=True)
-        json_files = get_json_filenames(folder_path)
-        i = 0
-        index = 0
-        for json_file in sorted(json_files):
-            index += 1
-            json_config_path = folder_path + '/' + json_file
-            json_config = load_json_file(json_config_path)
+        for train_dataset_dir in train_dataset_dirs:
             if vendor == 'Juniper':
-                json_config = insert_template(json_config)
-
-            json_config_simplified = simplify_json(json_config)
-            json_name, _ = os.path.splitext(json_file)
-            save_file_path = save_path + '/' + json_name + '.json'
-            save_json_file(json_config_simplified, save_file_path)
-            i += 1
-        print("finished: " + str(i))
-
-
+                folder_path = str(project_root / train_dataset_dir / 'command_tree' / '{}_subdivided'.format(vendor))
+            else:
+                folder_path = str(project_root / train_dataset_dir / 'command_tree' / '{}'.format(vendor))
+            save_path = str(project_root / train_dataset_dir / 'Json_simplified/{}'.format(vendor))
+            os.makedirs(save_path, exist_ok=True)
+            json_files = get_json_filenames(folder_path)
+            for json_file in tqdm(sorted(json_files), f'{vendor} {train_dataset_dir}'):
+                json_config_path = folder_path + '/' + json_file
+                json_config = load_json_file(json_config_path)
+                json_config_simplified = simplify_json(json_config)
+                json_name, _ = os.path.splitext(json_file)
+                save_file_path = save_path + '/' + json_name + '.json'
+                save_json_file(json_config_simplified, save_file_path)
