@@ -1,0 +1,181 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name NATA",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/0",
+        "explanation": "Configure the specified interface",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "unit 0 family inet address 192.168.10.1/24",
+            "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "The IPv4 address assigned to the interface."
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "Bits of IPv4 subnet mask."
+                }
+            ]
+        }
+    },
+    "set security zones security-zone [parameter1]": {
+        "template": "set security zones security-zone [parameter1]",
+        "command": "set security zones security-zone trust",
+        "explanation": "This command fragment configures a security zone named `[parameter1]` within the Junos security zones hierarchy, defining a logical boundary for security policies and interfaces.",
+        "parameters": [
+            {
+                "name": "zone-name",
+                "type": "string",
+                "explanation": "Name of the safe area."
+            }
+        ],
+        "interfaces [parameter2] host-inbound-traffic system-services [parameter3]": {
+            "template": "interfaces [parameter2] host-inbound-traffic system-services [parameter3]",
+            "command": "interfaces ge-0/0/0 host-inbound-traffic system-services all",
+            "explanation": "The interfaces with the secure Zone of Confidence allow all system service entry traffic.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-0/0/0."
+                },
+                {
+                    "name": "system-services",
+                    "type": "string",
+                    "explanation": "Allowed type of system service, e.g. all."
+                }
+            ]
+        }
+    },
+    "set security nat source pool [parameter1]": {
+        "template": "set security nat source pool [parameter1]",
+        "command": "set security nat source pool address-group1",
+        "explanation": "This command configures a source NAT pool named `[parameter1]` in Junos, defining a range of IP addresses used for translating private source IPs to public IPs.",
+        "parameters": [
+            {
+                "name": "pool-name",
+                "type": "string",
+                "explanation": "Name of NAT source pool."
+            }
+        ],
+        "address [parameter2] to [parameter3]": {
+            "template": "address [parameter2] to [parameter3]",
+            "command": "address 11.11.11.101 to 11.11.11.105",
+            "explanation": "Configure the address range of the source NAT address pool.",
+            "parameters": [
+                {
+                    "name": "start-address",
+                    "type": "string",
+                    "explanation": "Address pool start address."
+                },
+                {
+                    "name": "end-address",
+                    "type": "string",
+                    "explanation": "Address pool end address."
+                }
+            ]
+        }
+    },
+    "set security nat source rule-set [parameter1]": {
+        "template": "set security nat source rule-set [parameter1]",
+        "command": "set security nat source rule-set OUTBOUND",
+        "explanation": "This command configures a source NAT rule set in Junos, defining a collection of rules for translating source IP addresses in traffic matching specified criteria.",
+        "parameters": [
+            {
+                "name": "rule-set-name",
+                "type": "string",
+                "explanation": "Name of the NAT rule book."
+            }
+        ],
+        "from zone [parameter2]": {
+            "template": "from zone [parameter2]",
+            "command": "from zone trust",
+            "explanation": "Configure the application area for the source NAT ruleset.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "Source area name, such as trust."
+                }
+            ]
+        },
+        "to zone [parameter2]": {
+            "template": "to zone [parameter2]",
+            "command": "to zone untrust",
+            "explanation": "Configure the application target area for the source NAT ruleset.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "Target area name, e.g. untrust."
+                }
+            ]
+        },
+        "rule [parameter2] match source-address [parameter3]/[parameter4]": {
+            "template": "rule [parameter2] match source-address [parameter3]/[parameter4]",
+            "command": "rule NAT-INSIDE match source-address 192.168.10.0/24",
+            "explanation": "Configure the source address range that the source NAT rules match.",
+            "parameters": [
+                {
+                    "name": "rule",
+                    "type": "string",
+                    "explanation": "Rule name, such as NAT-INSIDE."
+                },
+                {
+                    "name": "source-address",
+                    "type": "string",
+                    "explanation": "Matches the source address range."
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "Number of subnet mask bits in the source address range."
+                }
+            ]
+        },
+        "rule [parameter2] then source-nat pool [parameter3]": {
+            "template": "rule [parameter2] then source-nat pool [parameter3]",
+            "command": "rule NAT-INSIDE then source-nat pool address-group1",
+            "explanation": "Configure the source address conversion behaviour for source NAT rules.",
+            "parameters": [
+                {
+                    "name": "rule",
+                    "type": "string",
+                    "explanation": "Rule name, such as NAT-INSIDE."
+                },
+                {
+                    "name": "pool",
+                    "type": "string",
+                    "explanation": "Name of the address pool used to convert the source address, e.g., address-group1."
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,159 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name Spoke1",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Configure the specified interface",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "unit 0 family inet address 10.1.2.10/24",
+            "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "The IPv4 address assigned to the interface."
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "Bits of IPv4 subnet mask."
+                }
+            ]
+        },
+        "unit [parameter2] tunnel source [parameter3]": {
+            "template": "unit [parameter2] tunnel source [parameter3]",
+            "command": "unit 0 tunnel source lo0.0",
+            "explanation": "Configure the tunnel source address for the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "source-interface",
+                    "type": "string",
+                    "explanation": "Tunnel source interface name, e.g. lo0.0."
+                }
+            ]
+        },
+        "unit [parameter2] encapsulation [parameter3]": {
+            "template": "unit [parameter2] encapsulation [parameter3]",
+            "command": "unit 0 encapsulation gre",
+            "explanation": "Configure the containment type of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "encapsulation",
+                    "type": "string",
+                    "explanation": "Cover type, e.g. gre."
+                }
+            ]
+        },
+        "unit [parameter2] tunnel destination [parameter3]": {
+            "template": "unit [parameter2] tunnel destination [parameter3]",
+            "command": "unit 0 tunnel destination dynamic",
+            "explanation": "Configure the tunnel address for the interface to be dynamic.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "destination",
+                    "type": "string",
+                    "explanation": "Tunnel destination address, e.g., dynamic."
+                }
+            ]
+        }
+    },
+    "set security ipsec vpn [parameter1]": {
+        "template": "set security ipsec vpn [parameter1]",
+        "command": "set security ipsec vpn <IPSEC_PROFILE_NAME>",
+        "explanation": "This command configures an IPsec VPN in Junos by setting specific parameters (e.g., name, IKE gateway, IPsec policy) under the `security ipsec vpn` hierarchy.",
+        "parameters": [
+            {
+                "name": "vpn-profile",
+                "type": "string",
+                "explanation": "IPSec VPN configuration name."
+            }
+        ],
+        "bind-interface [parameter2]": {
+            "template": "bind-interface [parameter2]",
+            "command": "bind-interface ge-1/0/0.0",
+            "explanation": "Tie IPSec VPN to the specified interface.",
+            "parameters": [
+                {
+                    "name": "bind-interface",
+                    "type": "string",
+                    "explanation": "The name of the bound interface, e.g. g-1/0/0.0."
+                }
+            ]
+        }
+    },
+    "set routing-options router-id [parameter1]": {
+        "template": "set routing-options router-id [parameter1]",
+        "command": "set routing-options router-id 172.16.1.2",
+        "explanation": "Configure the device's Router ID.",
+        "parameters": [
+            {
+                "name": "router-id",
+                "type": "string",
+                "explanation": "Router ID of equipment for OSPF, BGP, etc."
+            }
+        ]
+    },
+    "set protocols ospf area [parameter1]": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0.0.0.0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface gr-1/0/0.0",
+            "explanation": "Configure OSPF regions and interfaces.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g. g-1/0/0.0."
+                }
+            ]
+        }
+    }
+}

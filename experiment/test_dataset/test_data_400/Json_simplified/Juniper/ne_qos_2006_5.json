@@ -1,0 +1,205 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name CE3",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Configure the specified interface",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "unit 0 family inet address 10.3.1.1/24",
+            "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "The IPv4 address assigned to the interface."
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "Bits of IPv4 subnet mask."
+                }
+            ]
+        },
+        "unit [parameter2] disable": {
+            "template": "unit [parameter2] disable",
+            "command": "unit 0 disable",
+            "explanation": "Disables the specified interface unit.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                }
+            ]
+        }
+    },
+    "set routing-options autonomous-system [parameter1]": {
+        "template": "set routing-options autonomous-system [parameter1]",
+        "command": "set routing-options autonomous-system 65430",
+        "explanation": "Autonomy system number with equipment.",
+        "parameters": [
+            {
+                "name": "autonomous-system",
+                "type": "integer",
+                "explanation": "Autonomy system number for equipment, used for route agreements such as BGP."
+            }
+        ]
+    },
+    "set protocols bgp group [parameter1]": {
+        "template": "set protocols bgp group [parameter1]",
+        "command": "set protocols bgp group BGP-PEERS",
+        "explanation": "This command configures a BGP group named [parameter1], defining a set of BGP peers with shared session parameters.",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP Group name."
+            }
+        ],
+        "type [parameter2]": {
+            "template": "type [parameter2]",
+            "command": "type external",
+            "explanation": "Configure the type of BGP group to be external.",
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "explanation": "Type of BGP group, e.g. external."
+                }
+            ]
+        },
+        "peer-as [parameter2]": {
+            "template": "peer-as [parameter2]",
+            "command": "peer-as 100",
+            "explanation": "Configures the peer autonomy system number for BGP groups.",
+            "parameters": [
+                {
+                    "name": "peer-as",
+                    "type": "integer",
+                    "explanation": "Equivalent Autonomy System Number."
+                }
+            ]
+        },
+        "neighbor [parameter2]": {
+            "template": "neighbor [parameter2]",
+            "command": "neighbor 10.3.1.2",
+            "explanation": "Configure the neighbors of the BGP team.",
+            "parameters": [
+                {
+                    "name": "neighbor",
+                    "type": "string",
+                    "explanation": "Neighbor's IP address."
+                }
+            ]
+        },
+        "family inet [parameter2]": {
+            "template": "family inet [parameter2]",
+            "command": "family inet unicast",
+            "explanation": "Configure BGP groups to support IPv4 solo addresses.",
+            "parameters": [
+                {
+                    "name": "family",
+                    "type": "string",
+                    "explanation": "Address community type, e.g., inert."
+                },
+                {
+                    "name": "address-family",
+                    "type": "string",
+                    "explanation": "Specific type of address group, e.g., unicast."
+                }
+            ]
+        },
+        "export [parameter2]": {
+            "template": "export [parameter2]",
+            "command": "export EXPORT-NETWORK",
+            "explanation": "Configure the BGP group using the specified export policy.",
+            "parameters": [
+                {
+                    "name": "export-policy",
+                    "type": "string",
+                    "explanation": "Name of the export policy."
+                }
+            ]
+        }
+    },
+    "set policy-options policy-statement [parameter1]": {
+        "template": "set policy-options policy-statement [parameter1]",
+        "command": "set policy-options policy-statement EXPORT-NETWORK",
+        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "name of the policy statement."
+            }
+        ],
+        "term [parameter2] from route-filter [parameter3]/[parameter4] [parameter5]": {
+            "template": "term [parameter2] from route-filter [parameter3]/[parameter4] [parameter5]",
+            "command": "term 1 from route-filter 10.3.1.0/24 exact",
+            "explanation": "Configure the matching conditions for the policy statement.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "The term number of the policy statement."
+                },
+                {
+                    "name": "route-filter",
+                    "type": "string",
+                    "explanation": "The network address of the route filter."
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "The number of subnet bits of the route filter."
+                },
+                {
+                    "name": "match-type",
+                    "type": "string",
+                    "explanation": "Match type, for example."
+                }
+            ]
+        },
+        "term [parameter2] then [parameter3]": {
+            "template": "term [parameter2] then [parameter3]",
+            "command": "term 1 then accept",
+            "explanation": "Configure the action for the policy statement.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "The term number of the policy statement."
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "explanation": "Action type, for example."
+                }
+            ]
+        }
+    }
+}

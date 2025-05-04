@@ -1,0 +1,217 @@
+{
+    "set system host-name [parameter1]": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DeviceC",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Configure the specified interface",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "unit 0 family inet address 10.20.1.1/24",
+            "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "The IPv4 address assigned to the interface."
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "Bits of IPv4 subnet mask."
+                }
+            ]
+        }
+    },
+    "set protocols bgp group [parameter1]": {
+        "template": "set protocols bgp group [parameter1]",
+        "command": "set protocols bgp group IBGP",
+        "explanation": "This command configures a BGP group named [parameter1], defining a set of BGP peers with shared session parameters.",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP Group name."
+            }
+        ],
+        "type [parameter2]": {
+            "template": "type [parameter2]",
+            "command": "type internal",
+            "explanation": "Configure BGP protocol group with specified type",
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "explanation": "Type of the BGP group, e.g., internal or external"
+                }
+            ]
+        },
+        "local-address [parameter2]": {
+            "template": "local-address [parameter2]",
+            "command": "local-address 10.20.1.1",
+            "explanation": "Configure BGP protocol settings specifying the group and local address",
+            "parameters": [
+                {
+                    "name": "local address",
+                    "type": "IPv4 address",
+                    "explanation": "Local IP address for BGP peering"
+                }
+            ]
+        },
+        "family [parameter2] [parameter3]": {
+            "template": "family [parameter2] [parameter3]",
+            "command": "family inet unicast",
+            "explanation": "Configure BGP protocol settings for a specific group and address family",
+            "parameters": [
+                {
+                    "name": "address family",
+                    "type": "string",
+                    "explanation": "Type of address family (e.g., inet)"
+                },
+                {
+                    "name": "sub-address family",
+                    "type": "string",
+                    "explanation": "Type of sub-address family (e.g., unicast)"
+                }
+            ]
+        },
+        "export [parameter2]": {
+            "template": "export [parameter2]",
+            "command": "export redistribute-connected",
+            "explanation": "Configure BGP protocol to export routes from a specified group",
+            "parameters": [
+                {
+                    "name": "export policy",
+                    "type": "string",
+                    "explanation": "Policy for exporting routes, e.g., redistribute-connected"
+                }
+            ]
+        }
+    },
+    "set protocols bgp group": {
+        "template": "set protocols bgp group",
+        "command": "set protocols bgp group",
+        "explanation": "The command `set protocols bgp group` configures a BGP (Border Gateway Protocol) group, defining peers sharing common settings like policies, authentication, and neighbor addresses.",
+        "group_name neighbor neighbor_ip peer-as as_number": {
+            "template": "group_name neighbor neighbor_ip peer-as as_number",
+            "command": "IBGP neighbor 10.20.1.2 peer-as 100",
+            "explanation": "Configure BGP protocol settings by specifying the group name, neighbor IP address, and the autonomous system (AS) number for the peer.",
+            "parameters": [
+                {
+                    "name": "neighbor_ip",
+                    "type": "ip_address",
+                    "explanation": "The IP address of the BGP neighbor."
+                },
+                {
+                    "name": "as_number",
+                    "type": "integer",
+                    "explanation": "The autonomous system number of the BGP peer."
+                }
+            ]
+        }
+    },
+    "set protocols ospf area [parameter1]": {
+        "template": "set protocols ospf area [parameter1]",
+        "command": "set protocols ospf area 0.0.0.0",
+        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSPF area ID."
+            }
+        ],
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-1/0/0.0",
+            "explanation": "Configure OSPF protocol area and interface",
+            "parameters": [
+                {
+                    "name": "interface name",
+                    "type": "string",
+                    "explanation": "The name of the interface to be included in the OSPF area"
+                }
+            ]
+        }
+    },
+    "set policy-options policy-statement [parameter1]": {
+        "template": "set policy-options policy-statement [parameter1]",
+        "command": "set policy-options policy-statement redistribute-connected",
+        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "name of the policy statement."
+            }
+        ],
+        "term [parameter2] from protocol [parameter3]": {
+            "template": "term [parameter2] from protocol [parameter3]",
+            "command": "term 1 from protocol direct",
+            "explanation": "Configure a policy statement to redistribute connected routes with a specific term and protocol",
+            "parameters": [
+                {
+                    "name": "term number",
+                    "type": "integer",
+                    "explanation": "The term number within the policy statement"
+                },
+                {
+                    "name": "protocol",
+                    "type": "string",
+                    "explanation": "The protocol from which routes are to be redistributed"
+                }
+            ]
+        },
+        "term [parameter2] then [parameter3]": {
+            "template": "term [parameter2] then [parameter3]",
+            "command": "term 1 then accept",
+            "explanation": "Configures a policy statement to redistribute connected routes under a specific term with an action to accept them.",
+            "parameters": [
+                {
+                    "name": "term number",
+                    "type": "integer",
+                    "explanation": "The term number within the policy statement."
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "explanation": "The action to be taken (e.g., accept, reject)."
+                }
+            ]
+        }
+    },
+    "set routing-options autonomous-system [parameter1]": {
+        "template": "set routing-options autonomous-system [parameter1]",
+        "command": "set routing-options autonomous-system 100",
+        "explanation": "Autonomy system number with equipment.",
+        "parameters": [
+            {
+                "name": "autonomous-system",
+                "type": "integer",
+                "explanation": "Autonomy system number for equipment, used for route agreements such as BGP."
+            }
+        ]
+    }
+}
