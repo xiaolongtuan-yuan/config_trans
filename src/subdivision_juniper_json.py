@@ -48,18 +48,23 @@ class LLM_Model:
         return self.executor.submit(_request)
 
 def split_parameters(text):
-    pattern = re.compile(r'(\[parameter\d+\])|([^[\]]+)')
+    pattern = re.compile(r'(\[[^\]]+\])|([^[\]]+)')
     segments = []
     current_text = ''
     current_params = []
 
+    param_index = 1
     for match in pattern.finditer(text):
         if match.group(1):
             # 处理参数部分
             param = match.group(1)
-            param_num = int(re.search(r'parameter(\d+)', param).group(1))
+            try:
+                param_num = int(re.search(r'parameter(\d+)', param).group(1))
+            except Exception as e:
+                param_num = param_index
             current_params.append(param_num)
             current_text += param
+            param_index += 1
         else:
             # 处理非参数部分
             non_param = match.group(2)
@@ -124,7 +129,7 @@ def subdivision_config(llm_model:LLM_Model,old_config_model:dict, decompose_comm
                         sub_model[command_match] = {"template": remaining_segment,
                                                     "command": command_match,
                                                     "explanation": detail['explanation'],
-                                                    "parameters": detail['parameters'][1:]}
+                                                    "parameters": detail['parameters'][paras[0][-1]:]}
         else:
             segments, paras = split_parameters(command_temp)
             command_node = juniper_model
@@ -192,7 +197,7 @@ if __name__ == '__main__':
     decompose_commands = load_json_file(decompose_command_path)
     translation_llm = LLM_Model('aliyun_deepseek-v3', endpoint_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
 
-    for condif_dir in ['400', '1200', '2000', '2800']:
+    for condif_dir in ['400']:
         source_dir = f'../experiment/test_dataset/test_data_{condif_dir}/command_tree/Juniper'
         save_dir = f'../experiment/test_dataset/test_data_{condif_dir}/command_tree/Juniper_subdivided'
         os.makedirs(save_dir, exist_ok=True)

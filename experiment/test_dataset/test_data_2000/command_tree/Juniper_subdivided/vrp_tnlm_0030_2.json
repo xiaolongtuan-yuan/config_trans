@@ -11,14 +11,20 @@
             }
         ]
     },
-    "set interfaces": {
-        "template": "set interfaces",
-        "command": "set interfaces",
-        "explanation": "The `set interfaces` command in Junos configures or defines network interfaces, specifying attributes like IP addresses, VLANs, and other interface-specific parameters.",
-        "parameters": [],
-        "ge-0/0/0 unit 0 family inet address 10.1.1.1/30": {
-            "template": "interface_name unit unit_number family family_type address ip_address",
-            "command": "ge-0/0/0 unit 0 family inet address 10.1.1.1/30",
+    "set interfaces ge-0/0/0": {
+        "template": "set interfaces [interface_name]",
+        "command": "set interfaces ge-0/0/0",
+        "explanation": "The command `set interfaces [interface_name]` in Junos creates or configures a specific network interface, allowing further settings like IP addresses or VLANs to be applied.",
+        "parameters": [
+            {
+                "name": "interface_name",
+                "type": "string",
+                "explanation": "The name of the interface to be configured"
+            }
+        ],
+        "unit 0 family inet address 10.1.1.1/30": {
+            "template": "unit [unit_number] family [family_type] address [ip_address]",
+            "command": "unit 0 family inet address 10.1.1.1/30",
             "explanation": "Configure an interface with a specific IP address and subnet mask",
             "parameters": [
                 {
@@ -37,10 +43,22 @@
                     "explanation": "The IP address and subnet mask in CIDR notation"
                 }
             ]
-        },
-        "lo0 unit 0 family inet address 3.3.3.3/32": {
-            "template": "interface unit unit family family address address",
-            "command": "lo0 unit 0 family inet address 3.3.3.3/32",
+        }
+    },
+    "set interfaces lo0": {
+        "template": "set interfaces [interface]",
+        "command": "set interfaces lo0",
+        "explanation": "The command `set interfaces [interface]` in Junos OS configures or modifies settings for a specified network interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "The name of the interface to be configured"
+            }
+        ],
+        "unit 0 family inet address 3.3.3.3/32": {
+            "template": "unit [unit] family [family] address [address]",
+            "command": "unit 0 family inet address 3.3.3.3/32",
             "explanation": "Configure an interface with a specific unit, family, and IP address",
             "parameters": [
                 {
@@ -183,6 +201,35 @@
                 }
             ]
         },
+        "neighbor 10.1.1.2": {
+            "template": "neighbor [neighbor_ip]",
+            "command": "neighbor 10.1.1.2",
+            "explanation": "Configure BGP protocol settings by specifying a group and its neighbor",
+            "parameters": [
+                {
+                    "name": "neighbor_ip",
+                    "type": "ip address",
+                    "explanation": "IP address of the BGP neighbor"
+                }
+            ]
+        },
+        "neighbor 10.1.1.2 import direct-import": {
+            "template": "neighbor [neighbor_ip] import [import_policy]",
+            "command": "neighbor 10.1.1.2 import direct-import",
+            "explanation": "Configure BGP protocol to set import policy for a neighbor in a specific group",
+            "parameters": [
+                {
+                    "name": "neighbor_ip",
+                    "type": "string",
+                    "explanation": "IP address of the BGP neighbor"
+                },
+                {
+                    "name": "import_policy",
+                    "type": "string",
+                    "explanation": "Name of the import policy to apply"
+                }
+            ]
+        },
         "family inet unicast": {
             "template": "family [parameter2] [parameter3]",
             "command": "family inet unicast",
@@ -197,41 +244,6 @@
                     "name": "sub-address family",
                     "type": "string",
                     "explanation": "Type of sub-address family (e.g., unicast)"
-                }
-            ]
-        }
-    },
-    "set protocols bgp group": {
-        "template": "set protocols bgp group",
-        "command": "set protocols bgp group",
-        "explanation": "The command `set protocols bgp group` configures a BGP group, defining a set of peers with shared BGP session parameters in Junos OS.",
-        "parameters": [],
-        "external neighbor 10.1.1.2": {
-            "template": "group_name neighbor neighbor_ip",
-            "command": "external neighbor 10.1.1.2",
-            "explanation": "Configure BGP protocol settings by specifying a group and its neighbor",
-            "parameters": [
-                {
-                    "name": "neighbor_ip",
-                    "type": "ip address",
-                    "explanation": "IP address of the BGP neighbor"
-                }
-            ]
-        },
-        "external neighbor 10.1.1.2 import direct-import": {
-            "template": "group_name neighbor neighbor_ip import import_policy",
-            "command": "external neighbor 10.1.1.2 import direct-import",
-            "explanation": "Configure BGP protocol to set import policy for a neighbor in a specific group",
-            "parameters": [
-                {
-                    "name": "neighbor_ip",
-                    "type": "string",
-                    "explanation": "IP address of the BGP neighbor"
-                },
-                {
-                    "name": "import_policy",
-                    "type": "string",
-                    "explanation": "Name of the import policy to apply"
                 }
             ]
         }

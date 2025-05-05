@@ -1,5 +1,6 @@
 import os
 import json
+import re
 from concurrent.futures import ThreadPoolExecutor
 
 from openai import OpenAI
@@ -107,7 +108,7 @@ def merge_tree_with_flat(txt_tree, flat_json, filename):
     tasks = []
     result = {}
     for key, sub in txt_tree.items():
-        node = flat_json.get(key, {})
+        node = flat_json.get(key, {"command": key})
         if key not in flat_json:
             print(f"{key} not in {filename} flat_json")
             future = llm_model.parse_command(key)
@@ -115,14 +116,23 @@ def merge_tree_with_flat(txt_tree, flat_json, filename):
             tasks.append((future, node_ref))
 
         else:
-            explanation_key = node.get("explanation")
-            parameters_key = node.get("parameters")
-
-            if explanation_key:
-                node['explanation'] = translate_Zh2Eng(explanation_key)
-            if parameters_key:
-                for parameter in parameters_key:
-                    parameter['explanation'] = translate_Zh2Eng(parameter['explanation'])
+            command = key
+            template = node.get('template')
+            params = para_extract(command, template)
+            if len(params) != len(node.get('parameters')):
+                # 解析有问题，重新来
+                future = llm_model.parse_command(key)
+                node_ref = node
+                tasks.append((future, node_ref))
+            # else:
+            #     explanation_key = node.get("explanation")
+            #     parameters_key = node.get("parameters")
+            #
+            #     if explanation_key:
+            #         node['explanation'] = translate_Zh2Eng(explanation_key)
+            #     if parameters_key:
+            #         for parameter in parameters_key:
+            #             parameter['explanation'] = translate_Zh2Eng(parameter['explanation'])
         if isinstance(sub, dict) and sub:
             sub_node, sub_tasks = merge_tree_with_flat(sub, flat_json, filename)
             node.update(sub_node)
@@ -138,7 +148,7 @@ def process_vendor(vendor):
         json_dir = f"../experiment/test_dataset/test_data_{condif_dir}/command_tree/{vendor}"
         save_dir = f"../experiment/test_dataset/test_data_{condif_dir}/command_tree/{vendor}"
         os.makedirs(save_dir, exist_ok=True)
-        for filename in tqdm(os.listdir(txt_dir)):
+        for filename in os.listdir(txt_dir):
             if not filename.endswith('.txt'):
                 continue
             txt_path = os.path.join(txt_dir, filename)
@@ -166,9 +176,28 @@ def process_vendor(vendor):
             json.dump(new_tree, f, ensure_ascii=False, indent=4)
     # 保存
 
+def para_extract(cmd: str, template: str) -> str:
+    # print(cmd, template)
+    # 将源模板转换为正则表达式
+    # 例如 "hostname [parameter1]" -> r"hostname (\S+)"
+    if bool(re.search(r"\[[^\]]+\]", template)):
+        src_regex = re.sub(r"\[[^\]]+\]", r"(\\S+)", template)
+    else:
+        src_regex = re.escape(template)
+    # 匹配源命令并提取参数
+    try:
+        match = re.match(src_regex, cmd)
+    except re.error:
+        return []
+    if not match:
+        # raise ValueError(f"源命令 '{cmd}' 不匹配模板 '{template}'")
+        return []
+    # 提取参数
+    parameters = match.groups()
+    return parameters
 
 if __name__ == '__main__':
     llm_model = LLM_Model('deepseek-chat')
-    for vendor in ['Cisco', 'HUAWEI', 'Juniper']:
+    for vendor in ['Juniper']:
         process_vendor(vendor)
 

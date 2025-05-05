@@ -262,13 +262,13 @@ def main_experiment():
     local_EMmodel_path = str(project_root / 'EmbeddingModel/MiniLM-L6-v2')
     # embedding_model = SentenceTransformer(local_EMmodel_path)
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
-    save_dir = str(project_root / f'dataset_multi_vendor_config/config_command_node/scale400')
+    save_dir = str(project_root / f'dataset_multi_vendor_config/config_command_node/verified_data')
     os.makedirs(save_dir, exist_ok=True)
 
     vendors = ["Juniper", "Cisco", "HUAWEI"]
     for vendor in vendors:
         Command_nodes = {}  # 'command_template': CommandNode_Object
-        config_model_path = str(project_root / f'dataset_multi_vendor_config/config_model/scale400/{vendor}.json')
+        config_model_path = str(project_root / f'dataset_multi_vendor_config/config_model/verified_data/{vendor}.json')
 
         # 加载供应商配置模型
         config_model = load_json_file(config_model_path)
@@ -278,7 +278,7 @@ def main_experiment():
         # 保存配置节点（json）
         save_json_file(Command_nodes, f"{save_dir}/{vendor}.json")
         node_num = len(Command_nodes.keys())
-        print(f"finished {vendor} with 400 scales, total {node_num} command nodes")
+        print(f"finished {vendor} with verified_data, total {node_num} command nodes")
 
 def debug():
     project_root = Path(__file__).parent.parent

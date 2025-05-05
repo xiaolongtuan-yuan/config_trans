@@ -19,10 +19,10 @@ if __name__ == '__main__':
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
     scales = [400]
 
-    translated_config_base = './experiment/exper_data/translated_config_with_scale400'
+    translated_config_base = '../experiment/exper_data/translated_config_with_scale400'
     vendor_config_models = {}
     for vendor in vendors:
-        config_model_path = f'./dataset_multi_vendor_config/config_model/scale400/{vendor}.json'
+        config_model_path = f'../dataset_multi_vendor_config/config_model/verified_data/{vendor}.json'
         config_model = load_config_model(config_model_path)
         vendor_config_models[vendor] = config_model
 
@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
 
                 trannlated_config_files = [f for f in os.listdir(translated_config_dir) if f.endswith('.txt') and not f.endswith('text.txt')]
-                real_config_dir = f'./experiment/test_dataset/text_config/{target_vendor}'
+                real_config_dir = f'../experiment/test_dataset/test_data_400/text_config/{target_vendor}'
 
                 # semantic_similarity = compute_embded_similarity(translated_config_dir, real_config_dir,
                 #                                                 trannlated_config_files)
@@ -73,7 +73,7 @@ if __name__ == '__main__':
                                                     vendor_config_models[target_vendor])
                 exper_data['param_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', param_accuracy))
 
-                real_target_config_json_dir = f'./experiment/test_dataset/command_tree/{target_vendor}' if target_vendor != 'Juniper' else f'./experiment/test_dataset/command_tree/Juniper_subdivided'
+                real_target_config_json_dir = f'../experiment/test_dataset/test_data_400/command_tree/{target_vendor}' if target_vendor != 'Juniper' else f'../experiment/test_dataset/test_data_400/command_tree/Juniper_subdivided'
 
                 grammatical_accuracy = cul_grammatical_accuracy_with_json(translated_config_dir, real_target_config_json_dir,
                                                                 trannlated_config_files)
@@ -96,5 +96,5 @@ if __name__ == '__main__':
             exper_data['view_accuracy']['vendors'])
         print(f"finished {scale} evaluation")
         print(exper_data)
-        with open(f'./experiment/exper_res/res_heuristics_{scale}.json', 'w', encoding='utf-8') as f:
+        with open(f'../experiment/exper_res/res_heuristics_{scale}.json', 'w', encoding='utf-8') as f:
             json.dump(exper_data, f, indent=4)

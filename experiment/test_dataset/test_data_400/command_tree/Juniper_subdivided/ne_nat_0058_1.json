@@ -45,14 +45,20 @@
             ]
         }
     },
-    "set interfaces": {
-        "template": "set interfaces",
-        "command": "set interfaces",
-        "explanation": "The `set interfaces` command in Junos is used to configure network interface properties such as IP addresses, VLANs, and link modes.",
-        "parameters": [],
-        "ge-0/0/1 unit 0 family inet address 2.2.2.1/24": {
-            "template": "interface unit unit family family address address",
-            "command": "ge-0/0/1 unit 0 family inet address 2.2.2.1/24",
+    "set interfaces ge-0/0/1": {
+        "template": "set interfaces [interface]",
+        "command": "set interfaces ge-0/0/1",
+        "explanation": "The command `set interfaces [interface]` in Junos configures a specific network interface, allowing you to define its properties, such as IP address, VLAN, or operational status.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "The name of the interface to be configured"
+            }
+        ],
+        "unit 0 family inet address 2.2.2.1/24": {
+            "template": "unit [unit] family [family] address [address]",
+            "command": "unit 0 family inet address 2.2.2.1/24",
             "explanation": "Configure an interface with a specific family and address",
             "parameters": [
                 {
@@ -278,14 +284,20 @@
             ]
         }
     },
-    "set protocols ospf area": {
-        "template": "set protocols ospf area",
-        "command": "set protocols ospf area",
-        "explanation": "The command `set protocols ospf area` configures an OSPF area within the OSPF protocol settings on a Junos device, defining the area's properties and interfaces.",
-        "parameters": [],
-        "0.0.0.0 interface ge-0/0/1.0": {
-            "template": "area_id interface interface_name",
-            "command": "0.0.0.0 interface ge-0/0/1.0",
+    "set protocols ospf area 0.0.0.0": {
+        "template": "set protocols ospf area [area_id]",
+        "command": "set protocols ospf area 0.0.0.0",
+        "explanation": "The command configures an OSPF (Open Shortest Path First) area with the specified `[area_id]` in a Junos device's OSPF protocol settings.",
+        "parameters": [
+            {
+                "name": "area_id",
+                "type": "string",
+                "explanation": "OSPF area identifier in dotted decimal format"
+            }
+        ],
+        "interface ge-0/0/1.0": {
+            "template": "interface [interface_name]",
+            "command": "interface ge-0/0/1.0",
             "explanation": "Configure OSPF protocol to include a specific interface in a designated area",
             "parameters": [
                 {
@@ -317,11 +329,6 @@
             "command": "next-hop 2.2.2.2",
             "explanation": "Configures the static route.",
             "parameters": [
-                {
-                    "name": "subnet-mask",
-                    "type": "integer",
-                    "explanation": "Number of subnet mask bits of the target network address."
-                },
                 {
                     "name": "next-hop",
                     "type": "string",

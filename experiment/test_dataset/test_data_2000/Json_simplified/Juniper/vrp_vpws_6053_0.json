@@ -11,13 +11,20 @@
             }
         ]
     },
-    "set interfaces": {
-        "template": "set interfaces",
-        "command": "set interfaces",
-        "explanation": "The `set interfaces` command in Junos configures or modifies network interface properties such as IP addresses, VLANs, MTU, and other interface-specific settings.",
-        "interface_name unit unit_number family family_type address ip_address": {
-            "template": "interface_name unit unit_number family family_type address ip_address",
-            "command": "ge-0/0/0 unit 0 family inet address 192.168.1.1/24",
+    "set interfaces [interface_name]": {
+        "template": "set interfaces [interface_name]",
+        "command": "set interfaces ge-0/0/0",
+        "explanation": "The command configures a specific network interface (`[interface_name]`) on a Junos device, allowing you to define its properties like IP address, MTU, or operational status.",
+        "parameters": [
+            {
+                "name": "interface_name",
+                "type": "string",
+                "explanation": "The name of the interface to be configured"
+            }
+        ],
+        "unit [unit_number] family [family_type] address [ip_address]": {
+            "template": "unit [unit_number] family [family_type] address [ip_address]",
+            "command": "unit 0 family inet address 192.168.1.1/24",
             "explanation": "Configure an interface with a specific IP address and subnet mask",
             "parameters": [
                 {
@@ -37,9 +44,9 @@
                 }
             ]
         },
-        "interface_name unit unit_number encapsulation encapsulation_type": {
-            "template": "interface_name unit unit_number encapsulation encapsulation_type",
-            "command": "ge-0/0/0 unit 1 encapsulation vlan-ccc",
+        "unit [unit_number] encapsulation [encapsulation_type]": {
+            "template": "unit [unit_number] encapsulation [encapsulation_type]",
+            "command": "unit 1 encapsulation vlan-ccc",
             "explanation": "Configure interface encapsulation type",
             "parameters": [
                 {
@@ -54,9 +61,9 @@
                 }
             ]
         },
-        "interface_name unit unit_number vlan-id vlan_id": {
-            "template": "interface_name unit unit_number vlan-id vlan_id",
-            "command": "ge-0/0/0 unit 1 vlan-id 1",
+        "unit [unit_number] vlan-id [vlan_id]": {
+            "template": "unit [unit_number] vlan-id [vlan_id]",
+            "command": "unit 1 vlan-id 1",
             "explanation": "Configure VLAN ID for a specific interface unit",
             "parameters": [
                 {
@@ -70,19 +77,7 @@
                     "explanation": "VLAN ID to be set for the interface unit"
                 }
             ]
-        }
-    },
-    "set interfaces [parameter1]": {
-        "template": "set interfaces [parameter1]",
-        "command": "set interfaces ge-0/0/0",
-        "explanation": "Configure the specified interface",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g., g-1/0/0."
-            }
-        ],
+        },
         "unit [parameter2] family inet address [parameter3]/[parameter4]": {
             "template": "unit [parameter2] family inet address [parameter3]/[parameter4]",
             "command": "unit 1 family inet address 192.168.1.1/24",

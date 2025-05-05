@@ -11,14 +11,20 @@
             }
         ]
     },
-    "set interfaces": {
-        "template": "set interfaces",
-        "command": "set interfaces",
-        "explanation": "The command fragment `set interfaces` in Junos OS is used to configure or modify settings for network interfaces on a device.",
-        "parameters": [],
-        "ge-1/0/0 unit 0 disable": {
-            "template": "interface_name unit unit_number disable",
-            "command": "ge-1/0/0 unit 0 disable",
+    "set interfaces ge-1/0/0": {
+        "template": "set interfaces [interface_name]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "The command `set interfaces [interface_name]` in Junos OS creates or selects a specific network interface for configuration in the device's hierarchy.",
+        "parameters": [
+            {
+                "name": "interface_name",
+                "type": "string",
+                "explanation": "The name of the interface to be disabled"
+            }
+        ],
+        "unit 0 disable": {
+            "template": "unit [unit_number] disable",
+            "command": "unit 0 disable",
             "explanation": "Disable a specific unit of an interface",
             "parameters": [
                 {
@@ -27,10 +33,22 @@
                     "explanation": "The unit number of the interface to be disabled"
                 }
             ]
-        },
-        "ge-0/0/0 unit 20 vlan-id 20": {
-            "template": "interface-name unit unit-number vlan-id vlan-id",
-            "command": "ge-0/0/0 unit 20 vlan-id 20",
+        }
+    },
+    "set interfaces ge-0/0/0": {
+        "template": "set interfaces [interface-name]",
+        "command": "set interfaces ge-0/0/0",
+        "explanation": "The command `set interfaces [interface-name]` in Junos configures a specific network interface by defining its properties and settings within the device's configuration.",
+        "parameters": [
+            {
+                "name": "interface-name",
+                "type": "string",
+                "explanation": "Name of the interface"
+            }
+        ],
+        "unit 20 vlan-id 20": {
+            "template": "unit [unit-number] vlan-id [vlan-id]",
+            "command": "unit 20 vlan-id 20",
             "explanation": "Configure VLAN ID for a specific interface unit",
             "parameters": [
                 {
@@ -45,9 +63,9 @@
                 }
             ]
         },
-        "ge-0/0/0 unit 20 family inet address 10.10.1.2/24": {
-            "template": "interface_name unit unit_number family family_type address ip_address",
-            "command": "ge-0/0/0 unit 20 family inet address 10.10.1.2/24",
+        "unit 20 family inet address 10.10.1.2/24": {
+            "template": "unit [unit_number] family [family_type] address [ip_address]",
+            "command": "unit 20 family inet address 10.10.1.2/24",
             "explanation": "Configure an interface with a specific unit, family type, and IP address.",
             "parameters": [
                 {

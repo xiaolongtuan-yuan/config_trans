@@ -582,8 +582,8 @@ class Config_Translater:
         # print(src_cmd, src_template)
         # 将源模板转换为正则表达式
         # 例如 "hostname [parameter1]" -> r"hostname (\S+)"
-        if bool(re.search(r"\[parameter\d*\]", src_template)):
-            src_regex = re.sub(r"\[parameter\d*\]", r"(\\S+)", src_template)
+        if bool(re.search(r"\[[^\]]+\]", src_template)):
+            src_regex = re.sub(r"\[[^\]]+\]", r"(\\S+)", src_template)
         else:
             src_regex = re.escape(src_template)
         # 匹配源命令并提取参数

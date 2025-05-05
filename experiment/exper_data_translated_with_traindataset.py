@@ -41,21 +41,21 @@ def batch_translate(config_translater, input_dir, output_dir, real_config_dir, r
             i = 0
             while i < len(futures):
                 future = futures[i]
-                try:
-                    if future.result():
-                        successed_files += 1
-                        pbar.update(1)
-                except Exception as e:
-                    print(f"\nError: {str(e)}")
-                    if config_files:
-                        config_file = config_files.pop(0)
-                        futures.append(executor.submit(translate_single_file,
-                                                       config_translater, input_dir, output_dir, real_config_dir,real_command_tree_dir,
-                                                       source_vendor, target_vendor, config_file))
+                # try:
+                #     if future.result():
+                #         successed_files += 1
+                #         pbar.update(1)
+                # except Exception as e:
+                #     print(f"\nError: {str(e)}")
+                #     if config_files:
+                #         config_file = config_files.pop(0)
+                #         futures.append(executor.submit(translate_single_file,
+                #                                        config_translater, input_dir, output_dir, real_config_dir,real_command_tree_dir,
+                #                                        source_vendor, target_vendor, config_file))
 
-                # if future.result():
-                #     successed_files += 1
-                #     pbar.update(1)
+                if future.result():
+                    successed_files += 1
+                    pbar.update(1)
                 i += 1
 
         print(f"Translated {successed_files} configs")
@@ -145,15 +145,15 @@ def delete_outdate_files(file_dir):
 def main():
     # 初始化路径
     device = "cuda:0"
-    output_dir = './experiment/exper_data/translated_config_with_scale400'
-    mapping_library_path = f'./dataset_multi_vendor_config/mapping_template_library/scale400/{{}}_{{}}.json'
-    manual_mapping_path = f'./dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
-    templates_path = f'./dataset_multi_vendor_config/config_command_node/scale400/{{}}.json'
-    config_model_dir = f'./dataset_multi_vendor_config/config_model/scale400/{{}}.json'
+    output_dir = '../experiment/exper_data/translated_config_with_scale400'
+    mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/verified_data/{{}}_{{}}.json'
+    manual_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
+    templates_path = f'../dataset_multi_vendor_config/config_command_node/verified_data/{{}}.json'
+    config_model_dir = f'../dataset_multi_vendor_config/config_model/verified_data/{{}}.json'
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
     config_num = [400]
-    local_EMmodel_path = './EmbeddingModel/MiniLM-L6-v2'
+    local_EMmodel_path = '../EmbeddingModel/MiniLM-L6-v2'
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})
 
@@ -162,10 +162,10 @@ def main():
             for target_vendor in vendors:
                 if source_vendor == target_vendor:
                     continue
-                source_config_dir = f'./experiment/test_dataset/command_tree/{source_vendor}' if source_vendor != 'Juniper' else f'./experiment/test_dataset/command_tree/Juniper_subdivided'
-                real_config_dir = f'./experiment/test_dataset/text_config/{target_vendor}'
-                real_command_tree_dir = f'./experiment/test_dataset/command_tree/{target_vendor}'
-                module_match_path = './dataset_multi_vendor_config/mapping_template_library/scale400/{}_{}_module_match.json'
+                source_config_dir = f'../experiment/test_dataset/test_data_400/command_tree/{source_vendor}' if source_vendor != 'Juniper' else f'../experiment/test_dataset/test_data_400/command_tree/Juniper_subdivided'
+                real_config_dir = f'../experiment/test_dataset/test_data_400/text_config/{target_vendor}'
+                real_command_tree_dir = f'../experiment/test_dataset/test_data_400/command_tree/{target_vendor}'
+                module_match_path = '../dataset_multi_vendor_config/mapping_template_library/verified_data/{}_{}_module_match.json'
 
                 output_save_dir = os.path.join(output_dir, str(scale), source_vendor)
                 os.makedirs(output_save_dir, exist_ok=True)

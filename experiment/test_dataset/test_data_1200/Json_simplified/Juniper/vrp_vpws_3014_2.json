@@ -11,13 +11,20 @@
             }
         ]
     },
-    "set interfaces": {
-        "template": "set interfaces",
-        "command": "set interfaces",
-        "explanation": "The command `set interfaces` in Junos is used to configure or modify settings for network interfaces, such as IP addresses, VLANs, or operational parameters.",
-        "interface_name unit unit_number family family_type address ip_address": {
-            "template": "interface_name unit unit_number family family_type address ip_address",
-            "command": "ge-1/0/0 unit 0 family inet address 10.1.1.2/24",
+    "set interfaces [interface_name]": {
+        "template": "set interfaces [interface_name]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "The command `set interfaces [interface_name]` creates or selects a specific network interface in Junos OS for configuration or modification.",
+        "parameters": [
+            {
+                "name": "interface_name",
+                "type": "string",
+                "explanation": "The name of the interface to be configured."
+            }
+        ],
+        "unit [unit_number] family [family_type] address [ip_address]": {
+            "template": "unit [unit_number] family [family_type] address [ip_address]",
+            "command": "unit 0 family inet address 10.1.1.2/24",
             "explanation": "Configures an interface with a specific IP address and subnet mask under a particular family type.",
             "parameters": [
                 {
@@ -36,10 +43,34 @@
                     "explanation": "The IP address and subnet mask in CIDR notation."
                 }
             ]
-        },
-        "interface unit unit family family address address": {
-            "template": "interface unit unit family family address address",
-            "command": "lo0 unit 0 family inet address 192.168.4.4/32",
+        }
+    },
+    "set protocols mpls interface [parameter1]": {
+        "template": "set protocols mpls interface [parameter1]",
+        "command": "set protocols mpls interface ge-1/0/0.0",
+        "explanation": "Enables the MPLS protocol on the specified interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ]
+    },
+    "set interfaces [interface]": {
+        "template": "set interfaces [interface]",
+        "command": "set interfaces lo0",
+        "explanation": "The command `set interfaces [interface]` in Junos configures a specific network interface, allowing further settings like IP address, VLAN, or MTU to be applied.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "The name of the interface to be configured"
+            }
+        ],
+        "unit [unit] family [family] address [address]": {
+            "template": "unit [unit] family [family] address [address]",
+            "command": "unit 0 family inet address 192.168.4.4/32",
             "explanation": "Configure an interface with a specific unit, family, and IP address",
             "parameters": [
                 {
@@ -60,18 +91,6 @@
             ]
         }
     },
-    "set protocols mpls interface [parameter1]": {
-        "template": "set protocols mpls interface [parameter1]",
-        "command": "set protocols mpls interface ge-1/0/0.0",
-        "explanation": "Enables the MPLS protocol on the specified interface.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g., g-1/0/0."
-            }
-        ]
-    },
     "set protocols ldp interface [parameter1]": {
         "template": "set protocols ldp interface [parameter1]",
         "command": "set protocols ldp interface lo0.0",
@@ -84,13 +103,20 @@
             }
         ]
     },
-    "set protocols ospf area": {
-        "template": "set protocols ospf area",
-        "command": "set protocols ospf area",
-        "explanation": "The command `set protocols ospf area` configures an OSPF area within the OSPF protocol settings on a Junos device, defining the area's properties and interfaces.",
-        "area_id interface interface_name": {
-            "template": "area_id interface interface_name",
-            "command": "0.0.0.0 interface lo0.0",
+    "set protocols ospf area [area_id]": {
+        "template": "set protocols ospf area [area_id]",
+        "command": "set protocols ospf area 0.0.0.0",
+        "explanation": "The command `set protocols ospf area [area_id]` configures an OSPF area with the specified `[area_id]` in the Junos OS routing protocol settings.",
+        "parameters": [
+            {
+                "name": "area_id",
+                "type": "string",
+                "explanation": "OSPF area identifier in dotted decimal format"
+            }
+        ],
+        "interface [interface_name]": {
+            "template": "interface [interface_name]",
+            "command": "interface lo0.0",
             "explanation": "Configure OSPF protocol to include an interface in a specific area",
             "parameters": [
                 {
@@ -99,19 +125,7 @@
                     "explanation": "Name of the interface to be included in the OSPF area"
                 }
             ]
-        }
-    },
-    "set protocols ospf area [parameter1]": {
-        "template": "set protocols ospf area [parameter1]",
-        "command": "set protocols ospf area 0.0.0.0",
-        "explanation": "This command configures an OSPF area in Junos OS, where `[parameter1]` specifies the area ID, enabling OSPF routing within the defined area.",
-        "parameters": [
-            {
-                "name": "area",
-                "type": "string",
-                "explanation": "OSPF area ID."
-            }
-        ],
+        },
         "interface [parameter2]": {
             "template": "interface [parameter2]",
             "command": "interface ge-1/0/0.0",

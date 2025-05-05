@@ -99,40 +99,45 @@
             }
         ]
     },
-    "snmp-server user [username] [groupname] v3 auth [auth_protocol] [auth_password] priv [priv_protocol] [priv_password] localizedkey": {
-        "template": "snmp-server user [username] [groupname] v3 auth [auth_protocol] [auth_password] priv [priv_protocol] [priv_password] localizedkey",
+    "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]": {
+        "template": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]",
         "command": "snmp-server user nms2-admin grp1 v3 auth sha %$%$n}=%C*UimYlx9-:$>T=*_y4PX*e~u6I_Aa9s=I1$%$% priv aes 128 %$%$at{pQGh!uMyq..8WSJ(<bU`~K_)[f-}s&*Gmw!iE%$%$ localizedkey",
-        "explanation": "Configures an SNMPv3 user with authentication and privacy settings.",
+        "explanation": "Configure SNMPv3 user with authentication and privacy settings",
         "parameters": [
             {
                 "name": "username",
                 "type": "string",
-                "explanation": "The name of the SNMPv3 user."
+                "explanation": "SNMPv3 username"
             },
             {
                 "name": "groupname",
                 "type": "string",
-                "explanation": "The name of the group to which the user belongs."
+                "explanation": "SNMP group name"
             },
             {
-                "name": "auth_protocol",
+                "name": "authentication protocol",
                 "type": "string",
-                "explanation": "The authentication protocol to use (e.g., sha)."
+                "explanation": "Authentication protocol (e.g., sha)"
             },
             {
-                "name": "auth_password",
+                "name": "authentication password",
                 "type": "string",
-                "explanation": "The authentication password for the user."
+                "explanation": "Authentication password"
             },
             {
-                "name": "priv_protocol",
+                "name": "privacy protocol",
                 "type": "string",
-                "explanation": "The privacy protocol to use (e.g., aes)."
+                "explanation": "Privacy protocol (e.g., aes)"
             },
             {
-                "name": "priv_password",
+                "name": "privacy key size",
+                "type": "integer",
+                "explanation": "Privacy key size (e.g., 128)"
+            },
+            {
+                "name": "privacy password",
                 "type": "string",
-                "explanation": "The privacy password for the user."
+                "explanation": "Privacy password"
             }
         ]
     },
@@ -184,6 +189,15 @@
     },
     "interface [parameter1]": {
         "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "Configure interface",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "interface name"
+            }
+        ],
         "ip address [parameter1] [parameter2]": {
             "template": "ip address [parameter1] [parameter2]",
             "command": "ip address 1.1.2.1 255.255.255.0",
@@ -200,19 +214,19 @@
                     "explanation": "The subnet mask corresponding to the IP address"
                 }
             ]
-        },
-        "command": "interface GigabitEthernet1/0/0",
-        "explanation": "Configure interface",
-        "parameters": [
-            {
-                "name": "interface name",
-                "type": "string",
-                "explanation": "interface name"
-            }
-        ]
+        }
     },
     "router ospf [parameter1]": {
         "template": "router ospf [parameter1]",
+        "command": "router ospf 1",
+        "explanation": "Configure OSPF routing process",
+        "parameters": [
+            {
+                "name": "process ID",
+                "type": "integer",
+                "explanation": "OSPF process ID"
+            }
+        ],
         "network [network_address] [wildcard_mask] area [area_id]": {
             "template": "network [network_address] [wildcard_mask] area [area_id]",
             "command": "network 1.1.2.0 0.0.0.255 area 0",
@@ -256,16 +270,7 @@
                     "explanation": "The OSPF area ID"
                 }
             ]
-        },
-        "command": "router ospf 1",
-        "explanation": "Configure OSPF routing process",
-        "parameters": [
-            {
-                "name": "process ID",
-                "type": "integer",
-                "explanation": "OSPF process ID"
-            }
-        ]
+        }
     },
     "snmp-server host [parameter1] version [parameter2] [parameter3]": {
         "template": "snmp-server host [parameter1] version [parameter2] [parameter3]",
@@ -356,14 +361,9 @@
                 "explanation": "Type of SNMP trap to enable"
             },
             {
-                "name": "entity",
+                "name": "trap category",
                 "type": "string",
-                "explanation": "Entity related to the trap"
-            },
-            {
-                "name": "module status",
-                "type": "string",
-                "explanation": "Status of the module to monitor"
+                "explanation": "Category of the SNMP trap"
             }
         ]
     },

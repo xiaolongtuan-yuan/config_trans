@@ -28,14 +28,20 @@
             }
         ]
     },
-    "set interfaces": {
-        "template": "set interfaces",
-        "command": "set interfaces",
-        "explanation": "The command `set interfaces` in Junos is used to configure or define network interface settings such as IP addresses, VLANs, and other interface-specific parameters.",
-        "parameters": [],
-        "ge-1/0/0 unit 10 family ethernet-switching vlan members 10": {
-            "template": "interface unit unit_number family family_type vlan members vlan_id",
-            "command": "ge-1/0/0 unit 10 family ethernet-switching vlan members 10",
+    "set interfaces ge-1/0/0": {
+        "template": "set interfaces [interface]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "The command `set interfaces [interface]` in Junos OS configures or modifies settings for a specified network interface, such as IP address, MTU, or description.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "The name of the interface to be configured."
+            }
+        ],
+        "unit 10 family ethernet-switching vlan members 10": {
+            "template": "unit [unit_number] family [family_type] vlan members [vlan_id]",
+            "command": "unit 10 family ethernet-switching vlan members 10",
             "explanation": "Configures a VLAN membership for a specific interface unit under the Ethernet switching family.",
             "parameters": [
                 {
@@ -55,9 +61,9 @@
                 }
             ]
         },
-        "ge-1/0/0 unit 10 family inet address 172.16.1.2/24": {
-            "template": "interface_name unit unit_number family family_type address ip_address",
-            "command": "ge-1/0/0 unit 10 family inet address 172.16.1.2/24",
+        "unit 10 family inet address 172.16.1.2/24": {
+            "template": "unit [unit_number] family [family_type] address [ip_address]",
+            "command": "unit 10 family inet address 172.16.1.2/24",
             "explanation": "Configure an interface with a specific unit, family type, and IP address",
             "parameters": [
                 {
@@ -76,19 +82,7 @@
                     "explanation": "The IP address and subnet mask for the interface"
                 }
             ]
-        }
-    },
-    "set interfaces ge-1/0/0": {
-        "template": "set interfaces [parameter1]",
-        "command": "set interfaces ge-1/0/0",
-        "explanation": "Configure the specified interface",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g., g-1/0/0."
-            }
-        ],
+        },
         "enable": {
             "template": "enable",
             "command": "enable",
