@@ -1,0 +1,15 @@
+set system host-name DeviceA
+set system authentication-order 2001
+set system authentication-order 0
+set system authentication-order 2002
+set policy-options policy-statement class1 term 5 from route-filter none/2001 or
+set policy-options policy-statement class2 term 5 from route-filter none/2002 or
+set policy-options policy-statement behavior1 term be from protocol green
+set policy-options policy-statement behavior1 term 6000 then none
+set policy-options policy-statement behavior2 term 2000 from protocol none
+set policy-options policy-statement behavior2 term 10 from route-filter none/none none
+set policy-options policy-statement policy1
+set interfaces GigabitEthernet1/0/0 family inet address 1.1.1.3/255.255.255.0
+set interfaces GigabitEthernet1/0/0 unit none family inet filter input policy1
+set interfaces GigabitEthernet1/0/0 unit none tunnel destination inbound
+set interfaces GigabitEthernet1/0/0 unit none disable

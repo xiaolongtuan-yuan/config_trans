@@ -1,0 +1,24 @@
+sysname Spoke1
+interface ge-1/0/0
+interface 0
+ ip address 10.1.2.10 none none
+ ip address none 24
+ source lo0.0
+ ip address 192.168.1.1 none none
+ ip address none 32
+ ip address 172.16.1.2 none none
+ source ge-1/0/0.0
+ source dynamic
+interface gre
+service-security policy none <IPSEC_PROFILE_NAME>
+ rule none deny protocol none source-ip ge-1/0/0.0 none
+ rule none deny protocol none source-ip gr-1/0/0.0 none
+interface lo0
+interface gr-1/0/0
+ospf none router-id 172.16.1.2
+ area 0.0.0.0
+vlan gr-1/0/0.0
+vlan lo0.0
+ospf none router-id 10.1.2.10
+ area 0.0.0.1
+vlan ge-1/0/0.0

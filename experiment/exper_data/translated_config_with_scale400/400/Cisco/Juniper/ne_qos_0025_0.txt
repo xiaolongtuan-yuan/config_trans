@@ -1,0 +1,15 @@
+set system host-name DeviceA
+set security nat source rule-set 2001 rule none match source-address none/2001
+set security nat source rule-set 2001 rule none match source-address 1.1.1.1
+set security nat source rule-set 2001 rule none match source-address none/2002
+set security nat source rule-set 2001 rule none match source-address 1.1.1.2
+set system host-name class1
+set system host-name 2001
+set system host-name class2
+set system host-name 2002
+set policy-options as-path policy1 transmit
+set policy-options as-path class1 transmit
+set policy-options as-path class2 drop
+set interfaces GigabitEthernet1/0/0 family inet address 1.1.1.3/255.255.255.0
+set interfaces input unit none family inet filter input policy1
+set interfaces none none none none

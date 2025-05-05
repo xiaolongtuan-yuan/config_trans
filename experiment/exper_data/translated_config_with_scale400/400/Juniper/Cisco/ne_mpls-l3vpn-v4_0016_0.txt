@@ -1,0 +1,15 @@
+hostname CE1
+interface ge-2/0/0
+interface 0
+ ip address 10.4.1.1 none none
+ ip address none 24
+ ip address 10.1.1.1 none none
+interface ge-1/0/0
+ip route 0.0.0.0 0 10.1.1.2
+router bgp IBGP
+router bgp external
+ neighbor 10.1.1.2 remote-as 100
+ address-family unicast none
+router bgp BGP-NETWORKS
+ip route 24 exact 1
+ip route none none accept

@@ -1,0 +1,14 @@
+hostname NATA
+
+ip access-list standard INSIDE_ACL
+ permit 192.168.10.0 0.0.0.255
+
+ip nat pool address-group1 11.11.11.101 11.11.11.105 netmask 255.255.255.0
+
+ip nat inside source list INSIDE_ACL pool address-group1 overload
+
+interface GigabitEthernet2/0/0
+ ip address 192.168.10.1 255.255.255.0
+ ip nat inside
+ no shutdown
+
