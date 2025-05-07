@@ -1,0 +1,15 @@
+sysname NATA
+interface ge-0/0/0
+interface 0
+ ip address 192.168.10.1 none none
+ ip address none 24
+service-security global-binding none trust
+service-security global-binding none all
+service-security global-binding none untrust
+bfd address-group1 bind peer-ip none interface none source-ip 24 auto
+service-security policy 11.11.11.101 OUTBOUND
+ rule NAT-INSIDE deny protocol none source-ip 11.11.11.105 none
+service-security policy none trust
+service-security policy none untrust
+service-security policy none NAT-INSIDE
+bfd address-group1 bind peer-ip none interface none source-ip none auto

@@ -1,0 +1,18 @@
+hostname CE3
+interface ge-1/0/0
+ ip address 10.3.1.1 none none
+ ip address none 24
+interface none.0
+router bgp 800
+aaa authentication login ADVERTISE_NETWORK group BGP_GROUP none
+router bgp external
+router bgp 100
+ neighbor 10.3.1.2 update-source none
+ address-family inet
+ address-family unicast none
+ neighbor 10.3.1.2 remote-as none
+ip route none none ADVERTISE_NETWORK none
+ip route none none exact none
+ip route 24 none none
+ip route none none accept none
+ip route none none reject none

@@ -1,0 +1,16 @@
+hostname DeviceA
+access-list 0 permit ip host 1.1.1.1 any
+access-list 0 permit ip host 1.1.1.2 any
+interface be
+ service-policy inbound or
+ switchport trunk allowed vlan 2001
+ switchport trunk allowed vlan 2002
+ monitor session 5 destination interface behavior1
+ switchport trunk allowed vlan 6000
+ description green
+ switchport trunk allowed vlan 2000
+interface policy1
+ monitor session 10 destination interface behavior2
+interface GigabitEthernet1/0/0
+ ip address 1.1.1.3 255.255.255.0
+interface none

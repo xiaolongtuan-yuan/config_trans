@@ -1,0 +1,21 @@
+sysname CE1
+interface ge-2/0/0
+interface 0
+ ip address 10.4.1.1 none none
+ ip address none 24
+ ip address 10.1.1.1 none none
+interface ge-1/0/0
+ip route-static 0 none none
+ip route-static none none none 10.1.1.2
+bfd IBGP bind peer-ip none interface external source-ip none auto
+bgp 100
+ peer 100 connect-interface none
+ peer 10.1.1.2 as-number none
+ ipv4-family unicast
+bfd BGP-NETWORKS bind peer-ip none interface none source-ip none auto
+traffic policy BGP-NETWORKS
+traffic policy 10.1.1.0
+ classifier none behavior none precedence 24
+ classifier none behavior exact
+traffic policy 1
+ classifier none behavior accept

@@ -1,0 +1,27 @@
+interface Spoke1
+interface ge-1/0/0
+interface 0
+ ip address 10.1.2.10 24
+ ip address 192.168.1.1 24
+ ip address 172.16.1.2 24
+interface ge-2/0/0
+interface gr-0/0/0
+interface ge-0/0/1
+bgp 200
+bgp bgp-group
+ peer 172.16.1.1 as-number external
+bgp 100
+bgp 300
+ peer 172.16.1.3 as-number none
+ peer 172.16.1.2 as-number none
+ peer unicast as-number none
+ ipv4-family ospf-to-bgp
+  import-route ospf-to-bgp none
+ospf 0.0.0.0
+vlan batch ge-2/0/0
+ospf 0.0.0.1
+vlan batch ge-1/0/0
+traffic policy ospf-to-bgp
+traffic policy ospf
+traffic policy 1
+ classifier none behavior accept precedence none

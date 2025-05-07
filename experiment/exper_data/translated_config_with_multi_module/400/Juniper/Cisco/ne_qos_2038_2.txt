@@ -1,0 +1,18 @@
+hostname DeviceC
+interface ge-1/0/0
+ ip address 10.20.1.1 none none
+ ip address none 24
+interface none.0
+aaa authentication login redistribute-connected group IBGP none
+router bgp internal
+ neighbor 10.20.1.1 remote-as none
+ address-family inet
+ address-family unicast none
+router ospf 0.0.0.0
+ network none none area 0.0.0.0
+vlan batch ge-1/0/0.0
+ip route none none redistribute-connected none
+ip route none none direct none
+ip route none none accept none
+router bgp 100
+ neighbor 10.20.1.2 update-source none

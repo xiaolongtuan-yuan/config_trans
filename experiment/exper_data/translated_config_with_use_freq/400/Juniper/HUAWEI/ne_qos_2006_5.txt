@@ -1,0 +1,16 @@
+interface CE3
+interface ge-1/0/0
+interface 0
+ ip address 10.3.1.1 24
+bgp 65430
+bgp BGP-PEERS
+ peer 10.3.1.2 as-number external
+ peer 10.3.1.2 as-number 100
+ peer unicast as-number none
+ ipv4-family EXPORT-NETWORK
+  import-route EXPORT-NETWORK none
+traffic policy EXPORT-NETWORK
+traffic policy 24
+ classifier none behavior exact precedence none
+traffic policy 1
+ classifier none behavior accept precedence none

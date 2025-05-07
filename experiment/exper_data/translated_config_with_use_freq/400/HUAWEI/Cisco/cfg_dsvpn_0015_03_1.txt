@@ -1,0 +1,27 @@
+hostname Spoke1
+interface GigabitEthernet1/0/0
+ ip address 10.1.2.10 255.255.255.0
+interface gre
+interface GigabitEthernet2/0/0
+ ip address 192.168.1.1 255.255.255.0
+interface Tunnel0
+ ip address 172.16.1.2 255.255.255.0
+ tunnel mode p2mp
+router bgp 200
+ network 172.16.1.2 mask none
+router bgp 100
+ neighbor 172.16.1.1 remote-as none
+router bgp 300
+ neighbor 172.16.1.3 remote-as none
+ address-family unicast
+router bgp 1
+ address-family unicast
+  redistribute ospf
+ neighbor 172.16.1.1 remote-as none
+ neighbor 172.16.1.3 remote-as none
+ neighbor 0.0.0.255 remote-as none
+ neighbor none activate
+router ospf 1
+ network 172.16.1.2 none area 0.0.0.0
+router ospf 2
+ network 10.1.2.10 none area 0.0.0.1

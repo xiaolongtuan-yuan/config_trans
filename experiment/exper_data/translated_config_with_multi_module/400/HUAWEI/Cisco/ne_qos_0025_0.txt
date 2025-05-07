@@ -1,0 +1,27 @@
+hostname DeviceA
+access-list 2001 permit ip host none any
+access-list 5 permit ip host none any
+ip access-list standard 5
+ permit 1.1.1.1 0
+ permit 1.1.1.2 0
+access-list 2002 permit ip host none any
+class-map class1
+ match access-group 2001
+interface GigabitEthernet1/0/0
+ service-policy inbound policy1
+ class be
+ description green
+  police cir 5000 pir 6000 conform-action none exceed-action none violate-action none
+ ip address 1.1.1.3 255.255.255.0
+class-map class2
+ match access-group 2002
+policy-map policy1
+ class be
+  police cir 2000 pir none conform-action none exceed-action none violate-action none
+policy-map behavior1
+ class class1
+  police cir none conform-action none exceed-action 5 violate-action none
+policy-map behavior2
+ class class2
+  police cir none conform-action none exceed-action 10 violate-action none
+interface none.none

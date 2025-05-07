@@ -1,0 +1,23 @@
+sysname NATA
+interface ge-0/0/0
+service-security global-binding none trust
+service-security global-binding none ge-0/0/0.0
+service-security global-binding none untrust
+service-security global-binding none ge-0/0/1.0
+bfd NATPOOL bind peer-ip 192.168.10.10/32 interface none source-ip 192.168.10.0/24 auto
+service-security policy 1.1.1.101 RS1
+ rule none deny protocol none source-ip 1.1.1.105 none
+service-security policy none trust
+service-security policy none untrust
+service-security policy none R1
+bfd NATPOOL bind peer-ip 192.168.10.10/32 interface none source-ip 1.1.1.100/32 auto
+service-security global-binding none RS-STATIC
+service-security global-binding none STATIC-1
+ip route-static 0 none none
+ip route-static none none none 2.2.2.2
+interface 0
+ ip address inet none
+ ip address 2.2.2.1/24 192.168.10.1/24 none
+interface ge-0/0/1
+ospf 0.0.0.0 router-id [parameter2]
+ area 0.0.0.0

@@ -7,19 +7,21 @@
 import json
 import os
 import sys
+
 sys.path.append("/data/public/hrx/Repositories/config_trans")
 import experiment
 
 from experiment.compute_bleu import compute_embded_similarity
 from experiment.syntax_correctness import load_config_model, cul_view_accuracy
 from experiment.tree_match import cul_command_accuracy, cul_grammatical_accuracy, cul_param_accuracy, \
-    cul_grammatical_accuracy_with_json
+    cul_grammatical_accuracy_with_json, cul_device_grammatical_accuracy_with_json
 
 if __name__ == '__main__':
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
+    name = "use_freq"
     scales = [400]
 
-    translated_config_base = '../experiment/exper_data/translated_config_with_scale400'
+    translated_config_base = '../experiment/exper_data/translated_config_with_use_freq'
     vendor_config_models = {}
     for vendor in vendors:
         config_model_path = f'../dataset_multi_vendor_config/config_model/verified_data/{vendor}.json'
@@ -44,6 +46,10 @@ if __name__ == '__main__':
                 "vendors": [],
                 "average": 0,
             },
+            "device_grammatical_accuracy": {
+                "vendors": [],
+                "average": 0,
+            },
             "view_accuracy": {
                 "vendors": [],
                 "average": 0,
@@ -57,8 +63,8 @@ if __name__ == '__main__':
 
                 translated_config_dir = os.path.join(translated_config_base, str(scale), source_vendor, target_vendor)
 
-
-                trannlated_config_files = [f for f in os.listdir(translated_config_dir) if f.endswith('.txt') and not f.endswith('text.txt')]
+                trannlated_config_files = [f for f in os.listdir(translated_config_dir) if
+                                           f.endswith('.txt') and not f.endswith('text.txt')]
                 real_config_dir = f'../experiment/test_dataset/test_data_400/text_config/{target_vendor}'
 
                 # semantic_similarity = compute_embded_similarity(translated_config_dir, real_config_dir,
@@ -75,11 +81,18 @@ if __name__ == '__main__':
 
                 real_target_config_json_dir = f'../experiment/test_dataset/test_data_400/command_tree/{target_vendor}' if target_vendor != 'Juniper' else f'../experiment/test_dataset/test_data_400/command_tree/Juniper_subdivided'
 
-                grammatical_accuracy = cul_grammatical_accuracy_with_json(translated_config_dir, real_target_config_json_dir,
-                                                                trannlated_config_files)
+                grammatical_accuracy = cul_grammatical_accuracy_with_json(translated_config_dir,
+                                                                          real_target_config_json_dir,
+                                                                          trannlated_config_files)
 
                 exper_data['grammatical_accuracy']['vendors'].append(
                     (f'{source_vendor}_{target_vendor}', grammatical_accuracy))
+
+                device_grammatical_accuracy = cul_device_grammatical_accuracy_with_json(translated_config_dir,
+                                                                                        real_target_config_json_dir,
+                                                                                        trannlated_config_files)
+                exper_data['device_grammatical_accuracy']['vendors'].append(
+                    (f'{source_vendor}_{target_vendor}', device_grammatical_accuracy))
 
                 view_accuracy = cul_view_accuracy(translated_config_dir, trannlated_config_files,
                                                   vendor_config_models[target_vendor])
@@ -92,9 +105,12 @@ if __name__ == '__main__':
         exper_data['grammatical_accuracy']['average'] = sum(
             [x[1] for x in exper_data['grammatical_accuracy']['vendors']]) / len(
             exper_data['grammatical_accuracy']['vendors'])
+        exper_data['device_grammatical_accuracy']['average'] = sum(
+            [ x[1] for x in exper_data['device_grammatical_accuracy']['vendors'] ] ) / len(
+            exper_data['device_grammatical_accuracy']['vendors'])
         exper_data['view_accuracy']['average'] = sum([x[1] for x in exper_data['view_accuracy']['vendors']]) / len(
             exper_data['view_accuracy']['vendors'])
-        print(f"finished {scale} evaluation")
+        print(f"finished {name} evaluation")
         print(exper_data)
-        with open(f'../experiment/exper_res/res_heuristics_{scale}.json', 'w', encoding='utf-8') as f:
+        with open(f'../experiment/exper_res/res_heuristics_{name}.json', 'w', encoding='utf-8') as f:
             json.dump(exper_data, f, indent=4)

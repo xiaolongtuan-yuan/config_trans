@@ -1,0 +1,26 @@
+hostname NATA
+snmp-server engineID local 1
+snmp-server engineID local 0
+aaa authentication login none group group1 none
+ip nat inside source list 1 pool nat1
+ip nat inside source list 1 pool address-group1
+ip nat pool none 1.1.1.101 1.1.1.105 netmask none
+ip nat inside source list 3001 pool address-group1
+ip nat pool none none 192.168.10.10 netmask none
+access-list 3001 permit ip host none any
+access-list 1 permit ip host none any
+ip access-list standard permit
+ permit 192.168.10.0 0.0.0.255
+interface GigabitEthernet
+ ip address 192.168.10.1 255.255.255.0
+ ip address 2.2.2.1 255.255.255.0
+interface none.3001
+interface nat1
+router ospf 1
+ network none 0.0.0.255 area 0.0.0.0
+ network 2.2.2.0 mask none
+router bgp 2.2.2.0
+ip route 0.0.0.0 0.0.0.0 none 2.2.2.2
+access-list 0 permit ip host none any
+ip nat pool none none none netmask none
+interface none.none

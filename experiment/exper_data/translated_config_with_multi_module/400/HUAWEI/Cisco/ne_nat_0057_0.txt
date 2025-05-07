@@ -1,0 +1,21 @@
+hostname NATA
+ip nat inside source list 1 pool nat1
+ip nat pool none 11.11.11.101 11.11.11.105 netmask full-cone
+snmp-server engineID local 1
+snmp-server engineID local 0
+aaa authentication login none group group1 none
+ip nat inside source list 1 pool address-group1
+ip nat inside source list 3001 pool address-group1
+access-list 3001 permit ip host none any
+class-map classifier1
+ match access-group 3001
+interface GigabitEthernet
+ service-policy inbound policy1
+ ip address 192.168.10.1 255.255.255.0
+policy-map policy1
+ class nat1
+policy-map behavior1
+ class classifier1
+ip access-list standard 1
+ permit 192.168.10.0 0.0.0.255
+interface none.none

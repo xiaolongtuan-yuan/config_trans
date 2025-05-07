@@ -1,0 +1,20 @@
+sysname Spoke1
+interface GigabitEthernet1/0/0
+ ip address 10.1.2.10 255.255.255.0
+ source Loopback0
+ tunnel-protocol none gre
+ ipsec profile <IPSEC_PROFILE_NAME>
+interface Loopback0
+ ip address 192.168.1.1 255.255.255.255
+interface Tunnel0
+ ip address 172.16.1.2 255.255.255.0
+ source GigabitEthernet1/0/0
+ospf 1
+ area 0
+  network 172.16.1.0 0.0.0.255
+  network 192.168.1.0 0.0.0.255
+ospf none router-id 172.16.1.2
+ospf 2
+ area 1
+  network 10.1.2.0 0.0.0.255
+ospf none router-id 10.1.2.10

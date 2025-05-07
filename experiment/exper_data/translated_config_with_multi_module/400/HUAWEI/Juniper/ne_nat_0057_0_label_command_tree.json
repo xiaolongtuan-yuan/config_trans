@@ -1,0 +1,190 @@
+{
+    "set system host-name NATA": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name NATA",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces ge-0/0/0 unit 0 family inet address 192.168.10.1/24": {
+        "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+        "command": "set interfaces ge-0/0/0 unit 0 family inet address 192.168.10.1/24",
+        "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-0/0/0."
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+            },
+            {
+                "name": "ip-address",
+                "type": "string",
+                "explanation": "The IPv4 address assigned to the interface."
+            },
+            {
+                "name": "subnet-mask",
+                "type": "integer",
+                "explanation": "Bits of IPv4 subnet mask."
+            }
+        ]
+    },
+    "set security zones security-zone trust interfaces ge-0/0/0 host-inbound-traffic system-services all": {
+        "template": "set security zones security-zone [parameter1] interfaces [parameter2] host-inbound-traffic system-services [parameter3]",
+        "command": "set security zones security-zone trust interfaces ge-0/0/0 host-inbound-traffic system-services all",
+        "explanation": "The interfaces with the secure Zone of Confidence allow all system service entry traffic.",
+        "parameters": [
+            {
+                "name": "security-zone",
+                "type": "string",
+                "explanation": "Name of safe area, such as trust."
+            },
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-0/0/0."
+            },
+            {
+                "name": "system-services",
+                "type": "string",
+                "explanation": "Allowed type of system service, e.g. all."
+            }
+        ]
+    },
+    "set security zones security-zone untrust interfaces ge-0/0/1 host-inbound-traffic system-services all": {
+        "template": "set security zones security-zone [parameter1] interfaces [parameter2] host-inbound-traffic system-services [parameter3]",
+        "command": "set security zones security-zone untrust interfaces ge-0/0/1 host-inbound-traffic system-services all",
+        "explanation": "The interface with the untrusted area of the security area allows all system service entry traffic.",
+        "parameters": [
+            {
+                "name": "security-zone",
+                "type": "string",
+                "explanation": "Name of safe area, e.g. untrust."
+            },
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-0/0/1."
+            },
+            {
+                "name": "system-services",
+                "type": "string",
+                "explanation": "Allowed type of system service, e.g. all."
+            }
+        ]
+    },
+    "set security nat source pool address-group1 address 11.11.11.101 to 11.11.11.105": {
+        "template": "set security nat source pool [parameter1] address [parameter2] to [parameter3]",
+        "command": "set security nat source pool address-group1 address 11.11.11.101 to 11.11.11.105",
+        "explanation": "Configure the address range of the source NAT address pool.",
+        "parameters": [
+            {
+                "name": "pool",
+                "type": "string",
+                "explanation": "Address pool name, e.g., address-group1."
+            },
+            {
+                "name": "start-address",
+                "type": "string",
+                "explanation": "Address pool start address."
+            },
+            {
+                "name": "end-address",
+                "type": "string",
+                "explanation": "Address pool end address."
+            }
+        ]
+    },
+    "set security nat source rule-set OUTBOUND from zone trust": {
+        "template": "set security nat source rule-set [parameter1] from zone [parameter2]",
+        "command": "set security nat source rule-set OUTBOUND from zone trust",
+        "explanation": "Configure the application area for the source NAT ruleset.",
+        "parameters": [
+            {
+                "name": "rule-set",
+                "type": "string",
+                "explanation": "Set of rules names, e.g. OUTBOUND."
+            },
+            {
+                "name": "zone",
+                "type": "string",
+                "explanation": "Source area name, such as trust."
+            }
+        ]
+    },
+    "set security nat source rule-set OUTBOUND to zone untrust": {
+        "template": "set security nat source rule-set [parameter1] to zone [parameter2]",
+        "command": "set security nat source rule-set OUTBOUND to zone untrust",
+        "explanation": "Configure the application target area for the source NAT ruleset.",
+        "parameters": [
+            {
+                "name": "rule-set",
+                "type": "string",
+                "explanation": "Set of rules names, e.g. OUTBOUND."
+            },
+            {
+                "name": "zone",
+                "type": "string",
+                "explanation": "Target area name, e.g. untrust."
+            }
+        ]
+    },
+    "set security nat source rule-set OUTBOUND rule NAT-INSIDE match source-address 192.168.10.0/24": {
+        "template": "set security nat source rule-set [parameter1] rule [parameter2] match source-address [parameter3]/[parameter4]",
+        "command": "set security nat source rule-set OUTBOUND rule NAT-INSIDE match source-address 192.168.10.0/24",
+        "explanation": "Configure the source address range that the source NAT rules match.",
+        "parameters": [
+            {
+                "name": "rule-set",
+                "type": "string",
+                "explanation": "Set of rules names, e.g. OUTBOUND."
+            },
+            {
+                "name": "rule",
+                "type": "string",
+                "explanation": "Rule name, such as NAT-INSIDE."
+            },
+            {
+                "name": "source-address",
+                "type": "string",
+                "explanation": "Matches the source address range."
+            },
+            {
+                "name": "subnet-mask",
+                "type": "integer",
+                "explanation": "Number of subnet mask bits in the source address range."
+            }
+        ]
+    },
+    "set security nat source rule-set OUTBOUND rule NAT-INSIDE then source-nat pool address-group1": {
+        "template": "set security nat source rule-set [parameter1] rule [parameter2] then source-nat pool [parameter3]",
+        "command": "set security nat source rule-set OUTBOUND rule NAT-INSIDE then source-nat pool address-group1",
+        "explanation": "Configure the source address conversion behaviour for source NAT rules.",
+        "parameters": [
+            {
+                "name": "rule-set",
+                "type": "string",
+                "explanation": "Set of rules names, e.g. OUTBOUND."
+            },
+            {
+                "name": "rule",
+                "type": "string",
+                "explanation": "Rule name, such as NAT-INSIDE."
+            },
+            {
+                "name": "pool",
+                "type": "string",
+                "explanation": "Name of the address pool used to convert the source address, e.g., address-group1."
+            }
+        ]
+    }
+}

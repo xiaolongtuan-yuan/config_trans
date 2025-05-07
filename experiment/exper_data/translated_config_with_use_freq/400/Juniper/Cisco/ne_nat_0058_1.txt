@@ -1,0 +1,21 @@
+interface NATA
+interface ge-0/0/0
+username trust secret none none
+username ge-0/0/0.0 secret none none
+username untrust secret none none
+username ge-0/0/1.0 secret none none
+ip nat pool NATPOOL 1.1.1.101 1.1.1.105 netmask none
+access-list R1 permit ip host 192.168.10.0/24 any
+access-list R1 permit ip host NATPOOL any
+ip nat pool STATIC-1 none 1.1.1.100/32 netmask none
+access-list none permit ip host untrust any
+ip nat pool STATIC-1 none 192.168.10.10/32 netmask none
+ip route 0.0.0.0 0 none 2.2.2.2
+interface 0
+ ip address inet 2.2.2.1/24
+ ip address none 192.168.10.1/24 none
+interface inet.[parameter2]
+ bfd neighbor none interface ge-0/0/1
+router ospf 0.0.0.0
+ network none none area 0.0.0.0
+ network none none area ge-0/0/1.0

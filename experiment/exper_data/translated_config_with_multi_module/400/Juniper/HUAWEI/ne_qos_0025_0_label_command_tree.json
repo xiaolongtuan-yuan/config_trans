@@ -1,0 +1,311 @@
+{
+    "sysname DeviceA": {
+        "template": "sysname [parameter1]",
+        "command": "sysname DeviceA",
+        "explanation": "Sets the device's host name 'DeviceA'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "Host Name"
+            }
+        ]
+    },
+    "acl number 2001": {
+        "template": "acl number [parameter1]",
+        "command": "acl number 2001",
+        "explanation": "Create or enter configuration mode for ACL 2001",
+        "parameters": [
+            {
+                "name": "acl number",
+                "type": "integer",
+                "explanation": "ACL Number"
+            }
+        ],
+        "rule 5 permit source 1.1.1.1 0": {
+            "template": "rule [parameter1] permit source [parameter2] [parameter3]",
+            "command": "rule 5 permit source 1.1.1.1 0",
+            "explanation": "Add a rule to ACL 2001 that allows a package with source IP address 1.1.1.1 to pass",
+            "parameters": [
+                {
+                    "name": "rule number",
+                    "type": "integer",
+                    "explanation": "Rule number"
+                },
+                {
+                    "name": "source ip",
+                    "type": "IPv4",
+                    "explanation": "Source IP Address"
+                },
+                {
+                    "name": "wildcard bits",
+                    "type": "integer",
+                    "explanation": "Match Places"
+                }
+            ]
+        }
+    },
+    "acl number 2002": {
+        "template": "acl number [parameter1]",
+        "command": "acl number 2002",
+        "explanation": "Create or enter configuration mode for ACL 2002",
+        "parameters": [
+            {
+                "name": "acl number",
+                "type": "integer",
+                "explanation": "ACL Number"
+            }
+        ],
+        "rule 5 permit source 1.1.1.2 0": {
+            "template": "rule [parameter1] permit source [parameter2] [parameter3]",
+            "command": "rule 5 permit source 1.1.1.2 0",
+            "explanation": "Add a rule to ACL 2002 that allows a package with source IP address 1.1.1.2 to pass",
+            "parameters": [
+                {
+                    "name": "rule number",
+                    "type": "integer",
+                    "explanation": "Rule number"
+                },
+                {
+                    "name": "source ip",
+                    "type": "IPv4",
+                    "explanation": "Source IP Address"
+                },
+                {
+                    "name": "wildcard bits",
+                    "type": "integer",
+                    "explanation": "Match Places"
+                }
+            ]
+        }
+    },
+    "traffic classifier class1 operator or": {
+        "template": "traffic classifier [parameter1] operator [parameter2]",
+        "command": "traffic classifier class1 operator or",
+        "explanation": "Creates or enters a flow configator configuration called Class1 and sets the logical operation to be or",
+        "parameters": [
+            {
+                "name": "classifier name",
+                "type": "string",
+                "explanation": "Flow Catalog Name"
+            },
+            {
+                "name": "operator",
+                "type": "string",
+                "explanation": "Logical Operator"
+            }
+        ],
+        "if-match acl 2001": {
+            "template": "if-match acl [parameter1]",
+            "command": "if-match acl 2001",
+            "explanation": "Matching ACL 2001 traffic",
+            "parameters": [
+                {
+                    "name": "acl number",
+                    "type": "integer",
+                    "explanation": "ACL Number"
+                }
+            ]
+        }
+    },
+    "traffic classifier class2 operator or": {
+        "template": "traffic classifier [parameter1] operator [parameter2]",
+        "command": "traffic classifier class2 operator or",
+        "explanation": "Creates or enters a flow configator configuration called cass2 and sets the logical operation to be or",
+        "parameters": [
+            {
+                "name": "classifier name",
+                "type": "string",
+                "explanation": "Flow Catalog Name"
+            },
+            {
+                "name": "operator",
+                "type": "string",
+                "explanation": "Logical Operator"
+            }
+        ],
+        "if-match acl 2002": {
+            "template": "if-match acl [parameter1]",
+            "command": "if-match acl 2002",
+            "explanation": "Matching ACL 2002 traffic",
+            "parameters": [
+                {
+                    "name": "acl number",
+                    "type": "integer",
+                    "explanation": "ACL Number"
+                }
+            ]
+        }
+    },
+    "traffic behavior behavior1": {
+        "template": "traffic behavior [parameter1]",
+        "command": "traffic behavior behavior1",
+        "explanation": "Create or enter a traffic behaviour configuration called behavior1",
+        "parameters": [
+            {
+                "name": "behavior name",
+                "type": "string",
+                "explanation": "Traffic behaviour name"
+            }
+        ],
+        "car cir 5000 pir 6000 green pass yellow pass red pass service-class be color green": {
+            "template": "car cir [parameter1] pir [parameter2] green pass yellow pass red pass service-class [parameter3] color [parameter4]",
+            "command": "car cir 5000 pir 6000 green pass yellow pass red pass service-class be color green",
+            "explanation": "Configure commitment information rate (CIR) of 5000, peak information rate (PIR) of 6,000, green, yellow, red traffic pass, service level of BE, colour of green",
+            "parameters": [
+                {
+                    "name": "cir",
+                    "type": "integer",
+                    "explanation": "Commitment information rate"
+                },
+                {
+                    "name": "pir",
+                    "type": "integer",
+                    "explanation": "Peak Information Rate"
+                },
+                {
+                    "name": "service-class",
+                    "type": "string",
+                    "explanation": "Level of service"
+                },
+                {
+                    "name": "color",
+                    "type": "string",
+                    "explanation": "Colours"
+                }
+            ]
+        }
+    },
+    "traffic behavior behavior2": {
+        "template": "traffic behavior [parameter1]",
+        "command": "traffic behavior behavior2",
+        "explanation": "Create or enter a traffic behaviour configuration called behavior2",
+        "parameters": [
+            {
+                "name": "behavior name",
+                "type": "string",
+                "explanation": "Traffic behaviour name"
+            }
+        ],
+        "car cir 2000 green pass red discard": {
+            "template": "car cir [parameter1] green pass red discard",
+            "command": "car cir 2000 green pass red discard",
+            "explanation": "Configure Commitment Information Rate (CIR) is 2000. Green traffic passed, red traffic discarded.",
+            "parameters": [
+                {
+                    "name": "cir",
+                    "type": "integer",
+                    "explanation": "Commitment information rate"
+                }
+            ]
+        }
+    },
+    "traffic policy policy1": {
+        "template": "traffic policy [parameter1]",
+        "command": "traffic policy policy1",
+        "explanation": "Create or enter a traffic policy configuration called policy1",
+        "parameters": [
+            {
+                "name": "policy name",
+                "type": "string",
+                "explanation": "Traffic Policy Name"
+            }
+        ],
+        "classifier class1 behavior behavior1 precedence 5": {
+            "template": "classifier [parameter1] behavior [parameter2] precedence [parameter3]",
+            "command": "classifier class1 behavior behavior1 precedence 5",
+            "explanation": "Link flow class 1 to traffic behaviour behavior 1, with priority of 5",
+            "parameters": [
+                {
+                    "name": "classifier name",
+                    "type": "string",
+                    "explanation": "Flow Catalog Name"
+                },
+                {
+                    "name": "behavior name",
+                    "type": "string",
+                    "explanation": "Traffic behaviour name"
+                },
+                {
+                    "name": "precedence",
+                    "type": "integer",
+                    "explanation": "Priority"
+                }
+            ]
+        },
+        "classifier class2 behavior behavior2 precedence 10": {
+            "template": "classifier [parameter1] behavior [parameter2] precedence [parameter3]",
+            "command": "classifier class2 behavior behavior2 precedence 10",
+            "explanation": "Link flow class 2 to flow behaviour behavior 2, with priority of 10",
+            "parameters": [
+                {
+                    "name": "classifier name",
+                    "type": "string",
+                    "explanation": "Flow Catalog Name"
+                },
+                {
+                    "name": "behavior name",
+                    "type": "string",
+                    "explanation": "Traffic behaviour name"
+                },
+                {
+                    "name": "precedence",
+                    "type": "integer",
+                    "explanation": "Priority"
+                }
+            ]
+        }
+    },
+    "interface GigabitEthernet1/0/0": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "Configure mode for entering the GigabitEthernet1/0/0 interface",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "Interface Name"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "Enable interface (the interface is closed by default)",
+            "parameters": []
+        },
+        "ip address 1.1.1.3 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 1.1.1.3 255.255.255.0",
+            "explanation": "Configure interface IPv4 address 1.1.1.3 with subnet mask 255255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 Address"
+                },
+                {
+                    "name": "sub musk",
+                    "type": "IPv4",
+                    "explanation": "Subnet mask"
+                }
+            ]
+        },
+        "traffic-policy policy1 inbound": {
+            "template": "traffic-policy [parameter1] [parameter2]",
+            "command": "traffic-policy policy1 inbound",
+            "explanation": "Apply traffic policy1 to interface entry",
+            "parameters": [
+                {
+                    "name": "policy name",
+                    "type": "string",
+                    "explanation": "Traffic Policy Name"
+                },
+                {
+                    "name": "direction",
+                    "type": "string",
+                    "explanation": "Orientation"
+                }
+            ]
+        }
+    }
+}

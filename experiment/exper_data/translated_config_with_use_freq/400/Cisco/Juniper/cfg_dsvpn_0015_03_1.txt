@@ -1,0 +1,20 @@
+set system host-name Spoke1
+set interfaces GigabitEthernet1/0/0 unit none family inet address 10.1.2.10/255.255.255.0
+set interfaces GigabitEthernet1/0/0 unit none tunnel destination 172.16.1.1
+set interfaces GigabitEthernet2/0/0 unit none tunnel destination 192.168.1.1
+set interfaces GigabitEthernet2/0/0 unit 0 tunnel source gre
+set interfaces GigabitEthernet2/0/0 unit none family inet address 192.168.1.1/255.255.255.0
+set interfaces Tunnel0 unit none family inet address 172.16.1.2/255.255.255.0
+set routing-options autonomous-system 200
+set routing-options autonomous-system 172.16.1.2
+set routing-options autonomous-system 100
+set routing-options autonomous-system 300
+set routing-options autonomous-system ipv4
+set routing-options autonomous-system ospf
+set protocols ospf area 1
+set protocols ospf area 172.16.1.2
+set protocols ospf area 0.0.0.0 interface 192.168.1.0
+set protocols ospf area 2
+set protocols ospf area 10.1.2.10
+set protocols ospf area 0.0.0.1 interface 10.1.2.0
+set protocols bgp local-as none

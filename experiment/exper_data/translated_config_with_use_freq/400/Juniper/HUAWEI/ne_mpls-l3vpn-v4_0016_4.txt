@@ -1,0 +1,18 @@
+interface CE3
+interface ge-1/0/0
+interface 0
+ ip address 10.3.1.1 24
+bgp 800
+bgp BGP_GROUP
+ peer 10.3.1.2 as-number external
+bgp 100
+ peer unicast as-number none
+ peer 10.3.1.2 enable
+ ipv4-family ADVERTISE_NETWORK
+  import-route ADVERTISE_NETWORK none
+traffic policy ADVERTISE_NETWORK
+traffic policy 24
+ classifier none behavior exact precedence none
+traffic policy 1
+ classifier none behavior accept precedence none
+ classifier none behavior reject precedence none

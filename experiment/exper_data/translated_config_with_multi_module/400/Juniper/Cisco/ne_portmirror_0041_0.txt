@@ -1,0 +1,19 @@
+hostname Device
+vlan batch vlan10
+interface ge-1/0/0
+ switchport trunk native vlan 10
+ encapsulation dot1Q vlan10
+interface none.0
+ switchport mode access
+ bfd neighbor none interface ge-1/0/1
+ bfd neighbor none interface ge-1/0/2
+icmp-echo none source-interface ingress
+vlan batch ge-1/0/0
+vlan batch ge-2/0/0
+vlan batch ge-3/0/0
+interface ge-2/0/0
+ ip address 10.10.1.1 none none
+ ip address none 24
+interface ge-3/0/0
+ ip address 10.1.1.2 none none
+ ip address none 24

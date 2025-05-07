@@ -1,0 +1,25 @@
+hostname Spoke1
+interface ge-1/0/0
+ ip address 10.1.2.10 none none
+ ip address none 24
+ tunnel source lo0.0
+interface gre.0
+ip route <IPSEC_PROFILE_NAME> none ge-1/0/0.0 none
+ip route none none gr-1/0/0.0 none
+interface lo0
+ ip address 192.168.1.1 none none
+ ip address none 32
+interface none.0
+interface gr-1/0/0
+ ip address 172.16.1.2 none none
+ ip address none 24
+ tunnel source ge-1/0/0.0
+ tunnel destination dynamic
+mpls ldp router-id 172.16.1.2
+router ospf 0.0.0.0
+ network none none area 0.0.0.0
+ network none none area 0.0.0.1
+vlan batch gr-1/0/0.0
+vlan batch lo0.0
+mpls ldp router-id 10.1.2.10
+vlan batch ge-1/0/0.0

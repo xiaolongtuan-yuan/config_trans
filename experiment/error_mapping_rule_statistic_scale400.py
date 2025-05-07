@@ -4,8 +4,6 @@
 @Auth ： xiaolongtuan
 @File ：exper_data_translated.py
 """
-import sys
-sys.path.append("/data/public/hrx/Repositories/config_trans")
 from collections import Counter
 import os
 import json
@@ -32,7 +30,7 @@ def main():
                 continue
             error_statistic = {}
             grammatical_accuracy[f'{vendor1}_{vendor2}'] = []
-            folder_path = f'./experiment/exper_data/translated_config_with_scale400/400/{vendor1}/{vendor2}/' 
+            folder_path = f'./exper_data/translated_config_with_use_freq/400/{vendor1}/{vendor2}/'
             map_rule_extension = '_map_rules.json'
             label_template_extension = '_temp.json'
             result_extension = '_evaluate.json'
@@ -72,13 +70,15 @@ def main():
                             else:
                                 error_statistic[map_rule[0]] += count
             error_statistic = sorted(error_statistic.items(), key=lambda x: x[1], reverse=True)
-            error_statistic_path = f'./experiment/exper_res/scale_400_error_mapping_rules_freq/{vendor1}_{vendor2}_error_mapping_rules_freq.json'
+            error_statistic_path = f'./exper_res/scale_400_error_mapping_rules_freq/{vendor1}_{vendor2}_error_mapping_rules_freq.json'
             with open(error_statistic_path, mode='w', encoding='utf-8') as f:
                 json.dump(error_statistic, f, ensure_ascii=False, indent=2)
             print(f"Error mapping rules frequency saved to {error_statistic_path}")
     
     for key, value in grammatical_accuracy.items():
         print('task:', key, 'grammatical_accuracy_result:', np.mean(value))
+    all_values = [np.mean(v) for v in grammatical_accuracy.values()]
+    print('Overall grammatical_accuracy average:', np.mean(all_values))
 
 if __name__ == "__main__":
     main()

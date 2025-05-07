@@ -1,0 +1,28 @@
+interface Spoke1
+interface ge-1/0/0
+interface 0
+ ip address 10.1.2.10 24
+ ip address 192.168.1.1 24
+ tunnel destination 172.16.1.1
+ ip address 172.16.1.2 24
+interface ge-2/0/0
+interface gr-0/0/0
+ monitor session none source interface 0
+ tunnel source ge-0/0/1
+router bgp 200
+router bgp bgp-group
+router bgp external
+router bgp 100
+ neighbor 172.16.1.1 activate
+router bgp 300
+ neighbor 172.16.1.3 activate
+ neighbor 172.16.1.2 remote-as none
+ address-family unicast
+router bgp ospf-to-bgp
+router ospf 0.0.0.0
+vlan ge-2/0/0
+router ospf 0.0.0.1
+vlan ge-1/0/0
+ip route none none ospf-to-bgp none
+ip route none none ospf none
+ip route none none accept none

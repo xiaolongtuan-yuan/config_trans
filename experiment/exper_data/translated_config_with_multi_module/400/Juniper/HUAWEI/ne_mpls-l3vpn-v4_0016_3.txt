@@ -1,0 +1,17 @@
+sysname CE2
+interface ge-1/0/0
+interface 0
+ ip address 10.2.1.1 none none
+ ip address none 24
+bgp 700
+bfd BGP_GROUP bind peer-ip none interface external source-ip none auto
+bgp 100
+ peer 10.2.1.2 as-number none
+bfd ADVERTISE_NETWORK bind peer-ip none interface none source-ip none auto
+traffic policy ADVERTISE_NETWORK
+traffic policy 10.2.1.0/24
+traffic policy 1
+service-instance-group [parameter1]
+ service-location [parameter1]
+  location slot none engine none
+ip route-static none none none none

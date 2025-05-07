@@ -1,0 +1,21 @@
+interface Spoke1
+interface ge-1/0/0
+interface 0
+ ip address 10.1.2.10 24
+ ip address 192.168.1.1 32
+ ip address 172.16.1.2 24
+ ip address dynamic none
+interface lo0.0
+interface gre
+service-security policy ge-1/0/0.0 <IPSEC_PROFILE_NAME>
+service-security policy gr-1/0/0.0 none
+interface lo0
+interface gr-1/0/0
+interface ge-1/0/0.0
+ospf none router-id 172.16.1.2
+ospf 0.0.0.0
+vlan batch gr-1/0/0.0
+vlan batch lo0.0
+ospf none router-id 10.1.2.10
+ospf 0.0.0.1
+vlan batch ge-1/0/0.0

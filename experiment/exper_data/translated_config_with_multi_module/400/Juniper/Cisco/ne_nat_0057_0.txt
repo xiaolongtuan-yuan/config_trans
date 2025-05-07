@@ -1,0 +1,11 @@
+hostname NATA
+interface ge-0/0/0
+ ip address 192.168.10.1 none none
+ ip address none 24
+interface none.0
+snmp-server user trust ge-0/0/0 v3 auth all none priv none none none
+snmp-server user untrust ge-0/0/1 v3 auth all none priv none none none
+ip nat pool NAT-INSIDE 11.11.11.101 11.11.11.105 netmask 24
+ip nat pool NAT-INSIDE none none netmask 24
+access-list none permit ip host 192.168.10.0 any
+ip nat pool address-group1 none none netmask none
