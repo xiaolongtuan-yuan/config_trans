@@ -11,13 +11,11 @@ set security nat source pool nat1 address none to 192.168.10.10
 set security ipsec policy 3001
 set security ipsec policy 0.0.0.255
 set interfaces GigabitEthernet disable
-set interfaces GigabitEthernet unit 192.168.10.1 family inet address 255.255.255.0/none
-set interfaces GigabitEthernet unit 2.2.2.1 family inet address 255.255.255.0/none
+set interfaces GigabitEthernet unit none family inet address 192.168.10.1/255.255.255.0
+set interfaces GigabitEthernet unit none family inet address 2.2.2.1/255.255.255.0
 set interfaces GigabitEthernet unit 3001 tunnel destination nat1
 set protocols ospf area 1
-set protocols ospf area 0.0.0.0
-set routing-options autonomous-system 2.2.2.0
-set protocols bgp local-as 0.0.0.255
-set routing-options static route 0.0.0.0/none
-set routing-options static route none/0.0.0.0 2.2.2.2
+set protocols ospf area 0.0.0.0 interface 0.0.0.0
+set protocols ospf area 0.0.0.0 interface 0.0.0.255
+set routing-options static route 0.0.0.0/0.0.0.0 next-hop 2.2.2.2
 set security nat source rule-set [parameter1] from zone none
