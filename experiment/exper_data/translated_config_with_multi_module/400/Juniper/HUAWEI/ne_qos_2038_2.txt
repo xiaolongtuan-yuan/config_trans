@@ -1,18 +1,19 @@
 sysname DeviceC
 interface ge-1/0/0
-interface 0
  ip address 10.20.1.1 none none
  ip address none 24
-bfd IBGP bind peer-ip none interface internal source-ip none auto
-bgp 100
+interface 0 mode none
+bgp IBGP
+bgp internal
  peer 10.20.1.1 as-number none
  ipv4-family unicast
- peer 10.20.1.2 as-number none
-bfd redistribute-connected bind peer-ip none interface none source-ip none auto
+  import-route redistribute-connected none
 ospf 0.0.0.0 router-id [parameter2]
  area 0.0.0.0
 vlan ge-1/0/0.0
 traffic policy redistribute-connected
 traffic policy direct
 traffic policy 1
- classifier none behavior accept
+ classifier none behavior accept precedence none
+bgp 100
+ peer 10.20.1.2 as-number none

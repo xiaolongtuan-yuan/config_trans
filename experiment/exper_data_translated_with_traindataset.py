@@ -145,8 +145,9 @@ def delete_outdate_files(file_dir):
 def main():
     # 初始化路径
     device = "cuda:0"
-    output_dir = '../experiment/exper_data/translated_config_with_use_freq'
-    mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/use_freq/{{}}_{{}}.json'
+    name = 'multi_module'
+    output_dir = f'../experiment/exper_data/translated_config_with_{name}'
+    mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}.json'
     # manual_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
     templates_path = f'../dataset_multi_vendor_config/config_command_node/verified_data/{{}}.json'
     config_model_dir = f'../dataset_multi_vendor_config/config_model/verified_data/{{}}.json'
@@ -165,7 +166,7 @@ def main():
                 source_config_dir = f'../experiment/test_dataset/test_data_400/command_tree/{source_vendor}' if source_vendor != 'Juniper' else f'../experiment/test_dataset/test_data_400/command_tree/Juniper_subdivided'
                 real_config_dir = f'../experiment/test_dataset/test_data_400/text_config/{target_vendor}'
                 real_command_tree_dir = f'../experiment/test_dataset/test_data_400/command_tree/{target_vendor}'
-                module_match_path = '../dataset_multi_vendor_config/mapping_template_library/used_freq/{}_{}_module_match.json'
+                module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}_module_match.json'
 
                 output_save_dir = os.path.join(output_dir, str(scale), source_vendor)
                 os.makedirs(output_save_dir, exist_ok=True)

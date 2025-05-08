@@ -1,13 +1,14 @@
 sysname CE2
 interface ge-1/0/0
-interface 0
  ip address 10.2.1.1 none none
  ip address none 24
+interface 0 mode none
 bgp 700
-bfd BGP_GROUP bind peer-ip none interface external source-ip none auto
-bgp 100
- peer 10.2.1.2 as-number none
-bfd ADVERTISE_NETWORK bind peer-ip none interface none source-ip none auto
+bgp BGP_GROUP
+bgp external
+ peer 100 as-number none
+ ipv4-family 10.2.1.2
+  import-route ADVERTISE_NETWORK none
 traffic policy ADVERTISE_NETWORK
 traffic policy 10.2.1.0/24
 traffic policy 1

@@ -7,20 +7,17 @@ interface LoopBack0
  ip address 192.168.1.1 255.255.255.255
 interface Tunnel0
  ip address 172.16.1.2 255.255.255.0
+ tunnel key gre
  tunnel mode p2mp
  tunnel source GigabitEthernet1/0/0
- tunnel source p2mp
  tunnel protection ipsec profile <IPSEC_PROFILE_NAME>
+interface p2mp.[parameter2]
+ bfd neighbor none interface p2mp
+ ip address none none
 router ospf 1
  router-id 172.16.1.2
- network none 0.0.0.255 area 0.0.0.0
- network 172.16.1.0 mask none
- network 192.168.1.0 mask none
- network none 0.0.0.255 area 0.0.0.1
-router bgp 172.16.1.0
+ network 172.16.1.0 0.0.0.255 area 0.0.0.0
+ network 192.168.1.0 0.0.0.255 area 0.0.0.1
 router ospf 2
  router-id 10.1.2.10
- network 10.1.2.0 mask none
- network none 0.0.0.255 area none
-interface [parameter1].[parameter2]
- ip address none none
+ network 10.1.2.0 0.0.0.255 area none

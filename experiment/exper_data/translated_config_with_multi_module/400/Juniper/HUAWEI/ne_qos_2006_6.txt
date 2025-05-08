@@ -1,14 +1,13 @@
 sysname CE4
 interface ge-1/0/0
-interface 0
  ip address 10.4.1.1 none none
  ip address none 24
+interface 0 mode none
 bgp 65440
-bfd external bind peer-ip none interface external source-ip none auto
-bgp 100
- peer 10.4.1.2 as-number none
+bgp external
+ peer 100 as-number none
  ipv4-family unicast
-bfd redistribute-connected bind peer-ip none interface none source-ip none auto
+  import-route redistribute-connected none
 traffic policy redistribute-connected
 traffic policy direct
  classifier none behavior accept

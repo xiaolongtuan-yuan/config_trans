@@ -1,22 +1,24 @@
-set system domain-name Spoke1
-set interfaces GigabitEthernet1/0/0 family inet address 10.1.2.10/255.255.255.0
-set interfaces GigabitEthernet1/0/0 unit none tunnel source gre
-set interfaces GigabitEthernet2/0/0 family inet address 192.168.1.1/255.255.255.0
-set interfaces Tunnel0 family inet address 172.16.1.2/255.255.255.0
-set interfaces Tunnel0 gigether-options link-mode p2mp
+set system host-name Spoke1
+set interfaces GigabitEthernet1/0/0 unit none family inet address 10.1.2.10/255.255.255.0
+set interfaces GigabitEthernet1/0/0 unit none tunnel destination gre
+set interfaces GigabitEthernet2/0/0 unit none family inet address 192.168.1.1/255.255.255.0
+set interfaces Tunnel0 unit none family inet address 172.16.1.2/255.255.255.0
+set interfaces Tunnel0 unit none tunnel destination p2mp
 set interfaces Tunnel0 unit none tunnel source GigabitEthernet1/0/0
-set interfaces none none gre none
 set routing-options autonomous-system 200
 set routing-options autonomous-system 172.16.1.2
-set routing-options autonomous-system 172.16.1.1
 set protocols bgp local-as 100
-set routing-options autonomous-system 172.16.1.3
 set protocols bgp local-as 300
 set protocols bgp local-as unicast
+set protocols bgp local-as ospf
 set routing-options autonomous-system 1
+set protocols bgp local-as 172.16.1.1
+set protocols bgp local-as 172.16.1.3
 set routing-options router-id 172.16.1.2
 set protocols ospf area 0.0.0.0
-set routing-options autonomous-system 0.0.0.255
+set routing-options autonomous-system 192.168.1.0
+set protocols bgp local-as 0.0.0.255
 set routing-options router-id 10.1.2.10
 set protocols ospf area 0.0.0.1
+set routing-options autonomous-system 10.1.2.0
 set protocols bgp group [parameter1] family inet none

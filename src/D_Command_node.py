@@ -198,7 +198,7 @@ class CommandNode:
     def _generate_para_semantic_embedding(self, semantic_features, embedding_model):
         # 参数语义(单个参数的名字+完整配置命令解释)
         for p in semantic_features['parameters']:
-            para_text = p['name'] + p['type'] + p['explanation'] # + semantic_features['template']     # + semantic_features['explanation']
+            para_text = p['name'] + p['type'] + p['explanation'] + semantic_features['template'] # + semantic_features['explanation']
             self.paras_semantic_features.append(self._get_param_embedding(embedding_model, para_text).tolist())
 
     # 语义嵌入向量

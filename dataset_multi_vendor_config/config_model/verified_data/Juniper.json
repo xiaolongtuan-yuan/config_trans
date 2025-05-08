@@ -1,7 +1,7 @@
 {
     "set system host-name [parameter1]": {
         "template": "set system host-name [parameter1]",
-        "command": "set system host-name CE1",
+        "command": "set system host-name client001",
         "explanation": "Configure the host name of the device.",
         "parameters": [
             {
@@ -13,7 +13,7 @@
     },
     "set interfaces [parameter1]": {
         "template": "set interfaces [parameter1]",
-        "command": "set interfaces ge-2/0/0",
+        "command": "set interfaces ge-0/0/0",
         "explanation": "Configure the specified interface",
         "parameters": [
             {
@@ -24,7 +24,7 @@
         ],
         "unit [parameter2] family inet address [parameter3]/[parameter4]": {
             "template": "unit [parameter2] family inet address [parameter3]/[parameter4]",
-            "command": "unit 0 family inet address 10.4.1.1/24",
+            "command": "unit 0 family inet address 10.1.3.3/16",
             "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
             "parameters": [
                 {
@@ -41,6 +41,35 @@
                     "name": "subnet-mask",
                     "type": "integer",
                     "explanation": "Bits of IPv4 subnet mask."
+                }
+            ]
+        },
+        "unit [parameter2] vlan-id [parameter3]": {
+            "template": "unit [parameter2] vlan-id [parameter3]",
+            "command": "unit 1 vlan-id 10",
+            "explanation": "Configure the VLAN ID of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN ID to identify different virtual local area networks."
+                }
+            ]
+        },
+        "unit [parameter2] enable": {
+            "template": "unit [parameter2] enable",
+            "command": "unit 0 enable",
+            "explanation": "Enables specified interface units.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
                 }
             ]
         },
@@ -63,7 +92,7 @@
         },
         "unit [parameter2] family ethernet-switching vlan members [parameter3]": {
             "template": "unit [parameter2] family ethernet-switching vlan members [parameter3]",
-            "command": "unit 0 family ethernet-switching vlan members vlan10",
+            "command": "unit 0 family ethernet-switching vlan members VLAN2",
             "explanation": "Configure the VLAN members of the interface.",
             "parameters": [
                 {
@@ -74,60 +103,26 @@
                 {
                     "name": "vlan-members",
                     "type": "string",
-                    "explanation": "VLAN members, e.g. Vlan10."
+                    "explanation": "VLAN members, such as VLAN2."
                 }
             ]
         },
-        "unit [parameter2] vlan-id [parameter3]": {
-            "template": "unit [parameter2] vlan-id [parameter3]",
-            "command": "unit 1 vlan-id 10",
-            "explanation": "Configure the VLAN ID of the interface.",
-            "parameters": [
-                {
-                    "name": "unit",
-                    "type": "integer",
-                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
-                },
-                {
-                    "name": "vlan-id",
-                    "type": "integer",
-                    "explanation": "VLAN ID to identify different virtual local area networks."
-                }
-            ]
+        "disable": {
+            "template": "disable",
+            "command": "disable",
+            "explanation": "Disables the specified interface.",
+            "parameters": []
+        },
+        "enable": {
+            "template": "enable",
+            "command": "enable",
+            "explanation": "Enables the interface.",
+            "parameters": []
         },
         "unit [parameter2] disable": {
             "template": "unit [parameter2] disable",
             "command": "unit 0 disable",
             "explanation": "Disables the specified interface unit.",
-            "parameters": [
-                {
-                    "name": "unit",
-                    "type": "integer",
-                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
-                }
-            ]
-        },
-        "unit [parameter2] family ethernet-switching interface-mode [parameter3]": {
-            "template": "unit [parameter2] family ethernet-switching interface-mode [parameter3]",
-            "command": "unit 0 family ethernet-switching interface-mode access",
-            "explanation": "Configure the interface with an ethnet exchange mode.",
-            "parameters": [
-                {
-                    "name": "unit",
-                    "type": "integer",
-                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
-                },
-                {
-                    "name": "interface-mode",
-                    "type": "string",
-                    "explanation": "Interface mode, e.g., access or trunk."
-                }
-            ]
-        },
-        "unit [parameter2] enable": {
-            "template": "unit [parameter2] enable",
-            "command": "unit 0 enable",
-            "explanation": "Enables specified interface units.",
             "parameters": [
                 {
                     "name": "unit",
@@ -170,23 +165,6 @@
                 }
             ]
         },
-        "unit [parameter2] family inet filter input [parameter3]": {
-            "template": "unit [parameter2] family inet filter input [parameter3]",
-            "command": "unit 0 family inet filter input policy1",
-            "explanation": "Configure the input filter for the interface.",
-            "parameters": [
-                {
-                    "name": "unit",
-                    "type": "integer",
-                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
-                },
-                {
-                    "name": "filter-name",
-                    "type": "string",
-                    "explanation": "Filter name."
-                }
-            ]
-        },
         "aggregated-ether-options link-speed [parameter2]": {
             "template": "aggregated-ether-options link-speed [parameter2]",
             "command": "aggregated-ether-options link-speed gigabit-ethernet",
@@ -195,36 +173,19 @@
                 {
                     "name": "link-speed",
                     "type": "string",
-                    "explanation": "The speed of the chain, such as gigabit-ethernet, indicates a gigabit-ethernet."
+                    "explanation": "Specifies the speed of the link, e.g. gigabit-ethernet."
                 }
             ]
         },
         "ether-options 802.3ad [parameter2]": {
             "template": "ether-options 802.3ad [parameter2]",
             "command": "ether-options 802.3ad ae0",
-            "explanation": "Configure the Ethernet option for interfaces to add 802.3ad aggregation groups.",
+            "explanation": "Configure the Ethernet option for the interface and add it to the specified polymer interface.",
             "parameters": [
                 {
                     "name": "aggregated-interface",
                     "type": "string",
                     "explanation": "The name of the polymer interface, e.g. ae0."
-                }
-            ]
-        },
-        "unit [parameter2] encapsulation [parameter3]": {
-            "template": "unit [parameter2] encapsulation [parameter3]",
-            "command": "unit 0 encapsulation gre",
-            "explanation": "Configure the containment type of the interface.",
-            "parameters": [
-                {
-                    "name": "unit",
-                    "type": "integer",
-                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
-                },
-                {
-                    "name": "encapsulation",
-                    "type": "string",
-                    "explanation": "Cover type, e.g. gre."
                 }
             ]
         },
@@ -252,6 +213,12 @@
                 }
             ]
         },
+        "ether-options no-auto-negotiation": {
+            "template": "ether-options no-auto-negotiation",
+            "command": "ether-options no-auto-negotiation",
+            "explanation": "Disables automatic consultation of interfaces.",
+            "parameters": []
+        },
         "unit [parameter2] family ethernet-switching": {
             "template": "unit [parameter2] family ethernet-switching",
             "command": "unit 0 family ethernet-switching",
@@ -264,10 +231,10 @@
                 }
             ]
         },
-        "unit [parameter2] encapsulation vlan-id [parameter3]": {
-            "template": "unit [parameter2] encapsulation vlan-id [parameter3]",
-            "command": "unit 10 encapsulation vlan-id 10",
-            "explanation": "Configure the VLAN envelope for the interface.",
+        "unit [parameter2] family inet filter input [parameter3]": {
+            "template": "unit [parameter2] family inet filter input [parameter3]",
+            "command": "unit 0 family inet filter input policy1",
+            "explanation": "Configure the input filter for the interface.",
             "parameters": [
                 {
                     "name": "unit",
@@ -275,28 +242,16 @@
                     "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
                 },
                 {
-                    "name": "vlan-id",
-                    "type": "integer",
-                    "explanation": "VLAN ID, used to identify different VLANs."
-                }
-            ]
-        },
-        "description [parameter2]": {
-            "template": "description [parameter2]",
-            "command": "description \"EtherChannel to Huawei Eth-Trunk1\"",
-            "explanation": "Set description for an interface",
-            "parameters": [
-                {
-                    "name": "description",
+                    "name": "filter-name",
                     "type": "string",
-                    "explanation": "The description text for the interface"
+                    "explanation": "Filter name."
                 }
             ]
         },
-        "unit [parameter2] family ethernet-switching native-vlan-id [parameter3]": {
-            "template": "unit [parameter2] family ethernet-switching native-vlan-id [parameter3]",
-            "command": "unit 0 family ethernet-switching native-vlan-id 10",
-            "explanation": "Configure the local VLAN ID of the interface.",
+        "unit [parameter2] family ethernet-switching interface-mode [parameter3]": {
+            "template": "unit [parameter2] family ethernet-switching interface-mode [parameter3]",
+            "command": "unit 0 family ethernet-switching interface-mode access",
+            "explanation": "Configure the interface with an ethnet exchange mode.",
             "parameters": [
                 {
                     "name": "unit",
@@ -304,9 +259,26 @@
                     "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
                 },
                 {
-                    "name": "native-vlan-id",
+                    "name": "interface-mode",
+                    "type": "string",
+                    "explanation": "Interface mode, e.g., access or trunk."
+                }
+            ]
+        },
+        "unit [parameter2] encapsulation [parameter3]": {
+            "template": "unit [parameter2] encapsulation [parameter3]",
+            "command": "unit 0 encapsulation gre",
+            "explanation": "Configure the containment type of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
                     "type": "integer",
-                    "explanation": "Local VLAN ID number."
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "encapsulation",
+                    "type": "string",
+                    "explanation": "Cover type, e.g. gre."
                 }
             ]
         },
@@ -342,29 +314,46 @@
                 }
             ]
         },
-        "gigether-options speed [parameter2]": {
-            "template": "gigether-options speed [parameter2]",
-            "command": "gigether-options speed 1g",
-            "explanation": "Configure an interface with a Gg velocity of 1G.",
+        "aggregated-ether-options": {
+            "template": "aggregated-ether-options",
+            "command": "aggregated-ether-options",
+            "explanation": "Configure the options for the etho-net interface.",
+            "parameters": []
+        },
+        "unit [parameter2] family ethernet-switching native-vlan-id [parameter3]": {
+            "template": "unit [parameter2] family ethernet-switching native-vlan-id [parameter3]",
+            "command": "unit 0 family ethernet-switching native-vlan-id 10",
+            "explanation": "Configure the native VLAN ID of the interface.",
             "parameters": [
                 {
-                    "name": "speed",
-                    "type": "string",
-                    "explanation": "Interface speed, for example 1g."
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "native-vlan-id",
+                    "type": "integer",
+                    "explanation": "Native VLAN ID."
                 }
             ]
         },
-        "gigether-options link-mode [parameter2]": {
-            "template": "gigether-options link-mode [parameter2]",
-            "command": "gigether-options link-mode full-duplex",
-            "explanation": "The Gg of the configuration interface is based on the ENSP model.",
+        "description [parameter2]": {
+            "template": "description [parameter2]",
+            "command": "description \"EtherChannel to Huawei Eth-Trunk1\"",
+            "explanation": "Set description for an interface",
             "parameters": [
                 {
-                    "name": "link-mode",
+                    "name": "description",
                     "type": "string",
-                    "explanation": "Chain mode, for example full-duplex."
+                    "explanation": "The description text for the interface"
                 }
             ]
+        },
+        "vlan-tagging": {
+            "template": "vlan-tagging",
+            "command": "vlan-tagging",
+            "explanation": "Enables the VLAN tag function for the interface.",
+            "parameters": []
         },
         "vlan-id [parameter2]": {
             "template": "vlan-id [parameter2]",
@@ -392,6 +381,53 @@
                     "name": "subnet-mask",
                     "type": "integer",
                     "explanation": "Bits of IPv4 subnet mask."
+                }
+            ]
+        },
+        "unit [parameter2] encapsulation vlan-id [parameter3]": {
+            "template": "unit [parameter2] encapsulation vlan-id [parameter3]",
+            "command": "unit 10 encapsulation vlan-id 10",
+            "explanation": "Configure the VLAN envelope for the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN ID, used to identify different VLANs."
+                }
+            ]
+        },
+        "gigether-options no-auto-negotiation": {
+            "template": "gigether-options no-auto-negotiation",
+            "command": "gigether-options no-auto-negotiation",
+            "explanation": "Configure the Gg of interfaces without automatic consultation using the ethnet option.",
+            "parameters": []
+        },
+        "gigether-options speed [parameter2]": {
+            "template": "gigether-options speed [parameter2]",
+            "command": "gigether-options speed 1g",
+            "explanation": "Configure an interface with a Gg velocity of 1G.",
+            "parameters": [
+                {
+                    "name": "speed",
+                    "type": "string",
+                    "explanation": "Interface speed, for example 1g."
+                }
+            ]
+        },
+        "gigether-options link-mode [parameter2]": {
+            "template": "gigether-options link-mode [parameter2]",
+            "command": "gigether-options link-mode full-duplex",
+            "explanation": "The Gg of the configuration interface is based on the ENSP model.",
+            "parameters": [
+                {
+                    "name": "link-mode",
+                    "type": "string",
+                    "explanation": "Chain mode, for example full-duplex."
                 }
             ]
         },
@@ -454,38 +490,33 @@
             ]
         }
     },
-    "set routing-options static route [parameter1]/[parameter2]": {
-        "template": "set routing-options static route [parameter1]/[parameter2]",
-        "command": "set routing-options static route 0.0.0.0/0",
-        "explanation": "This command configures a static route in Junos, where `[parameter1]` is the destination network and `[parameter2]` is the subnet mask.",
+    "set system services ssh protocol-version [parameter1]": {
+        "template": "set system services ssh protocol-version [parameter1]",
+        "command": "set system services ssh protocol-version v2",
+        "explanation": "Configure the protocol version used for SSH services.",
         "parameters": [
             {
-                "name": "destination",
+                "name": "protocol-version",
                 "type": "string",
-                "explanation": "Target network address."
-            },
-            {
-                "name": "prefix-length",
-                "type": "integer",
-                "explanation": "Prefix length of target network."
+                "explanation": "SSH protocol version, v2 indicates use of SSH version 2."
             }
-        ],
-        "next-hop [parameter3]": {
-            "template": "next-hop [parameter3]",
-            "command": "next-hop 10.1.1.2",
-            "explanation": "Configures the static route.",
-            "parameters": [
-                {
-                    "name": "next-hop",
-                    "type": "string",
-                    "explanation": "Next jump address."
-                }
-            ]
-        }
+        ]
+    },
+    "set routing-options autonomous-system [parameter1]": {
+        "template": "set routing-options autonomous-system [parameter1]",
+        "command": "set routing-options autonomous-system 65420",
+        "explanation": "Autonomy system number with equipment.",
+        "parameters": [
+            {
+                "name": "autonomous-system",
+                "type": "integer",
+                "explanation": "Autonomy system number for equipment, used for route agreements such as BGP."
+            }
+        ]
     },
     "set protocols bgp group [parameter1]": {
         "template": "set protocols bgp group [parameter1]",
-        "command": "set protocols bgp group IBGP",
+        "command": "set protocols bgp group PEERS",
         "explanation": "This command configures a BGP group named [parameter1], defining a set of BGP peers with shared session parameters.",
         "parameters": [
             {
@@ -497,89 +528,48 @@
         "type [parameter2]": {
             "template": "type [parameter2]",
             "command": "type external",
-            "explanation": "Configure the type of BGP group.",
+            "explanation": "Configure BGP protocol group with specified type",
             "parameters": [
                 {
                     "name": "type",
                     "type": "string",
-                    "explanation": "Type of BGP group, e.g. external."
+                    "explanation": "Type of the BGP group, e.g., external"
+                }
+            ]
+        },
+        "local-address [parameter2]": {
+            "template": "local-address [parameter2]",
+            "command": "local-address 10.1.2.1",
+            "explanation": "Configure BGP protocol settings specifying the group and local address",
+            "parameters": [
+                {
+                    "name": "local address",
+                    "type": "IPv4 address",
+                    "explanation": "Local IP address for BGP sessions"
                 }
             ]
         },
         "peer-as [parameter2]": {
             "template": "peer-as [parameter2]",
             "command": "peer-as 100",
-            "explanation": "Configure the BGP group's equivalent AS.",
+            "explanation": "Configure BGP protocol settings by specifying the group and peer AS number",
             "parameters": [
                 {
-                    "name": "peer-as",
+                    "name": "peer AS number",
                     "type": "integer",
-                    "explanation": "Peer AS."
+                    "explanation": "Autonomous System number of the BGP peer"
                 }
             ]
         },
         "neighbor [parameter2]": {
             "template": "neighbor [parameter2]",
-            "command": "neighbor 10.1.1.2",
-            "explanation": "Configure the neighbors of the BGP team.",
+            "command": "neighbor 10.1.2.2",
+            "explanation": "Configure BGP protocol settings by specifying a group and a neighbor IP address",
             "parameters": [
                 {
-                    "name": "neighbor-address",
-                    "type": "string",
-                    "explanation": "Neighbor's IP address."
-                }
-            ]
-        },
-        "family inet [parameter2]": {
-            "template": "family inet [parameter2]",
-            "command": "family inet unicast",
-            "explanation": "Configure the addresses of the BGP group.",
-            "parameters": [
-                {
-                    "name": "address-family",
-                    "type": "string",
-                    "explanation": "Address type, e.g., unicast."
-                }
-            ]
-        },
-        "export [parameter2]": {
-            "template": "export [parameter2]",
-            "command": "export BGP-NETWORKS",
-            "explanation": "Configure the export policy of the BGP group.",
-            "parameters": [
-                {
-                    "name": "export-policy",
-                    "type": "string",
-                    "explanation": "Name of the export policy."
-                }
-            ]
-        },
-        "neighbor [parameter2] peer-as [parameter3]": {
-            "template": "neighbor [parameter2] peer-as [parameter3]",
-            "command": "neighbor 10.2.1.2 peer-as 100",
-            "explanation": "Configure BGP neighbours and their self-government systems.",
-            "parameters": [
-                {
-                    "name": "neighbor",
-                    "type": "string",
-                    "explanation": "BGP neighbor's IP address."
-                },
-                {
-                    "name": "peer-as",
-                    "type": "integer",
-                    "explanation": "BGP Neighbors' Autonomy System Number."
-                }
-            ]
-        },
-        "neighbor [parameter2] family inet unicast": {
-            "template": "neighbor [parameter2] family inet unicast",
-            "command": "neighbor 10.2.1.2 family inet unicast",
-            "explanation": "This post is part of our special coverage Global Voices 2011.",
-            "parameters": [
-                {
-                    "name": "neighbor",
-                    "type": "string",
-                    "explanation": "BGP neighbor's IP address."
+                    "name": "neighbor IP address",
+                    "type": "IPv4 address",
+                    "explanation": "IP address of the BGP neighbor"
                 }
             ]
         },
@@ -591,24 +581,29 @@
                 {
                     "name": "address family",
                     "type": "string",
-                    "explanation": "The address family to configure (e.g., inet)"
+                    "explanation": "Address family type (e.g., inet)"
                 },
                 {
-                    "name": "address family type",
+                    "name": "sub-address family",
                     "type": "string",
-                    "explanation": "The type of the address family (e.g., unicast)"
+                    "explanation": "Sub-address family type (e.g., unicast)"
                 }
             ]
         },
-        "local-address [parameter2]": {
-            "template": "local-address [parameter2]",
-            "command": "local-address 172.16.1.2",
-            "explanation": "Configure the local address of the BGP group.",
+        "neighbor [parameter2] peer-as [parameter3]": {
+            "template": "neighbor [parameter2] peer-as [parameter3]",
+            "command": "neighbor 10.3.1.2 peer-as 100",
+            "explanation": "Configure BGP neighbours and their self-government systems.",
             "parameters": [
                 {
-                    "name": "local-address",
+                    "name": "neighbor",
                     "type": "string",
-                    "explanation": "Local address of the BGP group."
+                    "explanation": "BGP neighbor's IP address."
+                },
+                {
+                    "name": "peer-as",
+                    "type": "integer",
+                    "explanation": "Neighbors' Home Rule System Number."
                 }
             ]
         },
@@ -634,15 +629,15 @@
                 }
             ]
         },
-        "local-as [parameter2]": {
-            "template": "local-as [parameter2]",
-            "command": "local-as 200",
-            "explanation": "Configure local AS numbers for BGP groups.",
+        "export [parameter2]": {
+            "template": "export [parameter2]",
+            "command": "export ADVERTISE_NETWORK",
+            "explanation": "Configure the BGP group to export the specified route policy.",
             "parameters": [
                 {
-                    "name": "local-as",
-                    "type": "integer",
-                    "explanation": "Local AS number."
+                    "name": "export",
+                    "type": "string",
+                    "explanation": "The name of the export route's strategy."
                 }
             ]
         },
@@ -655,6 +650,18 @@
                     "name": "prefix-limit",
                     "type": "string",
                     "explanation": "Prefix limits, e.g. 10.1.2.0/24."
+                }
+            ]
+        },
+        "local-as [parameter2]": {
+            "template": "local-as [parameter2]",
+            "command": "local-as 200",
+            "explanation": "Configure local AS numbers for BGP groups.",
+            "parameters": [
+                {
+                    "name": "local-as",
+                    "type": "integer",
+                    "explanation": "Local AS number."
                 }
             ]
         },
@@ -688,128 +695,62 @@
             ]
         }
     },
-    "set policy-options policy-statement [parameter1]": {
-        "template": "set policy-options policy-statement [parameter1]",
-        "command": "set policy-options policy-statement BGP-NETWORKS",
-        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+    "set vlans [parameter1]": {
+        "template": "set vlans [parameter1]",
+        "command": "set vlans VLAN2",
+        "explanation": "Configure VLAN.",
         "parameters": [
             {
-                "name": "policy-statement",
+                "name": "vlan-name",
                 "type": "string",
-                "explanation": "name of the policy statement."
+                "explanation": "VLAN's name, like Vlan100."
             }
         ],
-        "term [parameter2] from route-filter [parameter3]/[parameter4] [parameter5]": {
-            "template": "term [parameter2] from route-filter [parameter3]/[parameter4] [parameter5]",
-            "command": "term 1 from route-filter 10.1.1.0/24 exact",
-            "explanation": "Configure the matching conditions for the policy statement.",
+        "vlan-id [parameter2]": {
+            "template": "vlan-id [parameter2]",
+            "command": "vlan-id 2",
+            "explanation": "Configure VLAN's ID.",
             "parameters": [
                 {
-                    "name": "term",
+                    "name": "vlan-id",
                     "type": "integer",
-                    "explanation": "The term number of the policy statement."
-                },
-                {
-                    "name": "route-filter",
-                    "type": "string",
-                    "explanation": "Route filter, which matches a specific route."
-                },
-                {
-                    "name": "prefix-length",
-                    "type": "integer",
-                    "explanation": "Route prefix length."
-                },
-                {
-                    "name": "match-type",
-                    "type": "string",
-                    "explanation": "Match type, for example."
+                    "explanation": "VLAN ID."
                 }
             ]
         },
-        "term [parameter2] then [parameter3]": {
-            "template": "term [parameter2] then [parameter3]",
-            "command": "term 1 then accept",
-            "explanation": "Configure the action for the policy statement.",
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface ae100",
+            "explanation": "Ties VLAN to the specified interface.",
             "parameters": [
                 {
-                    "name": "term",
-                    "type": "integer",
-                    "explanation": "The term number of the policy statement."
-                },
-                {
-                    "name": "action",
+                    "name": "interface",
                     "type": "string",
-                    "explanation": "Actions, like accept."
+                    "explanation": "Interface name, e.g. ae100."
                 }
             ]
         },
-        "term [parameter2] from route-filter [parameter3] exact": {
-            "template": "term [parameter2] from route-filter [parameter3] exact",
-            "command": "term 1 from route-filter 10.2.1.0/24 exact",
-            "explanation": "Configures the matching conditions for the policy statement, which accurately matches the given route.",
+        "l3-interface [parameter2]": {
+            "template": "l3-interface [parameter2]",
+            "command": "l3-interface irb.10",
+            "explanation": "Link VLAN to the three-layer interface.",
             "parameters": [
                 {
-                    "name": "term",
-                    "type": "integer",
-                    "explanation": "The term number of the policy statement."
-                },
-                {
-                    "name": "route-filter",
+                    "name": "interface",
                     "type": "string",
-                    "explanation": "For matching route prefixes."
+                    "explanation": "Three-tier interface name."
                 }
             ]
         },
-        "term [parameter2] then accept": {
-            "template": "term [parameter2] then accept",
-            "command": "term 1 then accept",
-            "explanation": "Configures the actions of the policy statement, and accepts a matching path.",
+        "description [parameter2]": {
+            "template": "description [parameter2]",
+            "command": "description \"Default VLAN\"",
+            "explanation": "Configures the description of VLAN.",
             "parameters": [
                 {
-                    "name": "term",
-                    "type": "integer",
-                    "explanation": "The term number of the policy statement."
-                }
-            ]
-        },
-        "term [parameter2] from protocol [parameter3]": {
-            "template": "term [parameter2] from protocol [parameter3]",
-            "command": "term 1 from protocol direct",
-            "explanation": "Configure the matching conditions of the router policy as the direct connecting route.",
-            "parameters": [
-                {
-                    "name": "term",
-                    "type": "integer",
-                    "explanation": "the serial number of the policy item."
-                },
-                {
-                    "name": "protocol",
+                    "name": "description",
                     "type": "string",
-                    "explanation": "Matches route protocols, for example, direct."
-                }
-            ]
-        },
-        "then [parameter2]": {
-            "template": "then [parameter2]",
-            "command": "then accept",
-            "explanation": "Configure the movement of route policy as the path to be matched.",
-            "parameters": [
-                {
-                    "name": "action",
-                    "type": "string",
-                    "explanation": "Policy action, for example."
-                }
-            ]
-        },
-        "from protocol [parameter2]": {
-            "template": "from protocol [parameter2]",
-            "command": "from protocol direct",
-            "explanation": "Defines a strategy for redistributing the connected route to BGP.",
-            "parameters": [
-                {
-                    "name": "protocol",
-                    "type": "string",
-                    "explanation": "Type of agreement, e.g. direct."
+                    "explanation": "VLAN description information."
                 }
             ]
         }
@@ -826,67 +767,21 @@
             }
         ]
     },
-    "set system services ssh hostkey-algorithm [parameter1]": {
-        "template": "set system services ssh hostkey-algorithm [parameter1]",
-        "command": "set system services ssh hostkey-algorithm rsa",
-        "explanation": "Configure the primary key algorithm for SSH services.",
+    "set system services ssh root-login [parameter1]": {
+        "template": "set system services ssh root-login [parameter1]",
+        "command": "set system services ssh root-login deny",
+        "explanation": "Configure SSH services, prohibiting root users from login.",
         "parameters": [
             {
-                "name": "hostkey-algorithm",
+                "name": "root-login",
                 "type": "string",
-                "explanation": "Primary key algorithm used for SSH services."
-            }
-        ]
-    },
-    "set system services ssh key-exchange [parameter1]": {
-        "template": "set system services ssh key-exchange [parameter1]",
-        "command": "set system services ssh key-exchange group14-sha256",
-        "explanation": "Configure key exchange algorithms for SSH services.",
-        "parameters": [
-            {
-                "name": "key-exchange",
-                "type": "string",
-                "explanation": "A key exchange algorithm is used for SSH services."
-            }
-        ]
-    },
-    "set system services ssh ciphers [parameter1] [parameter2] [parameter3]": {
-        "template": "set system services ssh ciphers [parameter1] [parameter2] [parameter3]",
-        "command": "set system services ssh ciphers aes128-ctr aes192-ctr aes256-ctr",
-        "explanation": "Configure the encryption algorithms used for SSH services.",
-        "parameters": [
-            {
-                "name": "cipher1",
-                "type": "string",
-                "explanation": "The first encryption algorithm is used for SSH services."
-            },
-            {
-                "name": "cipher2",
-                "type": "string",
-                "explanation": "The second encryption algorithm is used for SSH services."
-            },
-            {
-                "name": "cipher3",
-                "type": "string",
-                "explanation": "The third encryption algorithm is used for SSH services."
-            }
-        ]
-    },
-    "set system services ssh protocol-version [parameter1]": {
-        "template": "set system services ssh protocol-version [parameter1]",
-        "command": "set system services ssh protocol-version v2",
-        "explanation": "Configure the protocol version used for SSH services.",
-        "parameters": [
-            {
-                "name": "protocol-version",
-                "type": "string",
-                "explanation": "SSH protocol version, v2 indicates use of SSH version 2."
+                "explanation": "Whether or not to control root users can log in through SSH and Deny says no."
             }
         ]
     },
     "set system login user [parameter1]": {
         "template": "set system login user [parameter1]",
-        "command": "set system login user client001",
+        "command": "set system login user <username>",
         "explanation": "This command fragment configures a user account on a Junos device, where `[parameter1]` specifies the username for login authentication and management access.",
         "parameters": [
             {
@@ -895,6 +790,12 @@
                 "explanation": "User name."
             }
         ],
+        "authentication plain-text-password": {
+            "template": "authentication plain-text-password",
+            "command": "authentication plain-text-password",
+            "explanation": "Configure a system login user with a plain-text password",
+            "parameters": []
+        },
         "class [parameter2]": {
             "template": "class [parameter2]",
             "command": "class super-user",
@@ -931,18 +832,6 @@
                 }
             ]
         },
-        "authentication-tries [parameter2]": {
-            "template": "authentication-tries [parameter2]",
-            "command": "authentication-tries 4",
-            "explanation": "Configure the number of authentication attempts that you want to log in.",
-            "parameters": [
-                {
-                    "name": "authentication-tries",
-                    "type": "integer",
-                    "explanation": "Number of authentication attempts allowed."
-                }
-            ]
-        },
         "class [parameter2] authentication [parameter3]": {
             "template": "class [parameter2] authentication [parameter3]",
             "command": "class super-user authentication plain-text-password",
@@ -960,6 +849,18 @@
                 }
             ]
         },
+        "authentication-tries [parameter2]": {
+            "template": "authentication-tries [parameter2]",
+            "command": "authentication-tries 4",
+            "explanation": "Configure the number of authentication attempts that you want to log in.",
+            "parameters": [
+                {
+                    "name": "authentication-tries",
+                    "type": "integer",
+                    "explanation": "Number of authentication attempts allowed."
+                }
+            ]
+        },
         "authentication [parameter2]": {
             "template": "authentication [parameter2]",
             "command": "authentication plain-text-password",
@@ -973,86 +874,302 @@
             ]
         }
     },
-    "set system authentication-order [parameter1]": {
-        "template": "set system authentication-order [parameter1]",
-        "command": "set system authentication-order password",
-        "explanation": "Configure the authentication order of the system.",
-        "parameters": [
-            {
-                "name": "authentication-method",
-                "type": "string",
-                "explanation": "Authentication methods, such as Radius."
-            }
-        ]
+    "set system services ssh": {
+        "template": "set system services ssh",
+        "command": "set system services ssh",
+        "explanation": "Enable SSH services.",
+        "parameters": []
     },
-    "set system ports console [parameter1]": {
-        "template": "set system ports console [parameter1]",
-        "command": "set system ports console insecure",
-        "explanation": "Configure the security of the console port.",
+    "set policy-options policy-statement [parameter1]": {
+        "template": "set policy-options policy-statement [parameter1]",
+        "command": "set policy-options policy-statement ADVERTISE_NETWORK",
+        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
         "parameters": [
             {
-                "name": "security",
+                "name": "policy-statement",
                 "type": "string",
-                "explanation": "The security settings of the console port, for example, include:"
-            }
-        ]
-    },
-    "set vlans [parameter1]": {
-        "template": "set vlans [parameter1]",
-        "command": "set vlans vlan10",
-        "explanation": "Configure VLAN.",
-        "parameters": [
-            {
-                "name": "vlan-name",
-                "type": "string",
-                "explanation": "VLAN's name, like Vlan100."
+                "explanation": "name of the policy statement."
             }
         ],
-        "vlan-id [parameter2]": {
-            "template": "vlan-id [parameter2]",
-            "command": "vlan-id 10",
-            "explanation": "Configure VLAN's ID.",
+        "term [parameter2] from route-filter [parameter3]/[parameter4] [parameter5]": {
+            "template": "term [parameter2] from route-filter [parameter3]/[parameter4] [parameter5]",
+            "command": "term 1 from route-filter 10.3.1.0/24 exact",
+            "explanation": "Configures the matching conditions for routed strategies.",
             "parameters": [
                 {
-                    "name": "vlan-id",
+                    "name": "term",
                     "type": "integer",
-                    "explanation": "VLAN ID."
+                    "explanation": "."
+                },
+                {
+                    "name": "route-filter",
+                    "type": "string",
+                    "explanation": "Route filter, specify a matching route."
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "Bits of subnet mask."
+                },
+                {
+                    "name": "match-type",
+                    "type": "string",
+                    "explanation": "Match type, for example."
                 }
             ]
         },
-        "interface [parameter2]": {
-            "template": "interface [parameter2]",
-            "command": "interface ae100",
-            "explanation": "Ties VLAN to the specified interface.",
+        "term [parameter2] then [parameter3]": {
+            "template": "term [parameter2] then [parameter3]",
+            "command": "term 1 then accept",
+            "explanation": "Configure the actions of the route policy.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "."
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "explanation": "Actions, like accept."
+                }
+            ]
+        },
+        "then [parameter2]": {
+            "template": "then [parameter2]",
+            "command": "then reject",
+            "explanation": "Configure the default action for the route policy.",
+            "parameters": [
+                {
+                    "name": "action",
+                    "type": "string",
+                    "explanation": "Default action, such as reject."
+                }
+            ]
+        },
+        "term [parameter2] from protocol [parameter3]": {
+            "template": "term [parameter2] from protocol [parameter3]",
+            "command": "term 1 from protocol ospf",
+            "explanation": "Configure the matching condition for the policy statement is the OSF protocol.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "The term of the policy statement."
+                },
+                {
+                    "name": "protocol",
+                    "type": "string",
+                    "explanation": "Matches the protocol type, for example, ospf."
+                }
+            ]
+        },
+        "then reject": {
+            "template": "then reject",
+            "command": "then reject",
+            "explanation": "Configures the default actions for the policy statement, rejecting all unmatched paths.",
+            "parameters": []
+        },
+        "from protocol [parameter2]": {
+            "template": "from protocol [parameter2]",
+            "command": "from protocol direct",
+            "explanation": "Defines a strategy for redistributing the connected route to BGP.",
+            "parameters": [
+                {
+                    "name": "protocol",
+                    "type": "string",
+                    "explanation": "Type of agreement, e.g. direct."
+                }
+            ]
+        }
+    },
+    "set security zones security-zone [parameter1]": {
+        "template": "set security zones security-zone [parameter1]",
+        "command": "set security zones security-zone trust",
+        "explanation": "This command fragment configures a security zone named `[parameter1]` within the Junos security zones hierarchy, defining a logical boundary for security policies and interfaces.",
+        "parameters": [
+            {
+                "name": "zone-name",
+                "type": "string",
+                "explanation": "Name of the safe area."
+            }
+        ],
+        "interfaces [parameter2] host-inbound-traffic system-services [parameter3]": {
+            "template": "interfaces [parameter2] host-inbound-traffic system-services [parameter3]",
+            "command": "interfaces ge-0/0/0 host-inbound-traffic system-services all",
+            "explanation": "The interfaces with the secure Zone of Confidence allow all system service entry traffic.",
             "parameters": [
                 {
                     "name": "interface",
                     "type": "string",
-                    "explanation": "Interface name, e.g., g-2/0/0.0."
+                    "explanation": "Interface name, e.g., g-0/0/0."
+                },
+                {
+                    "name": "system-services",
+                    "type": "string",
+                    "explanation": "Allowed type of system service, e.g. all."
                 }
             ]
         },
-        "description [parameter2]": {
-            "template": "description [parameter2]",
-            "command": "description \"Default VLAN\"",
-            "explanation": "Configures the description of VLAN.",
+        "interfaces [parameter2]": {
+            "template": "interfaces [parameter2]",
+            "command": "interfaces ge-0/0/0.0",
+            "explanation": "Configure security zone and assign an interface to it",
             "parameters": [
                 {
-                    "name": "description",
+                    "name": "interface name",
                     "type": "string",
-                    "explanation": "VLAN description information."
+                    "explanation": "Name of the interface to be assigned to the security zone"
+                }
+            ]
+        }
+    },
+    "set security nat source pool [parameter1]": {
+        "template": "set security nat source pool [parameter1]",
+        "command": "set security nat source pool address-group1",
+        "explanation": "This command configures a source NAT pool named `[parameter1]` in Junos, defining a range of IP addresses used for translating private source IPs to public IPs.",
+        "parameters": [
+            {
+                "name": "pool-name",
+                "type": "string",
+                "explanation": "Name of NAT source pool."
+            }
+        ],
+        "address [parameter2] to [parameter3]": {
+            "template": "address [parameter2] to [parameter3]",
+            "command": "address 11.11.11.101 to 11.11.11.105",
+            "explanation": "Configure the address range of the source NAT address pool.",
+            "parameters": [
+                {
+                    "name": "start-address",
+                    "type": "string",
+                    "explanation": "Address pool start address."
+                },
+                {
+                    "name": "end-address",
+                    "type": "string",
+                    "explanation": "Address pool end address."
+                }
+            ]
+        }
+    },
+    "set security nat source rule-set [parameter1]": {
+        "template": "set security nat source rule-set [parameter1]",
+        "command": "set security nat source rule-set OUTBOUND",
+        "explanation": "This command configures a source NAT rule set in Junos, defining a collection of rules for translating source IP addresses in traffic matching specified criteria.",
+        "parameters": [
+            {
+                "name": "rule-set-name",
+                "type": "string",
+                "explanation": "Name of the NAT rule book."
+            }
+        ],
+        "from zone [parameter2]": {
+            "template": "from zone [parameter2]",
+            "command": "from zone trust",
+            "explanation": "Configure the application area for the source NAT ruleset.",
+            "parameters": [
+                {
+                    "name": "zone",
+                    "type": "string",
+                    "explanation": "Source area name, such as trust."
                 }
             ]
         },
-        "l3-interface [parameter2]": {
-            "template": "l3-interface [parameter2]",
-            "command": "l3-interface irb.10",
-            "explanation": "Link VLAN to the three-layer interface.",
+        "to zone [parameter2]": {
+            "template": "to zone [parameter2]",
+            "command": "to zone untrust",
+            "explanation": "Configure the application target area for the source NAT ruleset.",
             "parameters": [
                 {
-                    "name": "interface",
+                    "name": "zone",
                     "type": "string",
-                    "explanation": "Three-tier interface name."
+                    "explanation": "Target area name, e.g. untrust."
+                }
+            ]
+        },
+        "rule [parameter2] match source-address [parameter3]/[parameter4]": {
+            "template": "rule [parameter2] match source-address [parameter3]/[parameter4]",
+            "command": "rule NAT-INSIDE match source-address 192.168.10.0/24",
+            "explanation": "Configure the source address range that the source NAT rules match.",
+            "parameters": [
+                {
+                    "name": "rule",
+                    "type": "string",
+                    "explanation": "Rule name, such as NAT-INSIDE."
+                },
+                {
+                    "name": "source-address",
+                    "type": "string",
+                    "explanation": "Matches the source address range."
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "Number of subnet mask bits in the source address range."
+                }
+            ]
+        },
+        "rule [parameter2] then source-nat pool [parameter3]": {
+            "template": "rule [parameter2] then source-nat pool [parameter3]",
+            "command": "rule NAT-INSIDE then source-nat pool address-group1",
+            "explanation": "Configure the source address conversion behaviour for source NAT rules.",
+            "parameters": [
+                {
+                    "name": "rule",
+                    "type": "string",
+                    "explanation": "Rule name, such as NAT-INSIDE."
+                },
+                {
+                    "name": "pool",
+                    "type": "string",
+                    "explanation": "Name of the address pool used to convert the source address, e.g., address-group1."
+                }
+            ]
+        },
+        "rule [parameter2] match source-address [parameter3]": {
+            "template": "rule [parameter2] match source-address [parameter3]",
+            "command": "rule R1 match source-address 192.168.10.0/24",
+            "explanation": "Configure NAT source rule set with a specific rule matching a source address",
+            "parameters": [
+                {
+                    "name": "rule name",
+                    "type": "string",
+                    "explanation": "Name of the rule within the rule set"
+                },
+                {
+                    "name": "source address",
+                    "type": "CIDR notation",
+                    "explanation": "Source address to match in CIDR notation"
+                }
+            ]
+        }
+    },
+    "set routing-options static route [parameter1]/[parameter2]": {
+        "template": "set routing-options static route [parameter1]/[parameter2]",
+        "command": "set routing-options static route 10.1.2.0/24",
+        "explanation": "This command configures a static route in Junos, where `[parameter1]` is the destination network and `[parameter2]` is the subnet mask.",
+        "parameters": [
+            {
+                "name": "destination",
+                "type": "string",
+                "explanation": "Target network address."
+            },
+            {
+                "name": "prefix-length",
+                "type": "integer",
+                "explanation": "Prefix length of target network."
+            }
+        ],
+        "next-hop [parameter3]": {
+            "template": "next-hop [parameter3]",
+            "command": "next-hop 10.110.0.10",
+            "explanation": "Configure static routers, specify the destination network and the next jump address.",
+            "parameters": [
+                {
+                    "name": "next-hop",
+                    "type": "string",
+                    "explanation": "Next jump address, the package forwards to the next stop of the destination network."
                 }
             ]
         }
@@ -1070,13 +1187,13 @@
         ],
         "interface [parameter2]": {
             "template": "interface [parameter2]",
-            "command": "interface ge-3/0/0.0",
-            "explanation": "Configure the OSPF interface within the assigned area.",
+            "command": "interface ge-2/0/0",
+            "explanation": "Configure OSPF regions and interfaces.",
             "parameters": [
                 {
                     "name": "interface",
                     "type": "string",
-                    "explanation": "Interface name, e.g., g-3/0/0.0."
+                    "explanation": "Interface name, e.g. g-2/0/0."
                 }
             ]
         },
@@ -1093,15 +1210,56 @@
             ]
         }
     },
-    "set routing-options autonomous-system [parameter1]": {
-        "template": "set routing-options autonomous-system [parameter1]",
-        "command": "set routing-options autonomous-system 700",
-        "explanation": "Autonomy system number with equipment.",
+    "set forwarding-options hash-key family [parameter1] [parameter2]": {
+        "template": "set forwarding-options hash-key family [parameter1] [parameter2]",
+        "command": "set forwarding-options hash-key family inet per-packet-balancing",
+        "explanation": "Configures the Hash keys for forwarding options to specify how the IPv4 family package is balanced.",
         "parameters": [
             {
-                "name": "autonomous-system",
-                "type": "integer",
-                "explanation": "Autonomy system number for equipment, used for route agreements such as BGP."
+                "name": "family",
+                "type": "string",
+                "explanation": "Designated family of the protocol, e.g., it indicates IPv4."
+            },
+            {
+                "name": "balancing-method",
+                "type": "string",
+                "explanation": "Specifies the method of balancing the package, such as per-packet-ballancing."
+            }
+        ]
+    },
+    "set forwarding-options port-mirroring input [parameter1]": {
+        "template": "set forwarding-options port-mirroring input [parameter1]",
+        "command": "set forwarding-options port-mirroring input ingress",
+        "explanation": "The command configures port mirroring to copy incoming traffic from the specified interface (`[parameter1]`) to a monitoring interface for analysis.",
+        "parameters": [
+            {
+                "name": "direction",
+                "type": "string",
+                "explanation": "Data flow direction, e.g. ingress."
+            }
+        ],
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface ge-1/0/0",
+            "explanation": "Configure the input direction and interface of the port mirror.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0."
+                }
+            ]
+        }
+    },
+    "set forwarding-options port-mirroring output interface [parameter1]": {
+        "template": "set forwarding-options port-mirroring output interface [parameter1]",
+        "command": "set forwarding-options port-mirroring output interface ge-1/0/1",
+        "explanation": "Configure the output interface for port mirrors.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/1."
             }
         ]
     },
@@ -1250,220 +1408,87 @@
             ]
         }
     },
-    "set forwarding-options hash-key family [parameter1] [parameter2]": {
-        "template": "set forwarding-options hash-key family [parameter1] [parameter2]",
-        "command": "set forwarding-options hash-key family inet per-packet-balancing",
-        "explanation": "Configures the Hash key for forwarding options, for each package of IPv4s.",
+    "set system services ssh hostkey-algorithm [parameter1]": {
+        "template": "set system services ssh hostkey-algorithm [parameter1]",
+        "command": "set system services ssh hostkey-algorithm rsa",
+        "explanation": "Configure the primary key algorithm for SSH services.",
         "parameters": [
             {
-                "name": "family",
+                "name": "hostkey-algorithm",
                 "type": "string",
-                "explanation": "The protocol family, e.g., it means IPv4."
+                "explanation": "Primary key algorithm used for SSH services."
+            }
+        ]
+    },
+    "set system services ssh key-exchange [parameter1]": {
+        "template": "set system services ssh key-exchange [parameter1]",
+        "command": "set system services ssh key-exchange group14-sha256",
+        "explanation": "Configure key exchange algorithms for SSH services.",
+        "parameters": [
+            {
+                "name": "key-exchange",
+                "type": "string",
+                "explanation": "A key exchange algorithm is used for SSH services."
+            }
+        ]
+    },
+    "set system services ssh ciphers [parameter1] [parameter2] [parameter3]": {
+        "template": "set system services ssh ciphers [parameter1] [parameter2] [parameter3]",
+        "command": "set system services ssh ciphers aes128-ctr aes192-ctr aes256-ctr",
+        "explanation": "Configure the encryption algorithms used for SSH services.",
+        "parameters": [
+            {
+                "name": "cipher1",
+                "type": "string",
+                "explanation": "The first encryption algorithm is used for SSH services."
             },
             {
-                "name": "balancing-method",
+                "name": "cipher2",
                 "type": "string",
-                "explanation": "The load equilibrium method, such as per-packet-ballancing, indicates a load balance per package."
+                "explanation": "The second encryption algorithm is used for SSH services."
+            },
+            {
+                "name": "cipher3",
+                "type": "string",
+                "explanation": "The third encryption algorithm is used for SSH services."
             }
         ]
     },
-    "set forwarding-options port-mirroring input [parameter1]": {
-        "template": "set forwarding-options port-mirroring input [parameter1]",
-        "command": "set forwarding-options port-mirroring input ingress",
-        "explanation": "The command configures port mirroring to copy incoming traffic from the specified interface (`[parameter1]`) to a monitoring interface for analysis.",
+    "set system authentication-order [parameter1]": {
+        "template": "set system authentication-order [parameter1]",
+        "command": "set system authentication-order password",
+        "explanation": "Configure the authentication order of the system.",
         "parameters": [
             {
-                "name": "direction",
+                "name": "authentication-method",
                 "type": "string",
-                "explanation": "Data flow direction, e.g. ingress."
-            }
-        ],
-        "interface [parameter2]": {
-            "template": "interface [parameter2]",
-            "command": "interface ge-1/0/0",
-            "explanation": "Configure the input direction and interface of the port mirror.",
-            "parameters": [
-                {
-                    "name": "interface",
-                    "type": "string",
-                    "explanation": "Interface name, e.g., g-1/0/0."
-                }
-            ]
-        }
-    },
-    "set forwarding-options port-mirroring output interface [parameter1]": {
-        "template": "set forwarding-options port-mirroring output interface [parameter1]",
-        "command": "set forwarding-options port-mirroring output interface ge-1/0/1",
-        "explanation": "Configure the output interface for port mirrors.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g., g-1/0/1."
+                "explanation": "Authentication methods, such as Radius."
             }
         ]
     },
-    "set security zones security-zone [parameter1]": {
-        "template": "set security zones security-zone [parameter1]",
-        "command": "set security zones security-zone trust",
-        "explanation": "This command fragment configures a security zone named `[parameter1]` within the Junos security zones hierarchy, defining a logical boundary for security policies and interfaces.",
+    "set system ports console [parameter1]": {
+        "template": "set system ports console [parameter1]",
+        "command": "set system ports console insecure",
+        "explanation": "Configure the security of the console port.",
         "parameters": [
             {
-                "name": "zone-name",
+                "name": "security",
                 "type": "string",
-                "explanation": "Name of the safe area."
+                "explanation": "The security settings of the console port, for example, include:"
             }
-        ],
-        "interfaces [parameter2]": {
-            "template": "interfaces [parameter2]",
-            "command": "interfaces ge-0/0/0.0",
-            "explanation": "Configure security zone and assign an interface to it",
-            "parameters": [
-                {
-                    "name": "interface name",
-                    "type": "string",
-                    "explanation": "Name of the interface to be assigned to the security zone"
-                }
-            ]
-        },
-        "interfaces [parameter2] host-inbound-traffic system-services [parameter3]": {
-            "template": "interfaces [parameter2] host-inbound-traffic system-services [parameter3]",
-            "command": "interfaces ge-0/0/0.0 host-inbound-traffic system-services ssh",
-            "explanation": "Configure the port traffic services allowed in the safe area.",
-            "parameters": [
-                {
-                    "name": "interface",
-                    "type": "string",
-                    "explanation": "Interface name, e.g., g-0/0/0.0."
-                },
-                {
-                    "name": "service",
-                    "type": "string",
-                    "explanation": "Allowed entry and flow service names, such as ssh."
-                }
-            ]
-        }
+        ]
     },
-    "set security nat source pool [parameter1]": {
-        "template": "set security nat source pool [parameter1]",
-        "command": "set security nat source pool NATPOOL",
-        "explanation": "This command configures a source NAT pool named `[parameter1]` in Junos, defining a range of IP addresses used for translating private source IPs to public IPs.",
+    "set system services [parameter1]": {
+        "template": "set system services [parameter1]",
+        "command": "set system services ssh",
+        "explanation": "Enable system services such as SSH.",
         "parameters": [
             {
-                "name": "pool-name",
+                "name": "service",
                 "type": "string",
-                "explanation": "Name of NAT source pool."
+                "explanation": "System service name, e.g. ssh."
             }
-        ],
-        "address [parameter2] to [parameter3]": {
-            "template": "address [parameter2] to [parameter3]",
-            "command": "address 1.1.1.101 to 1.1.1.105",
-            "explanation": "Configure NAT source pool with a range of addresses",
-            "parameters": [
-                {
-                    "name": "starting IP address",
-                    "type": "IP address",
-                    "explanation": "The first IP address in the range"
-                },
-                {
-                    "name": "ending IP address",
-                    "type": "IP address",
-                    "explanation": "The last IP address in the range"
-                }
-            ]
-        }
-    },
-    "set security nat source rule-set [parameter1]": {
-        "template": "set security nat source rule-set [parameter1]",
-        "command": "set security nat source rule-set RS1",
-        "explanation": "This command configures a source NAT rule set in Junos, defining a collection of rules for translating source IP addresses in traffic matching specified criteria.",
-        "parameters": [
-            {
-                "name": "rule-set-name",
-                "type": "string",
-                "explanation": "Name of the NAT rule book."
-            }
-        ],
-        "from zone [parameter2]": {
-            "template": "from zone [parameter2]",
-            "command": "from zone trust",
-            "explanation": "Configure NAT source rule set to apply from a specific zone",
-            "parameters": [
-                {
-                    "name": "zone name",
-                    "type": "string",
-                    "explanation": "Name of the zone from which the rule set is applied"
-                }
-            ]
-        },
-        "to zone [parameter2]": {
-            "template": "to zone [parameter2]",
-            "command": "to zone untrust",
-            "explanation": "Configure NAT source rule-set to a specific zone",
-            "parameters": [
-                {
-                    "name": "zone name",
-                    "type": "string",
-                    "explanation": "Name of the zone to which the rule-set is applied"
-                }
-            ]
-        },
-        "rule [parameter2] match source-address [parameter3]": {
-            "template": "rule [parameter2] match source-address [parameter3]",
-            "command": "rule R1 match source-address 192.168.10.0/24",
-            "explanation": "Configure NAT source rule set with a specific rule matching a source address",
-            "parameters": [
-                {
-                    "name": "rule name",
-                    "type": "string",
-                    "explanation": "Name of the rule within the rule set"
-                },
-                {
-                    "name": "source address",
-                    "type": "CIDR notation",
-                    "explanation": "Source address to match in CIDR notation"
-                }
-            ]
-        },
-        "rule [parameter2] then source-nat pool [parameter3]": {
-            "template": "rule [parameter2] then source-nat pool [parameter3]",
-            "command": "rule R1 then source-nat pool NATPOOL",
-            "explanation": "Configure source NAT rule within a rule set to use a specific NAT pool",
-            "parameters": [
-                {
-                    "name": "rule name",
-                    "type": "string",
-                    "explanation": "Name of the rule within the rule set"
-                },
-                {
-                    "name": "NAT pool name",
-                    "type": "string",
-                    "explanation": "Name of the NAT pool to be used for source NAT"
-                }
-            ]
-        },
-        "rule [parameter2] match source-address [parameter3]/[parameter4]": {
-            "template": "rule [parameter2] match source-address [parameter3]/[parameter4]",
-            "command": "rule NAT-INSIDE match source-address 192.168.10.0/24",
-            "explanation": "Configure the source address range that the source NAT rules match.",
-            "parameters": [
-                {
-                    "name": "rule",
-                    "type": "string",
-                    "explanation": "Rule name, such as NAT-INSIDE."
-                },
-                {
-                    "name": "source-address",
-                    "type": "string",
-                    "explanation": "Matches the source address range."
-                },
-                {
-                    "name": "subnet-mask",
-                    "type": "integer",
-                    "explanation": "Number of subnet mask bits in the source address range."
-                }
-            ]
-        }
+        ]
     },
     "set security nat static rule-set [parameter1]": {
         "template": "set security nat static rule-set [parameter1]",
@@ -1595,22 +1620,10 @@
             }
         ]
     },
-    "set system services ssh root-login [parameter1]": {
-        "template": "set system services ssh root-login [parameter1]",
-        "command": "set system services ssh root-login deny",
-        "explanation": "Configure SSH services, prohibiting root users from login.",
-        "parameters": [
-            {
-                "name": "root-login",
-                "type": "string",
-                "explanation": "Whether or not to control root users can log in through SSH and Deny says no."
-            }
-        ]
-    },
     "set system services ssh connection-limit [parameter1]": {
         "template": "set system services ssh connection-limit [parameter1]",
-        "command": "set system services ssh connection-limit 4",
-        "explanation": "Configure the maximum number of connections to SSH services.",
+        "command": "set system services ssh connection-limit 5",
+        "explanation": "Sets the connection limits for SSH services.",
         "parameters": [
             {
                 "name": "connection-limit",
@@ -1631,18 +1644,6 @@
             }
         ]
     },
-    "set system services [parameter1]": {
-        "template": "set system services [parameter1]",
-        "command": "set system services ssh",
-        "explanation": "Enable system services such as SSH.",
-        "parameters": [
-            {
-                "name": "service",
-                "type": "string",
-                "explanation": "System service name, e.g. ssh."
-            }
-        ]
-    },
     "set system services ssh client-alive-count-max [parameter1]": {
         "template": "set system services ssh client-alive-count-max [parameter1]",
         "command": "set system services ssh client-alive-count-max 1",
@@ -1652,380 +1653,6 @@
                 "name": "count",
                 "type": "integer",
                 "explanation": "Maximum number of client survival tests."
-            }
-        ]
-    },
-    "set protocols bgp local-as [parameter1]": {
-        "template": "set protocols bgp local-as [parameter1]",
-        "command": "set protocols bgp local-as 65410",
-        "explanation": "Configure the local AS number of the BGP protocol.",
-        "parameters": [
-            {
-                "name": "local-as",
-                "type": "integer",
-                "explanation": "Local self-government system number."
-            }
-        ]
-    },
-    "set system services ssh ciphers [parameter1]": {
-        "template": "set system services ssh ciphers [parameter1]",
-        "command": "set system services ssh ciphers aes128-ctr",
-        "explanation": "Configure SSH ciphers for system services",
-        "parameters": [
-            {
-                "name": "cipher algorithm",
-                "type": "string",
-                "explanation": "The cipher algorithm to be used for SSH"
-            }
-        ]
-    },
-    "set protocols stp bridge-priority [parameter1]": {
-        "template": "set protocols stp bridge-priority [parameter1]",
-        "command": "set protocols stp bridge-priority 8",
-        "explanation": "The command sets the Spanning Tree Protocol (STP) bridge priority to `[parameter1]`, influencing root bridge election in the network.",
-        "parameters": [
-            {
-                "name": "bridge-priority",
-                "type": "integer",
-                "explanation": "The higher the value of the STP Bridge, the smaller the priority."
-            }
-        ],
-        "vlan [parameter2]": {
-            "template": "vlan [parameter2]",
-            "command": "vlan vlan-100",
-            "explanation": "Configure the STP bridge priority and associated VLAN.",
-            "parameters": [
-                {
-                    "name": "vlan",
-                    "type": "string",
-                    "explanation": "Associated VLAN name."
-                }
-            ]
-        }
-    },
-    "set services rpm probe [parameter1]": {
-        "template": "set services rpm probe [parameter1]",
-        "command": "set services rpm probe sla-test",
-        "explanation": "The command fragment `set services rpm probe [parameter1]` configures a Real-Time Performance Monitoring (RPM) probe in Junos, defining its name or identifier as `[parameter1]`.",
-        "parameters": [
-            {
-                "name": "probe-name",
-                "type": "string",
-                "explanation": "The name of the probe test."
-            }
-        ],
-        "test [parameter2] source-interface [parameter3]": {
-            "template": "test [parameter2] source-interface [parameter3]",
-            "command": "test icmp-test source-interface ge-1/0/1",
-            "explanation": "Configure the source interface for RPM probe testing.",
-            "parameters": [
-                {
-                    "name": "test-name",
-                    "type": "string",
-                    "explanation": "The name of the test."
-                },
-                {
-                    "name": "source-interface",
-                    "type": "string",
-                    "explanation": "Source interface name."
-                }
-            ]
-        },
-        "test [parameter2] target address [parameter3]": {
-            "template": "test [parameter2] target address [parameter3]",
-            "command": "test icmp-test target address 10.1.1.1",
-            "explanation": "Configure the target address for RPM probe testing.",
-            "parameters": [
-                {
-                    "name": "test-name",
-                    "type": "string",
-                    "explanation": "The name of the test."
-                },
-                {
-                    "name": "target-address",
-                    "type": "string",
-                    "explanation": "Target IP address."
-                }
-            ]
-        },
-        "test [parameter2] probe-count [parameter3]": {
-            "template": "test [parameter2] probe-count [parameter3]",
-            "command": "test icmp-test probe-count 2",
-            "explanation": "Configure the number of probes tested by RPM probes.",
-            "parameters": [
-                {
-                    "name": "test-name",
-                    "type": "string",
-                    "explanation": "The name of the test."
-                },
-                {
-                    "name": "probe-count",
-                    "type": "integer",
-                    "explanation": "The number of probes."
-                }
-            ]
-        },
-        "test [parameter2] probe-interval [parameter3]": {
-            "template": "test [parameter2] probe-interval [parameter3]",
-            "command": "test icmp-test probe-interval 5",
-            "explanation": "Configure the time between probes for RPM probe testing.",
-            "parameters": [
-                {
-                    "name": "test-name",
-                    "type": "string",
-                    "explanation": "The name of the test."
-                },
-                {
-                    "name": "probe-interval",
-                    "type": "integer",
-                    "explanation": "Time between probes (seconds)."
-                }
-            ]
-        },
-        "test [parameter2] test-interval [parameter3]": {
-            "template": "test [parameter2] test-interval [parameter3]",
-            "command": "test icmp-test test-interval 3",
-            "explanation": "Configure the time between tests for RPM probes.",
-            "parameters": [
-                {
-                    "name": "test-name",
-                    "type": "string",
-                    "explanation": "The name of the test."
-                },
-                {
-                    "name": "test-interval",
-                    "type": "integer",
-                    "explanation": "Time between tests (secs)."
-                }
-            ]
-        }
-    },
-    "set security ike policy [parameter1]": {
-        "template": "set security ike policy [parameter1]",
-        "command": "set security ike policy IPSEC-PROFILE-NAME",
-        "explanation": "This command fragment configures an IKE (Internet Key Exchange) policy in Junos, defining parameters for VPN key exchange, such as encryption and authentication methods.",
-        "parameters": [
-            {
-                "name": "policy-name",
-                "type": "string",
-                "explanation": "The name of the IKE policy."
-            }
-        ],
-        "mode [parameter2]": {
-            "template": "mode [parameter2]",
-            "command": "mode main",
-            "explanation": "Configure IKE policy for security",
-            "parameters": [
-                {
-                    "name": "mode",
-                    "type": "string",
-                    "explanation": "Mode of the IKE policy, e.g., main or aggressive"
-                }
-            ]
-        },
-        "proposal-set [parameter2]": {
-            "template": "proposal-set [parameter2]",
-            "command": "proposal-set basic",
-            "explanation": "Configure IKE policy with a specific proposal set",
-            "parameters": [
-                {
-                    "name": "proposal set",
-                    "type": "string",
-                    "explanation": "Name of the proposal set to be used with the IKE policy"
-                }
-            ]
-        }
-    },
-    "set security ike gateway [parameter1]": {
-        "template": "set security ike gateway [parameter1]",
-        "command": "set security ike gateway IPSEC-GATEWAY",
-        "explanation": "This command configures an IKE gateway in Junos, specifying parameters like peer address, authentication method, and policies for secure VPN tunnel establishment.",
-        "parameters": [
-            {
-                "name": "gateway-name",
-                "type": "string",
-                "explanation": "The name of the IKE gateway."
-            }
-        ],
-        "address [parameter2]": {
-            "template": "address [parameter2]",
-            "command": "address 172.16.1.1",
-            "explanation": "Configure IKE gateway for security",
-            "parameters": [
-                {
-                    "name": "IP address",
-                    "type": "string",
-                    "explanation": "IP address of the IKE gateway"
-                }
-            ]
-        },
-        "ike-policy [parameter2]": {
-            "template": "ike-policy [parameter2]",
-            "command": "ike-policy IPSEC-PROFILE-NAME",
-            "explanation": "Configure IKE gateway with a specific IKE policy",
-            "parameters": [
-                {
-                    "name": "ike policy name",
-                    "type": "string",
-                    "explanation": "Name of the IKE policy to be used with the gateway"
-                }
-            ]
-        }
-    },
-    "set security ipsec policy [parameter1]": {
-        "template": "set security ipsec policy [parameter1]",
-        "command": "set security ipsec policy IPSEC-POLICY",
-        "explanation": "This command configures an IPsec policy named `[parameter1]`, defining security parameters for VPN tunnels, including encryption, authentication, and key management settings.",
-        "parameters": [
-            {
-                "name": "policy-name",
-                "type": "string",
-                "explanation": "Name of the IPsec policy."
-            }
-        ],
-        "proposal-set [parameter2]": {
-            "template": "proposal-set [parameter2]",
-            "command": "proposal-set basic",
-            "explanation": "Configure IPsec policy with a specific proposal set",
-            "parameters": [
-                {
-                    "name": "proposal set",
-                    "type": "string",
-                    "explanation": "Name of the proposal set to be used with the IPsec policy"
-                }
-            ]
-        }
-    },
-    "set policy-options as-path [parameter1] [parameter2]": {
-        "template": "set policy-options as-path [parameter1] [parameter2]",
-        "command": "set policy-options as-path as-path-1 \"^.*_30_.*$\"",
-        "explanation": "Configure AS path regular expression for policy options",
-        "parameters": [
-            {
-                "name": "as-path name",
-                "type": "string",
-                "explanation": "Name of the AS path"
-            },
-            {
-                "name": "regular expression",
-                "type": "string",
-                "explanation": "Regular expression to match AS paths"
-            }
-        ]
-    },
-    "set protocols pim interface [parameter1]": {
-        "template": "set protocols pim interface [parameter1]",
-        "command": "set protocols pim interface all",
-        "explanation": "This command enables Protocol Independent Multicast (PIM) on a specified network interface (`[parameter1]`) for multicast routing in Junos OS.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g., g-1/0/0."
-            }
-        ],
-        "mode [parameter2]": {
-            "template": "mode [parameter2]",
-            "command": "mode sparse",
-            "explanation": "Enable a thin PIM mode (an independent multicast protocol) on all interfaces.",
-            "parameters": [
-                {
-                    "name": "mode",
-                    "type": "string",
-                    "explanation": "PIM mode, sparse means thin mode."
-                }
-            ]
-        }
-    },
-    "set protocols igmp interface [parameter1]": {
-        "template": "set protocols igmp interface [parameter1]",
-        "command": "set protocols igmp interface ge-1/0/1",
-        "explanation": "This command enables IGMP (Internet Group Management Protocol) on a specified network interface (`[parameter1]`) for multicast group management.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "interface name."
-            }
-        ],
-        "version [parameter2]": {
-            "template": "version [parameter2]",
-            "command": "version 3",
-            "explanation": "Configure IGMP version 3 on the specified interface.",
-            "parameters": [
-                {
-                    "name": "version",
-                    "type": "integer",
-                    "explanation": "IGMP version number."
-                }
-            ]
-        }
-    },
-    "set protocols pim rp static address [parameter1]": {
-        "template": "set protocols pim rp static address [parameter1]",
-        "command": "set protocols pim rp static address 1.1.1.1",
-        "explanation": "Configure PIM's static RP address.",
-        "parameters": [
-            {
-                "name": "rp-address",
-                "type": "string",
-                "explanation": "PIM's static RP address."
-            }
-        ]
-    },
-    "delete interfaces [parameter1]": {
-        "template": "delete interfaces [parameter1]",
-        "command": "delete interfaces ge-0/0/0",
-        "explanation": "The command fragment `delete interfaces [parameter1]` removes the configuration for the specified interface (`[parameter1]`) from the Junos device.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g. g-0/0/1."
-            }
-        ]
-    },
-    "set interfaces [parameter1] [parameter2] [parameter3] [parameter4]": {
-        "template": "set interfaces [parameter1] [parameter2] [parameter3] [parameter4]",
-        "command": "set interfaces ge-0/0/2 gigether-options 802.3ad ae1",
-        "explanation": "Configure interface settings for a Gigabit Ethernet interface, specifying it as part of an 802.3ad link aggregation group",
-        "parameters": [
-            {
-                "name": "interface identifier",
-                "type": "string",
-                "explanation": "The specific interface to be configured, identified by its hardware path"
-            },
-            {
-                "name": "configuration option",
-                "type": "string",
-                "explanation": "The type of configuration to apply to the interface"
-            },
-            {
-                "name": "aggregation protocol",
-                "type": "string",
-                "explanation": "The protocol used for link aggregation, in this case 802.3ad"
-            },
-            {
-                "name": "aggregated interface",
-                "type": "string",
-                "explanation": "The name of the aggregated interface to which this interface belongs"
-            }
-        ]
-    },
-    "delete interfaces [parameter1] [parameter2]": {
-        "template": "delete interfaces [parameter1] [parameter2]",
-        "command": "delete interfaces ge-0/0/3 disable",
-        "explanation": "Delete configuration or disable an interface",
-        "parameters": [
-            {
-                "name": "interface name",
-                "type": "string",
-                "explanation": "The name of the interface to be deleted or disabled"
-            },
-            {
-                "name": "action",
-                "type": "string",
-                "explanation": "The action to be performed on the interface, such as 'disable'"
             }
         ]
     },
@@ -2051,9 +1678,69 @@
             }
         ]
     },
+    "set protocols mpls interface [parameter1]": {
+        "template": "set protocols mpls interface [parameter1]",
+        "command": "set protocols mpls interface ge-1/0/0.0",
+        "explanation": "Enables the MPLS protocol on the specified interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ]
+    },
+    "set protocols ldp interface [parameter1]": {
+        "template": "set protocols ldp interface [parameter1]",
+        "command": "set protocols ldp interface lo0.0",
+        "explanation": "Enables the LDP protocol on the specified interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g. g-0/0/0."
+            }
+        ]
+    },
+    "delete interfaces [parameter1]": {
+        "template": "delete interfaces [parameter1]",
+        "command": "delete interfaces ge-1/0/0",
+        "explanation": "The command fragment `delete interfaces [parameter1]` removes the configuration for the specified interface (`[parameter1]`) from the Junos device.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g. g-0/0/1."
+            }
+        ],
+        "disable": {
+            "template": "disable",
+            "command": "disable",
+            "explanation": "Delete the disable configuration from the specified interface",
+            "parameters": []
+        }
+    },
+    "set routing-options forwarding-table export [parameter1]": {
+        "template": "set routing-options forwarding-table export [parameter1]",
+        "command": "set routing-options forwarding-table export export-connected",
+        "explanation": "Configure does not synchronize.",
+        "parameters": [
+            {
+                "name": "export-policy",
+                "type": "string",
+                "explanation": "Export the policy name."
+            }
+        ]
+    },
+    "set protocols rstp": {
+        "template": "set protocols rstp",
+        "command": "set protocols rstp",
+        "explanation": "Enables RSTP (Quick Generate Tree Protocol) protocols.",
+        "parameters": []
+    },
     "set bridge-domains [parameter1]": {
         "template": "set bridge-domains [parameter1]",
-        "command": "set bridge-domains vlan-10",
+        "command": "set bridge-domains 10",
         "explanation": "Create a bridge field.",
         "parameters": [
             {
@@ -2062,6 +1749,18 @@
                 "explanation": "Bridge domain names, such as vlan10."
             }
         ],
+        "interface [parameter2]": {
+            "template": "interface [parameter2]",
+            "command": "interface ae10.1",
+            "explanation": "Adds the interface to the bridge field.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g. ae10.1."
+                }
+            ]
+        },
         "domain-type [parameter2]": {
             "template": "domain-type [parameter2]",
             "command": "domain-type bridge",
@@ -2071,76 +1770,6 @@
                     "name": "domain-type",
                     "type": "string",
                     "explanation": "Type of bridge domain, for example, Bridge."
-                }
-            ]
-        },
-        "interface [parameter2]": {
-            "template": "interface [parameter2]",
-            "command": "interface ae10.100",
-            "explanation": "Adds the interface to the bridge field.",
-            "parameters": [
-                {
-                    "name": "interface",
-                    "type": "string",
-                    "explanation": "Interface name, e.g. ae10.100."
-                }
-            ]
-        }
-    },
-    "set interfaces [parameter1] [parameter2]": {
-        "template": "set interfaces [parameter1] [parameter2]",
-        "command": "set interfaces ge-1/0/0 disable",
-        "explanation": "Disable a specific interface",
-        "parameters": [
-            {
-                "name": "interface name",
-                "type": "string",
-                "explanation": "The name of the interface to be disabled"
-            },
-            {
-                "name": "action",
-                "type": "string",
-                "explanation": "The action to be taken on the interface, in this case, 'disable'"
-            }
-        ]
-    },
-    "set ethernet-switching-options aging-time [parameter1]": {
-        "template": "set ethernet-switching-options aging-time [parameter1]",
-        "command": "set ethernet-switching-options aging-time 500",
-        "explanation": "Configure the ageing time in the Ethernet exchange option.",
-        "parameters": [
-            {
-                "name": "aging-time",
-                "type": "integer",
-                "explanation": "The MAC address list is aged in seconds."
-            }
-        ]
-    },
-    "set ethernet-switching-options secure-access-port interface [parameter1]": {
-        "template": "set ethernet-switching-options secure-access-port interface [parameter1]",
-        "command": "set ethernet-switching-options secure-access-port interface ge-0/0/1",
-        "explanation": "The command configures secure access port settings on a specified interface (`[parameter1]`) for Ethernet switching, enabling features like MAC limiting or port security.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "interface name."
-            }
-        ],
-        "static-mac [parameter2] vlan [parameter3]": {
-            "template": "static-mac [parameter2] vlan [parameter3]",
-            "command": "static-mac 00:e0:fc:12:34:58 vlan vlan-2",
-            "explanation": "Configure the static MAC address of the secure access port.",
-            "parameters": [
-                {
-                    "name": "static-mac",
-                    "type": "string",
-                    "explanation": "Static MAC address."
-                },
-                {
-                    "name": "vlan",
-                    "type": "string",
-                    "explanation": "VLAN name."
                 }
             ]
         }
@@ -2270,39 +1899,341 @@
             }
         ]
     },
-    "set routing-options forwarding-table export [parameter1]": {
-        "template": "set routing-options forwarding-table export [parameter1]",
-        "command": "set routing-options forwarding-table export export-connected",
-        "explanation": "Configure does not synchronize.",
-        "parameters": [
-            {
-                "name": "export-policy",
-                "type": "string",
-                "explanation": "Export the policy name."
-            }
-        ]
-    },
-    "set protocols mpls interface [parameter1]": {
-        "template": "set protocols mpls interface [parameter1]",
-        "command": "set protocols mpls interface ge-1/0/0.0",
-        "explanation": "Enables the MPLS protocol on the specified interface.",
+    "set protocols pim interface [parameter1]": {
+        "template": "set protocols pim interface [parameter1]",
+        "command": "set protocols pim interface all",
+        "explanation": "This command enables Protocol Independent Multicast (PIM) on a specified network interface (`[parameter1]`) for multicast routing in Junos OS.",
         "parameters": [
             {
                 "name": "interface",
                 "type": "string",
                 "explanation": "Interface name, e.g., g-1/0/0."
             }
-        ]
+        ],
+        "mode [parameter2]": {
+            "template": "mode [parameter2]",
+            "command": "mode sparse",
+            "explanation": "Enable a thin PIM mode (an independent multicast protocol) on all interfaces.",
+            "parameters": [
+                {
+                    "name": "mode",
+                    "type": "string",
+                    "explanation": "PIM mode, sparse means thin mode."
+                }
+            ]
+        }
     },
-    "set protocols ldp interface [parameter1]": {
-        "template": "set protocols ldp interface [parameter1]",
-        "command": "set protocols ldp interface lo0.0",
-        "explanation": "Enables the LDP protocol on the specified interface.",
+    "set protocols igmp interface [parameter1]": {
+        "template": "set protocols igmp interface [parameter1]",
+        "command": "set protocols igmp interface ge-1/0/1",
+        "explanation": "This command enables IGMP (Internet Group Management Protocol) on a specified network interface (`[parameter1]`) for multicast group management.",
         "parameters": [
             {
                 "name": "interface",
                 "type": "string",
-                "explanation": "Interface name, e.g. g-0/0/0."
+                "explanation": "interface name."
+            }
+        ],
+        "version [parameter2]": {
+            "template": "version [parameter2]",
+            "command": "version 3",
+            "explanation": "Configure IGMP version 3 on the specified interface.",
+            "parameters": [
+                {
+                    "name": "version",
+                    "type": "integer",
+                    "explanation": "IGMP version number."
+                }
+            ]
+        }
+    },
+    "set protocols pim rp static address [parameter1]": {
+        "template": "set protocols pim rp static address [parameter1]",
+        "command": "set protocols pim rp static address 1.1.1.1",
+        "explanation": "Configure PIM's static RP address.",
+        "parameters": [
+            {
+                "name": "rp-address",
+                "type": "string",
+                "explanation": "PIM's static RP address."
+            }
+        ]
+    },
+    "set interfaces [parameter1] [parameter2]": {
+        "template": "set interfaces [parameter1] [parameter2]",
+        "command": "set interfaces ge-1/0/0 disable",
+        "explanation": "Disable a specific interface",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "The name of the interface to be disabled"
+            },
+            {
+                "name": "action",
+                "type": "string",
+                "explanation": "The action to be taken on the interface, in this case, 'disable'"
+            }
+        ]
+    },
+    "set interfaces [parameter1] [parameter2] [parameter3] [parameter4]": {
+        "template": "set interfaces [parameter1] [parameter2] [parameter3] [parameter4]",
+        "command": "set interfaces ge-0/0/2 gigether-options 802.3ad ae1",
+        "explanation": "Configure interface settings for a Gigabit Ethernet interface, specifying it as part of an 802.3ad link aggregation group",
+        "parameters": [
+            {
+                "name": "interface identifier",
+                "type": "string",
+                "explanation": "The specific interface to be configured, identified by its hardware path"
+            },
+            {
+                "name": "configuration option",
+                "type": "string",
+                "explanation": "The type of configuration to apply to the interface"
+            },
+            {
+                "name": "aggregation protocol",
+                "type": "string",
+                "explanation": "The protocol used for link aggregation, in this case 802.3ad"
+            },
+            {
+                "name": "aggregated interface",
+                "type": "string",
+                "explanation": "The name of the aggregated interface to which this interface belongs"
+            }
+        ]
+    },
+    "delete interfaces [parameter1] [parameter2]": {
+        "template": "delete interfaces [parameter1] [parameter2]",
+        "command": "delete interfaces ge-0/0/3 disable",
+        "explanation": "Delete configuration or disable an interface",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "The name of the interface to be deleted or disabled"
+            },
+            {
+                "name": "action",
+                "type": "string",
+                "explanation": "The action to be performed on the interface, such as 'disable'"
+            }
+        ]
+    },
+    "set services rpm probe [parameter1]": {
+        "template": "set services rpm probe [parameter1]",
+        "command": "set services rpm probe sla-test",
+        "explanation": "The command fragment `set services rpm probe [parameter1]` configures a Real-Time Performance Monitoring (RPM) probe in Junos, defining its name or identifier as `[parameter1]`.",
+        "parameters": [
+            {
+                "name": "probe-name",
+                "type": "string",
+                "explanation": "The name of the probe test."
+            }
+        ],
+        "test [parameter2] source-interface [parameter3]": {
+            "template": "test [parameter2] source-interface [parameter3]",
+            "command": "test icmp-test source-interface ge-1/0/1",
+            "explanation": "Configure the source interface for RPM probe testing.",
+            "parameters": [
+                {
+                    "name": "test-name",
+                    "type": "string",
+                    "explanation": "The name of the test."
+                },
+                {
+                    "name": "source-interface",
+                    "type": "string",
+                    "explanation": "Source interface name."
+                }
+            ]
+        },
+        "test [parameter2] target address [parameter3]": {
+            "template": "test [parameter2] target address [parameter3]",
+            "command": "test icmp-test target address 10.1.1.1",
+            "explanation": "Configure the target address for RPM probe testing.",
+            "parameters": [
+                {
+                    "name": "test-name",
+                    "type": "string",
+                    "explanation": "The name of the test."
+                },
+                {
+                    "name": "target-address",
+                    "type": "string",
+                    "explanation": "Target IP address."
+                }
+            ]
+        },
+        "test [parameter2] probe-count [parameter3]": {
+            "template": "test [parameter2] probe-count [parameter3]",
+            "command": "test icmp-test probe-count 2",
+            "explanation": "Configure the number of probes tested by RPM probes.",
+            "parameters": [
+                {
+                    "name": "test-name",
+                    "type": "string",
+                    "explanation": "The name of the test."
+                },
+                {
+                    "name": "probe-count",
+                    "type": "integer",
+                    "explanation": "The number of probes."
+                }
+            ]
+        },
+        "test [parameter2] probe-interval [parameter3]": {
+            "template": "test [parameter2] probe-interval [parameter3]",
+            "command": "test icmp-test probe-interval 5",
+            "explanation": "Configure the time between probes for RPM probe testing.",
+            "parameters": [
+                {
+                    "name": "test-name",
+                    "type": "string",
+                    "explanation": "The name of the test."
+                },
+                {
+                    "name": "probe-interval",
+                    "type": "integer",
+                    "explanation": "Time between probes (seconds)."
+                }
+            ]
+        },
+        "test [parameter2] test-interval [parameter3]": {
+            "template": "test [parameter2] test-interval [parameter3]",
+            "command": "test icmp-test test-interval 3",
+            "explanation": "Configure the time between tests for RPM probes.",
+            "parameters": [
+                {
+                    "name": "test-name",
+                    "type": "string",
+                    "explanation": "The name of the test."
+                },
+                {
+                    "name": "test-interval",
+                    "type": "integer",
+                    "explanation": "Time between tests (secs)."
+                }
+            ]
+        }
+    },
+    "set protocols ldp router-id [parameter1]": {
+        "template": "set protocols ldp router-id [parameter1]",
+        "command": "set protocols ldp router-id 2.2.2.9",
+        "explanation": "Configure the LDP protocol router ID.",
+        "parameters": [
+            {
+                "name": "router-id",
+                "type": "string",
+                "explanation": "Router ID for LDP protocol."
+            }
+        ]
+    },
+    "set security ike policy [parameter1]": {
+        "template": "set security ike policy [parameter1]",
+        "command": "set security ike policy IPSEC-PROFILE-NAME",
+        "explanation": "This command fragment configures an IKE (Internet Key Exchange) policy in Junos, defining parameters for VPN key exchange, such as encryption and authentication methods.",
+        "parameters": [
+            {
+                "name": "policy-name",
+                "type": "string",
+                "explanation": "The name of the IKE policy."
+            }
+        ],
+        "mode [parameter2]": {
+            "template": "mode [parameter2]",
+            "command": "mode main",
+            "explanation": "Configure IKE policy for security",
+            "parameters": [
+                {
+                    "name": "mode",
+                    "type": "string",
+                    "explanation": "Mode of the IKE policy, e.g., main or aggressive"
+                }
+            ]
+        },
+        "proposal-set [parameter2]": {
+            "template": "proposal-set [parameter2]",
+            "command": "proposal-set basic",
+            "explanation": "Configure IKE policy with a specific proposal set",
+            "parameters": [
+                {
+                    "name": "proposal set",
+                    "type": "string",
+                    "explanation": "Name of the proposal set to be used with the IKE policy"
+                }
+            ]
+        }
+    },
+    "set security ike gateway [parameter1]": {
+        "template": "set security ike gateway [parameter1]",
+        "command": "set security ike gateway IPSEC-GATEWAY",
+        "explanation": "This command configures an IKE gateway in Junos, specifying parameters like peer address, authentication method, and policies for secure VPN tunnel establishment.",
+        "parameters": [
+            {
+                "name": "gateway-name",
+                "type": "string",
+                "explanation": "The name of the IKE gateway."
+            }
+        ],
+        "address [parameter2]": {
+            "template": "address [parameter2]",
+            "command": "address 172.16.1.1",
+            "explanation": "Configure IKE gateway for security",
+            "parameters": [
+                {
+                    "name": "IP address",
+                    "type": "string",
+                    "explanation": "IP address of the IKE gateway"
+                }
+            ]
+        },
+        "ike-policy [parameter2]": {
+            "template": "ike-policy [parameter2]",
+            "command": "ike-policy IPSEC-PROFILE-NAME",
+            "explanation": "Configure IKE gateway with a specific IKE policy",
+            "parameters": [
+                {
+                    "name": "ike policy name",
+                    "type": "string",
+                    "explanation": "Name of the IKE policy to be used with the gateway"
+                }
+            ]
+        }
+    },
+    "set security ipsec policy [parameter1]": {
+        "template": "set security ipsec policy [parameter1]",
+        "command": "set security ipsec policy IPSEC-POLICY",
+        "explanation": "This command configures an IPsec policy named `[parameter1]`, defining security parameters for VPN tunnels, including encryption, authentication, and key management settings.",
+        "parameters": [
+            {
+                "name": "policy-name",
+                "type": "string",
+                "explanation": "Name of the IPsec policy."
+            }
+        ],
+        "proposal-set [parameter2]": {
+            "template": "proposal-set [parameter2]",
+            "command": "proposal-set basic",
+            "explanation": "Configure IPsec policy with a specific proposal set",
+            "parameters": [
+                {
+                    "name": "proposal set",
+                    "type": "string",
+                    "explanation": "Name of the proposal set to be used with the IPsec policy"
+                }
+            ]
+        }
+    },
+    "set protocols bgp local-as [parameter1]": {
+        "template": "set protocols bgp local-as [parameter1]",
+        "command": "set protocols bgp local-as 300",
+        "explanation": "Configure the local AS number of the BGP protocol.",
+        "parameters": [
+            {
+                "name": "local-as",
+                "type": "integer",
+                "explanation": "Local self-government system number."
             }
         ]
     },
@@ -2318,17 +2249,99 @@
             }
         ]
     },
-    "set protocols ldp router-id [parameter1]": {
-        "template": "set protocols ldp router-id [parameter1]",
-        "command": "set protocols ldp router-id 2.2.2.9",
-        "explanation": "Configure the LDP protocol router ID.",
+    "set system services ssh ciphers [parameter1]": {
+        "template": "set system services ssh ciphers [parameter1]",
+        "command": "set system services ssh ciphers aes128-ctr",
+        "explanation": "Configure SSH ciphers for system services",
         "parameters": [
             {
-                "name": "router-id",
+                "name": "cipher algorithm",
                 "type": "string",
-                "explanation": "Router ID for LDP protocol."
+                "explanation": "The cipher algorithm to be used for SSH"
             }
         ]
+    },
+    "set policy-options as-path [parameter1] [parameter2]": {
+        "template": "set policy-options as-path [parameter1] [parameter2]",
+        "command": "set policy-options as-path as-path-1 \"^.*_30_.*$\"",
+        "explanation": "Configure AS path regular expression for policy options",
+        "parameters": [
+            {
+                "name": "as-path name",
+                "type": "string",
+                "explanation": "Name of the AS path"
+            },
+            {
+                "name": "regular expression",
+                "type": "string",
+                "explanation": "Regular expression to match AS paths"
+            }
+        ]
+    },
+    "set protocols stp bridge-priority [parameter1]": {
+        "template": "set protocols stp bridge-priority [parameter1]",
+        "command": "set protocols stp bridge-priority 8",
+        "explanation": "The command sets the Spanning Tree Protocol (STP) bridge priority to `[parameter1]`, influencing root bridge election in the network.",
+        "parameters": [
+            {
+                "name": "bridge-priority",
+                "type": "integer",
+                "explanation": "The higher the value of the STP Bridge, the smaller the priority."
+            }
+        ],
+        "vlan [parameter2]": {
+            "template": "vlan [parameter2]",
+            "command": "vlan vlan-100",
+            "explanation": "Configure the STP bridge priority and associated VLAN.",
+            "parameters": [
+                {
+                    "name": "vlan",
+                    "type": "string",
+                    "explanation": "Associated VLAN name."
+                }
+            ]
+        }
+    },
+    "set ethernet-switching-options aging-time [parameter1]": {
+        "template": "set ethernet-switching-options aging-time [parameter1]",
+        "command": "set ethernet-switching-options aging-time 500",
+        "explanation": "Configure the ageing time in the Ethernet exchange option.",
+        "parameters": [
+            {
+                "name": "aging-time",
+                "type": "integer",
+                "explanation": "The MAC address list is aged in seconds."
+            }
+        ]
+    },
+    "set ethernet-switching-options secure-access-port interface [parameter1]": {
+        "template": "set ethernet-switching-options secure-access-port interface [parameter1]",
+        "command": "set ethernet-switching-options secure-access-port interface ge-0/0/1",
+        "explanation": "The command configures secure access port settings on a specified interface (`[parameter1]`) for Ethernet switching, enabling features like MAC limiting or port security.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "interface name."
+            }
+        ],
+        "static-mac [parameter2] vlan [parameter3]": {
+            "template": "static-mac [parameter2] vlan [parameter3]",
+            "command": "static-mac 00:e0:fc:12:34:58 vlan vlan-2",
+            "explanation": "Configure the static MAC address of the secure access port.",
+            "parameters": [
+                {
+                    "name": "static-mac",
+                    "type": "string",
+                    "explanation": "Static MAC address."
+                },
+                {
+                    "name": "vlan",
+                    "type": "string",
+                    "explanation": "VLAN name."
+                }
+            ]
+        }
     },
     "set forwarding-options hash-key family [parameter1]": {
         "template": "set forwarding-options hash-key family [parameter1]",
@@ -2340,7 +2353,13 @@
                 "type": "string",
                 "explanation": "The protocol community, e.g., is indicated by the name of IPv4."
             }
-        ]
+        ],
+        "layer-3": {
+            "template": "layer-3",
+            "command": "layer-3",
+            "explanation": "Configure the Hash keys for forward options, based on the third layer of IPv4 information.",
+            "parameters": []
+        }
     },
     "set protocols bfd interface [parameter1]": {
         "template": "set protocols bfd interface [parameter1]",
@@ -2419,18 +2438,6 @@
             ]
         }
     },
-    "set protocols rstp interface [parameter1]": {
-        "template": "set protocols rstp interface [parameter1]",
-        "command": "set protocols rstp interface ge-0/0/1.0",
-        "explanation": "Enables RSTP protocols on all interfaces.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface range, call indicates all interfaces."
-            }
-        ]
-    },
     "set protocols pim rp static [parameter1]": {
         "template": "set protocols pim rp static [parameter1]",
         "command": "set protocols pim rp static 4.4.4.4",
@@ -2440,6 +2447,18 @@
                 "name": "rp-address",
                 "type": "string",
                 "explanation": "PIM protocol static RP address."
+            }
+        ]
+    },
+    "set protocols rstp interface [parameter1]": {
+        "template": "set protocols rstp interface [parameter1]",
+        "command": "set protocols rstp interface ge-0/0/1",
+        "explanation": "Enables RSTP protocols on all interfaces.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface range, call indicates all interfaces."
             }
         ]
     },

@@ -22,6 +22,7 @@ def find_files(directory, extension):
 
 
 def main():
+    name = 'multi_module'
     vendors = ['HUAWEI', 'Juniper', 'Cisco']
     grammatical_accuracy = {}
     for vendor1 in vendors:
@@ -30,7 +31,8 @@ def main():
                 continue
             error_statistic = {}
             grammatical_accuracy[f'{vendor1}_{vendor2}'] = []
-            folder_path = f'./exper_data/translated_config_with_use_freq/400/{vendor1}/{vendor2}/'
+            folder_path = f'./exper_data/translated_config_with_{name}/400/{vendor1}/{vendor2}/'
+            # folder_path = f'./exper_data/translated_config_with_use_freq/400/{vendor1}/{vendor2}/'
             map_rule_extension = '_map_rules.json'
             label_template_extension = '_temp.json'
             result_extension = '_evaluate.json'

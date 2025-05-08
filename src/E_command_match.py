@@ -43,6 +43,7 @@ class ConfigMatcher:
         if isinstance(best_root, list):
             for root in best_root:
                 ranked_candidates[root] = self._semantic_ranking(command_node, self.templates[root])
+            ranked_candidates = self.filter_global_topk_similarities(ranked_candidates)
             para_match = self._param_semantic_match(command_node, ranked_candidates, best_root=best_root)
         else:
             raise ValueError("best_root should be a list")
@@ -66,20 +67,20 @@ class ConfigMatcher:
         similarities = dot_product / (norm_src * norm_tgt.T)
         similarities = similarities.squeeze(0).cpu().numpy()
 
-        if self.root_command_frequencies:
+        '''if self.root_command_frequencies:
             # 根据使用频率选择最佳根节点
             # 获取相似度前k的候选
             topk_indices = np.argsort(similarities)[-2:][::-1]
             topk_candidates = [tgt_root_names[i] for i in topk_indices]
             best_root = max(topk_candidates, key=lambda x: self.root_command_frequencies.get(x, 0))
             return [best_root]
-        else:
-            # 如果没有频率信息，选择相似度最高的
-            J = 2  # 设置要返回的相似度最高的数量
-            topk_indices = np.argsort(similarities)[-J:][::-1]
-            topk_candidates = [tgt_root_names[i] for i in topk_indices]
-            topk_similarities = [similarities[i] for i in topk_indices]
-            return topk_candidates
+        else:'''
+        # 如果没有频率信息，选择相似度最高的
+        J = 2  # 设置要返回的相似度最高的数量
+        topk_indices = np.argsort(similarities)[-J:][::-1]
+        topk_candidates = [tgt_root_names[i] for i in topk_indices]
+        topk_similarities = [similarities[i] for i in topk_indices]
+        return topk_candidates
 
     def _semantic_ranking(self, command_node, templates=None):
         if templates is None:
@@ -98,6 +99,22 @@ class ConfigMatcher:
         similarities = similarities.squeeze(0).cpu().numpy()
         similarity_pairs = [(template, sim) for template, sim in zip(template_list, similarities)]
         return sorted(similarity_pairs, key=lambda x: x[1], reverse=True)[:self.semantic_topk]
+
+    def filter_global_topk_similarities(self, ranked_candidates):
+        all_pairs = []
+        for root, pairs in ranked_candidates.items():
+            all_pairs.extend(pairs)
+        # 按 sim 降序排序并取 topk
+        topk_pairs = sorted(all_pairs, key=lambda x: x[1], reverse=True)[:self.semantic_topk]
+        
+        # 重新构建 ranked_candidates（可能某些 root 会被完全过滤掉）
+        new_ranked_candidates = {}
+        for root, pairs in ranked_candidates.items():
+            # 只保留在 topk_pairs 中的模板
+            filtered_pairs = [p for p in pairs if p in topk_pairs]
+            if filtered_pairs:  # 如果非空才保留
+                new_ranked_candidates[root] = filtered_pairs
+        return new_ranked_candidates
 
     def _get_parent_commands(self, ranked_candidates, templates):
         # templates[command]['structural_features']['context_topology']['parent_command']
@@ -134,13 +151,14 @@ class ConfigMatcher:
                     if len(similarities) > 0:
                         all_similarities.append((sorted(similarities, key=lambda x: x[1], reverse=True)[0], root))
 
-            if len(all_similarities) > 0:
+            '''if len(all_similarities) > 0:
                 # 在这里选择使用相似度前k中使用频率最高的参数匹配
                 if self.subtree_command_frequencies:
                     topk_candidates = sorted(all_similarities, key=lambda x: x[1], reverse=True)[:2]
                     para_match.append(sorted(topk_candidates, key=lambda x: self.subtree_command_frequencies[best_root[0]].get(x[0], 0), reverse=True)[0])
                 else:
-                    para_match.append(sorted(all_similarities, key=lambda x: x[0][1], reverse=True)[0])
+                    para_match.append(sorted(all_similarities, key=lambda x: x[0][1], reverse=True)[0])'''
+            para_match.append(sorted(all_similarities, key=lambda x: x[0][1], reverse=True)[0])
         return para_match
 
     def _integrate_commands(self, best_root, ranked_candidates, para_match):
@@ -224,7 +242,7 @@ def _build_mapping_template_library_experiment(vendors, template_path, config_mo
     command_templates = {}  # 模板库
     config_models = {}  # 配置模型
     command2roots = {}  # 根节点映射
-    module_match = {}
+    module_match = {vendor:{} for vendor in vendors}
     configuration_matchers = {}  # 匹配器
 
     for vendor in vendors:
@@ -233,11 +251,12 @@ def _build_mapping_template_library_experiment(vendors, template_path, config_mo
         command_templates[vendor] = load_json_file(vendor_templates_path)
         config_models[vendor] = load_json_file(vendor_config_model_path)
         command2roots[vendor] = build_command2root(config_models[vendor])
-        module_match[vendor] = {vendor1: load_json_file(module_match_path.format(vendor1, vendor))
-                                for vendor1 in vendors if vendor1 != vendor} if module_match_path else {vendor1: {}
-                                                                                                        for vendor1 in
-                                                                                                        vendors if
-                                                                                                        vendor1 != vendor}
+        for vendor1 in vendors:
+            if os.path.exists(module_match_path.format(vendor1, vendor)) and vendor1 != vendor:
+                module_match[vendor][vendor1] = load_json_file(module_match_path.format(vendor1, vendor))
+            else:
+                module_match[vendor][vendor1] = {}
+
         if frequency_dir:
             root_command_frequencies = load_json_file(os.path.join(frequency_dir, f"{vendor}_root_command_frequency.json"))
             subtree_command_frequencies = load_json_file(os.path.join(frequency_dir, f"{vendor}_sub_template_frequency.json"))
@@ -385,19 +404,21 @@ if __name__ == "__main__":
     print('加载供应商配置模板节点库, 建立相应配置匹配器')
     vendors = ["Cisco", "HUAWEI", "Juniper"]
     project_root = Path(__file__).parent.parent
+    name = 'multi_module'
 
-    save_path = str(project_root / 'dataset_multi_vendor_config/mapping_template_library/use_freq/{}_{}.json')
+    # save_path = str(project_root / 'dataset_multi_vendor_config/mapping_template_library/use_freq/{}_{}.json')
+    save_path = str(project_root / f'dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}.json')
     templates_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/verified_data/{}.json')
-    os.makedirs(save_path, exist_ok=True)
+    # os.makedirs(save_path, exist_ok=True)
     # _build_juniper_400_mapping_library(vendors, templates_path, save_path)
     config_model_dir = str(project_root / 'dataset_multi_vendor_config/config_model/verified_data/{}.json')
     module_match_path = str(
-        project_root / 'dataset_multi_vendor_config/mapping_template_library/verified_data/{}_{}_module_match.json')
+        project_root / f'dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}_module_match.json')
     frequency_dir = str(project_root / 'experiment/test_dataset/template_used')
 
     # _build_mapping_template_library_experiment(vendors, templates_path, config_model_dir, save_path, module_match_path)
-    _build_mapping_template_library_experiment(vendors, templates_path, config_model_dir, save_path, frequency_dir)
-    # _build_mapping_template_library_experiment(vendors, templates_path, config_model_dir, save_path)
+    _build_mapping_template_library_experiment(vendors, templates_path, config_model_dir, save_path, 
+                                               module_match_path= module_match_path)
 
     '''
     command_templates = {}      # 模板库

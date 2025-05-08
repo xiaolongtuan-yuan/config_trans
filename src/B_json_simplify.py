@@ -16,9 +16,10 @@ def merge_nodes(existing_node: dict, new_node: dict):
     for key, val in new_node.items():
         # 如果在 existing_node 中没有这个 key，直接添加
         if key not in existing_node:
-            filtered_val = filter_valid_nodes(val)
+            '''filtered_val = filter_valid_nodes(val)
             if filtered_val:
-                existing_node[key] = filtered_val
+                existing_node[key] = filtered_val'''
+            existing_node[key] = val
         else:
             # 若都为 dict，则需要递归合并，否则跳过（只保留第一次）
             if isinstance(existing_node[key], dict) and isinstance(val, dict):
@@ -215,3 +216,12 @@ if __name__ == "__main__":
                 json_name, _ = os.path.splitext(json_file)
                 save_file_path = save_path + '/' + json_name + '.json'
                 save_json_file(json_config_simplified, save_file_path)
+
+'''    dic = {"no synchronization": {
+            "template": "no synchronization",
+            "command": "no synchronization",
+            "explanation": "Disable BGP Sync",
+            "parameters": []
+        }}
+    print(filter_valid_nodes(dic))'''
+    

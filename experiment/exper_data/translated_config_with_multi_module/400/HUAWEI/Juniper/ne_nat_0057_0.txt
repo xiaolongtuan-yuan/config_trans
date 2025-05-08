@@ -1,22 +1,18 @@
-set system domain-name NATA
-set interfaces 192.168.10.0 none 0.0.0.255 6
-set security nat source pool nat1 address 1024 to 1
-set security nat source pool nat1 rule 3001 match destination-address 1
-set security nat source pool nat1 address 11.11.11.101 to 11.11.11.105
-set routing-options autonomous-system 1
+set system host-name NATA
+set security nat source pool 0 address 11.11.11.101 to 11.11.11.105
+set security nat source pool 0 rule none match destination-address 1
+set security nat source pool 0 address address-group1 to 3001
+set system services 1
 set routing-options autonomous-system 0
 set protocols bgp group group1
-set security nat static rule-set full-cone rule 1 match destination-address 1
-set security nat static rule-set full-cone from zone address-group1
-set security nat source pool address-group1
+set security nat static rule-set nat1 from zone nat1
+set security nat static rule-set nat1 rule none then static-nat prefix 1
+set security nat static rule-set nat1 rule none then static-nat prefix full-cone
 set security ipsec policy 3001
-set firewall family inet filter classifier1 term classifier1 from source-address none/none
-set routing-options autonomous-system 3001
-set policy-options policy-statement behavior1
-set firewall policer nat1
-set policy-options policy-statement policy1
-set policy-options as-path classifier1 none
-set interfaces GigabitEthernet family inet address 192.168.10.1/255.255.255.0
-set interfaces GigabitEthernet unit none family inet filter input policy1
-set interfaces GigabitEthernet unit none tunnel destination inbound
+set firewall family inet filter classifier1 term classifier1 then behavior1
+set policy-options policy-statement policy1 term none from route-filter none/none 3001
+set policy-options policy-statement policy1 term none from protocol nat1
+set policy-options policy-statement policy1 term none from protocol behavior1
+set interfaces GigabitEthernet unit none family inet address 192.168.10.1/255.255.255.0
 set interfaces GigabitEthernet unit none disable
+set interfaces 1 0.0.0.255 none none

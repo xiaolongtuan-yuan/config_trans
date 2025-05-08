@@ -1,19 +1,20 @@
 sysname NATA
 nat instance NATPOOL id 1.1.1.101
- nat address-group NATPOOL group-id none
- nat address-group none group-id none 255.255.255.0 none
-  section none 1.1.1.101 1.1.1.105
+ nat address-group NATPOOL group-id 1.1.1.101
+  section none 1.1.1.101 255.255.255.0
  nat outbound 100 address-group none
  nat server global 1.1.1.100 inside 192.168.10.10
-ip as-path-filter any permit 192.168.10.0
+ip as-path-filter none deny any
 interface GigabitEthernet2/0/0
  ip address 192.168.10.1 255.255.255.0
 interface GigabitEthernet3/0/0
  ip address 2.2.2.1 255.255.255.0
-ospf 1
+ospf 1 router-id none
+ospf 2.2.2.0
  area 0
   network 2.2.2.0 0.0.0.255
-ip route-static 0.0.0.0 0.0.0.0 2.2.2.2
+ip route-static 0.0.0.0 0.0.0.0 none none
+ip route-static none none 2.2.2.2
 interface none mode none
  encapsulation dot1q vid none
  bridge-domain none

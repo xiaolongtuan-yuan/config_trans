@@ -1,17 +1,17 @@
 sysname CE3
 interface ge-1/0/0
-interface 0
  ip address 10.3.1.1 none none
  ip address none 24
+interface 0 mode none
 bgp 65430
- peer 100 connect-interface none
+bgp BGP-PEERS
+bgp external
+ peer 100 as-number none
  peer 10.3.1.2 as-number none
  ipv4-family unicast
-bfd BGP-PEERS bind peer-ip none interface external source-ip none auto
-bfd EXPORT-NETWORK bind peer-ip none interface none source-ip none auto
+  import-route EXPORT-NETWORK none
 traffic policy EXPORT-NETWORK
-traffic policy 10.3.1.0
- classifier none behavior none precedence 24
- classifier none behavior exact
+traffic policy 24
+load-balance packet exact
 traffic policy 1
- classifier none behavior accept
+ classifier none behavior accept precedence none

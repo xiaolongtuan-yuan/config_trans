@@ -7,21 +7,19 @@ ip access-list standard 5
 access-list 2002 permit ip host none any
 class-map class1
  match access-group 2001
-interface GigabitEthernet1/0/0
+interface or
+ monitor session none destination interface behavior1
+ monitor session none destination interface behavior2
  service-policy inbound policy1
- class be
- description green
-  police cir 5000 pir 6000 conform-action none exceed-action none violate-action none
- ip address 1.1.1.3 255.255.255.0
+  police cir none conform-action none exceed-action 10 violate-action none
+ class class1
+ class class2
 class-map class2
  match access-group 2002
-policy-map policy1
- class be
-  police cir 2000 pir none conform-action none exceed-action none violate-action none
-policy-map behavior1
- class class1
-  police cir none conform-action none exceed-action 5 violate-action none
-policy-map behavior2
- class class2
-  police cir none conform-action none exceed-action 10 violate-action none
+policy-map 5000
+ class green
+  police cir 6000 pir none conform-action none exceed-action none violate-action none
+  police cir 2000 conform-action none exceed-action 5 violate-action none
+interface GigabitEthernet1/0/0
+ ip address 1.1.1.3 255.255.255.0
 interface none.none

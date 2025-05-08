@@ -1,24 +1,25 @@
-set system domain-name NATA
-set routing-options autonomous-system 1
+set system host-name NATA
+set system services 1
 set routing-options autonomous-system 0
 set protocols bgp group group1
-set security nat source pool nat1
-set security nat static rule-set nat1 rule 1 match destination-address 1
-set security nat static rule-set nat1 address 1.1.1.101 to 1.1.1.105
+set security nat static rule-set nat1 from zone nat1
+set security nat static rule-set nat1 rule none then static-nat prefix 1
 set security nat static rule-set nat1 rule none then static-nat prefix none
-set security nat source pool address-group1 rule 3001 match destination-address none
-set security nat source pool address-group1 address none to 192.168.10.10
+set security nat source pool address-group1 rule none match destination-address address-group1
+set security nat source pool address-group1 address 1.1.1.101 to 1.1.1.105
+set security nat source pool address-group1 address address-group1 to 3001
+set security nat source pool address-group1 address 192.168.10.10 to none
 set security ipsec policy 3001
-set security ipsec policy permit proposal-set 0.0.0.255
-set interfaces GigabitEthernet family inet address 192.168.10.1/255.255.255.0
-set interfaces GigabitEthernet family inet address 2.2.2.1/255.255.255.0
-set interfaces nat1 unit 3001 tunnel destination none
-set interfaces nat1 unit none disable
+set security ipsec policy 0.0.0.255
+set interfaces GigabitEthernet unit none family inet address 192.168.10.1/255.255.255.0
+set interfaces GigabitEthernet unit none family inet address 2.2.2.1/255.255.255.0
+set interfaces GigabitEthernet unit none disable
+set interfaces none none none nat1 unit 3001 tunnel destination none
 set protocols ospf area 1
 set protocols ospf area 0.0.0.0
-set routing-options autonomous-system 0.0.0.255
+set routing-options autonomous-system 2.2.2.0
+set protocols bgp local-as 0.0.0.255
 set routing-options static route 0.0.0.0/none
-set routing-options static route none/0.0.0.0 none next-hop 2.2.2.2
+set routing-options static route none/0.0.0.0 2.2.2.2
 set system host-name none
-set firewall policer 6 if-exceeding burst-size-limit 1
-set firewall policer 6 if-exceeding peak-burst-size-limit 0
+set firewall policer 6 if-exceeding burst-size-limit 0
