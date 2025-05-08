@@ -30,6 +30,7 @@ def main():
             if vendor1 == vendor2:
                 continue
             error_statistic = {}
+            missing_template = {}
             grammatical_accuracy[f'{vendor1}_{vendor2}'] = []
             folder_path = f'./exper_data/translated_config_with_{name}/400/{vendor1}/{vendor2}/'
             # folder_path = f'./exper_data/translated_config_with_use_freq/400/{vendor1}/{vendor2}/'
@@ -53,6 +54,7 @@ def main():
                 grammatical_accuracy[f'{vendor1}_{vendor2}'].append(result_data["grammatical_accuracy"])
                 # 使用Counter统计出现次数
                 template_count_result = Counter(label_template_data)
+                # 统计错误模板数量
                 for map_rule_str, count in match_rule_data.items():
                     map_rule = ast.literal_eval(map_rule_str)
                     # print(f"map_rule_str: {map_rule_str}")
@@ -71,12 +73,25 @@ def main():
                                 error_statistic[map_rule[0]] = count
                             else:
                                 error_statistic[map_rule[0]] += count
+                missing_template_count_result = Counter(result_data["missed_templates"])
+                # 统计缺失模板数量
+                for template in missing_template_count_result:
+                    if template not in missing_template.keys():
+                        missing_template[template] = missing_template_count_result[template]
+                    else:
+                        missing_template[template] += missing_template_count_result[template]
+            # 保存数据
             error_statistic = sorted(error_statistic.items(), key=lambda x: x[1], reverse=True)
             error_statistic_path = f'./exper_res/scale_400_error_mapping_rules_freq/{vendor1}_{vendor2}_error_mapping_rules_freq.json'
             with open(error_statistic_path, mode='w', encoding='utf-8') as f:
                 json.dump(error_statistic, f, ensure_ascii=False, indent=2)
             print(f"Error mapping rules frequency saved to {error_statistic_path}")
-    
+            missing_template = sorted(missing_template.items(), key=lambda x: x[1], reverse=True)
+            missing_template_path = f'./exper_res/scale_400_error_mapping_rules_freq/{vendor1}_{vendor2}_missing_template_statistic.json'
+            with open(missing_template_path, mode='w', encoding='utf-8') as f:
+                json.dump(missing_template, f, ensure_ascii=False, indent=2)
+            print(f"Missing template frequency saved to {missing_template_path}")
+
     for key, value in grammatical_accuracy.items():
         print('task:', key, 'grammatical_accuracy_result:', np.mean(value))
     all_values = [np.mean(v) for v in grammatical_accuracy.values()]
