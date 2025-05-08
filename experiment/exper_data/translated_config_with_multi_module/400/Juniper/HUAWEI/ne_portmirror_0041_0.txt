@@ -2,10 +2,11 @@ sysname Device
 vlan vlan10
 interface ge-1/0/0
  port trunk allow-pass vlan none 10
-interface 0
+ undo shutdown
+ portswitch
  port link-type access
- port default vlan 0
- vlan-type dot1q vlan10
+ port default vlan vlan10
+ port trunk allow-pass vlan vlan10
  source ge-1/0/1
  source ge-1/0/2
 bfd none bind peer-ip none interface ingress source-ip none auto
@@ -13,6 +14,8 @@ vlan ge-1/0/0
 vlan ge-2/0/0
 vlan ge-3/0/0
 interface ge-2/0/0
+ undo shutdown
  ip address 10.10.1.1 24
 interface ge-3/0/0
+ undo shutdown
  ip address 10.1.1.2 24

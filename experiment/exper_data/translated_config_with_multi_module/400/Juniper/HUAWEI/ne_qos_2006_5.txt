@@ -1,5 +1,6 @@
 sysname CE3
 interface ge-1/0/0
+ undo shutdown
  ip address 10.3.1.1 24
 interface 0
 bgp 65430
@@ -8,8 +9,11 @@ bgp BGP-PEERS
  peer 100 as-number none
  peer 10.3.1.2 as-number none
  ipv4-family unicast
+  undo synchronization
  import-route EXPORT-NETWORK
+ peer 10.3.1.0 enable
+  undo synchronization
+  import-route direct
+ peer accept enable
 traffic policy EXPORT-NETWORK
-traffic policy 10.3.1.0
-load-balance packet exact
-traffic policy accept
+traffic policy 1

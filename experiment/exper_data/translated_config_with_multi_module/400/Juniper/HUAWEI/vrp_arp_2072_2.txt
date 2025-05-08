@@ -2,10 +2,14 @@ sysname CE1
 vlan vlan-10
 interface ge-0/0/1
  port trunk allow-pass vlan none 10
-interface 0
+ undo shutdown
+ portswitch
  port link-type access
- port default vlan 0
- vlan-type dot1q vlan-10
- port link-type trunk
- vlan-type dot1q default
+ port default vlan vlan-10
+ port trunk allow-pass vlan vlan-10
 interface ge-0/0/2
+ undo shutdown
+ portswitch
+ port link-type trunk
+ port default vlan default
+ port trunk allow-pass vlan default

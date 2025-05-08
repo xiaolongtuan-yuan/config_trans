@@ -1,5 +1,6 @@
 sysname CE4
 interface ge-1/0/0
+ undo shutdown
  ip address 10.4.1.1 24
 interface 0
 bgp 65440
@@ -7,8 +8,9 @@ bgp external
  import-route external
  peer 100 as-number none
  ipv4-family unicast
+  undo synchronization
  import-route redistribute-connected
+ import-route direct
+ peer accept enable
 traffic policy redistribute-connected
 traffic policy 1
- classifier none behavior direct
- classifier none behavior accept

@@ -1,9 +1,12 @@
 sysname Spoke1
 interface ge-1/0/0
+ undo shutdown
  ip address 10.1.2.10 24
 interface ge-2/0/0
+ undo shutdown
  ip address 192.168.1.1 24
 interface gr-0/0/0
+ undo shutdown
  source ge-0/0/1
  source 0
  binding tunnel 172.16.1.1
@@ -16,6 +19,8 @@ bgp bgp-group
  peer 172.16.1.2 as-number none
  import-route ospf-to-bgp
  ipv4-family unicast
+ import-route ospf
+ peer accept enable
 ospf 0.0.0.0
  area 0.0.0.0
  area 0.0.0.1
@@ -23,5 +28,3 @@ vlan ge-2/0/0
 vlan ge-1/0/0
 traffic policy ospf-to-bgp
 traffic policy 1
- classifier none behavior ospf
-traffic policy accept
