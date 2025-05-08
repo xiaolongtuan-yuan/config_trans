@@ -54,6 +54,39 @@
             "root": "interface [parameter1]"
         }
     ],
+    "unit [parameter2] vlan-id [parameter3]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "encapsulation dot1q [parameter1]",
+            "parent_command": [
+                "interface [parameter1].[parameter2]"
+            ],
+            "root": "interface [parameter1].[parameter2]"
+        }
+    ],
+    "unit [parameter2] enable": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
+        }
+    ],
     "unit [parameter2] family ethernet-switching port-mode [parameter3]": [
         {
             "para_map": [
@@ -71,9 +104,9 @@
             ],
             "trans_command": "switchport mode [parameter1]",
             "parent_command": [
-                "interface [parameter1].[parameter2]"
+                "interface [parameter1]"
             ],
-            "root": "interface [parameter1].[parameter2]"
+            "root": "interface [parameter1]"
         }
     ],
     "unit [parameter2] family ethernet-switching vlan members [parameter3]": [
@@ -93,67 +126,32 @@
             ],
             "trans_command": "encapsulation dot1Q [parameter1]",
             "parent_command": [
-                "interface [parameter1]"
+                "interface [parameter1].[parameter2]"
             ],
-            "root": "interface [parameter1]"
-        }
-    ],
-    "unit [parameter2] vlan-id [parameter3]": [
-        {
-            "para_map": [
-                0,
-                1
-            ],
-            "trans_command": "interface [parameter1].[parameter2]",
-            "parent_command": [],
-            "root": "interface [parameter1].[parameter2]"
-        },
-        {
-            "para_map": [
-                1,
-                0
-            ],
-            "trans_command": "encapsulation dot1Q [parameter1]",
-            "parent_command": [
-                "interface [parameter1]"
-            ],
-            "root": "interface [parameter1]"
-        }
-    ],
-    "unit [parameter2] disable": [
-        {
-            "para_map": [
-                0,
-                1
-            ],
-            "trans_command": "interface [parameter1].[parameter2]",
-            "parent_command": [],
             "root": "interface [parameter1].[parameter2]"
         }
     ],
-    "unit [parameter2] family ethernet-switching interface-mode [parameter3]": [
+    "disable": [
         {
-            "para_map": [
-                0,
-                1
-            ],
-            "trans_command": "interface [parameter1].[parameter2]",
-            "parent_command": [],
-            "root": "interface [parameter1].[parameter2]"
-        },
-        {
-            "para_map": [
-                1,
-                0
-            ],
-            "trans_command": "switchport mode [parameter1]",
+            "para_map": [],
+            "trans_command": "no shutdown",
             "parent_command": [
                 "interface [parameter1].[parameter2]"
             ],
             "root": "interface [parameter1].[parameter2]"
         }
     ],
-    "unit [parameter2] enable": [
+    "enable": [
+        {
+            "para_map": [],
+            "trans_command": "no shutdown",
+            "parent_command": [
+                "interface [parameter1].[parameter2]"
+            ],
+            "root": "interface [parameter1].[parameter2]"
+        }
+    ],
+    "unit [parameter2] disable": [
         {
             "para_map": [
                 0,
@@ -170,9 +168,11 @@
                 0,
                 1
             ],
-            "trans_command": "interface [parameter1].[parameter2]",
-            "parent_command": [],
-            "root": "interface [parameter1].[parameter2]"
+            "trans_command": "monitor session [parameter1] source interface [parameter2] [parameter3]",
+            "parent_command": [
+                "interface [parameter1]"
+            ],
+            "root": "interface [parameter1]"
         },
         {
             "para_map": [
@@ -208,6 +208,73 @@
             "root": "interface [parameter1]"
         }
     ],
+    "aggregated-ether-options link-speed [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
+        }
+    ],
+    "ether-options 802.3ad [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
+        }
+    ],
+    "aggregated-ether-options lacp [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "ip igmp version [parameter1]",
+            "parent_command": [
+                "interface [parameter1]"
+            ],
+            "root": "interface [parameter1]"
+        }
+    ],
+    "gigether-options 802.3ad [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
+        }
+    ],
+    "ether-options no-auto-negotiation": [
+        {
+            "para_map": [],
+            "trans_command": "description [parameter1]",
+            "parent_command": [
+                "interface [parameter1]"
+            ],
+            "root": "interface [parameter1]"
+        }
+    ],
+    "unit [parameter2] family ethernet-switching": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
+        }
+    ],
     "unit [parameter2] family inet filter input [parameter3]": [
         {
             "para_map": [
@@ -230,27 +297,25 @@
             "root": "interface [parameter1]"
         }
     ],
-    "aggregated-ether-options link-speed [parameter2]": [
+    "unit [parameter2] family ethernet-switching interface-mode [parameter3]": [
         {
             "para_map": [
                 0,
                 1
             ],
-            "trans_command": "bfd neighbor [parameter1] interface [parameter2]",
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "switchport mode [parameter1]",
             "parent_command": [
                 "interface [parameter1].[parameter2]"
             ],
-            "root": "interface [parameter1].[parameter2]"
-        }
-    ],
-    "ether-options 802.3ad [parameter2]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "interface [parameter1].[parameter2]",
-            "parent_command": [],
             "root": "interface [parameter1].[parameter2]"
         }
     ],
@@ -274,33 +339,7 @@
             "root": "interface [parameter1].[parameter2]"
         }
     ],
-    "aggregated-ether-options lacp [parameter2]": [
-        {
-            "para_map": [
-                0,
-                1
-            ],
-            "trans_command": "channel-group [parameter1] mode [parameter2]",
-            "parent_command": [
-                "interface [parameter1]"
-            ],
-            "root": "interface [parameter1]"
-        }
-    ],
-    "gigether-options 802.3ad [parameter2]": [
-        {
-            "para_map": [
-                0,
-                1
-            ],
-            "trans_command": "bfd neighbor [parameter1] interface [parameter2]",
-            "parent_command": [
-                "interface [parameter1].[parameter2]"
-            ],
-            "root": "interface [parameter1].[parameter2]"
-        }
-    ],
-    "unit [parameter2] family ethernet-switching": [
+    "unit [parameter2] family inet address [parameter3]/[parameter4] vrrp-group [parameter5] virtual-address [parameter6]": [
         {
             "para_map": [
                 0,
@@ -309,15 +348,13 @@
             "trans_command": "interface [parameter1].[parameter2]",
             "parent_command": [],
             "root": "interface [parameter1].[parameter2]"
-        }
-    ],
-    "unit [parameter2] encapsulation vlan-id [parameter3]": [
+        },
         {
             "para_map": [
-                0,
+                1,
                 0
             ],
-            "trans_command": "encapsulation dot1Q [parameter1]",
+            "trans_command": "ip address [parameter1] [parameter2] [parameter3]",
             "parent_command": [
                 "interface [parameter1]"
             ],
@@ -325,27 +362,44 @@
         },
         {
             "para_map": [
-                1,
+                2,
+                1
+            ],
+            "trans_command": "ip address [parameter1] [parameter2]",
+            "parent_command": [
+                "interface [parameter1]"
+            ],
+            "root": "interface [parameter1]"
+        },
+        {
+            "para_map": [
+                3,
                 0
             ],
-            "trans_command": "encapsulation dot1Q [parameter1]",
+            "trans_command": "ip address [parameter1] [parameter2]",
+            "parent_command": [
+                "interface [parameter1]"
+            ],
+            "root": "interface [parameter1]"
+        },
+        {
+            "para_map": [
+                4,
+                0
+            ],
+            "trans_command": "ip address [parameter1] [parameter2]",
             "parent_command": [
                 "interface [parameter1]"
             ],
             "root": "interface [parameter1]"
         }
     ],
-    "description [parameter2]": [
+    "aggregated-ether-options": [
         {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "description [parameter1]",
-            "parent_command": [
-                "interface [parameter1]"
-            ],
-            "root": "interface [parameter1]"
+            "para_map": [],
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
         }
     ],
     "unit [parameter2] family ethernet-switching native-vlan-id [parameter3]": [
@@ -370,83 +424,27 @@
             "root": "interface [parameter1]"
         }
     ],
-    "unit [parameter2] family inet address [parameter3]/[parameter4] vrrp-group [parameter5] virtual-address [parameter6]": [
+    "description [parameter2]": [
         {
             "para_map": [
                 0,
-                1
+                0
             ],
-            "trans_command": "interface [parameter1].[parameter2]",
-            "parent_command": [],
+            "trans_command": "description [parameter1]",
+            "parent_command": [
+                "interface [parameter1]"
+            ],
+            "root": "interface [parameter1]"
+        }
+    ],
+    "vlan-tagging": [
+        {
+            "para_map": [],
+            "trans_command": "switchport access vlan [parameter1]",
+            "parent_command": [
+                "interface [parameter1].[parameter2]"
+            ],
             "root": "interface [parameter1].[parameter2]"
-        },
-        {
-            "para_map": [
-                1,
-                1
-            ],
-            "trans_command": "standby [parameter1] ip [parameter2]",
-            "parent_command": [
-                "interface [parameter1]"
-            ],
-            "root": "interface [parameter1]"
-        },
-        {
-            "para_map": [
-                2,
-                1
-            ],
-            "trans_command": "ip address [parameter1] [parameter2]",
-            "parent_command": [
-                "interface [parameter1]"
-            ],
-            "root": "interface [parameter1]"
-        },
-        {
-            "para_map": [
-                3,
-                0
-            ],
-            "trans_command": "standby [parameter1] ip [parameter2]",
-            "parent_command": [
-                "interface [parameter1]"
-            ],
-            "root": "interface [parameter1]"
-        },
-        {
-            "para_map": [
-                4,
-                1
-            ],
-            "trans_command": "standby [parameter1] ip [parameter2]",
-            "parent_command": [
-                "interface [parameter1]"
-            ],
-            "root": "interface [parameter1]"
-        }
-    ],
-    "gigether-options speed [parameter2]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "interface [parameter1]",
-            "parent_command": [],
-            "root": "interface [parameter1]"
-        }
-    ],
-    "gigether-options link-mode [parameter2]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "tunnel mode [parameter1]",
-            "parent_command": [
-                "interface [parameter1]"
-            ],
-            "root": "interface [parameter1]"
         }
     ],
     "vlan-id [parameter2]": [
@@ -486,6 +484,62 @@
             "root": "interface [parameter1]"
         }
     ],
+    "unit [parameter2] encapsulation vlan-id [parameter3]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "encapsulation dot1q [parameter1]",
+            "parent_command": [
+                "interface [parameter1].[parameter2]"
+            ],
+            "root": "interface [parameter1].[parameter2]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "encapsulation dot1q [parameter1]",
+            "parent_command": [
+                "interface [parameter1].[parameter2]"
+            ],
+            "root": "interface [parameter1].[parameter2]"
+        }
+    ],
+    "gigether-options no-auto-negotiation": [
+        {
+            "para_map": [],
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
+        }
+    ],
+    "gigether-options speed [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "interface [parameter1]",
+            "parent_command": [],
+            "root": "interface [parameter1]"
+        }
+    ],
+    "gigether-options link-mode [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "switchport mode [parameter1]",
+            "parent_command": [
+                "interface [parameter1].[parameter2]"
+            ],
+            "root": "interface [parameter1].[parameter2]"
+        }
+    ],
     "unit [parameter2] encapsulation vlan-bridge vlan-id [parameter3]": [
         {
             "para_map": [
@@ -501,11 +555,11 @@
                 1,
                 0
             ],
-            "trans_command": "encapsulation dot1Q [parameter1]",
+            "trans_command": "encapsulation dot1q [parameter1]",
             "parent_command": [
-                "interface [parameter1]"
+                "interface [parameter1].[parameter2]"
             ],
-            "root": "interface [parameter1]"
+            "root": "interface [parameter1].[parameter2]"
         }
     ],
     "encapsulation [parameter2]": [
@@ -514,11 +568,11 @@
                 0,
                 0
             ],
-            "trans_command": "encapsulation dot1Q [parameter1]",
+            "trans_command": "encapsulation dot1q [parameter1]",
             "parent_command": [
-                "interface [parameter1]"
+                "interface [parameter1].[parameter2]"
             ],
-            "root": "interface [parameter1]"
+            "root": "interface [parameter1].[parameter2]"
         }
     ],
     "encapsulation dot1q [parameter2]": [
@@ -527,11 +581,11 @@
                 0,
                 0
             ],
-            "trans_command": "encapsulation dot1Q [parameter1]",
+            "trans_command": "encapsulation dot1q [parameter1]",
             "parent_command": [
-                "interface [parameter1]"
+                "interface [parameter1].[parameter2]"
             ],
-            "root": "interface [parameter1]"
+            "root": "interface [parameter1].[parameter2]"
         }
     ],
     "unit [parameter2] family [parameter3]": [
@@ -554,46 +608,40 @@
             "root": "interface [parameter1].[parameter2]"
         }
     ],
-    "set routing-options static route [parameter1]/[parameter2]": [
+    "set system services ssh protocol-version [parameter1]": [
         {
             "para_map": [
                 0,
                 0
             ],
-            "trans_command": "ip route [parameter1] [parameter2] [parameter3]",
+            "trans_command": "ip ssh version [parameter1]",
             "parent_command": [],
-            "root": "ip route [parameter1] [parameter2] [parameter3]"
-        },
-        {
-            "para_map": [
-                1,
-                1
-            ],
-            "trans_command": "ip route [parameter1] [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "ip route [parameter1] [parameter2] [parameter3]"
+            "root": "ip ssh version [parameter1]"
         }
     ],
-    "next-hop [parameter3]": [
+    "set routing-options autonomous-system [parameter1]": [
         {
             "para_map": [
                 0,
-                2
+                0
             ],
-            "trans_command": "ip route [parameter1] [parameter2] [parameter3]",
+            "trans_command": "router bgp [parameter1]",
             "parent_command": [],
-            "root": "ip route [parameter1] [parameter2] [parameter3]"
+            "root": "router bgp [parameter1]"
         }
     ],
     "set protocols bgp group [parameter1]": [
         {
             "para_map": [
                 0,
-                1
+                0
             ],
-            "trans_command": "aaa authentication login [parameter1] group [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "aaa authentication login [parameter1] group [parameter2] [parameter3]"
+            "trans_command": "redistribute [parameter1]",
+            "parent_command": [
+                "router bgp [parameter1]",
+                "address-family ipv4 unicast"
+            ],
+            "root": "router bgp [parameter1]"
         }
     ],
     "type [parameter2]": [
@@ -607,81 +655,31 @@
             "root": "router bgp [parameter1]"
         }
     ],
+    "local-address [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "neighbor [parameter1] remote-as [parameter2]",
+            "parent_command": [
+                "router bgp [parameter1]"
+            ],
+            "root": "router bgp [parameter1]"
+        }
+    ],
     "peer-as [parameter2]": [
         {
             "para_map": [
                 0,
-                1
+                0
             ],
-            "trans_command": "neighbor [parameter1] remote-as [parameter2]",
-            "parent_command": [
-                "router bgp [parameter1]"
-            ],
+            "trans_command": "router bgp [parameter1]",
+            "parent_command": [],
             "root": "router bgp [parameter1]"
         }
     ],
     "neighbor [parameter2]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "neighbor [parameter1] remote-as [parameter2]",
-            "parent_command": [
-                "router bgp [parameter1]"
-            ],
-            "root": "router bgp [parameter1]"
-        }
-    ],
-    "family inet [parameter2]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "address-family [parameter1] [parameter2]",
-            "parent_command": [
-                "router bgp [parameter1]"
-            ],
-            "root": "router bgp [parameter1]"
-        }
-    ],
-    "export [parameter2]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "aaa authentication login [parameter1] group [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "aaa authentication login [parameter1] group [parameter2] [parameter3]"
-        }
-    ],
-    "neighbor [parameter2] peer-as [parameter3]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "neighbor [parameter1] update-source [parameter2]",
-            "parent_command": [
-                "router bgp [parameter1]"
-            ],
-            "root": "router bgp [parameter1]"
-        },
-        {
-            "para_map": [
-                1,
-                1
-            ],
-            "trans_command": "neighbor [parameter1] remote-as [parameter2]",
-            "parent_command": [
-                "router bgp [parameter1]"
-            ],
-            "root": "router bgp [parameter1]"
-        }
-    ],
-    "neighbor [parameter2] family inet unicast": [
         {
             "para_map": [
                 0,
@@ -718,14 +716,27 @@
             "root": "router bgp [parameter1]"
         }
     ],
-    "local-address [parameter2]": [
+    "neighbor [parameter2] peer-as [parameter3]": [
         {
             "para_map": [
                 0,
                 0
             ],
-            "trans_command": "router bgp [parameter1]",
-            "parent_command": [],
+            "trans_command": "neighbor [parameter1] update-source [parameter2]",
+            "parent_command": [
+                "router bgp [parameter1]"
+            ],
+            "root": "router bgp [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "neighbor [parameter1] remote-as [parameter2]",
+            "parent_command": [
+                "router bgp [parameter1]"
+            ],
             "root": "router bgp [parameter1]"
         }
     ],
@@ -735,7 +746,7 @@
                 0,
                 0
             ],
-            "trans_command": "neighbor [parameter1] remote-as [parameter2]",
+            "trans_command": "neighbor [parameter1] activate",
             "parent_command": [
                 "router bgp [parameter1]"
             ],
@@ -764,15 +775,16 @@
             "root": "router bgp [parameter1]"
         }
     ],
-    "local-as [parameter2]": [
+    "export [parameter2]": [
         {
             "para_map": [
                 0,
-                1
+                0
             ],
-            "trans_command": "neighbor [parameter1] remote-as [parameter2]",
+            "trans_command": "redistribute [parameter1]",
             "parent_command": [
-                "router bgp [parameter1]"
+                "router bgp [parameter1]",
+                "address-family ipv4 unicast"
             ],
             "root": "router bgp [parameter1]"
         }
@@ -784,6 +796,19 @@
                 1
             ],
             "trans_command": "network [parameter1] mask [parameter2]",
+            "parent_command": [
+                "router bgp [parameter1]"
+            ],
+            "root": "router bgp [parameter1]"
+        }
+    ],
+    "local-as [parameter2]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "neighbor [parameter1] remote-as [parameter2]",
             "parent_command": [
                 "router bgp [parameter1]"
             ],
@@ -805,11 +830,14 @@
         {
             "para_map": [
                 1,
-                0
+                1
             ],
-            "trans_command": "aaa authentication login [parameter1] group [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "aaa authentication login [parameter1] group [parameter2] [parameter3]"
+            "trans_command": "neighbor [parameter1] filter-list [parameter2] out",
+            "parent_command": [
+                "router bgp [parameter1]",
+                "address-family [parameter1] [parameter2]"
+            ],
+            "root": "router bgp [parameter1]"
         }
     ],
     "import [parameter2]": [
@@ -818,11 +846,169 @@
                 0,
                 0
             ],
-            "trans_command": "bgp router-id [parameter1]",
+            "trans_command": "redistribute [parameter1]",
             "parent_command": [
-                "router bgp [parameter1]"
+                "router bgp [parameter1]",
+                "address-family ipv4 unicast"
             ],
             "root": "router bgp [parameter1]"
+        }
+    ],
+    "set vlans [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "vlan [parameter1]",
+            "parent_command": [],
+            "root": "vlan [parameter1]"
+        }
+    ],
+    "interface [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "vlan [parameter1]",
+            "parent_command": [],
+            "root": "vlan [parameter1]"
+        }
+    ],
+    "l3-interface [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "vlan [parameter1]",
+            "parent_command": [],
+            "root": "vlan [parameter1]"
+        }
+    ],
+    "set system domain-name [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "ip domain-name [parameter1]",
+            "parent_command": [],
+            "root": "ip domain-name [parameter1]"
+        }
+    ],
+    "set system services ssh root-login [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "ip ssh version [parameter1]",
+            "parent_command": [],
+            "root": "ip ssh version [parameter1]"
+        }
+    ],
+    "set system login user [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]",
+            "parent_command": [],
+            "root": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]"
+        }
+    ],
+    "authentication plain-text-password": [
+        {
+            "para_map": [],
+            "trans_command": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]",
+            "parent_command": [],
+            "root": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]"
+        }
+    ],
+    "class [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "username [parameter1] secret [parameter2] [parameter3]",
+            "parent_command": [],
+            "root": "username [parameter1] secret [parameter2] [parameter3]"
+        }
+    ],
+    "authentication plaintext-password [parameter2]": [
+        {
+            "para_map": [
+                0,
+                3
+            ],
+            "trans_command": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]",
+            "parent_command": [],
+            "root": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]"
+        }
+    ],
+    "authentication encrypted-password [parameter2]": [
+        {
+            "para_map": [
+                0,
+                2
+            ],
+            "trans_command": "username [parameter1] secret [parameter2] [parameter3]",
+            "parent_command": [],
+            "root": "username [parameter1] secret [parameter2] [parameter3]"
+        }
+    ],
+    "class [parameter2] authentication [parameter3]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "username [parameter1] secret [parameter2] [parameter3]",
+            "parent_command": [],
+            "root": "username [parameter1] secret [parameter2] [parameter3]"
+        },
+        {
+            "para_map": [
+                1,
+                3
+            ],
+            "trans_command": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]",
+            "parent_command": [],
+            "root": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]"
+        }
+    ],
+    "authentication-tries [parameter2]": [
+        {
+            "para_map": [
+                0,
+                2
+            ],
+            "trans_command": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]",
+            "parent_command": [],
+            "root": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]"
+        }
+    ],
+    "authentication [parameter2]": [
+        {
+            "para_map": [
+                0,
+                3
+            ],
+            "trans_command": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]",
+            "parent_command": [],
+            "root": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]"
+        }
+    ],
+    "set system services ssh": [
+        {
+            "para_map": [],
+            "trans_command": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]",
+            "parent_command": [],
+            "root": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]"
         }
     ],
     "set policy-options policy-statement [parameter1]": [
@@ -894,27 +1080,7 @@
             "root": "ip route [parameter1] [parameter2] [parameter3] [parameter4]"
         }
     ],
-    "term [parameter2] from route-filter [parameter3] exact": [
-        {
-            "para_map": [
-                0,
-                2
-            ],
-            "trans_command": "ip route [parameter1] [parameter2] [parameter3] [parameter4]",
-            "parent_command": [],
-            "root": "ip route [parameter1] [parameter2] [parameter3] [parameter4]"
-        },
-        {
-            "para_map": [
-                1,
-                2
-            ],
-            "trans_command": "ip route [parameter1] [parameter2] [parameter3] [parameter4]",
-            "parent_command": [],
-            "root": "ip route [parameter1] [parameter2] [parameter3] [parameter4]"
-        }
-    ],
-    "term [parameter2] then accept": [
+    "then [parameter2]": [
         {
             "para_map": [
                 0,
@@ -945,12 +1111,9 @@
             "root": "ip route [parameter1] [parameter2] [parameter3] [parameter4]"
         }
     ],
-    "then [parameter2]": [
+    "then reject": [
         {
-            "para_map": [
-                0,
-                2
-            ],
+            "para_map": [],
             "trans_command": "ip route [parameter1] [parameter2] [parameter3] [parameter4]",
             "parent_command": [],
             "root": "ip route [parameter1] [parameter2] [parameter3] [parameter4]"
@@ -967,91 +1130,38 @@
             "root": "ip route [parameter1] [parameter2] [parameter3] [parameter4]"
         }
     ],
-    "set system domain-name [parameter1]": [
+    "set security zones security-zone [parameter1]": [
         {
             "para_map": [
                 0,
                 0
             ],
-            "trans_command": "ip domain-name [parameter1]",
+            "trans_command": "username [parameter1] secret [parameter2] [parameter3]",
             "parent_command": [],
-            "root": "ip domain-name [parameter1]"
+            "root": "username [parameter1] secret [parameter2] [parameter3]"
         }
     ],
-    "set system services ssh hostkey-algorithm [parameter1]": [
+    "interfaces [parameter2] host-inbound-traffic system-services [parameter3]": [
         {
             "para_map": [
                 0,
-                0
+                1
             ],
-            "trans_command": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]",
+            "trans_command": "username [parameter1] secret [parameter2] [parameter3]",
             "parent_command": [],
-            "root": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]"
-        }
-    ],
-    "set system services ssh key-exchange [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]"
-        }
-    ],
-    "set system services ssh ciphers [parameter1] [parameter2] [parameter3]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]"
+            "root": "username [parameter1] secret [parameter2] [parameter3]"
         },
         {
             "para_map": [
                 1,
                 1
             ],
-            "trans_command": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]",
+            "trans_command": "username [parameter1] secret [parameter2] [parameter3]",
             "parent_command": [],
-            "root": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]"
-        },
-        {
-            "para_map": [
-                2,
-                2
-            ],
-            "trans_command": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]"
+            "root": "username [parameter1] secret [parameter2] [parameter3]"
         }
     ],
-    "set system services ssh protocol-version [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "ip ssh version [parameter1]",
-            "parent_command": [],
-            "root": "ip ssh version [parameter1]"
-        }
-    ],
-    "set system login user [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]",
-            "parent_command": [],
-            "root": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]"
-        }
-    ],
-    "class [parameter2]": [
+    "interfaces [parameter2]": [
         {
             "para_map": [
                 0,
@@ -1062,125 +1172,168 @@
             "root": "username [parameter1] secret [parameter2] [parameter3]"
         }
     ],
-    "authentication plaintext-password [parameter2]": [
-        {
-            "para_map": [
-                0,
-                3
-            ],
-            "trans_command": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]",
-            "parent_command": [],
-            "root": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]"
-        }
-    ],
-    "authentication encrypted-password [parameter2]": [
-        {
-            "para_map": [
-                0,
-                2
-            ],
-            "trans_command": "username [parameter1] secret [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "username [parameter1] secret [parameter2] [parameter3]"
-        }
-    ],
-    "authentication-tries [parameter2]": [
-        {
-            "para_map": [
-                0,
-                2
-            ],
-            "trans_command": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]",
-            "parent_command": [],
-            "root": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]"
-        }
-    ],
-    "class [parameter2] authentication [parameter3]": [
+    "set security nat source pool [parameter1]": [
         {
             "para_map": [
                 0,
                 0
             ],
-            "trans_command": "username [parameter1] secret [parameter2] [parameter3]",
+            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
             "parent_command": [],
-            "root": "username [parameter1] secret [parameter2] [parameter3]"
+            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
+        }
+    ],
+    "address [parameter2] to [parameter3]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "ip nat inside source list [parameter1] pool [parameter2]",
+            "parent_command": [],
+            "root": "ip nat inside source list [parameter1] pool [parameter2]"
         },
         {
             "para_map": [
                 1,
-                3
+                1
             ],
-            "trans_command": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]",
+            "trans_command": "ip nat inside source list [parameter1] pool [parameter2]",
             "parent_command": [],
-            "root": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]"
+            "root": "ip nat inside source list [parameter1] pool [parameter2]"
         }
     ],
-    "authentication [parameter2]": [
+    "set security nat source rule-set [parameter1]": [
         {
             "para_map": [
                 0,
-                3
+                0
             ],
-            "trans_command": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]",
+            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
             "parent_command": [],
-            "root": "username [parameter1] privilege [parameter2] password [parameter3] [parameter4]"
+            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
         }
     ],
-    "set system authentication-order [parameter1]": [
+    "from zone [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
+            "parent_command": [],
+            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
+        }
+    ],
+    "to zone [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
+            "parent_command": [],
+            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
+        }
+    ],
+    "rule [parameter2] match source-address [parameter3]/[parameter4]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
+            "parent_command": [],
+            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "access-list [parameter1] permit ip host [parameter2] any",
+            "parent_command": [],
+            "root": "access-list [parameter1] permit ip host [parameter2] any"
+        },
+        {
+            "para_map": [
+                2,
+                3
+            ],
+            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
+            "parent_command": [],
+            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
+        }
+    ],
+    "rule [parameter2] then source-nat pool [parameter3]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
+            "parent_command": [],
+            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
+            "parent_command": [],
+            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
+        }
+    ],
+    "rule [parameter2] match source-address [parameter3]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
+            "parent_command": [],
+            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "access-list [parameter1] permit ip host [parameter2] any",
+            "parent_command": [],
+            "root": "access-list [parameter1] permit ip host [parameter2] any"
+        }
+    ],
+    "set routing-options static route [parameter1]/[parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "ip route [parameter1] [parameter2] [parameter3]",
+            "parent_command": [],
+            "root": "ip route [parameter1] [parameter2] [parameter3]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "ip route [parameter1] [parameter2] [parameter3]",
+            "parent_command": [],
+            "root": "ip route [parameter1] [parameter2] [parameter3]"
+        }
+    ],
+    "next-hop [parameter3]": [
         {
             "para_map": [
                 0,
                 2
             ],
-            "trans_command": "aaa authentication login [parameter1] group [parameter2] [parameter3]",
+            "trans_command": "ip route [parameter1] [parameter2] [parameter3]",
             "parent_command": [],
-            "root": "aaa authentication login [parameter1] group [parameter2] [parameter3]"
-        }
-    ],
-    "set system ports console [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "transport input [parameter1]",
-            "parent_command": [
-                "line vty [parameter1] [parameter2]"
-            ],
-            "root": "line vty [parameter1] [parameter2]"
-        }
-    ],
-    "set vlans [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "vlan [parameter1]",
-            "parent_command": [],
-            "root": "vlan [parameter1]"
-        }
-    ],
-    "interface [parameter2]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "vlan [parameter1]",
-            "parent_command": [],
-            "root": "vlan [parameter1]"
-        }
-    ],
-    "l3-interface [parameter2]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "vlan [parameter1]",
-            "parent_command": [],
-            "root": "vlan [parameter1]"
+            "root": "ip route [parameter1] [parameter2] [parameter3]"
         }
     ],
     "set protocols ospf area [parameter1]": [
@@ -1207,15 +1360,48 @@
             "root": "interface [parameter1].[parameter2]"
         }
     ],
-    "set routing-options autonomous-system [parameter1]": [
+    "set forwarding-options hash-key family [parameter1] [parameter2]": [
         {
             "para_map": [
                 0,
                 0
             ],
-            "trans_command": "router bgp [parameter1]",
+            "trans_command": "neighbor [parameter1] activate",
+            "parent_command": [
+                "address-family [parameter1]"
+            ],
+            "root": "address-family [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "ip load-sharing [parameter1]",
             "parent_command": [],
-            "root": "router bgp [parameter1]"
+            "root": "ip load-sharing [parameter1]"
+        }
+    ],
+    "set forwarding-options port-mirroring input [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "icmp-echo [parameter1] source-interface [parameter2]",
+            "parent_command": [],
+            "root": "icmp-echo [parameter1] source-interface [parameter2]"
+        }
+    ],
+    "set forwarding-options port-mirroring output interface [parameter1]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "icmp-echo [parameter1] source-interface [parameter2]",
+            "parent_command": [],
+            "root": "icmp-echo [parameter1] source-interface [parameter2]"
         }
     ],
     "set firewall policer [parameter1]": [
@@ -1353,228 +1539,97 @@
             "root": "access-list [parameter1] permit ip [parameter2] [parameter3] [parameter4]"
         }
     ],
-    "set forwarding-options hash-key family [parameter1] [parameter2]": [
+    "set system services ssh hostkey-algorithm [parameter1]": [
         {
             "para_map": [
                 0,
                 0
             ],
-            "trans_command": "address-family [parameter1]",
+            "trans_command": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]",
             "parent_command": [],
-            "root": "address-family [parameter1]"
-        },
-        {
-            "para_map": [
-                1,
-                0
-            ],
-            "trans_command": "ip load-sharing [parameter1]",
-            "parent_command": [],
-            "root": "ip load-sharing [parameter1]"
+            "root": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]"
         }
     ],
-    "set forwarding-options port-mirroring input [parameter1]": [
+    "set system services ssh key-exchange [parameter1]": [
         {
             "para_map": [
                 0,
                 0
             ],
-            "trans_command": "icmp-echo [parameter1] source-interface [parameter2]",
+            "trans_command": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]",
             "parent_command": [],
-            "root": "icmp-echo [parameter1] source-interface [parameter2]"
+            "root": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]"
         }
     ],
-    "set forwarding-options port-mirroring output interface [parameter1]": [
-        {
-            "para_map": [
-                0,
-                1
-            ],
-            "trans_command": "icmp-echo [parameter1] source-interface [parameter2]",
-            "parent_command": [],
-            "root": "icmp-echo [parameter1] source-interface [parameter2]"
-        }
-    ],
-    "set security zones security-zone [parameter1]": [
+    "set system services ssh ciphers [parameter1] [parameter2] [parameter3]": [
         {
             "para_map": [
                 0,
                 0
             ],
-            "trans_command": "username [parameter1] secret [parameter2] [parameter3]",
+            "trans_command": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]",
             "parent_command": [],
-            "root": "username [parameter1] secret [parameter2] [parameter3]"
-        }
-    ],
-    "interfaces [parameter2]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "username [parameter1] secret [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "username [parameter1] secret [parameter2] [parameter3]"
-        }
-    ],
-    "interfaces [parameter2] host-inbound-traffic system-services [parameter3]": [
-        {
-            "para_map": [
-                0,
-                1
-            ],
-            "trans_command": "username [parameter1] secret [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "username [parameter1] secret [parameter2] [parameter3]"
-        },
-        {
-            "para_map": [
-                1,
-                4
-            ],
-            "trans_command": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]",
-            "parent_command": [],
-            "root": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]"
-        }
-    ],
-    "set security nat source pool [parameter1]": [
-        {
-            "para_map": [
-                0,
-                1
-            ],
-            "trans_command": "ip nat inside source list [parameter1] pool [parameter2]",
-            "parent_command": [],
-            "root": "ip nat inside source list [parameter1] pool [parameter2]"
-        }
-    ],
-    "address [parameter2] to [parameter3]": [
-        {
-            "para_map": [
-                0,
-                1
-            ],
-            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
-            "parent_command": [],
-            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
-        },
-        {
-            "para_map": [
-                1,
-                2
-            ],
-            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
-            "parent_command": [],
-            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
-        }
-    ],
-    "set security nat source rule-set [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
-            "parent_command": [],
-            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
-        }
-    ],
-    "from zone [parameter2]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
-            "parent_command": [],
-            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
-        }
-    ],
-    "to zone [parameter2]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
-            "parent_command": [],
-            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
-        }
-    ],
-    "rule [parameter2] match source-address [parameter3]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
-            "parent_command": [],
-            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
+            "root": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]"
         },
         {
             "para_map": [
                 1,
                 1
             ],
-            "trans_command": "access-list [parameter1] permit ip host [parameter2] any",
+            "trans_command": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]",
             "parent_command": [],
-            "root": "access-list [parameter1] permit ip host [parameter2] any"
-        }
-    ],
-    "rule [parameter2] then source-nat pool [parameter3]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
-            "parent_command": [],
-            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
-        },
-        {
-            "para_map": [
-                1,
-                0
-            ],
-            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
-            "parent_command": [],
-            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
-        }
-    ],
-    "rule [parameter2] match source-address [parameter3]/[parameter4]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
-            "parent_command": [],
-            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
-        },
-        {
-            "para_map": [
-                1,
-                1
-            ],
-            "trans_command": "access-list [parameter1] permit ip host [parameter2] any",
-            "parent_command": [],
-            "root": "access-list [parameter1] permit ip host [parameter2] any"
+            "root": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]"
         },
         {
             "para_map": [
                 2,
-                3
+                2
             ],
-            "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
+            "trans_command": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]",
             "parent_command": [],
-            "root": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]"
+            "root": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]"
+        }
+    ],
+    "set system authentication-order [parameter1]": [
+        {
+            "para_map": [
+                0,
+                2
+            ],
+            "trans_command": "aaa authentication login [parameter1] group [parameter2] [parameter3]",
+            "parent_command": [],
+            "root": "aaa authentication login [parameter1] group [parameter2] [parameter3]"
+        }
+    ],
+    "set system ports console [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "transport input [parameter1]",
+            "parent_command": [
+                "line vty [parameter1] [parameter2]"
+            ],
+            "root": "line vty [parameter1] [parameter2]"
+        }
+    ],
+    "set system services [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]",
+            "parent_command": [],
+            "root": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]"
         }
     ],
     "set security nat static rule-set [parameter1]": [
         {
             "para_map": [
                 0,
-                3
+                0
             ],
             "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
             "parent_command": [],
@@ -1594,7 +1649,7 @@
         {
             "para_map": [
                 1,
-                0
+                2
             ],
             "trans_command": "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]",
             "parent_command": [],
@@ -1647,7 +1702,7 @@
         {
             "para_map": [
                 0,
-                2
+                0
             ],
             "trans_command": "ip route [parameter1] [parameter2] [parameter3] [parameter4]",
             "parent_command": [],
@@ -1658,7 +1713,7 @@
         {
             "para_map": [
                 0,
-                2
+                3
             ],
             "trans_command": "ip route [parameter1] [parameter2] [parameter3] [parameter4]",
             "parent_command": [],
@@ -1687,26 +1742,15 @@
             "root": "mpls ldp router-id [parameter1]"
         }
     ],
-    "set system services ssh root-login [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "ip ssh version [parameter1]",
-            "parent_command": [],
-            "root": "ip ssh version [parameter1]"
-        }
-    ],
     "set system services ssh connection-limit [parameter1]": [
         {
             "para_map": [
                 0,
                 0
             ],
-            "trans_command": "ip ssh version [parameter1]",
+            "trans_command": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]",
             "parent_command": [],
-            "root": "ip ssh version [parameter1]"
+            "root": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]"
         }
     ],
     "set protocols l2-learning global-mode [parameter1]": [
@@ -1720,17 +1764,6 @@
             "root": "spanning-tree mode [parameter1]"
         }
     ],
-    "set system services [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]"
-        }
-    ],
     "set system services ssh client-alive-count-max [parameter1]": [
         {
             "para_map": [
@@ -1742,50 +1775,348 @@
             "root": "ip ssh version [parameter1]"
         }
     ],
-    "set protocols bgp local-as [parameter1]": [
+    "set routing-options static route [parameter1]/[parameter2] [parameter3]": [
         {
             "para_map": [
                 0,
                 0
             ],
-            "trans_command": "router bgp [parameter1]",
+            "trans_command": "ip route [parameter1] [parameter2] [parameter3]",
             "parent_command": [],
-            "root": "router bgp [parameter1]"
+            "root": "ip route [parameter1] [parameter2] [parameter3]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "ip route [parameter1] [parameter2] [parameter3]",
+            "parent_command": [],
+            "root": "ip route [parameter1] [parameter2] [parameter3]"
+        },
+        {
+            "para_map": [
+                2,
+                2
+            ],
+            "trans_command": "ip route [parameter1] [parameter2] [parameter3]",
+            "parent_command": [],
+            "root": "ip route [parameter1] [parameter2] [parameter3]"
         }
     ],
-    "set system services ssh ciphers [parameter1]": [
+    "set protocols mpls interface [parameter1]": [
         {
             "para_map": [
                 0,
                 0
             ],
-            "trans_command": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]",
+            "trans_command": "mpls ldp router-id [parameter1] force",
             "parent_command": [],
-            "root": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]"
+            "root": "mpls ldp router-id [parameter1] force"
         }
     ],
-    "set protocols stp bridge-priority [parameter1]": [
+    "set protocols ldp interface [parameter1]": [
         {
             "para_map": [
                 0,
                 0
             ],
-            "trans_command": "spanning-tree mode [parameter1]",
+            "trans_command": "mpls ldp router-id [parameter1] force",
             "parent_command": [],
-            "root": "spanning-tree mode [parameter1]"
+            "root": "mpls ldp router-id [parameter1] force"
         }
     ],
-    "vlan [parameter2]": [
+    "delete interfaces [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "interface [parameter1]",
+            "parent_command": [],
+            "root": "interface [parameter1]"
+        }
+    ],
+    "set routing-options forwarding-table export [parameter1]": [
+        {
+            "para_map": [
+                0,
+                2
+            ],
+            "trans_command": "ip route [parameter1] [parameter2] [parameter3]",
+            "parent_command": [],
+            "root": "ip route [parameter1] [parameter2] [parameter3]"
+        }
+    ],
+    "set protocols rstp": [
+        {
+            "para_map": [],
+            "trans_command": "lldp run",
+            "parent_command": [],
+            "root": "lldp run"
+        }
+    ],
+    "set bridge-domains [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "bridge-domain [parameter1]",
+            "parent_command": [],
+            "root": "bridge-domain [parameter1]"
+        }
+    ],
+    "domain-type [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "bridge-domain [parameter1]",
+            "parent_command": [],
+            "root": "bridge-domain [parameter1]"
+        }
+    ],
+    "set snmp v3 usm local-engine user [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]",
+            "parent_command": [],
+            "root": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]"
+        }
+    ],
+    "authentication-sha [parameter2] privacy-aes128 [parameter3]": [
+        {
+            "para_map": [
+                0,
+                2
+            ],
+            "trans_command": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]",
+            "parent_command": [],
+            "root": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]"
+        },
+        {
+            "para_map": [
+                1,
+                6
+            ],
+            "trans_command": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]",
+            "parent_command": [],
+            "root": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]"
+        }
+    ],
+    "set snmp community [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "snmp-server community [parameter1] [parameter2]",
+            "parent_command": [],
+            "root": "snmp-server community [parameter1] [parameter2]"
+        }
+    ],
+    "authorization [parameter2]": [
+        {
+            "para_map": [
+                0,
+                3
+            ],
+            "trans_command": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]",
+            "parent_command": [],
+            "root": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]"
+        }
+    ],
+    "set snmp trap-options [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "snmp-server enable traps snmp [parameter1] [parameter2]",
+            "parent_command": [],
+            "root": "snmp-server enable traps snmp [parameter1] [parameter2]"
+        }
+    ],
+    "set snmp trap-group [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "snmp-server enable traps [parameter1] [parameter2] [parameter3]",
+            "parent_command": [],
+            "root": "snmp-server enable traps [parameter1] [parameter2] [parameter3]"
+        }
+    ],
+    "targets [parameter2]": [
         {
             "para_map": [
                 0,
                 1
             ],
-            "trans_command": "address-family [parameter1] [parameter2]",
-            "parent_command": [
-                "router bgp [parameter1]"
+            "trans_command": "snmp-server enable traps [parameter1] [parameter2] [parameter3]",
+            "parent_command": [],
+            "root": "snmp-server enable traps [parameter1] [parameter2] [parameter3]"
+        }
+    ],
+    "version [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
             ],
-            "root": "router bgp [parameter1]"
+            "trans_command": "snmp-server enable traps [parameter1] [parameter2] [parameter3]",
+            "parent_command": [],
+            "root": "snmp-server enable traps [parameter1] [parameter2] [parameter3]"
+        }
+    ],
+    "categories [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "snmp-server enable traps [parameter1] [parameter2] [parameter3]",
+            "parent_command": [],
+            "root": "snmp-server enable traps [parameter1] [parameter2] [parameter3]"
+        }
+    ],
+    "set snmp contact [parameter1]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "snmp-server contact [parameter1] at [parameter2]",
+            "parent_command": [],
+            "root": "snmp-server contact [parameter1] at [parameter2]"
+        }
+    ],
+    "set protocols pim interface [parameter1]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "icmp-echo [parameter1] source-interface [parameter2]",
+            "parent_command": [],
+            "root": "icmp-echo [parameter1] source-interface [parameter2]"
+        }
+    ],
+    "mode [parameter2]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "icmp-echo [parameter1] source-interface [parameter2]",
+            "parent_command": [],
+            "root": "icmp-echo [parameter1] source-interface [parameter2]"
+        }
+    ],
+    "set protocols igmp interface [parameter1]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "icmp-echo [parameter1] source-interface [parameter2]",
+            "parent_command": [],
+            "root": "icmp-echo [parameter1] source-interface [parameter2]"
+        }
+    ],
+    "set protocols pim rp static address [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "ip pim rp-address [parameter1]",
+            "parent_command": [],
+            "root": "ip pim rp-address [parameter1]"
+        }
+    ],
+    "set interfaces [parameter1] [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
+        }
+    ],
+    "set interfaces [parameter1] [parameter2] [parameter3] [parameter4]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
+        },
+        {
+            "para_map": [
+                2,
+                0
+            ],
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
+        },
+        {
+            "para_map": [
+                3,
+                0
+            ],
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
+        }
+    ],
+    "delete interfaces [parameter1] [parameter2]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
         }
     ],
     "set services rpm probe [parameter1]": [
@@ -1899,6 +2230,17 @@
             "root": "snmp-server contact [parameter1] at [parameter2]"
         }
     ],
+    "set protocols ldp router-id [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "mpls ldp router-id [parameter1]",
+            "parent_command": [],
+            "root": "mpls ldp router-id [parameter1]"
+        }
+    ],
     "set security ike policy [parameter1]": [
         {
             "para_map": [
@@ -1908,17 +2250,6 @@
             "trans_command": "username [parameter1] secret [parameter2] [parameter3]",
             "parent_command": [],
             "root": "username [parameter1] secret [parameter2] [parameter3]"
-        }
-    ],
-    "mode [parameter2]": [
-        {
-            "para_map": [
-                0,
-                4
-            ],
-            "trans_command": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]",
-            "parent_command": [],
-            "root": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]"
         }
     ],
     "proposal-set [parameter2]": [
@@ -1976,6 +2307,42 @@
             "root": "username [parameter1] secret [parameter2] [parameter3]"
         }
     ],
+    "set protocols bgp local-as [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "router bgp [parameter1]",
+            "parent_command": [],
+            "root": "router bgp [parameter1]"
+        }
+    ],
+    "set protocols bgp export [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "redistribute [parameter1]",
+            "parent_command": [
+                "router bgp [parameter1]",
+                "address-family ipv4 unicast"
+            ],
+            "root": "router bgp [parameter1]"
+        }
+    ],
+    "set system services ssh ciphers [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]",
+            "parent_command": [],
+            "root": "ip ssh server algorithm encryption [parameter1] [parameter2] [parameter3]"
+        }
+    ],
     "set policy-options as-path [parameter1] [parameter2]": [
         {
             "para_map": [
@@ -1996,188 +2363,28 @@
             "root": "ip as-path access-list [parameter1] permit [parameter2]"
         }
     ],
-    "set protocols pim interface [parameter1]": [
+    "set protocols stp bridge-priority [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "spanning-tree mode [parameter1]",
+            "parent_command": [],
+            "root": "spanning-tree mode [parameter1]"
+        }
+    ],
+    "vlan [parameter2]": [
         {
             "para_map": [
                 0,
                 1
             ],
-            "trans_command": "icmp-echo [parameter1] source-interface [parameter2]",
-            "parent_command": [],
-            "root": "icmp-echo [parameter1] source-interface [parameter2]"
-        }
-    ],
-    "set protocols igmp interface [parameter1]": [
-        {
-            "para_map": [
-                0,
-                1
+            "trans_command": "address-family [parameter1] [parameter2]",
+            "parent_command": [
+                "router bgp [parameter1]"
             ],
-            "trans_command": "icmp-echo [parameter1] source-interface [parameter2]",
-            "parent_command": [],
-            "root": "icmp-echo [parameter1] source-interface [parameter2]"
-        }
-    ],
-    "version [parameter2]": [
-        {
-            "para_map": [
-                0,
-                1
-            ],
-            "trans_command": "icmp-echo [parameter1] source-interface [parameter2]",
-            "parent_command": [],
-            "root": "icmp-echo [parameter1] source-interface [parameter2]"
-        }
-    ],
-    "set protocols pim rp static address [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "ip pim rp-address [parameter1]",
-            "parent_command": [],
-            "root": "ip pim rp-address [parameter1]"
-        }
-    ],
-    "delete interfaces [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "interface [parameter1]",
-            "parent_command": [],
-            "root": "interface [parameter1]"
-        }
-    ],
-    "set interfaces [parameter1] [parameter2] [parameter3] [parameter4]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "interface [parameter1].[parameter2]",
-            "parent_command": [],
-            "root": "interface [parameter1].[parameter2]"
-        },
-        {
-            "para_map": [
-                1,
-                0
-            ],
-            "trans_command": "interface [parameter1].[parameter2]",
-            "parent_command": [],
-            "root": "interface [parameter1].[parameter2]"
-        },
-        {
-            "para_map": [
-                2,
-                0
-            ],
-            "trans_command": "interface [parameter1].[parameter2]",
-            "parent_command": [],
-            "root": "interface [parameter1].[parameter2]"
-        },
-        {
-            "para_map": [
-                3,
-                0
-            ],
-            "trans_command": "interface [parameter1].[parameter2]",
-            "parent_command": [],
-            "root": "interface [parameter1].[parameter2]"
-        }
-    ],
-    "delete interfaces [parameter1] [parameter2]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "interface [parameter1].[parameter2]",
-            "parent_command": [],
-            "root": "interface [parameter1].[parameter2]"
-        },
-        {
-            "para_map": [
-                1,
-                0
-            ],
-            "trans_command": "interface [parameter1].[parameter2]",
-            "parent_command": [],
-            "root": "interface [parameter1].[parameter2]"
-        }
-    ],
-    "set routing-options static route [parameter1]/[parameter2] [parameter3]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "ip route [parameter1] [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "ip route [parameter1] [parameter2] [parameter3]"
-        },
-        {
-            "para_map": [
-                1,
-                1
-            ],
-            "trans_command": "ip route [parameter1] [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "ip route [parameter1] [parameter2] [parameter3]"
-        },
-        {
-            "para_map": [
-                2,
-                2
-            ],
-            "trans_command": "ip route [parameter1] [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "ip route [parameter1] [parameter2] [parameter3]"
-        }
-    ],
-    "set bridge-domains [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "bridge-domain [parameter1]",
-            "parent_command": [],
-            "root": "bridge-domain [parameter1]"
-        }
-    ],
-    "domain-type [parameter2]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "bridge-domain [parameter1]",
-            "parent_command": [],
-            "root": "bridge-domain [parameter1]"
-        }
-    ],
-    "set interfaces [parameter1] [parameter2]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "interface [parameter1].[parameter2]",
-            "parent_command": [],
-            "root": "interface [parameter1].[parameter2]"
-        },
-        {
-            "para_map": [
-                1,
-                0
-            ],
-            "trans_command": "interface [parameter1].[parameter2]",
-            "parent_command": [],
-            "root": "interface [parameter1].[parameter2]"
+            "root": "router bgp [parameter1]"
         }
     ],
     "set ethernet-switching-options aging-time [parameter1]": [
@@ -2208,188 +2415,18 @@
                 0,
                 0
             ],
-            "trans_command": "switchport trunk native vlan [parameter1]",
-            "parent_command": [
-                "interface [parameter1]"
-            ],
-            "root": "interface [parameter1]"
+            "trans_command": "interface [parameter1].[parameter2]",
+            "parent_command": [],
+            "root": "interface [parameter1].[parameter2]"
         },
         {
             "para_map": [
                 1,
                 0
             ],
-            "trans_command": "switchport trunk native vlan [parameter1]",
-            "parent_command": [
-                "interface [parameter1]"
-            ],
-            "root": "interface [parameter1]"
-        }
-    ],
-    "set snmp v3 usm local-engine user [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]",
+            "trans_command": "interface [parameter1].[parameter2]",
             "parent_command": [],
-            "root": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]"
-        }
-    ],
-    "authentication-sha [parameter2] privacy-aes128 [parameter3]": [
-        {
-            "para_map": [
-                0,
-                2
-            ],
-            "trans_command": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]",
-            "parent_command": [],
-            "root": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]"
-        },
-        {
-            "para_map": [
-                1,
-                6
-            ],
-            "trans_command": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]",
-            "parent_command": [],
-            "root": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]"
-        }
-    ],
-    "set snmp community [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "snmp-server community [parameter1] [parameter2]",
-            "parent_command": [],
-            "root": "snmp-server community [parameter1] [parameter2]"
-        }
-    ],
-    "authorization [parameter2]": [
-        {
-            "para_map": [
-                0,
-                3
-            ],
-            "trans_command": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]",
-            "parent_command": [],
-            "root": "snmp-server user [parameter1] [parameter2] v3 auth [parameter3] [parameter4] priv [parameter5] [parameter6] [parameter7]"
-        }
-    ],
-    "set snmp trap-options [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "snmp-server enable traps snmp [parameter1] [parameter2]",
-            "parent_command": [],
-            "root": "snmp-server enable traps snmp [parameter1] [parameter2]"
-        }
-    ],
-    "set snmp trap-group [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "snmp-server enable traps [parameter1] [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "snmp-server enable traps [parameter1] [parameter2] [parameter3]"
-        }
-    ],
-    "targets [parameter2]": [
-        {
-            "para_map": [
-                0,
-                1
-            ],
-            "trans_command": "snmp-server enable traps [parameter1] [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "snmp-server enable traps [parameter1] [parameter2] [parameter3]"
-        }
-    ],
-    "categories [parameter2]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "snmp-server enable traps [parameter1] [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "snmp-server enable traps [parameter1] [parameter2] [parameter3]"
-        }
-    ],
-    "set snmp contact [parameter1]": [
-        {
-            "para_map": [
-                0,
-                1
-            ],
-            "trans_command": "snmp-server contact [parameter1] at [parameter2]",
-            "parent_command": [],
-            "root": "snmp-server contact [parameter1] at [parameter2]"
-        }
-    ],
-    "set routing-options forwarding-table export [parameter1]": [
-        {
-            "para_map": [
-                0,
-                2
-            ],
-            "trans_command": "ip route [parameter1] [parameter2] [parameter3]",
-            "parent_command": [],
-            "root": "ip route [parameter1] [parameter2] [parameter3]"
-        }
-    ],
-    "set protocols mpls interface [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "mpls ldp router-id [parameter1] force",
-            "parent_command": [],
-            "root": "mpls ldp router-id [parameter1] force"
-        }
-    ],
-    "set protocols ldp interface [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "mpls ldp router-id [parameter1] force",
-            "parent_command": [],
-            "root": "mpls ldp router-id [parameter1] force"
-        }
-    ],
-    "set protocols bgp export [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "redistribute [parameter1]",
-            "parent_command": [
-                "router bgp [parameter1]",
-                "address-family [parameter1]"
-            ],
-            "root": "router bgp [parameter1]"
-        }
-    ],
-    "set protocols ldp router-id [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "mpls ldp router-id [parameter1]",
-            "parent_command": [],
-            "root": "mpls ldp router-id [parameter1]"
+            "root": "interface [parameter1].[parameter2]"
         }
     ],
     "set forwarding-options hash-key family [parameter1]": [
@@ -2403,6 +2440,14 @@
             "root": "address-family [parameter1]"
         }
     ],
+    "layer-3": [
+        {
+            "para_map": [],
+            "trans_command": "ip route [parameter1] [parameter2] [parameter3] [parameter4]",
+            "parent_command": [],
+            "root": "ip route [parameter1] [parameter2] [parameter3] [parameter4]"
+        }
+    ],
     "set protocols bfd interface [parameter1]": [
         {
             "para_map": [
@@ -2411,9 +2456,9 @@
             ],
             "trans_command": "bfd neighbor [parameter1] interface [parameter2]",
             "parent_command": [
-                "interface [parameter1].[parameter2]"
+                "interface [parameter1]"
             ],
-            "root": "interface [parameter1].[parameter2]"
+            "root": "interface [parameter1]"
         }
     ],
     "minimum-interval [parameter2]": [
@@ -2424,9 +2469,9 @@
             ],
             "trans_command": "bfd interval [parameter1] min_rx [parameter2] multiplier [parameter3]",
             "parent_command": [
-                "interface [parameter1].[parameter2]"
+                "interface [parameter1]"
             ],
-            "root": "interface [parameter1].[parameter2]"
+            "root": "interface [parameter1]"
         }
     ],
     "minimum-receive-interval [parameter2]": [
@@ -2437,9 +2482,9 @@
             ],
             "trans_command": "bfd interval [parameter1] min_rx [parameter2] multiplier [parameter3]",
             "parent_command": [
-                "interface [parameter1].[parameter2]"
+                "interface [parameter1]"
             ],
-            "root": "interface [parameter1].[parameter2]"
+            "root": "interface [parameter1]"
         }
     ],
     "multiplier [parameter2]": [
@@ -2450,9 +2495,9 @@
             ],
             "trans_command": "bfd interval [parameter1] min_rx [parameter2] multiplier [parameter3]",
             "parent_command": [
-                "interface [parameter1].[parameter2]"
+                "interface [parameter1]"
             ],
-            "root": "interface [parameter1].[parameter2]"
+            "root": "interface [parameter1]"
         }
     ],
     "set protocols bfd peer [parameter1]": [
@@ -2470,11 +2515,11 @@
         {
             "para_map": [
                 0,
-                2
+                0
             ],
-            "trans_command": "ip route [parameter1] [parameter2] [parameter3] [parameter4]",
+            "trans_command": "mpls ldp router-id [parameter1] force",
             "parent_command": [],
-            "root": "ip route [parameter1] [parameter2] [parameter3] [parameter4]"
+            "root": "mpls ldp router-id [parameter1] force"
         },
         {
             "para_map": [
@@ -2486,17 +2531,6 @@
             "root": "ip route [parameter1] [parameter2] [parameter3] [parameter4]"
         }
     ],
-    "set protocols rstp interface [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "interface [parameter1]",
-            "parent_command": [],
-            "root": "interface [parameter1]"
-        }
-    ],
     "set protocols pim rp static [parameter1]": [
         {
             "para_map": [
@@ -2506,6 +2540,17 @@
             "trans_command": "ip pim rp-address [parameter1]",
             "parent_command": [],
             "root": "ip pim rp-address [parameter1]"
+        }
+    ],
+    "set protocols rstp interface [parameter1]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "interface [parameter1]",
+            "parent_command": [],
+            "root": "interface [parameter1]"
         }
     ],
     "set protocols lldp interface [parameter1]": [

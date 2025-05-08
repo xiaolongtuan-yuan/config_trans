@@ -133,7 +133,8 @@ class ConfigMatcher:
         candidate = defaultdict(list)
         if isinstance(best_root, list):
             for root in best_root:
-                candidate[root].extend(self._get_parent_commands(ranked_candidates[root], self.templates[root]))
+                if root in ranked_candidates.keys():
+                    candidate[root].extend(self._get_parent_commands(ranked_candidates[root], self.templates[root]))
         else:
             candidate[best_root].extend(self._get_parent_commands(ranked_candidates[best_root], self.templates[best_root]))
         para_match = []
