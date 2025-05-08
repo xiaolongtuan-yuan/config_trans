@@ -3,12 +3,14 @@ vlan vlan10
 interface ge-1/0/1
  port trunk allow-pass vlan none 10
  port trunk allow-pass vlan none 30
- port link-type access
- port default vlan vlan30
- undo shutdown
 vlan vlan30
-interface 0 mode switching
-interface ge-1/0/2
+interface 0
+ port link-type access
+ port default vlan 0
+ vlan-type dot1q vlan30
+ undo shutdown
  port link-type trunk
- port default vlan vlan10
+ vlan-type dot1q vlan10
+interface ge-1/0/2
 interface ge-1/0/3
+interface none mode switching

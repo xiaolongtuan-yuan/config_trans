@@ -167,6 +167,7 @@ def main():
                 real_config_dir = f'../experiment/test_dataset/test_data_400/text_config/{target_vendor}'
                 real_command_tree_dir = f'../experiment/test_dataset/test_data_400/command_tree/{target_vendor}'
                 module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}_module_match.json'
+                manual_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
 
                 output_save_dir = os.path.join(output_dir, str(scale), source_vendor)
                 os.makedirs(output_save_dir, exist_ok=True)
@@ -175,8 +176,8 @@ def main():
                 print(f"exper for {scale}, {source_vendor} to {target_vendor} translation without llm")
 
 
-                # mapping_libraries = mapping_library_load(mapping_library_path, vendors, manual_mapping_path)
-                mapping_libraries = mapping_library_load(mapping_library_path, vendors)
+                mapping_libraries = mapping_library_load(mapping_library_path, vendors, manual_mapping_path)
+                # mapping_libraries = mapping_library_load(mapping_library_path, vendors)
 
                 config_matchers = config_matchers_load(templates_path, config_model_dir, module_match_path, vendors)
 
