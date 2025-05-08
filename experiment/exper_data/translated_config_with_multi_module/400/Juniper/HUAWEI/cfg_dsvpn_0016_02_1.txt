@@ -1,21 +1,19 @@
 sysname Spoke1
 interface ge-1/0/0
- ip address 10.1.2.10 none gre
- ip address none 24
+ ip address 10.1.2.10 24 gre
  source lo0.0
 interface 0 mode none
 service-security global-binding <IPSEC_PROFILE_NAME> ge-1/0/0.0
 service-security global-binding none gr-1/0/0.0
 interface lo0
- ip address 192.168.1.1 none none
- ip address none 32
+ ip address 192.168.1.1 32 none
 interface gr-1/0/0
- ip address 172.16.1.2 none none
- ip address none 24
+ ip address 172.16.1.2 24 none
  source ge-1/0/0.0
+ source 0
  binding tunnel dynamic
 router id 172.16.1.2
-ospf 0.0.0.0 router-id [parameter2]
+ospf 0.0.0.0
  area 0.0.0.0
  area 0.0.0.1
 vlan gr-1/0/0.0

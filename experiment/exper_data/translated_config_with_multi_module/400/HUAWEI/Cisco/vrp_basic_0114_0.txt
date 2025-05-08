@@ -1,19 +1,20 @@
 hostname SSH_Server
 ip domain-name example.com
-crypto key generate rsa general-keys modulus 2048
-ip ssh version 2
+crypto key generate rsa general-keys modulus none
 interface LoopBack0
+ tunnel key 2048
  ip address 10.1.1.1 255.255.255.255
+ip ssh client enable first-time
+ip ssh version 2
 ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
-username client001 secret none client001
-username client001 privilege 15 password none @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
+crypto key generate @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
+username client001 privilege 15 password none none
+username client001 secret none none
 interface GigabitEthernet0/0/0
  ip address 10.1.1.2 255.255.0.0
-line vty 0 4
-crypto key generate rsa general-keys modulus none
-ip ssh version none
-ip ssh server algorithm encryption none none none
-aaa authorization network none group none none
-interface none.none
+interface [parameter1].[parameter2]
+ no shutdown
  switchport mode none
- switchport trunk allowed vlan none
+ ip address none none
+line vty 0 4
+aaa authorization exec default group none none

@@ -1,13 +1,15 @@
 set system host-name Spoke1
-set interfaces GigabitEthernet1/0/0 unit none family inet address 10.1.2.10/255.255.255.0
-set interfaces GigabitEthernet1/0/0 unit none tunnel destination gre
-set interfaces GigabitEthernet1/0/0 unit none tunnel source LoopBack0
+set interfaces [parameter1] unit none family inet address none/none vrrp-group none virtual-address none
+set interfaces [parameter1] unit none family inet address 10.1.2.10/255.255.255.0
+set interfaces [parameter1] unit none tunnel destination gre
+set interfaces [parameter1] unit none tunnel source LoopBack0
 set interfaces LoopBack0 unit none family inet address 192.168.1.1/255.255.255.255
 set interfaces Tunnel0 unit none family inet address 172.16.1.2/255.255.255.0
 set interfaces Tunnel0 unit none tunnel destination p2mp
 set interfaces Tunnel0 unit none tunnel source GigabitEthernet1/0/0
 set interfaces Tunnel0 unit none family p2mp
-set interfaces <IPSEC_PROFILE_NAME> none none none
+set interfaces Tunnel0 unit none family inet address none/none vrrp-group none virtual-address none
+set interfaces Tunnel0 unit none family inet address <IPSEC_PROFILE_NAME>/none
 set routing-options router-id 172.16.1.2
 set protocols ospf area 0.0.0.0
 set routing-options autonomous-system 172.16.1.0
@@ -16,4 +18,3 @@ set routing-options autonomous-system 192.168.1.0
 set routing-options router-id 10.1.2.10
 set protocols ospf area 0.0.0.1
 set routing-options autonomous-system 10.1.2.0
-delete interfaces none

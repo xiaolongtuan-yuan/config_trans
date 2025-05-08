@@ -7,9 +7,13 @@ interface ge-1/0/0
  ip address 10.1.1.1 none none
  ip address none 24
 ip route 0.0.0.0 0 10.1.1.2
-aaa authentication login BGP-NETWORKS group IBGP none
 router bgp external
- neighbor 10.1.1.2 remote-as 100
+ address-family ipv4 unicast
+  redistribute IBGP
+router bgp 100
+ neighbor 10.1.1.2 update-source none
+ address-family ipv4 unicast
+  redistribute BGP-NETWORKS
  address-family unicast none
 ip route none 24 exact none
 ip route none none accept none

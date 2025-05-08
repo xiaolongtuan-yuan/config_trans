@@ -1,18 +1,17 @@
 set system host-name NATA
+set security nat source pool 0 rule nat1 then static-nat prefix full-cone
 set security nat source pool 0 address 11.11.11.101 to 11.11.11.105
-set security nat source pool 0 rule none match destination-address 1
-set security nat source pool 0 address address-group1 to 3001
+set security nat source pool 0 address none to address-group1
 set system services 1
 set routing-options autonomous-system 0
 set protocols bgp group group1
-set security nat static rule-set nat1 from zone nat1
-set security nat static rule-set nat1 rule none then static-nat prefix 1
-set security nat static rule-set nat1 rule none then static-nat prefix full-cone
+set security nat static rule-set nat1
 set security ipsec policy 3001
+set security ipsec policy 192.168.10.0 proposal-set 0.0.0.255
 set firewall family inet filter classifier1 term classifier1 then behavior1
-set policy-options policy-statement policy1 term none from route-filter none/none 3001
-set policy-options policy-statement policy1 term none from protocol nat1
+set policy-options policy-statement policy1 term 3001 from route-filter none/none none
+set policy-options policy-statement policy1 term nat1 then none
 set policy-options policy-statement policy1 term none from protocol behavior1
+set interfaces GigabitEthernet disable
 set interfaces GigabitEthernet unit none family inet address 192.168.10.1/255.255.255.0
-set interfaces GigabitEthernet unit none disable
-set interfaces 1 0.0.0.255 none none
+set interfaces none inbound none none

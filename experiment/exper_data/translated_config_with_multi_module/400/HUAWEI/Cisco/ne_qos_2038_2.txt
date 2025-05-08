@@ -1,11 +1,14 @@
 hostname DeviceC
 interface GigabitEthernet1/0/0
  ip address 10.20.1.1 255.255.255.0
+interface [parameter1].[parameter2]
+ no shutdown
 router bgp 100
- neighbor 10.20.1.2 remote-as 100
  neighbor 10.20.1.2 remote-as none
+ address-family ipv4 unicast
+ no synchronization
+ address-family [parameter1] [parameter2]
+  neighbor none route-map none in
+ neighbor 10.20.1.2 activate
 router ospf 1
  network 10.20.1.0 0.0.0.255 area 0.0.0.0
-interface none.none
- ip address none none
- ip igmp version none

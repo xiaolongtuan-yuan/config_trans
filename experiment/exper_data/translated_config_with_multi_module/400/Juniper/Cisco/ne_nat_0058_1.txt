@@ -6,15 +6,9 @@ username trust secret none none
 username ge-0/0/0.0 secret none none
 username untrust secret none none
 username ge-0/0/1.0 secret none none
-ip nat inside source list none pool NATPOOL
-ip nat pool RS1 1.1.1.101 1.1.1.105 netmask RS-STATIC
-ip nat pool trust none none netmask RS-STATIC
-ip nat pool untrust none none netmask RS-STATIC
-ip nat pool R1 none none netmask RS-STATIC
+ip nat pool STATIC-1 none 1.1.1.100/32 netmask none
+ip nat inside source list none pool 1.1.1.105
 access-list none permit ip host 192.168.10.0/24 any
-ip nat pool NATPOOL none none netmask RS-STATIC
-ip nat pool untrust none none netmask none
-ip nat pool 1.1.1.100/32 none none netmask none
 ip nat pool STATIC-1 none none netmask none
 ip nat inside source static 192.168.10.10/32 none
 ip route 0.0.0.0 0 2.2.2.2

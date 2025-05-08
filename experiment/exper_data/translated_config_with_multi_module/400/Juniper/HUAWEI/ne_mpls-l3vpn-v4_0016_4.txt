@@ -1,17 +1,16 @@
 sysname CE3
 interface ge-1/0/0
- ip address 10.3.1.1 none none
- ip address none 24
+ ip address 10.3.1.1 24 none
 interface 0 mode none
 bgp 800
 bgp BGP_GROUP
-bgp external
+ import-route external
  peer 100 as-number none
  ipv4-family unicast
-  import-route ADVERTISE_NETWORK none
+ peer 10.3.1.2 as-number none
+ import-route ADVERTISE_NETWORK
 traffic policy ADVERTISE_NETWORK
-traffic policy 24
+traffic policy 10.3.1.0
 load-balance packet exact
-traffic policy 1
- classifier none behavior accept precedence none
+traffic policy accept
  classifier none behavior reject

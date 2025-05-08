@@ -1,8 +1,8 @@
 hostname NATA
+crypto key generate rsa general-keys modulus 0
 snmp-server engineID local 1
 snmp-server engineID local 0
 aaa authentication login none group group1 none
-ip nat inside source list 1 pool nat1
 ip nat pool address-group1 1.1.1.101 1.1.1.105 netmask none
 ip nat inside source list 3001 pool address-group1
 ip nat pool none none 192.168.10.10 netmask none
@@ -13,11 +13,9 @@ interface GigabitEthernet
  ip address 192.168.10.1 255.255.255.0
  ip address 2.2.2.1 255.255.255.0
  ip access-group nat1 none
-interface none.3001
+interface [parameter1].[parameter2]
+ no shutdown
 router ospf 1
  network 2.2.2.0 0.0.0.255 area 0.0.0.0
-ip route 0.0.0.0 0.0.0.0 none
-ip route none none none 2.2.2.2
-access-list 0 permit ip host none any
-ip nat pool none none none netmask none
-interface none.none
+ip route 0.0.0.0 0.0.0.0 2.2.2.2
+access-list none permit ip host none any

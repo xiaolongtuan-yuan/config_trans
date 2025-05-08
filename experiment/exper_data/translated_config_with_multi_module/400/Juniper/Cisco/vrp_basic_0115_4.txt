@@ -1,10 +1,12 @@
 hostname CE2
 interface none.0
 router bgp 65420
-aaa authentication login none group PEERS none
+ address-family ipv4 unicast
+  redistribute PEERS
 router bgp external
-router bgp 10.1.2.1
- neighbor 10.1.2.2 remote-as 100
+ neighbor 10.1.2.1 remote-as none
+router bgp 100
+ neighbor 10.1.2.2 update-source none
  address-family unicast none
 interface ge-1/0/1
  ip address 0 10.1.2.1/24 none

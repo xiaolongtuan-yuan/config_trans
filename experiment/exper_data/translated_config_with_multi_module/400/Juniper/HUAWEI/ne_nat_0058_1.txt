@@ -1,18 +1,19 @@
 sysname NATA
 interface ge-0/0/0
- ip address inet 2.2.2.1/24 none
- ip address inet 192.168.10.1/24
+ ip address 0 192.168.10.1/24 none
+ ip address inet none
 service-security policy none trust
 service-security policy none ge-0/0/0.0
 service-security policy none untrust
- rule R1 deny protocol none source-ip 192.168.10.0/24 none
 service-security policy none ge-0/0/1.0
- rule RS1 deny protocol none source-ip 1.1.1.105 none
-bfd STATIC-1 bind peer-ip none interface 192.168.10.10/32 source-ip 1.1.1.101 auto
+ rule R1 deny protocol none source-ip 192.168.10.0/24 none
+bfd NATPOOL bind peer-ip none interface 1.1.1.105 source-ip 1.1.1.101 auto
 bfd STATIC-1 bind peer-ip none interface 192.168.10.10/32 source-ip 1.1.1.100/32 auto
  rule R1 deny protocol none source-ip none none
-ip route-static 0 none none
-ip route-static none none none 2.2.2.2
+ip route-static 0.0.0.0 none none
+ip route-static none 0 none 2.2.2.2
 interface ge-0/0/1
-ospf ge-0/0/1.0 router-id [parameter2]
+ ip address inet 2.2.2.1/24 none
+ospf 0.0.0.0
  area 0.0.0.0
+ area ge-0/0/1.0

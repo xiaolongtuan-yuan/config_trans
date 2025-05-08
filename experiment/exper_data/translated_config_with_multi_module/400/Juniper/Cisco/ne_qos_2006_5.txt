@@ -4,9 +4,13 @@ interface ge-1/0/0
  ip address none 24
 interface none.0
 router bgp 65430
-aaa authentication login EXPORT-NETWORK group BGP-PEERS none
+ address-family ipv4 unicast
+  redistribute BGP-PEERS
 router bgp external
- neighbor 10.3.1.2 remote-as 100
+router bgp 100
+ neighbor 10.3.1.2 update-source none
  address-family unicast none
+ address-family ipv4 unicast
+  redistribute EXPORT-NETWORK
 ip route none 24 exact none
 ip route none none accept none

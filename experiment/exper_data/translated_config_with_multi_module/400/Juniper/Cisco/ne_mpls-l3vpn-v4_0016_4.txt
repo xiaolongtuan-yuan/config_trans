@@ -4,11 +4,15 @@ interface ge-1/0/0
  ip address none 24
 interface none.0
 router bgp 800
-aaa authentication login ADVERTISE_NETWORK group BGP_GROUP none
+ address-family ipv4 unicast
+  redistribute BGP_GROUP
 router bgp external
  neighbor 10.3.1.2 update-source none
- neighbor 10.3.1.2 remote-as 100
+ neighbor none remote-as 100
  address-family unicast none
+ neighbor 10.3.1.2 activate
+ address-family ipv4 unicast
+  redistribute ADVERTISE_NETWORK
 ip route none 24 exact none
 ip route none none accept none
 ip route none none reject none
