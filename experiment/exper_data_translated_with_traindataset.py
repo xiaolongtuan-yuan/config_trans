@@ -148,7 +148,7 @@ def main():
     name = 'multi_module'
     output_dir = f'../experiment/exper_data/translated_config_with_{name}'
     mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}.json'
-    # manual_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
+    manual_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
     templates_path = f'../dataset_multi_vendor_config/config_command_node/verified_data/{{}}.json'
     config_model_dir = f'../dataset_multi_vendor_config/config_model/verified_data/{{}}.json'
 

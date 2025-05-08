@@ -157,24 +157,18 @@ def cul_grammatical_accuracy_with_json(translated_dir, real_dir, config_files):
     return average_match_ratio
 
 def cul_device_grammatical_accuracy_with_json(translated_dir, real_dir, config_files):
-    file_accuracies = []  # 存储每个文件的准确率
+    grammatical_accuracy = []  # 存储每个文件的准确率
+    command_accuracy = []
     for file_name in config_files:
         device_name= os.path.splitext(file_name)[0]
-        trans_templates = json.load(open(os.path.join(translated_dir, f"{device_name}_temp.json")))
-        expected_json = os.path.join(real_dir, f"{device_name}.json")
-        expected_templates = get_all_templates(json.load(open(expected_json)))
+        evaluate_json = json.load(open(os.path.join(translated_dir, f"{device_name}_evaluate.json")))
 
-        match_score, match_account, error_templates = calculate_match_ratio(trans_templates,
-                                                                            expected_templates,
-                                                                            [],
-                                                                            [])
-        # 计算当前文件准确率并记录
-        if match_account > 0:
-            file_accuracy = match_score / match_account
-            file_accuracies.append(file_accuracy)
+        grammatical_accuracy.append(evaluate_json['grammatical_accuracy'])
+        command_accuracy.append(evaluate_json['command_accuracy'])
     # 计算所有文件的平均准确率
-    average_match_ratio = sum(file_accuracies) / len(file_accuracies) if file_accuracies else 0
-    return average_match_ratio
+    average_grammatical_accuracy = sum(grammatical_accuracy) / len(grammatical_accuracy) if grammatical_accuracy else 0
+    average_command_accuracy = sum(command_accuracy) / len(command_accuracy) if command_accuracy else 0
+    return average_grammatical_accuracy, average_command_accuracy
 
 def grammatical_match(device_name, match_rule, real_dir):
     expected_json = os.path.join(real_dir, f"{device_name}.json")
