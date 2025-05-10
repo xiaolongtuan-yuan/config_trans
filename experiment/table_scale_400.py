@@ -18,8 +18,9 @@ from experiment.tree_match import cul_command_accuracy, cul_grammatical_accuracy
 
 if __name__ == '__main__':
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
-    name = 'multi_module'
-    scales = [400]
+    name = 'full_process'
+    data_dir = 'valid_data'
+    scales = [2800]
     
     # translated_config_base = '../experiment/exper_data/translated_config_with_multi_module'
     translated_config_base = f'../experiment/exper_data/translated_config_with_{name}'
@@ -62,14 +63,20 @@ if __name__ == '__main__':
 
                 trannlated_config_files = [f for f in os.listdir(translated_config_dir) if
                                            f.endswith('.txt') and not f.endswith('text.txt')]
-                real_config_dir = f'../experiment/test_dataset/test_data_400/text_config/{target_vendor}'
-                real_target_config_json_dir = f'../experiment/test_dataset/test_data_400/command_tree/{target_vendor}' if target_vendor != 'Juniper' else f'../experiment/test_dataset/test_data_400/command_tree/Juniper_subdivided'
+                real_config_dir = f'../experiment/test_dataset/{data_dir}/text_config/{target_vendor}'
+                real_target_config_json_dir = f'../experiment/test_dataset/{data_dir}/command_tree/{target_vendor}' if target_vendor != 'Juniper' else f'../experiment/test_dataset/{data_dir}/command_tree/Juniper_subdivided'
 
 
                 device_grammatical_accuracy, device_command_accuracy = cul_device_grammatical_accuracy_with_json(
                     translated_config_dir,
                     real_target_config_json_dir,
                     trannlated_config_files)
+
+                semantic_similarity = compute_embded_similarity(translated_config_dir, real_config_dir,
+                                                                trannlated_config_files)
+                exper_data['semantic_similarity']['vendors'].append(
+                    (f'{source_vendor}_{target_vendor}', semantic_similarity))
+
                 # command_accuracy = cul_command_accuracy(translated_config_dir, real_config_dir, trannlated_config_files)
                 exper_data['command_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', device_command_accuracy))
 
@@ -88,6 +95,8 @@ if __name__ == '__main__':
                                                   vendor_config_models[target_vendor])
                 exper_data['view_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', view_accuracy))
 
+        exper_data['semantic_similarity']['average'] = sum(
+            [x[1] for x in exper_data['semantic_similarity']['vendors']]) / len(exper_data['semantic_similarity']['vendors'])
         exper_data['command_accuracy']['average'] = sum(
             [x[1] for x in exper_data['command_accuracy']['vendors']]) / len(exper_data['command_accuracy']['vendors'])
         exper_data['param_accuracy']['average'] = sum(

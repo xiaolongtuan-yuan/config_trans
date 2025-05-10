@@ -145,11 +145,13 @@ def delete_outdate_files(file_dir):
 def main():
     # 初始化路径
     device = "cuda:0"
-    name = 'multi_module'
+    # name = 'multi_module'
+    name = 'full_process'
+
     output_dir = f'../experiment/exper_data/translated_config_with_{name}'
-    mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}.json'
+    mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}.json'
     manual_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
-    module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}_module_match.json'
+    module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}_module_match.json'
     templates_path = f'../dataset_multi_vendor_config/config_command_node/verified_data/{{}}.json'
     config_model_dir = f'../dataset_multi_vendor_config/config_model/verified_data/{{}}.json'
 
@@ -159,14 +161,15 @@ def main():
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})
 
+    data_dir = 'valid_data'
     for scale in config_num:
         for source_vendor in vendors:
             for target_vendor in vendors:
                 if source_vendor == target_vendor:
                     continue
-                source_config_dir = f'../experiment/test_dataset/test_data_400/command_tree/{source_vendor}' if source_vendor != 'Juniper' else f'../experiment/test_dataset/test_data_400/command_tree/Juniper_subdivided'
-                real_config_dir = f'../experiment/test_dataset/test_data_400/text_config/{target_vendor}'
-                real_command_tree_dir = f'../experiment/test_dataset/test_data_400/command_tree/{target_vendor}'
+                source_config_dir = f'../experiment/test_dataset/{data_dir}/command_tree/{source_vendor}' if source_vendor != 'Juniper' else f'../experiment/test_dataset/{data_dir}/command_tree/Juniper_subdivided'
+                real_config_dir = f'../experiment/test_dataset/{data_dir}/text_config/{target_vendor}'
+                real_command_tree_dir = f'../experiment/test_dataset/{data_dir}/command_tree/{target_vendor}'
 
                 output_save_dir = os.path.join(output_dir, str(scale), source_vendor)
                 os.makedirs(output_save_dir, exist_ok=True)
