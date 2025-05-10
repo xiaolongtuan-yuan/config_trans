@@ -25,11 +25,12 @@ for i, vendor in enumerate(vendors):
     cumulative_usage = np.cumsum(y_values)
     cumulative_percentage = cumulative_usage / total_usage
 
+    CP_value = 0.7
     # 找到第一个累计百分比达到或超过80%的索引
-    threshold_index = np.argmax(cumulative_percentage >= 0.8)
+    threshold_index = np.argmax(cumulative_percentage >= CP_value)
     # 计算前面的轴数量占总轴数量的百分比
     threshold_ratio = (threshold_index + 1) / len(x_labels) * 100
-    print(f"达到80%累计百分比时，前面的轴数量占总轴数量的 {threshold_ratio:.2f}%")
+    print(f"达到{CP_value}累计时，前面的轴数量占总轴数量的 {threshold_ratio:.2f}%")
 
     # 将原始使用次数转换为占总数的比例
     y_proportions = np.array(y_values) / total_usage

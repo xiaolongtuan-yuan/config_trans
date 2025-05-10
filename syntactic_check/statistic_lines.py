@@ -55,6 +55,17 @@ def statistic_config_lines(range_num):
 
 
 if __name__ == "__main__":
-    range_num = '2800'
-    config_lines = statistic_config_lines(range_num)
-    print(config_lines)
+
+    range_num = ['400', '1200', '2000','2800']
+    all_config_lines = {j:0 for j in ['Cisco', 'HUAWEI','Juniper']}
+    for i in range_num:
+        config_lines = statistic_config_lines(i)
+        for j in ['Cisco', 'HUAWEI','Juniper']:
+            print(f"{j}的平均行数为：{config_lines[j]['average_all_lines']}")
+            all_config_lines[j] += sum(list(config_lines[j]['all_config_line'].values()))
+    
+    for vendor in all_config_lines.keys():
+        all_config_lines[vendor] = all_config_lines[vendor] / 1693
+    print(all_config_lines)
+
+
