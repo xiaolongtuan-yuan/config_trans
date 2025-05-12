@@ -1,12 +1,10 @@
 sysname CE1
 interface GigabitEthernet1/0/1
  undo shutdown
- port default vlan 10
  vlan-type dot1q 1
  ip address 192.168.1.2 255.255.255.0
-interface ge-1/0/2
- undo shutdown
 interface GigabitEthernet1/0/2
+ undo shutdown
  ip address 172.16.1.2 255.255.255.0
 bgp 65410
  ipv4-family unicast
@@ -14,11 +12,12 @@ bgp 65410
  peer 10.1.2.2 enable
 router id 192.168.1.2
 ospf 1 router-id 192.168.1.2
-traffic policy IMPORT-DIRECT
 traffic policy policy1
 bgp 65420
  import-route external
  peer 10.1.2.2 as-number 100
  peer 192.168.1.1 as-number 65001
- peer 172.16.1.1 as-number 0
+ peer 172.16.1.1 as-number 65001
  import-route direct
+port link-type hybrid
+ip ip-prefix IMPORT-DIRECT index 10 permit 0.0.0.0 0 less-equal 32

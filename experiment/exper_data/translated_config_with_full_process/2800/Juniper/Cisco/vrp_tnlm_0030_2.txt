@@ -2,12 +2,8 @@ hostname CE1
 router bgp 65410
  address-family ipv4 unicast
   redistribute external
-ip route 255.255.255.0 GigabitEthernet2/0/0 direct-import 10.30.1.2
-ip route 255.255.255.0 GigabitEthernet2/0/0 direct 10.30.1.2
-ip route 0.0.0.0 0.0.0.0 accept 0.0.0.0
-ip route 255.255.255.0 GigabitEthernet2/0/0 reject 10.30.1.2
 router bgp 65420
- neighbor 10.1.1.1 remote-as 100
+ neighbor 10.1.1.1 remote-as 0
 router bgp 100
  address-family ipv4 unicast
 interface GigabitEthernet0/0/0
@@ -15,5 +11,10 @@ interface GigabitEthernet0/0
 ip address 10.1.1.1 255.255.255.252
 interface Loopback0
 ip address 3.3.3.3 255.255.255.255
+route-map direct-import permit 10
+match interface
+match protocol connected
+permit
+route-map direct-import deny 20
 neighbor 10.1.1.2 remote-as 100
 neighbor 10.1.1.2 route-map direct-import in

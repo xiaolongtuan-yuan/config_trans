@@ -1,7 +1,6 @@
 sysname DeviceC
-interface ge-1/0/0
- undo shutdown
 interface GigabitEthernet1/0/0
+ undo shutdown
  ip address 10.20.1.1 255.255.255.0
 bgp 65420
  import-route internal
@@ -12,10 +11,12 @@ bgp 65420
  peer 10.1.2.2 enable
 ospf 1
  area 0.0.0.0
-ospf 1 router-id 172.16.1.2
+ospf 1 router-id 172.16.1.1
  area 0.0.0.0
   network 0.0.0.0 255.255.255.255
-traffic policy redistribute-connected
 traffic policy policy1
 bgp 100
 peer 10.20.1.2 as-number 100
+ip ip-prefix redistribute-connected index 10 permit 0.0.0.0 0 less-equal 32
+route-policy redistribute-connected permit node 10
+if-match ip-prefix redistribute-connected

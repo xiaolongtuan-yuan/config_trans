@@ -986,6 +986,8 @@ class Translation_Model:
                 for match in matches:
                     target_commands.extend(match.split('\n'))
 
+                if len(target_commands) == 0:
+                    print("llm mapping returns 0 results")
                 matched_results = []
                 for target_command in target_commands:
                     target_command = target_command.strip()

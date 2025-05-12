@@ -1,17 +1,18 @@
 set system host-name SSH_Server
 set system domain-name example.com
-set system services ssh hostkey-algorithm rsa
-set system services ssh connection-limit 4
 set system services ssh
 set system services ssh protocol-version v2
 set interfaces lo0 disable
-set interfaces lo0 unit 0 family inet address 10.1.1.1/32
-set system services ssh ciphers aes128-ctr aes192-ctr aes256-ctr
-set protocols rstp interface ge-0/0/1
-set system login user client001 class super-user authentication none
+set interfaces LoopBack0 unit 0 family inet address 10.1.1.1/32
 set interfaces ge-0/0/0 disable
 set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.2/16
 set interfaces ge-0/0/0 unit 0 disable
-delete interfaces ge-0/0/3 disable
+set system services ssh connection-limit 4
 set system services ssh root-login deny
+set system host-key ssh-rsa size 2048
+set system services ssh ciphers aes128-ctr aes192-ctr aes256-ctr
 set system authentication-order password
+set system login user client001 authentication encrypted-password "@%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%"
+set system login user client001 class super-user
+set system login user client001 authentication ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAr..."
+set system login authentication-order password

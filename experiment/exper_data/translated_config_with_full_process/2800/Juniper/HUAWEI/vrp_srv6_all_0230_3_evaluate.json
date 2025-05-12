@@ -1,7 +1,8 @@
 {
-    "command_accuracy": 0.8333333333333334,
+    "command_accuracy": 0.75,
     "missed_commands": [
         "interface loopback1",
+        "peer 10.1.1.1 as-number 100",
         "network 11.11.11.11 255.255.255.255",
         "peer 10.1.1.1 enable"
     ],
@@ -10,6 +11,10 @@
         "network [parameter1] [parameter2]"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_trans_commands": [],
-    "llm_command_ratio": 0.0
+    "llm_trans_commands": [
+        "ip ip-prefix announce-lo0 index 10 permit 11.11.11.11 32",
+        "route-policy announce-lo0 permit node 10",
+        "if-match ip-prefix announce-lo0"
+    ],
+    "llm_command_ratio": 0.125
 }
