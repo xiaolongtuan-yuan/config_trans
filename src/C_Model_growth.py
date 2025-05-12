@@ -173,59 +173,52 @@ def insert_template(config_model: dict) -> dict:
 
 
 if __name__ == "__main__":
-    '''
-    vendors = ["Juniper"]
-    config_num = [100, 500, 1000, 2000]
-    project_root = Path(__file__).parent.parent
+    ''' # 最全面数据
+        vendors = ['Cisco', "HUAWEI", "Juniper"]
+        train_dataset_dirs = ['experiment/test_dataset/test_data_400',
+                              'experiment/test_dataset/test_data_1200',
+                              'experiment/test_dataset/test_data_2000',
+                              'experiment/test_dataset/test_data_2800']
 
-    # merge the device configuration to the vendor model
-    for vendor in vendors:
-        for num in config_num:
+        project_root = Path(__file__).parent.parent
+
+        for vendor in vendors:
             template_used_statistic = {}
-            # 加载供应商配置模型
-            # vendor_model = load_json_file(vendor_model_path)
             vendor_model = {}
             vendor_command_re = {}
-            folder_path = str(project_root / f'dataset_multi_vendor_config/Json_config/partition/{vendor}_{num}')
-            vendor_model_path = str(project_root / f'dataset_multi_vendor_config/config_model/different_scale/{vendor}_{num}.json')
-
-            json_files = get_json_filenames(folder_path)
             merge_count = 0
-            for json_file in tqdm(json_files, desc="Merged config num"):
-                json_config_path = folder_path + '/' + json_file
-                # 加载设备配置模型
-                try:
-                    json_config = load_json_file(json_config_path)
-                    if vendor == 'Juniper':
-                        json_config = process_juniper_json(json_config)
-                except:
-                    continue
+            for train_dataset_dir in train_dataset_dirs:
+                folder_path = str(project_root / train_dataset_dir / f'Json_simplified/{vendor}')
+                file_names_path = str(project_root / train_dataset_dir / f'command_tree/Cisco')   # 只用测试集试试效果
+                json_files = get_json_filenames(file_names_path)
+                for json_file in tqdm(json_files, desc=f"{vendor} {train_dataset_dir} Merged config num"):
+                    json_config_path = folder_path + '/' + json_file
+                    try:
+                        json_config = load_json_file(json_config_path)
+                    except:
+                        continue
+                    # 对vendor_model中的模版进行去重，主要问题是同样的conmand，llm在解析时可能出现不同的模版（配置参数缺失了），建议均采用最大的配置参数，我们需要一个字典来记录是否去重
+                    vendor_model = merge_models(vendor_model, json_config, vendor_command_re, template_used_statistic)
+            vendor_model_dir = str(project_root / f'dataset_multi_vendor_config/config_model/verified_data')
+            os.makedirs(vendor_model_dir, exist_ok=True)
+            save_json_file(vendor_model, f"{vendor_model_dir}/{vendor}.json")'''
 
-                # 对vendor_model中的模版进行去重，主要问题是同样的conmand，llm在解析时可能出现不同的模版（配置参数缺失了），建议均采用最大的配置参数，我们需要一个字典来记录是否去重
-                vendor_model = merge_models(vendor_model, json_config, vendor_command_re, template_used_statistic)
-            save_json_file(vendor_model, vendor_model_path)
-
-            # save_json_file(template_used_statistic, str(project_root / f'statistic/statistic_res/{vendor}_template_used_statistic.json')) # 统计模版使用次数
-    '''
-
-    # 只处理前400条juniper数据
+    # 不同规模
     vendors = ['Cisco', "HUAWEI", "Juniper"]
-    train_dataset_dirs = ['experiment/test_dataset/test_data_400',
-                          'experiment/test_dataset/test_data_1200',
-                          'experiment/test_dataset/test_data_2000',
-                          'experiment/test_dataset/test_data_2800']
+    train_dataset_dir = 'experiment/test_dataset/all_data'
 
     project_root = Path(__file__).parent.parent
-
-    for vendor in vendors:
-        template_used_statistic = {}
-        vendor_model = {}
-        vendor_command_re = {}
-        merge_count = 0
-        for train_dataset_dir in train_dataset_dirs:
+    vendor_model_dir = str(project_root / f'dataset_multi_vendor_config/config_model/different_scale')
+    os.makedirs(vendor_model_dir, exist_ok=True)
+    for scale in [40, 80, 120]:
+        for vendor in vendors:
+            template_used_statistic = {}
+            vendor_model = {}
+            vendor_command_re = {}
+            merge_count = 0
             folder_path = str(project_root / train_dataset_dir / f'Json_simplified/{vendor}')
-            file_names_path = str(project_root / train_dataset_dir / f'command_tree/Cisco')   # 只用测试集试试效果
-            json_files = get_json_filenames(file_names_path)
+            file_names_path = str(project_root / train_dataset_dir / f'command_tree/Cisco')
+            json_files = get_json_filenames(file_names_path)[:scale]
             for json_file in tqdm(json_files, desc=f"{vendor} {train_dataset_dir} Merged config num"):
                 json_config_path = folder_path + '/' + json_file
                 try:
@@ -234,9 +227,9 @@ if __name__ == "__main__":
                     continue
                 # 对vendor_model中的模版进行去重，主要问题是同样的conmand，llm在解析时可能出现不同的模版（配置参数缺失了），建议均采用最大的配置参数，我们需要一个字典来记录是否去重
                 vendor_model = merge_models(vendor_model, json_config, vendor_command_re, template_used_statistic)
-        vendor_model_dir = str(project_root / f'dataset_multi_vendor_config/config_model/verified_data')
-        os.makedirs(vendor_model_dir, exist_ok=True)
-        save_json_file(vendor_model, f"{vendor_model_dir}/{vendor}.json")
+            save_json_file(vendor_model, f"{vendor_model_dir}/{vendor}_{scale}.json")
+
+
 
 
 

@@ -60,7 +60,7 @@ def find_template(command, config_model):
 
         # 使用正则表达式匹配模板
         if template == 'template':
-            pattern = re.sub(r'\[parameter\d+\]', r'(\\S+)', details)
+            pattern = re.sub(r"\[[^\]]+\]", r'(\\S+)', details)
             pattern = f'^{pattern}$'
             try:
                 if re.match(pattern, command):

@@ -1,0 +1,13 @@
+sysname CE3
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.3.1.1 255.255.255.0
+interface LoopBack0
+ undo shutdown
+ ip address 5.5.5.5 255.255.255.255
+bgp 65420
+ import-route external
+ peer 100 as-number none
+ peer 10.3.1.2 as-number 65001
+ ipv4-family unicast
+  undo synchronization

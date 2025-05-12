@@ -230,13 +230,11 @@ def save_json_file(data, file_path):
 
 def main():
     project_root = Path(__file__).parent.parent
-    # 加载embedding model
     local_EMmodel_path = str(project_root / 'EmbeddingModel/MiniLM-L6-v2')
-    # embedding_model = SentenceTransformer(local_EMmodel_path)
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
 
     vendors = ["Juniper", "Cisco", "HUAWEI"]
-    config_num = [100, 500, 1000, 2000]
+    config_num = [40, 80, 120]
 
     # vendors = ["HUAWEI"]
     for vendor in vendors:
@@ -247,11 +245,13 @@ def main():
             # 加载供应商配置模型
             config_model = load_json_file(config_model_path)
             # 解析配置节点
-            Command_nodes = parse_command_node(Command_nodes, config_model, embedding_model)
+            Command_nodes = build_command_node(Command_nodes, config_model, embedding_model)
+
             # 保存配置节点（json）
             save_path = str(project_root / f'dataset_multi_vendor_config/config_command_node/different_scale/{vendor}_{num}.json')
+            node_num = len(Command_nodes.keys())
             save_json_file(Command_nodes, save_path)
-            print(f"finished {vendor} with {num} scales")
+            print(f"finished {vendor} with verified_data, total {node_num} command nodes")
 
             # save_path = str(project_root / 'dataset_multi_vendor_config/config_command_node_debug/{}.json'.format(vendor))
             # save_json_file(Command_nodes, save_path)
@@ -305,7 +305,7 @@ def debug():
             print(f"finished {vendor} with {num} scales")
 
 if __name__ == "__main__":
-    run_type = 'main_experiment'
+    run_type = 'main'
 
     if run_type == 'main':
         main()

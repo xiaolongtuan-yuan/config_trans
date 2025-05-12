@@ -1,0 +1,18 @@
+hostname CE1
+interface ge-0/0/0
+ ip address inet 3.3.3.3/32 none
+ ip address 0 10.1.1.1/30 none
+ ip address inet none
+interface lo0.0
+router bgp 65410
+ bgp router-id 1
+ address-family unicast accept
+ bgp router-id 2
+ address-family unicast reject
+ip route none none direct-import none
+ip route none none direct none
+router bgp external
+ neighbor 10.1.1.1 remote-as none
+router bgp 100
+ neighbor 10.1.1.2 update-source none
+ neighbor direct-import update-source none

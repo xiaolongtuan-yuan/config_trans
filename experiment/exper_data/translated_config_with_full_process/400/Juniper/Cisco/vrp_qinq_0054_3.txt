@@ -1,0 +1,22 @@
+hostname CE1
+interface ge-1/0/1
+ no shutdown
+ switchport trunk native vlan none
+ encapsulation dot1Q 1
+ ip address 192.168.1.2 24
+interface none.1
+interface ge-1/0/2
+ no shutdown
+ ip address 172.16.1.2 24
+router bgp 65410
+mpls ldp router-id 192.168.1.2
+ip route none none IMPORT-DIRECT none
+ip route none none direct none
+ip route none none accept none
+router bgp EBGP
+router bgp external
+router bgp 100
+ neighbor 192.168.1.1 activate
+ neighbor 172.16.1.1 activate
+ address-family ipv4 unicast
+  redistribute IMPORT-DIRECT

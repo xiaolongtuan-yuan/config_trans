@@ -1,0 +1,22 @@
+hostname CE1
+interface ge-1/0/1
+ no shutdown
+ switchport trunk native vlan 1
+interface GigabitEthernet1/0/1
+ ip address 192.168.1.2 255.255.255.0
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 172.16.1.2 255.255.255.0
+router bgp 65410
+ address-family ipv4 unicast
+  redistribute EBGP
+mpls ldp router-id 192.168.1.2
+ip route 0.0.0.0 255.255.255.0 IMPORT-DIRECT 0.0.0.0
+ip route 255.255.255.0 GigabitEthernet2/0/0 direct 10.30.1.2
+ip route 255.255.255.0 GigabitEthernet2/0/0 accept 10.30.1.2
+router bgp 65420
+router bgp 100
+ neighbor 192.168.1.1 update-source Loopback0
+ neighbor 172.16.1.1 update-source Loopback0
+ address-family ipv4 unicast
+  redistribute IMPORT-DIRECT

@@ -9,17 +9,20 @@ import os
 
 from experiment.compute_bleu import compute_embded_similarity
 from experiment.syntax_correctness import load_config_model, cul_view_accuracy
-from experiment.tree_match import cul_command_accuracy, cul_grammatical_accuracy, cul_param_accuracy
+from experiment.tree_match import cul_command_accuracy, cul_grammatical_accuracy, cul_param_accuracy, cul_command_and_param_accuracy
 
 if __name__ == '__main__':
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
     # scales = [100,500,1000,2000]
-    scales = [2000]
+    scales = [400, 2800]
 
-    translated_config_base = './exper_data/translated_config'
+    translated_config_base = './exper_data/translated_config_with_full_process'
     vendor_config_models = {}
     for vendor in vendors:
-        config_model_path = f'../dataset_multi_vendor_config/config_model/different_scale/{vendor}_2000.json'
+        if vendor == 'Juniper':
+            config_model_path = f'../dataset_multi_vendor_config/config_model/verified_data/Juniper_combined.json'
+        else:
+            config_model_path = f'../dataset_multi_vendor_config/config_model/verified_data/{vendor}.json'
         config_model = load_config_model(config_model_path)
         vendor_config_models[vendor] = config_model
 
@@ -53,24 +56,21 @@ if __name__ == '__main__':
                     continue
 
                 translated_config_dir = os.path.join(translated_config_base, str(scale), source_vendor, target_vendor)
-                trannlated_config_files = [f for f in os.listdir(translated_config_dir) if f.endswith('.txt')]
-                real_config_dir = f'./exper_data/lable/{target_vendor}'
+                trannlated_config_files = [f for f in os.listdir(translated_config_dir) if f.endswith('.txt') and not f.endswith('_label_text.txt')]
+                real_config_dir = f'./test_dataset/valid_data/text_config/{target_vendor}'
 
                 semantic_similarity = compute_embded_similarity(translated_config_dir, real_config_dir,
                                                                 trannlated_config_files)
                 exper_data['semantic_similarity']['vendors'].append(
                     (f'{source_vendor}_{target_vendor}', semantic_similarity))
 
-                command_accuracy = cul_command_accuracy(translated_config_dir, real_config_dir, trannlated_config_files)
+                command_accuracy, param_accuracy, grammatical_accuracy = cul_command_and_param_accuracy(translated_config_dir, real_config_dir, trannlated_config_files)
                 exper_data['command_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', command_accuracy))
-
-                param_accuracy = cul_param_accuracy(translated_config_dir, real_config_dir, trannlated_config_files,
-                                                    vendor_config_models[target_vendor])
                 exper_data['param_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', param_accuracy))
 
-                grammatical_accuracy = cul_grammatical_accuracy(translated_config_dir, real_config_dir,
-                                                                trannlated_config_files,
-                                                                vendor_config_models[target_vendor])
+                # grammatical_accuracy = cul_grammatical_accuracy(translated_config_dir, real_config_dir,
+                #                                                 trannlated_config_files,
+                #                                                 vendor_config_models[target_vendor])
                 exper_data['grammatical_accuracy']['vendors'].append(
                     (f'{source_vendor}_{target_vendor}', grammatical_accuracy))
 

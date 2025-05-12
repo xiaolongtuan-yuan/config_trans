@@ -1,0 +1,209 @@
+{
+    "set system host-name DeviceC": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DeviceC",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces ge-1/0/0 unit 0 family inet address 10.20.1.1/24": {
+        "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+        "command": "set interfaces ge-1/0/0 unit 0 family inet address 10.20.1.1/24",
+        "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+            },
+            {
+                "name": "ip-address",
+                "type": "string",
+                "explanation": "The IPv4 address assigned to the interface."
+            },
+            {
+                "name": "subnet-mask",
+                "type": "integer",
+                "explanation": "Bits of IPv4 subnet mask."
+            }
+        ]
+    },
+    "set protocols bgp group IBGP type internal": {
+        "template": "set protocols bgp group [parameter1] type [parameter2]",
+        "command": "set protocols bgp group IBGP type internal",
+        "explanation": "Configure BGP protocol group with specified type",
+        "parameters": [
+            {
+                "name": "group name",
+                "type": "string",
+                "explanation": "Name of the BGP group"
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "explanation": "Type of the BGP group, e.g., internal or external"
+            }
+        ]
+    },
+    "set protocols bgp group IBGP local-address 10.20.1.1": {
+        "template": "set protocols bgp group [parameter1] local-address [parameter2]",
+        "command": "set protocols bgp group IBGP local-address 10.20.1.1",
+        "explanation": "Configure BGP protocol settings specifying the group and local address",
+        "parameters": [
+            {
+                "name": "group name",
+                "type": "string",
+                "explanation": "Name of the BGP group"
+            },
+            {
+                "name": "local address",
+                "type": "IPv4 address",
+                "explanation": "Local IP address for BGP peering"
+            }
+        ]
+    },
+    "set protocols bgp group IBGP neighbor 10.20.1.2 peer-as 100": {
+        "template": "set protocols bgp group [group_name] neighbor [neighbor_ip] peer-as [as_number]",
+        "command": "set protocols bgp group IBGP neighbor 10.20.1.2 peer-as 100",
+        "explanation": "Configure BGP protocol settings by specifying the group name, neighbor IP address, and the autonomous system (AS) number for the peer.",
+        "parameters": [
+            {
+                "name": "group_name",
+                "type": "string",
+                "explanation": "The name of the BGP group."
+            },
+            {
+                "name": "neighbor_ip",
+                "type": "ip_address",
+                "explanation": "The IP address of the BGP neighbor."
+            },
+            {
+                "name": "as_number",
+                "type": "integer",
+                "explanation": "The autonomous system number of the BGP peer."
+            }
+        ]
+    },
+    "set protocols bgp group IBGP family inet unicast": {
+        "template": "set protocols bgp group [parameter1] family [parameter2] [parameter3]",
+        "command": "set protocols bgp group IBGP family inet unicast",
+        "explanation": "Configure BGP protocol settings for a specific group and address family",
+        "parameters": [
+            {
+                "name": "group name",
+                "type": "string",
+                "explanation": "Name of the BGP group"
+            },
+            {
+                "name": "address family",
+                "type": "string",
+                "explanation": "Type of address family (e.g., inet)"
+            },
+            {
+                "name": "sub-address family",
+                "type": "string",
+                "explanation": "Type of sub-address family (e.g., unicast)"
+            }
+        ]
+    },
+    "set protocols bgp group IBGP export redistribute-connected": {
+        "template": "set protocols bgp group [parameter1] export [parameter2]",
+        "command": "set protocols bgp group IBGP export redistribute-connected",
+        "explanation": "Configure BGP protocol to export routes from a specified group",
+        "parameters": [
+            {
+                "name": "group name",
+                "type": "string",
+                "explanation": "Name of the BGP group"
+            },
+            {
+                "name": "export policy",
+                "type": "string",
+                "explanation": "Policy for exporting routes, e.g., redistribute-connected"
+            }
+        ]
+    },
+    "set protocols ospf area 0.0.0.0 interface ge-1/0/0.0": {
+        "template": "set protocols ospf area [parameter1] interface [parameter2]",
+        "command": "set protocols ospf area 0.0.0.0 interface ge-1/0/0.0",
+        "explanation": "Configure OSPF protocol area and interface",
+        "parameters": [
+            {
+                "name": "OSPF area",
+                "type": "IPv4 address",
+                "explanation": "The OSPF area identifier in IPv4 address format"
+            },
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "The name of the interface to be included in the OSPF area"
+            }
+        ]
+    },
+    "set policy-options policy-statement redistribute-connected term 1 from protocol direct": {
+        "template": "set policy-options policy-statement [parameter1] term [parameter2] from protocol [parameter3]",
+        "command": "set policy-options policy-statement redistribute-connected term 1 from protocol direct",
+        "explanation": "Configure a policy statement to redistribute connected routes with a specific term and protocol",
+        "parameters": [
+            {
+                "name": "policy-statement name",
+                "type": "string",
+                "explanation": "The name of the policy statement"
+            },
+            {
+                "name": "term number",
+                "type": "integer",
+                "explanation": "The term number within the policy statement"
+            },
+            {
+                "name": "protocol",
+                "type": "string",
+                "explanation": "The protocol from which routes are to be redistributed"
+            }
+        ]
+    },
+    "set policy-options policy-statement redistribute-connected term 1 then accept": {
+        "template": "set policy-options policy-statement [parameter1] term [parameter2] then [parameter3]",
+        "command": "set policy-options policy-statement redistribute-connected term 1 then accept",
+        "explanation": "Configures a policy statement to redistribute connected routes under a specific term with an action to accept them.",
+        "parameters": [
+            {
+                "name": "policy-statement name",
+                "type": "string",
+                "explanation": "The name of the policy statement."
+            },
+            {
+                "name": "term number",
+                "type": "integer",
+                "explanation": "The term number within the policy statement."
+            },
+            {
+                "name": "action",
+                "type": "string",
+                "explanation": "The action to be taken (e.g., accept, reject)."
+            }
+        ]
+    },
+    "set routing-options autonomous-system 100": {
+        "template": "set routing-options autonomous-system [parameter1]",
+        "command": "set routing-options autonomous-system 100",
+        "explanation": "Configure the autonomous system number for routing options",
+        "parameters": [
+            {
+                "name": "autonomous-system number",
+                "type": "integer",
+                "explanation": "The autonomous system number"
+            }
+        ]
+    }
+}

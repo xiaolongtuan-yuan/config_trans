@@ -1,0 +1,11 @@
+set system host-name CE2
+
+set interfaces ge-1/0/1 unit 20 vlan-id 20
+set interfaces ge-1/0/1 unit 20 family inet address 10.3.1.2/24
+
+set protocols bgp group eBGP type external
+set protocols bgp group eBGP peer-as 100
+set protocols bgp group eBGP neighbor 10.2.1.1 family inet unicast
+set protocols bgp group eBGP export direct-routes
+set policy-options policy-statement direct-routes term 1 from protocol direct
+set policy-options policy-statement direct-routes term 1 then accept

@@ -1,0 +1,12 @@
+hostname CE2
+interface GigabitEthernet1/0/1
+ ip address 10.1.2.1 255.255.255.0
+ service-policy input policy1
+interface GigabitEthernet1/0/0.1
+ no shutdown
+router bgp 65420
+router bgp 100
+ neighbor 10.1.2.2 remote-as 100
+ address-family ipv4 unicast
+  neighbor 10.1.1.1 route-map default-route-map in
+ neighbor 10.1.2.2 activate

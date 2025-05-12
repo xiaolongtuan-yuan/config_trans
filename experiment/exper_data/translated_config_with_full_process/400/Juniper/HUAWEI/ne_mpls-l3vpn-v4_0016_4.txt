@@ -1,0 +1,20 @@
+sysname CE3
+interface ge-1/0/0
+ undo shutdown
+ ip address 10.3.1.1 24
+interface 0
+bgp 800
+bgp BGP_GROUP
+ import-route external
+ peer 100 as-number none
+ ipv4-family unicast
+  undo synchronization
+  import-route ADVERTISE_NETWORK none
+ peer 10.3.1.2 as-number none
+ peer 10.3.1.0 enable
+  undo synchronization
+  import-route direct
+ peer accept enable
+ peer reject enable
+traffic policy ADVERTISE_NETWORK
+traffic policy 1

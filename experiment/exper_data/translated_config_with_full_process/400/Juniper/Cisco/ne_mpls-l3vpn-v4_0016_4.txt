@@ -1,0 +1,17 @@
+hostname CE3
+interface ge-1/0/0
+ no shutdown
+ ip address 10.3.1.1 24
+interface 0
+router bgp 800
+router bgp BGP_GROUP
+router bgp external
+ neighbor 10.3.1.2 update-source none
+ neighbor none remote-as 100
+ address-family unicast none
+ neighbor 10.3.1.2 activate
+ address-family ipv4 unicast
+  redistribute ADVERTISE_NETWORK
+ip route none 24 exact none
+ip route none none reject none
+ip route none none accept none

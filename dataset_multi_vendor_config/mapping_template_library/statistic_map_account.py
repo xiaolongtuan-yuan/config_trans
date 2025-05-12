@@ -17,11 +17,11 @@ def count_rules(obj):
 
 result = {}
 # 遍历different_scale目录下的json文件，统计每个文件中的规则数量
-# directory = "./different_scale"
-directory = "./scale400"
+directory = "./different_scale"
+# directory = "./multi_module"
 
 for filename in os.listdir(directory):
-    if filename.endswith(".json"):
+    if filename.endswith(".json") and not filename.endswith("module_match.json"):
         file_path = os.path.join(directory, filename)
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)

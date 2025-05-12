@@ -1,0 +1,21 @@
+sysname CE1
+bgp 65410
+ ipv4-family unicast
+ import-route direct
+ peer 10.1.2.2 enable
+traffic policy direct-import
+traffic policy 1
+traffic policy policy1
+traffic policy policy2
+bgp 65420
+ import-route external
+ peer 10.1.1.1 as-number 65001
+ peer 100 as-number 100
+ ipv4-family unicast
+  undo synchronization
+interface GigabitEthernet0/0/0
+ip address 10.1.1.1 255.255.255.252
+interface LoopBack0
+ip address 3.3.3.3 255.255.255.255
+peer 10.1.1.2 as-number 100
+peer 10.1.1.2 route-policy direct-import import

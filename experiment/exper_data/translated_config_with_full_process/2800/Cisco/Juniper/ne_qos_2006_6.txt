@@ -1,0 +1,13 @@
+set system host-name CE4
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.4.1.1/24
+set routing-options autonomous-system 65440
+set protocols bgp group PEERS type external
+set protocols bgp group PEERS neighbor 10.4.1.2 peer-as 100
+set protocols bgp group PEERS export ADVERTISE_NETWORK
+set protocols bgp group PEERS family inet unicast
+set protocols bgp local-as 300
+set policy-options policy-statement REDISTRIBUTE-CONNECTED term 1 from protocol direct
+set policy-options policy-statement REDISTRIBUTE-CONNECTED term 1 then accept
+set protocols bgp group EXTERNAL-PEER export REDISTRIBUTE-CONNECTED

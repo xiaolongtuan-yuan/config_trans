@@ -20,13 +20,13 @@ from experiment.syntax_correctness import load_config_model, cul_view_accuracy
 from experiment.tree_match import cul_command_accuracy, cul_grammatical_accuracy, cul_param_accuracy
 
 if __name__ == '__main__':
-    e2e_models = ['deepseek-reasoner', 'gpt-4o']
+    e2e_models = ["aliyun_deepseek-r1", "gpt-4o", "aliyun_qwen-max"]
     for e2e_model in e2e_models:
         vendors = ['Cisco', 'HUAWEI', 'Juniper']
         translated_config_base = './exper_data/e2e_llm_translated_config'
         vendor_config_models = {}
         for vendor in vendors:
-            config_model_path = f'../dataset_multi_vendor_config/config_model/different_scale/{vendor}_2000.json'
+            config_model_path = f'../dataset_multi_vendor_config/config_model/verified_data/{vendor}.json'
             config_model = load_config_model(config_model_path)
             vendor_config_models[vendor] = config_model
 
@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
                 translated_config_dir = os.path.join(translated_config_base, e2e_model, source_vendor, target_vendor)
                 trannlated_config_files = [f for f in os.listdir(translated_config_dir) if f.endswith('.txt')][:100]
-                real_config_dir = f'./exper_data/lable/{target_vendor}'
+                real_config_dir = f'./test_dataset/valid_data/text_config/{target_vendor}'
 
                 semantic_similarity = compute_embded_similarity(translated_config_dir, real_config_dir,
                                                                 trannlated_config_files)     # cul semantic_similarity
@@ -67,6 +67,7 @@ if __name__ == '__main__':
                     (f'{source_vendor}_{target_vendor}', semantic_similarity))
 
                 command_accuracy = cul_command_accuracy(translated_config_dir, real_config_dir, trannlated_config_files)    # cul command accuracy
+
                 exper_data['command_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', command_accuracy))
 
                 param_accuracy = cul_param_accuracy(translated_config_dir, real_config_dir, trannlated_config_files,

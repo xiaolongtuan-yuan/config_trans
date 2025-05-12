@@ -1,0 +1,24 @@
+sysname CE1
+interface ge-1/0/1
+ undo shutdown
+ port default vlan none
+ vlan-type dot1q 1
+ ip address 192.168.1.2 24
+interface ge-1/0/2
+ undo shutdown
+ ip address 172.16.1.2 24
+bgp 65410
+ ipv4-family 1
+ import-route direct
+ peer accept enable
+router id 192.168.1.2
+ospf none router-id 192.168.1.2
+traffic policy IMPORT-DIRECT
+traffic policy 1
+bgp EBGP
+ import-route external
+ peer 100 as-number none
+ peer 192.168.1.1 as-number none
+ peer 172.16.1.1 as-number none
+ ipv4-family 1
+  import-route IMPORT-DIRECT none

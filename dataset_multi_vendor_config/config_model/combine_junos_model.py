@@ -1,0 +1,39 @@
+# -*- coding: utf-8 -*-
+"""
+@Time ： 2025/5/10 22:01
+@Auth ： xiaolongtuan
+@File ：combine_junos_model.py
+"""
+import json
+
+model_dir = 'different_scale'
+
+combine_model = {}
+for scale in [40, 80, 120]:
+    with open(f'./{model_dir}/Juniper_{scale}.json', 'r', encoding='utf-8') as f:
+        juniper_model = json.load(f)
+
+    for root, value in juniper_model.items():
+        flag = True
+        root_parameter = value.get('parameters')
+        for sub_command, v in value.items():
+            if isinstance(v, dict):
+                combine_command = root + ' ' + sub_command
+                total_parameters = root_parameter + v.get('parameters')
+                combine_model[combine_command] = {
+                    'template': combine_command,
+                    'parameters': total_parameters
+                }
+                flag = False
+        if flag:
+            combine_model[root] = {
+                'template': root,
+                'parameters': root_parameter
+            }
+
+    with open(f'./{model_dir}/Juniper_combined_{scale}.json', 'w', encoding='utf-8') as f:
+        json.dump(combine_model, f, ensure_ascii=False, indent=4)
+
+
+
+

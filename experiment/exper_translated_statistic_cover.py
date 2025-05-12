@@ -6,7 +6,7 @@
 """
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from src.F_device_configtrans import Config_Translater, Translation_Model, mapping_library_load, config_matchers_load, \
+from src.F_new_device_configtrans import Config_Translater, Translation_Model, mapping_library_load, config_matchers_load, \
     process_juniper_json
 import os
 import json
@@ -62,8 +62,6 @@ def translate_single_file(config_translater, input_dir, statistic_res, map_rule_
     # 加载配置
     config_path = os.path.join(input_dir, config_file)
     json_config = load_json_file(config_path)
-    if source_vendor == 'Juniper':
-        json_config = process_juniper_json(json_config)
     file_name = os.path.splitext(config_file)[0]
 
     statistic_data, map_rule_data = config_translater.translation_without_llm(json_config, source_vendor, target_vendor,
@@ -101,9 +99,23 @@ def main():
     local_EMmodel_path = '../EmbeddingModel/MiniLM-L6-v2'
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})
-    scales = [2000]
+    scales = [177]
     scales_covers_res = {}
     for scale in scales:
+        # mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/different_scale/{{}}_{{}}_{scale}.json'
+        # templates_path = f'../dataset_multi_vendor_config/config_command_node/different_scale/{{}}_{scale}.json'
+        # config_model_dir = f'../dataset_multi_vendor_config/config_model/different_scale/{{}}_{scale}.json'
+        # module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/different_scale/{{}}_{{}}_{scale}_module_match.json'
+        # manual_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
+        # error_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{{}}_{{}}.json'
+        mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}.json'
+        manual_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
+        error_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{{}}_{{}}.json'
+        module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}_module_match.json'
+        templates_path = f'../dataset_multi_vendor_config/config_command_node/verified_data/{{}}.json'
+        config_model_dir = f'../dataset_multi_vendor_config/config_model/verified_data/{{}}.json'
+
+
         statistic_res = {
             "command_count": 0,
             "rule_ccount": 0,
@@ -113,18 +125,16 @@ def main():
             for target_vendor in vendors:
                 if source_vendor == target_vendor:
                     continue
-                source_config_dir = f'./exper_data/{source_vendor}'
+                source_config_dir = f'../experiment/test_dataset/valid_data/command_tree/{source_vendor}' if source_vendor != 'Juniper' else f'../experiment/test_dataset/valid_data/command_tree/Juniper_subdivided'
+
                 output_save_dir = os.path.join(output_dir, str(scale), source_vendor)  # 当前处理的是哪个scale的哪个源供应商
                 os.makedirs(output_save_dir, exist_ok=True)
                 delete_outdate_files(os.path.join(output_dir, str(scale), source_vendor, target_vendor))
 
                 print(f"exper for {scale}, {source_vendor} to {target_vendor} translation without llm")
-                mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/different_scale/{{}}_{{}}_{scale}.json'
-                templates_path = f'../dataset_multi_vendor_config/config_command_node/different_scale/{{}}_{scale}.json'
-                config_model_dir = f'../dataset_multi_vendor_config/config_model/different_scale/{{}}_{scale}.json'
 
-                mapping_libraries = mapping_library_load(mapping_library_path, vendors)
-                config_matchers = config_matchers_load(templates_path, vendors, semantic_topk=3)
+                mapping_libraries = mapping_library_load(mapping_library_path, vendors, manual_mapping_path, error_mapping_path)
+                config_matchers = config_matchers_load(templates_path, config_model_dir, module_match_path, vendors, topk=3)
 
                 translation_llm = Translation_Model('deepseek-chat', config_model_dir=config_model_dir, vendors=vendors)
 
@@ -133,8 +143,8 @@ def main():
                 # 执行批量翻译
                 cover_data, map_rule_freq = batch_translate(config_translater, source_config_dir, output_save_dir,
                                 source_vendor=source_vendor,
-                                target_vendor=target_vendor,
-                                batch_size=500)
+                                target_vendor=target_vendor)
+
                 with open(f'./exper_res/{source_vendor}_{target_vendor}_map_rule_freq.json', 'w', encoding='utf-8') as f:
                     json.dump(map_rule_freq, f, ensure_ascii=False, indent=4)
                 statistic_res['command_count'] += cover_data['command_count']

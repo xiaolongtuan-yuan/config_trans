@@ -5,11 +5,9 @@
 @File ：exper_data_translated.py
 """
 from concurrent.futures import ThreadPoolExecutor
-
 from openai import OpenAI
 import os
-import json
-from tqdm import tqdm  # 用于显示进度条
+from tqdm import tqdm
 
 
 class E2E_Config_Translater:
@@ -17,7 +15,10 @@ class E2E_Config_Translater:
         if 'gpt' in model_name:
             api_key = os.getenv("OPENAI_KEY")
             endpoint_url = 'https://api.openai.com/v1'
-
+        elif 'aliyun' in model_name:
+            api_key = os.getenv("ALIYUN_API_KEY")
+            model_name = model_name.replace('aliyun_', '')
+            endpoint_url = "https://dashscope.aliyuncs.com/compatible-mode/v1"
         elif 'deepseek' in model_name:
             api_key = os.getenv("DEEPSEEK_API_KEY")
             endpoint_url = 'https://api.deepseek.com/v1'
@@ -35,27 +36,29 @@ class E2E_Config_Translater:
         messages = [
             {"role": "user", "content": prompt}
         ]
+        if target_vendor == 'Juniper':
+            messages.append({"role": "system",
+                             "content": "When generating Juniper configuration content, please use imperative configuration. Each line is a complete configuration command, such as: set system host-name router1"})
+
         for i in range(3):
             try:
                 response = self.llm_model.chat.completions.create(
                     model=self.model_name,
                     messages=messages,
-                    response_format={
-                        'type': 'json_object'
-                    }
                 )
-                json_response = response.choices[0].message.content
-                json_response = json.loads(json_response)
-                return json_response.get('translated_config', '')
+                response = response.choices[0].message.content
+                start = response.find('##') + 2
+                end = response.rfind('##')
+                config_content = response[start:end].strip()
+                return config_content
             except Exception as e:
                 print(f"第 {i + 1} 次尝试失败，错误信息: {str(e)}")
         return ''
 
 
-def batch_translate(config_translater, input_dir, txt_file_dir, output_dir, source_vendor, target_vendor,
-                    batch_size=100):
+def batch_translate(config_translater, txt_file_dir, output_dir, source_vendor, target_vendor):
     # 获取所有配置文件
-    config_files = [f for f in os.listdir(input_dir) if f.endswith('.json')]
+    config_files = [f for f in os.listdir(txt_file_dir) if f.endswith('.txt')]
 
     # 创建输出目录
     os.makedirs(os.path.join(output_dir, target_vendor), exist_ok=True)
@@ -65,12 +68,15 @@ def batch_translate(config_translater, input_dir, txt_file_dir, output_dir, sour
 
     with ThreadPoolExecutor() as executor:  # 多线程好像有点问题，暂时不使用
         futures = []
-        for file_index in range(batch_size):
+        for file_index in range(len(config_files)):
             config_file = config_files.pop(0)
+            if os.path.exists(os.path.join(output_dir, target_vendor, config_file)):
+                successed_files += 1
+                continue
             futures.append(executor.submit(translate_single_file,
                                            config_translater, txt_file_dir, output_dir,
                                            source_vendor, target_vendor, config_file))
-        with tqdm(total=batch_size, desc="Successed files") as pbar:
+        with tqdm(total=len(futures), desc="Successed files") as pbar:
             i = 0
             while i < len(futures):
                 future = futures[i]
@@ -85,9 +91,10 @@ def batch_translate(config_translater, input_dir, txt_file_dir, output_dir, sour
                         futures.append(executor.submit(translate_single_file,
                                                        config_translater, txt_file_dir, output_dir,
                                                        source_vendor, target_vendor, config_file))
-                i+=1
+                i += 1
 
         print(f"Translated {successed_files} configs")
+
 
 def preprocess_text(text):
     # 去除注释（以#或!开头的行）
@@ -96,12 +103,13 @@ def preprocess_text(text):
     cleaned_text = ''.join(char for char in '\n'.join(lines) if ord(char) < 128)
     return cleaned_text
 
+
 def translate_single_file(config_translater: E2E_Config_Translater, txt_file_dir, output_dir,
                           source_vendor, target_vendor, config_file):
     try:
         # 加载配置
         file_name = os.path.splitext(config_file)[0]
-        config_path = os.path.join(txt_file_dir, file_name+'.txt')
+        config_path = os.path.join(txt_file_dir, file_name + '.txt')
 
         source_config = open(config_path, 'r', encoding='utf-8').read()
 
@@ -135,17 +143,17 @@ def main():
     output_dir = './exper_data/e2e_llm_translated_config'
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
-    llm_models = ["deepseek-chat", "gpt-4o-mini"]
+    llm_models = ["aliyun_deepseek-r1", "gpt-4o", "aliyun_qwen-max"]
     for llm_model in llm_models:
         for source_vendor in vendors:
             for target_vendor in vendors:
                 if source_vendor == target_vendor:
                     continue
-                source_config_dir = f'./exper_data/{source_vendor}'
-                txt_file_dir = f'./exper_data/lable/{source_vendor}'
+                source_config_dir = f'./test_dataset/valid_data/text_config/{source_vendor}'
+                txt_file_dir = f'./test_dataset/valid_data/text_config/{source_vendor}'
                 output_save_dir = os.path.join(output_dir, llm_model, source_vendor)  # 当前处理的是哪个scale的哪个源供应商
                 os.makedirs(output_save_dir, exist_ok=True)
-                delete_outdate_files(os.path.join(output_dir, llm_model, source_vendor, target_vendor))
+                # delete_outdate_files(os.path.join(output_dir, llm_model, source_vendor, target_vendor))
 
                 print(f"exper for {llm_model}, from {source_vendor} to {target_vendor} translation")
 
@@ -153,12 +161,10 @@ def main():
 
                 # 执行批量翻译
                 batch_translate(config_translater=config_translater,
-                                input_dir=source_config_dir,
                                 txt_file_dir=txt_file_dir,
                                 output_dir=output_save_dir,
                                 source_vendor=source_vendor,
-                                target_vendor=target_vendor,
-                                batch_size=50)
+                                target_vendor=target_vendor)
 
 
 if __name__ == "__main__":

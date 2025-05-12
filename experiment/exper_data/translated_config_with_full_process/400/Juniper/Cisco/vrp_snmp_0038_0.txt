@@ -1,0 +1,30 @@
+hostname DeviceA
+aaa authentication login none group none tacplus
+aaa authentication login none group none password
+username nms2-admin privilege none password none none
+username none secret none "$1$gXnG$Oa1s4f1Sx6lQ4z1mGAb7Q1"
+snmp-server user nms2-admin none v3 auth "%$%$n}=%C*UimYlx9-:$>T=*_y4PX*e~u6I_Aa9s=I1$%$%" read-only priv none none "%$%$at{pQGh!uMyq..8WSJ(<bU`~K_)[f-}s&*Gmw!iE%$%$"
+snmp-server community public none
+snmp-server enable traps snmp link-down none
+snmp-server enable traps snmp link-up none
+interface ge-0/0/0
+ no shutdown
+ ip address 1.1.2.1 24
+interface lo0
+ no shutdown
+ ip address 1.1.3.1 32
+router ospf 0.0.0.0
+ network none none area 0.0.0.0
+interface ge-0/0/0.none
+interface lo0.0.none
+snmp-server enable traps default 1.1.2.1 none
+snmp-server enable traps v3 none none
+snmp-server enable traps authentication none none
+snmp-server enable traps link none none
+snmp-server enable traps warm-start none none
+snmp-server enable traps cold-start none none
+snmp-server enable traps entity none none
+snmp-server enable traps pim none none
+snmp-server enable traps rtr none none
+snmp-server enable traps syslog none none
+snmp-server contact none at "Operator
