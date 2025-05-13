@@ -1,5 +1,5 @@
 {
-    "command_accuracy": 0.375,
+    "command_accuracy": 0.5625,
     "missed_commands": [
         "set interfaces ge-1/0/1 vlan-tagging",
         "set interfaces ge-1/0/1 unit 1 vlan-id 1",
@@ -16,7 +16,7 @@
         "set protocols bgp group ebgp neighbor 172.16.1.1",
         "set protocols bgp group ebgp export import-direct"
     ],
-    "grammatical_accuracy": 0.5,
+    "grammatical_accuracy": 0.6875,
     "missed_templates": [
         "set interfaces [parameter1] vlan-tagging",
         "set interfaces [parameter1] unit [parameter2] vlan-id [parameter3]",
@@ -29,7 +29,59 @@
         "set protocols bgp group [parameter1] neighbor [parameter2]",
         "set protocols bgp group [parameter1] neighbor [parameter2]"
     ],
-    "llm_command_accuracy": 0.0,
-    "llm_trans_commands": [],
-    "llm_command_ratio": 0.0
+    "llm_command_accuracy": 0.125,
+    "llm_command_ratio": 0.5,
+    "command_for_llm": [
+        "redistribute connected",
+        "address-family ipv4 unicast"
+    ],
+    "llm_trans_commands": [
+        "set routing-options autonomous-system 65410",
+        "set protocols bgp group external-peers type external",
+        "set protocols bgp group external-peers peer-as 100",
+        "set protocols bgp group external-peers neighbor 192.168.1.1",
+        "set protocols bgp group external-peers neighbor 172.16.1.1",
+        "set protocols bgp group external-peers family inet unicast",
+        "set policy-options policy-statement REDISTRIBUTE-CONNECTED term 1 from protocol direct",
+        "set policy-options policy-statement REDISTRIBUTE-CONNECTED term 1 then accept",
+        "set routing-options autonomous-system 65410",
+        "set routing-options forwarding-table export REDISTRIBUTE-CONNECTED"
+    ],
+    "source_commands": [
+        "hostname CE1",
+        "interface GigabitEthernet1/0/1.1",
+        "interface GigabitEthernet1/0/1.1",
+        "no shutdown",
+        "no shutdown",
+        "ip address 192.168.1.2 255.255.255.0",
+        "ip address 192.168.1.2 255.255.255.0",
+        "interface GigabitEthernet1/0/2.1",
+        "interface GigabitEthernet1/0/2.1",
+        "ip address 172.16.1.2 255.255.255.0",
+        "ip address 172.16.1.2 255.255.255.0",
+        "router bgp 65410",
+        "neighbor 192.168.1.1 remote-as 100",
+        "neighbor 192.168.1.1 remote-as 100",
+        "neighbor 192.168.1.1 remote-as 100",
+        "neighbor 192.168.1.1 remote-as 100",
+        "neighbor 172.16.1.1 remote-as 100",
+        "neighbor 172.16.1.1 remote-as 100",
+        "neighbor 172.16.1.1 remote-as 100",
+        "neighbor 172.16.1.1 remote-as 100",
+        "no synchronization",
+        "neighbor 172.16.1.1 activate",
+        "address-family ipv4 unicast",
+        "address-family ipv4 unicast",
+        "address-family ipv4 unicast",
+        "address-family ipv4 unicast",
+        "address-family ipv4 unicast",
+        "address-family ipv4 unicast",
+        "redistribute connected",
+        "redistribute connected",
+        "redistribute connected",
+        "redistribute connected"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
 }

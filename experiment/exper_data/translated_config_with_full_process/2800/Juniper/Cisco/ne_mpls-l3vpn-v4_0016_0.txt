@@ -4,19 +4,16 @@ interface ge-2/0/0
  ip address 10.4.1.1 255.255.255.0
 interface GigabitEthernet1/0/0
  no shutdown
-interface ge-1/0/0
  ip address 10.1.1.1 255.255.255.0
-ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/0 0.0.0.0
+ip route 0.0.0.0 0.0.0.0 BGP-NETWORKS none
 ip route 0.0.0.0 0.0.0.0 10.1.1.2
 router bgp 65420
  address-family ipv4 unicast
   redistribute bgp
 router bgp 100
- neighbor 10.1.1.2 update-source Loopback0
  address-family ipv4 unicast
   redistribute bgp
+ip route none 255.255.255.0 exact none
+ip route 255.255.255.0 GigabitEthernet2/0/0 accept 10.30.1.2
+neighbor 10.1.1.2 remote-as 100
 address-family ipv4 unicast
-ip prefix-list BGP-NETWORKS seq 5 permit 10.1.1.0/24
-route-map BGP-NETWORKS permit 10
-match ip address prefix-list BGP-NETWORKS
-permit

@@ -1,7 +1,7 @@
 hostname CE2
-interface ge-1/0/0
- no shutdown
 interface GigabitEthernet1/0/0
+ no shutdown
+interface ge-1/0/0
  ip address 10.2.1.2 255.255.255.0
 interface Loopback0
  no shutdown
@@ -10,11 +10,8 @@ router bgp 65420
  address-family ipv4 unicast
   redistribute external-peers
 router bgp 100
- neighbor 10.2.1.1 update-source Loopback0
  address-family ipv4 unicast
-  redistribute connected
-ip prefix-list advertise-networks seq 5 permit 22.22.22.22/32
+  redistribute advertise-networks
+ip route 0.0.0.0 255.255.255.255 GigabitEthernet0/0 0.0.0.0
+neighbor 10.2.1.1 remote-as 100
 route-map advertise-networks permit 10
-match ip address prefix-list advertise-networks
-match ip address prefix-list 22.22.22.22/32
-permit

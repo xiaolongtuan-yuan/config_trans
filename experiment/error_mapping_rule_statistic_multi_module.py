@@ -4,6 +4,7 @@
 @Auth ： xiaolongtuan
 @File ：exper_data_translated.py
 """
+import re
 from collections import Counter, defaultdict
 import os
 import json
@@ -23,7 +24,7 @@ def find_files(directory, extension):
 
 def main():
     name = 'full_process'
-    num = 400
+    num = 300
     vendors = ['HUAWEI', 'Juniper', 'Cisco']
     grammatical_accuracy = {}
     for vendor1 in vendors:
@@ -71,15 +72,16 @@ def main():
                             trans_template = trans_template + ' ' + item['trans_command'] if trans_template != '' else item['trans_command']
                         else:
                             trans_template = item['trans_command']
-                        if trans_template not in label_template_data:
-                            # 统计错误类型
-                            if map_rule[0] not in error_statistic.keys():
-                                error_statistic[map_rule[0]] = count
-                            else:
-                                error_statistic[map_rule[0]] += count
-                        if trans_template in label_template_data:
+
+                        has_mappping = False
+                        for label_template in label_template_data:
+                            label_template_re = re.sub(r"\[[^\]]+\]", r'(\\S+)', label_template)
+                            if re.match(label_template_re, trans_template):
+                                has_mappping = True
+                                break
+                        if has_mappping: # 计算是否匹配
+                            error_statistic[map_rule[0]] += count
                             flag = True
-                            break
                     if flag: # 映射是有用的
                         error_mapping_statistic[map_rule[0]] += 1
                     else:
@@ -99,7 +101,7 @@ def main():
             error_statistic_path = f'./exper_res/scale_177_error_mapping_rules_freq/{vendor1}_{vendor2}_error_mapping_rules_freq.json'
             with open(error_statistic_path, mode='w', encoding='utf-8') as f:
                 json.dump(error_statistic, f, ensure_ascii=False, indent=2)
-            error_mapping_rules = [rule[0] for rule in error_mapping_statistic if rule[1] == 0]
+            error_mapping_rules = [rule for rule, used in error_mapping_statistic.items() if used == 0]
             with open(f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{vendor1}_{vendor2}.json', mode='w', encoding='utf-8') as f:
                 json.dump(error_mapping_rules, f, ensure_ascii=False, indent=2)
             print(f"Error mapping rules frequency saved to {error_statistic_path}")

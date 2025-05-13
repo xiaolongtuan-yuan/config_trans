@@ -75,10 +75,14 @@ def translate_single_file(config_translater, input_dir, output_dir, real_config_
     json_config = load_json_file(config_path)
     file_name = os.path.splitext(config_file)[0]
 
-    trans_res_dict = config_translater.translation(json_config,
+    # trans_res_dict = config_translater.translation(json_config,
+    #                                                source_vendor,
+    #                                                target_vendor,
+    #                                                tau=0.001)
+    trans_res_dict = config_translater.translation_without_llm(json_config,
                                                    source_vendor,
-                                                   target_vendor,
-                                                   tau=0.001)
+                                                   target_vendor)
+
     # 评估
     evaluate_res = {
         "command_accuracy": 0,
@@ -100,19 +104,23 @@ def translate_single_file(config_translater, input_dir, output_dir, real_config_
     result_commands = parse_config_file_content_intact(trans_res_dict['trans_res'])
     expect_temp = get_all_templates(real_command_tree)
 
+    ''' 
     evaluate_res['llm_command_ratio'] = len(trans_res_dict['llm_transd_commands']) / len(result_commands)
     llm_transd_commands = [command_pair[0] for command_pair in trans_res_dict['llm_transd_commands']]
     evaluate_res['llm_trans_commands'] = llm_transd_commands
+    match_ratio_dict = command_template_process(expect_temp,
+                                                    deepcopy(result_commands),
+                                                    deepcopy(llm_transd_commands),
+                                                    deepcopy(expected_commands),
+                                                    real_command_tree)
+    evaluate_res['llm_command_accuracy'] = match_ratio_dict['llm_command_match_ratio']
+    '''
 
     match_ratio_dict = command_template_process(expect_temp,
                                                 deepcopy(result_commands),
-                                                deepcopy(llm_transd_commands),
+                                                [],
                                                 deepcopy(expected_commands),
                                                 real_command_tree)
-
-
-    evaluate_res['llm_command_accuracy'] = match_ratio_dict['llm_command_match_ratio']
-
     _, _, missed_commands = calculate_match_ratio(result_commands,
                                                   expected_commands,
                                                   [],
@@ -175,7 +183,7 @@ def main():
     name = 'full_process'
     # data_dir = 'all_data'
     data_dir = 'valid_data'
-    config_num = [400]
+    config_num = [300]
 
     output_dir = f'../experiment/exper_data/translated_config_with_{name}'
     mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}.json'
@@ -205,8 +213,9 @@ def main():
 
                 print(f"exper for {scale}, {source_vendor} to {target_vendor} translation without llm")
 
-                mapping_libraries = mapping_library_load(mapping_library_path, vendors, manual_mapping_path,
-                                                         error_mapping_path)
+                # mapping_libraries = mapping_library_load(mapping_library_path, vendors, manual_mapping_path,
+                #                                          error_mapping_path)
+                mapping_libraries = mapping_library_load(mapping_library_path, vendors, manual_mapping_path)
                 # mapping_libraries = mapping_library_load(mapping_library_path, vendors)
 
                 config_matchers = config_matchers_load(templates_path, config_model_dir, module_match_path, vendors)

@@ -1,7 +1,6 @@
 hostname CE4
-interface ge-1/0/0
- no shutdown
 interface GigabitEthernet1/0/0
+ no shutdown
  ip address 10.4.1.1 255.255.255.0
 interface GigabitEthernet0/0/0
 router bgp 65440
@@ -12,8 +11,6 @@ router bgp 65420
  neighbor 10.1.2.2 remote-as 100
  address-family ipv4 unicast
   redistribute connected
-ip prefix-list redistribute-connected permit 0.0.0.0/0 le 32
+ip route 0.0.0.0 0.0.0.0 redistribute-connected 0.0.0.0
 route-map redistribute-connected permit 10
-match ip address prefix-list redistribute-connected
-match protocol connected
-permit
+match interface

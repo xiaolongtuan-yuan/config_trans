@@ -9,4 +9,8 @@ set protocols bgp group PEERS type external
 set protocols bgp group PEERS neighbor 10.2.1.1 peer-as 100
 set protocols bgp group PEERS export ADVERTISE_NETWORK
 set protocols bgp group PEERS family inet unicast
-set protocols bgp local-as 10
+set protocols bgp local-as 300
+set policy-options policy-statement IMPORT-DIRECT term 1 from protocol direct
+set policy-options policy-statement IMPORT-DIRECT term 1 then accept
+set routing-options instance-type forwarding
+set routing-options forwarding-table export IMPORT-DIRECT

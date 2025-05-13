@@ -1,6 +1,8 @@
 # 从json解析配置到目标供应商配置
 import sys
 
+from experiment.tree_match import parse_config_file_content_intact
+
 sys.path.append("/data/public/hrx/Repositories/config_trans")
 import os
 import types
@@ -141,7 +143,8 @@ class Config_Translater:
                                                                 config_match, vendor, target_vendor)
 
         # 阶段二：模糊映射fuzzy_mapping-->针对规则映射库未覆盖的配置命令
-        config_match = self.fuzzy_mapping(rest_commands_feature, config_match, vendor, target_vendor, tau=tau, source_total_config=source_total_config)
+        config_match = self.fuzzy_mapping(rest_commands_feature, config_match, vendor, target_vendor, tau=tau,
+                                          source_total_config=source_total_config)
 
         map_rule_freq = {}
         for command, match in config_match.items():
@@ -169,7 +172,10 @@ class Config_Translater:
             'trans_mapping_info': trans_res_dict['trans_mapping_info'],
             'trans_templates': trans_res_dict['trans_templates'],
             'map_rule_freq': map_rule_freq,
-            'llm_transd_commands': trans_res_dict['llm_transd_commands']
+            'llm_transd_commands': trans_res_dict['llm_transd_commands'],
+            'command_for_llm': trans_res_dict['command_for_llm'],
+            'llm_origin_response': trans_res_dict['llm_origin_response'],
+            'source_commands': trans_res_dict['source_commands'],
         }
 
     def translation_without_llm(self, json_configuration, vendor, target_vendor, istatistics=False):
@@ -259,7 +265,8 @@ class Config_Translater:
         return rest_commands_feature, config_match
 
     # 阶段二借助目标供应商配置模板基于语义相似度实现模糊映射
-    def fuzzy_mapping(self, rest_commands_feature, config_match, vendor, target_vendor, tau=0.65, source_total_config=None):
+    def fuzzy_mapping(self, rest_commands_feature, config_match, vendor, target_vendor, tau=0.65,
+                      source_total_config=None):
         # 根据语义做模糊匹配
         for command, features in rest_commands_feature.items():
             # structural_feature = features['feature']['structural_feature']
@@ -288,7 +295,8 @@ class Config_Translater:
                 self.mapping_libraries['{}_{}'.format(vendor, target_vendor)][template] = matched_result
             else:
                 matched_result = self.translation_llm.llm_command_mapping(command, vendor,
-                                                                          target_vendor, source_total_config)  # matched_result = str
+                                                                          target_vendor,
+                                                                          source_total_config)  # matched_result = str
                 if not matched_result:
                     template = features['feature']['semantic_features']['template']
                     # 补充现有的模板库
@@ -402,7 +410,9 @@ class Config_Translater:
                                                                                                  translated_command),
                                                             'target_command': translated_command,
                                                             'parent_node': parent_commands,
-                                                            'source': 'llm' if 'source' in para_match.keys() else 'rule'
+                                                            'source': 'llm' if 'source' in para_match.keys() else 'rule',
+                                                            'origin_response': para_match[
+                                                                'origin_response'] if 'origin_response' in para_match.keys() else ''
                                                             }
                                                        }
                 # 如果该层级中不包含这一配置命令
@@ -425,7 +435,9 @@ class Config_Translater:
                                                                                                       translated_command),
                                                                  'target_command': translated_command,
                                                                  'parent_node': parent_commands,
-                                                                 'source': 'llm' if 'source' in para_match.keys() else 'rule'
+                                                                 'source': 'llm' if 'source' in para_match.keys() else 'rule',
+                                                                 'origin_response': para_match[
+                                                                     'origin_response'] if 'origin_response' in para_match.keys() else ''
                                                                  }
                                                             })
                 # 如果该层级包含这一配置命令
@@ -654,7 +666,9 @@ class Config_Translater:
         root = ConfigNode("system", "")
         stack = [(root, -1)]
         llm_transd_commands = []
-
+        source_commands = []
+        command_for_llm = set()
+        llm_origin_response = set()
         # 遍历每一个需要翻译的配置命令
         for command, translation in target_config.items():
             # 遍历该需要翻译配置命令中每一层级的配置命令
@@ -668,8 +682,11 @@ class Config_Translater:
                     if source == 'llm':
                         temp = self.find_command_template(target_vendor, line)
                         llm_transd_commands.append([line, temp])  # 0: command , 1: template
+                        command_for_llm.add(command)
+                        llm_origin_response.add(command_info['origin_response'])
                     else:
                         temp = target_temp
+                    source_commands.append(command)
                     node = ConfigNode(line, temp)
                     while stack and stack[-1][1] >= depth:
                         stack.pop()
@@ -694,7 +711,10 @@ class Config_Translater:
             'trans_res': trans_res,
             'trans_mapping_info': trans_mapping_info,
             'trans_templates': trans_templates,
-            'llm_transd_commands': llm_transd_commands
+            'command_for_llm': list(command_for_llm),
+            'llm_transd_commands': llm_transd_commands,
+            'llm_origin_response': list(llm_origin_response),
+            'source_commands': source_commands
         }
 
     def find_command_template(self, target_vendor, command):
@@ -956,11 +976,22 @@ class Translation_Model:
                 print(json_response)
         return ''
 
+    def get_complete_commands(self, source_command, source_total_config):
+        complete_commands = []
+        source_total_commands = parse_config_file_content_intact(source_total_config)
+        for complete_command in source_total_commands:
+            if source_command in complete_command:
+                complete_commands.append(complete_command)
+        return '\n'.join(complete_commands)
+
     def llm_command_mapping(self, source_command, source_vendor, target_vendor, source_total_config):
         prompt_file = project_root / 'resource/command_mapping_F_prompt.txt'
         prompt = open(prompt_file, 'r', encoding='utf-8').read()
 
         prompt = prompt.replace("{source_vendor}", source_vendor)
+        if source_vendor == 'Juniper':
+            source_command = self.get_complete_commands(source_command, source_total_config)
+
         prompt = prompt.replace("{source_command}", source_command)
         prompt = prompt.replace("{target_vendor}", target_vendor)
         prompt = prompt.replace("{source_total_config}", source_total_config)
@@ -999,6 +1030,7 @@ class Translation_Model:
                         "parent_command": [],
                         "root": target_command,
                         "source": "llm",
+                        "origin_reponse": response,  # 保存原始响应
                         "trans_template": command_template
                     })
 

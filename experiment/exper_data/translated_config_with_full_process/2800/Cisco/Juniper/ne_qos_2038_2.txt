@@ -10,4 +10,7 @@ set protocols bgp local-as 300
 set protocols ospf area 0.0.0.0 interface ae1
 set protocols ospf area 0.0.0.0 interface ae100
 family inet
-set protocols bgp group <group-name> synchronization
+synchronize
+set policy-options policy-statement REDIST-CONNECTED term 1 from protocol direct
+set policy-options policy-statement REDIST-CONNECTED term 1 then accept
+set routing-options forwarding-table export REDIST-CONNECTED

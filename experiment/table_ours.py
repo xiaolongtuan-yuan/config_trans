@@ -15,7 +15,7 @@ from experiment.compute_bleu import compute_embded_similarity
 from experiment.syntax_correctness import load_config_model, cul_view_accuracy
 from experiment.tree_match import cul_command_accuracy, cul_grammatical_accuracy, cul_param_accuracy, \
     cul_grammatical_accuracy_with_json, cul_device_grammatical_accuracy_with_json, cul_command_and_param_accuracy, \
-    cuL_llm_accuracy_with_json
+    cuL_llm_accuracy_with_json, cuL_llm_coverage_with_json
 
 if __name__ == '__main__':
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
@@ -49,6 +49,10 @@ if __name__ == '__main__':
                 "vendors": [],
                 "average": 0,
             },
+            "rule_LLM_coverage": {
+                "vendors": [],
+                "average": 0,
+            },
             "param_accuracy": {
                 "vendors": [],
                 "average": 0,
@@ -78,6 +82,11 @@ if __name__ == '__main__':
                 accuracy_dict = cul_command_and_param_accuracy(
                     translated_config_dir, real_config_dir, trannlated_config_files)
 
+                rule_LLM_coverage = cuL_llm_coverage_with_json(f'../experiment/test_dataset/{data_dir}/text_config/{source_vendor}',
+                    translated_config_dir, trannlated_config_files)
+                exper_data['rule_LLM_coverage']['vendors'].append(
+                    (f'{source_vendor}_{target_vendor}', rule_LLM_coverage))
+
                 semantic_similarity = compute_embded_similarity(translated_config_dir, real_config_dir,
                                                                 trannlated_config_files)
                 exper_data['semantic_similarity']['vendors'].append(
@@ -106,6 +115,9 @@ if __name__ == '__main__':
             exper_data['semantic_similarity']['vendors'])
         exper_data['command_accuracy']['average'] = sum(
             [x[1] for x in exper_data['command_accuracy']['vendors']]) / len(exper_data['command_accuracy']['vendors'])
+        exper_data['rule_LLM_coverage']['average'] = sum(
+            [x[1] for x in exper_data['rule_LLM_coverage']['vendors']]) / len(
+            exper_data['rule_LLM_coverage']['vendors'])
         exper_data['llm_command_accuracy']['average'] = sum(
             [x[1] for x in exper_data['llm_command_accuracy']['vendors']]) / len(
             exper_data['llm_command_accuracy']['vendors'])

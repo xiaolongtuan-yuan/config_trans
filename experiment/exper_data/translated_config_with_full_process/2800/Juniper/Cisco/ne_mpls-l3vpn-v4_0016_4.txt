@@ -12,8 +12,6 @@ router bgp 65420
  address-family ipv4 unicast
   redistribute ADVERTISE_NETWORK
  neighbor 10.3.1.2 activate
-route-map ADVERTISE_NETWORK permit 10
-match ip address prefix-list ADVERTISE_NETWORK
-route-map ADVERTISE_NETWORK permit 10 match ip address prefix-list 10.3.1.0/24
-set term 1 then accept
-deny any
+ip route 0.0.0.0 255.255.255.0 GigabitEthernet0/0 0.0.0.0
+ip route 255.255.255.0 GigabitEthernet2/0/0 accept 10.30.1.2
+route-map ADVERTISE_NETWORK deny 65535

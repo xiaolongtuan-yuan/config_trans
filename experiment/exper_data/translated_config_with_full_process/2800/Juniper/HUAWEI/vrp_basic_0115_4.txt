@@ -6,4 +6,10 @@ bgp 65420
  import-route external
  peer 10.1.2.2 as-number 100
 ipv4-family unicast
-ip ip-prefix CE2_to_Peer index 10 permit 10.1.2.0 24
+peer 10.1.2.2 prefix-limit 10 1
+ip ip-prefix CE2_to_Peer_Prefix index 10 permit 10.1.2.0 24
+ip ip-prefix CE2_to_Peer_Prefix index 20 deny 0.0.0.0 0 less-equal 32
+route-policy CE2_to_Peer_Policy permit node 10
+if-match ip-prefix CE2_to_Peer_Prefix
+bgp 100
+peer 10.1.2.2 route-policy CE2_to_Peer_Policy import

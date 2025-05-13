@@ -423,6 +423,20 @@ def cul_grammatical_accuracy_with_json(translated_dir, real_dir, config_files):
     average_match_ratio = total_match_score / total_match_account if total_match_account > 0 else 0
     return average_match_ratio
 
+def cuL_llm_coverage_with_json(source_txt_dir,translated_dir, config_files):
+    llm_command_accuracys = []
+    for file_name in config_files:
+        device_name= os.path.splitext(file_name)[0]
+        source_config_txt = os.path.join(source_txt_dir, f"{device_name}.txt")
+        source_commands = parse_config_file_intact(source_config_txt)
+
+        evaluate_json = json.load(open(os.path.join(translated_dir, f"{device_name}_evaluate.json")))
+        command_for_llm = evaluate_json['command_for_llm']
+        llm_command_accuracy = len(command_for_llm) / len(source_commands) if len(source_commands) > 0 else 0
+        llm_command_accuracys.append(llm_command_accuracy)
+    average_match_ratio = sum(llm_command_accuracys) / len(llm_command_accuracys) if  llm_command_accuracys else 0
+    return average_match_ratio
+
 def cuL_llm_accuracy_with_json(translated_dir, config_files):
     llm_command_accuracys = []
     for file_name in config_files:

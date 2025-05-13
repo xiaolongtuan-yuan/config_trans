@@ -15,6 +15,9 @@ interface GigabitEthernet0/0/0
 ip address 10.1.1.1 255.255.255.252
 interface LoopBack0
 ip address 3.3.3.3 255.255.255.255
-ip ip-prefix direct-import index 10 permit 0.0.0.0 0 less-equal 32
+policy direct-import
+permit protocol direct
+deny
 peer 10.1.1.2 as-number 100
-peer 10.1.1.2 import-policy direct-import
+peer 10.1.1.2 route-policy direct-import import
+ipv4-family unicast

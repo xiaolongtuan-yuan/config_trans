@@ -85,7 +85,7 @@ def translate_single_file(config_translater, input_dir, output_dir, real_config_
     trans_res_dict = config_translater.translation(json_config,
                                                    source_vendor,
                                                    target_vendor,
-                                                   tau=0.999,
+                                                   tau=0.001,
                                                    source_total_config=source_total_config)
     # 评估
     evaluate_res = {
@@ -94,7 +94,11 @@ def translate_single_file(config_translater, input_dir, output_dir, real_config_
         "grammatical_accuracy": 0,
         "missed_templates": [],
         "llm_command_accuracy": {},
-        "llm_trans_commands": []
+        'llm_command_ratio':0,
+        "command_for_llm": trans_res_dict['command_for_llm'],
+        "llm_trans_commands": [command_pair[0] for command_pair in trans_res_dict['llm_transd_commands']],
+        'source_commands':trans_res_dict['source_commands'],
+        'llm_origin_response':trans_res_dict['llm_origin_response']
     }
     real_command_tree_path = os.path.join(real_command_tree_dir, f"{file_name}.json")
     real_config_path = os.path.join(real_config_dir, f"{file_name}.txt")
@@ -107,11 +111,8 @@ def translate_single_file(config_translater, input_dir, output_dir, real_config_
     expected_commands = parse_config_file_content_intact(real_config)
     result_commands = parse_config_file_content_intact(trans_res_dict['trans_res'])
     expect_temp = get_all_templates(real_command_tree)
-
     evaluate_res['llm_command_ratio'] = len(trans_res_dict['llm_transd_commands']) / len(result_commands)
     llm_transd_commands = [command_pair[0] for command_pair in trans_res_dict['llm_transd_commands']]
-    evaluate_res['llm_trans_commands'] = llm_transd_commands
-
     match_ratio_dict = command_template_process(expect_temp,
                                                 deepcopy(result_commands),
                                                 deepcopy(llm_transd_commands),
@@ -142,6 +143,7 @@ def translate_single_file(config_translater, input_dir, output_dir, real_config_
     expected_temp_path = os.path.join(output_dir, target_vendor, f"{file_name}_expected_temp.json")
 
     label_config_text_path = os.path.join(output_dir, target_vendor, f"{file_name}_label_text.txt")
+    source_config_command_tree_path = os.path.join(output_dir, target_vendor, f"{file_name}_source_command_tree.json")
     label_command_tree_path = os.path.join(output_dir, target_vendor, f"{file_name}_label_command_tree.json")
     tran_map_rule_usage_output_path = os.path.join(output_dir, target_vendor, f"{file_name}_map_rules.json")
     tran_evaluate_output_path = os.path.join(output_dir, target_vendor, f"{file_name}_evaluate.json")
@@ -154,6 +156,8 @@ def translate_single_file(config_translater, input_dir, output_dir, real_config_
         json.dump(expected_templates, f, ensure_ascii=False, indent=4)
     with open(label_config_text_path, mode='w', encoding='utf-8') as f:
         f.write(real_config)
+    with open(source_config_command_tree_path, mode='w', encoding='utf-8') as f:
+        json.dump(json_config, f, ensure_ascii=False, indent=4)
     with open(label_command_tree_path, mode='w', encoding='utf-8') as f:
         json.dump(real_command_tree, f, ensure_ascii=False, indent=4)
     with open(tran_map_rule_usage_output_path, 'w', encoding='utf-8') as f:
@@ -186,7 +190,7 @@ def main():
     error_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{{}}_{{}}.json'
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
-    config_num = [2800]
+    config_num = [400]
     local_EMmodel_path = '../EmbeddingModel/MiniLM-L6-v2'
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})

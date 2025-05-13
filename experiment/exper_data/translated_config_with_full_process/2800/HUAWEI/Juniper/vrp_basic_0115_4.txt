@@ -8,4 +8,8 @@ set protocols bgp group PEERS neighbor 10.1.2.2 peer-as 100
 set protocols bgp group PEERS export ADVERTISE_NETWORK
 set protocols bgp group PEERS family inet unicast
 set protocols bgp local-as 300
-delete protocols bgp group <group-name> synchronization
+no synchronization
+set policy-options policy-statement import-direct term 1 from protocol direct
+set policy-options policy-statement import-direct term 1 then accept
+set routing-options instance-type forwarding
+set routing-options forwarding-table export import-direct
