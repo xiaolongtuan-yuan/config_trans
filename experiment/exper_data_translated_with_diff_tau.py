@@ -73,12 +73,18 @@ def translate_single_file(config_translater, input_dir, output_dir, real_config_
     # 加载配置
     config_path = os.path.join(input_dir, config_file)
     json_config = load_json_file(config_path)
+    txt_config_path = config_path.replace('command_tree', 'text_config')
+    txt_config_path = txt_config_path.replace('.json', '.txt')
     file_name = os.path.splitext(config_file)[0]
+    with open(txt_config_path, 'r', encoding='utf-8') as f:
+        source_total_config = f.read()
+
 
     trans_res_dict = config_translater.translation(json_config,
                                                    source_vendor,
                                                    target_vendor,
-                                                   tau=tau)
+                                                   tau=tau,
+                                                   source_total_config=source_total_config)
 
     # 评估
     evaluate_res = {

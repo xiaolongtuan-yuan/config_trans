@@ -131,7 +131,7 @@ class Config_Translater:
 
     # 进行配置翻译
     def translation(self, json_configuration, vendor, target_vendor, tau=0.65, source_total_config=None):
-        config_match = {}  # 保存翻译（匹配）集合
+        config_match = []  # 保存翻译（匹配）集合
         # 给juniper配置模型加个保险
         if vendor == 'Juniper':
             json_configuration = insert_template(json_configuration)
@@ -147,7 +147,7 @@ class Config_Translater:
                                           source_total_config=source_total_config)
 
         map_rule_freq = {}
-        for command, match in config_match.items():
+        for command, match in config_match:
             map_rule = str([match['template'], match['match']])
 
             if map_rule not in map_rule_freq.keys():
@@ -260,7 +260,8 @@ class Config_Translater:
                                                       'root_feature': commands_feature[key][key]}
                     continue
                 # 在映射库中的配置命令
-                config_match[command] = {'template': template, 'match': specific_mapping_library[template], 'root': key}
+                config_match.append(
+                    (command, {'template': template, 'match': specific_mapping_library[template], 'root': key}))
 
         return rest_commands_feature, config_match
 
@@ -320,7 +321,7 @@ class Config_Translater:
                                 match['trans_command']: result_node}
 
             template = features['feature']['semantic_features']['template']
-            config_match[command] = {'template': template, 'match': matched_result, 'root': src_root}
+            config_match.append((command, {'template': template, 'match': matched_result, 'root': src_root}))
 
         return config_match
 
@@ -357,16 +358,17 @@ class Config_Translater:
 
     # 阶段四进行配置编排，对应正确的视图
     def config_arranging(self, config_matches, target_vendor):
-        arranged_command = {}
+        arranged_command = []
         # Juniper没有视图层级, 按顺序输出配置命令即可
-        for item_k, item_v in config_matches.items():
+        for item_k, item_v in config_matches:
             # 依据翻译命令的视图深度实现编排{0:{c0:[4,[0,0,1,1]]}}
             # paras-->具体配置参数值, depth-->第零层, translated_command-->命令模板, 
             # para_num-->参数数量, para_placeholders-->[0,0,1,1]参数填充占位标识,
             # para_match --> 参数映射,  target_command--> 最终翻译命令
-            paras = self.para_extract(item_k, config_matches[item_k]['template'])
+            paras = self.para_extract(item_k, item_v['template'])
             # any(len(paras) <= match['para_map'][0] for match in item_v['match'] if len(match['para_map'])>0)
-            arranged_command[item_k] = {'para': paras}
+            arranged_command_item = {'para': paras}
+            arranged_command.append((item_k, arranged_command_item))
             # 如果是list需要遍历整合信息
             # if isinstance(item_v['match'], list):
             for para_match in item_v['match']:  # 遍历每一个参数映射信息
@@ -392,7 +394,7 @@ class Config_Translater:
                 para_num = command_node['structural_features']['param_signature']['count']
                 parent_commands = para_match['parent_command']
                 # 如果不包含该层级
-                if depth not in arranged_command[item_k].keys():
+                if depth not in arranged_command_item.keys():
                     para_placeholders = [0] if para_num == 0 else [
                                                                       0] * para_num  # 为什么每一个参数映射信息都要有一个站位符呢？而且站位符的长度是目标命令的参数数量？
                     if para_match['para_map']:
@@ -402,21 +404,21 @@ class Config_Translater:
                             except IndexError:
                                 print(f"IndexError: para_placeholders index out of range: {para_match}")
                     # print(paras, para_num, item_v['match'], translated_command)
-                    arranged_command[item_k][depth] = {translated_command:
-                                                           {'para_num': para_num,
-                                                            'para_placeholders': para_placeholders,
-                                                            'para_match': self.match_and_extract(paras, para_num,
-                                                                                                 item_v['match'],
-                                                                                                 translated_command),
-                                                            'target_command': translated_command,
-                                                            'parent_node': parent_commands,
-                                                            'source': 'llm' if 'source' in para_match.keys() else 'rule',
-                                                            'origin_response': para_match[
-                                                                'origin_response'] if 'origin_response' in para_match.keys() else ''
-                                                            }
-                                                       }
+                    arranged_command_item[depth] = {translated_command:
+                                                        {'para_num': para_num,
+                                                         'para_placeholders': para_placeholders,
+                                                         'para_match': self.match_and_extract(paras, para_num,
+                                                                                              item_v['match'],
+                                                                                              translated_command),
+                                                         'target_command': translated_command,
+                                                         'parent_node': parent_commands,
+                                                         'source': 'llm' if 'source' in para_match.keys() else 'rule',
+                                                         'origin_response': para_match[
+                                                             'origin_response'] if 'origin_response' in para_match.keys() else ''
+                                                         }
+                                                    }
                 # 如果该层级中不包含这一配置命令
-                elif translated_command not in arranged_command[item_k][depth].keys():
+                elif translated_command not in arranged_command_item[depth].keys():
                     # 参数填充占位符
                     para_placeholders = [0] if para_num == 0 else [0] * para_num
                     if para_match['para_map']:
@@ -425,27 +427,27 @@ class Config_Translater:
                                 para_placeholders[para_match['para_map'][1]] = 1
                             except IndexError:
                                 print(f"IndexError: para_placeholders index out of range: {para_match}")
-                    arranged_command[item_k][depth].update({translated_command:
-                                                                {'para_num': para_num,
-                                                                 'para_placeholders': para_placeholders,
-                                                                 'para_match': self.match_and_extract(paras,
-                                                                                                      para_num,
-                                                                                                      item_v[
-                                                                                                          'match'],
-                                                                                                      translated_command),
-                                                                 'target_command': translated_command,
-                                                                 'parent_node': parent_commands,
-                                                                 'source': 'llm' if 'source' in para_match.keys() else 'rule',
-                                                                 'origin_response': para_match[
-                                                                     'origin_response'] if 'origin_response' in para_match.keys() else ''
-                                                                 }
-                                                            })
+                    arranged_command_item[depth].update({translated_command:
+                                                             {'para_num': para_num,
+                                                              'para_placeholders': para_placeholders,
+                                                              'para_match': self.match_and_extract(paras,
+                                                                                                   para_num,
+                                                                                                   item_v[
+                                                                                                       'match'],
+                                                                                                   translated_command),
+                                                              'target_command': translated_command,
+                                                              'parent_node': parent_commands,
+                                                              'source': 'llm' if 'source' in para_match.keys() else 'rule',
+                                                              'origin_response': para_match[
+                                                                  'origin_response'] if 'origin_response' in para_match.keys() else ''
+                                                              }
+                                                         })
                 # 如果该层级包含这一配置命令
                 else:
                     if para_match['para_map']:
                         if not -1 in para_match:
                             try:
-                                arranged_command[item_k][depth][translated_command]['para_placeholders'][
+                                arranged_command_item[depth][translated_command]['para_placeholders'][
                                     para_match['para_map'][1]] = 1
                             except IndexError:
                                 print(f"IndexError: para_placeholders index out of range: {para_match}")
@@ -482,7 +484,7 @@ class Config_Translater:
     def parameter_mapping_with_LLM_remapping(self, arranged_config: dict, vendor, target_vendor) -> dict:
         target_commands = {}  # 最终配置命令
         # 遍历每一个需要翻译的配置命令
-        for src_command, translation in arranged_config.items():
+        for index, (src_command, translation) in enumerate(arranged_config):
             all_params = translation['para']
             # 遍历该需要翻译配置命令中每一层级的配置命令
             for depth, translation_commands in translation.items():
@@ -493,16 +495,16 @@ class Config_Translater:
                 for command, command_v in translation_commands.items():
                     parent_commands = command_v['parent_node']
                     if len(parent_commands) > 0:  # 不是根节点
-                        self.insert_parent_command(target_commands, src_command, int(depth), parent_commands,
+                        self.insert_parent_command(target_commands, index, src_command, int(depth), parent_commands,
                                                    all_params, target_vendor)  # 补充父节点
-                    target_commands = self.command_param_merge(target_commands, src_command,
+                    target_commands = self.command_param_merge(target_commands, index, src_command,
                                                                int(depth), command, command_v)
 
         # 参数插入配置命令模板
         # 创建一个线程池，将llm映射的任务提交给线程池
         with ThreadPoolExecutor() as executor:
             futures = []
-            for src_command, translation in target_commands.items():
+            for id, (src_command, translation) in target_commands.items():
                 # 遍历该需要翻译配置命令中每一层级的配置命令
                 for depth, translation_commands in translation.items():
                     if depth == -1:
@@ -557,12 +559,12 @@ class Config_Translater:
         return target_commands
 
     # 基于配置参数合并配置命令模板(带翻译的配置命令参数分布在多个命令中，并包含共享的命令)
-    def command_param_merge(self, target_commands: dict, src_command: str, src_depth: int,
+    def command_param_merge(self, target_commands: dict, src_command_id, src_command: str, src_depth: int,
                             command: str, command_info: dict) -> dict:
         # merge标识符
         merged_flag = 0
         # 遍历是否存在与command相同的命令
-        for pre_src_command, translation in target_commands.items():  # 变量名重复，已改
+        for id, (pre_src_command, translation) in target_commands.items():  # 变量名重复，已改
             for depth, translation_commands in translation.items():
                 for command_k, command_v in translation_commands.items():
                     # 若有相同的配置命令模板
@@ -576,13 +578,18 @@ class Config_Translater:
                         if not np.array_equal(merged_placeholders, np.array(command_v['para_placeholders'])):
                             # 将参数填补到可合并配置命令中
                             # 使用列表推导式，优先选择非空元素
-                            merged_paras = [x if x != 'none' else y for x, y in
-                                            zip(command_info['para_match'], command_v['para_match'])]
+                            pre_merged_paras = [x if x != 'none' else y for x, y in
+                                            zip(command_v['para_match'], command_info['para_match'])]
                             command_v['para_placeholders'] = merged_placeholders.tolist()
-                            command_v['para_match'] = merged_paras
+                            command_v['para_match'] = pre_merged_paras
+
+                            this_merged_paras = [x if x != 'none' else y for x, y in
+                                            zip(command_info['para_match'], command_v['para_match'])]
+                            command_info['para_placeholders'] = merged_placeholders.tolist()
+                            command_info['para_match'] = this_merged_paras
                             merged_flag = 1
         if merged_flag == 0:
-            target_commands.setdefault(src_command, {}).setdefault(src_depth, {})[command] = command_info
+            target_commands.setdefault(src_command_id, (src_command,{}))[1].setdefault(src_depth, {})[command] = command_info
         return target_commands
 
     """
@@ -670,7 +677,7 @@ class Config_Translater:
         command_for_llm = set()
         llm_origin_response = set()
         # 遍历每一个需要翻译的配置命令
-        for command, translation in target_config.items():
+        for id, (command, translation) in target_config.items():
             # 遍历该需要翻译配置命令中每一层级的配置命令
             for depth, target_command in translation.items():
                 if depth == -1:
@@ -774,7 +781,7 @@ class Config_Translater:
     # juniper模板合并
     def juniper_template_combine(self, target_config):
         trans_templates = []
-        for src_command, translation in target_config.items():
+        for id, (src_command, translation) in target_config.items():
             comamnd_key = list(translation.keys())[-1]
             for target_command, item in translation[comamnd_key].items():
                 template_command = ''
@@ -784,12 +791,12 @@ class Config_Translater:
                 trans_templates.append(template_command.strip())
         return trans_templates
 
-    def insert_parent_command(self, target_commands, src_command, src_depth, parent_commands: [], all_params,
+    def insert_parent_command(self, target_commands, src_command_id, src_command, src_depth, parent_commands: [], all_params,
                               target_vendor):
         for index, parent_command in enumerate(parent_commands):
             newest_parent = None
             # 遍历是否存在与command相同的命令
-            for pre_src_command, translation in target_commands.items():
+            for id, (pre_src_command, translation) in target_commands.items():
                 for depth, translation_commands in translation.items():
                     for command_k, command_v in translation_commands.items():
                         if command_k == parent_command:
@@ -805,7 +812,7 @@ class Config_Translater:
                                  'parent_node': parent_commands[0:index],
                                  'source': 'rule'
                                  }
-            target_commands.setdefault(src_command, {}).setdefault(index, {})[parent_command] = newest_parent
+            target_commands.setdefault(src_command_id, (src_command, {}))[1].setdefault(index, {})[parent_command] = newest_parent
 
         return target_commands
 
