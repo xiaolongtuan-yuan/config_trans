@@ -1,14 +1,14 @@
 set system host-name CE1
-set interfaces GigabitEthernet1/0/0 unit none disable
-set interfaces GigabitEthernet1/0/0 unit none family inet address 10.1.1.2/255.255.255.0
-set interfaces Loopback1 unit none disable
-set interfaces Loopback1 unit none family inet address 11.11.11.11/255.255.255.255
-set interfaces Loopback1 enable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.2/24
+set interfaces lo0.1 unit 0 disable
+set interfaces lo0.1 unit 0 family inet address 11.11.11.11/32
 set routing-options autonomous-system 65410
-set protocols bgp group 10.1.1.1 type 100
-set protocols bgp group 10.1.1.1 neighbor 10.1.1.1 peer-as 100
-set protocols bgp group 10.1.1.1 export 100
-set protocols bgp group 10.1.1.1 family none none
-set policy-options policy-statement 11.11.11.11 term none from route-filter 11.11.11.11/255.255.255.255 none
-set policy-options policy-statement 11.11.11.11 term none then 255.255.255.255
-set protocols bgp local-as 10.1.1.1
+set protocols bgp group PEERS type external
+set protocols bgp group PEERS neighbor 10.1.1.1 peer-as 100
+set protocols bgp group PEERS export ADVERTISE_NETWORK
+set protocols bgp group PEERS family inet unicast
+set protocols bgp local-as 300
+set policy-options policy-statement 11.11.11.11 term 1 from route-filter 11.11.11.11/32 exact
+set policy-options policy-statement 11.11.11.11 term 1 then accept

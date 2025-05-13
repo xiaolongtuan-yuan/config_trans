@@ -1,17 +1,16 @@
 set system host-name CE1
-set interfaces GigabitEthernet2/0/0 disable
-set interfaces GigabitEthernet2/0/0 unit none disable
-set interfaces GigabitEthernet2/0/0 unit none family inet address 10.4.1.1/255.255.255.0
-set interfaces GigabitEthernet1/0/0 disable
-set interfaces GigabitEthernet1/0/0 unit none family inet address 10.1.1.1/255.255.255.0
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 10.4.1.1/24
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.1/24
 set routing-options autonomous-system 600
 set protocols bgp group 600 type 600
-set protocols bgp group 600 type 100
+set protocols bgp group 600 type external
 set protocols bgp group 600 neighbor 10.1.1.2 peer-as 100
-set protocols bgp group 600 export 100
-set protocols bgp group 600 family none none
-set routing-options autonomous-system direct
-set routing-options autonomous-system none
-set protocols bgp local-as 10.1.1.2
-set routing-options static route none/0.0.0.0 none
-set routing-options static route 0.0.0.0/0.0.0.0 next-hop 10.1.1.2
+set protocols bgp group 600 export ADVERTISE_NETWORK
+set protocols bgp group 600 family inet unicast
+set routing-options autonomous-system 65420
+set protocols bgp local-as 300
+set routing-options static route 0.0.0.0/0 discard
+set routing-options static route 0.0.0.0/0 next-hop 10.1.1.2

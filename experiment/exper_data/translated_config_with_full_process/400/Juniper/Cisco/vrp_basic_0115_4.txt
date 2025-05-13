@@ -1,10 +1,11 @@
 hostname CE2
-interface ge-0/0/1
+interface GigabitEthernet0/0/1
  no shutdown
- ip address 10.1.2.1 24
-router bgp CE2_to_Peer
-router bgp external
+ ip address 10.1.2.1 255.255.255.0
+router bgp 65420
+ address-family ipv4 unicast
+  redistribute CE2_to_Peer
 router bgp 100
  neighbor 10.1.2.2 activate
- network none mask 10.1.2.0/24
+ network 10.1.2.0 mask 255.255.255.0
  address-family ipv4 unicast

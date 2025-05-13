@@ -14,7 +14,8 @@ import experiment
 from experiment.compute_bleu import compute_embded_similarity
 from experiment.syntax_correctness import load_config_model, cul_view_accuracy
 from experiment.tree_match import cul_command_accuracy, cul_grammatical_accuracy, cul_param_accuracy, \
-    cul_grammatical_accuracy_with_json, cul_device_grammatical_accuracy_with_json, cul_command_and_param_accuracy
+    cul_grammatical_accuracy_with_json, cul_device_grammatical_accuracy_with_json, cul_command_and_param_accuracy, \
+    cuL_llm_coverage_with_json
 
 if __name__ == '__main__':
     vendors = ['Cisco', 'HUAWEI', 'Juniper']

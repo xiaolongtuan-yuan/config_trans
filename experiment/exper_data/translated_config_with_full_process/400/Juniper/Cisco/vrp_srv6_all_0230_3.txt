@@ -1,18 +1,17 @@
 hostname CE1
-interface ge-1/0/0
+interface GigabitEthernet1/0/0
  no shutdown
- ip address 10.1.1.2 24
-interface lo0
+ ip address 10.1.1.2 255.255.255.0
+interface Loopback0
  no shutdown
- ip address 11.11.11.11 32
-router bgp external
-router bgp 100
-router bgp 65410
+ ip address 11.11.11.11 255.255.255.255
+router bgp 65420
  address-family ipv4 unicast
   redistribute external-peers
-  redistribute announce-lo0
+router bgp 100
+ address-family ipv4 unicast
+  redistribute connected
+router bgp 65410
  neighbor 10.1.1.1 activate
- address-family unicast none
-ip route none 32 exact none
-ip route none none announce-lo0 none
-ip route none none accept none
+ip route 0.0.0.0 255.255.255.255 GigabitEthernet0/0 0.0.0.0
+ip route 255.255.255.0 GigabitEthernet2/0/0 10.30.1.2 none

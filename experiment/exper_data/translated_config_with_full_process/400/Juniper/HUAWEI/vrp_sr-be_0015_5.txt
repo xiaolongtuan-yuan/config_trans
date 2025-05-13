@@ -1,17 +1,16 @@
 sysname CE2
-interface ge-1/0/0
+interface GigabitEthernet1/0/0
  undo shutdown
- ip address 10.2.1.1 24
-interface lo0
+ ip address 10.2.1.1 255.255.255.0
+interface LoopBack0
  undo shutdown
- ip address 10.22.2.2 32
-bgp external-peers
+ ip address 10.22.2.2 255.255.255.255
+bgp 65420
  import-route external
- peer 100 as-number none
- peer 10.2.1.2 as-number none
+ peer none as-number 100
+ peer 10.2.1.2 as-number 0
  ipv4-family unicast
- ipv4-family 10.2.1.2
-  import-route advertise-lo0 none
+ import-route advertise-lo0
 traffic policy advertise-lo0
-traffic policy 32
-traffic policy 1
+traffic policy policy32
+traffic policy policy1

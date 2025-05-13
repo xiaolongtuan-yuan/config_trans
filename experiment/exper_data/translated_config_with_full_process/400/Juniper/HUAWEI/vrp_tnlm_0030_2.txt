@@ -1,22 +1,22 @@
 sysname CE1
-interface ge-0/0/0
-interface lo0
- ip address inet 3.3.3.3/32 none
- ip address 0 10.1.1.1/30 none
- ip address inet none
+interface GigabitEthernet0/0/0
+interface LoopBack0
+ ip address 3.3.3.3 255.255.255.255 sub
+ ip address 10.1.1.1 255.255.255.252 sub
+ ip address 0.0.0.0 255.255.255.0
 bgp 65410
  ipv4-family unicast
  import-route direct
- peer accept enable
- peer reject enable
+ peer 10.1.2.2 enable
 traffic policy direct-import
-traffic policy 1
-traffic policy 2
-bgp external
+traffic policy policy1
+traffic policy policy2
+bgp 65420
  import-route external
- peer 10.1.1.1 as-number none
- peer 100 as-number none
+ peer 10.1.1.1 as-number 100
+ peer 10.1.2.2 as-number 100
  ipv4-family unicast
   undo synchronization
- peer 10.1.1.2 as-number none
- peer direct-import enable
+ peer 10.1.1.2 as-number 100
+bgp [parameter1]
+ peer 10.1.2.2 enable

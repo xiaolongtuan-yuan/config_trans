@@ -1,20 +1,19 @@
 sysname CE3
-interface ge-1/0/0
+interface GigabitEthernet1/0/0
  undo shutdown
- ip address 10.3.1.1 24
-interface 0
+ ip address 10.3.1.1 255.255.255.0
+interface GigabitEthernet0/0/0
 bgp 800
-bgp BGP_GROUP
+bgp 65420
  import-route external
- peer 100 as-number none
+ peer 10.1.2.2 as-number 100
  ipv4-family unicast
   undo synchronization
-  import-route ADVERTISE_NETWORK none
- peer 10.3.1.2 as-number none
+ peer 10.3.1.2 as-number 0
+ import-route direct
  peer 10.3.1.0 enable
   undo synchronization
   import-route direct
- peer accept enable
- peer reject enable
+ peer 10.1.2.2 enable
 traffic policy ADVERTISE_NETWORK
-traffic policy 1
+traffic policy policy1

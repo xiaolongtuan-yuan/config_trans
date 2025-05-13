@@ -1,14 +1,13 @@
 set system host-name CE2
-set interfaces GigabitEthernet1/0/0 disable
-set interfaces GigabitEthernet1/0/0 unit none disable
-set interfaces GigabitEthernet1/0/0 unit none family inet address 10.2.1.2/255.255.255.0
-set interfaces LoopBack1 disable
-set interfaces LoopBack1 unit none family inet address 22.22.22.22/255.255.255.255
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.2.1.2/24
+set interfaces lo0.1 disable
+set interfaces lo0.1 unit 0 family inet address 22.22.22.22/32
 set routing-options autonomous-system 65420
-set protocols bgp group 65420 type 65420
-set protocols bgp group 65420 type 100
-set protocols bgp group 65420 neighbor 10.2.1.1 peer-as 100
-set protocols bgp group 65420 export 100
-set protocols bgp group 65420 family none none
-set protocols bgp local-as 10.2.1.1
-set protocols ospf area 22.22.22.22 interface 255.255.255.255
+set protocols bgp group PEERS type external
+set protocols bgp group PEERS neighbor 10.2.1.1 peer-as 100
+set protocols bgp group PEERS export ADVERTISE_NETWORK
+set protocols bgp group PEERS family inet unicast
+set protocols ospf area 22.22.22.22 interface ae100
+set protocols bgp local-as 300

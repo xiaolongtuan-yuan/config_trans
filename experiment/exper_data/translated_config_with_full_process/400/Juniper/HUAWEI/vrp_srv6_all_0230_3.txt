@@ -1,22 +1,22 @@
 sysname CE1
-interface ge-1/0/0
+interface GigabitEthernet1/0/0
  undo shutdown
- ip address 10.1.1.2 24
-interface lo0
+ ip address 10.1.1.2 255.255.255.0
+interface LoopBack0
  undo shutdown
- ip address 11.11.11.11 32
-bgp external-peers
- peer 100 as-number none
- peer 10.1.1.1 as-number none
+ ip address 11.11.11.11 255.255.255.255
+bgp 65420
+ import-route external
+ peer 10.1.2.2 as-number 100
+ peer 10.1.1.1 as-number 100
  ipv4-family unicast
   undo synchronization
+ import-route direct
 bgp 65410
  ipv4-family unicast
-  import-route announce-lo0 none
  peer 11.11.11.11 enable
   undo synchronization
   import-route direct
- peer accept enable
- import-route external
-traffic policy 1
+ peer 10.1.2.2 enable
+traffic policy policy1
 traffic policy announce-lo0

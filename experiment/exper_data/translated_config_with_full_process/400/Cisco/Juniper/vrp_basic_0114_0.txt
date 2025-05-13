@@ -1,15 +1,15 @@
 set system host-name SSH_Server
 set system domain-name example.com
-set system services ssh hostkey-algorithm 1024
-set system services ssh protocol-version 2
-set interfaces Loopback0 unit none disable
-set interfaces Loopback0 unit none family inet address 10.1.1.1/255.255.255.255
+set system services ssh hostkey-algorithm rsa
+set system services ssh protocol-version v2
+set interfaces lo0 unit 0 disable
+set interfaces lo0 unit 0 family inet address 10.1.1.1/32
 set system services ssh ciphers aes128-ctr aes192-ctr aes256-ctr
-set interfaces none none none none
-set system login user client001 class none authentication @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
-set interfaces GigabitEthernet0/0/0 unit none disable
-set interfaces GigabitEthernet0/0/0 unit none family inet address 10.1.1.2/255.255.0.0
-set interfaces GigabitEthernet0/0/0 unit none tunnel destination ssh
-set interfaces GigabitEthernet0/0/0 unit none family inet address none/none vrrp-group default virtual-address none
-set interfaces GigabitEthernet0/0/0 enable
+set system login user client001 class super-user authentication plain-text-password
+set interfaces ge-0/0/0 unit 0 disable
+set interfaces ge-0/0/0 disable
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.2/16
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.2/24 vrrp-group 1 virtual-address 10.1.1.111
 set system services ssh connection-limit 4
+set interfaces ge-0/0/1 gigether-options 802.3ad ae0
+set vlans VLAN_SSH interface ssh

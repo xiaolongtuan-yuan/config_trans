@@ -1,15 +1,15 @@
 hostname SSH_Server
 ip domain-name example.com
-ip ssh server algorithm encryption aes128-ctr none none
-ip ssh version v2
-ip ssh server algorithm encryption aes192-ctr none none
-ip ssh server algorithm encryption aes256-ctr none none
-interface lo0
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh version 2
+ip ssh server algorithm encryption aes192-ctr aes128-ctr aes256-ctr
+ip ssh server algorithm encryption aes256-ctr aes128-ctr aes192-ctr
+interface Loopback0
  no shutdown
- ip address 10.1.1.1 32
-interface ge-0/0/0
+ ip address 10.1.1.1 255.255.255.255
+interface GigabitEthernet0/0/0
  no shutdown
- ip address 10.1.1.2 16
-username client001 privilege none password none plain-text-password
-username super-user secret none none
-interface none.0
+ ip address 10.1.1.2 255.255.0.0
+username client001 privilege 15 password 0 plain-text-password
+interface GigabitEthernet1/0/0.0
+username super-user secret 0 super-password

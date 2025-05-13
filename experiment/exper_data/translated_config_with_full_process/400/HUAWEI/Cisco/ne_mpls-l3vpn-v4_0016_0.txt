@@ -1,15 +1,15 @@
 hostname CE1
 interface GigabitEthernet2/0/0
  ip address 10.4.1.1 255.255.255.0
-interface [parameter1].[parameter2]
+interface GigabitEthernet1/0/0.1
  no shutdown
 interface GigabitEthernet1/0/0
  ip address 10.1.1.1 255.255.255.0
 router bgp 600
 router bgp 100
- neighbor 10.1.1.2 remote-as none
+ neighbor 10.1.1.2 remote-as 100
+ address-family ipv4 unicast
+  neighbor 10.1.1.2 route-map direct-import in
  no synchronization
  neighbor 10.1.1.2 activate
- address-family ipv4 unicast
- bgp router-id none
-ip route 0.0.0.0 0.0.0.0 none 10.1.1.2
+ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/0 10.1.1.2
