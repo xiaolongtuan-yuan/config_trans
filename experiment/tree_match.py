@@ -264,6 +264,12 @@ def command_template_process(expect_templates: [], trans_commands: [], llm_trans
                 res_simplifoed_data.append(command_data)  # 被参数代替了的命令
 
                 commands_to_remove.append(command_data.id)
+            else:
+                if is_omnipotent and any([key in template for key in ['enable', 'disable']]):
+                    is_match = True
+                    command_data.set_simplify_command(str([]))
+                    res_simplifoed_data.append(command_data)
+
         # for command in commands_to_remove:
         #     trans_commands.remove(command)
 
@@ -275,11 +281,14 @@ def command_template_process(expect_templates: [], trans_commands: [], llm_trans
         commands_to_remove = []
         for command_data in [data for data in expected_command_datas if data.id not in commands_to_remove]:
             if re.match(template_re, command_data.command):
-                lebel_parameters = list(para_extract(command_data.command, template))
-                lebel_parameters = [parameter for index, parameter in enumerate(lebel_parameters) if
-                                    index not in ignore_param_index]
+                if is_omnipotent:
+                    lebel_parameters = []
+                else:
+                    lebel_parameters = list(para_extract(command_data.command, template))
+                    lebel_parameters = [parameter for index, parameter in enumerate(lebel_parameters) if
+                                        index not in ignore_param_index]
 
-                expected_params.extend(lebel_parameters)
+                    expected_params.extend(lebel_parameters)
                 command_data.set_simplify_command(str(lebel_parameters))
 
                 label_simplifoed_data.append(command_data)
