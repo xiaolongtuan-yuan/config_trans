@@ -23,9 +23,11 @@ def find_files(directory, extension):
 
 def main():
     name = 'full_process'
-    num = 400
+    num = 2800
     vendors = ['HUAWEI', 'Juniper', 'Cisco']
     grammatical_accuracy = {}
+    command_accuracy = {}
+    llm_command_ratio = {}
     for vendor1 in vendors:
         for vendor2 in vendors:
             if vendor1 == vendor2:
@@ -34,6 +36,8 @@ def main():
             error_mapping_statistic = defaultdict(int)
             missing_template = {}
             grammatical_accuracy[f'{vendor1}_{vendor2}'] = []
+            command_accuracy[f'{vendor1}_{vendor2}'] = []
+            llm_command_ratio[f'{vendor1}_{vendor2}'] = []
             folder_path = f'./exper_data/translated_config_with_{name}/{num}/{vendor1}/{vendor2}/'
             # folder_path = f'./exper_data/translated_config_with_use_freq/400/{vendor1}/{vendor2}/'
             map_rule_extension = '_map_rules.json'
@@ -57,6 +61,8 @@ def main():
                 # 读取结果文件
                 result_data = load_json_file(result_file)
                 grammatical_accuracy[f'{vendor1}_{vendor2}'].append(result_data["grammatical_accuracy"])
+                command_accuracy[f'{vendor1}_{vendor2}'].append(result_data["command_accuracy"])
+                llm_command_ratio[f'{vendor1}_{vendor2}'].append(result_data["llm_command_ratio"])
                 # template_count_result = Counter(label_template_data)
                 # 统计错误模板数量
                 for map_rule_str, count in match_rule_data.items():
@@ -111,8 +117,20 @@ def main():
 
     for key, value in grammatical_accuracy.items():
         print('task:', key, 'grammatical_accuracy_result:', np.mean(value))
+    # 计算所有任务的平均值
     all_values = [np.mean(v) for v in grammatical_accuracy.values()]
     print('Overall grammatical_accuracy average:', np.mean(all_values))
+    for key, value in command_accuracy.items():
+        print('task:', key, 'command_accuracy_result:', np.mean(value))
+    # 计算所有任务的平均值
+    all_values = [np.mean(v) for v in command_accuracy.values()]
+    print('Overall command_accuracy average:', np.mean(all_values))
+    for key, value in llm_command_ratio.items():
+        print('task:', key, 'llm_command_ratio_result:', np.mean(value))
+    # 计算所有任务的平均值
+    all_values = [np.mean(v) for v in llm_command_ratio.values()]
+    print('Overall llm_command_ratio average:', np.mean(all_values))
+    
 
 if __name__ == "__main__":
     main()
