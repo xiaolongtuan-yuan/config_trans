@@ -20,29 +20,29 @@
     "llm_command_accuracy": 0.16666666666666666,
     "llm_command_ratio": 0.29411764705882354,
     "command_for_llm": [
-        "neighbor 10.2.1.1 family inet unicast",
+        "unit 20 vlan-id 20",
         "term 1 from protocol direct",
-        "unit 20 vlan-id 20"
+        "neighbor 10.2.1.1 family inet unicast"
     ],
     "llm_trans_commands": [
         "interface gigabitethernet1/0/1.20",
         "encapsulation dot1q 20",
         "neighbor 10.2.1.1 address-family ipv4 unicast",
         "route-map direct-routes permit 10",
-        "match interface"
+        "match protocol connected"
     ],
     "source_commands": [
-        "set protocols bgp group ebgp",
-        "term 1 from protocol direct",
+        "export direct-routes",
+        "set policy-options policy-statement direct-routes",
+        "term 1 then accept",
+        "unit 20 vlan-id 20",
         "set interfaces ge-1/0/1",
         "set system host-name ce2",
         "peer-as 100",
-        "export direct-routes",
-        "unit 20 vlan-id 20",
-        "set policy-options policy-statement direct-routes",
-        "unit 20 family inet address 10.3.1.2/24",
-        "term 1 then accept",
-        "neighbor 10.2.1.1 family inet unicast"
+        "set protocols bgp group ebgp",
+        "term 1 from protocol direct",
+        "neighbor 10.2.1.1 family inet unicast",
+        "unit 20 family inet address 10.3.1.2/24"
     ],
     "llm_origin_response": [
         ""

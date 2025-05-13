@@ -17,8 +17,8 @@
         "set protocols bgp group [parameter1] local-address [parameter2]",
         "set protocols bgp group [parameter1] family [parameter2] [parameter3]"
     ],
-    "llm_command_accuracy": 0.18181818181818182,
-    "llm_command_ratio": 0.3125,
+    "llm_command_accuracy": 0.2727272727272727,
+    "llm_command_ratio": 0.375,
     "command_for_llm": [
         "redistribute connected",
         "address-family ipv4 unicast",
@@ -29,21 +29,22 @@
         "set protocols bgp group internal synchronization",
         "set policy-options policy-statement redistribute-connected term 1 from protocol direct",
         "set policy-options policy-statement redistribute-connected term 1 then accept",
-        "set protocols bgp group internal import redistribute-connected"
+        "set routing-options autonomous-system 100",
+        "set routing-options forwarding-table export redistribute-connected"
     ],
     "source_commands": [
-        "no shutdown",
-        "address-family ipv4 unicast",
-        "router bgp 100",
         "neighbor 10.20.1.2 remote-as 100",
-        "network 10.20.1.0 0.0.0.255 area 0",
-        "neighbor 10.20.1.2 activate",
+        "address-family ipv4 unicast",
+        "synchronization",
+        "router ospf 1",
         "redistribute connected",
+        "router bgp 100",
+        "neighbor 10.20.1.2 activate",
+        "network 10.20.1.0 0.0.0.255 area 0",
         "hostname devicec",
         "interface gigabitethernet1/0/0",
-        "synchronization",
-        "ip address 10.20.1.1 255.255.255.0",
-        "router ospf 1"
+        "no shutdown",
+        "ip address 10.20.1.1 255.255.255.0"
     ],
     "llm_origin_response": [
         ""

@@ -4,13 +4,17 @@ interface gigabitethernet0/0/0
  undo shutdown
  ip address 10.1.2.1 255.255.255.0
 interface gigabitethernet1/0/3
+ undo shutdown
  ip address 10.1.1.2 255.255.255.0
+ mpls ldp
 interface loopback0
  ip address 2.2.2.9 255.255.255.255
-ospf 1 router-id 0.0.0.0
+ospf 1 router-id 1.1.1.1
 ospf 2
- area 0.0.0.0
+ area 2.2.2.9
   network 2.2.2.9 0.0.0.0
+ area 0.0.0.0
   network 10.1.1.0 0.0.0.255
   network 10.1.2.0 0.0.0.255
-mpls ldp lsr-id loopback0
+mpls ldp lsp-trigger all
+mpls ldp transport-address interface loopback0

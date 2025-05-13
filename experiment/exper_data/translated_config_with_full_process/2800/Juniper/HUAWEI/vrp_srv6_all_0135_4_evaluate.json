@@ -1,12 +1,10 @@
 {
-    "command_accuracy": 0.75,
+    "command_accuracy": 0.8333333333333334,
     "missed_commands": [
         "ip address 22.22.22.22 255.255.255.255",
         "network 22.22.22.22 255.255.255.255",
-        "peer 10.2.1.1 enable",
         "ip address 22.22.22.22 255.255.255.255",
-        "network 22.22.22.22 255.255.255.255",
-        "peer 10.2.1.1 enable"
+        "network 22.22.22.22 255.255.255.255"
     ],
     "grammatical_accuracy": 0.9166666666666666,
     "missed_templates": [
@@ -23,19 +21,19 @@
         "if-match ip-prefix advertise-networks"
     ],
     "source_commands": [
-        "set interfaces ge-1/0/0",
+        "set interfaces lo0",
         "export advertise-networks",
         "set system host-name ce2",
-        "type external",
+        "set interfaces ge-1/0/0",
+        "unit 0 family inet address 10.2.1.2/24",
         "then accept",
+        "type external",
         "peer-as 100",
         "set protocols bgp group external-peers",
         "set policy-options policy-statement advertise-networks",
-        "unit 0 family inet address 10.2.1.2/24",
-        "neighbor 10.2.1.1",
+        "term 1 from route-filter 22.22.22.22/32 exact",
         "unit 1 family inet address 22.22.22.22/32",
-        "set interfaces lo0",
-        "term 1 from route-filter 22.22.22.22/32 exact"
+        "neighbor 10.2.1.1"
     ],
     "llm_origin_response": [
         ""
