@@ -1,4 +1,4 @@
-sysname CE1
+sysname ce1
 bgp 65410
  ipv4-family unicast
  import-route direct
@@ -6,18 +6,19 @@ bgp 65410
 traffic policy policy1
 traffic policy policy2
 bgp 65420
- import-route external
  peer 10.1.1.1 as-number 100
  peer 10.1.2.2 as-number 100
  ipv4-family unicast
   undo synchronization
-interface GigabitEthernet0/0/0
+bgp [parameter1]
+ import-route external
+interface gigabitethernet0/0/0
 ip address 10.1.1.1 255.255.255.252
-interface LoopBack0
+interface loopback0
 ip address 3.3.3.3 255.255.255.255
-policy direct-import
-permit protocol direct
-deny
+ip ip-prefix direct-import index 10 permit 0.0.0.0 0 less-equal 32
+route-policy direct-import permit node 10
+if-match ip-prefix direct-import
+route-policy direct-import deny node 20
 peer 10.1.1.2 as-number 100
 peer 10.1.1.2 route-policy direct-import import
-ipv4-family unicast

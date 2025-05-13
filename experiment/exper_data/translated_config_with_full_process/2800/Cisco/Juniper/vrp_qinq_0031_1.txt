@@ -1,15 +1,16 @@
-set system host-name CE2
+set system host-name ce2
 set interfaces ge-1/0/1 unit 0 disable
 set interfaces ge-1/0/1 disable
 set interfaces ge-1/0/1.20 unit 0 disable
+set interfaces ge-1/0/1.20 disable
 set interfaces ge-1/0/1.20 unit 0 family inet address 10.3.1.2/24
 set routing-options autonomous-system 65420
-set protocols bgp group PEERS type external
-set protocols bgp group PEERS neighbor 10.2.1.1 peer-as 100
-set protocols bgp group PEERS export ADVERTISE_NETWORK
-set protocols bgp group PEERS family inet unicast
-set policy-options policy-statement ADVERTISE_NETWORK term 1 from route-filter 10.3.1.0/24 exact
-set policy-options policy-statement ADVERTISE_NETWORK term 1 then accept
+set protocols bgp group peers type external
+set protocols bgp group peers neighbor 10.2.1.1 peer-as 100
+set protocols bgp group peers export advertise_network
+set protocols bgp group peers family inet unicast
+set policy-options policy-statement advertise_network term 1 from route-filter 10.3.1.0/24 exact
+set policy-options policy-statement advertise_network term 1 then accept
 set protocols bgp local-as 300
 set interfaces ge-1/0/1 unit 20 vlan-id 20
 set routing-options synchronization disabled

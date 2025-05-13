@@ -10,8 +10,6 @@ import json
 import re
 from collections import defaultdict, Counter
 
-from sqlalchemy.sql.coercions import expect
-
 from experiment.syntax_correctness import find_template, load_config_model
 
 
@@ -23,7 +21,7 @@ def parse_config_file(file_path, config_model):
         for line in f:
             # 去除前后空格和缩进
             command = line.strip()
-            if command.startswith(('#', '!', '*', '/*', '*/')): # 注释行
+            if command.startswith(('#', '!', '*', '/*', '*/')):  # 注释行
                 continue
             if command:
                 template = find_template(command, config_model)
@@ -41,12 +39,13 @@ def parse_config_file_intact(file_path):
         for line in f:
             # 去除前后空格和缩进
             command = line.strip()
-            if command.startswith(('#', '!', '*', '/*', '*/')): # 注释行
+            if command.startswith(('#', '!', '*', '/*', '*/')):  # 注释行
                 continue
             if command:
                 commands.append(command.lower())
     # commands = set(commands)
     return commands
+
 
 def parse_config_file_content_intact(file_content):
     """解析配置文件为命令列表"""
@@ -80,6 +79,7 @@ def calculate_match_ratio(result_templates, expected_templates, result_extra_com
 
     return match_count, (len(expected_templates) + len(expected_extra_commands)), error_templates
 
+
 def para_extract(src_cmd: str, src_template: str) -> str:
     # print(src_cmd, src_template)
     # 将源模板转换为正则表达式
@@ -100,6 +100,7 @@ def para_extract(src_cmd: str, src_template: str) -> str:
     parameters = match.groups()
     return parameters
 
+
 def get_template_info(template, config_model):
     """递归查找命令对应的模板"""
     for k, details in config_model.items():
@@ -113,7 +114,8 @@ def get_template_info(template, config_model):
                 return sub_template
     return None
 
-def llm_command_accuracy_cal(expect_templates:[], trans_commands:[], expected_commands:[], config_model:{}):
+
+def llm_command_accuracy_cal(expect_templates: [], trans_commands: [], expected_commands: [], config_model: {}):
     # 计算参数准确率
     trans_params = []
     expected_params = []
@@ -134,7 +136,7 @@ def llm_command_accuracy_cal(expect_templates:[], trans_commands:[], expected_co
             if 'name' in parameter['explanation'].lower():
                 ignore_param_index.append(index)
 
-        template_re = re.sub(r"\[[^\]]+\]", r'(\\S+)', template)
+        template_re = re.sub(r"\[[^\]]+\]", r'(\\S+)', template).lower()
         commands_to_remove = []
         is_match = False
         for command in trans_commands:
@@ -143,10 +145,11 @@ def llm_command_accuracy_cal(expect_templates:[], trans_commands:[], expected_co
                 is_match = True
                 # 提取参数
                 res_parameters = list(para_extract(command, template))
-                res_parameters = [parameter for index, parameter in enumerate(res_parameters) if index not in ignore_param_index]
+                res_parameters = [parameter for index, parameter in enumerate(res_parameters) if
+                                  index not in ignore_param_index]
 
-                trans_params.extend(res_parameters) # 总参数
-                res_param_strs.append(str(res_parameters)) # 被参数代替了的命令
+                trans_params.extend(res_parameters)  # 总参数
+                res_param_strs.append(str(res_parameters))  # 被参数代替了的命令
 
                 commands_to_remove.append(command)
         for command in commands_to_remove:
@@ -158,7 +161,8 @@ def llm_command_accuracy_cal(expect_templates:[], trans_commands:[], expected_co
         for command in expected_commands:
             if re.match(template_re, command):
                 lebel_parameters = list(para_extract(command, template))
-                lebel_parameters = [parameter for index, parameter in enumerate(lebel_parameters) if index not in ignore_param_index]
+                lebel_parameters = [parameter for index, parameter in enumerate(lebel_parameters) if
+                                    index not in ignore_param_index]
 
                 expected_params.extend(lebel_parameters)
                 label_param_strs.append(str(lebel_parameters))
@@ -180,20 +184,22 @@ def llm_command_accuracy_cal(expect_templates:[], trans_commands:[], expected_co
     command_match_ratio = command_match_score / denominator if denominator > 0 else 0
     template_match_ratio = template_match_score / len(expect_templates) if len(expect_templates) > 0 else 0
 
-
     return command_match_ratio, param_match_ratio, template_match_ratio
 
+
 class command_data:
-    def __init__(self,id, command, source):
+    def __init__(self, id, command, source):
         self.id = id
         self.command = command
         self.source = source
+
     def set_simplify_command(self, simplified_command):
         # 去除掉命名参数后的命令
         self.simplified_command = simplified_command
         return
 
-def trans_command_preprocess(trans_commands:[], llm_trans_commands:[]):
+
+def trans_command_preprocess(trans_commands: [], llm_trans_commands: [], expected_commands: []):
     id = 0
     trans_command_datas = []
     for command in [data for data in trans_commands if data not in llm_trans_commands]:
@@ -202,10 +208,21 @@ def trans_command_preprocess(trans_commands:[], llm_trans_commands:[]):
     for command in llm_trans_commands:
         trans_command_datas.append(command_data(id, command, 'llm'))
         id += 1
-    return trans_command_datas
 
-def command_template_process(expect_templates:[], trans_commands:[], llm_trans_commands:[], expected_commands:[], config_model:{}):
-    trans_command_datas = trans_command_preprocess(trans_commands, llm_trans_commands)
+    expected_command_datas = []
+    for command in expected_commands:
+        expected_command_datas.append(command_data(id, command, 'label'))
+        id += 1
+    return trans_command_datas, expected_command_datas
+
+
+def command_template_process(expect_templates: [], trans_commands: [], llm_trans_commands: [], expected_commands: [],
+                             config_model: {}):
+    trans_command_datas, expected_command_datas = trans_command_preprocess(trans_commands, llm_trans_commands,
+                                                                           expected_commands)
+
+    missed_commands = []
+    missed_templates = []
 
     trans_params = []
     expected_params = []
@@ -216,16 +233,21 @@ def command_template_process(expect_templates:[], trans_commands:[], llm_trans_c
 
     expected_template_counter = Counter(expect_templates)
     used_simplifoed_data_id = []
+    cheched_expected_command_data_id = []
     for template in expected_template_counter.keys():
+        is_omnipotent = False
+        if any([key in template for key in ['enable', 'disable']]):
+            is_omnipotent = True
         res_simplifoed_data = []
-        label_param_strs = []
+        label_simplifoed_data = []
         template_info = get_template_info(template, config_model)
-        ignore_param_index = [] # 如果是与名字相关的参数，我们不计入准确率
-        for index, parameter in enumerate(template_info.get('parameters', [])):
-            if 'name' in parameter['explanation'].lower():
-                ignore_param_index.append(index)
+        ignore_param_index = []  # 如果是与名字相关的参数，我们不计入准确率
+        if template_info:
+            for index, parameter in enumerate(template_info.get('parameters', [])):
+                if 'name' in parameter['explanation'].lower() or parameter['name'].lower() == 'unit':
+                    ignore_param_index.append(index)
 
-        template_re = re.sub(r"\[[^\]]+\]", r'(\\S+)', template)
+        template_re = re.sub(r"\[[^\]]+\]", r'(\\S+)', template.lower())
         commands_to_remove = []
         is_match = False
         for command_data in [data for data in trans_command_datas if data.id not in commands_to_remove]:
@@ -234,11 +256,12 @@ def command_template_process(expect_templates:[], trans_commands:[], llm_trans_c
                 is_match = True
                 # 提取参数
                 res_parameters = list(para_extract(command_data.command, template))
-                res_parameters = [parameter for index, parameter in enumerate(res_parameters) if index not in ignore_param_index]
+                res_parameters = [parameter for index, parameter in enumerate(res_parameters) if
+                                  index not in ignore_param_index]
 
-                trans_params.extend(res_parameters) # 总参数
+                trans_params.extend(res_parameters)  # 总参数
                 command_data.set_simplify_command(str(res_parameters))
-                res_simplifoed_data.append(command_data) # 被参数代替了的命令
+                res_simplifoed_data.append(command_data)  # 被参数代替了的命令
 
                 commands_to_remove.append(command_data.id)
         # for command in commands_to_remove:
@@ -246,35 +269,53 @@ def command_template_process(expect_templates:[], trans_commands:[], llm_trans_c
 
         if is_match:
             template_match_score += expected_template_counter[template]
+        else:
+            missed_templates.append(template)
 
         commands_to_remove = []
-        for command in expected_commands:
-            if re.match(template_re, command):
-                lebel_parameters = list(para_extract(command, template))
-                lebel_parameters = [parameter for index, parameter in enumerate(lebel_parameters) if index not in ignore_param_index]
+        for command_data in [data for data in expected_command_datas if data.id not in commands_to_remove]:
+            if re.match(template_re, command_data.command):
+                lebel_parameters = list(para_extract(command_data.command, template))
+                lebel_parameters = [parameter for index, parameter in enumerate(lebel_parameters) if
+                                    index not in ignore_param_index]
 
                 expected_params.extend(lebel_parameters)
-                label_param_strs.append(str(lebel_parameters))
-                commands_to_remove.append(command)
-        for command in commands_to_remove:
-            expected_commands.remove(command)
+                command_data.set_simplify_command(str(lebel_parameters))
 
-        for label_param_str in label_param_strs:
-            for res_simplifoed_data_item in [data for data in res_simplifoed_data if data.id not in used_simplifoed_data_id]:
-                if label_param_str == res_simplifoed_data_item.simplified_command:
+                label_simplifoed_data.append(command_data)
+                commands_to_remove.append(command_data.id)
+        # for command in commands_to_remove:
+        #     expected_commands.remove(command)
+
+        for label_simplifoed_data_item in label_simplifoed_data:
+            has_mapping = False
+            for res_simplifoed_data_item in [data for data in res_simplifoed_data if
+                                             data.id not in used_simplifoed_data_id]:
+                if label_simplifoed_data_item.simplified_command == res_simplifoed_data_item.simplified_command:
+                    has_mapping = True
                     command_match_score += 1
                     if res_simplifoed_data_item.source == 'llm':
                         llm_command_match_score += 1
                     used_simplifoed_data_id.append(res_simplifoed_data_item.id)
                     break
+            if not has_mapping:
+                missed_commands.append(label_simplifoed_data_item.command)
+            else:
+                cheched_expected_command_data_id.append(label_simplifoed_data_item.id)
 
-    for label_command in expected_commands:
-        for res_simplifoed_data_item in [data for data in trans_command_datas if data.id not in used_simplifoed_data_id]:
-            if label_command == res_simplifoed_data_item.command:
+    for label_simplifoed_data_item in [data for data in expected_command_datas if
+                                       data.id not in cheched_expected_command_data_id]:
+        has_mapping = False
+        for res_simplifoed_data_item in [data for data in trans_command_datas if
+                                         data.id not in used_simplifoed_data_id]:
+            if label_simplifoed_data_item.command == res_simplifoed_data_item.command:
+                has_mapping = True
                 command_match_score += 1
                 if res_simplifoed_data_item.source == 'llm':
                     llm_command_match_score += 1
                 break
+        if not has_mapping:
+            missed_commands.append(label_simplifoed_data_item.command)
 
     param_match_score = [param for param in expected_params if param in trans_params]
     param_match_ratio = len(param_match_score) / len(expected_params) if len(expected_params) > 0 else 0
@@ -283,16 +324,18 @@ def command_template_process(expect_templates:[], trans_commands:[], llm_trans_c
     llm_command_match_ratio = llm_command_match_score / denominator if denominator > 0 else 0
     rule_command_match_ratio = (command_match_score - llm_command_match_score) / denominator if denominator > 0 else 0
 
-
     return {
         'command_match_ratio': command_match_ratio,
         'param_match_ratio': param_match_ratio,
         'template_match_ratio': template_match_ratio,
         'llm_command_match_ratio': llm_command_match_ratio,
-        'rule_command_match_ratio': rule_command_match_ratio
+        'rule_command_match_ratio': rule_command_match_ratio,
+        'missed_commands': missed_commands,
+        'missed_templates': missed_templates
     }
 
-def cul_command_and_param_accuracy(translated_dir, real_dir, config_files):
+
+def cul_command_and_param_accuracy(translated_dir, real_dir, real_command_tree_dir, config_files):
     total_command_match_ratio = []
     total_param_match_ratio = []
     total_template_match_ratio = []
@@ -300,11 +343,11 @@ def cul_command_and_param_accuracy(translated_dir, real_dir, config_files):
     total_rule_command_match_ratio = []
     for file_name in config_files:
         file_result = os.path.join(translated_dir, file_name)
-        command_tree_path = file_result.replace('.txt', '_label_command_tree.json')
+        command_tree_path = os.path.join(real_command_tree_dir, file_name).replace('.txt', '.json')
         evaluate_json_path = file_result.replace('.txt', '_evaluate.json')
-        if not os.path.exists(command_tree_path):
-            command_tree_dir = real_dir.replace('text_config', 'command_tree')
-            command_tree_path = os.path.join(command_tree_dir, file_name.replace('.txt', '.json'))
+        # if not os.path.exists(command_tree_path):
+        #     command_tree_dir = real_dir.replace('text_config', 'command_tree')
+        #     command_tree_path = os.path.join(command_tree_dir, file_name.replace('.txt', '.json'))
 
         real_command_tree = load_config_model(command_tree_path)
         expect_temp = get_all_templates(real_command_tree)
@@ -312,11 +355,10 @@ def cul_command_and_param_accuracy(translated_dir, real_dir, config_files):
         evaluate_json = load_config_model(evaluate_json_path)
 
         result_commands = parse_config_file_intact(file_result)
-        llm_trans_commands = evaluate_json['llm_trans_commands']
+        llm_trans_commands = [command.lower() for command in evaluate_json['llm_trans_commands']]
         expected_commands = parse_config_file_intact(file_expected)
-        accuracy_dict = command_template_process(expect_temp, result_commands, llm_trans_commands, expected_commands, real_command_tree)
-
-
+        accuracy_dict = command_template_process(expect_temp, result_commands, llm_trans_commands, expected_commands,
+                                                 real_command_tree)
 
         total_command_match_ratio.append(accuracy_dict['command_match_ratio'])
         total_param_match_ratio.append(accuracy_dict['param_match_ratio'])
@@ -324,11 +366,16 @@ def cul_command_and_param_accuracy(translated_dir, real_dir, config_files):
         total_llm_command_match_ratio.append(accuracy_dict['llm_command_match_ratio'])
         total_rule_command_match_ratio.append(accuracy_dict['rule_command_match_ratio'])
 
-    average_command_match_ratio = sum(total_command_match_ratio) / len(total_command_match_ratio) if total_command_match_ratio else 0
-    average_param_match_ratio = sum(total_param_match_ratio) / len(total_param_match_ratio) if total_param_match_ratio else 0
-    average_template_match_ratio = sum(total_template_match_ratio) / len(total_template_match_ratio) if total_template_match_ratio else 0
-    average_llm_command_match_ratio = sum(total_llm_command_match_ratio) / len(total_llm_command_match_ratio) if total_llm_command_match_ratio else 0
-    average_rule_command_match_ratio = sum(total_rule_command_match_ratio) / len(total_rule_command_match_ratio) if total_rule_command_match_ratio else 0
+    average_command_match_ratio = sum(total_command_match_ratio) / len(
+        total_command_match_ratio) if total_command_match_ratio else 0
+    average_param_match_ratio = sum(total_param_match_ratio) / len(
+        total_param_match_ratio) if total_param_match_ratio else 0
+    average_template_match_ratio = sum(total_template_match_ratio) / len(
+        total_template_match_ratio) if total_template_match_ratio else 0
+    average_llm_command_match_ratio = sum(total_llm_command_match_ratio) / len(
+        total_llm_command_match_ratio) if total_llm_command_match_ratio else 0
+    average_rule_command_match_ratio = sum(total_rule_command_match_ratio) / len(
+        total_rule_command_match_ratio) if total_rule_command_match_ratio else 0
     return {
         'average_command_match_ratio': average_command_match_ratio,
         'average_param_match_ratio': average_param_match_ratio,
@@ -350,19 +397,21 @@ def cul_command_accuracy(translated_dir, real_dir, config_files):
         expected_commands = parse_config_file_intact(file_expected)
 
         command_match_score, command_match_account, error_commands = calculate_match_ratio(result_commands,
-                                                                                         expected_commands,
-                                                                                         [],
-                                                                                         [])
+                                                                                           expected_commands,
+                                                                                           [],
+                                                                                           [])
         command_match_ratio = command_match_score / command_match_account if command_match_account > 0 else 0
         total_command_match_ratio.append(command_match_ratio)
         # total_command_match_score += command_match_score
         # total_command_match_account += command_match_account
 
     # average_command_match_ratio = total_command_match_score / total_command_match_account if total_command_match_account > 0 else 0
-    average_command_match_ratio = sum(total_command_match_ratio) / len(total_command_match_ratio) if total_command_match_ratio else 0
+    average_command_match_ratio = sum(total_command_match_ratio) / len(
+        total_command_match_ratio) if total_command_match_ratio else 0
     return average_command_match_ratio
 
-def cul_grammatical_accuracy(translated_dir, real_dir, config_files, config_model:{}):
+
+def cul_grammatical_accuracy(translated_dir, real_dir, config_files, config_model: {}):
     total_match_score = 0
     total_match_account = 0
     total_match_ratio = []
@@ -390,14 +439,16 @@ def cul_grammatical_accuracy(translated_dir, real_dir, config_files, config_mode
 def get_all_templates(data):
     templates = []
 
-    def dfs(data:dict):
+    def dfs(data: dict):
         for key, value in data.items():
             if isinstance(value, dict):
                 dfs(value)
             elif key == 'template':
                 templates.append(value)
+
     dfs(data)
     return templates
+
 
 def cul_grammatical_accuracy_with_json(translated_dir, real_dir, config_files):
     '''
@@ -408,7 +459,7 @@ def cul_grammatical_accuracy_with_json(translated_dir, real_dir, config_files):
     total_match_score = 0
     total_match_account = 0
     for file_name in config_files:
-        device_name= os.path.splitext(file_name)[0]
+        device_name = os.path.splitext(file_name)[0]
 
         trans_templates = json.load(open(os.path.join(translated_dir, f"{device_name}_temp.json")))
         expected_json = os.path.join(real_dir, f"{device_name}.json")
@@ -423,10 +474,11 @@ def cul_grammatical_accuracy_with_json(translated_dir, real_dir, config_files):
     average_match_ratio = total_match_score / total_match_account if total_match_account > 0 else 0
     return average_match_ratio
 
-def cuL_llm_coverage_with_json(source_txt_dir,translated_dir, config_files):
+
+def cuL_llm_coverage_with_json(source_txt_dir, translated_dir, config_files):
     llm_command_accuracys = []
     for file_name in config_files:
-        device_name= os.path.splitext(file_name)[0]
+        device_name = os.path.splitext(file_name)[0]
         source_config_txt = os.path.join(source_txt_dir, f"{device_name}.txt")
         source_commands = parse_config_file_intact(source_config_txt)
 
@@ -434,25 +486,27 @@ def cuL_llm_coverage_with_json(source_txt_dir,translated_dir, config_files):
         command_for_llm = evaluate_json['command_for_llm']
         llm_command_accuracy = len(command_for_llm) / len(source_commands) if len(source_commands) > 0 else 0
         llm_command_accuracys.append(llm_command_accuracy)
-    average_match_ratio = sum(llm_command_accuracys) / len(llm_command_accuracys) if  llm_command_accuracys else 0
+    average_match_ratio = sum(llm_command_accuracys) / len(llm_command_accuracys) if llm_command_accuracys else 0
     return average_match_ratio
+
 
 def cuL_llm_accuracy_with_json(translated_dir, config_files):
     llm_command_accuracys = []
     for file_name in config_files:
-        device_name= os.path.splitext(file_name)[0]
+        device_name = os.path.splitext(file_name)[0]
         evaluate_json = json.load(open(os.path.join(translated_dir, f"{device_name}_evaluate.json")))
         llm_command_accuracy = evaluate_json['llm_command_accuracy']
         if llm_command_accuracy > 0:
             llm_command_accuracys.append(llm_command_accuracy)
-    average_match_ratio = sum(llm_command_accuracys) / len(llm_command_accuracys) if  llm_command_accuracys else 0
+    average_match_ratio = sum(llm_command_accuracys) / len(llm_command_accuracys) if llm_command_accuracys else 0
     return average_match_ratio
+
 
 def cul_device_grammatical_accuracy_with_json(translated_dir, real_dir, config_files):
     grammatical_accuracy = []  # 存储每个文件的准确率
     command_accuracy = []
     for file_name in config_files:
-        device_name= os.path.splitext(file_name)[0]
+        device_name = os.path.splitext(file_name)[0]
         evaluate_json = json.load(open(os.path.join(translated_dir, f"{device_name}_evaluate.json")))
 
         grammatical_accuracy.append(evaluate_json['grammatical_accuracy'])
@@ -461,6 +515,7 @@ def cul_device_grammatical_accuracy_with_json(translated_dir, real_dir, config_f
     average_grammatical_accuracy = sum(grammatical_accuracy) / len(grammatical_accuracy) if grammatical_accuracy else 0
     average_command_accuracy = sum(command_accuracy) / len(command_accuracy) if command_accuracy else 0
     return average_grammatical_accuracy, average_command_accuracy
+
 
 def grammatical_match(device_name, match_rule, real_dir):
     expected_json = os.path.join(real_dir, f"{device_name}.json")
@@ -486,8 +541,8 @@ def grammatical_match(device_name, match_rule, real_dir):
     return error_mapping_rules, error_mapping_rules_count
 
 
-
-def calculate_param_match_ratio(result_templates:{}, expected_templates:{}, result_extra_commands:[], expected_extra_commands:[]):
+def calculate_param_match_ratio(result_templates: {}, expected_templates: {}, result_extra_commands: [],
+                                expected_extra_commands: []):
     """计算翻译的模板序列的匹配度"""
     match_score = 0
     match_count = 0
@@ -505,6 +560,7 @@ def calculate_param_match_ratio(result_templates:{}, expected_templates:{}, resu
             match_score += 1
 
     return match_score, match_count
+
 
 def cul_param_accuracy(translated_dir, real_dir, config_files, config_model: {}):
     def parse_config_file(file_path, config_model):
@@ -533,13 +589,14 @@ def cul_param_accuracy(translated_dir, real_dir, config_files, config_model: {})
         expected_templates, expected_extra_command = parse_config_file(file_expected, config_model)
 
         match_score, match_ccount = calculate_param_match_ratio(result_templates,
-                                                                            expected_templates,
-                                                                            result_extra_command,
-                                                                            expected_extra_command)
+                                                                expected_templates,
+                                                                result_extra_command,
+                                                                expected_extra_command)
         total_match_score += match_score
         total_match_ccount += match_ccount
     average_match_ratio = total_match_score / total_match_ccount if total_match_ccount > 0 else 0
     return average_match_ratio
+
 
 if __name__ == '__main__':
     scale = 2000

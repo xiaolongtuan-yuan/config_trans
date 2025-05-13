@@ -1,11 +1,11 @@
-hostname CE1
+hostname ce1
 interface ge-2/0/0
  no shutdown
  ip address 10.4.1.1 255.255.255.0
-interface GigabitEthernet1/0/0
+interface gigabitethernet1/0/0
  no shutdown
  ip address 10.1.1.1 255.255.255.0
-ip route 0.0.0.0 0.0.0.0 BGP-NETWORKS none
+ip route 0.0.0.0 0.0.0.0 bgp-networks 0.0.0.0
 ip route 0.0.0.0 0.0.0.0 10.1.1.2
 router bgp 65420
  address-family ipv4 unicast
@@ -13,7 +13,7 @@ router bgp 65420
 router bgp 100
  address-family ipv4 unicast
   redistribute bgp
-ip route none 255.255.255.0 exact none
-ip route 255.255.255.0 GigabitEthernet2/0/0 accept 10.30.1.2
+ip route 255.255.255.0 24 exact 0.0.0.0
+ip route 255.255.255.0 gigabitethernet2/0/0 accept 10.30.1.2
 neighbor 10.1.1.2 remote-as 100
 address-family ipv4 unicast

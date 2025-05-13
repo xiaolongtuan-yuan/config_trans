@@ -11,8 +11,8 @@ sys.path.append("/data/public/hrx/Repositories/config_trans")
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
-from experiment.tree_match import parse_config_file_intact, parse_config_file_content_intact, calculate_match_ratio, \
-    get_all_templates, command_template_process, llm_command_accuracy_cal
+from experiment.tree_match import parse_config_file_content_intact, calculate_match_ratio, \
+    get_all_templates, command_template_process
 from src.F_new_device_configtrans import Config_Translater, Translation_Model, mapping_library_load, \
     config_matchers_load, config_model_load
 import os
@@ -85,7 +85,7 @@ def translate_single_file(config_translater, input_dir, output_dir, real_config_
     trans_res_dict = config_translater.translation(json_config,
                                                    source_vendor,
                                                    target_vendor,
-                                                   tau=0.001,
+                                                   tau=0.999,
                                                    source_total_config=source_total_config)
     # 评估
     evaluate_res = {
@@ -122,20 +122,12 @@ def translate_single_file(config_translater, input_dir, output_dir, real_config_
 
     evaluate_res['llm_command_accuracy'] = match_ratio_dict['llm_command_match_ratio']
 
-    _, _, missed_commands = calculate_match_ratio(result_commands,
-                                                  expected_commands,
-                                                  [],
-                                                  [])
-    evaluate_res['missed_commands'] = missed_commands
+    evaluate_res['missed_commands'] = match_ratio_dict['missed_commands']
     evaluate_res['command_accuracy'] = match_ratio_dict['command_match_ratio']
 
     expected_templates = get_all_templates(real_command_tree)
 
-    _, _, error_templates = calculate_match_ratio(trans_res_dict['trans_templates'],
-                                                  expected_templates,
-                                                  [],
-                                                  [])
-    evaluate_res['missed_templates'] = error_templates
+    evaluate_res['missed_templates'] = match_ratio_dict['missed_templates']
     evaluate_res['grammatical_accuracy'] = match_ratio_dict['template_match_ratio']
 
     tran_res_output_path = os.path.join(output_dir, target_vendor, f"{file_name}.txt")
@@ -190,7 +182,7 @@ def main():
     error_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{{}}_{{}}.json'
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
-    config_num = [400]
+    config_num = [2800]
     local_EMmodel_path = '../EmbeddingModel/MiniLM-L6-v2'
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})

@@ -666,7 +666,7 @@ class Config_Translater:
         root = ConfigNode("system", "")
         stack = [(root, -1)]
         llm_transd_commands = []
-        source_commands = []
+        source_commands = set()
         command_for_llm = set()
         llm_origin_response = set()
         # 遍历每一个需要翻译的配置命令
@@ -677,16 +677,16 @@ class Config_Translater:
                     continue
                 # 输出该层级下所有的配置命令
                 for target_temp, command_info in target_command.items():
-                    line = command_info['target_command']
+                    line = command_info['target_command'].lower()
                     source = command_info['source']
                     if source == 'llm':
-                        temp = self.find_command_template(target_vendor, line)
+                        temp = self.find_command_template(target_vendor, line).lower()
                         llm_transd_commands.append([line, temp])  # 0: command , 1: template
-                        command_for_llm.add(command)
+                        command_for_llm.add(command.lower())
                         llm_origin_response.add(command_info['origin_response'])
                     else:
                         temp = target_temp
-                    source_commands.append(command)
+                    source_commands.add(command.lower())
                     node = ConfigNode(line, temp)
                     while stack and stack[-1][1] >= depth:
                         stack.pop()
@@ -714,7 +714,7 @@ class Config_Translater:
             'command_for_llm': list(command_for_llm),
             'llm_transd_commands': llm_transd_commands,
             'llm_origin_response': list(llm_origin_response),
-            'source_commands': source_commands
+            'source_commands': list(source_commands)
         }
 
     def find_command_template(self, target_vendor, command):

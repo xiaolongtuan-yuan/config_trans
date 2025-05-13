@@ -1,27 +1,25 @@
-hostname CE1
-interface GigabitEthernet1/0/1
+hostname ce1
+interface gigabitethernet1/0/1
  no shutdown
  ip address 192.168.1.2 255.255.255.0
-interface ge-1/0/2
+interface gigabitethernet1/0/2
  no shutdown
-interface GigabitEthernet1/0/2
  ip address 172.16.1.2 255.255.255.0
 router bgp 65410
  address-family ipv4 unicast
-  redistribute EBGP
-ip route 255.255.255.0 IMPORT-DIRECT 0.0.0.0 0.0.0.0
-ip route 255.255.255.0 GigabitEthernet2/0/0 10.30.1.2 none
+  redistribute ebgp
+ip route 255.255.255.0 import-direct 0.0.0.0 0.0.0.0
+ip route 255.255.255.0 gigabitethernet2/0/0 10.30.1.2 none
 router bgp 65420
 router bgp 100
  address-family ipv4 unicast
-  redistribute IMPORT-DIRECT
+  redistribute import-direct
 switchport mode trunk
-interface GigabitEthernet1/0/1.1
-encapsulation dot1Q 1
-!
-interface GigabitEthernet1/0/2.1
+interface gigabitethernet1/0/1.1
+encapsulation dot1q 1
+interface gigabitethernet1/0/2.1
 router-id 192.168.1.2
-route-map IMPORT-DIRECT permit 10
-match protocol connected
+route-map import-direct permit 10
+match interface
 neighbor 192.168.1.1 remote-as 100
 neighbor 172.16.1.1 remote-as 100
