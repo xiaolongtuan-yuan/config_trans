@@ -365,6 +365,8 @@ def cul_command_and_param_accuracy(translated_dir, real_dir, real_command_tree_d
 
         result_commands = parse_config_file_intact(file_result)
         llm_trans_commands = [command.lower() for command in evaluate_json['llm_trans_commands']]
+        # llm_trans_commands = []
+
         expected_commands = parse_config_file_intact(file_expected)
         accuracy_dict = command_template_process(expect_temp, result_commands, llm_trans_commands, expected_commands,
                                                  real_command_tree)

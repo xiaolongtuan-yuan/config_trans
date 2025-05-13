@@ -182,7 +182,7 @@ class Config_Translater:
         '''
         启发式翻译
         '''
-        config_match = {}  # 保存翻译（匹配）集合
+        config_match = []  # 保存翻译（匹配）集合
         # 给juniper配置模型加个保险
         if vendor == 'Juniper':
             json_configuration = insert_template(json_configuration)
@@ -196,12 +196,12 @@ class Config_Translater:
         # print(json.dumps(config_match, indent=2, ensure_ascii=False))
         if not istatistics:
             # 阶段二：模糊映射fuzzy_mapping-->针对规则映射库未覆盖的配置命令
-            if len(rest_commands_feature) > 0:
-                config_match = self.fuzzy_mapping(rest_commands_feature, config_match, vendor, target_vendor, tau=0)
+            # if len(rest_commands_feature) > 0:
+            #     config_match = self.fuzzy_mapping(rest_commands_feature, config_match, vendor, target_vendor, tau=0)
             # print(f"config_match: {json.dumps(config_match, indent=2, ensure_ascii=False)}")
             # 映射规则使用统计
             map_rule_freq = {}
-            for command, match in config_match.items():
+            for command, match in config_match:
                 map_rule = str([match['template'], match['match']])
 
                 if map_rule not in map_rule_freq.keys():
@@ -214,7 +214,7 @@ class Config_Translater:
             # print(json.dumps(arranged_config, indent=2, ensure_ascii=False))
 
             # 阶段五：参数映射
-            target_config = self.parameter_mapping(arranged_config, vendor, target_vendor)
+            target_config = self.parameter_mapping_with_LLM_remapping(arranged_config, vendor, target_vendor)
 
             # 阶段六：输出并保存翻译的配置命令
             trans_res_dict = self.print_and_save_translation_config(target_config,
@@ -225,6 +225,10 @@ class Config_Translater:
                 'trans_mapping_info': trans_res_dict['trans_mapping_info'],
                 'trans_templates': trans_res_dict['trans_templates'],
                 'map_rule_freq': map_rule_freq,
+                'llm_transd_commands': trans_res_dict['llm_transd_commands'],
+                'command_for_llm': trans_res_dict['command_for_llm'],
+                'llm_origin_response': trans_res_dict['llm_origin_response'],
+                'source_commands': trans_res_dict['source_commands'],
             }
         else:
             statistic_data = {
@@ -579,17 +583,18 @@ class Config_Translater:
                             # 将参数填补到可合并配置命令中
                             # 使用列表推导式，优先选择非空元素
                             pre_merged_paras = [x if x != 'none' else y for x, y in
-                                            zip(command_v['para_match'], command_info['para_match'])]
+                                                zip(command_v['para_match'], command_info['para_match'])]
                             command_v['para_placeholders'] = merged_placeholders.tolist()
                             command_v['para_match'] = pre_merged_paras
 
                             this_merged_paras = [x if x != 'none' else y for x, y in
-                                            zip(command_info['para_match'], command_v['para_match'])]
+                                                 zip(command_info['para_match'], command_v['para_match'])]
                             command_info['para_placeholders'] = merged_placeholders.tolist()
                             command_info['para_match'] = this_merged_paras
                             merged_flag = 1
         if merged_flag == 0:
-            target_commands.setdefault(src_command_id, (src_command,{}))[1].setdefault(src_depth, {})[command] = command_info
+            target_commands.setdefault(src_command_id, (src_command, {}))[1].setdefault(src_depth, {})[
+                command] = command_info
         return target_commands
 
     """
@@ -791,7 +796,8 @@ class Config_Translater:
                 trans_templates.append(template_command.strip())
         return trans_templates
 
-    def insert_parent_command(self, target_commands, src_command_id, src_command, src_depth, parent_commands: [], all_params,
+    def insert_parent_command(self, target_commands, src_command_id, src_command, src_depth, parent_commands: [],
+                              all_params,
                               target_vendor):
         for index, parent_command in enumerate(parent_commands):
             newest_parent = None
@@ -812,7 +818,8 @@ class Config_Translater:
                                  'parent_node': parent_commands[0:index],
                                  'source': 'rule'
                                  }
-            target_commands.setdefault(src_command_id, (src_command, {}))[1].setdefault(index, {})[parent_command] = newest_parent
+            target_commands.setdefault(src_command_id, (src_command, {}))[1].setdefault(index, {})[
+                parent_command] = newest_parent
 
         return target_commands
 

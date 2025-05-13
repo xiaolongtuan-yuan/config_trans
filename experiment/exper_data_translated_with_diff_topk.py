@@ -5,13 +5,14 @@
 @File ：exper_data_translated.py
 """
 import sys
+from copy import deepcopy
 
 sys.path.append("/data/public/hrx/Repositories/config_trans")
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
 from experiment.tree_match import parse_config_file_intact, parse_config_file_content_intact, calculate_match_ratio, \
-    get_all_templates
+    get_all_templates, command_template_process
 from src.F_new_device_configtrans import Config_Translater, Translation_Model, mapping_library_load, \
     config_matchers_load, config_model_load
 import os
@@ -74,22 +75,30 @@ def translate_single_file(config_translater, input_dir, output_dir, real_config_
     json_config = load_json_file(config_path)
     txt_config_path = config_path.replace('command_tree', 'text_config')
     txt_config_path = txt_config_path.replace('.json', '.txt')
-    file_name = os.path.splitext(config_file)[0]
+    if 'Juniper_subdivided' in txt_config_path:
+        txt_config_path = txt_config_path.replace('Juniper_subdivided', 'Juniper')
     with open(txt_config_path, 'r', encoding='utf-8') as f:
         source_total_config = f.read()
 
-    trans_res, trans_mapping_info, trans_templates, map_rule_freq = config_translater.translation(json_config,
+    file_name = os.path.splitext(config_file)[0]
+
+    trans_res_dict = config_translater.translation(json_config,
                                                    source_vendor,
                                                    target_vendor,
                                                    tau=0.001,
                                                    source_total_config=source_total_config)
-
     # 评估
     evaluate_res = {
         "command_accuracy": 0,
         "missed_commands": [],
         "grammatical_accuracy": 0,
-        "missed_templates": []
+        "missed_templates": [],
+        "llm_command_accuracy": {},
+        'llm_command_ratio': 0,
+        "command_for_llm": trans_res_dict['command_for_llm'],
+        "llm_trans_commands": [command_pair[0] for command_pair in trans_res_dict['llm_transd_commands']],
+        'source_commands': trans_res_dict['source_commands'],
+        'llm_origin_response': trans_res_dict['llm_origin_response']
     }
     real_command_tree_path = os.path.join(real_command_tree_dir, f"{file_name}.json")
     real_config_path = os.path.join(real_config_dir, f"{file_name}.txt")
@@ -100,44 +109,50 @@ def translate_single_file(config_translater, input_dir, output_dir, real_config_
         real_config = f.read()
 
     expected_commands = parse_config_file_content_intact(real_config)
-    result_commands = parse_config_file_content_intact(trans_res)
+    result_commands = parse_config_file_content_intact(trans_res_dict['trans_res'])
+    expect_temp = get_all_templates(real_command_tree)
+    evaluate_res['llm_command_ratio'] = len(trans_res_dict['llm_transd_commands']) / len(result_commands)
+    llm_transd_commands = [command_pair[0] for command_pair in trans_res_dict['llm_transd_commands']]
+    match_ratio_dict = command_template_process(expect_temp,
+                                                deepcopy(result_commands),
+                                                deepcopy(llm_transd_commands),
+                                                deepcopy(expected_commands),
+                                                real_command_tree)
 
-    command_match_score, command_match_account, missed_commands = calculate_match_ratio(result_commands,
-                                                                                        expected_commands,
-                                                                                        [],
-                                                                                        [])
-    evaluate_res['command_accuracy'] = command_match_score / command_match_account
-    evaluate_res['missed_commands'] = missed_commands
+    evaluate_res['llm_command_accuracy'] = match_ratio_dict['llm_command_match_ratio']
+
+    evaluate_res['missed_commands'] = match_ratio_dict['missed_commands']
+    evaluate_res['command_accuracy'] = match_ratio_dict['command_match_ratio']
 
     expected_templates = get_all_templates(real_command_tree)
 
-    # print(f"expected_templates: {expected_templates}")
-    # print(f"trans_templates: {trans_templates}")
-
-    match_score, match_account, error_templates = calculate_match_ratio(trans_templates,
-                                                                        expected_templates,
-                                                                        [],
-                                                                        [])
-    evaluate_res['missed_templates'] = error_templates
-    evaluate_res['grammatical_accuracy'] = match_score / match_account
+    evaluate_res['missed_templates'] = match_ratio_dict['missed_templates']
+    evaluate_res['grammatical_accuracy'] = match_ratio_dict['template_match_ratio']
 
     tran_res_output_path = os.path.join(output_dir, target_vendor, f"{file_name}.txt")
     tran_temp_output_path = os.path.join(output_dir, target_vendor, f"{file_name}_temp.json")
+    expected_temp_path = os.path.join(output_dir, target_vendor, f"{file_name}_expected_temp.json")
+
     label_config_text_path = os.path.join(output_dir, target_vendor, f"{file_name}_label_text.txt")
+    source_config_command_tree_path = os.path.join(output_dir, target_vendor, f"{file_name}_source_command_tree.json")
     label_command_tree_path = os.path.join(output_dir, target_vendor, f"{file_name}_label_command_tree.json")
     tran_map_rule_usage_output_path = os.path.join(output_dir, target_vendor, f"{file_name}_map_rules.json")
     tran_evaluate_output_path = os.path.join(output_dir, target_vendor, f"{file_name}_evaluate.json")
 
     with open(tran_res_output_path, 'w', encoding='utf-8') as f:
-        f.write(trans_res)
+        f.write(trans_res_dict['trans_res'])
     with open(tran_temp_output_path, 'w', encoding='utf-8') as f:
-        json.dump(trans_templates, f, ensure_ascii=False, indent=4)
+        json.dump(trans_res_dict['trans_templates'], f, ensure_ascii=False, indent=4)
+    with open(expected_temp_path, 'w', encoding='utf-8') as f:
+        json.dump(expected_templates, f, ensure_ascii=False, indent=4)
     with open(label_config_text_path, mode='w', encoding='utf-8') as f:
         f.write(real_config)
+    with open(source_config_command_tree_path, mode='w', encoding='utf-8') as f:
+        json.dump(json_config, f, ensure_ascii=False, indent=4)
     with open(label_command_tree_path, mode='w', encoding='utf-8') as f:
         json.dump(real_command_tree, f, ensure_ascii=False, indent=4)
     with open(tran_map_rule_usage_output_path, 'w', encoding='utf-8') as f:
-        json.dump(map_rule_freq, f, ensure_ascii=False, indent=4)
+        json.dump(trans_res_dict['map_rule_freq'], f, ensure_ascii=False, indent=4)
     with open(tran_evaluate_output_path, 'w', encoding='utf-8') as f:
         json.dump(evaluate_res, f, ensure_ascii=False, indent=4)
     return True

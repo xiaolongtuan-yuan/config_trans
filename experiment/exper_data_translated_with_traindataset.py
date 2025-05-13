@@ -183,7 +183,7 @@ def main():
     name = 'full_process'
     # data_dir = 'all_data'
     data_dir = 'valid_data'
-    config_num = [300]
+    config_num = [400]
 
     output_dir = f'../experiment/exper_data/translated_config_with_{name}'
     mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}.json'

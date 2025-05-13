@@ -77,16 +77,10 @@ if __name__ == '__main__':
                 trannlated_config_files = [f for f in os.listdir(translated_config_dir) if
                                            f.endswith('.txt') and not f.endswith('text.txt')]
                 real_config_dir = f'../experiment/test_dataset/{data_dir}/text_config/{target_vendor}'
-                real_target_config_json_dir = f'../experiment/test_dataset/{data_dir}/command_tree/{target_vendor}' if target_vendor != 'Juniper' else f'../experiment/test_dataset/{data_dir}/command_tree/Juniper_subdivided'
+                real_target_config_json_dir = f'../experiment/test_dataset/{data_dir}/command_tree/{target_vendor}'
 
                 accuracy_dict = cul_command_and_param_accuracy(
-                    translated_config_dir, real_config_dir, trannlated_config_files)
-
-                rule_LLM_coverage = cuL_llm_coverage_with_json(
-                    f'../experiment/test_dataset/{data_dir}/text_config/{source_vendor}',
-                    translated_config_dir, trannlated_config_files)
-                exper_data['rule_LLM_coverage']['vendors'].append(
-                    (f'{source_vendor}_{target_vendor}', rule_LLM_coverage))
+                    translated_config_dir, real_config_dir, real_target_config_json_dir, trannlated_config_files)
 
                 semantic_similarity = compute_embded_similarity(translated_config_dir, real_config_dir,
                                                                 trannlated_config_files)
@@ -116,9 +110,7 @@ if __name__ == '__main__':
             exper_data['semantic_similarity']['vendors'])
         exper_data['command_accuracy']['average'] = sum(
             [x[1] for x in exper_data['command_accuracy']['vendors']]) / len(exper_data['command_accuracy']['vendors'])
-        exper_data['rule_LLM_coverage']['average'] = sum(
-            [x[1] for x in exper_data['rule_LLM_coverage']['vendors']]) / len(
-            exper_data['rule_LLM_coverage']['vendors'])
+        exper_data['rule_LLM_coverage']['average'] = 0
         exper_data['llm_command_accuracy']['average'] = sum(
             [x[1] for x in exper_data['llm_command_accuracy']['vendors']]) / len(
             exper_data['llm_command_accuracy']['vendors'])

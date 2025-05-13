@@ -32,11 +32,19 @@ if __name__ == '__main__':
                 "vendors": [],
                 "average": 0,
             },
+            "command_accuracy": {
+                "vendors": [],
+                "average": 0,
+            },
             "llm_command_accuracy": {
                 "vendors": [],
                 "average": 0,
             },
-            "command_accuracy": {
+            "rule_command_accuracy": {
+                "vendors": [],
+                "average": 0,
+            },
+            "rule_LLM_coverage": {
                 "vendors": [],
                 "average": 0,
             },
@@ -64,39 +72,46 @@ if __name__ == '__main__':
                 trannlated_config_files = [f for f in os.listdir(translated_config_dir) if
                                            f.endswith('.txt') and not f.endswith('text.txt')]
                 real_config_dir = f'../experiment/test_dataset/{data_dir}/text_config/{target_vendor}'
-                real_target_config_json_dir = f'../experiment/test_dataset/{data_dir}/command_tree/{target_vendor}' if target_vendor != 'Juniper' else f'../experiment/test_dataset/{data_dir}/command_tree/Juniper_subdivided'
+                real_target_config_json_dir = f'../experiment/test_dataset/{data_dir}/command_tree/{target_vendor}'
+
+                accuracy_dict = cul_command_and_param_accuracy(
+                    translated_config_dir, real_config_dir, real_target_config_json_dir, trannlated_config_files)
 
                 semantic_similarity = compute_embded_similarity(translated_config_dir, real_config_dir,
                                                                 trannlated_config_files)
                 exper_data['semantic_similarity']['vendors'].append(
                     (f'{source_vendor}_{target_vendor}', semantic_similarity))
 
-                exper_data['llm_command_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', cuL_llm_accuracy_with_json(translated_config_dir, trannlated_config_files)))
-
-                command_accuracy, param_accuracy, grammatical_accuracy = cul_command_and_param_accuracy(translated_config_dir, real_config_dir, trannlated_config_files)
-
-
                 exper_data['command_accuracy']['vendors'].append(
-                    (f'{source_vendor}_{target_vendor}', command_accuracy))
+                    (f'{source_vendor}_{target_vendor}', accuracy_dict['average_command_match_ratio']))
+                exper_data['rule_command_accuracy']['vendors'].append(
+                    (f'{source_vendor}_{target_vendor}', accuracy_dict['average_rule_command_match_ratio']))
 
-                exper_data['param_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', param_accuracy))
+                exper_data['llm_command_accuracy']['vendors'].append(
+                    (f'{source_vendor}_{target_vendor}', accuracy_dict['average_llm_command_match_ratio']))
+
+                exper_data['param_accuracy']['vendors'].append(
+                    (f'{source_vendor}_{target_vendor}', accuracy_dict['average_param_match_ratio']))
 
                 exper_data['grammatical_accuracy']['vendors'].append(
-                    (f'{source_vendor}_{target_vendor}', grammatical_accuracy))
+                    (f'{source_vendor}_{target_vendor}', accuracy_dict['average_template_match_ratio']))
 
                 view_accuracy = cul_view_accuracy(translated_config_dir, trannlated_config_files,
                                                   vendor_config_models[target_vendor])
                 exper_data['view_accuracy']['vendors'].append((f'{source_vendor}_{target_vendor}', view_accuracy))
-        # 计算平均值
-        exper_data['llm_command_accuracy']['average'] = sum(
-            [x[1] for x in exper_data['llm_command_accuracy']['vendors']]) / len(
-            exper_data['llm_command_accuracy']['vendors'])
 
         exper_data['semantic_similarity']['average'] = sum(
             [x[1] for x in exper_data['semantic_similarity']['vendors']]) / len(
             exper_data['semantic_similarity']['vendors'])
         exper_data['command_accuracy']['average'] = sum(
             [x[1] for x in exper_data['command_accuracy']['vendors']]) / len(exper_data['command_accuracy']['vendors'])
+        exper_data['rule_LLM_coverage']['average'] = 0
+        exper_data['llm_command_accuracy']['average'] = sum(
+            [x[1] for x in exper_data['llm_command_accuracy']['vendors']]) / len(
+            exper_data['llm_command_accuracy']['vendors'])
+        exper_data['rule_command_accuracy']['average'] = sum(
+            [x[1] for x in exper_data['rule_command_accuracy']['vendors']]) / len(
+            exper_data['rule_command_accuracy']['vendors'])
         exper_data['param_accuracy']['average'] = sum(
             [x[1] for x in exper_data['param_accuracy']['vendors']]) / len(exper_data['param_accuracy']['vendors'])
         exper_data['grammatical_accuracy']['average'] = sum(
