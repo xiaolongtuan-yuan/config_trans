@@ -184,8 +184,8 @@ class ConfigMatcher:
             for index, match_item in enumerate(para_match):
                 # print('[parameter{}]'.format(index+1), 'correspond [parameter{}] of command -- {}'.format(match_item[2]+1, match_item[0]))
                 parent_commands = \
-                self.templates[match_item[1]][match_item[0][0]]["structural_features"]['context_topology'][
-                    "parent_command"]
+                    self.templates[match_item[1]][match_item[0][0]]["structural_features"]['context_topology'][
+                        "parent_command"]
                 root = parent_commands[0] if len(parent_commands) > 0 else match_item[0][0]
                 match_list.append({'para_map': [index, match_item[0][2]], 'trans_command': match_item[0][0],
                                    'parent_command': parent_commands, 'root': root})
@@ -254,7 +254,7 @@ class ConfigMatcher:
 #                                                                                                                   target_vendor, scale)))
 
 def _build_mapping_template_library_experiment(vendors, template_path, config_model_dir, save_path, frequency_dir=None,
-                                               module_match_path=None):
+                                               module_match_path=None, topk=3):
     command_templates = {}  # 模板库
     config_models = {}  # 配置模型
     command2roots = {}  # 根节点映射
@@ -282,12 +282,12 @@ def _build_mapping_template_library_experiment(vendors, template_path, config_mo
             subtree_command_frequencies = load_json_file(
                 os.path.join(frequency_dir, f"{vendor}_sub_template_frequency.json"))
             configuration_matchers[vendor] = ConfigMatcher(vendor, command_templates[vendor], config_models[vendor],
-                                                           module_match[vendor],
+                                                           module_match[vendor],topk=topk,
                                                            root_command_frequencies=root_command_frequencies,
                                                            subtree_command_frequencies=subtree_command_frequencies)
         else:
             configuration_matchers[vendor] = ConfigMatcher(vendor, command_templates[vendor], config_models[vendor],
-                                                           module_match[vendor])
+                                                           module_match[vendor], topk=topk)
 
     for vendor in vendors:
         for target_vendor in vendors:
@@ -446,14 +446,14 @@ if __name__ == "__main__":
     vendors = ["Cisco", "HUAWEI", "Juniper"]
     project_root = Path(__file__).parent.parent
 
-    for scale in [40, 80, 120]:
+    for topk in [1, 2, 4]:
         save_path = str(
-            project_root / f'dataset_multi_vendor_config/mapping_template_library/different_scale/{{}}_{{}}_{scale}.json')
+            project_root / f'dataset_multi_vendor_config/mapping_template_library/different_topk/{{}}_{{}}_{topk}.json')
         templates_path = str(
-            project_root / f'dataset_multi_vendor_config/config_command_node/different_scale/{{}}_{scale}.json')
+            project_root / f'dataset_multi_vendor_config/config_command_node/verified_data/{{}}.json')
         config_model_dir = str(
-            project_root / f'dataset_multi_vendor_config/config_model/different_scale/{{}}_{scale}.json')
+            project_root / f'dataset_multi_vendor_config/config_model/verified_data/{{}}.json')
         module_match_path = str(
             project_root / f'dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}_module_match.json')
 
-        _build_mapping_template_library_experiment(vendors, templates_path, config_model_dir, save_path)
+        _build_mapping_template_library_experiment(vendors, templates_path, config_model_dir, save_path, topk=topk)

@@ -85,7 +85,7 @@ def translate_single_file(config_translater, input_dir, output_dir, real_config_
     trans_res_dict = config_translater.translation(json_config,
                                                    source_vendor,
                                                    target_vendor,
-                                                   tau=0.001,
+                                                   tau=0.999,
                                                    source_total_config=source_total_config)
     # 评估
     evaluate_res = {
@@ -181,13 +181,13 @@ def main():
     error_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{{}}_{{}}.json'
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
-    topk_values = [1,2,3,4]
+    topk_values = [2, 4]
     local_EMmodel_path = '../EmbeddingModel/MiniLM-L6-v2'
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})
 
     for topk in topk_values:
-        mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}.json'
+        mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/different_topk/{{}}_{{}}_{topk}.json'
         module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}_module_match.json'
         config_model_dir = f'../dataset_multi_vendor_config/config_model/verified_data/{{}}.json'
 
@@ -205,7 +205,7 @@ def main():
                 print(f"exper for {topk}, {source_vendor} to {target_vendor} translation without llm")
 
                 mapping_libraries = mapping_library_load(mapping_library_path, vendors, manual_mapping_path,
-                                                         error_mapping_path)
+                                                         error_mapping_path, topk=topk)
 
                 config_matchers = config_matchers_load(templates_path, config_model_dir, module_match_path, vendors, topk=topk)
 

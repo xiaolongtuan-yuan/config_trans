@@ -1063,7 +1063,7 @@ def load_json_file(file_path):
 
 
 # 规则映射库加载
-def mapping_library_load(file_path, vendors, manual_mapping_path=None, error_mapping_path=None):
+def mapping_library_load(file_path, vendors, manual_mapping_path=None, error_mapping_path=None, topk=3):
     mapping_libraries = {}
     for vendor in vendors:
         for target_vendor in vendors:
@@ -1079,7 +1079,11 @@ def mapping_library_load(file_path, vendors, manual_mapping_path=None, error_map
                         del mapping_libraries[library_name][key]
             if manual_mapping_path:
                 manual_mapping = load_json_file(manual_mapping_path.format(vendor, target_vendor))
-                mapping_libraries[library_name].update(manual_mapping)
+                if topk != 3:
+                    for key, value in list(manual_mapping.items())[:-abs(topk - 3)]:
+                        mapping_libraries[library_name][key] = value
+                else:
+                    mapping_libraries[library_name].update(manual_mapping)
 
     return mapping_libraries
 

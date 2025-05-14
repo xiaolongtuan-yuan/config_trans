@@ -14,7 +14,7 @@ from experiment.tree_match import cul_command_accuracy, cul_grammatical_accuracy
 
 if __name__ == '__main__':
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
-    top_ks = [1,2,3,4]
+    top_ks = [2,4]
     data_dir = 'valid_data'
 
 
