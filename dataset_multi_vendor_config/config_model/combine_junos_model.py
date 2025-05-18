@@ -3,6 +3,7 @@
 @Time ： 2025/5/10 22:01
 @Auth ： xiaolongtuan
 @File ：combine_junos_model.py
+用于将视图拆分后的Juniper命令合并为完整的命令，得到完整的juniper模型，便于与txt文件进行对比
 """
 import json
 

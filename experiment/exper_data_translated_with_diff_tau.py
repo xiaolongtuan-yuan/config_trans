@@ -183,7 +183,7 @@ def main():
     error_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{{}}_{{}}.json'
 
     vendors = ["Cisco", "HUAWEI", "Juniper"]
-    tau_values = [0.3, 0.5, 0.7]
+    tau_values = [0.9]
     local_EMmodel_path = '../EmbeddingModel/MiniLM-L6-v2'
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})

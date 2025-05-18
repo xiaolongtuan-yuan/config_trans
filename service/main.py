@@ -37,16 +37,16 @@ async def config_trans(input_data: ConfigInput):
     targetVendor = input_data.targetVendor
     config = input_data.config
     try:
-        config = json.loads(config)  # 尝试解析JSON
-        source_parsed_json = parse_json_2_visible_txt(config)
+        json_config = json.loads(config)  # 尝试解析JSON
+        source_parsed_json = parse_json_2_visible_txt(json_config)
         logging.info("Config is valid JSON")
     except json.JSONDecodeError:
         logging.warning("Config is not valid JSON")
         # 使用llm解析config
-        config = config_parse(config, sourceVendor)
-        source_parsed_json = parse_json_2_visible_txt(config)
+        json_config = config_parse(config, sourceVendor)
+        source_parsed_json = parse_json_2_visible_txt(json_config)
 
-    translation_result, trans_mapping_info = translate_config(config, sourceVendor, targetVendor)
+    translation_result, trans_mapping_info = translate_config(json_config, sourceVendor, targetVendor, config)
     print(translation_result)
 
     result = TranslationResult(

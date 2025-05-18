@@ -11,15 +11,16 @@ from tqdm import tqdm
 warnings.filterwarnings("ignore", category=UserWarning, module="torch")
 
 
-# 输入----
-# Command_nodes= {'command_template': CommandNode_Object}
-# config_model-->供应商大配置模型
-# parent_command-->父节点配置命令
-# depth_commmand-->配置命令层级
-# 输出---
-# Command_Nodes
-
-# 现在配置节点的结构是{Module: {node1:{}, node2:{}}}, 区别于之前扁平的形式
+'''
+输入----
+Command_nodes= {'command_template': CommandNode_Object}
+config_model-->供应商大配置模型
+parent_command-->父节点配置命令
+depth_commmand-->配置命令层级
+输出---
+Command_Nodes
+现在配置节点的结构是{Module: {node1:{}, node2:{}}}, 区别于之前扁平的形式
+'''
 
 def build_command_node(Command_nodes: dict, config_model: dict, embedding_model):
     for key in tqdm(config_model.keys()):
@@ -309,7 +310,6 @@ if __name__ == "__main__":
 
     if run_type == 'main':
         main()
-        # juniper_pre_400()
     if run_type == 'debug':
         debug()
     if run_type == 'main_experiment':

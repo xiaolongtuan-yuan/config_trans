@@ -1,0 +1,11 @@
+set system host-name CE2
+set interfaces ge-1/0/0 unit 0 family inet address 10.2.1.1/24
+set interfaces lo0 unit 1 family inet address 10.22.2.2/32
+set routing-options autonomous-system 65420
+set protocols bgp group EBGP type external
+set protocols bgp group EBGP peer-as 100
+set protocols bgp group EBGP neighbor 10.2.1.2
+set protocols bgp group EBGP export ADVERTISE-LOOPBACK
+set policy-options policy-statement ADVERTISE-LOOPBACK term 1 from protocol direct
+set policy-options policy-statement ADVERTISE-LOOPBACK term 1 from route-filter 10.22.2.2/32 exact
+set policy-options policy-statement ADVERTISE-LOOPBACK term 1 then accept

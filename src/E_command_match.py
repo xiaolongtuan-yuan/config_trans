@@ -1,7 +1,6 @@
 import os
 from collections import defaultdict
 from pathlib import Path
-
 import torch
 from sklearn.metrics.pairwise import cosine_similarity
 import json
@@ -28,14 +27,13 @@ import copy
 
 class ConfigMatcher:
     def __init__(self, vendor, target_command_templates, config_model, module_match, topk=3,
-                 root_command_frequencies=None, subtree_command_frequencies=None):
+                 root_command_frequencies=None):
         self.templates = target_command_templates
         self.semantic_topk = topk
         self.config_model = config_model
         self.module_match = module_match
         self.vendor = vendor
         self.root_command_frequencies = root_command_frequencies
-        self.subtree_command_frequencies = subtree_command_frequencies
 
     def find_best_match(self, source_vendor, command_node, src_root, src_root_semantic):
         best_root = self._module_ranking(source_vendor, src_root, src_root_semantic)
@@ -69,15 +67,6 @@ class ConfigMatcher:
         similarities = dot_product / (norm_src * norm_tgt.T)
         similarities = similarities.squeeze(0).cpu().numpy()
 
-        '''if self.root_command_frequencies:
-            # 根据使用频率选择最佳根节点
-            # 获取相似度前k的候选
-            topk_indices = np.argsort(similarities)[-2:][::-1]
-            topk_candidates = [tgt_root_names[i] for i in topk_indices]
-            best_root = max(topk_candidates, key=lambda x: self.root_command_frequencies.get(x, 0))
-            return [best_root]
-        else:'''
-        # 如果没有频率信息，选择相似度最高的
         J = 2  # 设置要返回的相似度最高的数量
         topk_indices = np.argsort(similarities)[-J:][::-1]
         topk_candidates = [tgt_root_names[i] for i in topk_indices]
@@ -165,13 +154,6 @@ class ConfigMatcher:
                     if len(similarities) > 0:
                         all_similarities.append((sorted(similarities, key=lambda x: x[1], reverse=True)[0], root))
 
-            '''if len(all_similarities) > 0:
-                # 在这里选择使用相似度前k中使用频率最高的参数匹配
-                if self.subtree_command_frequencies:
-                    topk_candidates = sorted(all_similarities, key=lambda x: x[1], reverse=True)[:2]
-                    para_match.append(sorted(topk_candidates, key=lambda x: self.subtree_command_frequencies[best_root[0]].get(x[0], 0), reverse=True)[0])
-                else:
-                    para_match.append(sorted(all_similarities, key=lambda x: x[0][1], reverse=True)[0])'''
             if len(all_similarities) > 0:
                 para_match.append(sorted(all_similarities, key=lambda x: x[0][1], reverse=True)[0])
         return para_match
@@ -200,60 +182,7 @@ class ConfigMatcher:
             return [{'para_map': [], 'trans_command': ranked_candidates[0][0], 'parent_command': parent_commands,
                      'root': root}]
 
-    '''def get_subtree_commands(self, root_command):
-        # 返回属于该根节点的所有命令
-        subtree_commands = [cmd for cmd, root in self.command2root.items() if root == root_command]
-        if len(subtree_commands) == 0:
-            subtree_commands = [root_command]
-        return subtree_commands'''
-
-    '''def module_match_with_score(self, src_root, src_root_semantic):
-        tgt_root_names = [k for k in self.config_model.keys() if k in self.templates]
-        tgt_root_embeddings = [torch.tensor(self.templates[k]['semantic_features'], dtype=torch.float32).unsqueeze(0) for k in tgt_root_names]
-        tgt_root_embeddings = torch.cat(tgt_root_embeddings, dim=0).cuda()
-        norm_src = torch.norm(src_root_semantic, dim=1, keepdim=True)
-        norm_tgt = torch.norm(tgt_root_embeddings, dim=1, keepdim=True)
-        dot_product = torch.matmul(src_root_semantic, tgt_root_embeddings.T)
-        similarities = dot_product / (norm_src * norm_tgt.T)
-        similarities = similarities.squeeze(0).cpu().numpy()
-        best_idx = np.argmax(similarities)
-        best_root = tgt_root_names[best_idx]
-        similarity = similarities[best_idx]
-        return best_root, similarity'''
-
-
-# def _build_mapping_template_library(vendors, template_path, save_path):
-#     scales = [2000, 1000, 500, 100]
-#     for scale in scales:
-#         command_templates = {}  # 模板库
-#         configuration_matchers = {}  # 匹配器
-
-#         for vendor in vendors:
-#             vendor_templates_path = template_path.format(vendor, scale)
-#             # 加载模板库
-#             command_templates[vendor] = load_json_file(vendor_templates_path)
-#             # 加载配置匹配器
-#             configuration_matchers[vendor] = ConfigMatcher(command_templates[vendor], command_templates[vendor])
-
-#         for vendor in vendors:
-#             for target_vendor in vendors:
-#                 if vendor == target_vendor:
-#                     continue
-#                 if (not vendor == 'Juniper') and (not target_vendor == 'Juniper'):
-#                     continue
-#                 command_mapping = {}
-#                 # 映射每一条配置命令到目标供应商配置命令
-#                 description = "Match process from {} to {}".format(vendor, target_vendor)
-#                 for template, command_node in tqdm(command_templates[vendor].items(), desc=description):
-#                     # print(template)
-#                     matched_configuration = configuration_matchers[target_vendor].find_best_match(command_node, configuration_matchers[vendor].command2root, command_templates[vendor])
-#                     command_mapping[template] = matched_configuration
-#                 save_json_file(command_mapping, save_path.format(vendor, target_vendor, scale))
-#                 print('Mapping template libraries {}->{} scale {} have been built and saved in {}'.format(vendor, target_vendor, scale,
-#                                                                                                  save_path.format(vendor,
-#                                                                                                                   target_vendor, scale)))
-
-def _build_mapping_template_library_experiment(vendors, template_path, config_model_dir, save_path, frequency_dir=None,
+def _build_mapping_template_library_experiment(vendors, template_path, config_model_dir, save_path,
                                                module_match_path=None, topk=3):
     command_templates = {}  # 模板库
     config_models = {}  # 配置模型
@@ -276,15 +205,6 @@ def _build_mapping_template_library_experiment(vendors, template_path, config_mo
             else:
                 module_match[vendor][vendor1] = {}
 
-        if frequency_dir:
-            root_command_frequencies = load_json_file(
-                os.path.join(frequency_dir, f"{vendor}_root_command_frequency.json"))
-            subtree_command_frequencies = load_json_file(
-                os.path.join(frequency_dir, f"{vendor}_sub_template_frequency.json"))
-            configuration_matchers[vendor] = ConfigMatcher(vendor, command_templates[vendor], config_models[vendor],
-                                                           module_match[vendor],topk=topk,
-                                                           root_command_frequencies=root_command_frequencies,
-                                                           subtree_command_frequencies=subtree_command_frequencies)
         else:
             configuration_matchers[vendor] = ConfigMatcher(vendor, command_templates[vendor], config_models[vendor],
                                                            module_match[vendor], topk=topk)
@@ -436,9 +356,7 @@ if __name__ == "__main__":
     config_model_dir = str(project_root / 'dataset_multi_vendor_config/config_model/verified_data/{}.json')
     module_match_path = str(
         project_root / f'dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}_module_match.json')
-    frequency_dir = str(project_root / 'experiment/test_dataset/template_used')
 
-    # _build_mapping_template_library_experiment(vendors, templates_path, config_model_dir, save_path, module_match_path)
     _build_mapping_template_library_experiment(vendors, templates_path, config_model_dir, save_path, 
                                                module_match_path= module_match_path)'''
 

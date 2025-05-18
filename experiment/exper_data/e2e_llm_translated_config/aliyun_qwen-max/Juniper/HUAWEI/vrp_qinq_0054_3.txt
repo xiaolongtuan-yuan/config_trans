@@ -1,0 +1,23 @@
+sysname CE1
+
+interface GigabitEthernet0/0/1
+ port link-type hybrid
+ port hybrid tagged vlan 1
+ port hybrid untagged vlan 2 to 4094
+ ip address 192.168.1.2 255.255.255.0 sub-vlan 1
+
+interface GigabitEthernet0/0/2
+ port link-type hybrid
+ port hybrid tagged vlan 1
+ port hybrid untagged vlan 2 to 4094
+ ip address 172.16.1.2 255.255.255.0 sub-vlan 1
+
+bgp 65410
+ router-id 192.168.1.2
+ peer 192.168.1.1 as-number 100
+ peer 172.16.1.1 as-number 100
+ import-route direct
+
+route-policy IMPORT-DIRECT permit node 10
+ if-match direct
+ apply accept

@@ -1,0 +1,13 @@
+set system host-name CE1
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.1/30
+set interfaces lo0 unit 0 family inet address 3.3.3.3/32
+set routing-instances instance-name instance-name 
+set routing-instances instance-name interface ge-0/0/0.0
+set routing-instances instance-name interface lo0.0
+set policy-options policy-statement bgp-import term 1 from protocol direct
+set policy-options policy-statement bgp-import term 1 then accept
+set protocols bgp group external-peer type external
+set protocols bgp group external-peer peer-as 100
+set protocols bgp group external-peer neighbor 10.1.1.2
+set protocols bgp group external-peer import bgp-import
+set protocols bgp group external-peer export export-policy

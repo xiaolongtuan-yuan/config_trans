@@ -21,7 +21,7 @@ if __name__ == '__main__':
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
     name = 'full_process'
     data_dir = 'valid_data'
-    scales = [2800]
+    scales = [177]
 
     # translated_config_base = '../experiment/exper_data/translated_config_with_multi_module'
     translated_config_base = f'../experiment/exper_data/translated_config_with_{name}'

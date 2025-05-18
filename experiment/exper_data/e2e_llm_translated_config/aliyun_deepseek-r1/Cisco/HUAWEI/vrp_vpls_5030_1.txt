@@ -1,0 +1,14 @@
+sysname CE2
+
+interface GigabitEthernet1/0/0.1
+ dot1q termination vid 10
+ ip address 10.1.1.2 255.255.255.0
+ arp broadcast enable
+ undo shutdown
+##
+The translation includes:
+1. Hostname conversion from Cisco's "hostname" to Huawei's "sysname"
+2. VLAN subinterface configuration using Huawei's "dot1q termination vid" instead of Cisco's "encapsulation dot1q"
+3. Added "arp broadcast enable" which is required for Layer 3 subinterfaces in Huawei devices to process ARP requests
+4. Interface activation using Huawei's "undo shutdown" instead of Cisco's "no shutdown"
+5. Maintained the same IP addressing scheme and subnet mask

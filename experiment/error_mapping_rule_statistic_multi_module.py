@@ -2,13 +2,13 @@
 """
 @Time ： 2025/3/11 14:46
 @Auth ： xiaolongtuan
-@File ：exper_data_translated.py
+@File ：error_mapping_rule_statistic_multi_module.py
+统计翻译过程中使用的映射规则错误率以及在标签中未被翻译到的命令模版频率
 """
 import re
 from collections import Counter, defaultdict
 import os
 import json
-from tqdm import tqdm  # 用于显示进度条
 import ast
 import numpy as np
 

@@ -178,7 +178,7 @@ class Config_Translater:
             'source_commands': trans_res_dict['source_commands'],
         }
 
-    def translation_without_llm(self, json_configuration, vendor, target_vendor, istatistics=False):
+    def translation_without_llm(self, json_configuration, vendor, target_vendor, istatistics=False, tau=0.9):
         '''
         启发式翻译
         '''
@@ -237,7 +237,7 @@ class Config_Translater:
                 "llm_ccount": 0
             }
             map_rule_freq = {}
-            for command, match in config_match.items():
+            for command, match in config_match:
                 map_rule = str([match['template'], match['match']])
 
                 if map_rule not in map_rule_freq.keys():
@@ -245,13 +245,13 @@ class Config_Translater:
                 else:
                     map_rule_freq[map_rule] += 1
             _, filtered_commands_feature = self.fuzzy_mapping_for_statistic(rest_commands_feature, config_match, vendor,
-                                                                            target_vendor)
+                                                                            target_vendor, tau=tau)
             statistic_data['llm_ccount'] = len(filtered_commands_feature)
             return statistic_data, map_rule_freq
 
     # 阶段一借助模板映射库实现规则映射
     def rule_mapping(self, commands_feature, config_match, vendor, target_vendor):
-        rest_commands_feature = {}  # 保存不包含在规则映射库中的配置命令
+        rest_commands_feature = []  # 保存不包含在规则映射库中的配置命令
         specific_mapping_library = self.mapping_libraries['{}_{}'.format(vendor, target_vendor)]
         # 查找每一条配置在规则库里的映射关系
         for key in commands_feature.keys():
@@ -260,8 +260,9 @@ class Config_Translater:
                 template = feature['semantic_features']['template']
                 if template not in specific_mapping_library.keys():
                     # print(template)
-                    rest_commands_feature[command] = {'feature': feature, 'root': key,
-                                                      'root_feature': commands_feature[key][key]}
+                    rest_commands_feature.append(
+                        (command, {'feature': feature, 'root': key, 'root_feature': commands_feature[key][key]}))
+
                     continue
                 # 在映射库中的配置命令
                 config_match.append(
@@ -273,7 +274,7 @@ class Config_Translater:
     def fuzzy_mapping(self, rest_commands_feature, config_match, vendor, target_vendor, tau=0.65,
                       source_total_config=None):
         # 根据语义做模糊匹配
-        for command, features in rest_commands_feature.items():
+        for command, features in rest_commands_feature:
             # structural_feature = features['feature']['structural_feature']
             # semantic_feature = features['feature']['semantic_feature']
             # 创建命令节点，执行语义/参数嵌入
@@ -332,7 +333,7 @@ class Config_Translater:
     def fuzzy_mapping_for_statistic(self, rest_commands_feature, config_match, vendor, target_vendor, tau=0.65):
         # 根据语义做模糊匹配
         filtered_commands_feature = []
-        for command, features in rest_commands_feature.items():
+        for command, features in rest_commands_feature:
             # 创建命令节点，执行语义/参数嵌入
             Command_Node = CommandNode(features['feature']['structural_features'],
                                        features['feature']['semantic_features'], self.embedding_model)

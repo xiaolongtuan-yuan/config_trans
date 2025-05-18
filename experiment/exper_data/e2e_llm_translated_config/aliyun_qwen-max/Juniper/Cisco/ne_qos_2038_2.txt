@@ -1,0 +1,22 @@
+hostname DeviceC
+
+interface GigabitEthernet0/0
+ ip address 10.20.1.1 255.255.255.0
+
+router bgp 100
+ bgp router-id 10.20.1.1
+ neighbor 10.20.1.2 remote-as 100
+ neighbor 10.20.1.2 update-source 10.20.1.1
+ address-family ipv4 unicast
+  redistribute connected
+ exit-address-family
+
+router ospf 1
+ network 10.20.1.0 0.0.0.255 area 0
+
+ip access-list standard redistribute-connected
+ permit 10.20.1.0 0.0.0.255
+
+route-map redistribute-connected permit 10
+ match ip address prefix-list redistribute-connected
+!

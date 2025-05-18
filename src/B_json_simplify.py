@@ -1,6 +1,7 @@
+'''
+对json文件中国的每个节点进行简化和检查，并将命令模版作为节点的键值
+'''
 import json
-import argparse
-import glob
 from pathlib import Path
 import os
 from tqdm import tqdm

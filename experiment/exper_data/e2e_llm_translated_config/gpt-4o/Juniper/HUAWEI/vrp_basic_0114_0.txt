@@ -1,0 +1,16 @@
+sysname SSH_Server
+ip domain-name example.com
+ssh server enable
+ssh version 2
+ssh cipher aes128-ctr
+ssh cipher aes192-ctr
+ssh cipher aes256-ctr
+interface LoopBack0
+ ip address 10.1.1.1 255.255.255.255
+interface GigabitEthernet0/0/0
+ ip address 10.1.1.2 255.255.0.0
+ shutdown
+user-interface vty 0 4
+ authentication-mode password
+ set authentication password cipher <password>  // Replace <password> with the plain-text password for client001
+ user client001 privilege level 15

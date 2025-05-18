@@ -1,0 +1,21 @@
+sysname CE1
+
+interface GigabitEthernet2/0/0
+ ip address 10.4.1.1 255.255.255.0
+#
+interface GigabitEthernet1/0/0
+ ip address 10.1.1.1 255.255.255.0
+
+ip route-static 0.0.0.0 0.0.0.0 10.1.1.2
+
+bgp 100
+ peer 10.1.1.2 as-number 100
+ #
+ ipv4-family unicast
+  peer 10.1.1.2 enable
+  peer 10.1.1.2 route-policy BGP-NETWORKS export
+
+route-policy BGP-NETWORKS permit node 10
+ if-match ip-prefix NETWORKS
+
+ip ip-prefix NETWORKS index 10 permit 10.1.1.0 24 greater-equal 24 less-equal 24

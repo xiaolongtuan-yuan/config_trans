@@ -1,6 +1,7 @@
+'''
+将训练数据集中的json文件合并为一个，作为该供应商的json文件，
+'''
 import json
-import argparse
-import glob
 from pathlib import Path
 import os
 from tqdm import tqdm

@@ -1,0 +1,21 @@
+hostname SSH_Server
+
+ip domain-name example.com
+
+crypto key generate rsa modulus 2048
+
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+
+interface Loopback0
+ ip address 10.1.1.1 255.255.255.255
+
+username client001 privilege 15 secret @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
+
+interface GigabitEthernet0/0
+ ip address 10.1.1.2 255.255.0.0
+ no shutdown
+
+line vty 0 4
+ login authentication aaa
+ transport input ssh

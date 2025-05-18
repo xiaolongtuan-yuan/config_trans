@@ -1,0 +1,11 @@
+sysname CE2
+interface GigabitEthernet0/0/1
+ ip address 10.1.2.1 255.255.255.0
+bgp 65000
+ peer 10.1.2.2 as-number 100
+ ipv4-family unicast
+  undo synchronization
+  peer 10.1.2.2 prefix-list 10.1.2.0/24 import
+  peer 10.1.2.2 prefix-list 10.1.2.0/24 export
+#
+ip ip-prefix PrefixList1 index 10 permit 10.1.2.0 24

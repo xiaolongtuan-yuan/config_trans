@@ -1,0 +1,18 @@
+sysname CE1
+vlan batch 10
+interface GigabitEthernet0/0/1
+ port link-type access
+ port default vlan 10
+ undo shutdown
+interface GigabitEthernet0/0/2
+ port link-type trunk
+ port trunk allow-pass vlan 10
+ undo shutdown
+##
+The translation maintains equivalent functionality:
+1. Hostname configuration converted to sysname
+2. VLAN creation using vlan batch instead of separate vlan command
+3. Access port configuration with proper link-type and default vlan assignment
+4. Trunk port configuration with allow-pass parameter for VLAN permitting
+5. Interface activation using undo shutdown instead of no shutdown
+6. Huawei's interface naming convention (0/0/x instead of 1/0/x) is used

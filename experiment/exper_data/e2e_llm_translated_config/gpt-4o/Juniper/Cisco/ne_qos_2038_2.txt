@@ -1,0 +1,16 @@
+hostname DeviceC
+
+interface GigabitEthernet1/0/0
+ ip address 10.20.1.1 255.255.255.0
+ no shutdown
+!
+
+router bgp 100
+ bgp log-neighbor-changes
+ neighbor 10.20.1.2 remote-as 100
+ neighbor 10.20.1.2 update-source 10.20.1.1
+ redistribute connected
+!
+
+router ospf 1
+ network 10.20.1.0 0.0.0.255 area 0

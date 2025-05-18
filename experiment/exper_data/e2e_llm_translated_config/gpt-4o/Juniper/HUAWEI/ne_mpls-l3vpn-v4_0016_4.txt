@@ -1,0 +1,28 @@
+system-view
+ set hostname CE3
+
+ interface GigabitEthernet0/0/0
+  ip address 10.3.1.1 255.255.255.0
+  shutdown
+ quit
+
+ bgp 800
+  peer 10.3.1.2 as-number 100
+  ipv4-family unicast
+   import-route direct
+   maximum-prefix 1000
+   quit
+  export-to BGP_GROUP
+  quit
+
+ route-policy ADVERTISE_NETWORK
+  if-match ip address 10.3.1.0 24
+  then
+   accept
+  else
+   reject
+  quit
+
+ bgp 800
+  export-route-policy ADVERTISE_NETWORK
+ quit

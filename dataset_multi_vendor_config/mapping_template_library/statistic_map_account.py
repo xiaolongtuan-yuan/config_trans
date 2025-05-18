@@ -2,6 +2,7 @@
 @Time ： 2025/4/7 16:44
 @Auth ： xiaolongtuan
 @File ：statistic_map_account.py.py
+统计映射规则数量
 """
 import json
 import os

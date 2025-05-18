@@ -1,0 +1,22 @@
+hostname CE2
+
+interface GigabitEthernet1/0/0
+ ip address 10.2.1.2 255.255.255.0
+ no shutdown
+!
+
+interface Loopback1
+ ip address 22.22.22.22 255.255.255.255
+!
+
+router bgp 100
+ neighbor 10.2.1.1 remote-as 100
+ redistribute connected
+ network 22.22.22.22 mask 255.255.255.255
+!
+
+route-map advertise-networks permit 10
+ match ip address prefix-list advertise-22
+!
+
+ip prefix-list advertise-22 permit 22.22.22.22/32

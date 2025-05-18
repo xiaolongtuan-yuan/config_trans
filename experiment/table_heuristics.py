@@ -19,12 +19,11 @@ from experiment.tree_match import cul_command_accuracy, cul_grammatical_accuracy
 
 if __name__ == '__main__':
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
-    name = 'full_process'
+    name = 'without_llm'
     data_dir = 'valid_data'
-    scales = [400]
+    scales = [177]
 
-    # translated_config_base = '../experiment/exper_data/translated_config_with_multi_module'
-    translated_config_base = f'../experiment/exper_data/translated_config_with_{name}'
+    translated_config_base = f'../experiment/exper_data/translated_config_{name}'
     vendor_config_models = {}
     for vendor in vendors:
         config_model_path = f'../dataset_multi_vendor_config/config_model/verified_data/{vendor}.json'

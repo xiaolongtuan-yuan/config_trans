@@ -1,0 +1,21 @@
+sysname CE2
+
+interface GigabitEthernet1/0/0
+ ip address 10.2.1.2 255.255.255.0
+
+interface LoopBack1
+ ip address 22.22.22.22 255.255.255.255
+
+bgp 100
+ peer 10.2.1.1 as-number 100
+ import-route direct
+ ipv4-family unicast
+  undo synchronization
+  peer 10.2.1.1 enable
+  route-policy advertise-networks export
+
+route-policy advertise-networks permit node 10
+ if-match ip-prefix prefix1
+ apply accepted
+
+ip ip-prefix prefix1 index 10 permit 22.22.22.22 32

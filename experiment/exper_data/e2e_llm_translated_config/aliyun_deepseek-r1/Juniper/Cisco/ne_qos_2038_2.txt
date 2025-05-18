@@ -1,0 +1,28 @@
+hostname DeviceC
+
+interface GigabitEthernet1/0/0
+ ip address 10.20.1.1 255.255.255.0
+ no shutdown
+
+router ospf 1
+ network 10.20.1.0 0.0.0.255 area 0
+
+router bgp 100
+ neighbor 10.20.1.2 remote-as 100
+ neighbor 10.20.1.2 update-source GigabitEthernet1/0/0
+ address-family ipv4
+  neighbor 10.20.1.2 activate
+  redistribute connected route-map REDISTRIBUTE-CONNECTED
+ exit-address-family
+
+route-map REDISTRIBUTE-CONNECTED permit 10
+ match source-protocol direct
+##
+The configuration maintains equivalent functionality with:
+1. Interface configuration matching ge-1/0/0
+2. OSPF interface assignment using network statement
+3. IBGP peering with same AS (100) and local-address via update-source
+4. Connected route redistribution using route-map matching direct protocols
+5. Basic BGP IPv4 unicast configuration
+6. Route-map replaces Juniper's policy-statement structure
+Note: Cisco requires explicit address-family activation and uses different redistribution syntax

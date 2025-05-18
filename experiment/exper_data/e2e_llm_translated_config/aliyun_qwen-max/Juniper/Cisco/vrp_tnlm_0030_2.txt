@@ -1,0 +1,25 @@
+hostname CE1
+!
+interface GigabitEthernet0/0
+ ip address 10.1.1.1 255.255.255.252
+!
+interface Loopback0
+ ip address 3.3.3.3 255.255.255.255
+!
+router bgp 65410
+ neighbor 10.1.1.2 remote-as 100
+ neighbor 10.1.1.2 update-source 10.1.1.1
+ neighbor 10.1.1.2 route-map direct-import in
+ !
+ address-family ipv4
+  neighbor 10.1.1.2 activate
+ exit-address-family
+!
+ip as-path access-list 1 permit ^$
+!
+route-map direct-import permit 10
+ match as-path 1
+!
+route-map direct-import deny 20
+!
+!

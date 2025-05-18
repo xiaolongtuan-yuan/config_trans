@@ -1,0 +1,25 @@
+hostname CE1
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.4.1.1 255.255.255.0
+
+ip route 0.0.0.0 0.0.0.0 10.1.1.2
+
+router bgp 100
+ neighbor 10.1.1.2 remote-as 100
+ !
+ address-family ipv4
+  network 10.1.1.0 mask 255.255.255.0
+  neighbor 10.1.1.2 activate
+  neighbor 10.1.1.2 route-map BGP-NETWORKS out
+ exit-address-family
+
+ip prefix-list BGP-NETWORKS seq 5 permit 10.1.1.0/24
+
+route-map BGP-NETWORKS permit 10
+ match ip address prefix-list BGP-NETWORKS

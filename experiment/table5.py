@@ -14,7 +14,7 @@ from experiment.tree_match import cul_command_accuracy, cul_grammatical_accuracy
 
 if __name__ == '__main__':
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
-    tau_values = [0.3, 0.5, 0.7]
+    tau_values = [0.9]
 
     data_dir = 'valid_data'
 

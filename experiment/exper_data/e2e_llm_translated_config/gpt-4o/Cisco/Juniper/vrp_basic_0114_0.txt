@@ -1,0 +1,16 @@
+set system host-name SSH_Server
+set system domain-name example.com
+set system login user client001 class super-user authentication plain-text-password
+set system ssh root-login allow
+set system ssh key-gen rsa modulus 1024
+set system services ssh protocol-version v2
+set interfaces lo0 unit 0 family inet address 10.1.1.1/32
+set system services ssh encryption-algorithm aes128-ctr
+set system services ssh encryption-algorithm aes192-ctr
+set system services ssh encryption-algorithm aes256-ctr
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.2/16
+set system login user client001 authentication plain-text-password
+set system services ssh allow-scp
+set system services ssh allow-sftp
+set access address-assignment pool DHCP-Pool
+set access address-assignment pool DHCP-Pool range 10.1.1.1 10.1.1.254

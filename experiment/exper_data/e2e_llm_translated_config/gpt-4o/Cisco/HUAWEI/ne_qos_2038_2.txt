@@ -1,0 +1,13 @@
+hostname DeviceC
+interface GigabitEthernet 1/0/0
+ ip address 10.20.1.1 255.255.255.0
+ undo shutdown
+bgp 100
+ peer 10.20.1.2 as-number 100
+ address-family ipv4
+  synchronization
+  import-route connected
+  peer 10.20.1.2 enable
+ ospf 1
+ area 0
+ network 10.20.1.0 0.0.0.255
