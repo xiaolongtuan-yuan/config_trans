@@ -690,16 +690,16 @@ class Config_Translater:
                     continue
                 # 输出该层级下所有的配置命令
                 for target_temp, command_info in target_command.items():
-                    line = command_info['target_command'].lower()
+                    line = command_info['target_command']
                     source = command_info['source']
                     if source == 'llm':
-                        temp = self.find_command_template(target_vendor, line).lower()
+                        temp = self.find_command_template(target_vendor, line)
                         llm_transd_commands.append([line, temp])  # 0: command , 1: template
-                        command_for_llm.add(command.lower())
+                        command_for_llm.add(command)
                         llm_origin_response.add(command_info['origin_response'])
                     else:
                         temp = target_temp
-                    source_commands.add(command.lower())
+                    source_commands.add(command)
                     node = ConfigNode(line, temp)
                     while stack and stack[-1][1] >= depth:
                         stack.pop()
