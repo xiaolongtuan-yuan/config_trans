@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from service.trans_service import translate_config, config_parse, parse_json_2_visible_txt
+from service.trans_service import translate_config, config_parse, parse_json_2_visible_txt, parse_config_file
 
 app = FastAPI()
 app.add_middleware(
@@ -23,11 +23,13 @@ class ConfigInput(BaseModel):
     sourceVendor: str
     targetVendor: str
 
+
 # 响应模型，包含三个字段
 class TranslationResult(BaseModel):
     chatHistory: str
     aiExplanation: str
     anotherPanel: str
+
 
 @app.post("/config_trans", response_model=TranslationResult)
 async def config_trans(input_data: ConfigInput):
@@ -54,7 +56,37 @@ async def config_trans(input_data: ConfigInput):
         aiExplanation=f"{source_parsed_json}",
         anotherPanel=f"{trans_mapping_info}"
     )
+
     return result
+
+
+@app.post("/config_trans_mapping")
+async def trans_mapping(input_data: ConfigInput):
+    try:
+        source_config_json = json.loads(input_data.config)  # 尝试解析JSON
+        logging.info("Config is valid JSON")
+    except json.JSONDecodeError:
+        logging.warning("Config is not valid JSON")
+        # 使用llm解析config
+        source_config_json, tasks = parse_config_file(input_data.config, input_data.sourceVendor)
+        for future, template in tasks:  # 处理LLM解析的任务
+            result = future.result()
+            template.update(result)
+
+    translation_result, trans_mapping_info = translate_config(source_config_json, input_data.sourceVendor,
+                                                              input_data.targetVendor, input_data.config)
+
+    response = {
+        "sourceVendor": input_data.sourceVendor,
+        "sourceConfig": input_data.config,
+        "targetVendor": input_data.targetVendor,
+        "targetConfig": translation_result,
+        "sourceCmds": trans_mapping_info["source_cmds"],
+        "targetCmds": trans_mapping_info["target_cmds"],
+        "edges": trans_mapping_info["edges"]
+    }
+    return response
+
 
 if __name__ == '__main__':
     import uvicorn

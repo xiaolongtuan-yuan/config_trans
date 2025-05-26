@@ -53,7 +53,7 @@ def parse_config(config_str):
     将配置字符串按缩进层级解析成嵌套字典结构
     '''
     lines = config_str.strip().split('\n')
-    lines = [line for line in lines if not line.strip().startswith(('#', '!', '*', '/*', '*/'))]
+    lines = [line for line in lines if not line.strip().startswith(('#', '!', '*', '/*', '*/', '/'))]
     if not lines:
         return {}
 

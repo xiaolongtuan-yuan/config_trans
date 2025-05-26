@@ -5,9 +5,12 @@
 @File ：trans_service.py
 """
 import json
+import re
 from pathlib import Path
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
+from data_process.rearrange_command_tree import parse_config, merge_tree_with_flat, LLM_Model
+from data_process.subdivision_juniper_json import split_parameters
 from src.A_LLM_Parse_Config import load_client, process_file_service
 from src.F_new_device_configtrans import mapping_library_load, config_matchers_load, Translation_Model, \
     Config_Translater, config_model_load
@@ -15,6 +18,111 @@ from src.F_new_device_configtrans import mapping_library_load, config_matchers_l
 project_root = Path(__file__).parent.parent
 device = "cuda:0"
 
+def find_juniper_template(command, config_model, subdivide_model):
+    for template, details in config_model.items():
+        if isinstance(details, dict) and 'template' in details:
+            pattern = re.sub(r"\[[^\]]+\]", r'(\\S+)', details['template'])
+            pattern = f'^{pattern}$'
+            try:
+                if re.match(pattern, command):
+                    # subdivision
+                    command_words = command.split()
+                    segments, paras = split_parameters(template)
+                    begin = 0
+
+                    # 处理第一个segment
+                    segment = segments[0]
+                    segment_words = segment.split()
+                    command_match = ' '.join(command_words[begin:begin + len(segment_words)])
+
+                    new_node = {"template": segment,
+                                                "command": command_match,
+                                                "explanation": subdivide_model[segment]['explanation'],
+                                                "parameters": subdivide_model[segment]['parameters']}
+
+                    if len(segments) > 1:
+                        begin += len(segment_words)
+                        remaining_segment = ' '.join(segments[1:])
+                        subdivide_model = subdivide_model[segment]
+                        if remaining_segment:
+                            remaining_words = command_words[begin:]
+                            command_match = ' '.join(remaining_words)
+                            if command_match not in new_node:
+                                new_node[command_match] = {"template": remaining_segment,
+                                                            "command": command_match,
+                                                            "explanation": subdivide_model[remaining_segment]['explanation'],
+                                                            "parameters": details['parameters'][1:]}
+                    return new_node
+                else:
+                    continue
+            except re.error:
+                continue
+    return None
+
+def find_simple_template(command, config_model):
+    for template, details in config_model.items():
+        if isinstance(details, dict) and 'template' in details:
+            sub_template = find_simple_template(command, details)
+            if sub_template:
+                return sub_template
+
+            pattern = re.sub(r"\[[^\]]+\]", r'(\\S+)', details['template'])
+            pattern = f'^{pattern}$'
+            try:
+                if re.match(pattern, command):
+                    return {
+                        "template": details['template'],
+                        "command": command,
+                        "explanation": details['explanation'],
+                        "parameters": details['parameters'],
+                    }
+                else:
+                    continue
+            except re.error:
+                continue
+    return None
+
+def parse_config_file(config_str, vendor):
+    llm_model = LLM_Model('deepseek-chat')
+    tasks = []
+    lines = config_str.split('\n')
+    if not lines:
+        return {}
+    root = {}
+    stack = [(0, root)]  # (缩进级别, 当前字典)
+    for line in lines:
+        if not line.strip() or line.strip().startswith(('#', '!', '*', '/*', '*/', '/')):
+            continue
+        indent = len(line) - len(line.lstrip())
+        content = line.strip()
+
+        if vendor == 'Juniper':
+            config_model = config_models['Juniper']
+            subdivide_model = config_models['Juniper']
+            template = find_juniper_template(content, config_model, subdivide_model)
+        else:
+            config_model = config_models[vendor]
+            template = find_simple_template(content, config_model)
+
+        if not template:
+            future = llm_model.parse_command(content)
+            template = {
+                "template": content,
+                "command": content,
+                "explanation": '',
+                "parameters": [],
+            }
+            tasks.append((future, template))
+        while stack and stack[-1][0] >= indent:
+            stack.pop()
+        if not stack:
+            root[content] = template
+            stack.append((indent, root[content]))
+            continue
+        parent_indent, parent_dict = stack[-1]
+        parent_dict[content] = template
+        stack.append((indent, parent_dict[content]))
+    return root, tasks
 
 def initialize_translation_service():
     vendors = ["Cisco", "HUAWEI", "Juniper"]
@@ -53,16 +161,16 @@ def initialize_translation_service():
     print('Config translater loading.')
     config_translater = Config_Translater(mapping_libraries, config_matchers,
                                           translation_llm, embedding_model, config_models)
-    return config_translater
+    return config_translater, config_models
 
 
-config_translater = initialize_translation_service()
+config_translater, config_models = initialize_translation_service()
 
 
 def translate_config(json_config, vendor, target_vendor, config):
     # 执行翻译
     trans_res_dict = config_translater.translation(json_config, vendor, target_vendor, tau=0.999, source_total_config=config)
-    return trans_res_dict['trans_res'], trans_res_dict['map_rule_freq']
+    return trans_res_dict['trans_res'], trans_res_dict['trans_mapping_info']
 
 
 def config_parse(config, vendor):
@@ -71,7 +179,6 @@ def config_parse(config, vendor):
     config_str = process_file_service(config, vendor, client, model_name)
     config = json.loads(config_str)
     return config
-
 
 def parse_json_2_visible_txt(data, indent=0):
     result = ""
@@ -84,3 +191,27 @@ def parse_json_2_visible_txt(data, indent=0):
                 result += "  " * (indent + 1) + f"- {value['explanation']}\n"
             result += parse_json_2_visible_txt(value, indent + 2)
     return result
+
+
+if __name__ == '__main__':
+    vendor="Cisco"
+    target_vendor="HUAWEI"
+    config='''
+hostname CE1
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+!
+interface GigabitEthernet1/0/0.1
+ no shutdown
+ encapsulation dot1q 10
+ ip address 10.1.1.1 255.255.255.0
+'''
+    source_config_json, tasks=parse_config_file(config, vendor)
+    for future, template in tasks:  # 处理LLM解析的任务
+        result = future.result()
+        template.update(result)
+
+    translation_result, trans_mapping_info = translate_config(source_config_json, vendor, target_vendor, config)
+
+    print(translation_result)

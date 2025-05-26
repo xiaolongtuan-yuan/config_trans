@@ -120,7 +120,8 @@ class Config_Translater:
         self.embedding_model = embedding_model  # 加载嵌入模型
         self.config_models = config_models  # 加载配置模型
         # 初始化配置命令匹配器
-        # self.config_matchers = self.initialize_config_matchers(target_command_templates)                
+        # self.config_matchers = self.initialize_config_matchers(target_command_templates)
+        self.node_id = 0
 
     '''
     def initialize_config_matchers(self, target_command_templates):
@@ -659,7 +660,7 @@ class Config_Translater:
         return dest_template
 
     def merge_config_nodes(self, root, target_vendor):
-        merged_root = ConfigNode("system", "")
+        merged_root = ConfigNode("system", "", root.id[0])
         node_map = {}
 
         for child in root.children:
@@ -672,11 +673,28 @@ class Config_Translater:
 
         return merged_root
 
+    def merge_mapping_pairs(self, pairs):
+        merged_pairs = {}
+        for pair in pairs:
+            source_cmd = pair[0]
+            if source_cmd not in merged_pairs:
+                merged_pairs[source_cmd] = [(pair[1], pair[2])]
+            else:
+                merged_pairs[source_cmd].append((pair[1], pair[2]))
+        return merged_pairs
+
+    def get_next_node_id(self):
+        """获取下一个 node_id 并自动加一"""
+        current_id = self.node_id
+        self.node_id += 1
+        return current_id
+
     # 输出对应视图的配置命令
     def print_and_save_translation_config(self, target_config, target_vendor):
         # print('target_config:', target_config)
         trans_pairs = []
-        root = ConfigNode("system", "")
+        # 使用 get_next_node_id 方法获取 node_id
+        root = ConfigNode("system", "", self.get_next_node_id())
         stack = [(root, -1)]
         llm_transd_commands = []
         source_commands = set()
@@ -690,6 +708,7 @@ class Config_Translater:
                     continue
                 # 输出该层级下所有的配置命令
                 for target_temp, command_info in target_command.items():
+                    node_id = self.get_next_node_id()
                     line = command_info['target_command']
                     source = command_info['source']
                     if source == 'llm':
@@ -700,35 +719,129 @@ class Config_Translater:
                     else:
                         temp = target_temp
                     source_commands.add(command)
-                    node = ConfigNode(line, temp)
+                    # 使用 get_next_node_id 方法获取 node_id
+                    node = ConfigNode(line, temp, node_id, source)
                     while stack and stack[-1][1] >= depth:
                         stack.pop()
 
                     stack[-1][0].add_child(node)
                     stack.append((node, depth))
 
-                    trans_pairs.append(f"{command} -- {command_info['target_command']}")
+                    trans_pairs.append((command, node_id, source))
 
+        merged_mapping_pair = self.merge_mapping_pairs(trans_pairs)
         merged_config_tree = self.merge_config_nodes(root, target_vendor)
 
         if target_vendor == 'Juniper':
             trans_res = self.juniper_combine(merged_config_tree)
             trans_templates = self.juniper_template_combine(target_config)
+            mapping_info = self.get_mapping_info(merged_config_tree, merged_mapping_pair, is_juniper=True)
         else:
             trans_res = "\n".join(merged_config_tree.to_lines()[1:])
             trans_templates = merged_config_tree.get_all_tags()
-        trans_mapping_info = '\n'.join(trans_pairs)
+            mapping_info = self.get_mapping_info(merged_config_tree, merged_mapping_pair)
 
         # return trans_res, trans_mapping_info, trans_templates
         return {
             'trans_res': trans_res,
-            'trans_mapping_info': trans_mapping_info,
+            'trans_mapping_info': mapping_info,
             'trans_templates': trans_templates,
             'command_for_llm': list(command_for_llm),
             'llm_transd_commands': llm_transd_commands,
             'llm_origin_response': list(llm_origin_response),
             'source_commands': list(source_commands)
         }
+
+    def get_mapping_info(self, merged_config_tree, trans_pairs, is_juniper=False):
+        source_cmds = []
+        target_cmds = []
+        edges = []
+        source_id = 1
+        if not is_juniper:
+            target_cmd_info = merged_config_tree.to_mapping_graph()[1:]
+            for target_cmd, ids, source in target_cmd_info:
+                target_cmds.append({
+                    "id": f't{ids[0]}',
+                    "text": target_cmd,
+                    "description": '',
+                    "type": source
+                })
+
+            for source_cmd, mappings in trans_pairs.items():
+                source_cmds.append({
+                    "id": f's{source_id}',
+                    "text": source_cmd,
+                    "description": '',
+                    "type": 'rule'
+                })
+                for target_id, _ in mappings:
+                    for target_cmd, ids,_  in target_cmd_info:
+                        if target_id in ids:
+                            edges.append({
+                                "source": f's{source_id}',
+                                "target": f't{ids[0]}',
+                            })
+                            break
+                source_id += 1
+        else:
+            if merged_config_tree.line == "system":
+                subtrees = merged_config_tree.children
+            else:
+                subtrees = [merged_config_tree]
+            commands = []
+
+            def dfs(node, current_path, current_ids):
+                current_path.append(node.line)
+                current_ids.extend(node.id)
+                # 如果是叶节点，将当前路径拼接为命令
+                if not node.children:
+                    commands.append(" ".join(current_path))
+                    target_cmds.append({
+                        "id": f't{current_ids[-1]}',
+                        "ids": current_ids,
+                        "text": " ".join(current_path),
+                        "description": '',
+                        "type": node.source
+                    })
+                # 递归遍历子节点
+                for child in node.children:
+                    dfs(child, current_path.copy(), current_ids.copy())  # 使用copy创建新的路径副本
+
+            for subtree in subtrees:
+                dfs(subtree, [], [])
+
+            for source_cmd, mappings in trans_pairs.items():
+                source_cmds.append({
+                    "id": f's{source_id}',
+                    "text": source_cmd,
+                    "description": '',
+                    "type": 'rule'
+                })
+                for target_id, _ in mappings:
+                    for target_cmd_node in target_cmds:
+                        if target_id in target_cmd_node['ids']:
+                            edges.append({
+                                "source": f's{source_id}',
+                                "target": target_cmd_node['id']
+                            }),
+                            break
+                source_id += 1
+
+        # 对edges去重
+        seen = set()
+        unique_edges = []
+        for edge in edges:
+            hashable_edge = tuple(sorted(edge.items()))
+            if hashable_edge not in seen:
+                seen.add(hashable_edge)
+                unique_edges.append(edge)
+
+        return {
+            "source_cmds": source_cmds,
+            "target_cmds": target_cmds,
+            "edges": unique_edges
+        }
+
 
     def find_command_template(self, target_vendor, command):
         def _find_template(command, config_model):
@@ -826,10 +939,12 @@ class Config_Translater:
 
 
 class ConfigNode:
-    def __init__(self, line, tag):
+    def __init__(self, line, tag, id, source='rule'):
         self.line = line.strip()
         self.tag = tag
         self.children = []
+        self.id = [id]
+        self.source = source
 
     def add_child(self, child_node):
         self.children.append(child_node)
@@ -843,16 +958,25 @@ class ConfigNode:
             lines.extend(child.to_lines(indent + 1))
         return lines
 
+    def to_mapping_graph(self):
+        lines = [(self.line, self.id, self.source)]
+        for child in self.children:
+            lines.extend(child.to_mapping_graph())
+        return lines
+
     def __eq__(self, other):
         return isinstance(other, ConfigNode) and self.line == other.line
 
     def merge(self, other):
         for other_child in other.children:
+            merged = False
             for child in self.children:
                 if child == other_child:
                     child.merge(other_child)
+                    child.id.extend(other_child.id)
+                    merged = True
                     break
-            else:
+            if not merged:
                 self.children.append(deepcopy(other_child))
 
     def get_all_tags(self):
