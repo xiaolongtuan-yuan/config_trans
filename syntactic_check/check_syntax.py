@@ -92,8 +92,9 @@ def collect_test_dataset(range_num):
             shutil.copy2(source_path, target_path)
 
 if __name__ == "__main__":
-    single_syntax()
-    # range_num = '400'
+    # single_syntax()
+    range_num = '400'
+    batch_syntax(range_num)
     # range_num = '1200'
     # range_num = '2000'
     # range_num = '2800'

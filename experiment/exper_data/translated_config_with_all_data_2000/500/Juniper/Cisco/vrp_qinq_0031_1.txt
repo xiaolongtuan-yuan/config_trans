@@ -1,0 +1,19 @@
+hostname CE2
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 10.3.1.2 255.255.255.0
+aaa authentication login eBGP group eBGP local
+redistribute bgp
+aaa authentication login eBGP group 10.2.1.1 local
+redistribute connected
+router bgp 600
+ address-family ipv4
+  neighbor none route-map direct-routes none
+route-map direct-routes permit 1
+router bgp AS number
+ address-family ipv4
+  neighbor none route-map direct-routes none
+interface GigabitEthernet1/0/1.20
+encapsulation dot1Q 20
+route-map direct-routes permit 10
+match interface

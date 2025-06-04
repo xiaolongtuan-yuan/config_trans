@@ -231,31 +231,32 @@ def save_json_file(data, file_path):
 
 def main():
     project_root = Path(__file__).parent.parent
+    name = 'all_data_2000'
     local_EMmodel_path = str(project_root / 'EmbeddingModel/MiniLM-L6-v2')
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
 
     vendors = ["Juniper", "Cisco", "HUAWEI"]
-    config_num = [40, 80, 120]
+    # config_num = [40, 80, 120]
 
     # vendors = ["HUAWEI"]
     for vendor in vendors:
-        for num in config_num:
-            Command_nodes = {}  # 'command_template': CommandNode_Object
-            config_model_path = str(project_root / f'dataset_multi_vendor_config/config_model/different_scale/{vendor}_{num}.json')
+        # for num in config_num:
+        Command_nodes = {}  # 'command_template': CommandNode_Object
+        config_model_path = str(project_root / f'dataset_multi_vendor_config/config_model/{name}/{vendor}.json')
 
-            # 加载供应商配置模型
-            config_model = load_json_file(config_model_path)
-            # 解析配置节点
-            Command_nodes = build_command_node(Command_nodes, config_model, embedding_model)
+        # 加载供应商配置模型
+        config_model = load_json_file(config_model_path)
+        # 解析配置节点
+        Command_nodes = build_command_node(Command_nodes, config_model, embedding_model)
 
-            # 保存配置节点（json）
-            save_path = str(project_root / f'dataset_multi_vendor_config/config_command_node/different_scale/{vendor}_{num}.json')
-            node_num = len(Command_nodes.keys())
-            save_json_file(Command_nodes, save_path)
-            print(f"finished {vendor} with verified_data, total {node_num} command nodes")
-
-            # save_path = str(project_root / 'dataset_multi_vendor_config/config_command_node_debug/{}.json'.format(vendor))
-            # save_json_file(Command_nodes, save_path)
+        # 保存配置节点（json）
+        save_dir = str(project_root / f'dataset_multi_vendor_config/config_command_node/{name}')
+        os.makedirs(save_dir, exist_ok=True)
+        save_path = os.path.join(save_dir, f'{vendor}.json')
+        print(save_path)
+        node_num = len(Command_nodes.keys())
+        save_json_file(Command_nodes, save_path)
+        print(f"finished {vendor} with verified_data, total {node_num} command nodes")
 
 def main_experiment():
     project_root = Path(__file__).parent.parent

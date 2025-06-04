@@ -1,0 +1,210 @@
+{
+    "hostname DeviceA": {
+        "template": "hostname [parameter1]",
+        "command": "hostname DeviceA",
+        "explanation": "Sets the data's host name 'DeviceA'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "HostName"
+            }
+        ]
+    },
+    "class-map match-any AF4": {
+        "template": "class-map match-any [parameter1]",
+        "command": "class-map match-any AF4",
+        "explanation": "Defines a class Map, named AF4, watching any match",
+        "parameters": [
+            {
+                "name": "class-map name",
+                "type": "string",
+                "explanation": "Name of class Map"
+            }
+        ],
+        "match dscp af41": {
+            "template": "match dscp [parameter1]",
+            "command": "match dscp af41",
+            "explanation": "Flow watching DSCP value forty-one",
+            "parameters": [
+                {
+                    "name": "dscp value",
+                    "type": "string",
+                    "explanation": "DSCP value"
+                }
+            ]
+        }
+    },
+    "policy-map MPLS-EXP-OUTBOUND": {
+        "template": "policy-map [parameter1]",
+        "command": "policy-map MPLS-EXP-OUTBOUND",
+        "explanation": "Defines a policy Map named MPLS-EXP-OUTBOUND",
+        "parameters": [
+            {
+                "name": "policy-map name",
+                "type": "string",
+                "explanation": "Name of the policy Map"
+            }
+        ],
+        "class AF4": {
+            "template": "class [parameter1]",
+            "command": "class AF4",
+            "explanation": "Spectify Class AF4",
+            "parameters": [
+                {
+                    "name": "class name",
+                    "type": "string",
+                    "explanation": "Class name"
+                }
+            ],
+            "set mpls experimental topmost 5": {
+                "template": "set mpls experimental topmost [parameter1]",
+                "command": "set mpls experimental topmost 5",
+                "explanation": "Set the maxim of the MPLS executive level to 5",
+                "parameters": [
+                    {
+                        "name": "mpls experimental value",
+                        "type": "integer",
+                        "explanation": "Of the MPLS expert bit"
+                    }
+                ]
+            }
+        }
+    },
+    "policy-map DSCP-INBOUND": {
+        "template": "policy-map [parameter1]",
+        "command": "policy-map DSCP-INBOUND",
+        "explanation": "Defines a policy Map called DSCP-INBOUND",
+        "parameters": [
+            {
+                "name": "policy-map name",
+                "type": "string",
+                "explanation": "Name of the policy Map"
+            }
+        ],
+        "class AF4": {
+            "template": "class [parameter1]",
+            "command": "class AF4",
+            "explanation": "Spectify Class AF4",
+            "parameters": [
+                {
+                    "name": "class name",
+                    "type": "string",
+                    "explanation": "Class name"
+                }
+            ],
+            "set ip dscp 18": {
+                "template": "set ip dscp [parameter1]",
+                "command": "set ip dscp 18",
+                "explanation": "Set IP DSCP value to 18",
+                "parameters": [
+                    {
+                        "name": "dscp value",
+                        "type": "integer",
+                        "explanation": "DSCP value"
+                    }
+                ]
+            }
+        }
+    },
+    "interface GigabitEthernet1/0/0": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "Configure interface GigabitEthernet 1/0/0",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "InterfaceName"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "(The interface is closed by default)",
+            "parameters": []
+        },
+        "ip address 2.2.2.1 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 2.2.2.1 255.255.255.0",
+            "explanation": "Configure interface IPv4 address 2.2.2.1 Subnet Mask 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 Address"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "Subnet Mask"
+                }
+            ]
+        },
+        "service-policy input DSCP-INBOUND": {
+            "template": "service-policy input [parameter1]",
+            "command": "service-policy input DSCP-INBOUND",
+            "explanation": "Applying input orientation service service DSCP-INBOUND",
+            "parameters": [
+                {
+                    "name": "policy name",
+                    "type": "string",
+                    "explanation": "Name of service policy"
+                }
+            ]
+        }
+    },
+    "interface GigabitEthernet2/0/0": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet2/0/0",
+        "explanation": "Configure interface GigabitEthernet2/0/0",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "InterfaceName"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "(The interface is closed by default)",
+            "parameters": []
+        },
+        "ip address 3.3.3.1 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 3.3.3.1 255.255.255.0",
+            "explanation": "The IPv4 address for the communication information is 3.3.3.1 The subnet mark is 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 Address"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "Subnet Mask"
+                }
+            ]
+        },
+        "service-policy input DSCP-INBOUND": {
+            "template": "service-policy input [parameter1]",
+            "command": "service-policy input DSCP-INBOUND",
+            "explanation": "Applying input orientation service service DSCP-INBOUND",
+            "parameters": [
+                {
+                    "name": "policy name",
+                    "type": "string",
+                    "explanation": "Name of service policy"
+                }
+            ]
+        }
+    },
+    "end": {
+        "template": "end",
+        "command": "end",
+        "explanation": "End Construction Mode",
+        "parameters": []
+    }
+}

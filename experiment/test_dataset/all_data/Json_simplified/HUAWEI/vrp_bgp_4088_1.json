@@ -1,0 +1,177 @@
+{
+    "sysname [parameter1]": {
+        "template": "sysname [parameter1]",
+        "command": "sysname DeviceB",
+        "explanation": "Sets the device's host name 'DeviceB'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "Host Name"
+            }
+        ]
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "Configure mode into interface GigabitEthernet1/0/0",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "Interface Name"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "(The interface is closed by default)",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.1.3.1 255.255.255.0",
+            "explanation": "Configure interface IPv4 address 10.1.3.1 Subnet mask 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 Address"
+                },
+                {
+                    "name": "sub musk",
+                    "type": "IPv4",
+                    "explanation": "Subnet mask"
+                }
+            ]
+        }
+    },
+    "bgp [parameter1]": {
+        "template": "bgp [parameter1]",
+        "command": "bgp 20",
+        "explanation": "Enter BGP configuration mode, AS 20.",
+        "parameters": [
+            {
+                "name": "AS number",
+                "type": "integer",
+                "explanation": "AS."
+            }
+        ],
+        "router-id [parameter1]": {
+            "template": "router-id [parameter1]",
+            "command": "router-id 2.2.2.2",
+            "explanation": "Router ID for setting BGP is 2.2.2.2",
+            "parameters": [
+                {
+                    "name": "router id",
+                    "type": "IPv4",
+                    "explanation": "Router ID"
+                }
+            ]
+        },
+        "peer [parameter1] as-number [parameter2]": {
+            "template": "peer [parameter1] as-number [parameter2]",
+            "command": "peer 10.1.2.1 as-number 10",
+            "explanation": "Configure BGP equivalent 10.1.2.1, AS 10",
+            "parameters": [
+                {
+                    "name": "peer ip",
+                    "type": "IPv4",
+                    "explanation": "Peer IP Address"
+                },
+                {
+                    "name": "AS number",
+                    "type": "integer",
+                    "explanation": "AS."
+                }
+            ]
+        },
+        "ipv4-family unicast": {
+            "template": "ipv4-family unicast",
+            "command": "ipv4-family unicast",
+            "explanation": "Enter IPv4 solo community configuration mode",
+            "parameters": [],
+            "undo synchronization": {
+                "template": "undo synchronization",
+                "command": "undo synchronization",
+                "explanation": "Close BGP Sync with IGP",
+                "parameters": []
+            },
+            "import-route [parameter1]": {
+                "template": "import-route [parameter1]",
+                "command": "import-route direct",
+                "explanation": "Introduce direct connection to BGP",
+                "parameters": [
+                    {
+                        "name": "route type",
+                        "type": "string",
+                        "explanation": "Route Type"
+                    }
+                ]
+            },
+            "peer [parameter1] enable": {
+                "template": "peer [parameter1] enable",
+                "command": "peer 10.1.2.1 enable",
+                "explanation": "Enable IPv4 solo addresses of equivalents 10.1.2.1",
+                "parameters": [
+                    {
+                        "name": "peer ip",
+                        "type": "IPv4",
+                        "explanation": "Peer IP Address"
+                    }
+                ]
+            },
+            "peer [parameter1] as-path-filter [parameter2] export": {
+                "template": "peer [parameter1] as-path-filter [parameter2] export",
+                "command": "peer 10.1.2.1 as-path-filter 1 export",
+                "explanation": "Configure the export ASA path filter for equivalent 10.1.2.1 to 1",
+                "parameters": [
+                    {
+                        "name": "peer ip",
+                        "type": "IPv4",
+                        "explanation": "Peer IP Address"
+                    },
+                    {
+                        "name": "as-path-filter",
+                        "type": "integer",
+                        "explanation": "AS Path Filter Number"
+                    }
+                ]
+            }
+        }
+    },
+    "ip as-path-filter [parameter1] deny [parameter2]": {
+        "template": "ip as-path-filter [parameter1] deny [parameter2]",
+        "command": "ip as-path-filter 1 deny _30_",
+        "explanation": "Configure AS path filter 1, reject path with AS30",
+        "parameters": [
+            {
+                "name": "as-path-filter",
+                "type": "integer",
+                "explanation": "AS Path Filter Number"
+            },
+            {
+                "name": "AS number",
+                "type": "string",
+                "explanation": "AS."
+            }
+        ]
+    },
+    "ip as-path-filter [parameter1] permit [parameter2]": {
+        "template": "ip as-path-filter [parameter1] permit [parameter2]",
+        "command": "ip as-path-filter 1 permit .*",
+        "explanation": "Configure AS path filter 1, allow all paths",
+        "parameters": [
+            {
+                "name": "as-path-filter",
+                "type": "integer",
+                "explanation": "AS Path Filter Number"
+            },
+            {
+                "name": "regex",
+                "type": "string",
+                "explanation": "Regular Expression"
+            }
+        ]
+    }
+}

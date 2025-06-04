@@ -1,0 +1,242 @@
+{
+    "set system host-name CE1": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name CE1",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces ge-1/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Configure the specified interface",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0 family inet address 10.20.1.2/24": {
+            "template": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "unit 0 family inet address 10.20.1.2/24",
+            "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "The IPv4 address assigned to the interface."
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "Bits of IPv4 subnet mask."
+                }
+            ]
+        }
+    },
+    "set interfaces lo0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces lo0",
+        "explanation": "Configure the specified interface",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 1 family inet address 11.11.11.11/32": {
+            "template": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "unit 1 family inet address 11.11.11.11/32",
+            "explanation": "Configure IPv4 addresses and subnet masks for loop back interfaces.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "The IPv4 address assigned to the interface."
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "Bits of IPv4 subnet mask."
+                }
+            ]
+        }
+    },
+    "set routing-options static route 11.11.11.11/32 discard": {
+        "template": "set routing-options static route [parameter1]/[parameter2] [parameter3]",
+        "command": "set routing-options static route 11.11.11.11/32 discard",
+        "explanation": "Configures the static route and specifies the next jump to discard.",
+        "parameters": [
+            {
+                "name": "route",
+                "type": "string",
+                "explanation": "Target network address."
+            },
+            {
+                "name": "subnet-mask",
+                "type": "integer",
+                "explanation": "bits of subnet mask."
+            },
+            {
+                "name": "next-hop",
+                "type": "string",
+                "explanation": "Next jump address, like Discard."
+            }
+        ]
+    },
+    "set protocols bgp group EBGP": {
+        "template": "set protocols bgp group [parameter1]",
+        "command": "set protocols bgp group EBGP",
+        "explanation": "This command configures a BGP group named [parameter1], defining a set of BGP peers with shared session parameters.",
+        "parameters": [
+            {
+                "name": "group",
+                "type": "string",
+                "explanation": "BGP Group name."
+            }
+        ],
+        "type external": {
+            "template": "type [parameter2]",
+            "command": "type external",
+            "explanation": "Configure the type of BGP group to be external.",
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "explanation": "Type of BGP group, e.g. external."
+                }
+            ]
+        },
+        "local-as 65410": {
+            "template": "local-as [parameter2]",
+            "command": "local-as 65410",
+            "explanation": "Configure local AS numbers for BGP groups.",
+            "parameters": [
+                {
+                    "name": "local-as",
+                    "type": "integer",
+                    "explanation": "Local AS number."
+                }
+            ]
+        },
+        "neighbor 10.20.1.1 peer-as 100": {
+            "template": "neighbor [parameter2] peer-as [parameter3]",
+            "command": "neighbor 10.20.1.1 peer-as 100",
+            "explanation": "Configure BGP neighbor AS.",
+            "parameters": [
+                {
+                    "name": "neighbor-address",
+                    "type": "string",
+                    "explanation": "BGP neighbor's IP address."
+                },
+                {
+                    "name": "peer-as",
+                    "type": "integer",
+                    "explanation": "BGP neighbor AS."
+                }
+            ]
+        },
+        "neighbor 10.20.1.1 family inet unicast": {
+            "template": "neighbor [parameter2] family inet [parameter3]",
+            "command": "neighbor 10.20.1.1 family inet unicast",
+            "explanation": "The address of the BGP neighbour is distributed to the IPv4 live.",
+            "parameters": [
+                {
+                    "name": "neighbor-address",
+                    "type": "string",
+                    "explanation": "BGP neighbor's IP address."
+                },
+                {
+                    "name": "address-family",
+                    "type": "string",
+                    "explanation": "Address group type, e.g., inert unicast."
+                }
+            ]
+        },
+        "export advertise-lo0": {
+            "template": "export [parameter2]",
+            "command": "export advertise-lo0",
+            "explanation": "Configure the BGP group using the specified export policy.",
+            "parameters": [
+                {
+                    "name": "export-policy",
+                    "type": "string",
+                    "explanation": "Name of the export policy."
+                }
+            ]
+        }
+    },
+    "set policy-options policy-statement advertise-lo0": {
+        "template": "set policy-options policy-statement [parameter1]",
+        "command": "set policy-options policy-statement advertise-lo0",
+        "explanation": "This command fragment defines a routing policy named `[parameter1]` in Junos, allowing you to configure specific routing rules, actions, and conditions for traffic control.",
+        "parameters": [
+            {
+                "name": "policy-statement",
+                "type": "string",
+                "explanation": "name of the policy statement."
+            }
+        ],
+        "term 1 from route-filter 11.11.11.11/32 exact": {
+            "template": "term [parameter2] from route-filter [parameter3]/[parameter4] [parameter5]",
+            "command": "term 1 from route-filter 11.11.11.11/32 exact",
+            "explanation": "Configure the matching conditions for the policy statement.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "The term number of the policy statement."
+                },
+                {
+                    "name": "route-filter",
+                    "type": "string",
+                    "explanation": "The destination address of the route filter."
+                },
+                {
+                    "name": "prefix-length",
+                    "type": "integer",
+                    "explanation": "destination address."
+                },
+                {
+                    "name": "match-type",
+                    "type": "string",
+                    "explanation": "Match type, for example."
+                }
+            ]
+        },
+        "term 1 then accept": {
+            "template": "term [parameter2] then [parameter3]",
+            "command": "term 1 then accept",
+            "explanation": "Configure the action for the policy statement.",
+            "parameters": [
+                {
+                    "name": "term",
+                    "type": "integer",
+                    "explanation": "The term number of the policy statement."
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "explanation": "Process actions for matching traffic, for example."
+                }
+            ]
+        }
+    }
+}

@@ -133,7 +133,7 @@ def llm_command_accuracy_cal(expect_templates: [], trans_commands: [], expected_
         # 如果是与名字相关的参数，我们不计入准确率
         ignore_param_index = []
         for index, parameter in enumerate(template_info.get('parameters', [])):
-            if 'name' in parameter['explanation'].lower():
+            if any([name_key in parameter['explanation'].lower() for name_key in ['name', 'id']]):
                 ignore_param_index.append(index)
 
         template_re = re.sub(r"\[[^\]]+\]", r'(\\S+)', template).lower()
@@ -244,7 +244,7 @@ def command_template_process(expect_templates: [], trans_commands: [], llm_trans
         ignore_param_index = []  # 如果是与名字相关的参数，我们不计入准确率
         if template_info:
             for index, parameter in enumerate(template_info.get('parameters', [])):
-                if 'name' in parameter['explanation'].lower() or parameter['name'].lower() == 'unit':
+                if any([name_key in parameter['explanation'].lower() for name_key in ['name', 'id']]) or parameter['name'].lower() == 'unit':
                     ignore_param_index.append(index)
 
         template_re = re.sub(r"\[[^\]]+\]", r'(\\S+)', template.lower())

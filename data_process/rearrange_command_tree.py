@@ -108,9 +108,9 @@ def merge_tree_with_flat(txt_tree, flat_json, filename):
     tasks = []
     result = {}
     for key, sub in txt_tree.items():
-        node = flat_json.get(key, {"command": key})
+        node = flat_json.get(key, {"command": key}).copy()
         if key not in flat_json:
-            print(f"{key} not in {filename} flat_json")
+            # print(f"{key} not in {filename} flat_json")
             future = llm_model.parse_command(key)
             node_ref = node
             tasks.append((future, node_ref))
@@ -119,11 +119,18 @@ def merge_tree_with_flat(txt_tree, flat_json, filename):
             command = key
             template = node.get('template')
             params = para_extract(command, template)
-            if len(params) != len(node.get('parameters')):
-                # 解析有问题，重新来
+            try:
+                if len(params) != len(node.get('parameters')):
+                    # 解析有问题，重新来
+                    future = llm_model.parse_command(key)
+                    node_ref = node
+                    tasks.append((future, node_ref))
+            except Exception as e:
+                print(e)
                 future = llm_model.parse_command(key)
                 node_ref = node
                 tasks.append((future, node_ref))
+
         if isinstance(sub, dict) and sub:
             sub_node, sub_tasks = merge_tree_with_flat(sub, flat_json, filename)
             node.update(sub_node)
@@ -134,7 +141,8 @@ def merge_tree_with_flat(txt_tree, flat_json, filename):
 
 def process_vendor(vendor):
     tasks = []
-    for condif_dir in ['400', '1200', '2000', '2800']:
+    # for condif_dir in ['400', '1200', '2000', '2800']:
+    for condif_dir in ['2000']:
         txt_dir = f"../experiment/test_dataset/test_data_{condif_dir}/text_config/{vendor}"
         json_dir = f"../experiment/test_dataset/test_data_{condif_dir}/command_tree/{vendor}"
         save_dir = f"../experiment/test_dataset/test_data_{condif_dir}/command_tree/{vendor}"
@@ -153,8 +161,11 @@ def process_vendor(vendor):
                 txt_content = f.read()
             txt_tree = parse_config(txt_content)
             # 读取json
-            with open(json_path, 'r', encoding='utf-8') as f:
-                json_tree = json.load(f)
+            try:
+                with open(json_path, 'r', encoding='utf-8') as f:
+                    json_tree = json.load(f)
+            except Exception as e:
+                raise Exception(e)
             flat_json = flatten_json_tree(json_tree)
             new_tree, merge_tasks = merge_tree_with_flat(txt_tree, flat_json, filename)
             tasks.append((save_path, new_tree, merge_tasks))
@@ -188,7 +199,9 @@ def para_extract(cmd: str, template: str) -> str:
     return parameters
 
 if __name__ == '__main__':
+    # 更新command tree
+
     llm_model = LLM_Model('deepseek-chat')
-    for vendor in ['Juniper']:
+    for vendor in ['Cisco','HUAWEI','Juniper']:
         process_vendor(vendor)
 

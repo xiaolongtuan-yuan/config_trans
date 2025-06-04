@@ -1,0 +1,20 @@
+sysname name CE4
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.4.1.1 255.255.255.0
+interface ge-1/0/0.0
+bgp 65440
+ import-route external
+ peer 10.4.1.2 as-number 100
+ ipv4-family unicast
+  peer 10.4.1.2 next-hop-local
+  undo synchronization
+  peer peer IP route-policy route-policy name export
+ import-route direct
+ peer 10.1.1.2 enable
+user-group external
+traffic policy 1
+ip ip-prefix redistribute-connected index 10 permit 0.0.0.0 0 less-equal 32
+route-policy redistribute-connected permit node 10
+if-match ip-prefix redistribute-connected
+#

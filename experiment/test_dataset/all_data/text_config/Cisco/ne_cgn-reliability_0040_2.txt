@@ -1,0 +1,26 @@
+hostname CE
+
+interface GigabitEthernet2/0/1
+ no shutdown
+ ip address 10.11.11.2 255.255.255.0
+
+interface GigabitEthernet2/0/2
+ no shutdown
+ ip address 10.11.12.2 255.255.255.0
+
+interface Loopback0
+ ip address 10.2.2.2 255.255.255.255
+
+router bgp 200
+ neighbor 10.3.3.3 remote-as 200
+ neighbor 10.3.3.3 update-source Loopback0
+ neighbor 10.4.4.4 remote-as 200
+ neighbor 10.4.4.4 update-source Loopback0
+
+ address-family ipv4
+  neighbor 10.3.3.3 activate
+  neighbor 10.3.3.3 route-map local_pre in
+  neighbor 10.4.4.4 activate
+ exit-address-family
+
+end

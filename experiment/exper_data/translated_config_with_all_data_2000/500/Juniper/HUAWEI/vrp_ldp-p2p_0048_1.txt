@@ -1,0 +1,21 @@
+sysname name LSRB
+interface GigabitEthernet1/0/1
+ undo shutdown
+interface LoopBack0
+ ip address 10.1.2.1 255.255.255.0
+ ip address 10.1.1.2 255.255.255.0
+ undo shutdown
+ ip address 2.2.2.9 255.255.255.255
+interface GigabitEthernet1/0/3
+ undo shutdown
+mpls rsvp-te
+ospfv3 0
+ area 0.0.0.0
+ospf 1 router-id 0.0.0.0
+ area 0.0.0.0
+  network 0.0.0.0 0.0.0.255
+  network 0.0.0.0 ge-1/0/3.0
+ospf {'name': 'process id', 'type': 'integer', 'explanation': 'OSS Project ID', 'value': '1'} router-id {'name': 'router-id', 'type': 'IPv4', 'explanation': 'Router ID', 'value': '0.0.0.0'}
+ area 0.0.0.0
+  network 0.0.0.0 ge-1/0/1.0
+mpls ldp lsr-id 2.2.2.9

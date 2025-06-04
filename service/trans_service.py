@@ -125,13 +125,21 @@ def parse_config_file(config_str, vendor):
     return root, tasks
 
 def initialize_translation_service():
+    # vendors = ["Cisco", "HUAWEI", "Juniper"]
+    # templates_path = f'../dataset_multi_vendor_config/config_command_node/verified_data/{{}}.json'
+    # config_model_dir = f'../dataset_multi_vendor_config/config_model/verified_data/{{}}.json'
+    # manual_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
+    # error_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{{}}_{{}}.json'
+    # module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}_module_match.json'
+    # mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}.json'
     vendors = ["Cisco", "HUAWEI", "Juniper"]
-    templates_path = f'../dataset_multi_vendor_config/config_command_node/verified_data/{{}}.json'
-    config_model_dir = f'../dataset_multi_vendor_config/config_model/verified_data/{{}}.json'
+    templates_path = f'../dataset_multi_vendor_config/config_command_node/all_data/{{}}.json'
+    config_model_dir = f'../dataset_multi_vendor_config/config_model/all_data/{{}}.json'
     manual_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
     error_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{{}}_{{}}.json'
-    module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}_module_match.json'
-    mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}.json'
+    module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/all_data/{{}}_{{}}_module_match.json'
+    mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/all_data/{{}}_{{}}.json'
+
 
     # 加载规则映射库
     print('Mapping library loading.')
@@ -197,16 +205,17 @@ if __name__ == '__main__':
     vendor="Cisco"
     target_vendor="HUAWEI"
     config='''
-hostname CE1
-!
-interface GigabitEthernet1/0/0
- no shutdown
-!
-interface GigabitEthernet1/0/0.1
- no shutdown
- encapsulation dot1q 10
- ip address 10.1.1.1 255.255.255.0
+router ospf 2
+  router-id 10.1.3.10
+  network 10.1.3.0 0.0.0.255 area 0.0.0.1
 '''
+#     config='''
+# interface GigabitEthernet1/0/0
+#  ip address 10.1.1.10 255.255.255.0
+# !
+# interface Loopback0
+#  ip address 192.168.0.1 255.255.255.255
+# '''
     source_config_json, tasks=parse_config_file(config, vendor)
     for future, template in tasks:  # 处理LLM解析的任务
         result = future.result()

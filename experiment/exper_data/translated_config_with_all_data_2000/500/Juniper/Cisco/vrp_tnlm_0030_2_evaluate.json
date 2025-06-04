@@ -1,0 +1,80 @@
+{
+    "command_accuracy": 0.5714285714285714,
+    "missed_commands": [
+        "no shutdown",
+        "address-family ipv4 unicast",
+        "no synchronization",
+        "neighbor 10.1.1.2 activate",
+        "neighbor 10.1.1.2 send-community",
+        "network 3.3.3.3 mask 255.255.255.255",
+        "no shutdown",
+        "address-family ipv4 unicast",
+        "no synchronization",
+        "neighbor 10.1.1.2 activate",
+        "neighbor 10.1.1.2 send-community",
+        "network 3.3.3.3 mask 255.255.255.255"
+    ],
+    "grammatical_accuracy": 0.5714285714285714,
+    "missed_templates": [
+        "no shutdown",
+        "address-family ipv4 unicast",
+        "no synchronization",
+        "neighbor [parameter1] activate",
+        "neighbor [parameter1] send-community",
+        "network [parameter1] mask [parameter2]"
+    ],
+    "llm_command_accuracy": 0.35714285714285715,
+    "llm_command_ratio": 0.7916666666666666,
+    "command_for_llm": [
+        "set interfaces ge-0/0/0",
+        "unit 0 family inet address 3.3.3.3/32",
+        "unit 0 family inet address 10.1.1.1/30",
+        "set interfaces lo0",
+        "neighbor 10.1.1.2",
+        "neighbor 10.1.1.2 import direct-import",
+        "term 1 from protocol direct"
+    ],
+    "llm_trans_commands": [
+        "interface GigabitEthernet0/0/0",
+        "ip address 10.1.1.1 255.255.255.252",
+        "interface GigabitEthernet0/0/0",
+        "ip address 10.1.1.1 255.255.255.252",
+        "interface Loopback0",
+        "ip address 3.3.3.3 255.255.255.255",
+        "interface Loopback0",
+        "ip address 3.3.3.3 255.255.255.255",
+        "route-map direct-import permit 10",
+        "match interface",
+        "router bgp 65410",
+        "neighbor 10.1.1.2 remote-as 100",
+        "neighbor 10.1.1.2 update-source 10.1.1.1",
+        "neighbor 10.1.1.2 route-map DIRECT-IMPORT in",
+        "!",
+        "route-map DIRECT-IMPORT permit 10",
+        "match protocol connected",
+        "route-map DIRECT-IMPORT deny 20",
+        "neighbor 10.1.1.2 route-map direct-import in"
+    ],
+    "source_commands": [
+        "term 1 then accept",
+        "set interfaces ge-0/0/0",
+        "term 2 then reject",
+        "set protocols bgp group external",
+        "unit 0 family inet address 3.3.3.3/32",
+        "type external",
+        "peer-as 100",
+        "family inet unicast",
+        "unit 0 family inet address 10.1.1.1/30",
+        "set interfaces lo0",
+        "neighbor 10.1.1.2",
+        "set routing-options autonomous-system 65410",
+        "set system host-name CE1",
+        "local-address 10.1.1.1",
+        "neighbor 10.1.1.2 import direct-import",
+        "term 1 from protocol direct",
+        "set policy-options policy-statement direct-import"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

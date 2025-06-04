@@ -1,0 +1,22 @@
+hostname SSH_Server
+ip domain-name example.com
+ssh key rsa 2048
+ip ssh version 2
+interface LoopBack0
+interface GigabitEthernet0/0/0
+ ip address 10.1.1.1 255.255.255.255
+ ip address 10.1.1.2 255.255.0.0
+aaa authentication enable default none
+aaa authentication enable default enable
+interface {'name': 'interface name', 'type': 'string', 'explanation': 'Interface name'}.{'name': 'subinterface number', 'type': 'integer', 'explanation': 'subinterface number'}
+ no shutdown
+ip tcp connect 0 4
+line vty {'name': 'start line', 'type': 'integer', 'explanation': 'Start virtual terminal number'} {'name': 'end line', 'type': 'integer', 'explanation': 'End virtual terminal number'}
+ transport input ssh
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+username client001 privilege 15 secret 9 @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
+username client001 privilege 15 secret @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
+ip ssh server
+line vty 0 4
+transport input ssh
+login authentication default

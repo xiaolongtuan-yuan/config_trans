@@ -1,0 +1,18 @@
+hostname CE3
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.3.1.1 255.255.255.0
+interface {'name': 'interface name', 'type': 'string', 'explanation': 'Interface name', 'example': 'GigabitEthernet1/0/1'}.{'name': 'subinterface number', 'type': 'integer', 'explanation': 'subinterface number', 'example': '1'}
+router bgp 800
+ address-family ipv4
+  neighbor none route-map ADVERTISE_NETWORK out
+  neighbor 10.3.1.0 route-map ADVERTISE_NETWORK out
+  neighbor {'name': 'neighbor IP address', 'type': 'string', 'explanation': 'IP address of the neighbor', 'value': 'none'} route-map {'name': 'route-map policy name', 'type': 'string', 'explanation': 'Name of the route-map policy to apply', 'value': 'ADVERTISE_NETWORK'} {'name': 'direction', 'type': 'string', 'explanation': "'in' or 'out'", 'value': 'out'}
+aaa authentication login none group BGP_GROUP local
+redistribute bgp
+redistribute unicast
+aaa authentication login BGP_GROUP group inet local
+redistribute ADVERTISE_NETWORK
+route-map exact permit 10
+route-map ADVERTISE_NETWORK permit 1
+route-map ADVERTISE_NETWORK deny 65535

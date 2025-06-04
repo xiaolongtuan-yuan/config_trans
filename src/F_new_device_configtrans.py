@@ -532,6 +532,7 @@ class Config_Translater:
                     command_v['target_command'] = self.para_fill(llm_target_command['para_match'],
                                                                  llm_target_command['target_command'])
 
+
         return target_commands
 
     def parameter_mapping(self, arranged_config: dict, vendor, target_vendor) -> dict:

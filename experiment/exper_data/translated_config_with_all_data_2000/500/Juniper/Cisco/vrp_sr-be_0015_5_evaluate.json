@@ -1,0 +1,49 @@
+{
+    "command_accuracy": 0.8181818181818182,
+    "missed_commands": [
+        "router bgp 65420",
+        "network 10.22.2.2 mask 255.255.255.255",
+        "router bgp 65420",
+        "network 10.22.2.2 mask 255.255.255.255"
+    ],
+    "grammatical_accuracy": 0.9090909090909091,
+    "missed_templates": [
+        "network [parameter1] mask [parameter2]"
+    ],
+    "llm_command_accuracy": 0.18181818181818182,
+    "llm_command_ratio": 0.35,
+    "command_for_llm": [
+        "term 1 from route-filter 10.22.2.2/32 exact",
+        "term 1 then accept",
+        "neighbor 10.2.1.2"
+    ],
+    "llm_trans_commands": [
+        "router bgp 100",
+        "neighbor 10.2.1.2 remote-as 100",
+        "neighbor 10.2.1.2 activate",
+        "route-map advertise-lo0 permit 10",
+        "match ip address prefix-list exact-lo0",
+        "ip prefix-list exact-lo0 permit 10.22.2.2/32",
+        "route-map advertise-lo0 permit 10"
+    ],
+    "source_commands": [
+        "term 1 then accept",
+        "set policy-options policy-statement advertise-lo0",
+        "type external",
+        "set interfaces lo0",
+        "peer-as 100",
+        "family inet unicast",
+        "export advertise-lo0",
+        "term 1 from route-filter 10.22.2.2/32 exact",
+        "neighbor 10.2.1.2 family inet unicast",
+        "set protocols bgp group external-peers",
+        "set interfaces ge-1/0/0",
+        "unit 0 family inet address 10.2.1.1/24",
+        "set system host-name CE2",
+        "unit 1 family inet address 10.22.2.2/32",
+        "neighbor 10.2.1.2"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

@@ -52,7 +52,7 @@ def statistic_test_config(vendors = ['Cisco', 'Juniper'], range_num='400'):
 
 if __name__ == "__main__":
     vendors = ['Cisco', 'Juniper']
-    range_num='2800'
+    range_num='2000'
     summary_error_info = {}
     for vendor in vendors:
         # 统计错误信息

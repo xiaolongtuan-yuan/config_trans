@@ -89,48 +89,17 @@ def split_parameters(text):
 '''
 原来的思路是照着已经生成的模型进行拆分，但是一些之前没见过的命令依旧没有被拆分，所以这里我们还要调用segment
 '''
-def subdivision_config(llm_model:LLM_Model,old_config_model:dict, decompose_commands:dict, juniper_model:dict):
+def subdivision_config(llm_model:LLM_Model,old_config_model:dict, juniper_model:dict):
     tasks = []  # 用于收集所有需要处理的explanation任务
     node_refs = []  # 用于存储对应的节点引用
 
     new_config = {}
     for command, detail in old_config_model.items():
-        command_words = command.split()
-        command_temp = detail["template"]
-        sub_model = new_config
+        try:
+            command_words = command.split()
+            command_temp = detail["template"]
+            sub_model = new_config
 
-        if command_temp in decompose_commands: # 使用已有的成果，不需要翻译
-            seg = decompose_commands[command_temp]
-            segments = seg[0]
-            paras = seg[1]
-            begin = 0
-            command_node = juniper_model
-
-            # 去除for循环，只划分segments[0]和剩余部分
-            segment = segments[0]
-            segment_words = segment.split()
-            command_match = ' '.join(command_words[begin:begin + len(segment_words)])
-            command_node = command_node[segment]
-            if command_match not in sub_model:
-                sub_model[command_match] = {"template": segment,
-                                            "command": command_match,
-                                            "explanation": command_node['explanation'],
-                                            "parameters": command_node['parameters']}
-            sub_model = sub_model[command_match]
-            begin += len(segment_words)
-
-            # 处理剩余部分
-            if len(segments) > 1:
-                remaining_segment = ' '.join(segments[1:])
-                if remaining_segment:
-                    remaining_words = command_words[begin:]
-                    command_match = ' '.join(remaining_words)
-                    if command_match not in sub_model:
-                        sub_model[command_match] = {"template": remaining_segment,
-                                                    "command": command_match,
-                                                    "explanation": detail['explanation'],
-                                                    "parameters": detail['parameters'][paras[0][-1]:]}
-        else:
             segments, paras = split_parameters(command_temp)
             command_node = juniper_model
             begin = 0
@@ -186,6 +155,8 @@ def subdivision_config(llm_model:LLM_Model,old_config_model:dict, decompose_comm
                                                       "command": command_match,
                                                       "explanation": detail['explanation'],
                                                       "parameters": detail['parameters'][1:]}
+        except Exception as e:
+            print(f"error {command}: {detail}")
     return tasks, node_refs, new_config
 
 if __name__ == '__main__':
@@ -193,25 +164,23 @@ if __name__ == '__main__':
     将原始json command json转换为command tree
     '''
     juniper_model = load_json_file('../dataset_multi_vendor_config/config_model/scale388en/Juniper.json')
-    decompose_command_path = "../dataset_multi_vendor_config/config_command_node/commands/decompose_Juniper_commands.json"
-    decompose_commands = load_json_file(decompose_command_path)
     translation_llm = LLM_Model('aliyun_deepseek-v3', endpoint_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
 
-    for condif_dir in ['400']:
+    for condif_dir in ['2000']:
         source_dir = f'../experiment/test_dataset/test_data_{condif_dir}/command_tree/Juniper'
         save_dir = f'../experiment/test_dataset/test_data_{condif_dir}/command_tree/Juniper_subdivided'
         os.makedirs(save_dir, exist_ok=True)
         for filename in os.listdir(source_dir):
             if filename.endswith('.json'):
                 save_path = os.path.join(save_dir, filename)
-                # if os.path.exists(save_path):
-                #     continue
+                if os.path.exists(save_path):
+                    continue
                 file_path = os.path.join(source_dir, filename)
                 old_config = load_json_file(file_path)
                 if not old_config:
                     continue
                 # 使用相同的细分规则处理每个配置文件
-                tasks, node_refs, subdivision_model = subdivision_config(translation_llm, old_config, decompose_commands, juniper_model)
+                tasks, node_refs, subdivision_model = subdivision_config(translation_llm, old_config, juniper_model)
                 for future, node in tqdm(zip(tasks, node_refs), total=len(tasks), desc="处理解释任务"):
                     node['explanation'] = future.result()
 

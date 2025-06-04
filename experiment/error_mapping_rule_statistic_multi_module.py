@@ -23,8 +23,9 @@ def find_files(directory, extension):
 
 
 def main():
-    name = 'full_process'
-    num = 400
+    name = 'all_data_2000'
+    num = 500
+    scale = '680'
     vendors = ['HUAWEI', 'Juniper', 'Cisco']
     grammatical_accuracy = {}
     command_accuracy = {}
@@ -103,16 +104,16 @@ def main():
                         missing_template[template] += missing_template_count_result[template]
             # 保存数据
             error_statistic = sorted(error_statistic.items(), key=lambda x: x[1], reverse=True)
-            os.makedirs('./exper_res/scale_177_error_mapping_rules_freq', exist_ok=True)
-            error_statistic_path = f'./exper_res/scale_177_error_mapping_rules_freq/{vendor1}_{vendor2}_error_mapping_rules_freq.json'
+            os.makedirs(f'./exper_res/scale_{scale}_error_mapping_rules_freq', exist_ok=True)
+            error_statistic_path = f'./exper_res/scale_{scale}_error_mapping_rules_freq/{vendor1}_{vendor2}_error_mapping_rules_freq.json'
             with open(error_statistic_path, mode='w', encoding='utf-8') as f:
                 json.dump(error_statistic, f, ensure_ascii=False, indent=2)
-            error_mapping_rules = [rule for rule, used in error_mapping_statistic.items() if used == 0]
-            with open(f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{vendor1}_{vendor2}.json', mode='w', encoding='utf-8') as f:
-                json.dump(error_mapping_rules, f, ensure_ascii=False, indent=2)
+            # error_mapping_rules = [rule for rule, used in error_mapping_statistic.items() if used == 0]
+            # with open(f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{vendor1}_{vendor2}.json', mode='w', encoding='utf-8') as f:
+            #     json.dump(error_mapping_rules, f, ensure_ascii=False, indent=2)
             print(f"Error mapping rules frequency saved to {error_statistic_path}")
             missing_template = sorted(missing_template.items(), key=lambda x: x[1], reverse=True)
-            missing_template_path = f'./exper_res/scale_177_error_mapping_rules_freq/{vendor1}_{vendor2}_missing_template_statistic.json'
+            missing_template_path = f'./exper_res/scale_{scale}_error_mapping_rules_freq/{vendor1}_{vendor2}_missing_template_statistic.json'
             with open(missing_template_path, mode='w', encoding='utf-8') as f:
                 json.dump(missing_template, f, ensure_ascii=False, indent=2)
             print(f"Missing template frequency saved to {missing_template_path}")

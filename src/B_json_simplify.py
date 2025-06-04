@@ -193,10 +193,7 @@ def filter_valid_nodes(node: dict) -> dict:
 
 if __name__ == "__main__":
     vendors = ["Juniper", "Cisco", "HUAWEI"]
-    train_dataset_dirs = ['experiment/test_dataset/test_data_400',
-                          'experiment/test_dataset/test_data_1200',
-                          'experiment/test_dataset/test_data_2000',
-                          'experiment/test_dataset/test_data_2800']
+    train_dataset_dirs = ['experiment/test_dataset/test_data_2000']
 
     project_root = Path(__file__).parent.parent
 

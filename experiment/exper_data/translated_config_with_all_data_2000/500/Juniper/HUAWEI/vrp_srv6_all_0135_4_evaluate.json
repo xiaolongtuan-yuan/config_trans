@@ -1,0 +1,45 @@
+{
+    "command_accuracy": 0.75,
+    "missed_commands": [
+        "bgp 65420",
+        "peer 10.2.1.1 as-number 100",
+        "network 22.22.22.22 255.255.255.255",
+        "bgp 65420",
+        "peer 10.2.1.1 as-number 100",
+        "network 22.22.22.22 255.255.255.255"
+    ],
+    "grammatical_accuracy": 0.9166666666666666,
+    "missed_templates": [
+        "peer [parameter1] as-number [parameter2]"
+    ],
+    "llm_command_accuracy": 0.0,
+    "llm_command_ratio": 0.22727272727272727,
+    "command_for_llm": [
+        "set policy-options policy-statement advertise-networks"
+    ],
+    "llm_trans_commands": [
+        "ip ip-prefix advertise-networks index 10 permit 22.22.22.22 32",
+        "",
+        "route-policy advertise-networks permit node 10",
+        "if-match ip-prefix advertise-networks",
+        "#"
+    ],
+    "source_commands": [
+        "set system host-name CE2",
+        "export advertise-networks",
+        "type external",
+        "set interfaces lo0",
+        "peer-as 100",
+        "set protocols bgp group external-peers",
+        "then accept",
+        "neighbor 10.2.1.1",
+        "term 1 from route-filter 22.22.22.22/32 exact",
+        "set interfaces ge-1/0/0",
+        "set policy-options policy-statement advertise-networks",
+        "unit 1 family inet address 22.22.22.22/32",
+        "unit 0 family inet address 10.2.1.2/24"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

@@ -91,7 +91,7 @@ if __name__ == '__main__':
     mapping_libraries = mapping_library_load(mapping_library_path, vendors, manual_mapping_path)
     config_matchers = config_matchers_load(templates_path, config_model_dir, module_match_path, vendors)
 
-    translation_llm = Translation_Model('deepseek-chat',
+    translation_llm = Translation_Model('aliyun_deepseek-r1',
                                         config_model_dir=config_model_dir,
                                         vendors=vendors)
 
@@ -114,7 +114,7 @@ if __name__ == '__main__':
                 result = future.result()
                 template.update(result)
 
-            trans_res_dict = config_translater.translation(source_config_json, source_vendor, 'HUAWEI', source_total_config=origin_config)
+            trans_res_dict = config_translater.translation(source_config_json, source_vendor, 'HUAWEI', source_total_config=origin_config, add_parents=False)
             df.at[index, 'config_json'] = json.dumps(source_config_json, ensure_ascii=False, indent=4)
             df.at[index, 'translated'] = trans_res_dict['trans_res']
             print(trans_res_dict['trans_res'])

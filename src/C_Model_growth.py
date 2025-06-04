@@ -207,28 +207,28 @@ if __name__ == "__main__":
     # 不同规模
     vendors = ['Cisco', "HUAWEI", "Juniper"]
     train_dataset_dir = 'experiment/test_dataset/all_data'
-
+    name = 'all_data_2000'
     project_root = Path(__file__).parent.parent
-    vendor_model_dir = str(project_root / f'dataset_multi_vendor_config/config_model/different_scale')
+    vendor_model_dir = str(project_root / f'dataset_multi_vendor_config/config_model/{name}')
     os.makedirs(vendor_model_dir, exist_ok=True)
-    for scale in [40, 80, 120]:
-        for vendor in vendors:
-            template_used_statistic = {}
-            vendor_model = {}
-            vendor_command_re = {}
-            merge_count = 0
-            folder_path = str(project_root / train_dataset_dir / f'Json_simplified/{vendor}')
-            file_names_path = str(project_root / train_dataset_dir / f'command_tree/Cisco')
-            json_files = get_json_filenames(file_names_path)[:scale]
-            for json_file in tqdm(json_files, desc=f"{vendor} {train_dataset_dir} Merged config num"):
-                json_config_path = folder_path + '/' + json_file
-                try:
-                    json_config = load_json_file(json_config_path)
-                except:
-                    continue
-                # 对vendor_model中的模版进行去重，主要问题是同样的conmand，llm在解析时可能出现不同的模版（配置参数缺失了），建议均采用最大的配置参数，我们需要一个字典来记录是否去重
-                vendor_model = merge_models(vendor_model, json_config, vendor_command_re, template_used_statistic)
-            save_json_file(vendor_model, f"{vendor_model_dir}/{vendor}_{scale}.json")
+    # for scale in [40, 80, 120]:
+    for vendor in vendors:
+        template_used_statistic = {}
+        vendor_model = {}
+        vendor_command_re = {}
+        merge_count = 0
+        folder_path = str(project_root / train_dataset_dir / f'Json_simplified/{vendor}')
+        file_names_path = str(project_root / train_dataset_dir / f'command_tree/Cisco')
+        json_files = get_json_filenames(file_names_path)
+        for json_file in tqdm(json_files, desc=f"{vendor} {train_dataset_dir} Merged config num"):
+            json_config_path = folder_path + '/' + json_file
+            try:
+                json_config = load_json_file(json_config_path)
+            except:
+                continue
+            # 对vendor_model中的模版进行去重，主要问题是同样的conmand，llm在解析时可能出现不同的模版（配置参数缺失了），建议均采用最大的配置参数，我们需要一个字典来记录是否去重
+            vendor_model = merge_models(vendor_model, json_config, vendor_command_re, template_used_statistic)
+        save_json_file(vendor_model, f"{vendor_model_dir}/{vendor}.json")
 
 
 

@@ -1,0 +1,25 @@
+hostname CE1
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 192.168.1.2 255.255.255.0
+ ip address 172.16.1.2 255.255.255.0
+router bgp 65410
+ address-family ipv4
+  neighbor none route-map IMPORT-DIRECT in
+  neighbor {'name': 'neighbor IP address', 'type': 'string', 'explanation': 'IP address of the neighbor', 'value': 'none'} route-map {'name': 'route-map policy name', 'type': 'string', 'explanation': 'Name of the route-map policy to apply', 'value': 'IMPORT-DIRECT'} {'name': 'direction', 'type': 'string', 'explanation': "'in' or 'out'", 'value': 'none'}
+route-map {'name': 'route-map name', 'type': 'string', 'explanation': 'Route Map Name', 'value': 'IMPORT-DIRECT'} {'name': 'action', 'type': 'string', 'explanation': 'Actions (permit/deny)', 'value': 'permit'} {'name': 'sequence number', 'type': 'integer', 'explanation': 'Serial number', 'value': 1}
+aaa authentication login none group EBGP local
+redistribute bgp
+redistribute connected
+interface GigabitEthernet1/0/1
+switchport mode trunk
+!
+interface GigabitEthernet1/0/1.1
+encapsulation dot1Q 1
+interface GigabitEthernet1/0/2.1
+switchport trunk encapsulation dot1q
+router-id 192.168.1.2
+route-map IMPORT-DIRECT permit 10
+match interface
+neighbor 192.168.1.1 remote-as 100
+neighbor 172.16.1.1 remote-as 100

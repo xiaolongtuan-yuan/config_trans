@@ -21,13 +21,13 @@ if __name__ == '__main__':
     vendors = ['Cisco', 'HUAWEI', 'Juniper']
     name = 'full_process'
     data_dir = 'valid_data'
-    scales = [177]
+    scales = [500]
 
     # translated_config_base = '../experiment/exper_data/translated_config_with_multi_module'
     translated_config_base = f'../experiment/exper_data/translated_config_with_{name}'
     vendor_config_models = {}
     for vendor in vendors:
-        config_model_path = f'../dataset_multi_vendor_config/config_model/verified_data/{vendor}.json'
+        config_model_path = f'../dataset_multi_vendor_config/config_model/all_data/{vendor}.json'
         config_model = load_config_model(config_model_path)
         vendor_config_models[vendor] = config_model
 

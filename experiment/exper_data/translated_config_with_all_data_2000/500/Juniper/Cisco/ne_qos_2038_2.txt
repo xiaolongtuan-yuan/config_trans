@@ -1,0 +1,19 @@
+hostname DeviceC
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.20.1.1 255.255.255.0
+aaa authentication login none group IBGP local
+redistribute bgp
+aaa authentication login IBGP group 10.20.1.1 local
+redistribute connected
+network none 0.0.0.0 area 0
+router bgp 100
+ address-family ipv4
+  neighbor none route-map redistribute-connected none
+  neighbor none route-map redistribute-connected out
+route-map redistribute-connected permit 1
+neighbor 10.20.1.2 remote-as 100
+router ospf 1
+network 10.20.1.0 0.0.0.255 area 0
+route-map redistribute-connected permit 10
+match interface
