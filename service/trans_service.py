@@ -12,7 +12,7 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from data_process.rearrange_command_tree import parse_config, merge_tree_with_flat, LLM_Model
 from data_process.subdivision_juniper_json import split_parameters
 from src.A_LLM_Parse_Config import load_client, process_file_service
-from src.F_new_device_configtrans import mapping_library_load, config_matchers_load, Translation_Model, \
+from src.F_device_configtrans2 import mapping_library_load, config_matchers_load, Translation_Model, \
     Config_Translater, config_model_load
 
 project_root = Path(__file__).parent.parent
@@ -97,7 +97,7 @@ def parse_config_file(config_str, vendor):
         content = line.strip()
 
         if vendor == 'Juniper':
-            config_model = config_models['Juniper']
+            config_model = config_models['conbined_Juniper']
             subdivide_model = config_models['Juniper']
             template = find_juniper_template(content, config_model, subdivide_model)
         else:
