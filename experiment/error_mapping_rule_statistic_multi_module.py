@@ -70,29 +70,25 @@ def main():
                 for map_rule_str, count in match_rule_data.items():
                     map_rule = ast.literal_eval(map_rule_str)
                     # print(f"map_rule_str: {map_rule_str}")
-                    flag = False
+                    has_mapping = False  # 标记是否有匹配的映射
                     for item in map_rule[1]:
                         if vendor2 == 'Juniper':
                             trans_template = ''
-                            if item['parent_command'] != []:
+                            if item['parent_command']:  # 简化列表判断
                                 trans_template = ' '.join(item['parent_command'])
-                            trans_template = trans_template + ' ' + item['trans_command'] if trans_template != '' else item['trans_command']
+                            trans_template = trans_template + ' ' + item['trans_command'] if trans_template else item['trans_command']
                         else:
                             trans_template = item['trans_command']
 
-                        has_mappping = False
                         for label_template in label_template_data:
+                            # 修复正则表达式中的冗余转义
                             label_template_re = re.sub(r"\[[^\]]+\]", r'(\\S+)', label_template)
                             if re.match(label_template_re, trans_template):
-                                has_mappping = True
+                                has_mapping = True
                                 break
-                        if has_mappping: # 计算是否匹配
-                            error_statistic[map_rule[0]] += count
-                            flag = True
-                    if flag: # 映射是有用的
+                    if not has_mapping:  # 若没有匹配的映射，认为是错误映射
+                        error_statistic[map_rule[0]] += count
                         error_mapping_statistic[map_rule[0]] += 1
-                    else:
-                        error_mapping_statistic[map_rule[0]] += 0
 
 
                 missing_template_count_result = Counter(result_data["missed_templates"])
