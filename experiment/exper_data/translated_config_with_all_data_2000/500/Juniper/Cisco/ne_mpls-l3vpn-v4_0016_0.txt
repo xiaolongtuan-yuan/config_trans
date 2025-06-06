@@ -1,0 +1,21 @@
+hostname CE1
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+interface GigabitEthernet2/0/0
+ ip address 10.4.1.1 255.255.255.0
+ip route 0.0.0.0 0.0.0.0 none 10.1.1.2
+aaa authentication login none group IBGP local
+redistribute bgp
+router bgp AS number
+ address-family ipv4
+  neighbor none route-map BGP-NETWORKS none
+  neighbor {'name': 'neighbor IP address', 'type': 'string', 'explanation': 'IP address of the neighbor', 'value': 'none'} route-map {'name': 'route-map policy name', 'type': 'string', 'explanation': 'Name of the route-map policy to apply', 'value': 'BGP-NETWORKS'} {'name': 'direction', 'type': 'string', 'explanation': "'in' or 'out'", 'value': 'none'}
+route-map exact permit 10
+router bgp 600
+ address-family ipv4
+  neighbor {'name': 'neighbor IP address', 'type': 'string', 'explanation': 'IP address of the neighbor', 'value': '10.1.3.1'} route-map {'name': 'route-map policy name', 'type': 'string', 'explanation': 'Name of the route-map policy to apply', 'value': 'BGP-NETWORKS'} {'name': 'direction', 'type': 'string', 'explanation': "'in' or 'out'", 'value': 'out'}
+route-map policy-statement term then
+router bgp 100
+neighbor 10.1.1.2 remote-as 100
+address-family ipv4 unicast

@@ -1,0 +1,24 @@
+set system host-name DeviceA
+delete set protocols isis level 1 metric-style wide net 00.0005.0000.0000.0004.00
+set interfaces ge-1/0/0 disable
+set interfaces lo0 disable
+set interfaces lo0 unit 0 disable
+set interfaces lo0 unit 0 family inet address 1.1.2.1/24
+set interfaces lo0 unit 0 family inet address 1.1.3.1/32
+set protocols ospf area 0.0.0.0 interface gr-0/0/0.0
+set system login password minimum-length 10
+set snmp contact call Operator at 010-12345678
+set snmp v3 usm local-engine user nms2-admin authentication-sha %#%#n}=%C*UimYlx9-:$>T=*_y4PX*e~u6I_Aa9s=I1$%#%# privacy-aes128 %#%#at{pQGh!uMyq..8WSJ(<bU`~K_)[f-}s&*Gmw!iE%#%#
+set system login user nms2-admin class super-user authentication encrypted-password "$%#%#n}=%C*UimYlx9-:$>T=*_y4PX*e~u6I_Aa9s=I1$%#%#"
+set snmp v3 usm local-engine user nms2-admin authentication-sha authentication-password "$%#%#n}=%C*UimYlx9-:$>T=*_y4PX*e~u6I_Aa9s=I1$%#%#" privacy-aes128 privacy-password "$%#%#at{pQGh!uMyq..8WSJ(<bU`~K_)[f-}s&*Gmw!iE%#%#"
+set snmp v3 usm local-engine user nms2-admin authentication-sha authentication-password "n}=%C*UimYlx9-:$>T=*_y4PX*e~u6I_Aa9s=I1"
+set snmp v3 usm local-engine user nms2-admin group grp1
+set system login class tg1 permissions [ configure snmp ]
+set system login class grp1 permissions configure
+set groups grp1
+set system login class tg1 permissions configure
+set system login class tg1 permissions control
+set snmp
+set snmp engine-id 800007DB03001974593301
+set snmp trap-options source-interface lo0
+set snmp version v3

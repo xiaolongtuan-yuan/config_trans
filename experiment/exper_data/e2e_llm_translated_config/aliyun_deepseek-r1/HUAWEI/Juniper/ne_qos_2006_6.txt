@@ -1,0 +1,10 @@
+set system host-name CE4
+set interfaces ge-1/0/0 unit 0 family inet address 10.4.1.1/24
+set routing-options autonomous-system 65440
+set protocols bgp group EBGP_AS100 type external
+set protocols bgp group EBGP_AS100 peer-as 100
+set protocols bgp group EBGP_AS100 neighbor 10.4.1.2
+set protocols bgp group EBGP_AS100 family inet unicast
+set policy-options policy-statement IMPORT_DIRECT term 1 from protocol direct
+set policy-options policy-statement IMPORT_DIRECT term 1 then accept
+set protocols bgp group EBGP_AS100 export IMPORT_DIRECT

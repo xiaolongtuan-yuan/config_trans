@@ -10,7 +10,7 @@ from openai import OpenAI
 from tqdm import tqdm
 
 '''
-加载‘dataset_multi_vendor_config/mapping_template_library’下的映射文件，使用llm检查每一项映射是否存在错误，如果存在错误则修复
+加载‘dataset_multi_vendor_config/mapping_template_library’下的映射文件，使用llm检查每一项映射是否存在错误，如果存在错误则修复，目前已经不使用该步骤了
 '''
 import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -102,6 +102,7 @@ def merge_mapping_chunks(chunks, mapping_data, simple_templates):
             continue
 
     return mapping_data
+
 
 '''
 "ip address [parameter1] [parameter2]": [
@@ -201,8 +202,9 @@ if __name__ == '__main__':
                 with open(mapping_file_path, 'r', encoding='utf-8') as f:
                     mapping_data = json.load(f)
 
-                response = llm_check_mapping(client, model_name, mapping_data, source_vendor, target_vendor, prompt_path,
-                                     simple_templates)
+                response = llm_check_mapping(client, model_name, mapping_data, source_vendor, target_vendor,
+                                             prompt_path,
+                                             simple_templates)
                 # 保存response
                 save_path = project_root / 'dataset_multi_vendor_config' / 'mapping_template_library_examined' / 'different_scale'
                 save_path.mkdir(parents=True, exist_ok=True)
@@ -211,4 +213,3 @@ if __name__ == '__main__':
                 with open(save_file_path, 'w', encoding='utf-8') as f:
                     json.dump(response, f, ensure_ascii=False, indent=4)
                 print(f"处理完成scale{scale}: {source_vendor}到{target_vendor}的映射")
-

@@ -1,0 +1,14 @@
+hostname CE1
+interface GigabitEthernet1/0/0
+ no shutdown
+!
+interface GigabitEthernet1/0/0.1
+ encapsulation dot1Q 10
+ ip address 172.16.1.1 255.255.255.0
+##
+The configuration preserves:
+1. Device naming (sysname -> hostname)
+2. Interface activation (undo shutdown -> no shutdown)
+3. Subinterface creation and 802.1Q tagging (vlan-type -> encapsulation dot1Q)
+4. IPv4 address assignment (identical syntax)
+Note: Cisco uses "interface" numbering with forward slashes (1/0/0) like Huawei in this case, but requires explicit subinterface creation

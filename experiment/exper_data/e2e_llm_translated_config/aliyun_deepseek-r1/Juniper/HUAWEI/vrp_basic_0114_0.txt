@@ -1,0 +1,17 @@
+sysname SSH_Server
+domain name example.com
+ssh server enable
+ssh server protocol version v2
+ssh server cipher aes128_ctr aes192_ctr aes256_ctr
+interface LoopBack0
+ ip address 10.1.1.1 255.255.255.255
+interface GigabitEthernet0/0/0
+ ip address 10.1.1.2 16
+ shutdown
+aaa
+ local-user client001 password cipher
+ local-user client001 service-type ssh
+ local-user client001 privilege level 15
+user-interface vty 0 4
+ authentication-mode aaa
+ protocol inbound ssh

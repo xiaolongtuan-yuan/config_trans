@@ -1,0 +1,19 @@
+sysname CE2
+
+interface GigabitEthernet1/0/0
+ ip address 10.2.1.2 255.255.255.0
+
+interface LoopBack1
+ ip address 22.22.22.22 255.255.255.255
+
+ip ip-prefix loopback-route index 10 permit 22.22.22.22 32
+
+route-policy advertise-networks permit node 10
+ if-match ip-prefix loopback-route
+
+bgp <LOCAL_AS>
+ peer 10.2.1.1 as-number 100
+ #
+ ipv4-family unicast
+  peer 10.2.1.1 enable
+  peer 10.2.1.1 route-policy advertise-networks export

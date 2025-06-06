@@ -1,7 +1,6 @@
 import os
 from collections import defaultdict
 from pathlib import Path
-
 import torch
 from sklearn.metrics.pairwise import cosine_similarity
 import json
@@ -28,14 +27,13 @@ import copy
 
 class ConfigMatcher:
     def __init__(self, vendor, target_command_templates, config_model, module_match, topk=3,
-                 root_command_frequencies=None, subtree_command_frequencies=None):
+                 root_command_frequencies=None):
         self.templates = target_command_templates
         self.semantic_topk = topk
         self.config_model = config_model
         self.module_match = module_match
         self.vendor = vendor
         self.root_command_frequencies = root_command_frequencies
-        self.subtree_command_frequencies = subtree_command_frequencies
 
     def find_best_match(self, source_vendor, command_node, src_root, src_root_semantic):
         best_root = self._module_ranking(source_vendor, src_root, src_root_semantic)
@@ -69,15 +67,6 @@ class ConfigMatcher:
         similarities = dot_product / (norm_src * norm_tgt.T)
         similarities = similarities.squeeze(0).cpu().numpy()
 
-        '''if self.root_command_frequencies:
-            # 根据使用频率选择最佳根节点
-            # 获取相似度前k的候选
-            topk_indices = np.argsort(similarities)[-2:][::-1]
-            topk_candidates = [tgt_root_names[i] for i in topk_indices]
-            best_root = max(topk_candidates, key=lambda x: self.root_command_frequencies.get(x, 0))
-            return [best_root]
-        else:'''
-        # 如果没有频率信息，选择相似度最高的
         J = 2  # 设置要返回的相似度最高的数量
         topk_indices = np.argsort(similarities)[-J:][::-1]
         topk_candidates = [tgt_root_names[i] for i in topk_indices]
@@ -165,13 +154,6 @@ class ConfigMatcher:
                     if len(similarities) > 0:
                         all_similarities.append((sorted(similarities, key=lambda x: x[1], reverse=True)[0], root))
 
-            '''if len(all_similarities) > 0:
-                # 在这里选择使用相似度前k中使用频率最高的参数匹配
-                if self.subtree_command_frequencies:
-                    topk_candidates = sorted(all_similarities, key=lambda x: x[1], reverse=True)[:2]
-                    para_match.append(sorted(topk_candidates, key=lambda x: self.subtree_command_frequencies[best_root[0]].get(x[0], 0), reverse=True)[0])
-                else:
-                    para_match.append(sorted(all_similarities, key=lambda x: x[0][1], reverse=True)[0])'''
             if len(all_similarities) > 0:
                 para_match.append(sorted(all_similarities, key=lambda x: x[0][1], reverse=True)[0])
         return para_match
@@ -184,8 +166,8 @@ class ConfigMatcher:
             for index, match_item in enumerate(para_match):
                 # print('[parameter{}]'.format(index+1), 'correspond [parameter{}] of command -- {}'.format(match_item[2]+1, match_item[0]))
                 parent_commands = \
-                self.templates[match_item[1]][match_item[0][0]]["structural_features"]['context_topology'][
-                    "parent_command"]
+                    self.templates[match_item[1]][match_item[0][0]]["structural_features"]['context_topology'][
+                        "parent_command"]
                 root = parent_commands[0] if len(parent_commands) > 0 else match_item[0][0]
                 match_list.append({'para_map': [index, match_item[0][2]], 'trans_command': match_item[0][0],
                                    'parent_command': parent_commands, 'root': root})
@@ -200,61 +182,8 @@ class ConfigMatcher:
             return [{'para_map': [], 'trans_command': ranked_candidates[0][0], 'parent_command': parent_commands,
                      'root': root}]
 
-    '''def get_subtree_commands(self, root_command):
-        # 返回属于该根节点的所有命令
-        subtree_commands = [cmd for cmd, root in self.command2root.items() if root == root_command]
-        if len(subtree_commands) == 0:
-            subtree_commands = [root_command]
-        return subtree_commands'''
-
-    '''def module_match_with_score(self, src_root, src_root_semantic):
-        tgt_root_names = [k for k in self.config_model.keys() if k in self.templates]
-        tgt_root_embeddings = [torch.tensor(self.templates[k]['semantic_features'], dtype=torch.float32).unsqueeze(0) for k in tgt_root_names]
-        tgt_root_embeddings = torch.cat(tgt_root_embeddings, dim=0).cuda()
-        norm_src = torch.norm(src_root_semantic, dim=1, keepdim=True)
-        norm_tgt = torch.norm(tgt_root_embeddings, dim=1, keepdim=True)
-        dot_product = torch.matmul(src_root_semantic, tgt_root_embeddings.T)
-        similarities = dot_product / (norm_src * norm_tgt.T)
-        similarities = similarities.squeeze(0).cpu().numpy()
-        best_idx = np.argmax(similarities)
-        best_root = tgt_root_names[best_idx]
-        similarity = similarities[best_idx]
-        return best_root, similarity'''
-
-
-# def _build_mapping_template_library(vendors, template_path, save_path):
-#     scales = [2000, 1000, 500, 100]
-#     for scale in scales:
-#         command_templates = {}  # 模板库
-#         configuration_matchers = {}  # 匹配器
-
-#         for vendor in vendors:
-#             vendor_templates_path = template_path.format(vendor, scale)
-#             # 加载模板库
-#             command_templates[vendor] = load_json_file(vendor_templates_path)
-#             # 加载配置匹配器
-#             configuration_matchers[vendor] = ConfigMatcher(command_templates[vendor], command_templates[vendor])
-
-#         for vendor in vendors:
-#             for target_vendor in vendors:
-#                 if vendor == target_vendor:
-#                     continue
-#                 if (not vendor == 'Juniper') and (not target_vendor == 'Juniper'):
-#                     continue
-#                 command_mapping = {}
-#                 # 映射每一条配置命令到目标供应商配置命令
-#                 description = "Match process from {} to {}".format(vendor, target_vendor)
-#                 for template, command_node in tqdm(command_templates[vendor].items(), desc=description):
-#                     # print(template)
-#                     matched_configuration = configuration_matchers[target_vendor].find_best_match(command_node, configuration_matchers[vendor].command2root, command_templates[vendor])
-#                     command_mapping[template] = matched_configuration
-#                 save_json_file(command_mapping, save_path.format(vendor, target_vendor, scale))
-#                 print('Mapping template libraries {}->{} scale {} have been built and saved in {}'.format(vendor, target_vendor, scale,
-#                                                                                                  save_path.format(vendor,
-#                                                                                                                   target_vendor, scale)))
-
-def _build_mapping_template_library_experiment(vendors, template_path, config_model_dir, save_path, frequency_dir=None,
-                                               module_match_path=None):
+def _build_mapping_template_library_experiment(vendors, template_path, config_model_dir, save_path,
+                                               module_match_path=None, topk=3):
     command_templates = {}  # 模板库
     config_models = {}  # 配置模型
     command2roots = {}  # 根节点映射
@@ -276,18 +205,9 @@ def _build_mapping_template_library_experiment(vendors, template_path, config_mo
             else:
                 module_match[vendor][vendor1] = {}
 
-        if frequency_dir:
-            root_command_frequencies = load_json_file(
-                os.path.join(frequency_dir, f"{vendor}_root_command_frequency.json"))
-            subtree_command_frequencies = load_json_file(
-                os.path.join(frequency_dir, f"{vendor}_sub_template_frequency.json"))
-            configuration_matchers[vendor] = ConfigMatcher(vendor, command_templates[vendor], config_models[vendor],
-                                                           module_match[vendor],
-                                                           root_command_frequencies=root_command_frequencies,
-                                                           subtree_command_frequencies=subtree_command_frequencies)
         else:
             configuration_matchers[vendor] = ConfigMatcher(vendor, command_templates[vendor], config_models[vendor],
-                                                           module_match[vendor])
+                                                           module_match[vendor], topk=topk)
 
     for vendor in vendors:
         for target_vendor in vendors:
@@ -328,57 +248,57 @@ def _build_mapping_template_library_experiment(vendors, template_path, config_mo
             print('Module match mapping saved in {}'.format(module_match_path))
 
 
-def _build_mapping_template_test(vendors, template_path, config_model_dir):
-    command_templates = {}  # 模板库
-    config_models = {}  # 配置模型
-    command2roots = {}  # 根节点映射
-    configuration_matchers = {}  # 匹配器
-    module_match = {}  # 模块匹配
-
-    for vendor in vendors:
-        vendor_templates_path = template_path.format(vendor)
-        vendor_config_model_path = config_model_dir.format(vendor)
-        command_templates[vendor] = load_json_file(vendor_templates_path)
-        config_models[vendor] = load_json_file(vendor_config_model_path)
-        module_match[vendor] = {vendor1: load_json_file(module_match_path.format(vendor1, vendor))
-                                for vendor1 in vendors if vendor1 != vendor}
-        command2roots[vendor] = build_command2root(config_models[vendor])
-        configuration_matchers[vendor] = ConfigMatcher(command_templates[vendor], config_models[vendor])
-
-    # print(configuration_matchers['HUAWEI'].command2root['network [parameter1] [parameter2]'])
-    for vendor in ['Cisco']:
-        for target_vendor in ['HUAWEI']:
-
-            command_mapping = {}
-            module_match_dict = {}  # 新增：记录模块匹配信息
-            description = "Match process from {} to {}".format(vendor, target_vendor)
-            # for template, command_node in tqdm(command_templates[vendor].items(), desc=description):
-            template = 'network [parameter1] [parameter2] area [parameter3]'
-            src_root, command_node = get_root_command(command_templates[vendor], template)  # 语义节点
-            # print(template)
-            command_node_with_template = dict(command_node)
-            command_node_with_template['template'] = template
-            # src_root = command2roots[vendor].get(template)
-            # root_commands = command_node_with_template['structural_features']['context_topology']['parent_command']
-            # src_root = root_commands[0] if root_commands else template
-            print('src_root:', src_root)
-            if src_root is None:
-                raise ValueError(f"未能在源config_model中找到{template}的根节点")
-            src_root_semantic = torch.tensor(command_templates[vendor][src_root][src_root]['semantic_features'],
-                                             dtype=torch.float32).unsqueeze(0).cuda()
-            # 获取目标根节点及相似度        
-            matched_configuration, best_root, _ = configuration_matchers[target_vendor].find_best_match(
-                command_node,
-                src_root,
-                src_root_semantic
-            )
-            print('matched_configuration:', matched_configuration)
-            print('best_root:', best_root)
-            # 记录映射
-            module_match_dict[src_root] = best_root
-            if not command_mapping.get(template):
-                command_mapping[template] = matched_configuration
-
+# def _build_mapping_template_test(vendors, template_path, config_model_dir):
+#     command_templates = {}  # 模板库
+#     config_models = {}  # 配置模型
+#     command2roots = {}  # 根节点映射
+#     configuration_matchers = {}  # 匹配器
+#     module_match = {}  # 模块匹配
+#
+#     for vendor in vendors:
+#         vendor_templates_path = template_path.format(vendor)
+#         vendor_config_model_path = config_model_dir.format(vendor)
+#         command_templates[vendor] = load_json_file(vendor_templates_path)
+#         config_models[vendor] = load_json_file(vendor_config_model_path)
+#         module_match[vendor] = {vendor1: load_json_file(module_match_path.format(vendor1, vendor))
+#                                 for vendor1 in vendors if vendor1 != vendor}
+#         command2roots[vendor] = build_command2root(config_models[vendor])
+#         configuration_matchers[vendor] = ConfigMatcher(command_templates[vendor], config_models[vendor])
+#
+#     # print(configuration_matchers['HUAWEI'].command2root['network [parameter1] [parameter2]'])
+#     for vendor in ['Cisco']:
+#         for target_vendor in ['HUAWEI']:
+#
+#             command_mapping = {}
+#             module_match_dict = {}  # 新增：记录模块匹配信息
+#             description = "Match process from {} to {}".format(vendor, target_vendor)
+#             # for template, command_node in tqdm(command_templates[vendor].items(), desc=description):
+#             template = 'network [parameter1] [parameter2] area [parameter3]'
+#             src_root, command_node = get_root_command(command_templates[vendor], template)  # 语义节点
+#             # print(template)
+#             command_node_with_template = dict(command_node)
+#             command_node_with_template['template'] = template
+#             # src_root = command2roots[vendor].get(template)
+#             # root_commands = command_node_with_template['structural_features']['context_topology']['parent_command']
+#             # src_root = root_commands[0] if root_commands else template
+#             print('src_root:', src_root)
+#             if src_root is None:
+#                 raise ValueError(f"未能在源config_model中找到{template}的根节点")
+#             src_root_semantic = torch.tensor(command_templates[vendor][src_root][src_root]['semantic_features'],
+#                                              dtype=torch.float32).unsqueeze(0).cuda()
+#             # 获取目标根节点及相似度
+#             matched_configuration, best_root, _ = configuration_matchers[target_vendor].find_best_match(
+#                 command_node,
+#                 src_root,
+#                 src_root_semantic
+#             )
+#             print('matched_configuration:', matched_configuration)
+#             print('best_root:', best_root)
+#             # 记录映射
+#             module_match_dict[src_root] = best_root
+#             if not command_mapping.get(template):
+#                 command_mapping[template] = matched_configuration
+#
 
 # load JSON fie and load data
 def load_json_file(file_path):
@@ -425,35 +345,33 @@ def build_command2root(tree, mapping=None):
 
 
 if __name__ == "__main__":
-    '''print('加载供应商配置模板节点库, 建立相应配置匹配器')
-    vendors = ["Cisco", "HUAWEI", "Juniper"]
-    project_root = Path(__file__).parent.parent
-    name = 'multi_module'
-
-    save_path = str(project_root / f'dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}.json')
-    templates_path = str(project_root / 'dataset_multi_vendor_config/config_command_node/verified_data/{}.json')
-    # os.makedirs(save_path, exist_ok=True)
-    config_model_dir = str(project_root / 'dataset_multi_vendor_config/config_model/verified_data/{}.json')
-    module_match_path = str(
-        project_root / f'dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}_module_match.json')
-    frequency_dir = str(project_root / 'experiment/test_dataset/template_used')
-
-    # _build_mapping_template_library_experiment(vendors, templates_path, config_model_dir, save_path, module_match_path)
-    _build_mapping_template_library_experiment(vendors, templates_path, config_model_dir, save_path, 
-                                               module_match_path= module_match_path)'''
-
     print('加载供应商配置模板节点库, 建立相应配置匹配器')
     vendors = ["Cisco", "HUAWEI", "Juniper"]
     project_root = Path(__file__).parent.parent
+    name = 'all_data_2000'
 
-    for scale in [40, 80, 120]:
-        save_path = str(
-            project_root / f'dataset_multi_vendor_config/mapping_template_library/different_scale/{{}}_{{}}_{scale}.json')
-        templates_path = str(
-            project_root / f'dataset_multi_vendor_config/config_command_node/different_scale/{{}}_{scale}.json')
-        config_model_dir = str(
-            project_root / f'dataset_multi_vendor_config/config_model/different_scale/{{}}_{scale}.json')
-        module_match_path = str(
-            project_root / f'dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}_module_match.json')
+    save_path = str(project_root / f'dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}.json')
+    os.makedirs(str(project_root / f'dataset_multi_vendor_config/mapping_template_library/{name}'), exist_ok=True)
 
-        _build_mapping_template_library_experiment(vendors, templates_path, config_model_dir, save_path)
+    templates_path = str(project_root / f'dataset_multi_vendor_config/config_command_node/{name}/{{}}.json')
+    config_model_dir = str(project_root / f'dataset_multi_vendor_config/config_model/{name}/{{}}.json')
+    # module_match_path = str(
+    #     project_root / f'dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}_module_match.json')
+
+    _build_mapping_template_library_experiment(vendors, templates_path, config_model_dir, save_path)
+
+    # print('加载供应商配置模板节点库, 建立相应配置匹配器')
+    # vendors = ["Cisco", "HUAWEI", "Juniper"]
+    # project_root = Path(__file__).parent.parent
+    #
+    # for topk in [1, 2, 4]:
+    #     save_path = str(
+    #         project_root / f'dataset_multi_vendor_config/mapping_template_library/different_topk/{{}}_{{}}_{topk}.json')
+    #     templates_path = str(
+    #         project_root / f'dataset_multi_vendor_config/config_command_node/verified_data/{{}}.json')
+    #     config_model_dir = str(
+    #         project_root / f'dataset_multi_vendor_config/config_model/verified_data/{{}}.json')
+    #     module_match_path = str(
+    #         project_root / f'dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}_module_match.json')
+    #
+    #     _build_mapping_template_library_experiment(vendors, templates_path, config_model_dir, save_path, topk=topk)

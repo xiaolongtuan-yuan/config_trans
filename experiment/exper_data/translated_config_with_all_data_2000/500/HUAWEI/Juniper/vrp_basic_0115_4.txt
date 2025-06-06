@@ -1,0 +1,15 @@
+set system host-name CE2
+set interfaces ge-1/0/1 disable
+set interfaces ge-1/0/1 unit 0 disable
+set interfaces ge-1/0/1 unit 0 family inet address 10.1.2.1/24
+set routing-options autonomous-system 65420
+set protocols bgp group 65420 type external
+set protocols bgp group 65420 family inet unicast
+set protocols bgp group IBGP type external
+set protocols bgp group IBGP neighbor 10.1.2.2 peer-as 100
+set protocols bgp group IBGP export BGP-NETWORKS
+set protocols bgp group IBGP neighbor-10.1.2.2 peer-as 65420
+no synchronization
+set policy-options policy-statement IMPORT-DIRECT term 1 from protocol direct
+set policy-options policy-statement IMPORT-DIRECT then accept
+set protocols bgp import IMPORT-DIRECT

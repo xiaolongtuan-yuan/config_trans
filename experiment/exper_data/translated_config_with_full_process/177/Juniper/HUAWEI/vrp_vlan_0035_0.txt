@@ -1,0 +1,41 @@
+sysname ce1
+interface gigabitethernet0/0/5
+ port trunk allow-pass vlan 5 none
+ port trunk allow-pass vlan 9 none
+ undo shutdown
+ portswitch
+ port default vlan 5
+ port trunk allow-pass vlan 5
+ port link-type access
+interface ge-1/0/2
+ portswitch
+ port default vlan 5
+ port trunk allow-pass vlan 5
+interface gigabitethernet1/0/2
+ undo shutdown
+ portswitch
+ port link-type access
+interface ge-1/0/3
+interface gigabitethernet1/0/3
+ portswitch
+ port default vlan 9
+ port trunk allow-pass vlan 9
+ undo shutdown
+ port link-type access
+interface gigabitethernet1/0/4
+ portswitch
+ port default vlan 9
+ port trunk allow-pass vlan 9
+ undo shutdown
+ port link-type access
+interface gigabitethernet1/0/5
+ portswitch
+ port default vlan 5
+ port trunk allow-pass vlan 5
+ port default vlan 9
+ port trunk allow-pass vlan 9
+interface ge-1/0/5
+ portswitch
+ port link-type trunk
+vlan 5
+vlan 9

@@ -65,7 +65,7 @@ def translate_single_file(config_translater, input_dir, statistic_res, map_rule_
     file_name = os.path.splitext(config_file)[0]
 
     statistic_data, map_rule_data = config_translater.translation_without_llm(json_config, source_vendor, target_vendor,
-                                                                 istatistics=True)
+                                                                 istatistics=True, tau=0.9)
     statistic_res['command_count'] += statistic_data['command_count']
     statistic_res['rule_ccount'] += statistic_data['rule_ccount']
     statistic_res['llm_ccount'] += statistic_data['llm_ccount']
@@ -99,21 +99,22 @@ def main():
     local_EMmodel_path = '../EmbeddingModel/MiniLM-L6-v2'
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": device})
-    scales = [177]
+    scales = [40,80,120]
     scales_covers_res = {}
     for scale in scales:
-        # mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/different_scale/{{}}_{{}}_{scale}.json'
-        # templates_path = f'../dataset_multi_vendor_config/config_command_node/different_scale/{{}}_{scale}.json'
-        # config_model_dir = f'../dataset_multi_vendor_config/config_model/different_scale/{{}}_{scale}.json'
-        # module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/different_scale/{{}}_{{}}_{scale}_module_match.json'
-        # manual_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
-        # error_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{{}}_{{}}.json'
-        mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}.json'
+        mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/different_scale/{{}}_{{}}_{scale}.json'
+        templates_path = f'../dataset_multi_vendor_config/config_command_node/different_scale/{{}}_{scale}.json'
+        config_model_dir = f'../dataset_multi_vendor_config/config_model/different_scale/{{}}_{scale}.json'
+        module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/different_scale/{{}}_{{}}_{scale}_module_match.json'
         manual_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
         error_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{{}}_{{}}.json'
-        module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}_module_match.json'
-        templates_path = f'../dataset_multi_vendor_config/config_command_node/verified_data/{{}}.json'
-        config_model_dir = f'../dataset_multi_vendor_config/config_model/verified_data/{{}}.json'
+
+        # mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}.json'
+        # manual_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
+        # error_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{{}}_{{}}.json'
+        # module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}_module_match.json'
+        # templates_path = f'../dataset_multi_vendor_config/config_command_node/verified_data/{{}}.json'
+        # config_model_dir = f'../dataset_multi_vendor_config/config_model/verified_data/{{}}.json'
 
 
         statistic_res = {

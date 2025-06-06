@@ -2,6 +2,7 @@
 @Time ： 2025/4/7 16:44
 @Auth ： xiaolongtuan
 @File ：statistic_map_account.py.py
+统计映射规则数量
 """
 import json
 import os
@@ -17,7 +18,7 @@ def count_rules(obj):
 
 result = {}
 # 遍历different_scale目录下的json文件，统计每个文件中的规则数量
-directory = "./different_scale"
+directory = "./all_data_2000"
 # directory = "./multi_module"
 
 for filename in os.listdir(directory):
@@ -29,5 +30,5 @@ for filename in os.listdir(directory):
             total_rules = len(data.keys())
             result[filename] = total_rules
             print(f"{filename}: {total_rules} rules")
-with open("statistic_rule_account.json", "w", encoding="utf-8") as f:
+with open("760_statistic_rule_account.json", "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=4)

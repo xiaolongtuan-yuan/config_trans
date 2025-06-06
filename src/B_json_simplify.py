@@ -1,6 +1,7 @@
+'''
+对json文件中国的每个节点进行简化和检查，并将命令模版作为节点的键值
+'''
 import json
-import argparse
-import glob
 from pathlib import Path
 import os
 from tqdm import tqdm
@@ -192,10 +193,7 @@ def filter_valid_nodes(node: dict) -> dict:
 
 if __name__ == "__main__":
     vendors = ["Juniper", "Cisco", "HUAWEI"]
-    train_dataset_dirs = ['experiment/test_dataset/test_data_400',
-                          'experiment/test_dataset/test_data_1200',
-                          'experiment/test_dataset/test_data_2000',
-                          'experiment/test_dataset/test_data_2800']
+    train_dataset_dirs = ['experiment/test_dataset/test_data_2000']
 
     project_root = Path(__file__).parent.parent
 

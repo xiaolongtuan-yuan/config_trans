@@ -1,0 +1,16 @@
+hostname ce2
+interface gigabitethernet1/0/0
+ no shutdown
+ ip address 10.2.1.2 255.255.255.0
+interface loopback0
+ no shutdown
+ ip address 22.22.22.22 255.255.255.224
+router bgp 65420
+ address-family ipv4 unicast
+  redistribute external-peers
+router bgp 100
+ address-family ipv4 unicast
+  redistribute connected
+ip route 0.0.0.0 255.255.255.255 advertise-networks 0.0.0.0
+neighbor 10.2.1.1 remote-as 100
+route-map advertise-networks permit 10

@@ -1,0 +1,24 @@
+sysname name DeviceC
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.20.1.1 255.255.255.0
+user-group IBGP
+bgp 100
+ import-route internal
+ ipv4-family unicast
+  peer 10.20.1.1 next-hop-local
+  undo synchronization
+  peer {'name': 'peer IP', 'type': 'IPv4', 'explanation': 'Peer IP Address'} route-policy {'name': 'route-policy name', 'type': 'string', 'explanation': 'Route Policy Name'} export
+ import-route direct
+ peer 10.1.1.2 enable
+ospfv3 1
+ area 0.0.0.0
+ospf {'name': 'process id', 'type': 'integer', 'explanation': 'OSS Project ID', 'value': '1'} router-id {'name': 'router-id', 'type': 'IPv4', 'explanation': 'Router ID', 'value': '0.0.0.0'}
+ area 0.0.0.0
+  network 0.0.0.0 ge-1/0/0.0
+traffic policy 1
+peer 10.20.1.2 as-number 100
+ip ip-prefix redistribute-connected index 10 permit 0.0.0.0 0 less-equal 32
+route-policy redistribute-connected permit node 10
+if-match ip-prefix redistribute-connected
+#

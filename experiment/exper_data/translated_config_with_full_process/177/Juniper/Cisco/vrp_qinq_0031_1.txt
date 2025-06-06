@@ -1,0 +1,17 @@
+hostname ce2
+interface gigabitethernet1/0/1
+ no shutdown
+ ip address 10.3.1.2 255.255.255.0
+router bgp 65420
+ address-family ipv4 unicast
+  redistribute ebgp
+router bgp 100
+ address-family ipv4 unicast
+  redistribute direct-routes
+ip route none none direct-routes none
+ip route 255.255.255.0 gigabitethernet0/1 192.168.1.1 none
+interface gigabitethernet1/0/1.20
+encapsulation dot1q 20
+neighbor 10.2.1.1 address-family ipv4 unicast
+route-map direct-routes permit 10
+match protocol connected

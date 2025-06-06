@@ -1,0 +1,17 @@
+hostname CE1
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.252
+exit
+interface Loopback1
+ ip address 3.3.3.3 255.255.255.255
+exit
+router bgp 65410
+ neighbor 10.1.1.2 remote-as 100
+ bgp log-neighbor-changes
+ address-family ipv4
+  no synchronization
+  network 10.1.1.0 mask 255.255.255.252
+ exit-address-family
+ neighbor 10.1.1.2 activate
+exit

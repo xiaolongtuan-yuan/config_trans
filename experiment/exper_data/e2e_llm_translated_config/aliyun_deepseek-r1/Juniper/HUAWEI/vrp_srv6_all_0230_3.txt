@@ -1,0 +1,21 @@
+sysname CE1
+
+interface GigabitEthernet1/0/0
+ ip address 10.1.1.2 255.255.255.0
+ undo shutdown
+
+interface LoopBack1
+ ip address 11.11.11.11 255.255.255.255
+ undo shutdown
+
+bgp 65410
+ peer 10.1.1.1 as-number 100
+ 
+ ipv4-family unicast
+  peer 10.1.1.1 enable
+  peer 10.1.1.1 route-policy announce-lo0 export
+
+route-policy announce-lo0 permit node 10
+ if-match ip-prefix lo0-host
+
+ip ip-prefix lo0-host index 10 permit 11.11.11.11 32

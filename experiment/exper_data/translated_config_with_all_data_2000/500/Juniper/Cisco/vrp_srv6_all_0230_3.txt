@@ -1,0 +1,18 @@
+hostname CE1
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+interface Loopback0
+ no shutdown
+ ip address 11.11.11.11 255.255.255.255
+aaa authentication login none group external-peers local
+redistribute bgp
+redistribute connected
+router bgp 65410
+ address-family ipv4
+  neighbor none route-map announce-lo0 out
+  neighbor 11.11.11.11 route-map announce-lo0 out
+  neighbor {'name': 'neighbor IP address', 'type': 'string', 'explanation': 'IP address of the neighbor', 'value': 'none'} route-map {'name': 'route-map policy name', 'type': 'string', 'explanation': 'Name of the route-map policy to apply', 'value': 'announce-lo0'} {'name': 'direction', 'type': 'string', 'explanation': "'in' or 'out'", 'value': 'none'}
+route-map exact accept 10
+route-map policy-statement then accept
+neighbor 10.1.1.1 remote-as 100

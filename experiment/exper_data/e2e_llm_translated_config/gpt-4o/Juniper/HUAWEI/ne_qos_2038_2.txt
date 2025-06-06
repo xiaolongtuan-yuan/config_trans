@@ -1,0 +1,25 @@
+sysname DeviceC
+
+interface GigabitEthernet 1/0/0
+ ip address 10.20.1.1 255.255.255.0
+ undo shutdown
+ quit
+
+bgp 100
+ ipv4-family unicast
+  peer 10.20.1.2 as-number 100
+  update-source 10.20.1.1
+  import-route connected
+  quit
+ quit
+
+ospf 1
+ area 0.0.0.0
+  network 10.20.1.0 0.0.0.255
+  quit
+ quit
+
+ip policy route-policy redistribute-connected
+ if-match protocol direct
+ apply accept
+ quit

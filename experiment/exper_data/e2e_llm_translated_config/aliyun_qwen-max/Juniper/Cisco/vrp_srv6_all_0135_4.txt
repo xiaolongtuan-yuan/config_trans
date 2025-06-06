@@ -1,0 +1,16 @@
+hostname CE2
+
+interface GigabitEthernet1/0
+ ip address 10.2.1.2 255.255.255.0
+
+interface Loopback0
+ ip address 22.22.22.22 255.255.255.255
+
+router bgp 65000
+ neighbor 10.2.1.1 remote-as 100
+ !
+ address-family ipv4
+  neighbor 10.2.1.1 activate
+  network 22.22.22.22 mask 255.255.255.255
+ exit-address-family
+!

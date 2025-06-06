@@ -1,0 +1,29 @@
+system-view
+hostname CE1
+
+interface GigabitEthernet 1/0/1
+  port link-type trunk
+  port trunk allow-pass vlan 1
+  ip address 192.168.1.2 255.255.255.0
+  quit
+
+interface GigabitEthernet 1/0/2
+  port link-type trunk
+  port trunk allow-pass vlan 1
+  ip address 172.16.1.2 255.255.255.0
+  quit
+
+bgp 65410
+  router-id 192.168.1.2
+  peer 192.168.1.1 as-number 100
+  peer 172.16.1.1 as-number 100
+  undo synchronize
+  advertisement 1 route-distinguisher 0:100
+  
+  # Policy Definition
+  ip ip-prefix IMPORT-DIRECT permit 192.168.1.0 24
+  ip ip-prefix IMPORT-DIRECT permit 172.16.1.0 24
+
+  # Using the defined policy
+  import-policy IMPORT-DIRECT
+quit

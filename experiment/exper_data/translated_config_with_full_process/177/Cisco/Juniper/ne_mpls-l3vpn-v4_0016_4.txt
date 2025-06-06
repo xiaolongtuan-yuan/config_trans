@@ -1,0 +1,13 @@
+set system host-name ce3
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.3.1.1/24
+set routing-options autonomous-system 800
+set protocols bgp group peers type external
+set protocols bgp group peers neighbor 10.3.1.2 peer-as 100
+set protocols bgp group peers export advertise_network
+set protocols bgp local-as 10
+set policy-options policy-statement advertise_network term 1 from route-filter 10.3.1.0/24 exact
+set policy-options policy-statement advertise_network term 1 then accept
+family inet
+deactivate protocols bgp group <group-name> family inet

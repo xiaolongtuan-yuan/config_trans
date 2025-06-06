@@ -1,0 +1,11 @@
+set system host-name CE2
+set interfaces ge-1/0/0 unit 0 family inet address 10.2.1.2/24
+set interfaces lo0 unit 1 family inet address 22.22.22.22/32
+set routing-options autonomous-system 65420
+set routing-options static route 22.22.22.22/32 discard
+set policy-options policy-statement EXPORT_STATIC term 1 from route-filter 22.22.22.22/32 exact
+set policy-options policy-statement EXPORT_STATIC term 1 then accept
+set protocols bgp group EBGP_GROUP type external
+set protocols bgp group EBGP_GROUP peer-as 100
+set protocols bgp group EBGP_GROUP neighbor 10.2.1.1
+set protocols bgp group EBGP_GROUP export EXPORT_STATIC

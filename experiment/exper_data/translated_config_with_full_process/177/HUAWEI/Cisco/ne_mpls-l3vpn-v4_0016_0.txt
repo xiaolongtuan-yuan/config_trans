@@ -1,0 +1,15 @@
+hostname ce1
+interface gigabitethernet2/0/0
+ ip address 10.4.1.1 255.255.255.0
+interface gigabitethernet1/0/0.1
+ no shutdown
+interface gigabitethernet1/0/0
+ ip address 10.1.1.1 255.255.255.0
+router bgp 600
+router bgp 100
+ neighbor 10.1.1.2 remote-as 100
+ address-family ipv4 unicast
+  neighbor 10.1.1.2 route-map direct in
+ no synchronization
+ neighbor 10.1.1.2 activate
+ip route 0.0.0.0 0.0.0.0 10.1.1.2

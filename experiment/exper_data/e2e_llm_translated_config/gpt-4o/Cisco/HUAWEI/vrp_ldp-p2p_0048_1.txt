@@ -1,0 +1,24 @@
+sysname LSRB
+
+mpls ldp router-id Loopback0
+
+mpls ip
+
+interface GigabitEthernet1/0/1
+ ip address 10.1.2.1 255.255.255.0
+ undo shutdown
+ mpls enable
+
+interface GigabitEthernet1/0/3
+ ip address 10.1.1.2 255.255.255.0
+ undo shutdown
+ mpls enable
+
+interface LoopBack0
+ ip address 2.2.2.9 255.255.255.255
+
+ospf 1
+ area 0
+ network 2.2.2.9 0.0.0.0
+ network 10.1.1.0 0.0.0.255
+ network 10.1.2.0 0.0.0.255

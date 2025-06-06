@@ -1,0 +1,14 @@
+sysname ce2
+interface gigabitethernet0/0/1
+ undo shutdown
+ ip address 10.1.2.1 255.255.255.0
+bgp 65420
+ import-route external
+ peer 10.1.2.2 as-number 100
+ipv4-family unicast
+ipv4-family unicast prefix-limit 10.1.2.0/24
+ip ip-prefix ce2_to_peer_prefix permit 10.1.2.0 24
+route-policy ce2_to_peer_policy permit node 10
+if-match ip-prefix ce2_to_peer_prefix
+bgp 100
+peer 10.1.2.2 route-policy ce2_to_peer_policy import

@@ -1,0 +1,18 @@
+set system host-name SSH_Server
+set system domain-name example.com
+set protocols bgp local-as 2048
+set system login access-control ssh-only
+set system services ssh protocol-version v2
+set interfaces lo0 disable
+set interfaces lo0 unit 0 family inet address 10.1.1.1/32
+delete set protocols isis level 1 metric-style wide net 00.0005.0000.0000.0004.00
+set interfaces ge-0/0/0 disable
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.2/16
+set interfaces ge-0/0/0 unit 0 disable
+set system services ssh connection-limit 4
+set system services ssh root-login allow
+set system services ssh ciphers [ aes128-ctr aes192-ctr aes256-ctr ]
+set system authentication-order password
+set system login user client001 class super-user
+set system login user client001 authentication ssh-rsa "ssh-public-key"
+set system services ssh authentication-order password

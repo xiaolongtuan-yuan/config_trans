@@ -1,0 +1,32 @@
+sysname CE1
+
+vlan 2
+
+interface GigabitEthernet1/0/1
+ portswitch
+ undo shutdown
+ port link-type access
+ port default vlan 2
+
+interface GigabitEthernet1/0/2
+ portswitch
+ undo shutdown
+ port link-type access
+ port default vlan 2
+
+interface GigabitEthernet1/0/3
+ portswitch
+ undo shutdown
+ port link-type trunk
+ port trunk allow-pass vlan 2
+##
+The translation maintains equivalent functionality:
+1. Hostname converted to sysname
+2. VLAN 2 declaration remains the same
+3. Interfaces converted with Huawei syntax:
+   - portswitch enables L2 mode (equivalent to Cisco's switchport)
+   - undo shutdown replaces no shutdown
+   - port link-type access/trunk matches switchport mode
+   - port default vlan for access interfaces
+   - port trunk allow-pass vlan for trunk allowed list
+4. Interface numbering preserved assuming compatible hardware slots
