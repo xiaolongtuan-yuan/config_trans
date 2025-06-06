@@ -2,31 +2,26 @@
     "hostname DeviceA": {
         "template": "hostname [parameter1]",
         "command": "hostname DeviceA",
-        "explanation": "Sets the data's host name 'DeviceA'",
+        "explanation": "Sets the device's host name 'DeviceA'",
         "parameters": [
             {
                 "name": "host name",
                 "type": "string",
-                "explanation": "HostName"
+                "explanation": "Host Name"
             }
         ]
     },
-    "ip access-list extended ACL_3001": {
-        "command": "ip access-list extended ACL_3001",
+    "ip access-list extended ACL_TUN30": {
+        "command": "ip access-list extended ACL_TUN30",
         "permit ip host 10.100.0.11 any": {
             "command": "permit ip host 10.100.0.11 any",
-            "template": "permit ip host [source_ip] [destination]",
+            "template": "permit ip host [source_ip] any",
             "explanation": "Personal IP traffic from a secret host to any determination",
             "parameters": [
                 {
                     "name": "source_ip",
                     "type": "string",
                     "explanation": "The IP address of the source host"
-                },
-                {
-                    "name": "destination",
-                    "type": "string",
-                    "explanation": "The determination of the IP traffic, 'any' means all possible developments"
                 }
             ]
         },
@@ -40,17 +35,17 @@
             }
         ]
     },
-    "ip access-list extended ACL_3002": {
-        "command": "ip access-list extended ACL_3002",
+    "ip access-list extended ACL_TUN40": {
+        "command": "ip access-list extended ACL_TUN40",
         "permit ip host 10.110.0.11 any": {
             "command": "permit ip host 10.110.0.11 any",
-            "template": "permit ip host [source_ip] any",
-            "explanation": "Personally from a secret host IP to any determination",
+            "template": "permit ip host [parameter1] any",
+            "explanation": "Personal IP traffic from a secret host to any determination",
             "parameters": [
                 {
-                    "name": "source_ip",
+                    "name": "source IP address",
                     "type": "string",
-                    "explanation": "The source IP accounting that is defined to send traffic to any determination"
+                    "explanation": "The IP address of the host from which traffic is attributed"
                 }
             ]
         },
@@ -61,85 +56,61 @@
                 "name": "access-list name",
                 "type": "string",
                 "explanation": "Name of the quoted IP access list"
-            }
-        ]
-    },
-    "interface Tunnel30": {
-        "template": "interface [parameter1]",
-        "command": "interface Tunnel30",
-        "explanation": "\"Configuration tunnel 30\"",
-        "parameters": [
-            {
-                "name": "interface name",
-                "type": "string",
-                "explanation": "InterfaceName"
-            }
-        ]
-    },
-    "interface Tunnel40": {
-        "template": "interface [parameter1]",
-        "command": "interface Tunnel40",
-        "explanation": "Configuration tunnel interface 'Tunnel 40'",
-        "parameters": [
-            {
-                "name": "interface name",
-                "type": "string",
-                "explanation": "InterfaceName"
             }
         ]
     },
     "route-map PBR_AAA permit 5": {
         "command": "route-map PBR_AAA permit 5",
-        "match ip address ACL_3001": {
-            "command": "match ip address ACL_3001",
+        "match ip address ACL_TUN30": {
+            "command": "match ip address ACL_TUN30",
             "template": "match ip address [parameter1]",
-            "explanation": "Watches packs against the treated access control list",
+            "explanation": "Matches packs against the treated access control list",
             "parameters": [
                 {
                     "name": "ACL name",
                     "type": "string",
-                    "explanation": "Name of the access control list to match against"
+                    "explanation": "Name of the access control list to match packs against"
                 }
             ]
         },
-        "set ip next-hop 10.100.0.1  ! 必须指定具体下一跳": {
-            "command": "set ip next-hop 10.100.0.1",
+        "set ip next-hop 10.1.1.1": {
+            "command": "set ip next-hop 10.1.1.1",
             "template": "set ip next-hop [parameter1]",
             "explanation": "Set the next top IP address for moving",
             "parameters": [
                 {
                     "name": "next-hop IP address",
                     "type": "string",
-                    "explanation": "The Special Next IP interview that must be developed"
+                    "explanation": "The IP address of the next hoop"
                 }
             ]
         },
         "template": "route-map [parameter1] [parameter2] [parameter3]",
-        "explanation": "But I'm not sure I'm going to be able to do that.",
+        "explanation": "And I'm sure you're going to be able to make a sense of what you're doing.",
         "parameters": [
             {
                 "name": "route-map name",
                 "type": "string",
-                "explanation": "The name of the root Map"
+                "explanation": "Name of the root-map"
             },
             {
                 "name": "action",
                 "type": "string",
-                "explanation": "The action to be taken"
+                "explanation": "Action to take"
             },
             {
                 "name": "sequence number",
                 "type": "integer",
-                "explanation": "The security number to order the route"
+                "explanation": "No, no, no, no."
             }
         ]
     },
     "route-map PBR_AAA permit 10": {
         "command": "route-map PBR_AAA permit 10",
-        "match ip address ACL_3002": {
-            "command": "match ip address ACL_3002",
+        "match ip address ACL_TUN40": {
+            "command": "match ip address ACL_TUN40",
             "template": "match ip address [parameter1]",
-            "explanation": "Watches packs against the treated access control list",
+            "explanation": "Matches packs against the treated access control list",
             "parameters": [
                 {
                     "name": "ACL name",
@@ -148,19 +119,19 @@
                 }
             ]
         },
-        "set ip next-hop 10.110.0.1  ! 必须指定具体下一跳": {
-            "command": "set ip next-hop 10.110.0.1",
+        "set ip next-hop 10.2.2.2": {
+            "command": "set ip next-hop 10.2.2.2",
             "template": "set ip next-hop [parameter1]",
-            "explanation": "Set the next top IP address for the route",
+            "explanation": "Set the next top IP address for moving",
             "parameters": [
                 {
                     "name": "next-hop IP address",
                     "type": "string",
-                    "explanation": "The IP address of the next house"
+                    "explanation": "The IP address of the next hoop"
                 }
             ]
         },
-        "template": "route-map [parameter1] [parameter2] [parameter3]",
+        "template": "route-map [parameter1] [parameter2] [parameter3] [parameter4]",
         "explanation": "And I'm sure you're going to be able to make a sense of what you're doing.",
         "parameters": [
             {
@@ -176,31 +147,31 @@
             {
                 "name": "sequence number",
                 "type": "integer",
-                "explanation": "Time number to order the route-map gifts"
+                "explanation": "No, no, no, no."
             }
         ]
     },
     "interface GigabitEthernet1/0/0": {
         "template": "interface [parameter1]",
         "command": "interface GigabitEthernet1/0/0",
-        "explanation": "Configure interface 'GigabitEthernet 1/0/0'",
+        "explanation": "Configure interface 'GigabitEthernet1/0/0'",
         "parameters": [
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
         "no shutdown": {
             "template": "no shutdown",
             "command": "no shutdown",
-            "explanation": "(The interface is closed by default)",
+            "explanation": "Enable interface (the interface is closed by default)",
             "parameters": []
         },
         "ip address 10.100.0.10 255.255.255.0": {
             "template": "ip address [parameter1] [parameter2]",
             "command": "ip address 10.100.0.10 255.255.255.0",
-            "explanation": "The IPv4 address for the communication information is 10.100.0.10 and the subnet mark is 255.255.255.0",
+            "explanation": "The IPv4 address for the configuration interface is 10.100.0.10 and the subnet mask is 255.255.255.0",
             "parameters": [
                 {
                     "name": "ip address",
@@ -210,19 +181,19 @@
                 {
                     "name": "subnet mask",
                     "type": "IPv4",
-                    "explanation": "Subnet Mask"
+                    "explanation": "Subnet mask"
                 }
             ]
         },
-        "ip policy route-map PBR_AAA  ! 修正策略路由语法": {
+        "ip policy route-map PBR_AAA": {
             "command": "ip policy route-map PBR_AAA",
             "template": "ip policy route-map [parameter1]",
-            "explanation": "Consequence policy-baseing with a route map",
+            "explanation": "Apply a root-map for policy-based moving",
             "parameters": [
                 {
                     "name": "route-map name",
                     "type": "string",
-                    "explanation": "Name of the route Map to be used for policy-based moving"
+                    "explanation": "Name of the route-map to be applied for policy-based routing"
                 }
             ]
         }
@@ -235,19 +206,19 @@
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
         "no shutdown": {
             "template": "no shutdown",
             "command": "no shutdown",
-            "explanation": "(The interface is closed by default)",
+            "explanation": "Enable interface (the interface is closed by default)",
             "parameters": []
         },
         "ip address 10.110.0.10 255.255.255.0": {
             "template": "ip address [parameter1] [parameter2]",
             "command": "ip address 10.110.0.10 255.255.255.0",
-            "explanation": "The IPv4 address for the communication information is 10.10.0.10 and the subnet mark is 255.255.255.0",
+            "explanation": "The IPv4 address for the configuration interface is 10.110.0.10 and the subnet mask is 255.255.255.0",
             "parameters": [
                 {
                     "name": "ip address",
@@ -257,27 +228,71 @@
                 {
                     "name": "subnet mask",
                     "type": "IPv4",
-                    "explanation": "Subnet Mask"
-                }
-            ]
-        },
-        "ip policy route-map PBR_AAA  ! 修正策略路由语法": {
-            "command": "ip policy route-map PBR_AAA",
-            "template": "ip policy route-map [parameter1]",
-            "explanation": "Consequence policy-baseing with a protected route map",
-            "parameters": [
-                {
-                    "name": "route-map name",
-                    "type": "string",
-                    "explanation": "Name of the route Map to be used for policy-based moving"
+                    "explanation": "Subnet mask"
                 }
             ]
         }
     },
+    "router ospf 1": {
+        "command": "router ospf 1",
+        "network 10.100.0.0 0.0.0.255 area 0": {
+            "command": "network 10.100.0.0 0.0.0.255 area 0",
+            "template": "network [network_address] [wildcard_mask] area [area_id]",
+            "explanation": "Consequence a network in a specic OSF area",
+            "parameters": [
+                {
+                    "name": "network_address",
+                    "type": "IPv4 address",
+                    "explanation": "The network arrived to be incredged in the OSS moving process"
+                },
+                {
+                    "name": "wildcard_mask",
+                    "type": "IPv4 wildcard mask",
+                    "explanation": "The Wildcard ask that deals the range of the network"
+                },
+                {
+                    "name": "area_id",
+                    "type": "integer",
+                    "explanation": "The OSF area ID where the network will be included"
+                }
+            ]
+        },
+        "network 10.110.0.0 0.0.0.255 area 0": {
+            "command": "network 10.110.0.0 0.0.0.255 area 0",
+            "template": "network [network_address] [wildcard_mask] area [area_id]",
+            "explanation": "Specify the network approach and wildcard challenge for the OSF moving process and assocides it with an OSF area.",
+            "parameters": [
+                {
+                    "name": "network_address",
+                    "type": "string",
+                    "explanation": "The network brings that OSF will address."
+                },
+                {
+                    "name": "wildcard_mask",
+                    "type": "string",
+                    "explanation": "The wildcard asks that deals which bits in the network must match."
+                },
+                {
+                    "name": "area_id",
+                    "type": "integer",
+                    "explanation": "The OSF area ID to which the network belongs."
+                }
+            ]
+        },
+        "template": "router ospf [parameter1]",
+        "explanation": "CONFIGURE OSSF ROUTING PROCESS",
+        "parameters": [
+            {
+                "name": "process ID",
+                "type": "integer",
+                "explanation": "OSS process ID"
+            }
+        ]
+    },
     "end": {
         "template": "end",
         "command": "end",
-        "explanation": "Exit Construction Mode",
+        "explanation": "Exit Configuration Mode",
         "parameters": []
     }
 }

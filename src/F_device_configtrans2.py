@@ -376,9 +376,17 @@ class Config_Translater:
                                         "command_depth": 0,
                                     },
                                 }
-                                self.config_matchers[target_vendor].templates[match['trans_command']] = {
-                                    match['trans_command']: result_node.copy()}
-
+                                if match['trans_command'] in self.config_matchers[target_vendor].templates:
+                                    self.config_matchers[target_vendor].templates[match['trans_command']][match['trans_command']] = result_node.copy()
+                                else:
+                                    self.config_matchers[target_vendor].templates[match['trans_command']] = {match['trans_command']: result_node.copy()}
+                                match.update({
+                                    "root": match['trans_command'],
+                                    "source": "llm",
+                                    "trans_template": match['trans_command']
+                                })
+                        else:
+                            continue
                     matched_result = llm_matched_result
 
             feature.set_match(matched_result)
@@ -442,8 +450,12 @@ class Config_Translater:
                 translated_command = para_match['trans_command']
                 root = para_match['root']
                 try:
-                    command_node = self.config_matchers[target_vendor].templates[root][
-                        translated_command]  # 至少这这前面的不能随便改
+                    if 'source' in para_match:
+                        command_node = self.config_matchers[target_vendor].templates[root][
+                            para_match['trans_template']]  # 至少这这前面的不能随便改
+                    else:
+                        command_node = self.config_matchers[target_vendor].templates[root][
+                            translated_command]  # 至少这这前面的不能随便改
                 except KeyError:
                     print(f"KeyError: {translated_command}")
                     continue
@@ -640,7 +652,7 @@ class Config_Translater:
                     try:
                         result[item['para_map'][1]] = paras[item['para_map'][0]]
                     except Exception as e:
-                        print(para_match)
+                        print(f'match extract error {e}\n: {para_match}')
                         continue
         return result
 
@@ -1220,7 +1232,7 @@ class Translation_Model:
                         "root": root,
                         "source": "llm",
                         "origin_reponse": response,  # 保存原始响应
-                        "trans_template": command_template
+                        "trans_template": command_template['template'] if command_template else None
                     })
 
                 return matched_results

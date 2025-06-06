@@ -1,27 +1,12 @@
 set system host-name DeviceA
 
-# PPPoE Client Configuration
-!set interfaces pp0 unit 0 pppoe-options underlying-interface lmp-0/0/0.0
-!set interfaces pp0 unit 0 pppoe-options auto-reconnect 300
-!set interfaces pp0 unit 0 family inet negotiate-address
+set services pppoe-client interface ge-0/0/0.0
+set services pppoe-client profile default chap-secret "@%@%EDF~DAdfFD934J3<DAF#*<!@%@%"
+set services pppoe-client profile default client-name "rta"
 
-# PPP Authentication
-set access profile PPP-AUTH authentication-order chap
-set access profile PPP-AUTH chap default-user "rta"
-set access profile PPP-AUTH chap secret "$9$EDF~DAdfFD934J3<DAF#*<!"
+set access profile default authentication-order chap
+set access profile default client username "rtb" password "@%@%j]v~7%f[#S'W>j9zzM)3,*!u@%@%"
 
-# Local User Account
-set system login user rtb class super-user
-set system login user rtb authentication encrypted-password "$9$j]v~7%f[#S'W>j9zzM)3,*!u"
-
-# Address Pool
-set access address-pool POOL1 family inet network 10.110.0.0/24
-set access address-pool POOL1 family inet range RANGE1 low 10.110.0.2 high 10.110.0.254
-
-# Firewall Filter
-set firewall family inet filter DIALER-ALLOW term ALLOW-IP from protocol tcp
-set firewall family inet filter DIALER-ALLOW term ALLOW-IP from protocol udp
-set firewall family inet filter DIALER-ALLOW term ALLOW-IP then accept
-
-# Physical Interface
-!set interfaces lmp-0/0/0 unit 0 family inet
+set access address-assignment pool pool1 family inet network 10.110.0.0/24
+set access address-assignment pool pool1 family inet range range1 low 10.110.0.2 high 10.110.0.254
+set access address-assignment pool pool1 family inet host-routing

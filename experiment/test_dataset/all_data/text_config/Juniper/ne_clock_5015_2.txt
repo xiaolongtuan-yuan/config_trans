@@ -1,17 +1,7 @@
-set system host-name DeviceC
-set system time-zone UTC
+set system host-name DeviceC  
 
-set system ntp server bits0 prefer
-set system ntp boot-server bits0
-!set system ntp source-address 192.168.1.1  # 替换为实际管理IP
+set chassis clock source bits0 2mhz  
+set chassis clock source bits0 ssm  
 
-!set protocols ptp clock ordinary priority1 1
-!set protocols ptp clock ordinary clock-type boundary
+set chassis synchronization network-option ssm  
 
-!set interfaces ge-0/0/0 unit 0 family ptp
-!set interfaces ge-0/0/0 unit 0 family ptp clock-mode ordinary
-!set interfaces ge-0/0/0 unit 0 family ptp priority 1
-
-!set interfaces ge-0/0/1 unit 0 family ptp
-!set interfaces ge-0/0/1 unit 0 family ptp clock-mode ordinary
-!set interfaces ge-0/0/1 unit 0 family ptp priority 3

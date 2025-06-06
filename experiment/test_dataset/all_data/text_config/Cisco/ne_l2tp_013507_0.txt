@@ -1,41 +1,21 @@
 hostname DeviceA
 !
-! AAA和RADIUS配置
 aaa new-model
-aaa authentication ppp default group radius local
-aaa authorization network default group radius local
+aaa authentication ppp default group radius
+aaa authorization network default group radius 
 aaa accounting network default start-stop group radius
-aaa session-id common
 !
-radius-server host 10.20.20.1 auth-port 1812 acct-port 1813 key 7 061A2E3B3C021F1F777D701B1B317D7C1D1A371F1C1E7C
+radius-server host 10.20.20.1 auth-port 1812 acct-port 1813 key 7 <shared-key>
 !
-! 虚拟模板配置
-interface Virtual-Template1
- ppp authentication chap
-!
-! PPPoE服务配置
 interface GigabitEthernet2/0/0.100
  encapsulation dot1Q 100
- no shutdown
 !
-! L2TP隧道配置
-interface Tunnel1
- ip unnumbered GigabitEthernet1/0/0
- tunnel source GigabitEthernet1/0/0
- tunnel destination 10.38.160.2
-!
-! 物理接口配置
-interface GigabitEthernet1/0/0
- no shutdown
- ip address 10.38.160.1 255.255.255.0
-!
-! VPDN配置（L2TP标准语法）
 vpdn enable
 vpdn-group L2TP_GROUP
  accept-dialin
   protocol l2tp
   virtual-template 1
-!
-ip domain-name example.com  ! 替换为实际域名
+ !
+ l2tp tunnel password 7 <tunnel-password>
 !
 end

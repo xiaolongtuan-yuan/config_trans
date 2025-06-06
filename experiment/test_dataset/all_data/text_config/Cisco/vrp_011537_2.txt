@@ -1,19 +1,20 @@
 hostname PE2
 !
-mpls ip
- !
+ip cef
+mpls ldp router-id Loopback0
 !
-l2vpn vfi context ldp1
- vpn id 1
+pseudowire-class LDP-PW
+ encapsulation mpls
 !
 interface GigabitEthernet1/0/1.1
  encapsulation dot1Q 2
- xconnect 2.2.2.2 1 encapsulation mpls
+ xconnect 2.2.2.2 1 pw-class LDP-PW
 !
 interface GigabitEthernet1/0/2
  no shutdown
  ip address 10.1.1.2 255.255.255.0
  mpls ip
+ mpls ldp autoconfig
 !
 interface Loopback0
  ip address 1.1.1.1 255.255.255.255
@@ -21,13 +22,5 @@ interface Loopback0
 router ospf 1
  network 1.1.1.1 0.0.0.0 area 0
  network 10.1.1.0 0.0.0.255 area 0
-!
-ethernet cfm
-  service ma1
-    interface GigabitEthernet1/0/1.1
-
-   !
-  !
- !
 !
 end

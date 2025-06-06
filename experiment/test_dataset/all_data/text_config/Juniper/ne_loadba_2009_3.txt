@@ -1,14 +1,12 @@
 set system host-name routerD
 
-# IS-IS配置修正
-!set protocols isis level 1 disable  # 禁用level 2，只保留level 1
-!set protocols isis net 10.0000.0000.0004.00  # 修正network-entity语法
+set protocols isis interface ge-1/0/0.0 point-to-point
+set protocols isis interface ge-1/0/0.0 level 1 disable
 
-# 接口配置保持不变
 set interfaces ge-1/0/0 unit 0 family inet address 10.50.1.2/24
-set interfaces ge-1/0/0 unit 0 family iso
 set protocols isis interface ge-1/0/0.0
 
 set interfaces ge-2/0/0 unit 0 family inet address 10.80.1.2/24
-set interfaces ge-2/0/0 unit 0 family iso
 set protocols isis interface ge-2/0/0.0
+set protocols isis interface ge-2/0/0.0 point-to-point
+set protocols isis interface ge-2/0/0.0 level 1 disable

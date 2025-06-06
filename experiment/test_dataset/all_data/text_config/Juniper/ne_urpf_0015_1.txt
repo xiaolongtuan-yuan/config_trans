@@ -1,9 +1,13 @@
 set system host-name routerB
 
-set firewall family inet filter acl2010 term 1 from source-address 10.1.1.0/24
-set firewall family inet filter acl2010 term 1 then accept
-set firewall family inet filter acl2010 term default then discard
+set firewall family inet filter acl2010 term permit_ip from source-address 10.1.1.0/24
+set firewall family inet filter acl2010 term permit_ip then accept
 
+set firewall policer police_2mbps if-exceeding bandwidth-limit 2m
+set firewall policer police_2mbps if-exceeding burst-size-limit 150k
+set firewall policer police_2mbps then discard
+set firewall family inet filter acl2010 term rate_limit then policer police_2mbps
+set firewall family inet filter acl2010 term rate_limit then accept
 
-set interfaces ge-1/0/0 unit 0 family inet address 172.19.139.2/30
-set interfaces ge-1/0/0 unit 0 family inet filter input acl2010
+set interfaces ge-0/0/0 unit 0 family inet address 172.19.139.2/30
+set interfaces ge-0/0/0 unit 0 family inet filter input acl2010

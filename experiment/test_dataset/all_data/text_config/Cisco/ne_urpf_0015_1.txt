@@ -1,18 +1,17 @@
 hostname routerB
-!
-ip access-list extended 2010
- permit ip 10.1.1.0 0.0.0.255 any
-!
+
+access-list 2010 permit ip 10.1.1.0 0.0.0.255 any
+!!
 class-map match-any classifier1
- match access-group name 2010
-!
+ match access-group 2010
+
 policy-map policy1
  class classifier1
-  !verify source reachable-via rx
-!
+  ip verify unicast source reachable-via rx
+
 interface GigabitEthernet1/0/0
  no shutdown
  ip address 172.19.139.2 255.255.255.252
  service-policy input policy1
-!
+
 end

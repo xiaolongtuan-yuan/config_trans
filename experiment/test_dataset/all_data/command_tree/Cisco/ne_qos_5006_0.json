@@ -2,12 +2,12 @@
     "hostname DeviceA": {
         "template": "hostname [parameter1]",
         "command": "hostname DeviceA",
-        "explanation": "Sets the data's host name 'DeviceA'",
+        "explanation": "Sets the device's host name 'DeviceA'",
         "parameters": [
             {
                 "name": "host name",
                 "type": "string",
-                "explanation": "HostName"
+                "explanation": "Host Name"
             }
         ]
     },
@@ -19,30 +19,25 @@
             {
                 "name": "controller ID",
                 "type": "string",
-                "explanation": "I don't know."
+                "explanation": "controller identifier"
             }
         ],
-        "channel-group 0 timeslots 1-31": {
-            "template": "channel-group [parameter1] timeslots [parameter2]",
-            "command": "channel-group 0 timeslots 1-31",
-            "explanation": "Allocate times 1-31 to chanel-group 0",
+        "pri-group timeslots 1-31": {
+            "command": "pri-group timeslots 1-31",
+            "template": "pri-group timeslots [parameter1]",
+            "explanation": "Configure PRI group timeslots",
             "parameters": [
                 {
-                    "name": "channel-group number",
-                    "type": "integer",
-                    "explanation": "Channel group number"
-                },
-                {
-                    "name": "timeslots",
+                    "name": "timeslots range",
                     "type": "string",
-                    "explanation": "Gap Range"
+                    "explanation": "Range of times to be included in the PRI group"
                 }
             ]
         },
         "no shutdown": {
             "template": "no shutdown",
             "command": "no shutdown",
-            "explanation": "\"Enable interface",
+            "explanation": "Enable interface",
             "parameters": []
         }
     },
@@ -54,141 +49,79 @@
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
-        "service-policy output QOS_POLICY": {
-            "command": "service-policy output QOS_POLICY",
-            "template": "service-policy [direction] [policy-name]",
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "Enable interface",
+            "parameters": []
+        },
+        "ip address 3.3.3.1 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 3.3.3.1 255.255.255.0",
+            "explanation": "The IPv4 address for the configuration interface is 3.3.3.1 The subnet mask is 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 Address"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "Subnet mask"
+                }
+            ]
+        },
+        "service-policy output QOS_PROFILE": {
+            "command": "service-policy output QOS_PROFILE",
+            "template": "service-policy [direction] [policy_name]",
             "explanation": "Applies a QoS policy to traffic in the treated direction",
             "parameters": [
                 {
                     "name": "direction",
                     "type": "string",
-                    "explanation": "The rules of traffic are applied, either 'input' or 'output'"
+                    "explanation": "addressed to which the policy is applied"
                 },
                 {
-                    "name": "policy-name",
+                    "name": "policy_name",
                     "type": "string",
                     "explanation": "The name of the QoS policy to be applied"
                 }
             ]
         }
     },
-    "class-map match-any CLASS1": {
-        "command": "class-map match-any CLASS1",
-        "match ip precedence 1": {
-            "command": "match ip precedence 1",
-            "template": "match ip precedence [parameter1]",
-            "explanation": "Matches packs with a general IP predence value",
-            "parameters": [
-                {
-                    "name": "precedence value",
-                    "type": "integer",
-                    "explanation": "The IP predence value to match from 0 to 7"
-                }
-            ]
-        },
-        "template": "class-map match-any [parameter1]",
-        "explanation": "\"Create a class Map and make sure that you don't have to go to jail.\"",
-        "parameters": [
-            {
-                "name": "class-map name",
-                "type": "string",
-                "explanation": "Name of the class Map"
-            }
-        ]
+    "end": {
+        "template": "end",
+        "command": "end",
+        "explanation": "End Configuration Mode",
+        "parameters": []
     },
-    "class-map match-any CLASS2": {
-        "command": "class-map match-any CLASS2",
-        "match ip precedence 2": {
-            "command": "match ip precedence 2",
-            "template": "match ip precedence [parameter1]",
-            "explanation": "Matches packs with a general IP predence value",
-            "parameters": [
-                {
-                    "name": "precedence value",
-                    "type": "integer",
-                    "explanation": "The IP predence value to match from 0 to 7"
-                }
-            ]
-        },
-        "template": "class-map match-any [parameter1]",
-        "explanation": "Create a class map named CLASS2 that matches any of the claimed clitteria",
-        "parameters": [
-            {
-                "name": "class-map name",
-                "type": "string",
-                "explanation": "Name of the class Map"
-            }
-        ]
-    },
-    "class-map match-any CLASS3": {
-        "command": "class-map match-any CLASS3",
-        "match ip precedence 3": {
-            "command": "match ip precedence 3",
-            "template": "match ip precedence [parameter1]",
-            "explanation": "Matches packs with a general IP predence value",
-            "parameters": [
-                {
-                    "name": "precedence value",
-                    "type": "integer",
-                    "explanation": "IP release value to match (0-7)"
-                }
-            ]
-        },
-        "template": "class-map match-any [parameter1]",
-        "explanation": "Create a class map named CLASS3 that matches any of the clliteria drilled in the class Map",
-        "parameters": [
-            {
-                "name": "class-map name",
-                "type": "string",
-                "explanation": "The name of the class Map"
-            }
-        ]
-    },
-    "class-map match-any CLASS4": {
-        "command": "class-map match-any CLASS4",
-        "match ip precedence 4": {
-            "command": "match ip precedence 4",
-            "template": "match ip precedence [parameter1]",
-            "explanation": "Matches packs with a general IP predence value",
-            "parameters": [
-                {
-                    "name": "precedence value",
-                    "type": "integer",
-                    "explanation": "The IP predence value to match from 0 to 7"
-                }
-            ]
-        },
-        "template": "class-map match-any [parameter1]",
-        "explanation": "Create a class map named CLASS4 that matches any one of the supposed CIA",
-        "parameters": [
-            {
-                "name": "class-map name",
-                "type": "string",
-                "explanation": "Name of the class Map"
-            }
-        ]
-    },
-    "policy-map QOS_POLICY": {
-        "command": "policy-map QOS_POLICY",
-        "class CLASS1": {
-            "command": "class CLASS1",
-            "priority percent 25    ! 对应原priority-group 1": {
-                "command": "priority percent 25",
-                "template": "priority percent [parameter1]",
-                "explanation": "Set the price level for a Bridget group",
+    "policy-map QOS_PROFILE": {
+        "command": "policy-map QOS_PROFILE",
+        "class PG2": {
+            "command": "class PG2",
+            "shape average 400000 40000": {
+                "template": "shape average [parameter1] [parameter2]",
+                "command": "shape average 400000 40000",
+                "explanation": "Configure an average shaping rate of 400,000 bps and a flash of 40000 bytes",
                 "parameters": [
                     {
-                        "name": "percentage",
+                        "name": "average rate",
                         "type": "integer",
-                        "explanation": "The process value to set for the price"
+                        "explanation": "Average rate (bps)"
+                    },
+                    {
+                        "name": "burst size",
+                        "type": "integer",
+                        "explanation": "Bytes"
                     }
                 ]
             },
             "template": "class [parameter1]",
-            "explanation": "Define a class for QoS (Quality of Service) configuration",
+            "explanation": "Define a class for policy reconciliation",
             "parameters": [
                 {
                     "name": "class name",
@@ -197,80 +130,90 @@
                 }
             ]
         },
-        "class CLASS2": {
-            "command": "class CLASS2",
-            "bandwidth percent 40   ! 对应原priority-group 2": {
-                "command": "bandwidth percent 40",
-                "template": "bandwidth percent [parameter1]",
-                "explanation": "Sets the blindth capacity for a queu or interface",
+        "class PG3": {
+            "command": "class PG3",
+            "shape average 300000 30000": {
+                "template": "shape average [parameter1] [parameter2]",
+                "command": "shape average 300000 30000",
+                "explanation": "Configure an average shaping rate of 300,000 bps with a flash of 300,000 bytes",
                 "parameters": [
                     {
-                        "name": "percentage",
+                        "name": "average rate",
                         "type": "integer",
-                        "explanation": "The situation of total bandth to allocate"
+                        "explanation": "Average rate (bps)"
+                    },
+                    {
+                        "name": "burst size",
+                        "type": "integer",
+                        "explanation": "Bytes"
                     }
                 ]
             },
             "template": "class [parameter1]",
-            "explanation": "Refine or offer to a class for policy tables or other conflicts",
+            "explanation": "Define or refer to a class named PG3",
             "parameters": [
                 {
                     "name": "class name",
                     "type": "string",
-                    "explanation": "The name of the class to be compromised or offered"
+                    "explanation": "The name of the class to be compromised or referred"
                 }
             ]
         },
-        "class CLASS3": {
-            "command": "class CLASS3",
-            "bandwidth percent 30   ! 对应原priority-group 3": {
-                "command": "bandwidth percent 30",
-                "template": "bandwidth percent [parameter1]",
-                "explanation": "Set the handwidth operation for a specific nature group",
+        "class PG4": {
+            "command": "class PG4",
+            "shape average 200000 20000": {
+                "template": "shape average [parameter1] [parameter2]",
+                "command": "shape average 200000 20000",
+                "explanation": "Configure an average shaping rate of 200000 bps with a flash mass of 20000 bytes",
                 "parameters": [
                     {
-                        "name": "percentage",
+                        "name": "average rate",
                         "type": "integer",
-                        "explanation": "The power of arms to allocate"
+                        "explanation": "Average rate (bps)"
+                    },
+                    {
+                        "name": "burst size",
+                        "type": "integer",
+                        "explanation": "Bytes"
                     }
                 ]
             },
             "template": "class [parameter1]",
-            "explanation": "Of course.",
+            "explanation": "Define a class for policy routing",
             "parameters": [
                 {
                     "name": "class name",
                     "type": "string",
-                    "explanation": "Name of the class Map"
+                    "explanation": "The name of the class to be compromised"
                 }
             ]
         },
-        "class CLASS4": {
-            "command": "class CLASS4",
-            "bandwidth percent 20   ! 对应原priority-group 4": {
-                "command": "bandwidth percent 20",
-                "template": "bandwidth percent [parameter1]",
-                "explanation": "Set the handwidth operation for a specific nature group",
+        "class class-default": {
+            "command": "class class-default",
+            "shape average 60000": {
+                "command": "shape average 60000",
+                "template": "shape average [parameter1]",
+                "explanation": "...conveying for traffic in bits per second...",
                 "parameters": [
                     {
-                        "name": "percentage",
+                        "name": "average rate",
                         "type": "integer",
-                        "explanation": "The power of arms to allocate"
+                        "explanation": "The age rat in bits per second to which traffic should be shared"
                     }
                 ]
             },
             "template": "class [parameter1]",
-            "explanation": "Define or offer to a class for policy communication",
+            "explanation": "Confusion a class for quality of service",
             "parameters": [
                 {
                     "name": "class name",
                     "type": "string",
-                    "explanation": "The name of the class to be compromised or offered"
+                    "explanation": "The name of the class to be compromised, with 'class-default' being a reserved keyword for the default class"
                 }
             ]
         },
         "template": "policy-map [parameter1]",
-        "explanation": "Create or move a policy pap that can be visited to one or more services to a service policy",
+        "explanation": "Create or move a policy pap that could be attached to one or more introfaces to a service policy",
         "parameters": [
             {
                 "name": "policy-map name",
@@ -279,10 +222,40 @@
             }
         ]
     },
-    "end": {
-        "template": "end",
-        "command": "end",
-        "explanation": "End Construction Mode",
-        "parameters": []
+    "class-map PG2": {
+        "command": "class-map PG2",
+        "template": "class-map [parameter1]",
+        "explanation": "Create a class map to classify",
+        "parameters": [
+            {
+                "name": "class-map name",
+                "type": "string",
+                "explanation": "Name of the class Map"
+            }
+        ]
+    },
+    "class-map PG3": {
+        "command": "class-map PG3",
+        "template": "class-map [parameter1]",
+        "explanation": "Create a class map to classify",
+        "parameters": [
+            {
+                "name": "class-map name",
+                "type": "string",
+                "explanation": "Name of the class Map"
+            }
+        ]
+    },
+    "class-map PG4": {
+        "command": "class-map PG4",
+        "template": "class-map [parameter1]",
+        "explanation": "Create a class map to classify",
+        "parameters": [
+            {
+                "name": "class-map name",
+                "type": "string",
+                "explanation": "Name of the class Map"
+            }
+        ]
     }
 }

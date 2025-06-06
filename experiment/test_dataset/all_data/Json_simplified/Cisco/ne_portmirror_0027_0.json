@@ -2,31 +2,66 @@
     "hostname [parameter1]": {
         "template": "hostname [parameter1]",
         "command": "hostname DeviceB",
-        "explanation": "Sets the data's host name 'DeviceB'",
+        "explanation": "Sets the device's host name 'DeviceB'",
         "parameters": [
             {
                 "name": "host name",
                 "type": "string",
-                "explanation": "HostName"
+                "explanation": "Host Name"
             }
         ]
     },
     "vlan [parameter1]": {
         "template": "vlan [parameter1]",
-        "command": "vlan 10",
-        "explanation": "\"Create or enter configration mode for VLAN 10\"",
+        "command": "vlan 100",
+        "name [parameter1]": {
+            "template": "name [parameter1]",
+            "command": "name RSPAN_VLAN",
+            "explanation": "Assign a name to a VLAN",
+            "parameters": [
+                {
+                    "name": "VLAN name",
+                    "type": "string",
+                    "explanation": "The name to be identified to the VLAN"
+                }
+            ]
+        },
+        "remote-span": {
+            "template": "remote-span",
+            "command": "remote-span",
+            "explanation": "(Switched Port Analyzer)",
+            "parameters": []
+        },
+        "explanation": "Create or conjure a VLAN",
         "parameters": [
             {
-                "name": "vlan id",
+                "name": "VLAN ID",
                 "type": "integer",
-                "explanation": "VLAN ID"
+                "explanation": "The ID of the VLAN to be created or compromised"
             }
         ]
     },
-    "monitor session [session_id] source interface [interface_name] [direction]": {
-        "template": "monitor session [session_id] source interface [interface_name] [direction]",
-        "command": "monitor session 1 source interface GigabitEthernet3/0/0 both",
-        "explanation": "Consequence a monitoring session to follow from a trained intelligence in both directions",
+    "monitor session [parameter1] source interface [parameter2]": {
+        "template": "monitor session [parameter1] source interface [parameter2]",
+        "command": "monitor session 1 source interface GigabitEthernet3/0/0",
+        "explanation": "Configure the source interface for Monitor Session 1 as 'GigabitEthernet3/0/0'",
+        "parameters": [
+            {
+                "name": "session id",
+                "type": "integer",
+                "explanation": "Monitor Session ID"
+            },
+            {
+                "name": "source interface",
+                "type": "string",
+                "explanation": "Source Interface"
+            }
+        ]
+    },
+    "monitor session [session_id] destination remote vlan [vlan_id]": {
+        "template": "monitor session [session_id] destination remote vlan [vlan_id]",
+        "command": "monitor session 1 destination remote vlan 100",
+        "explanation": "I'm going to make sure a current VLAN.",
         "parameters": [
             {
                 "name": "session_id",
@@ -34,70 +69,79 @@
                 "explanation": "The ID of the monitoring session"
             },
             {
-                "name": "interface_name",
-                "type": "string",
-                "explanation": "The name of the interface to monitor"
-            },
-            {
-                "name": "direction",
-                "type": "string",
-                "explanation": "The direction of traffic to monitor"
-            }
-        ]
-    },
-    "monitor session [session_id] destination interface [interface_name] encapsulation [encapsulation_type] ingress vlan [vlan_id]": {
-        "template": "monitor session [session_id] destination interface [interface_name] encapsulation [encapsulation_type] ingress vlan [vlan_id]",
-        "command": "monitor session 1 destination interface GigabitEthernet3/0/1 encapsulation replicate ingress vlan 10",
-        "explanation": "Convergence of a monitoring session from a source to a determination in contact with trained encapsulation and VLAN settings.",
-        "parameters": [
-            {
-                "name": "session_id",
-                "type": "integer",
-                "explanation": "The ID of the monitoring session."
-            },
-            {
-                "name": "interface_name",
-                "type": "string",
-                "explanation": "The name of the development information."
-            },
-            {
-                "name": "encapsulation_type",
-                "type": "string",
-                "explanation": "The type of encapsulation to use, e.g., functional."
-            },
-            {
                 "name": "vlan_id",
                 "type": "integer",
-                "explanation": "The VLAN ID for ingress technical."
+                "explanation": "The VLAN ID to which the traffic is threatened"
             }
         ]
     },
     "interface [parameter1]": {
         "template": "interface [parameter1]",
-        "command": "interface GigabitEthernet3/0/0",
-        "explanation": "Configure interface 'GigabitEthernet3/0/0'",
+        "command": "interface GigabitEthernet3/0/1",
+        "explanation": "Configure interface 'GigabitEthernet3/0/1 '",
         "parameters": [
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
+        "description [parameter1]": {
+            "template": "description [parameter1]",
+            "command": "description RSPAN-DESTINATION",
+            "explanation": "Set a decision for the interface",
+            "parameters": [
+                {
+                    "name": "description text",
+                    "type": "string",
+                    "explanation": "The description text to be set for the interface"
+                }
+            ]
+        },
         "switchport": {
             "template": "switchport",
             "command": "switchport",
-            "explanation": "I'm sure you're right.",
+            "explanation": "Configure interfaces to secondary exchange port",
             "parameters": []
+        },
+        "switchport trunk allowed vlan [parameter1]": {
+            "template": "switchport trunk allowed vlan [parameter1]",
+            "command": "switchport trunk allowed vlan 100",
+            "explanation": "Problems the VLANs allowed on the turn port",
+            "parameters": [
+                {
+                    "name": "VLAN ID",
+                    "type": "integer",
+                    "explanation": "The VLAN ID that is allowed on the trunk port"
+                }
+            ]
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.10.1.1 255.255.255.0",
+            "explanation": "The IPv4 address for the configuration interface is 10.10.1.1 The subnet mask is 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 Address"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "Subnet mask"
+                }
+            ]
         },
         "switchport mode [parameter1]": {
             "template": "switchport mode [parameter1]",
             "command": "switchport mode access",
-            "explanation": "Set interface move as access move",
+            "explanation": "Set interface mode as access mode",
             "parameters": [
                 {
                     "name": "mode",
                     "type": "string",
-                    "explanation": "The Internet Mode"
+                    "explanation": "Interface Mode"
                 }
             ]
         },
@@ -112,29 +156,6 @@
                     "explanation": "VLAN ID"
                 }
             ]
-        },
-        "ip address [parameter1] [parameter2]": {
-            "template": "ip address [parameter1] [parameter2]",
-            "command": "ip address 10.1.1.2 255.255.255.0",
-            "explanation": "Configure interface IPv4 address 10.1.1.2 with subnet mask 255.255.255.0",
-            "parameters": [
-                {
-                    "name": "ip address",
-                    "type": "IPv4",
-                    "explanation": "IPv4 Address"
-                },
-                {
-                    "name": "subnet mask",
-                    "type": "IPv4",
-                    "explanation": "Subnet Mask"
-                }
-            ]
         }
-    },
-    "end": {
-        "template": "end",
-        "command": "end",
-        "explanation": "Exit Construction Mode",
-        "parameters": []
     }
 }

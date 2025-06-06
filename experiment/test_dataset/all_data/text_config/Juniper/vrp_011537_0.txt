@@ -1,19 +1,15 @@
 set system host-name CE1
 
-set vlans vlan-2 vlan-id 2
+set vlans vlan2
 
-set ethernet-switching-options interface ge-1/0/1 interface-mode access
-set ethernet-switching-options interface ge-1/0/1 vlan members vlan-2
+set ethernet-switching-options cfm mep 3 interface ge-0/0/1
+set ethernet-switching-options cfm mep 3 interface ge-0/0/1 ccm-send interval 10
+set ethernet-switching-options cfm mep 3 interface ge-0/0/1 ccm-send enable
+set ethernet-switching-options cfm mep 4 interface ge-0/0/1 ccm-receive enable
+set ethernet-switching-options cfm mep 3 remote-mep 4 ccm-receive enable
+set ethernet-switching-options cfm mep 3 loss-measure dual-ended test-id 2
+set ethernet-switching-options cfm mep 3 loss-measure dual-ended test-duration 0
+set ethernet-switching-options cfm mep 3 loss-measure dual-ended continuity-check interval 1
+set ethernet-switching-options cfm mep 3 loss-measure dual-ended continuity-check enable
 
-set protocols oam cfm version standard
-set protocols oam cfm mep md md1 ma ma2 mep-id 3 interface ge-1/0/1 direction down
-set protocols oam cfm mep md md1 ma ma2 mep-id 3 ccm interval 3
-set protocols oam cfm mep md md1 ma ma2 mep-id 3 ccm transmit enable
-set protocols oam cfm mep md md1 ma ma2 mep-id 3 remote-mep mep-id 4
-set protocols oam cfm mep md md1 ma ma2 mep-id 3 remote-mep ccm-receive enable
-set protocols oam cfm mep md md1 ma ma2 mep-id 3 loss-measurement test-id 2 peer-mep-id 4
-set protocols oam cfm mep md md1 ma ma2 mep-id 3 loss-measurement test-id 2 dual-ended continuous
-
-set interfaces ge-1/0/1 unit 0 family ethernet-switching interface-mode access
-set interfaces ge-1/0/1 unit 0 family ethernet-switching vlan members vlan-2
-set interfaces ge-1/0/1 disable
+set interfaces ge-0/0/1 unit 0 family ethernet-switching vlan members vlan2

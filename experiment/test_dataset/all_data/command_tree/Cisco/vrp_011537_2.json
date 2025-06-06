@@ -2,54 +2,66 @@
     "hostname PE2": {
         "template": "hostname [parameter1]",
         "command": "hostname PE2",
-        "explanation": "Set the data's hostname 'PE2'",
+        "explanation": "Set the device 's hostname 'PE2'",
         "parameters": [
             {
                 "name": "host name",
                 "type": "string",
-                "explanation": "HostName"
+                "explanation": "Host Name"
             }
         ]
     },
-    "mpls ip": {
-        "template": "mpls ip",
-        "command": "mpls ip",
-        "explanation": "Allow MPLS IP on interface",
+    "ip cef": {
+        "command": "ip cef",
+        "template": "ip cef",
+        "explanation": "Can Cisco Express Forwaring on the route",
         "parameters": []
     },
-    "l2vpn vfi context ldp1": {
-        "command": "l2vpn vfi context ldp1",
-        "vpn id 1": {
-            "template": "vpn id [parameter1]",
-            "command": "vpn id 1",
-            "explanation": "Set VPN ID to 1",
+    "mpls ldp router-id Loopback0": {
+        "command": "mpls ldp router-id Loopback0",
+        "template": "mpls ldp router-id [parameter1]",
+        "explanation": "Configures the MPLS LDP project ID to use the protected loopback interface",
+        "parameters": [
+            {
+                "name": "loopback interface",
+                "type": "string",
+                "explanation": "The name of the loopback interface to be used as the MPLS LDP project ID"
+            }
+        ]
+    },
+    "pseudowire-class LDP-PW": {
+        "command": "pseudowire-class LDP-PW",
+        "encapsulation mpls": {
+            "command": "encapsulation mpls",
+            "template": "encapsulation [parameter1]",
+            "explanation": "And I'm sure you'll find a way to keep your eyes open.",
             "parameters": [
                 {
-                    "name": "vpn id",
-                    "type": "integer",
-                    "explanation": "VPN education number"
+                    "name": "encapsulation type",
+                    "type": "string",
+                    "explanation": "The type of involvement to be applied, such as MPLS"
                 }
             ]
         },
-        "template": "l2vpn vfi context [parameter1]",
-        "explanation": "Construction a Layer 2 Virgin Forwaring Information",
+        "template": "pseudowire-class [parameter1]",
+        "explanation": "Configuration a psudwire class for Layer 2 VPN services",
         "parameters": [
             {
-                "name": "VFI context name",
+                "name": "pseudowire-class name",
                 "type": "string",
-                "explanation": "The name of the VFI contact"
+                "explanation": "Name of the pseudwire class"
             }
         ]
     },
     "interface GigabitEthernet1/0/1.1": {
         "template": "interface [parameter1]",
         "command": "interface GigabitEthernet1/0/1.1",
-        "explanation": "Configure interface GigabitEthernet 1/0/1.1",
+        "explanation": "Configure interface GigabitEthernet1/0/1.1",
         "parameters": [
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
         "encapsulation dot1Q 2": {
@@ -60,29 +72,29 @@
                 {
                     "name": "vlan id",
                     "type": "integer",
-                    "explanation": "VLAN education number"
+                    "explanation": "VLAN identification number"
                 }
             ]
         },
-        "xconnect 2.2.2.2 1 encapsulation mpls": {
-            "command": "xconnect 2.2.2.2 1 encapsulation mpls",
-            "template": "xconnect [peer_ip_address] [vc_id] encapsulation [encapsulation_type]",
-            "explanation": "Establishes a pseudwire connection to a person with the developed IP data, virtually Circuit ID, and encapsulation type.",
+        "xconnect 2.2.2.2 1 pw-class LDP-PW": {
+            "command": "xconnect 2.2.2.2 1 pw-class LDP-PW",
+            "template": "xconnect [parameter1] [parameter2] pw-class [parameter3]",
+            "explanation": "Conformity a cross-clane to a remote Peer with a psudwire class",
             "parameters": [
                 {
-                    "name": "peer_ip_address",
+                    "name": "remote peer IP address",
                     "type": "string",
-                    "explanation": "The IP address of the private route to which the psudwire is conned."
+                    "explanation": "I don't know."
                 },
                 {
-                    "name": "vc_id",
+                    "name": "VC ID",
                     "type": "integer",
-                    "explanation": "The vital civil ID that involves the security protection."
+                    "explanation": "Virtual Circuit Identifier"
                 },
                 {
-                    "name": "encapsulation_type",
+                    "name": "pseudowire class name",
                     "type": "string",
-                    "explanation": "The encapsulation met used for the psudwire, such as MPLS."
+                    "explanation": "Name of the pseudwire class"
                 }
             ]
         }
@@ -90,18 +102,18 @@
     "interface GigabitEthernet1/0/2": {
         "template": "interface [parameter1]",
         "command": "interface GigabitEthernet1/0/2",
-        "explanation": "Configure interface GigabitEthernet 1/0/2",
+        "explanation": "Configure interface GigabitEthernet1/0/2",
         "parameters": [
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
         "no shutdown": {
             "template": "no shutdown",
             "command": "no shutdown",
-            "explanation": "(The interface is closed by default)",
+            "explanation": "Enable interface (the interface is closed by default)",
             "parameters": []
         },
         "ip address 10.1.1.2 255.255.255.0": {
@@ -117,14 +129,20 @@
                 {
                     "name": "subnet mask",
                     "type": "IPv4",
-                    "explanation": "Subnet Mask"
+                    "explanation": "Subnet mask"
                 }
             ]
         },
         "mpls ip": {
             "template": "mpls ip",
             "command": "mpls ip",
-            "explanation": "Allow MPLS IP on interface",
+            "explanation": "Enable MPLS IP on interface",
+            "parameters": []
+        },
+        "mpls ldp autoconfig": {
+            "command": "mpls ldp autoconfig",
+            "template": "mpls ldp autoconfig",
+            "explanation": "Allows MPLS LDP on all interfaces that are running or IS-IS.",
             "parameters": []
         }
     },
@@ -136,13 +154,13 @@
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
         "ip address 1.1.1.1 255.255.255.255": {
             "command": "ip address 1.1.1.1 255.255.255.255",
             "template": "ip address [parameter1] [parameter2]",
-            "explanation": "If you can't do it, it's a good idea.",
+            "explanation": "Assign an IP address and subnet challenge to an interface",
             "parameters": [
                 {
                     "name": "IP address",
@@ -150,9 +168,9 @@
                     "explanation": "The IP address to be identified to the interface"
                 },
                 {
-                    "name": "subnet mask",
+                    "name": "Subnet mask",
                     "type": "string",
-                    "explanation": "The subnetsk agreed with the IP address"
+                    "explanation": "The subnet procession to the IP address"
                 }
             ]
         }
@@ -165,13 +183,13 @@
             {
                 "name": "process id",
                 "type": "integer",
-                "explanation": "OSS Project ID"
+                "explanation": "OSS Process ID"
             }
         ],
         "network 1.1.1.1 0.0.0.0 area 0": {
             "template": "network [parameter1] [parameter2] area [parameter3]",
             "command": "network 1.1.1.1 0.0.0.0 area 0",
-            "explanation": "Network 1.1.1.1/32 signed to OSF area 0",
+            "explanation": "Network 1.1.1.1/32 assigned to OSF area 0",
             "parameters": [
                 {
                     "name": "network address",
@@ -186,14 +204,14 @@
                 {
                     "name": "area",
                     "type": "integer",
-                    "explanation": "OAS Area Number"
+                    "explanation": "OSPF Area Number"
                 }
             ]
         },
         "network 10.1.1.0 0.0.0.255 area 0": {
             "template": "network [parameter1] [parameter2] area [parameter3]",
             "command": "network 10.1.1.0 0.0.0.255 area 0",
-            "explanation": "Transfer of the network to OSS Area 0",
+            "explanation": "Transfer of the network to OSPF Area 0",
             "parameters": [
                 {
                     "name": "network address",
@@ -208,51 +226,15 @@
                 {
                     "name": "area",
                     "type": "integer",
-                    "explanation": "OAS Area Number"
+                    "explanation": "OSPF Area Number"
                 }
             ]
         }
     },
-    "ethernet cfm": {
-        "command": "ethernet cfm",
-        "service ma1": {
-            "template": "service [parameter1]",
-            "command": "service ma1",
-            "explanation": "It's not like you're going to have to do it.",
-            "parameters": [
-                {
-                    "name": "service instance",
-                    "type": "string",
-                    "explanation": "Name of service example"
-                }
-            ],
-            "interface GigabitEthernet1/0/1.1": {
-                "template": "interface [parameter1]",
-                "command": "interface GigabitEthernet1/0/1.1",
-                "explanation": "Configure interface GigabitEthernet 1/0/1.1",
-                "parameters": [
-                    {
-                        "name": "interface name",
-                        "type": "string",
-                        "explanation": "InterfaceName"
-                    }
-                ]
-            }
-        },
-        "template": "ethernet [parameter1]",
-        "explanation": "CONFORM Ethernet CFM",
-        "parameters": [
-            {
-                "name": "CFM feature",
-                "type": "string",
-                "explanation": "Specify the CFM."
-            }
-        ]
-    },
     "end": {
         "command": "end",
         "template": "end",
-        "explanation": "Exit from the current contact mode and return to the Privileged EXEC mode",
+        "explanation": "Exit from the current situation move to the proposed EXEC move",
         "parameters": []
     }
 }

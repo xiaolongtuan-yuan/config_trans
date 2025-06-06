@@ -7,64 +7,67 @@
             {
                 "name": "host name",
                 "type": "string",
-                "explanation": "HostName"
+                "explanation": "Host Name"
             }
         ]
     },
-    "ip access-list extended [parameter1]": {
-        "template": "ip access-list extended [parameter1]",
-        "command": "ip access-list extended 2010",
-        "permit ip [source_address] [source_wildcard] [destination]": {
-            "template": "permit ip [source_address] [source_wildcard] [destination]",
-            "command": "permit ip 10.1.1.0 0.0.0.255 any",
-            "explanation": "Personally from a Specialized source network to any determination",
-            "parameters": [
-                {
-                    "name": "source_address",
-                    "type": "string",
-                    "explanation": "Since IP undersigned"
-                },
-                {
-                    "name": "source_wildcard",
-                    "type": "string",
-                    "explanation": "Wildcard mark for the source IP interview"
-                },
-                {
-                    "name": "destination",
-                    "type": "string",
-                    "explanation": "\"Desertation IP address or 'any' for any determination"
-                }
-            ]
-        },
-        "explanation": "I'm sure you're going to find out what happened.",
+    "access-list [parameter1] [parameter2] [parameter3] [parameter4] [parameter5] [parameter6]": {
+        "template": "access-list [parameter1] [parameter2] [parameter3] [parameter4] [parameter5] [parameter6]",
+        "command": "access-list 2010 permit ip 10.1.1.0 0.0.0.255 any",
+        "explanation": "Contact access control list (ACL) to personal IP traffic from a specific subnet to any determination",
         "parameters": [
             {
-                "name": "access-list number",
+                "name": "ACL number",
                 "type": "integer",
-                "explanation": "The number accounting the evaluated IP access list"
+                "explanation": "The number eating the ACL"
+            },
+            {
+                "name": "action",
+                "type": "string",
+                "explanation": "The action to take"
+            },
+            {
+                "name": "protocol",
+                "type": "string",
+                "explanation": "The program to flyer (e.g., ip, tcp, adp)"
+            },
+            {
+                "name": "source IP address",
+                "type": "string",
+                "explanation": "The source IP address or subnet"
+            },
+            {
+                "name": "source wildcard mask",
+                "type": "string",
+                "explanation": "The Wildcard mark for the source IP address"
+            },
+            {
+                "name": "destination",
+                "type": "string",
+                "explanation": "The determination IP address or 'any' for any determination"
             }
         ]
     },
     "class-map match-any [parameter1]": {
         "template": "class-map match-any [parameter1]",
         "command": "class-map match-any classifier1",
-        "explanation": "Create a class Map that matches any match, with the name classifier1",
+        "explanation": "Create a class map that matches any match, with the name classifier1",
         "parameters": [
             {
                 "name": "class map name",
                 "type": "string",
-                "explanation": "Name of class Map"
+                "explanation": "Name of class map"
             }
         ],
-        "match access-group name [parameter1]": {
-            "template": "match access-group name [parameter1]",
-            "command": "match access-group name 2010",
-            "explanation": "Matches an access group by its name for applying policies or formulas",
+        "match access-group [parameter1]": {
+            "template": "match access-group [parameter1]",
+            "command": "match access-group 2010",
+            "explanation": "Match Access Control List 2010",
             "parameters": [
                 {
-                    "name": "access-group name",
-                    "type": "string",
-                    "explanation": "The name of the access group to be monitored"
+                    "name": "access-group number",
+                    "type": "integer",
+                    "explanation": "Access control list number"
                 }
             ]
         }
@@ -77,7 +80,7 @@
             {
                 "name": "policy map name",
                 "type": "string",
-                "explanation": "Name of the policy Map"
+                "explanation": "Name of the policy map"
             }
         ],
         "class [parameter1]": {
@@ -90,30 +93,36 @@
                     "type": "string",
                     "explanation": "Class name"
                 }
-            ]
+            ],
+            "ip verify unicast source reachable-via rx": {
+                "template": "ip verify unicast source reachable-via rx",
+                "command": "ip verify unicast source reachable-via rx",
+                "explanation": "Validate the availability of PVs, via reception interface",
+                "parameters": []
+            }
         }
     },
     "interface [parameter1]": {
         "template": "interface [parameter1]",
         "command": "interface GigabitEthernet1/0/0",
-        "explanation": "Configure interface GigabitEthernet 1/0/0",
+        "explanation": "Configure interface GigabitEthernet1/0/0",
         "parameters": [
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
         "no shutdown": {
             "template": "no shutdown",
             "command": "no shutdown",
-            "explanation": "(The interface is closed by default)",
+            "explanation": "Enable interface (the interface is closed by default)",
             "parameters": []
         },
         "ip address [parameter1] [parameter2]": {
             "template": "ip address [parameter1] [parameter2]",
             "command": "ip address 172.19.139.2 255.255.255.252",
-            "explanation": "The IPv4 address for the communication information is 172.1139.2 and the subnet mark is 255.255.255.252.",
+            "explanation": "The IPv4 address for the configuration interface is 172.119.139.2 and the subnet mask is 255.255.255.252.",
             "parameters": [
                 {
                     "name": "ip address",
@@ -123,24 +132,24 @@
                 {
                     "name": "subnet mask",
                     "type": "IPv4",
-                    "explanation": "Subnet Mask"
+                    "explanation": "Subnet mask"
                 }
             ]
         },
-        "service-policy [parameter1] [parameter2]": {
-            "template": "service-policy [parameter1] [parameter2]",
+        "service-policy [direction] [policy-name]": {
+            "template": "service-policy [direction] [policy-name]",
             "command": "service-policy input policy1",
-            "explanation": "Apply a service policy to the input direction of an interface",
+            "explanation": "Apply a policy map to the input or output direction of an interface",
             "parameters": [
                 {
                     "name": "direction",
                     "type": "string",
-                    "explanation": "People the direction in which the service policy is applied"
+                    "explanation": "People the direction in which the policy Map is applied, either 'input' or 'output'"
                 },
                 {
-                    "name": "policy name",
+                    "name": "policy-name",
                     "type": "string",
-                    "explanation": "The name of the service policy to be applied"
+                    "explanation": "The name of the policy Map to be applied"
                 }
             ]
         }
@@ -148,7 +157,7 @@
     "end": {
         "template": "end",
         "command": "end",
-        "explanation": "Exit from the current contact mode and return to the Privileged EXEC mode",
+        "explanation": "Exit from the current conjurement mode and return to the Privileged EXEC mode",
         "parameters": []
     }
 }

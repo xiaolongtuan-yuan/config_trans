@@ -2,49 +2,17 @@
     "hostname DeviceB": {
         "template": "hostname [parameter1]",
         "command": "hostname DeviceB",
-        "explanation": "Sets the data's host name 'DeviceB'",
+        "explanation": "Sets the device's host name 'DeviceB'",
         "parameters": [
             {
                 "name": "host name",
                 "type": "string",
-                "explanation": "HostName"
+                "explanation": "Host Name"
             }
         ]
     },
-    "interface Lmpif1/0/0": {
-        "template": "interface [parameter1]",
-        "command": "interface Lmpif1/0/0",
-        "explanation": "Configure interface 'Lmpif1/0/0'",
-        "parameters": [
-            {
-                "name": "interface name",
-                "type": "string",
-                "explanation": "InterfaceName"
-            }
-        ],
-        "no shutdown": {
-            "template": "no shutdown",
-            "command": "no shutdown",
-            "explanation": "(The interface is closed by default)",
-            "parameters": []
-        },
-        "ip address 10.110.0.2 255.255.255.0": {
-            "template": "ip address [parameter1] [parameter2]",
-            "command": "ip address 10.110.0.2 255.255.255.0",
-            "explanation": "Configure interface IPv4 understanding with subnet mask 255.255.255.0",
-            "parameters": [
-                {
-                    "name": "ip address",
-                    "type": "IPv4",
-                    "explanation": "IPv4 Address"
-                },
-                {
-                    "name": "subnet mask",
-                    "type": "IPv4",
-                    "explanation": "Subnet Mask"
-                }
-            ]
-        },
+    "interface Serial1/0/0": {
+        "command": "interface Serial1/0/0",
         "ppp authentication chap": {
             "template": "ppp authentication [parameter1]",
             "command": "ppp authentication chap",
@@ -53,7 +21,7 @@
                 {
                     "name": "authentication type",
                     "type": "string",
-                    "explanation": "Type of education"
+                    "explanation": "Type of authentication"
                 }
             ]
         },
@@ -65,77 +33,86 @@
                 {
                     "name": "hostname",
                     "type": "string",
-                    "explanation": "HostName"
+                    "explanation": "Host Name"
                 }
             ]
         },
-        "ppp chap password 0 @%@%j]v~7%f[#S'W>j9zzM)3,*!u@%@%": {
-            "template": "ppp chap password [parameter1] [parameter2]",
-            "command": "ppp chap password 0 @%@%j]v~7%f[#S'W>j9zzM)3,*!u@%@%",
-            "explanation": "Set the CAP password to show exclusively",
+        "ppp chap password 7 094F471A1B0A545D484A5B597F": {
+            "command": "ppp chap password 7 094F471A1B0A545D484A5B597F",
+            "template": "ppp chap password [encryption_type] [password]",
+            "explanation": "CONFORM PPP CHAP Password with encryption",
             "parameters": [
                 {
-                    "name": "password type",
+                    "name": "encryption_type",
                     "type": "integer",
-                    "explanation": "Password type (0 exceptions)"
+                    "explanation": "The type of application used for the password (e.g., 7 for Cisco type 7 acceptance)"
                 },
                 {
                     "name": "password",
                     "type": "string",
-                    "explanation": "Password"
+                    "explanation": "The enclosed password string"
                 }
             ]
-        }
+        },
+        "template": "interface [parameter1]",
+        "explanation": "Configuure interface",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "Interface name"
+            }
+        ]
     },
-    "aaa new-model": {
-        "template": "aaa new-model",
-        "command": "aaa new-model",
-        "explanation": "Can AA new model",
-        "parameters": []
-    },
-    "username rta password 0 @%@%EDF~DAdfFD934J3<DAF#*<!@%@%": {
-        "template": "username [parameter1] password [parameter2] [parameter3]",
-        "command": "username rta password 0 @%@%EDF~DAdfFD934J3<DAF#*<!@%@%",
-        "explanation": "Creates the username 'rta 'and its password, clearly displayed",
+    "username rta secret 9 $9$hq4S.3Z9Kv1Xe$dQ1VUJ4wCgWbR7yT2MnHx0O5PfL8A6EIkNlBsDaGc": {
+        "command": "username rta secret 9 $9$hq4S.3Z9Kv1Xe$dQ1VUJ4wCgWbR7yT2MnHx0O5PfL8A6EIkNlBsDaGc",
+        "template": "username [parameter1] secret [parameter2] [parameter3]",
+        "explanation": "Configuration a username with a secret password",
         "parameters": [
             {
                 "name": "username",
                 "type": "string",
-                "explanation": "Username"
+                "explanation": "The name of the user"
             },
             {
-                "name": "password type",
+                "name": "encryption type",
                 "type": "integer",
-                "explanation": "Password type (0 exceptions)"
+                "explanation": "The type of involvement used for the security"
             },
             {
-                "name": "password",
+                "name": "encrypted secret",
                 "type": "string",
-                "explanation": "Password"
+                "explanation": "The enclosed secret password for the user"
             }
         ]
     },
-    "aaa authentication login default1 local": {
-        "template": "aaa authentication login [parameter1] [parameter2]",
-        "command": "aaa authentication login default1 local",
-        "explanation": "Sees AAA processing us using local data, including 'default1'",
+    "aaa new-model": {
+        "template": "aaa new-model",
+        "command": "aaa new-model",
+        "explanation": "Enable AAA new model",
+        "parameters": []
+    },
+    "aaa authentication ppp default local": {
+        "command": "aaa authentication ppp default local",
+        "template": "aaa authentication ppp [parameter1] [parameter2]",
+        "explanation": "Integration AAA for PPP sessions,",
         "parameters": [
             {
-                "name": "authentication list",
+                "name": "default",
                 "type": "string",
-                "explanation": "Authentification list name"
+                "explanation": "Speculations of the speciality system"
             },
             {
-                "name": "method",
+                "name": "local",
                 "type": "string",
-                "explanation": "Speciality method (local data)"
+                "explanation": "Asses the local user data for"
             }
         ]
     },
     "end": {
         "template": "end",
         "command": "end",
-        "explanation": "End Construction Mode",
+        "explanation": "End Configuration Mode",
         "parameters": []
     }
 }

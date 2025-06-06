@@ -1,40 +1,8 @@
 hostname Device1
 !
-! Cisco标准License声明
-license boot level network-advantage  ! Cisco推荐License级别
+license boot module c9400npe-flex
 !
 interface TenGigabitEthernet1/1/1
  no shutdown
-!
-! Cisco FlexE配置（仅适用于Catalyst 9400/Nexus平台）
-controller FlexE 1/1/1
- !mode ethernet
- !
- ! 成员接口配置
- !member-interface TenGigabitEthernet1/1/1
- !
- ! 客户端实例配置（Cisco标准语法）
- !client 1
- ! bandwidth 4000
- !
- !client 2
- ! bandwidth 5000
- !
- !client 3
- ! bandwidth 15000
- !
- !client 4
- ! bandwidth 20000
-!
-! Cisco逻辑接口配置
-interface Port-channel1
- switchport mode trunk
- switchport trunk allowed vlan 1-4094
- switchport nonegotiate
- no shutdown
-!
-! Cisco FlexE绑定配置
-controller FlexE 1/1/1
- !bind interface Port-channel1
 !
 end

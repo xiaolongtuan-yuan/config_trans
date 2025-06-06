@@ -2,12 +2,12 @@
     "set system host-name DeviceA": {
         "template": "set system host-name [parameter1]",
         "command": "set system host-name DeviceA",
-        "explanation": "Confusion the host name of the deal.",
+        "explanation": "Configure the host name of the device.",
         "parameters": [
             {
                 "name": "hostname",
                 "type": "string",
-                "explanation": "The host name of the equipment used to educate the equipment in the network."
+                "explanation": "The host name of the equipment used to identify the equipment in the network."
             }
         ]
     },
@@ -25,29 +25,29 @@
         "unit 0 family inet address 10.1.1.1/24": {
             "template": "unit [parameter2] family inet address [parameter3]/[parameter4]",
             "command": "unit 0 family inet address 10.1.1.1/24",
-            "explanation": "Configures an IPv4 address (`[parameter3]/[parameter4]`) on logical interface `[parameter2]` in a Juniper device.",
+            "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
             "parameters": [
                 {
                     "name": "unit",
                     "type": "integer",
-                    "explanation": "Interface without number to listen to the multi-ethnic relations under the same environment."
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
                 },
                 {
                     "name": "ip-address",
                     "type": "string",
-                    "explanation": "The IPv4 arrived agreed to the interface."
+                    "explanation": "The IPv4 address assigned to the interface."
                 },
                 {
                     "name": "subnet-mask",
                     "type": "integer",
-                    "explanation": "Bits of IPv4 subnet."
+                    "explanation": "Bits of IPv4 subnet mask."
                 }
             ]
         }
     },
-    "set interfaces st0": {
+    "set interfaces gr-0/0/0": {
         "template": "set interfaces [parameter1]",
-        "command": "set interfaces st0",
+        "command": "set interfaces gr-0/0/0",
         "explanation": "Creates a polymer interface.",
         "parameters": [
             {
@@ -56,74 +56,112 @@
                 "explanation": "Interface name, e.g., g-1/0/0."
             }
         ],
-        "unit 1 tunnel source ge-1/0/1.0": {
+        "unit 1 tunnel source 10.1.1.1": {
             "template": "unit [parameter2] tunnel source [parameter3]",
-            "command": "unit 1 tunnel source ge-1/0/1.0",
-            "explanation": "If you're going to be able to do that, you're going to have to do it.",
+            "command": "unit 1 tunnel source 10.1.1.1",
+            "explanation": "Configure the source address for the tunnel interface.",
             "parameters": [
                 {
-                    "name": "unit number",
+                    "name": "unit",
                     "type": "integer",
-                    "explanation": "Unit number of the interface"
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
                 },
                 {
-                    "name": "source interface",
+                    "name": "source-address",
                     "type": "string",
-                    "explanation": "Course interface for the tunnel (e.g., g-1/0/1.0)"
+                    "explanation": "Source IPv4 address for tunnel interface."
                 }
             ]
         },
-        "unit 1 tunnel destination 2001:db8::1": {
+        "unit 1 tunnel destination 0.0.0.0": {
             "template": "unit [parameter2] tunnel destination [parameter3]",
-            "command": "unit 1 tunnel destination 2001:db8::1",
-            "explanation": "Conspiracy a security transfer with a representative unit and development IPv6 undermining",
+            "command": "unit 1 tunnel destination 0.0.0.0",
+            "explanation": "Configure the purpose address of the tunnel interface.",
             "parameters": [
                 {
-                    "name": "unit number",
+                    "name": "unit",
                     "type": "integer",
-                    "explanation": "Local unit number for the interface"
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
                 },
                 {
-                    "name": "destination IPv6 address",
-                    "type": "IPv6 address",
-                    "explanation": "IPv6 address of the tunnel determination"
-                }
-            ]
-        },
-        "unit 1 tunnel protocol ipip6": {
-            "template": "unit [parameter2] tunnel protocol [parameter3]",
-            "command": "unit 1 tunnel protocol ipip6",
-            "explanation": "I'm going to have to tell you something.",
-            "parameters": [
-                {
-                    "name": "unit number",
-                    "type": "integer",
-                    "explanation": "The unit number of the interface"
-                },
-                {
-                    "name": "tunnel protocol",
+                    "name": "destination-address",
                     "type": "string",
-                    "explanation": "The program to be used for the tunnel"
-                }
-            ]
-        },
-        "unit 1 family inet6": {
-            "template": "unit [parameter2] family [parameter3]",
-            "command": "unit 1 family inet6",
-            "explanation": "Contact the interface with a private unit and family type for IPv6",
-            "parameters": [
-                {
-                    "name": "unit number",
-                    "type": "integer",
-                    "explanation": "The unit number of the interface"
-                },
-                {
-                    "name": "family type",
-                    "type": "string",
-                    "explanation": "The family type for the interface review, inet6 for IPv6"
+                    "explanation": "The purpose of the tunnel interface is IPv4 address."
                 }
             ]
         }
+    },
+    "set services service-set 6RD_SS": {
+        "template": "set services service-set [parameter1]",
+        "command": "set services service-set 6RD_SS",
+        "explanation": "The company `set services service-set [parameter1] `creates or conflicts a service set named `[parmeter1] for applying services like NAT, security, or technical capacity. '",
+        "parameters": [
+            {
+                "name": "service-set name",
+                "type": "string",
+                "explanation": "The name of the service set"
+            }
+        ],
+        "interface-service service-interface gr-0/0/0": {
+            "template": "interface-service service-interface [parameter2]",
+            "command": "interface-service service-interface gr-0/0/0",
+            "explanation": "Conspiracy a service set with a specialized service interface",
+            "parameters": [
+                {
+                    "name": "service-interface name",
+                    "type": "string",
+                    "explanation": "The name of the service"
+                }
+            ]
+        }
+    },
+    "set services 6rd service-set 6RD_SS": {
+        "template": "set services 6rd service-set [parameter1]",
+        "command": "set services 6rd service-set 6RD_SS",
+        "explanation": "It's a 6rd service set",
+        "parameters": [
+            {
+                "name": "service-set name",
+                "type": "string",
+                "explanation": "Name of the 6rd service set"
+            }
+        ]
+    },
+    "set services 6rd tunnel-context ipv4": {
+        "template": "set services 6rd tunnel-context [parameter1]",
+        "command": "set services 6rd tunnel-context ipv4",
+        "explanation": "Configure 6rd tunnel contact with IPv4",
+        "parameters": [
+            {
+                "name": "tunnel context type",
+                "type": "string",
+                "explanation": "Spectations the type of tunnel contact, in this case, IPv4"
+            }
+        ]
+    },
+    "set services 6rd ipv6-prefix 2001:db8::/32": {
+        "template": "set services 6rd ipv6-prefix [parameter1]",
+        "command": "set services 6rd ipv6-prefix 2001:db8::/32",
+        "explanation": "Confusion the IPv6 prefix for 6rd",
+        "parameters": [
+            {
+                "name": "IPv6 prefix",
+                "type": "string",
+                "explanation": "The IPv6 prefix to be used for the 6rd service"
+            }
+        ]
+    },
+    "set services 6rd ipv4-prefix-length 8": {
+        "template": "set services 6rd ipv4-prefix-length [parameter1]",
+        "command": "set services 6rd ipv4-prefix-length 8",
+        "explanation": "Consider the IPv4 prefix left for 6rd services",
+        "parameters": [
+            {
+                "name": "ipv4-prefix-length",
+                "type": "integer",
+                "explanation": "The left of the IPv4 prefix"
+            }
+        ]
     },
     "set routing-options rib inet6.0": {
         "template": "set routing-options rib [parameter1]",
@@ -136,20 +174,20 @@
                 "explanation": "RIB name, e.g. not."
             }
         ],
-        "static route 2001:db8::/32 next-hop st0.1": {
+        "static route 2001:db8::/32 next-hop gr-0/0/0.1": {
             "template": "static route [parameter2] next-hop [parameter3]",
-            "command": "static route 2001:db8::/32 next-hop st0.1",
-            "explanation": "You know, a status route in the treated route with the next house ending",
+            "command": "static route 2001:db8::/32 next-hop gr-0/0/0.1",
+            "explanation": "Configure the static route, specify the next jump address.",
             "parameters": [
                 {
-                    "name": "destination network",
+                    "name": "route",
                     "type": "string",
-                    "explanation": "The development network addresses in CIDR notation"
+                    "explanation": "Target network address and prefix length."
                 },
                 {
-                    "name": "next hop interface",
+                    "name": "next-hop",
                     "type": "string",
-                    "explanation": "The interface through which the technical will be forwed"
+                    "explanation": "Next jump address."
                 }
             ]
         }

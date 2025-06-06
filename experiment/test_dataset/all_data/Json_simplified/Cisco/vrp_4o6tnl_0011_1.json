@@ -2,36 +2,36 @@
     "hostname [parameter1]": {
         "template": "hostname [parameter1]",
         "command": "hostname DeviceB",
-        "explanation": "Sets the data's host name 'DeviceB'",
+        "explanation": "Sets the device's host name 'DeviceB'",
         "parameters": [
             {
                 "name": "host name",
                 "type": "string",
-                "explanation": "HostName"
+                "explanation": "Host Name"
             }
         ]
+    },
+    "ipv6 unicast-routing": {
+        "template": "ipv6 unicast-routing",
+        "command": "ipv6 unicast-routing",
+        "explanation": "I'm not sure if I'm going to be able to do this.",
+        "parameters": []
     },
     "interface [parameter1]": {
         "template": "interface [parameter1]",
         "command": "interface GigabitEthernet1/0/0",
-        "explanation": "Configure interface 'GigabitEthernet 1/0/0'",
+        "explanation": "Configure interface 'GigabitEthernet1/0/0'",
         "parameters": [
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
         "no shutdown": {
             "template": "no shutdown",
             "command": "no shutdown",
-            "explanation": "(The interface is closed by default)",
-            "parameters": []
-        },
-        "ipv6 enable": {
-            "template": "ipv6 enable",
-            "command": "ipv6 enable",
-            "explanation": "Allow information IPv6 compliance",
+            "explanation": "Enable interface (the interface is closed by default)",
             "parameters": []
         },
         "ipv6 address [parameter1]": {
@@ -49,7 +49,7 @@
         "ip address [parameter1] [parameter2]": {
             "template": "ip address [parameter1] [parameter2]",
             "command": "ip address 172.16.1.2 255.255.255.0",
-            "explanation": "The IPv4 address for the communication information is 172.16.1.2 and the subnet mark is 255.255.255.0",
+            "explanation": "The IPv4 address for the configuration interface is 172.16.1.2 and the subnet mask is 255.255.255.0",
             "parameters": [
                 {
                     "name": "ip address",
@@ -59,19 +59,31 @@
                 {
                     "name": "subnet mask",
                     "type": "IPv4",
-                    "explanation": "Subnet Mask"
+                    "explanation": "Subnet mask"
                 }
             ]
         },
         "tunnel source [parameter1]": {
             "template": "tunnel source [parameter1]",
-            "command": "tunnel source Loopback1",
-            "explanation": "♪ Specify turnel source as Loopback1 ♪",
+            "command": "tunnel source GigabitEthernet1/0/1",
+            "explanation": "Specify the source interface for the tunnel",
             "parameters": [
                 {
                     "name": "source interface",
                     "type": "string",
-                    "explanation": "Source Interface Name"
+                    "explanation": "The interface from the tunnels"
+                }
+            ]
+        },
+        "tunnel destination [parameter1]": {
+            "template": "tunnel destination [parameter1]",
+            "command": "tunnel destination 172.16.1.1",
+            "explanation": "Set the decision IP address for a Tunnel interface",
+            "parameters": [
+                {
+                    "name": "destination IP address",
+                    "type": "IPv4 address",
+                    "explanation": "The IPv4 address of the tunnel determination"
                 }
             ]
         }
@@ -79,18 +91,18 @@
     "router ospf [parameter1]": {
         "template": "router ospf [parameter1]",
         "command": "router ospf 1",
-        "explanation": "Enter OSF project promotion mode, process ID 1",
+        "explanation": "Enter OSPF router configuration mode, process ID 1",
         "parameters": [
             {
                 "name": "process id",
                 "type": "integer",
-                "explanation": "OSS Project ID"
+                "explanation": "OSS Process ID"
             }
         ],
         "network [parameter1] [parameter2] area [parameter3]": {
             "template": "network [parameter1] [parameter2] area [parameter3]",
             "command": "network 192.168.1.0 0.0.0.255 area 0",
-            "explanation": "192.168.1.0/24 into OSS area 0",
+            "explanation": "192.168.1.0/24 into OSPF area 0",
             "parameters": [
                 {
                     "name": "network address",
@@ -110,26 +122,32 @@
             ]
         }
     },
-    "ipv6 route [parameter1] [parameter2] [parameter3]": {
-        "template": "ipv6 route [parameter1] [parameter2] [parameter3]",
-        "command": "ipv6 route 2001:DB8:200::/64 GigabitEthernet1/0/0 2001:DB8:100::1",
-        "explanation": "Contact status IPv6 route, target network 2001: DB8:200:64, interface GigabitEthernet 1/0/0, next jump address 2001: DB8:100:1",
+    "ip route [destination_address] [subnet_mask] [interface_name]": {
+        "template": "ip route [destination_address] [subnet_mask] [interface_name]",
+        "command": "ip route 172.16.1.1 255.255.255.255 GigabitEthernet1/0/1",
+        "explanation": "And if you're going to be able to do that, then you're going to have to do it.",
         "parameters": [
             {
-                "name": "destination network",
-                "type": "IPv6",
-                "explanation": "Target network employment and prefix"
+                "name": "destination_address",
+                "type": "IPv4 address",
+                "explanation": "The determination IPv4 agreement for the status route"
             },
             {
-                "name": "interface",
+                "name": "subnet_mask",
+                "type": "IPv4 subnet mask",
+                "explanation": "The subnet mark for the development"
+            },
+            {
+                "name": "interface_name",
                 "type": "string",
-                "explanation": "Out interface."
-            },
-            {
-                "name": "next hop",
-                "type": "IPv6",
-                "explanation": "Next Jump Address"
+                "explanation": "The name of the interface through which the determination is possible"
             }
         ]
+    },
+    "end": {
+        "template": "end",
+        "command": "end",
+        "explanation": "Exit from the current conjurement mode and return to the Privileged EXEC mode",
+        "parameters": []
     }
 }

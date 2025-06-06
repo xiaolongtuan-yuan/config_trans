@@ -2,36 +2,19 @@
     "set system host-name [parameter1]": {
         "template": "set system host-name [parameter1]",
         "command": "set system host-name routerB",
-        "explanation": "Confusion the host name of the deal.",
+        "explanation": "Configure the host name of the device.",
         "parameters": [
             {
                 "name": "hostname",
                 "type": "string",
-                "explanation": "The host name of the equipment is used to educate the equipment in the network."
-            }
-        ]
-    },
-    "set forwarding-options hash-key family [parameter1] [parameter2]": {
-        "template": "set forwarding-options hash-key family [parameter1] [parameter2]",
-        "command": "set forwarding-options hash-key family inet per-packet-balancing",
-        "explanation": "Problems the Hash key for working options, for each package of IPv4s.",
-        "parameters": [
-            {
-                "name": "family",
-                "type": "string",
-                "explanation": "The protocol family, e.g., it means IPv4."
-            },
-            {
-                "name": "balancing-method",
-                "type": "string",
-                "explanation": "The load equilibrium met, such as per-packet-ballancing, indicates a load base per package."
+                "explanation": "The host name of the equipment used to identify the equipment in the network."
             }
         ]
     },
     "set interfaces [parameter1]": {
         "template": "set interfaces [parameter1]",
-        "command": "set interfaces ae0",
-        "explanation": "Conformity the targeted interface",
+        "command": "set interfaces ae1",
+        "explanation": "Creates a polymer interface.",
         "parameters": [
             {
                 "name": "interface",
@@ -39,56 +22,78 @@
                 "explanation": "Interface name, e.g., g-1/0/0."
             }
         ],
-        "aggregated-ether-options link-speed [parameter2]": {
-            "template": "aggregated-ether-options link-speed [parameter2]",
-            "command": "aggregated-ether-options link-speed gigabit-ethernet",
-            "explanation": "Conformity of the choice of convergence with the ethnet interface.",
-            "parameters": [
-                {
-                    "name": "link-speed",
-                    "type": "string",
-                    "explanation": "The print of the fruit, such as gigabit-ethernet, indicates a gigabit-ethernet."
-                }
-            ]
-        },
-        "unit [parameter2] family inet address [parameter3]/[parameter4]": {
-            "template": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+        "unit [parameter2] family [parameter3] address [parameter4]": {
+            "template": "unit [parameter2] family [parameter3] address [parameter4]",
             "command": "unit 0 family inet address 10.40.1.2/24",
-            "explanation": "Configures an IPv4 address (`[parameter3]/[parameter4]`) on interface unit `[parameter2]` in the `inet` family.",
+            "explanation": "Consequence an interface with a secret unit, family, and an IP interview",
             "parameters": [
                 {
-                    "name": "unit",
+                    "name": "unit number",
                     "type": "integer",
-                    "explanation": "Interface without number to listen to the multi-ethnic relations under the same environment."
+                    "explanation": "The unit number for the interface"
                 },
                 {
-                    "name": "ip-address",
+                    "name": "family type",
                     "type": "string",
-                    "explanation": "The IPv4 arrived agreed to the interface."
+                    "explanation": "The family type for the interface."
                 },
                 {
-                    "name": "subnet-mask",
-                    "type": "integer",
-                    "explanation": "Bits of IPv4 subnet."
+                    "name": "IP address with subnet",
+                    "type": "string",
+                    "explanation": "The IP address and subnet mark for the interface"
                 }
             ]
         },
         "ether-options 802.3ad [parameter2]": {
             "template": "ether-options 802.3ad [parameter2]",
-            "command": "ether-options 802.3ad ae0",
-            "explanation": "Convey the Ethernet option for interfaces to add 802.3ad Aggregation groups.",
+            "command": "ether-options 802.3ad ae1",
+            "explanation": "Consequence Ethernet options for an interface to be part of an 802.3d linkaggregation group",
             "parameters": [
                 {
-                    "name": "aggregated-interface",
+                    "name": "aggregated interface name",
                     "type": "string",
-                    "explanation": "The name of the polymer interface, e.g."
+                    "explanation": "The name of the aggregated interface (ae) to which this interface belongs"
+                }
+            ]
+        }
+    },
+    "set interfaces [interface_name]": {
+        "template": "set interfaces [interface_name]",
+        "command": "set interfaces ge-0/0/0",
+        "explanation": "The common partners a network interface by specifying its name for other settings like IP access, VLAN, or national state.",
+        "parameters": [
+            {
+                "name": "interface_name",
+                "type": "string",
+                "explanation": "The name of the interface to be compromised"
+            }
+        ],
+        "unit [unit_number] family [family_type] address [ip_address]": {
+            "template": "unit [unit_number] family [family_type] address [ip_address]",
+            "command": "unit 0 family inet address 10.30.1.2/24",
+            "explanation": "Consequence an interface with a spectical IP address and subnet mask",
+            "parameters": [
+                {
+                    "name": "unit_number",
+                    "type": "integer",
+                    "explanation": "The unit number for the interface"
+                },
+                {
+                    "name": "family_type",
+                    "type": "string",
+                    "explanation": "The protocol family type (e.g., inet for IPv4)"
+                },
+                {
+                    "name": "ip_address",
+                    "type": "string",
+                    "explanation": "The IP address and subnet matter in CIDR notation"
                 }
             ]
         }
     },
     "set routing-options static route [parameter1]/[parameter2]": {
         "template": "set routing-options static route [parameter1]/[parameter2]",
-        "command": "set routing-options static route 10.1.1.0/24",
+        "command": "set routing-options static route 10.20.1.0/24",
         "explanation": "This company conflicts a status route in Junos, where 'is the development network and 'is the subnet mark.",
         "parameters": [
             {
@@ -104,13 +109,18 @@
         ],
         "next-hop [parameter3]": {
             "template": "next-hop [parameter3]",
-            "command": "next-hop 10.30.1.1",
-            "explanation": "You're right.",
+            "command": "next-hop 10.50.1.2",
+            "explanation": "Configures the static route, specifies the destination network and the next jump address.",
             "parameters": [
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "Bits of subnet mask."
+                },
                 {
                     "name": "next-hop",
                     "type": "string",
-                    "explanation": "next-hop"
+                    "explanation": "Next jump address."
                 }
             ]
         }

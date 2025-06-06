@@ -2,118 +2,56 @@
     "set system host-name [parameter1]": {
         "template": "set system host-name [parameter1]",
         "command": "set system host-name SSH_Server",
-        "explanation": "Confusion the host name of the deal.",
+        "explanation": "Configure the host name of the device.",
         "parameters": [
             {
                 "name": "hostname",
                 "type": "string",
-                "explanation": "The host name of the equipment is used to educate the equipment in the network."
+                "explanation": "The host name of the equipment used to identify the equipment in the network."
             }
         ]
     },
     "set system domain-name [parameter1]": {
         "template": "set system domain-name [parameter1]",
         "command": "set system domain-name example.com",
-        "explanation": "Consequence the system domain name.",
+        "explanation": "Configure the domain name of the device.",
         "parameters": [
             {
                 "name": "domain-name",
                 "type": "string",
-                "explanation": "domain-name"
+                "explanation": "The domain name of the device."
             }
         ]
     },
-    "set system services ssh hostkey-algorithm [parameter1]": {
-        "template": "set system services ssh hostkey-algorithm [parameter1]",
-        "command": "set system services ssh hostkey-algorithm rsa",
-        "explanation": "Convey the primary key otherwise for SSH services.",
-        "parameters": [
-            {
-                "name": "hostkey-algorithm",
-                "type": "string",
-                "explanation": "Primary keep algorithm used for SSH services."
-            }
-        ]
-    },
-    "set system services ssh key-exchange [parameter1]": {
-        "template": "set system services ssh key-exchange [parameter1]",
-        "command": "set system services ssh key-exchange group14-sha256",
-        "explanation": "I'm sure you'll find it.",
-        "parameters": [
-            {
-                "name": "key-exchange",
-                "type": "string",
-                "explanation": "A key exception algorithm is used for SSH services."
-            }
-        ]
-    },
-    "set system services ssh ciphers [parameter1] [parameter2] [parameter3]": {
-        "template": "set system services ssh ciphers [parameter1] [parameter2] [parameter3]",
-        "command": "set system services ssh ciphers aes128-ctr aes192-ctr aes256-ctr",
-        "explanation": "Consider the encryption uses for SSH services.",
-        "parameters": [
-            {
-                "name": "cipher1",
-                "type": "string",
-                "explanation": "The first acceptance agreement is used for SSH services."
-            },
-            {
-                "name": "cipher2",
-                "type": "string",
-                "explanation": "The second acceptance agreement is used for SSH services."
-            },
-            {
-                "name": "cipher3",
-                "type": "string",
-                "explanation": "The third acceptance agreement is used for SSH services."
-            }
-        ]
+    "set system services ssh": {
+        "template": "set system services ssh",
+        "command": "set system services ssh",
+        "explanation": "Enable SSH services.",
+        "parameters": []
     },
     "set system services ssh protocol-version [parameter1]": {
         "template": "set system services ssh protocol-version [parameter1]",
         "command": "set system services ssh protocol-version v2",
-        "explanation": "Conformity the protocol was used for SSH services.",
+        "explanation": "The protocol version to configure SSH services.",
         "parameters": [
             {
                 "name": "protocol-version",
                 "type": "string",
-                "explanation": "SSH policy version, V2 indicates use of SSH version 2."
+                "explanation": "The protocol version used for SSH services."
             }
         ]
     },
-    "set interfaces [parameter1]": {
-        "template": "set interfaces [parameter1]",
-        "command": "set interfaces lo0",
-        "explanation": "Conformity the targeted interface",
+    "set system services ssh root-login [parameter1]": {
+        "template": "set system services ssh root-login [parameter1]",
+        "command": "set system services ssh root-login deny",
+        "explanation": "It's not like you're going to have to go to school.",
         "parameters": [
             {
-                "name": "interface",
+                "name": "root-login",
                 "type": "string",
-                "explanation": "Interface name, e.g., g-1/0/0."
+                "explanation": "SSH is allowed or destroyed"
             }
-        ],
-        "unit [parameter2] family inet address [parameter3]/[parameter4]": {
-            "template": "unit [parameter2] family inet address [parameter3]/[parameter4]",
-            "command": "unit 0 family inet address 10.1.1.1/32",
-            "explanation": "Contact IPv4 addresses and subnetmasks for loop back interfaces.",
-            "parameters": [
-                {
-                    "name": "unit",
-                    "type": "integer",
-                    "explanation": "Interface without number to listen to the multi-ethnic relations under the same environment."
-                },
-                {
-                    "name": "ip-address",
-                    "type": "string",
-                    "explanation": "The IPv4 arrived agreed to the interface."
-                },
-                {
-                    "name": "subnet-mask",
-                    "type": "integer",
-                    "explanation": "Bits of IPv4 subnet."
-                }
-            ]
-        }
+        ]
     },
     "set system login user [parameter1]": {
         "template": "set system login user [parameter1]",
@@ -126,10 +64,22 @@
                 "explanation": "username"
             }
         ],
+        "authentication plain-text-password [parameter2]": {
+            "template": "authentication plain-text-password [parameter2]",
+            "command": "authentication plain-text-password \"@%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%\"",
+            "explanation": "Set a plain-text password for a user in the system login communication",
+            "parameters": [
+                {
+                    "name": "password",
+                    "type": "string",
+                    "explanation": "The plain-text password to be set for the user"
+                }
+            ]
+        },
         "class [parameter2]": {
             "template": "class [parameter2]",
             "command": "class super-user",
-            "explanation": "Conspiracy the type of system login user.",
+            "explanation": "Configure the type of system login user.",
             "parameters": [
                 {
                     "name": "class",
@@ -137,60 +87,100 @@
                     "explanation": "Type of user, e.g. super-user."
                 }
             ]
-        },
-        "authentication plaintext-password [parameter2]": {
-            "template": "authentication plaintext-password [parameter2]",
-            "command": "authentication plaintext-password \"@%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%\"",
-            "explanation": "Confusion the password for the system to log in to the user.",
+        }
+    },
+    "set system login user [username]": {
+        "template": "set system login user [username]",
+        "command": "set system login user client002",
+        "explanation": "♪ On a Junos record, allowing access to the system.",
+        "parameters": [
+            {
+                "name": "username",
+                "type": "string",
+                "explanation": "The name of the user for the SSH RSA public key is being compromised"
+            }
+        ],
+        "authentication ssh-rsa [public_key]": {
+            "template": "authentication ssh-rsa [public_key]",
+            "command": "authentication ssh-rsa \"308188...1FFC38CD\"",
+            "explanation": ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .",
             "parameters": [
                 {
-                    "name": "plaintext-password",
+                    "name": "public_key",
                     "type": "string",
-                    "explanation": "Other Organiser"
+                    "explanation": "The SSH RSA public key for the user"
                 }
             ]
         },
-        "authentication encrypted-password [parameter2]": {
-            "template": "authentication encrypted-password [parameter2]",
-            "command": "authentication encrypted-password <encrypted-password>",
-            "explanation": "Consider the encryption password for system login us.",
+        "class [parameter2]": {
+            "template": "class [parameter2]",
+            "command": "class read-only",
+            "explanation": "As long as I'm here, I'm going to have to work with you.",
             "parameters": [
                 {
-                    "name": "encrypted-password",
+                    "name": "class",
                     "type": "string",
-                    "explanation": "Could not close technical funder: %s"
+                    "explanation": "The login class agreed to the user"
+                }
+            ]
+        },
+        "home-directory [parameter2]": {
+            "template": "home-directory [parameter2]",
+            "command": "home-directory /cfcard",
+            "explanation": "It's not like I'm going to have to tell you something.",
+            "parameters": [
+                {
+                    "name": "directory path",
+                    "type": "string",
+                    "explanation": "The path to the user's home directory"
+                }
+            ]
+        },
+        "service-type [service]": {
+            "template": "service-type [service]",
+            "command": "service-type sftp",
+            "explanation": "But I'm not sure if you're going to do it.",
+            "parameters": [
+                {
+                    "name": "service",
+                    "type": "string",
+                    "explanation": "The type of service the user can access"
                 }
             ]
         }
     },
-    "set system authentication-order [parameter1]": {
-        "template": "set system authentication-order [parameter1]",
-        "command": "set system authentication-order password",
-        "explanation": "Conspiracy the economy order of the system.",
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces lo0",
+        "explanation": "Creates a polymer interface.",
         "parameters": [
             {
-                "name": "authentication-method",
+                "name": "interface",
                 "type": "string",
-                "explanation": "Education, such as Radius."
+                "explanation": "Interface name, e.g., g-1/0/0."
             }
-        ]
-    },
-    "set system services ssh": {
-        "template": "set system services ssh",
-        "command": "set system services ssh",
-        "explanation": "It's not like I'm gonna be able to use it.",
-        "parameters": []
-    },
-    "set system ports console [parameter1]": {
-        "template": "set system ports console [parameter1]",
-        "command": "set system ports console insecure",
-        "explanation": "Consider the security of the Console port.",
-        "parameters": [
-            {
-                "name": "security",
-                "type": "string",
-                "explanation": "The security settings of the Console port, for example, include:"
-            }
-        ]
+        ],
+        "unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "unit 0 family inet address 10.1.1.1/32",
+            "explanation": "Configure IPv4 addresses and subnet masks for loop back interfaces.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "The IPv4 address assigned to the interface."
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "Bits of IPv4 subnet mask."
+                }
+            ]
+        }
     }
 }

@@ -1,32 +1,14 @@
 hostname DeviceA
-
-interface Virtual-Template1
+!
+interface GigabitEthernet0/0
  no shutdown
- !encapsulation ppp
- ip address 10.110.0.1 255.255.255.0
- ppp authentication chap
- ppp chap hostname rta
- ppp chap password 0 @%@%EDF~DAdfFD934J3<DAF#*<!@%@%
+ ip address 10.1.1.1 255.255.255.0  ! 保留基础接口配置
 !
-
-aaa new-model
-aaa authentication ppp default local
-aaa authorization network default local
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
 !
-
-username rtb password 0 @%@%j]v~7%f[#S'W>j9zzM)3,*!u@%@%
-!
-
-interface Dialer1
- !encapsulation ppp
- dialer pool 1
- ppp authentication chap
- ppp chap hostname rta
-!
-
-!ip local pool pool1 10.110.0.2 10.110.0.254
-!
-
-dialer-list 1 protocol ip permit
+router ospf 1
+ network 1.1.1.1 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
 !
 end

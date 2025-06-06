@@ -2,12 +2,12 @@
     "set system host-name DeviceB": {
         "template": "set system host-name [parameter1]",
         "command": "set system host-name DeviceB",
-        "explanation": "Confusion the host name of the deal.",
+        "explanation": "Configure the host name of the device.",
         "parameters": [
             {
                 "name": "hostname",
                 "type": "string",
-                "explanation": "The host name of the equipment used to educate the equipment in the network."
+                "explanation": "The host name of the equipment used to identify the equipment in the network."
             }
         ]
     },
@@ -36,47 +36,42 @@
         }
     },
     "set interfaces ge-3/0/0": {
-        "template": "set interfaces [interface_name]",
+        "template": "set interfaces [parameter1]",
         "command": "set interfaces ge-3/0/0",
-        "explanation": "This company works together in Junos by speciousing the interface name.",
+        "explanation": "Creates a polymer interface.",
         "parameters": [
             {
-                "name": "interface_name",
+                "name": "interface",
                 "type": "string",
-                "explanation": "The name of the interface to be compromised"
+                "explanation": "Interface name, e.g., g-1/0/0."
             }
         ],
-        "unit 0 family ethernet-switching interface-mode access": {
-            "template": "unit [unit_number] family [family_type] interface-mode [mode]",
-            "command": "unit 0 family ethernet-switching interface-mode access",
-            "explanation": "Configures the interface mode for a specific interface unit under the othernet-switching family",
+        "unit 0 family ethernet-switching port-mode access": {
+            "template": "unit [parameter2] family ethernet-switching port-mode [parameter3]",
+            "command": "unit 0 family ethernet-switching port-mode access",
+            "explanation": "Configure the interface with an ethnet exchange port mode.",
             "parameters": [
                 {
-                    "name": "unit_number",
+                    "name": "unit",
                     "type": "integer",
-                    "explanation": "The unit number of the interface"
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
                 },
                 {
-                    "name": "family_type",
+                    "name": "port-mode",
                     "type": "string",
-                    "explanation": "The family type of the interface conformation"
-                },
-                {
-                    "name": "mode",
-                    "type": "string",
-                    "explanation": "(e.g., access, trunk)"
+                    "explanation": "Port mode, for example, access."
                 }
             ]
         },
         "unit 0 family ethernet-switching vlan members vlan10": {
             "template": "unit [parameter2] family ethernet-switching vlan members [parameter3]",
             "command": "unit 0 family ethernet-switching vlan members vlan10",
-            "explanation": "Confusion the VLAN members of the interface.",
+            "explanation": "Configure the VLAN members of the interface.",
             "parameters": [
                 {
                     "name": "unit",
                     "type": "integer",
-                    "explanation": "Interface without number to listen to the multi-ethnic relations under the same environment."
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
                 },
                 {
                     "name": "vlan-member",
@@ -86,55 +81,31 @@
             ]
         }
     },
-    "set ethernet-switching-options analyzer monitor-session 1": {
-        "template": "set ethernet-switching-options analyzer monitor-session [parameter1]",
-        "command": "set ethernet-switching-options analyzer monitor-session 1",
-        "explanation": "This committee created a port mirroring session named `to copy and analize network traffic in Junos Ethernet Switching.",
+    "delete interfaces ge-3/0/0": {
+        "template": "delete interfaces [parameter1]",
+        "command": "delete interfaces ge-3/0/0",
+        "explanation": "`delete interfaces ' `removes the communication for the protected interface from the Junos device.",
         "parameters": [
             {
-                "name": "session number",
-                "type": "integer",
-                "explanation": "The monitoring session number"
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g. g-0/0/1."
             }
         ],
-        "input ingress interface ge-3/0/0": {
-            "template": "input [parameter2] interface [parameter3]",
-            "command": "input ingress interface ge-3/0/0",
-            "explanation": "And I'm sure you'll be able to find out what you're talking about.",
+        "unit 0 port-mirroring input": {
+            "template": "unit [parameter2] port-mirroring [parameter3]",
+            "command": "unit 0 port-mirroring input",
+            "explanation": "Delete port-mirroring configration from the purported interface unit",
             "parameters": [
                 {
-                    "name": "traffic direction",
-                    "type": "string",
-                    "explanation": "The direction of traffic to monitor"
+                    "name": "unit number",
+                    "type": "integer",
+                    "explanation": "The unit number of the interface"
                 },
                 {
-                    "name": "interface name",
+                    "name": "port-mirroring direction",
                     "type": "string",
-                    "explanation": "The name of the interface to monitor"
-                }
-            ]
-        },
-        "output interface ge-3/0/1": {
-            "template": "output interface [interface_name]",
-            "command": "output interface ge-3/0/1",
-            "explanation": "But I'm not sure if it's a good idea, but it's a good idea.",
-            "parameters": [
-                {
-                    "name": "interface_name",
-                    "type": "string",
-                    "explanation": "The name of the exit incident"
-                }
-            ]
-        },
-        "output interface ge-1/0/0": {
-            "template": "output interface [interface_name]",
-            "command": "output interface ge-1/0/0",
-            "explanation": "But I'm not sure if it's a good idea, but it's a good idea.",
-            "parameters": [
-                {
-                    "name": "interface_name",
-                    "type": "string",
-                    "explanation": "The name of the exit incident"
+                    "explanation": "The direction of the port-mirroring to delete"
                 }
             ]
         }
@@ -153,22 +124,22 @@
         "unit 0 family inet address 10.1.1.2/24": {
             "template": "unit [parameter2] family inet address [parameter3]/[parameter4]",
             "command": "unit 0 family inet address 10.1.1.2/24",
-            "explanation": "Configures logical interface `[parameter2]` with IPv4 address `[parameter3]` and subnet mask `[parameter4]`.",
+            "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
             "parameters": [
                 {
                     "name": "unit",
                     "type": "integer",
-                    "explanation": "Interface without number to listen to the multi-ethnic relations under the same environment."
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
                 },
                 {
                     "name": "ip-address",
                     "type": "string",
-                    "explanation": "The IPv4 arrived agreed to the interface."
+                    "explanation": "The IPv4 address assigned to the interface."
                 },
                 {
                     "name": "subnet-mask",
                     "type": "integer",
-                    "explanation": "Bits of IPv4 subnet."
+                    "explanation": "Bits of IPv4 subnet mask."
                 }
             ]
         }
@@ -187,22 +158,58 @@
         "unit 0 family inet address 10.10.1.1/24": {
             "template": "unit [parameter2] family inet address [parameter3]/[parameter4]",
             "command": "unit 0 family inet address 10.10.1.1/24",
-            "explanation": "Configures an IPv4 address `[parameter3]/[parameter4]` on logical interface `[parameter2]` within the `inet` address family.",
+            "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
             "parameters": [
                 {
                     "name": "unit",
                     "type": "integer",
-                    "explanation": "Interface without number to listen to the multi-ethnic relations under the same environment."
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
                 },
                 {
                     "name": "ip-address",
                     "type": "string",
-                    "explanation": "The IPv4 arrived agreed to the interface."
+                    "explanation": "The IPv4 address assigned to the interface."
                 },
                 {
                     "name": "subnet-mask",
                     "type": "integer",
-                    "explanation": "Bits of IPv4 subnet."
+                    "explanation": "Bits of IPv4 subnet mask."
+                }
+            ]
+        }
+    },
+    "set forwarding-options port-mirroring instance 1": {
+        "template": "set forwarding-options port-mirroring instance [parameter1]",
+        "command": "set forwarding-options port-mirroring instance 1",
+        "explanation": "This company configures port mirroring on a Junos device, creating an entry name `to Copy and Forward Traffic for monitoring or analsis processes.",
+        "parameters": [
+            {
+                "name": "instance",
+                "type": "integer",
+                "explanation": "The number of the portmiror example."
+            }
+        ],
+        "input ge-3/0/0": {
+            "template": "input [parameter2]",
+            "command": "input ge-3/0/0",
+            "explanation": "Configure the input interface for port mirror examples.",
+            "parameters": [
+                {
+                    "name": "input-interface",
+                    "type": "string",
+                    "explanation": "Enter an interface name, such as g-3/0/0."
+                }
+            ]
+        },
+        "output ge-3/0/1": {
+            "template": "output [parameter2]",
+            "command": "output ge-3/0/1",
+            "explanation": "Configure the output interface for port mirror examples.",
+            "parameters": [
+                {
+                    "name": "output-interface",
+                    "type": "string",
+                    "explanation": "Output interface name, e.g. g-3/0/1."
                 }
             ]
         }

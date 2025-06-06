@@ -1,33 +1,27 @@
 set system host-name PE1
 
-set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.2/24
-set interfaces ge-0/0/0 unit 0 family mpls
-
-set interfaces ge-0/0/1 unit 0 family inet address 10.10.1.1/24
-set interfaces ge-0/0/1 unit 0 family mpls
-
-set interfaces lo0 unit 0 family inet address 11.11.11.11/32
-
-set protocols ospf area 0 interface ge-0/0/0.0
-set protocols ospf area 0 interface ge-0/0/1.0
-set protocols ospf area 0 interface lo0.0 passive
-
-set protocols ospf traffic-engineering
-
-set protocols ldp interface lo0.0
+set routing-options router-id 11.11.11.11
 set protocols ldp interface ge-0/0/0.0
 set protocols ldp interface ge-0/0/1.0
 
-set protocols rsvp interface ge-0/0/0.0
-
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.2/24
 set protocols mpls interface ge-0/0/0.0
+
+set interfaces ge-0/0/1 unit 0 family inet address 10.10.1.1/24
 set protocols mpls interface ge-0/0/1.0
 
-set firewall policer POLICER-PE if-exceeding bandwidth-limit 15m
-set firewall policer POLICER-PE if-exceeding burst-size-limit 20k
-set firewall policer POLICER-PE then discard
+set interfaces lo0 unit 0 family inet address 11.11.11.11/32
 
-set firewall filter FILTER-PE term TERM-1 then policer POLICER-PE
-set firewall filter FILTER-PE term TERM-1 then accept
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.0 interface lo0.0 passive
 
-set interfaces ge-0/0/0 unit 0 family inet filter input FILTER-PE
+set firewall family inet filter pe term match-any then accept
+set firewall family inet filter pe term default then discard
+
+set class-of-service classifiers inet pe forwarding-class best-effort loss-priority low code-points 000000
+set class-of-service schedulers pe transmit-rate percent 50
+set class-of-service schedulers pe buffer-size percent 50
+set class-of-service schedulers pe priority low
+
+set interfaces ge-0/0/0 unit 0 family inet filter input pe

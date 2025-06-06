@@ -2,42 +2,54 @@
     "set system host-name [parameter1]": {
         "template": "set system host-name [parameter1]",
         "command": "set system host-name PE2",
-        "explanation": "Confusion the host name of the deal.",
+        "explanation": "Configure the host name of the device.",
         "parameters": [
             {
                 "name": "hostname",
                 "type": "string",
-                "explanation": "The host name of the equipment used to educate the equipment in the network."
+                "explanation": "The host name of the equipment used to identify the equipment in the network."
             }
         ]
     },
-    "set protocols oam cfm": {
-        "template": "set protocols oam cfm",
-        "command": "set protocols oam cfm",
-        "explanation": "Allows the OAM CFM program.",
-        "parameters": []
+    "set protocols mpls interface [parameter1]": {
+        "template": "set protocols mpls interface [parameter1]",
+        "command": "set protocols mpls interface ge-0/0/2.0",
+        "explanation": "Configuration MPLS program on a specific interface",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "The name of the interface to inable MPLS program on"
+            }
+        ]
     },
-    "set protocols ldp": {
-        "template": "set protocols ldp",
-        "command": "set protocols ldp",
-        "explanation": "Allows the LDP program.",
-        "parameters": []
+    "set protocols ldp interface [parameter1]": {
+        "template": "set protocols ldp interface [parameter1]",
+        "command": "set protocols ldp interface ge-0/0/2.0",
+        "explanation": "Configure LDP (Label Distribution Protocol) on a specific information",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "The name of the interface to adequate LDP on"
+            }
+        ]
     },
     "set protocols ldp router-id [parameter1]": {
         "template": "set protocols ldp router-id [parameter1]",
-        "command": "set protocols ldp router-id lo0",
-        "explanation": "Problems the Router ID of the LDP program as the Loopback interface.",
+        "command": "set protocols ldp router-id 2.2.2.2",
+        "explanation": "Set the route ID for LDP",
         "parameters": [
             {
                 "name": "router-id",
-                "type": "string",
-                "explanation": "Router ID, usually set to a loopback interface."
+                "type": "ipv4 address",
+                "explanation": "The route ID in IPv4"
             }
         ]
     },
     "set interfaces [parameter1]": {
         "template": "set interfaces [parameter1]",
-        "command": "set interfaces ge-1/0/1",
+        "command": "set interfaces ge-0/0/1",
         "explanation": "Creates a polymer interface.",
         "parameters": [
             {
@@ -46,103 +58,131 @@
                 "explanation": "Interface name, e.g., g-1/0/0."
             }
         ],
-        "unit [parameter2] encapsulation [parameter3]": {
-            "template": "unit [parameter2] encapsulation [parameter3]",
-            "command": "unit 1 encapsulation vlan-vpls",
-            "explanation": "Conspiracy the cover type for the interface is VLAN-VPLS.",
+        "flexible-vlan-tagging": {
+            "template": "flexible-vlan-tagging",
+            "command": "flexible-vlan-tagging",
+            "explanation": "Allowable flexible VLAN tagging on the protected interface",
+            "parameters": []
+        },
+        "encapsulation [parameter2]": {
+            "template": "encapsulation [parameter2]",
+            "command": "encapsulation flexible-ethernet-services",
+            "explanation": "Conspiracy the encapsulation type for a trained interface",
             "parameters": [
                 {
-                    "name": "unit",
-                    "type": "integer",
-                    "explanation": "I don't know."
-                },
-                {
-                    "name": "encapsulation",
+                    "name": "encapsulation type",
                     "type": "string",
-                    "explanation": "Over type."
+                    "explanation": "The type of involvement to be applied to the interface"
                 }
             ]
         },
-        "unit [parameter2] vlan-id [parameter3]": {
-            "template": "unit [parameter2] vlan-id [parameter3]",
+        "unit [unit_number] encapsulation [encapsulation_type]": {
+            "template": "unit [unit_number] encapsulation [encapsulation_type]",
+            "command": "unit 1 encapsulation vlan",
+            "explanation": "- Yes, sir.",
+            "parameters": [
+                {
+                    "name": "unit_number",
+                    "type": "integer",
+                    "explanation": "The unit number on the interface to be compromised."
+                },
+                {
+                    "name": "encapsulation_type",
+                    "type": "string",
+                    "explanation": "The type of involvement to be applied to the interface unit."
+                }
+            ]
+        },
+        "unit [unit] vlan-id [vlan-id]": {
+            "template": "unit [unit] vlan-id [vlan-id]",
             "command": "unit 1 vlan-id 1",
-            "explanation": "Confusion the VLAN ID of the interface.",
+            "explanation": "Conspiracy VLAN ID on a special interface unit",
             "parameters": [
                 {
                     "name": "unit",
                     "type": "integer",
-                    "explanation": "I don't know."
+                    "explanation": "Unit number"
                 },
                 {
                     "name": "vlan-id",
                     "type": "integer",
-                    "explanation": "VLAN ID."
+                    "explanation": "VLAN ID"
                 }
             ]
         },
-        "unit [parameter2] family inet address [parameter3]/[parameter4]": {
-            "template": "unit [parameter2] family inet address [parameter3]/[parameter4]",
-            "command": "unit 0 family inet address 192.168.1.2/24",
-            "explanation": "Configures an IPv4 address (`[parameter3]/[parameter4]`) on interface logical unit `[parameter2]` in the `inet` address family.",
+        "unit [parameter2] family [parameter3] address [parameter4]": {
+            "template": "unit [parameter2] family [parameter3] address [parameter4]",
+            "command": "unit 1 family inet address 1.1.1.1/24",
+            "explanation": "Configure interface with special unit, family, and IP understanding",
             "parameters": [
                 {
-                    "name": "unit",
+                    "name": "unit number",
                     "type": "integer",
-                    "explanation": "I don't know."
+                    "explanation": "Local unit number for the interface"
                 },
                 {
-                    "name": "ip-address",
+                    "name": "family type",
                     "type": "string",
-                    "explanation": "The IPv4 arrived agreed to the interface."
+                    "explanation": "Protocol family type (e.g., inet for IPv4)"
                 },
                 {
-                    "name": "subnet-mask",
-                    "type": "integer",
-                    "explanation": "Bits of IPv4 subnet."
+                    "name": "IP address with subnet mask",
+                    "type": "string",
+                    "explanation": "IP address and subnet mark in CIDR notation"
                 }
             ]
         }
     },
-    "set protocols l2circuit neighbor [parameter1]": {
-        "template": "set protocols l2circuit neighbor [parameter1]",
-        "command": "set protocols l2circuit neighbor 1.1.1.1",
-        "explanation": "Configures a Layer 2 Circle (L2Circuit) neighbor with the specified IP address (`[parameter 1] ') for point-to-point psudwire confectivity.",
+    "set interfaces [interface_name]": {
+        "template": "set interfaces [interface_name]",
+        "command": "set interfaces ge-0/0/2",
+        "explanation": "This company deals with matters for a special network in Junos, allowing customs of IP solutions, VLAN, or MTU.",
         "parameters": [
             {
-                "name": "neighbor-ip",
+                "name": "interface_name",
                 "type": "string",
-                "explanation": "neighbor-ip"
+                "explanation": "The name of the interface to be compromised"
             }
         ],
-        "virtual-circuit-id [parameter2] encapsulation-type [parameter3]": {
-            "template": "virtual-circuit-id [parameter2] encapsulation-type [parameter3]",
-            "command": "virtual-circuit-id 1001 encapsulation-type mpls",
-            "explanation": "Neighbors, virtual Circuts IDs and communication types with L2 Circuts.",
+        "unit [unit_number] family [family_type] address [ip_address]": {
+            "template": "unit [unit_number] family [family_type] address [ip_address]",
+            "command": "unit 0 family inet address 192.168.1.2/24",
+            "explanation": "Consequence an interface with a spectical IP address and subnet mask",
             "parameters": [
                 {
-                    "name": "virtual-circuit-id",
+                    "name": "unit_number",
                     "type": "integer",
-                    "explanation": "I don't know."
+                    "explanation": "The unit number for the interface configration"
                 },
                 {
-                    "name": "encapsulation-type",
+                    "name": "family_type",
                     "type": "string",
-                    "explanation": "Over type."
+                    "explanation": "The protocol family type (e.g., inet for IPv4)"
+                },
+                {
+                    "name": "ip_address",
+                    "type": "string",
+                    "explanation": "The IP address and subnet matter in CIDR notation"
+                }
+            ]
+        },
+        "unit [unit_number] family [family_type]": {
+            "template": "unit [unit_number] family [family_type]",
+            "command": "unit 0 family mpls",
+            "explanation": "Conspiracy the treated interface with a unit number and family type for MPLS",
+            "parameters": [
+                {
+                    "name": "unit_number",
+                    "type": "integer",
+                    "explanation": "The unit number for the interface configration"
+                },
+                {
+                    "name": "family_type",
+                    "type": "string",
+                    "explanation": "The family type for the interface configration, such as mpls"
                 }
             ]
         }
-    },
-    "set protocols ldp interface [parameter1]": {
-        "template": "set protocols ldp interface [parameter1]",
-        "command": "set protocols ldp interface ge-1/0/2.0",
-        "explanation": "Conformity LD program on a specific interface",
-        "parameters": [
-            {
-                "name": "interface name",
-                "type": "string",
-                "explanation": "The name of the interface to inable LDP program on"
-            }
-        ]
     },
     "set protocols ospf area [parameter1]": {
         "template": "set protocols ospf area [parameter1]",
@@ -157,152 +197,134 @@
         ],
         "interface [parameter2]": {
             "template": "interface [parameter2]",
-            "command": "interface lo0.0",
-            "explanation": "Conformity involves in the OSF area.",
+            "command": "interface ge-0/0/1.1",
+            "explanation": "Configuration OFSPF programme settings for a specic area and interface",
             "parameters": [
                 {
-                    "name": "interface",
+                    "name": "interface name",
                     "type": "string",
-                    "explanation": "I don't know, interface name."
+                    "explanation": "The name of the interface to be configured under the delivered OSF area"
+                }
+            ]
+        },
+        "interface [interface_name] passive": {
+            "template": "interface [interface_name] passive",
+            "command": "interface lo0.0 passive",
+            "explanation": "Of the OSPF program to set an interface as passive in a specified area, which means it will not send OSF hello packs but can still receive them.",
+            "parameters": [
+                {
+                    "name": "interface_name",
+                    "type": "string",
+                    "explanation": "The name of the interface to be set as passive."
                 }
             ]
         }
     },
-    "set protocols oam cfm maintenance-domain [parameter1]": {
-        "template": "set protocols oam cfm maintenance-domain [parameter1]",
-        "command": "set protocols oam cfm maintenance-domain md1",
-        "explanation": "This company conflicts a Community Fault Management (CFM)",
+    "set protocols oam ethernet [parameter1]": {
+        "template": "set protocols oam ethernet [parameter1]",
+        "command": "set protocols oam ethernet connectivity-fault-management",
+        "explanation": "Configure OAM Ethernet relationship",
+        "parameters": [
+            {
+                "name": "connectivity-fault-management",
+                "type": "string",
+                "explanation": "connectivity-fault-management"
+            }
+        ]
+    },
+    "set protocols oam ethernet connectivity-fault-management maintenance-domain [parameter1]": {
+        "template": "set protocols oam ethernet connectivity-fault-management maintenance-domain [parameter1]",
+        "command": "set protocols oam ethernet connectivity-fault-management maintenance-domain md1",
+        "explanation": "This company conflicts a Mainence Domain (MD) in Ethernet Contact Forest Management (CFM) under OAM programmes, where '[parmeter1] ' s designations the MD name or level.",
         "parameters": [
             {
                 "name": "maintenance-domain",
                 "type": "string",
-                "explanation": "- It's not like you're in trouble."
+                "explanation": "Mentains the name of the domain."
             }
         ],
-        "maintenance-association [parameter2]": {
-            "template": "maintenance-association [parameter2]",
-            "command": "maintenance-association ma1",
-            "explanation": "It's not like you're going to do it.",
+        "level [parameter2]": {
+            "template": "level [parameter2]",
+            "command": "level 5",
+            "explanation": "CONFORM OAM.",
             "parameters": [
                 {
-                    "name": "maintenance-association",
-                    "type": "string",
-                    "explanation": "maintenance-association"
+                    "name": "level",
+                    "type": "integer",
+                    "explanation": "Love of the mine"
                 }
             ]
         },
-        "maintenance-association [parameter2] mep [parameter3] interface [parameter4]": {
-            "template": "maintenance-association [parameter2] mep [parameter3] interface [parameter4]",
-            "command": "maintenance-association ma1 mep 2 interface ge-1/0/1.1",
-            "explanation": "Configures of the MEP.",
+        "maintenance-association [parameter2]": {
+            "template": "maintenance-association [parameter2]",
+            "command": "maintenance-association ma1",
+            "explanation": "Community OAM.",
+            "parameters": [
+                {
+                    "name": "maintenance-association name",
+                    "type": "string",
+                    "explanation": "Name of the mine association within the domain"
+                }
+            ]
+        },
+        "maintenance-association [parameter2] continuity-check interval [parameter3]": {
+            "template": "maintenance-association [parameter2] continuity-check interval [parameter3]",
+            "command": "maintenance-association ma1 continuity-check interval 1s",
+            "explanation": "Consequence OAM.",
             "parameters": [
                 {
                     "name": "maintenance-association",
                     "type": "string",
-                    "explanation": "maintenance-association"
+                    "explanation": "Name of the mine association within the minedomain"
+                },
+                {
+                    "name": "interval",
+                    "type": "string",
+                    "explanation": "Communion check interval, e.g., 1s for a second."
+                }
+            ]
+        },
+        "maintenance-association [parameter2] mep [parameter3] interface [parameter4] direction [parameter5]": {
+            "template": "maintenance-association [parameter2] mep [parameter3] interface [parameter4] direction [parameter5]",
+            "command": "maintenance-association ma1 mep 2 interface ge-0/0/1.1 direction inward",
+            "explanation": "Configration OAAM.",
+            "parameters": [
+                {
+                    "name": "maintenance-association",
+                    "type": "string",
+                    "explanation": "Name of the mine association within the minedomain"
                 },
                 {
                     "name": "mep",
                     "type": "integer",
-                    "explanation": "Mep ID."
+                    "explanation": "Identifier for the Maintenance End Point"
                 },
                 {
                     "name": "interface",
                     "type": "string",
-                    "explanation": "I don't know, interface name."
+                    "explanation": "Interface agreed with the MEP"
+                },
+                {
+                    "name": "direction",
+                    "type": "string",
+                    "explanation": "Directing of the MEP, either 'inward' or 'outward'"
                 }
             ]
         },
-        "maintenance-association [parameter2] mep [parameter3] continuity-check transmit-interval [parameter4]": {
-            "template": "maintenance-association [parameter2] mep [parameter3] continuity-check transmit-interval [parameter4]",
-            "command": "maintenance-association ma1 mep 2 continuity-check transmit-interval 1s",
-            "explanation": "Configuration CFM's constant check transfer interval.",
+        "maintenance-association [parameter2] remote-mep [parameter3]": {
+            "template": "maintenance-association [parameter2] remote-mep [parameter3]",
+            "command": "maintenance-association ma1 remote-mep 1",
+            "explanation": "Community OAM.",
             "parameters": [
                 {
                     "name": "maintenance-association",
                     "type": "string",
-                    "explanation": "maintenance-association"
-                },
-                {
-                    "name": "mep",
-                    "type": "integer",
-                    "explanation": "Mep ID."
-                },
-                {
-                    "name": "transmit-interval",
-                    "type": "string",
-                    "explanation": "Transfer interval."
-                }
-            ]
-        },
-        "maintenance-association [parameter2] remote-mep [parameter3] continuity-check receive": {
-            "template": "maintenance-association [parameter2] remote-mep [parameter3] continuity-check receive",
-            "command": "maintenance-association ma1 remote-mep 1 continuity-check receive",
-            "explanation": "Configure remote meP continuous check review for CFM.",
-            "parameters": [
-                {
-                    "name": "maintenance-association",
-                    "type": "string",
-                    "explanation": "maintenance-association"
+                    "explanation": "Name of the mine association within the domain"
                 },
                 {
                     "name": "remote-mep",
                     "type": "integer",
-                    "explanation": "Remote MEP ID."
-                }
-            ]
-        },
-        "maintenance-association [parameter2] test-id [parameter3] mep [parameter4] delay-measurement two-way receive": {
-            "template": "maintenance-association [parameter2] test-id [parameter3] mep [parameter4] delay-measurement two-way receive",
-            "command": "maintenance-association ma1 test-id 1 mep 2 delay-measurement two-way receive",
-            "explanation": "Configures the two way played measration response of CFM.",
-            "parameters": [
-                {
-                    "name": "maintenance-association",
-                    "type": "string",
-                    "explanation": "maintenance-association"
-                },
-                {
-                    "name": "test-id",
-                    "type": "integer",
-                    "explanation": "Test ID."
-                },
-                {
-                    "name": "mep",
-                    "type": "integer",
-                    "explanation": "Mep ID."
-                }
-            ]
-        },
-        "maintenance-association [parameter2] test-id [parameter3] mep [parameter4] remote-mep [parameter5] delay-measurement two-way send interval [parameter6]": {
-            "template": "maintenance-association [parameter2] test-id [parameter3] mep [parameter4] remote-mep [parameter5] delay-measurement two-way send interval [parameter6]",
-            "command": "maintenance-association ma1 test-id 2 mep 2 remote-mep 1 delay-measurement two-way send interval 30000",
-            "explanation": "Configures the two ways to play measurement every interval for CFM.",
-            "parameters": [
-                {
-                    "name": "maintenance-association",
-                    "type": "string",
-                    "explanation": "maintenance-association"
-                },
-                {
-                    "name": "test-id",
-                    "type": "integer",
-                    "explanation": "Test ID."
-                },
-                {
-                    "name": "mep",
-                    "type": "integer",
-                    "explanation": "Mep ID."
-                },
-                {
-                    "name": "remote-mep",
-                    "type": "integer",
-                    "explanation": "Remote MEP ID."
-                },
-                {
-                    "name": "interval",
-                    "type": "integer",
-                    "explanation": "(ms)."
+                    "explanation": "Identifier for the remote Maintenance End Point"
                 }
             ]
         }

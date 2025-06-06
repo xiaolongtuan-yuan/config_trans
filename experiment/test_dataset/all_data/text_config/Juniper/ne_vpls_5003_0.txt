@@ -1,26 +1,19 @@
 set system host-name PE1
 
-# MPLS/LDP配置（Batfish兼容语法）
-set protocols mpls interface ge-0/0/1.0
-set protocols mpls interface lo0.0
-set protocols ldp interface ge-0/0/1.0
-set protocols ldp router-id 1.1.1.9
-set protocols ldp targeted-session 3.3.3.9
+set routing-instances a2 instance-type virtual-switch
+set routing-instances a2 bridge-domains bd1 vlan-id 10
+set routing-instances a2 bridge-domains bd1 interface ge-0/0/0.0
 
-# 路由实例配置（VRF标准语法）
-set routing-instances a2 instance-type vrf
-set routing-instances a2 interface ge-0/0/0.0
-set routing-instances a2 route-distinguisher 1:2
-set routing-instances a2 vrf-target target:1:2
-
-# 接口配置（语法规范化）
 set interfaces ge-0/0/0 flexible-vlan-tagging
-set interfaces ge-0/0/0 unit 0 vlan-id 10
-set interfaces ge-0/0/0 unit 0 family inet
-set interfaces ge-0/0/1 unit 0 family inet address 10.1.1.1/24
-set interfaces ge-0/0/1 unit 0 family mpls
-set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+set interfaces ge-0/0/0 unit 0 family ethernet-switching vlan members 10
+set interfaces ge-0/0/0 unit 1 family inet address 10.1.1.1/24
+set interfaces ge-0/0/0 unit 1 family mpls
 
-# OSPF配置（保持不变）
-set protocols ospf area 0.0.0.0 interface lo0.0
-set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+set protocols ospf area 0 interface lo0.0
+set protocols ospf area 0 interface ge-0/0/0.1
+
+set protocols mpls interface ge-0/0/0.1
+set protocols ldp interface lo0.0
+set protocols ldp interface ge-0/0/0.1
+set protocols ldp targeted-neighbor 3.3.3.9

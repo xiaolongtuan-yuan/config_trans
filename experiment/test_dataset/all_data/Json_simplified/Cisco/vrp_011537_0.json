@@ -2,12 +2,12 @@
     "hostname [parameter1]": {
         "template": "hostname [parameter1]",
         "command": "hostname CE1",
-        "explanation": "Sets the data 's hostname 'CE1 '",
+        "explanation": "Sets the device 's hostname 'CE1 '",
         "parameters": [
             {
                 "name": "host name",
                 "type": "string",
-                "explanation": "HostName"
+                "explanation": "Host Name"
             }
         ]
     },
@@ -23,22 +23,45 @@
             }
         ]
     },
-    "ethernet cfm [parameter1]": {
-        "template": "ethernet cfm [parameter1]",
-        "command": "ethernet cfm ieee",
-        "explanation": "CONFIGUURE Ethernet CONTACT Fault Management",
+    "ethernet [parameter1]": {
+        "template": "ethernet [parameter1]",
+        "command": "ethernet cfm",
+        "ethernet cfm global": {
+            "template": "ethernet cfm global",
+            "command": "ethernet cfm global",
+            "explanation": "Allowable Ethernet Contact Fault Management (CFM) globally on the data",
+            "parameters": []
+        },
+        "explanation": "CONFORM Ethernet CFM",
         "parameters": [
             {
-                "name": "standard",
+                "name": "cfm",
                 "type": "string",
-                "explanation": "The standing to which CFM should consider, e.g."
+                "explanation": "Compliance Fault Management"
             }
         ]
     },
     "ethernet cfm domain [parameter1] level [parameter2]": {
         "template": "ethernet cfm domain [parameter1] level [parameter2]",
-        "command": "ethernet cfm domain md1 level 1",
-        "explanation": "CONFIGURE Ethernet Network Management",
+        "command": "ethernet cfm domain md1 level 4",
+        "service [parameter1] evc [parameter2]": {
+            "template": "service [parameter1] evc [parameter2]",
+            "command": "service ma2 evc MA2",
+            "explanation": "Conversion a service with an Ethernet Virtual Community",
+            "parameters": [
+                {
+                    "name": "service name",
+                    "type": "string",
+                    "explanation": "The name of the service"
+                },
+                {
+                    "name": "EVC name",
+                    "type": "string",
+                    "explanation": "The name of the European Community"
+                }
+            ]
+        },
+        "explanation": "Confectivity Fair Management domain with a special level",
         "parameters": [
             {
                 "name": "domain name",
@@ -48,132 +71,27 @@
             {
                 "name": "level",
                 "type": "integer",
-                "explanation": "CFM level for the domain"
-            }
-        ]
-    },
-    "ethernet cfm service [parameter1] vlan [parameter2] direction [parameter3]": {
-        "template": "ethernet cfm service [parameter1] vlan [parameter2] direction [parameter3]",
-        "command": "ethernet cfm service ma2 vlan 2 direction down",
-        "explanation": "General Security Service, VLAN, and direction",
-        "parameters": [
-            {
-                "name": "MA name",
-                "type": "string",
-                "explanation": "Community Association name"
-            },
-            {
-                "name": "VLAN ID",
-                "type": "integer",
-                "explanation": "VLAN identifier"
-            },
-            {
-                "name": "direction",
-                "type": "string",
-                "explanation": "Direction of the CFM service (up or down)"
-            }
-        ]
-    },
-    "ethernet cfm mep [parameter1] domain [parameter2] service [parameter3]": {
-        "template": "ethernet cfm mep [parameter1] domain [parameter2] service [parameter3]",
-        "command": "ethernet cfm mep 3 domain md1 service ma2",
-        "interface [parameter1]": {
-            "template": "interface [parameter1]",
-            "command": "interface GigabitEthernet1/0/1",
-            "explanation": "Configure interface 'GigabitEthernet 1/0/1 '",
-            "parameters": [
-                {
-                    "name": "interface name",
-                    "type": "string",
-                    "explanation": "InterfaceName"
-                }
-            ]
-        },
-        "explanation": "This command configures an Ethernet CFM Maintenance End Point (MEP) with specified domain, service, and direction (parameter1: inward/outward).  \n\n(30 words)",
-        "parameters": [
-            {
-                "name": "MEP ID",
-                "type": "integer",
-                "explanation": "It's not like you're in love."
-            },
-            {
-                "name": "domain name",
-                "type": "string",
-                "explanation": "CFM domain name"
-            },
-            {
-                "name": "service name",
-                "type": "string",
-                "explanation": "CFM service name"
-            }
-        ]
-    },
-    "ethernet cfm remote-mep [parameter1] domain [parameter2] service [parameter3]": {
-        "template": "ethernet cfm remote-mep [parameter1] domain [parameter2] service [parameter3]",
-        "command": "ethernet cfm remote-mep 4 domain md1 service ma2",
-        "explanation": "I don't know.",
-        "parameters": [
-            {
-                "name": "remote-mep ID",
-                "type": "integer",
-                "explanation": "The ID of the remote MEP"
-            },
-            {
-                "name": "domain name",
-                "type": "string",
-                "explanation": "The name of the domain"
-            },
-            {
-                "name": "service name",
-                "type": "string",
-                "explanation": "The name of the service"
-            }
-        ]
-    },
-    "ethernet cfm traceroute cache": {
-        "template": "ethernet cfm traceroute cache",
-        "command": "ethernet cfm traceroute cache",
-        "explanation": "CONFIGUURE Ethernet CONTACT Fault Management",
-        "parameters": []
-    },
-    "ethernet cfm sla [parameter1] mep [parameter2] domain [parameter3] service [parameter4]": {
-        "template": "ethernet cfm sla [parameter1] mep [parameter2] domain [parameter3] service [parameter4]",
-        "command": "ethernet cfm sla 2 mep 3 domain md1 service ma2",
-        "explanation": "Security Level Agreement with Maintenance End Point in a specific domain and service",
-        "parameters": [
-            {
-                "name": "SLA ID",
-                "type": "integer",
-                "explanation": "The environment for the SLA"
-            },
-            {
-                "name": "MEP ID",
-                "type": "integer",
-                "explanation": "The ideaer for the Mainence End Point"
-            },
-            {
-                "name": "domain name",
-                "type": "string",
-                "explanation": "The name of the domain"
-            },
-            {
-                "name": "service name",
-                "type": "string",
-                "explanation": "The name of the service"
+                "explanation": "Service level of the CFM domain"
             }
         ]
     },
     "interface [parameter1]": {
         "template": "interface [parameter1]",
         "command": "interface GigabitEthernet1/0/1",
-        "explanation": "Configure interface 'GigabitEthernet 1/0/1 '",
+        "explanation": "Configure interface 'GigabitEthernet1/0/1 '",
         "parameters": [
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "Enable interface (the interface is closed by default)",
+            "parameters": []
+        },
         "switchport access vlan [parameter1]": {
             "template": "switchport access vlan [parameter1]",
             "command": "switchport access vlan 2",
@@ -186,17 +104,38 @@
                 }
             ]
         },
-        "no shutdown": {
-            "template": "no shutdown",
-            "command": "no shutdown",
-            "explanation": "(The interface is closed by default)",
-            "parameters": []
+        "ethernet cfm mep domain [parameter1] service [parameter2] mpid [parameter3] direction [parameter4]": {
+            "template": "ethernet cfm mep domain [parameter1] service [parameter2] mpid [parameter3] direction [parameter4]",
+            "command": "ethernet cfm mep domain md1 service ma2 mpid 3 direction down",
+            "explanation": "Community.",
+            "parameters": [
+                {
+                    "name": "domain name",
+                    "type": "string",
+                    "explanation": "The name of the domain for the MEP"
+                },
+                {
+                    "name": "service name",
+                    "type": "string",
+                    "explanation": "The name of the service for the MEP"
+                },
+                {
+                    "name": "MPID",
+                    "type": "integer",
+                    "explanation": "The Maintenance association End Point Identifier"
+                },
+                {
+                    "name": "direction",
+                    "type": "string",
+                    "explanation": "The direction of the MEP, either 'up' or 'down'"
+                }
+            ]
         }
     },
     "end": {
         "template": "end",
         "command": "end",
-        "explanation": "Exit from the current contact mode and return to the Privileged EXEC mode",
+        "explanation": "Exit from the current conjurement mode and return to the Privileged EXEC mode",
         "parameters": []
     }
 }

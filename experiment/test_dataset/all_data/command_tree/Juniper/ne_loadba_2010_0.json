@@ -2,249 +2,327 @@
     "set system host-name routerA": {
         "template": "set system host-name [parameter1]",
         "command": "set system host-name routerA",
-        "explanation": "Confusion the host name of the death.",
+        "explanation": "配置设备的主机名。",
         "parameters": [
             {
                 "name": "hostname",
                 "type": "string",
-                "explanation": "The host name of the equipment used to educate the equipment in the network."
+                "explanation": "设备的主机名，用于标识网络中的设备。"
             }
         ]
     },
-    "set forwarding-options hash-key family inet per-packet-balancing": {
-        "template": "set forwarding-options hash-key family [parameter1] [parameter2]",
-        "command": "set forwarding-options hash-key family inet per-packet-balancing",
-        "explanation": "Problems the Hash keys for working options to share how the IPv4 family package is secured.",
+    "set interfaces ae1 unit 0 family inet address 10.40.1.1/24": {
+        "command": "set interfaces ae1 unit 0 family inet address 10.40.1.1/24",
+        "template": "set interfaces [parameter1] unit [parameter2] family [parameter3] address [parameter4]",
+        "explanation": "Configure an interface with a specific unit, family, and IP address",
         "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "The name of the interface to be configured"
+            },
+            {
+                "name": "unit number",
+                "type": "integer",
+                "explanation": "The unit number for the interface configuration"
+            },
+            {
+                "name": "family type",
+                "type": "string",
+                "explanation": "The family type for the interface (e.g., inet for IPv4)"
+            },
+            {
+                "name": "IP address with subnet",
+                "type": "string",
+                "explanation": "The IP address and subnet mask for the interface"
+            }
+        ]
+    },
+    "set interfaces ge-0/0/0 ether-options 802.3ad ae1": {
+        "command": "set interfaces ge-0/0/0 ether-options 802.3ad ae1",
+        "template": "set interfaces [parameter1] ether-options 802.3ad [parameter2]",
+        "explanation": "Configure Ethernet options for an interface to be part of an 802.3ad link aggregation group",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "The name of the interface to be configured"
+            },
+            {
+                "name": "aggregated Ethernet interface name",
+                "type": "string",
+                "explanation": "The name of the aggregated Ethernet interface to which this interface will belong"
+            }
+        ]
+    },
+    "set interfaces ge-0/0/1 ether-options 802.3ad ae1": {
+        "command": "set interfaces ge-0/0/1 ether-options 802.3ad ae1",
+        "template": "set interfaces [parameter1] ether-options 802.3ad [parameter2]",
+        "explanation": "Configure Ethernet options for an interface to be part of an 802.3ad link aggregation group",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "The name of the interface to be configured"
+            },
+            {
+                "name": "aggregated ethernet interface name",
+                "type": "string",
+                "explanation": "The name of the aggregated Ethernet interface (ae) to which this interface belongs"
+            }
+        ]
+    },
+    "delete set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.1/24": {
+        "command": "delete set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.1/24",
+        "template": "delete set interfaces [interface] unit [unit] family [family] address [address]",
+        "explanation": "Delete a specific IP address configuration from an interface",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "The name of the interface"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "The unit number of the interface"
+            },
             {
                 "name": "family",
                 "type": "string",
-                "explanation": "Designed family of the program, e.g., it involves IPv4."
+                "explanation": "The address family (e.g., inet for IPv4)"
             },
             {
-                "name": "balancing-method",
+                "name": "address",
                 "type": "string",
-                "explanation": "People like you."
+                "explanation": "The IP address and subnet mask in CIDR notation"
             }
         ]
     },
-    "set interfaces ae0 aggregated-ether-options link-speed gigabit-ethernet": {
-        "template": "set interfaces [parameter1] aggregated-ether-options link-speed [parameter2]",
-        "command": "set interfaces ae0 aggregated-ether-options link-speed gigabit-ethernet",
-        "explanation": "Of the choice of convulsion with the ethnet interface.",
+    "delete set interfaces ge-0/0/1 unit 0 family inet address 10.30.1.1/24": {
+        "command": "delete set interfaces ge-0/0/1 unit 0 family inet address 10.30.1.1/24",
+        "template": "delete set interfaces [parameter1] unit [parameter2] family [parameter3] address [parameter4]",
+        "explanation": "Delete a specific IP address configuration from an interface",
         "parameters": [
             {
-                "name": "interface",
+                "name": "interface name",
                 "type": "string",
-                "explanation": "Interface name, e.g. ae0."
+                "explanation": "The name of the interface to be configured"
             },
             {
-                "name": "link-speed",
+                "name": "unit number",
+                "type": "integer",
+                "explanation": "The unit number of the interface"
+            },
+            {
+                "name": "family type",
                 "type": "string",
-                "explanation": "People of the link, e.g."
+                "explanation": "The family type of the interface (e.g., inet for IPv4)"
+            },
+            {
+                "name": "IP address with subnet",
+                "type": "string",
+                "explanation": "The IP address and subnet mask to be deleted from the interface"
             }
         ]
     },
-    "set interfaces ae0 unit 0 family inet address 10.40.1.1/24": {
-        "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
-        "command": "set interfaces ae0 unit 0 family inet address 10.40.1.1/24",
-        "explanation": "I mean, I'm not sure I'm going to be able to do that.",
+    "delete set routing-options static route 10.20.1.0/24 next-hop 10.30.1.2 via ge-0/0/1": {
+        "command": "delete set routing-options static route 10.20.1.0/24 next-hop 10.30.1.2 via ge-0/0/1",
+        "template": "delete set routing-options static route [parameter1] next-hop [parameter2] via [parameter3]",
+        "explanation": "Delete a static route configuration",
         "parameters": [
+            {
+                "name": "destination network",
+                "type": "string",
+                "explanation": "The destination network address in CIDR notation"
+            },
+            {
+                "name": "next-hop address",
+                "type": "string",
+                "explanation": "The next-hop IP address for the route"
+            },
             {
                 "name": "interface",
                 "type": "string",
-                "explanation": "Interface name, e.g. ae0."
-            },
-            {
-                "name": "unit",
-                "type": "integer",
-                "explanation": "With no number to listen to the multi-ethnic settlements under the same environment."
-            },
-            {
-                "name": "ip-address",
-                "type": "string",
-                "explanation": "The IPv4 arrived to the interface."
-            },
-            {
-                "name": "subnet-mask",
-                "type": "integer",
-                "explanation": "Bits of IPv4 subnet."
+                "explanation": "The interface through which the next-hop is reachable"
             }
         ]
     },
-    "set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.1/24": {
-        "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
-        "command": "set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.1/24",
-        "explanation": "I mean, I'm not sure I'm going to be able to do that.",
+    "delete set routing-options static route 10.20.1.0/24 next-hop 10.40.1.2 via ae1": {
+        "command": "delete set routing-options static route 10.20.1.0/24 next-hop 10.40.1.2 via ae1",
+        "template": "delete set routing-options static route [parameter1] next-hop [parameter2] via [parameter3]",
+        "explanation": "Delete a static route configuration from the routing options",
         "parameters": [
+            {
+                "name": "destination network",
+                "type": "string",
+                "explanation": "The destination network address with subnet mask"
+            },
+            {
+                "name": "next-hop address",
+                "type": "string",
+                "explanation": "The next-hop IP address for the route"
+            },
             {
                 "name": "interface",
                 "type": "string",
-                "explanation": "Interface name, e.g., g-0."
-            },
-            {
-                "name": "unit",
-                "type": "integer",
-                "explanation": "With no number to listen to the multi-ethnic settlements under the same environment."
-            },
-            {
-                "name": "ip-address",
-                "type": "string",
-                "explanation": "The IPv4 arrived to the interface."
-            },
-            {
-                "name": "subnet-mask",
-                "type": "integer",
-                "explanation": "Bits of IPv4 subnet."
+                "explanation": "The interface through which the next-hop is reachable"
             }
         ]
     },
-    "set interfaces ge-0/0/1 unit 0 family inet address 10.30.1.1/24": {
-        "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
-        "command": "set interfaces ge-0/0/1 unit 0 family inet address 10.30.1.1/24",
-        "explanation": "I mean, I'm not sure I'm going to be able to do that.",
+    "delete set routing-options static route 10.50.1.0/24 next-hop 10.30.1.2 via ge-0/0/1": {
+        "command": "delete set routing-options static route 10.50.1.0/24 next-hop 10.30.1.2 via ge-0/0/1",
+        "template": "delete set routing-options static route [parameter1] next-hop [parameter2] via [parameter3]",
+        "explanation": "Delete a static route configuration",
         "parameters": [
+            {
+                "name": "destination network",
+                "type": "string",
+                "explanation": "The destination network address and subnet mask in CIDR notation"
+            },
+            {
+                "name": "next-hop address",
+                "type": "string",
+                "explanation": "The next-hop IP address for the static route"
+            },
             {
                 "name": "interface",
                 "type": "string",
-                "explanation": "Interface name, e.g., g-0/0/1."
-            },
-            {
-                "name": "unit",
-                "type": "integer",
-                "explanation": "With no number to listen to the multi-ethnic settlements under the same environment."
-            },
-            {
-                "name": "ip-address",
-                "type": "string",
-                "explanation": "The IPv4 arrived to the interface."
-            },
-            {
-                "name": "subnet-mask",
-                "type": "integer",
-                "explanation": "Bits of IPv4 subnet."
+                "explanation": "The interface through which the next-hop is reachable"
             }
         ]
     },
-    "set interfaces ge-0/0/2 ether-options 802.3ad ae0": {
-        "template": "set interfaces [parameter1] ether-options 802.3ad [parameter2]",
-        "command": "set interfaces ge-0/0/2 ether-options 802.3ad ae0",
-        "explanation": "Conspiracy the Ethernet option for the interface and add it to the supposed Polish interface.",
+    "delete set routing-options static route 10.50.1.0/24 next-hop 10.40.1.2 via ae1": {
+        "command": "delete set routing-options static route 10.50.1.0/24 next-hop 10.40.1.2 via ae1",
+        "template": "delete set routing-options static route [parameter1] next-hop [parameter2] via [parameter3]",
+        "explanation": "Delete a static route configuration",
         "parameters": [
+            {
+                "name": "destination network",
+                "type": "string",
+                "explanation": "The destination network address and prefix length"
+            },
+            {
+                "name": "next-hop address",
+                "type": "string",
+                "explanation": "The next-hop IP address"
+            },
             {
                 "name": "interface",
                 "type": "string",
-                "explanation": "Interface name, e.g., g-0/0/2."
-            },
-            {
-                "name": "aggregated-interface",
-                "type": "string",
-                "explanation": "The name of the polymer interface, e.g."
-            }
-        ]
-    },
-    "set interfaces ge-0/0/3 ether-options 802.3ad ae0": {
-        "template": "set interfaces [parameter1] ether-options 802.3ad [parameter2]",
-        "command": "set interfaces ge-0/0/3 ether-options 802.3ad ae0",
-        "explanation": "Conspiracy the Ethernet option for the interface and add it to the supposed Polish interface.",
-        "parameters": [
-            {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g., g-0/0/3."
-            },
-            {
-                "name": "aggregated-interface",
-                "type": "string",
-                "explanation": "The name of the polymer interface, e.g."
+                "explanation": "The outgoing interface for the route"
             }
         ]
     },
     "set routing-options static route 10.20.1.0/24 next-hop 10.30.1.2": {
         "template": "set routing-options static route [parameter1]/[parameter2] next-hop [parameter3]",
         "command": "set routing-options static route 10.20.1.0/24 next-hop 10.30.1.2",
-        "explanation": "You're right.",
+        "explanation": "配置静态路由，指定目的网络和下一跳地址。",
         "parameters": [
             {
                 "name": "destination-network",
                 "type": "string",
-                "explanation": "destination-network"
+                "explanation": "目的网络地址。"
             },
             {
                 "name": "subnet-mask",
                 "type": "integer",
-                "explanation": "The number of subnetsked bits of the development network."
+                "explanation": "目的网络的子网掩码位数。"
             },
             {
                 "name": "next-hop",
                 "type": "string",
-                "explanation": "The next jump offer will be foreeen to that offer."
+                "explanation": "下一跳地址，数据包将被转发到该地址。"
             }
         ]
     },
     "set routing-options static route 10.20.1.0/24 next-hop 10.40.1.2": {
         "template": "set routing-options static route [parameter1]/[parameter2] next-hop [parameter3]",
         "command": "set routing-options static route 10.20.1.0/24 next-hop 10.40.1.2",
-        "explanation": "You're right.",
+        "explanation": "配置静态路由，指定目的网络和下一跳地址。",
         "parameters": [
             {
                 "name": "destination-network",
                 "type": "string",
-                "explanation": "destination-network"
+                "explanation": "目的网络地址。"
             },
             {
                 "name": "subnet-mask",
                 "type": "integer",
-                "explanation": "The number of subnetsked bits of the development network."
+                "explanation": "目的网络的子网掩码位数。"
             },
             {
                 "name": "next-hop",
                 "type": "string",
-                "explanation": "The next jump offer will be foreeen to that offer."
+                "explanation": "下一跳地址，数据包将被转发到该地址。"
             }
         ]
     },
     "set routing-options static route 10.50.1.0/24 next-hop 10.30.1.2": {
         "template": "set routing-options static route [parameter1]/[parameter2] next-hop [parameter3]",
         "command": "set routing-options static route 10.50.1.0/24 next-hop 10.30.1.2",
-        "explanation": "You're right.",
+        "explanation": "配置静态路由，指定目的网络和下一跳地址。",
         "parameters": [
             {
                 "name": "destination-network",
                 "type": "string",
-                "explanation": "destination-network"
+                "explanation": "目的网络地址。"
             },
             {
                 "name": "subnet-mask",
                 "type": "integer",
-                "explanation": "The number of subnetsked bits of the development network."
+                "explanation": "目的网络的子网掩码位数。"
             },
             {
                 "name": "next-hop",
                 "type": "string",
-                "explanation": "The next jump offer will be foreeen to that offer."
+                "explanation": "下一跳地址，数据包将被转发到该地址。"
             }
         ]
     },
     "set routing-options static route 10.50.1.0/24 next-hop 10.40.1.2": {
         "template": "set routing-options static route [parameter1]/[parameter2] next-hop [parameter3]",
         "command": "set routing-options static route 10.50.1.0/24 next-hop 10.40.1.2",
-        "explanation": "You're right.",
+        "explanation": "配置静态路由，指定目的网络和下一跳地址。",
         "parameters": [
             {
                 "name": "destination-network",
                 "type": "string",
-                "explanation": "destination-network"
+                "explanation": "目的网络地址。"
             },
             {
                 "name": "subnet-mask",
                 "type": "integer",
-                "explanation": "The number of subnetsked bits of the development network."
+                "explanation": "目的网络的子网掩码位数。"
             },
             {
                 "name": "next-hop",
                 "type": "string",
-                "explanation": "The next jump offer will be foreeen to that offer."
+                "explanation": "下一跳地址，数据包将被转发到该地址。"
+            }
+        ]
+    },
+    "delete set routing-options forwarding-table load-balance unequal-cost": {
+        "command": "delete set routing-options forwarding-table load-balance unequal-cost",
+        "template": "delete set routing-options forwarding-table load-balance [parameter1]",
+        "explanation": "Delete the set configuration for load balancing with unequal-cost paths in the routing options forwarding table",
+        "parameters": [
+            {
+                "name": "load-balance type",
+                "type": "string",
+                "explanation": "Specifies the type of load balancing to delete, such as unequal-cost"
+            }
+        ]
+    },
+    "set routing-options forwarding-table indirect-next-hop": {
+        "command": "set routing-options forwarding-table indirect-next-hop",
+        "template": "set routing-options forwarding-table [parameter1]",
+        "explanation": "Configure the forwarding table options in routing to use indirect next-hop",
+        "parameters": [
+            {
+                "name": "forwarding option",
+                "type": "string",
+                "explanation": "Specifies the forwarding table option, such as indirect-next-hop"
             }
         ]
     }

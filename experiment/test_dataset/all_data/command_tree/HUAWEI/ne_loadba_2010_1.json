@@ -7,19 +7,19 @@
             {
                 "name": "host name",
                 "type": "string",
-                "explanation": "HostName"
+                "explanation": "Host Name"
             }
         ]
     },
     "interface Eth-Trunk1": {
         "template": "interface [parameter1]",
         "command": "interface Eth-Trunk1",
-        "explanation": "Enter Eth-Trunk1 Information Mode",
+        "explanation": "Enter Eth-Trunk1 interface configuration mode",
         "parameters": [
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
         "ip address 10.40.1.2 255.255.255.0": {
@@ -35,7 +35,7 @@
                 {
                     "name": "sub musk",
                     "type": "IPv4",
-                    "explanation": "Subnet Mask"
+                    "explanation": "Subnet mask"
                 }
             ]
         }
@@ -48,13 +48,13 @@
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
         "undo shutdown": {
             "template": "undo shutdown",
             "command": "undo shutdown",
-            "explanation": "(The interface is closed by default)",
+            "explanation": "Enable interface (the interface is closed by default)",
             "parameters": []
         },
         "ip address 10.30.1.2 255.255.255.0": {
@@ -70,7 +70,7 @@
                 {
                     "name": "sub musk",
                     "type": "IPv4",
-                    "explanation": "Subnet Mask"
+                    "explanation": "Subnet mask"
                 }
             ]
         }
@@ -83,19 +83,19 @@
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
         "undo shutdown": {
             "template": "undo shutdown",
             "command": "undo shutdown",
-            "explanation": "(The interface is closed by default)",
+            "explanation": "Enable interface (the interface is closed by default)",
             "parameters": []
         },
         "ip address 10.50.1.1 255.255.255.0": {
             "template": "ip address [parameter1] [parameter2]",
             "command": "ip address 10.50.1.1 255.255.255.0",
-            "explanation": "The IPv4 offer for the communication information is 10.50.1 subnet mask 255.255.255.0",
+            "explanation": "The IPv4 address for the configuration interface is 10.50.1.1, subnet mask 255.255.255.0",
             "parameters": [
                 {
                     "name": "ip address",
@@ -105,7 +105,7 @@
                 {
                     "name": "sub musk",
                     "type": "IPv4",
-                    "explanation": "Subnet Mask"
+                    "explanation": "Subnet mask"
                 }
             ]
         }
@@ -118,13 +118,13 @@
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
         "undo shutdown": {
             "template": "undo shutdown",
             "command": "undo shutdown",
-            "explanation": "(The interface is closed by default)",
+            "explanation": "Enable interface (the interface is closed by default)",
             "parameters": []
         },
         "eth-trunk 1": {
@@ -143,18 +143,18 @@
     "interface GigabitEthernet4/0/0": {
         "template": "interface [parameter1]",
         "command": "interface GigabitEthernet4/0/0",
-        "explanation": "Enter gigabitEthernet4/0/interface configuration mode",
+        "explanation": "Enter gigabitEthernet4/0/0 interface configuration mode",
         "parameters": [
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
         "undo shutdown": {
             "template": "undo shutdown",
             "command": "undo shutdown",
-            "explanation": "(The interface is closed by default)",
+            "explanation": "Enable interface (the interface is closed by default)",
             "parameters": []
         },
         "eth-trunk 1": {
@@ -168,87 +168,93 @@
                     "explanation": "Eth-Trunk ID"
                 }
             ]
+        },
+        "ip route-static 10.1.1.0 255.255.255.0 GigabitEthernet2/0/0 10.30.1.1": {
+            "template": "ip route-static [parameter1] [parameter2] [parameter3] [parameter4]",
+            "command": "ip route-static 10.1.1.0 255.255.255.0 GigabitEthernet2/0/0 10.30.1.1",
+            "explanation": "Configure static routers, target network 10.1.1.0/24, next jump 10.30.1.1, exit interface with GigabitEthernet2/0/0",
+            "parameters": [
+                {
+                    "name": "destination network",
+                    "type": "IPv4",
+                    "explanation": "Destination Network Address"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "Subnet mask"
+                },
+                {
+                    "name": "outgoing interface",
+                    "type": "string",
+                    "explanation": "Out interface."
+                },
+                {
+                    "name": "next hop",
+                    "type": "IPv4",
+                    "explanation": "Next Jump Address"
+                }
+            ]
+        },
+        "ip route-static 10.1.1.0 255.255.255.0 Eth-Trunk1 10.40.1.1": {
+            "template": "ip route-static [parameter1] [parameter2] [parameter3] [parameter4]",
+            "command": "ip route-static 10.1.1.0 255.255.255.0 Eth-Trunk1 10.40.1.1",
+            "explanation": "Configure static routers, destination network 10.1.1.0/24, next jump 10.40.1.1, exit interface Eth-Trunk1",
+            "parameters": [
+                {
+                    "name": "destination network",
+                    "type": "IPv4",
+                    "explanation": "Destination Network Address"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "Subnet mask"
+                },
+                {
+                    "name": "outgoing interface",
+                    "type": "string",
+                    "explanation": "Out interface."
+                },
+                {
+                    "name": "next hop",
+                    "type": "IPv4",
+                    "explanation": "Next Jump Address"
+                }
+            ]
+        },
+        "ip route-static 10.20.1.0 255.255.255.0 GigabitEthernet2/0/2 10.50.1.2": {
+            "template": "ip route-static [parameter1] [parameter2] [parameter3] [parameter4]",
+            "command": "ip route-static 10.20.1.0 255.255.255.0 GigabitEthernet2/0/2 10.50.1.2",
+            "explanation": "Configure static routers, target network 10.20.1.0/24, next jump 10.50.1.2, interface with GigabitEthernet2/0/2",
+            "parameters": [
+                {
+                    "name": "destination network",
+                    "type": "IPv4",
+                    "explanation": "Destination Network Address"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "Subnet mask"
+                },
+                {
+                    "name": "outgoing interface",
+                    "type": "string",
+                    "explanation": "Out interface."
+                },
+                {
+                    "name": "next hop",
+                    "type": "IPv4",
+                    "explanation": "Next Jump Address"
+                }
+            ]
         }
     },
-    "ip route-static 10.1.1.0 255.255.255.0 GigabitEthernet2/0/0 10.30.1.1": {
-        "template": "ip route-static [parameter1] [parameter2] [parameter3] [parameter4]",
-        "command": "ip route-static 10.1.1.0 255.255.255.0 GigabitEthernet2/0/0 10.30.1.1",
-        "explanation": "Contact status routers, target network 10.1/24, next jump 10.30.1.1, exit with GigabitEthernet2/0/0/0/0",
-        "parameters": [
-            {
-                "name": "destination network",
-                "type": "IPv4",
-                "explanation": "Development Network Address"
-            },
-            {
-                "name": "subnet mask",
-                "type": "IPv4",
-                "explanation": "Subnet Mask"
-            },
-            {
-                "name": "outgoing interface",
-                "type": "string",
-                "explanation": "Out interface."
-            },
-            {
-                "name": "next hop",
-                "type": "IPv4",
-                "explanation": "Next Jump Address"
-            }
-        ]
-    },
-    "ip route-static 10.1.1.0 255.255.255.0 Eth-Trunk1 10.40.1.1": {
-        "template": "ip route-static [parameter1] [parameter2] [parameter3] [parameter4]",
-        "command": "ip route-static 10.1.1.0 255.255.255.0 Eth-Trunk1 10.40.1.1",
-        "explanation": "Contact status routers, development network 10.1.1.0/24, next jump 10.40.1, exit into Eth-Trunk1",
-        "parameters": [
-            {
-                "name": "destination network",
-                "type": "IPv4",
-                "explanation": "Development Network Address"
-            },
-            {
-                "name": "subnet mask",
-                "type": "IPv4",
-                "explanation": "Subnet Mask"
-            },
-            {
-                "name": "outgoing interface",
-                "type": "string",
-                "explanation": "Out interface."
-            },
-            {
-                "name": "next hop",
-                "type": "IPv4",
-                "explanation": "Next Jump Address"
-            }
-        ]
-    },
-    "ip route-static 10.20.1.0 255.255.255.0 GigabitEthernet2/0/2 10.50.1.2": {
-        "template": "ip route-static [parameter1] [parameter2] [parameter3] [parameter4]",
-        "command": "ip route-static 10.20.1.0 255.255.255.0 GigabitEthernet2/0/2 10.50.1.2",
-        "explanation": "Contact status routers, target network 10.20.1.0/24, next jump 10.50.1.2, interface with GigabitEthernet2/0/2",
-        "parameters": [
-            {
-                "name": "destination network",
-                "type": "IPv4",
-                "explanation": "Development Network Address"
-            },
-            {
-                "name": "subnet mask",
-                "type": "IPv4",
-                "explanation": "Subnet Mask"
-            },
-            {
-                "name": "outgoing interface",
-                "type": "string",
-                "explanation": "Out interface."
-            },
-            {
-                "name": "next hop",
-                "type": "IPv4",
-                "explanation": "Next Jump Address"
-            }
-        ]
+    "return": {
+        "template": "return",
+        "command": "return",
+        "explanation": "Exit current configuration mode and return to user view",
+        "parameters": []
     }
 }

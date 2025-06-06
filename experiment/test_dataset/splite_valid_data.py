@@ -13,15 +13,15 @@ random.seed(42)
 
 device_list = os.listdir(f'all_data/text_config/Juniper')
 total_devices = [device.split('.')[0] for device in device_list]
-total_num = len(device_list)
-print(total_num)
-print(len(total_devices))
+print(f"Cisco: {len(os.listdir('all_data/text_config/Cisco'))}")
+print(f"HUAWEI: {len(os.listdir('all_data/text_config/HUAWEI'))}")
+print(f"Juniper: {len(os.listdir('all_data/text_config/Juniper'))}")
 target_dir = 'valid_data'
 
 if os.path.exists(target_dir):
     shutil.rmtree(target_dir)
 # 从total_devices中随机抽取50个设备
-sample_data = random.sample(total_devices, 60)
+sample_data = random.sample(total_devices, 120)
 valid_devices = []
 
 for device in sample_data:
@@ -37,7 +37,7 @@ for device in sample_data:
                 break
     if flag:
         valid_devices.append(device)
-        if len(valid_devices) == 50: break
+        if len(valid_devices) == 100: break
 
 for device in valid_devices:
     for vendor in ['Cisco', 'HUAWEI', 'Juniper', 'Juniper_subdivided']:

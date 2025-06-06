@@ -1,19 +1,13 @@
 hostname NPE
 !
+ip cef
+!
 vrf definition vpn1
  rd 100:1
- !
- address-family ipv4
-  route-target export 2:2
-  route-target import 2:2
- exit-address-family
+ route-target export 2:2
+ route-target import 2:2
 !
-!mpls ldp
-! router-id Loopback1 force
- !
-! address-family ipv4
- ! discovery transport-address interface
- !exit-address-family
+mpls ldp router-id Loopback1
 !
 router isis
  net 10.0000.0000.0003.00
@@ -22,7 +16,7 @@ interface GigabitEthernet1/0/0
  no shutdown
  ip address 10.2.1.2 255.255.255.0
  mpls ip
- mpls ldp igp sync  ! Cisco标准同步命令
+ mpls ldp autoconfig
 !
 interface GigabitEthernet2/0/0
  no shutdown
@@ -36,7 +30,7 @@ router bgp 100
  neighbor 2.2.2.2 remote-as 100
  neighbor 2.2.2.2 update-source Loopback1
  !
- address-family ipv4
+ address-family ipv4 unicast
   neighbor 2.2.2.2 activate
   neighbor 2.2.2.2 next-hop-self
  exit-address-family
@@ -45,9 +39,6 @@ router bgp 100
   neighbor 2.2.2.2 activate
   neighbor 2.2.2.2 send-community both
  exit-address-family
- !
-  neighbor 2.2.2.2 activate
-  neighbor 2.2.2.2 send-community extended
 !
 route-map SPE permit 10
  match ip address prefix-list default

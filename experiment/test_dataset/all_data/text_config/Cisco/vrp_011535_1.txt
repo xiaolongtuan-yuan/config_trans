@@ -1,23 +1,19 @@
 hostname PE2
 !
-ethernet cfm
-!
 mpls ip
-!mpls l2vpn encapsulation mpls
-!mpls ldp
- !mpls label protocol ldp
 !
-mpls ldp router-id Loopback0 force
+mpls ldp router-id Loopback0
 !
 interface GigabitEthernet1/0/1.1
- encapsulation dot1q 1
- xconnect 1.1.1.1 1001 encapsulation mpls
+ encapsulation dot1Q 1
+ service instance 1 ethernet
+  xconnect 1.1.1.1 1001 encapsulation mpls
 !
 interface GigabitEthernet1/0/2
  no shutdown
  ip address 192.168.1.2 255.255.255.0
  mpls ip
- mpls ldp autoconfig
+ mpls ldp igp autoconfig
 !
 interface Loopback0
  ip address 2.2.2.2 255.255.255.255
@@ -25,20 +21,5 @@ interface Loopback0
 router ospf 1
  network 2.2.2.2 0.0.0.0 area 0
  network 192.168.1.0 0.0.0.255 area 0
-!
-ethernet cfm domain md1 level 7
-ethernet cfm maintenance-association ma1 md1
- service ccm
- !continuity-check
- !mep crosscheck
-!
-ethernet cfm mep 2 ma ma1 interface GigabitEthernet1/0/1.1
-ethernet cfm cc mep 2 ma ma1 enable
-ethernet cfm remote-mep 1 ma ma1
-ethernet cfm cc remote-mep 1 ma ma1 enable
-ethernet cfm dm two-way mep 2 ma ma1 test-id 1
-ethernet cfm dm receive test-id 1
-ethernet cfm dm two-way mep 2 ma ma1 test-id 2 remote-mep 1
-ethernet cfm dm send continual test-id 2 interval 30000
 !
 end

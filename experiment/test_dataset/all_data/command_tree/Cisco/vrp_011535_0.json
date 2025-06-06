@@ -2,90 +2,54 @@
     "hostname PE1": {
         "template": "hostname [parameter1]",
         "command": "hostname PE1",
-        "explanation": "Sets the data 's hostname 'PE1 '",
+        "explanation": "Sets the device 's hostname 'PE1 '",
         "parameters": [
             {
                 "name": "host name",
                 "type": "string",
-                "explanation": "HostName"
+                "explanation": "Host Name"
             }
         ]
     },
-    "ethernet cfm": {
-        "command": "ethernet cfm",
-        "service ma1": {
-            "command": "service ma1",
-            "interface GigabitEthernet1/0/1.1": {
-                "template": "interface [parameter1]",
-                "command": "interface GigabitEthernet1/0/1.1",
-                "explanation": "Spectify interface for MEP",
-                "parameters": [
-                    {
-                        "name": "interface name",
-                        "type": "string",
-                        "explanation": "InterfaceName"
-                    }
-                ]
-            },
-            "template": "service [parameter1]",
-            "explanation": "Configure service",
-            "parameters": [
-                {
-                    "name": "service name",
-                    "type": "string",
-                    "explanation": "service name"
-                }
-            ]
-        },
-        "template": "ethernet cfm",
-        "explanation": "(CFM)",
-        "parameters": []
-    },
-    "mpls ldp": {
-        "template": "mpls ldp",
-        "command": "mpls ldp",
-        "explanation": "Allowable MPLS LDP on interface",
-        "parameters": []
-    },
-    "l2vpn vfi context l2vpn1": {
-        "command": "l2vpn vfi context l2vpn1",
-        "template": "l2vpn vfi context [parameter1]",
-        "explanation": "Contact a Layer 2 Virgin Private Network",
+    "mpls ldp router-id Loopback0": {
+        "template": "mpls ldp router-id [parameter1]",
+        "command": "mpls ldp router-id Loopback0",
+        "explanation": "Set IP address for MPLS LDP router ID for Loopback0 interface",
         "parameters": [
             {
-                "name": "VFI name",
+                "name": "interface",
                 "type": "string",
-                "explanation": "The name of the Virgin Forwaring Institute"
+                "explanation": "Specify interface, this is Loopback0"
             }
         ]
     },
     "interface GigabitEthernet1/0/1.1": {
         "template": "interface [parameter1]",
         "command": "interface GigabitEthernet1/0/1.1",
-        "explanation": "Spectify interface for MEP",
+        "explanation": "Specify interface for MEP",
         "parameters": [
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
-        "encapsulation dot1q 1": {
-            "command": "encapsulation dot1q 1",
-            "template": "encapsulation dot1q [parameter1]",
-            "explanation": "Conformity VLAN encapsulation using IEE 802.1Q standing",
+        "encapsulation dot1Q 1": {
+            "template": "encapsulation dot1Q [parameter1]",
+            "command": "encapsulation dot1Q 1",
+            "explanation": "Sets the cover type of interface to dot1Q, VLAN ID to 1",
             "parameters": [
                 {
-                    "name": "VLAN ID",
+                    "name": "vlan id",
                     "type": "integer",
-                    "explanation": "The VLAN educationaler"
+                    "explanation": "VLAN ID"
                 }
             ]
         },
         "xconnect 2.2.2.2 1001 encapsulation mpls": {
             "template": "xconnect [parameter1] [parameter2] encapsulation [parameter3]",
             "command": "xconnect 2.2.2.2 1001 encapsulation mpls",
-            "explanation": "Confusion cross-convention with end IP 2.2.2, VLAN ID 1001 and cover type MPLS",
+            "explanation": "Configure cross-connection with end IP 2.2.2.2, VLAN ID 1001 and cover type MPLS",
             "parameters": [
                 {
                     "name": "peer ip address",
@@ -100,7 +64,7 @@
                 {
                     "name": "encapsulation type",
                     "type": "string",
-                    "explanation": "Over type, here is 'mpls'"
+                    "explanation": "Cover type, here is 'mpls'"
                 }
             ]
         }
@@ -108,24 +72,24 @@
     "interface GigabitEthernet1/0/2": {
         "template": "interface [parameter1]",
         "command": "interface GigabitEthernet1/0/2",
-        "explanation": "Configure Interface 'GigabitEthernet 1/0/2'",
+        "explanation": "Configure Interface 'GigabitEthernet1/0/2'",
         "parameters": [
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
         "no shutdown": {
             "template": "no shutdown",
             "command": "no shutdown",
-            "explanation": "(The interface is closed by default)",
+            "explanation": "Enable interface (the interface is closed by default)",
             "parameters": []
         },
         "ip address 192.168.1.1 255.255.255.0": {
             "template": "ip address [parameter1] [parameter2]",
             "command": "ip address 192.168.1.1 255.255.255.0",
-            "explanation": "The IPv4 address for the communication information is 192.168.1.1 and the subnet mark is 255.252.5.5.0",
+            "explanation": "The IPv4 address for the configuration interface is 192.168.1.1 and the subnet mask is 255.252.55.0",
             "parameters": [
                 {
                     "name": "ip address",
@@ -135,14 +99,20 @@
                 {
                     "name": "subnet mask",
                     "type": "IPv4",
-                    "explanation": "Subnet Mask"
+                    "explanation": "Subnet mask"
                 }
             ]
         },
         "mpls ip": {
             "template": "mpls ip",
             "command": "mpls ip",
-            "explanation": "Allow MPLS IP on interface",
+            "explanation": "Enable MPLS IP on interface",
+            "parameters": []
+        },
+        "mpls ldp autoconfig": {
+            "command": "mpls ldp autoconfig",
+            "template": "mpls ldp autoconfig",
+            "explanation": "Allows MPLS au-conformation on the route, allowing the route to automatically configuring LDP on all interfaces that are already covered with MPLS.",
             "parameters": []
         }
     },
@@ -154,13 +124,13 @@
             {
                 "name": "interface name",
                 "type": "string",
-                "explanation": "InterfaceName"
+                "explanation": "Interface Name"
             }
         ],
         "ip address 1.1.1.1 255.255.255.255": {
             "command": "ip address 1.1.1.1 255.255.255.255",
             "template": "ip address [parameter1] [parameter2]",
-            "explanation": "Assign an IP address and subnet challenge to an interface",
+            "explanation": "It's not like I'm going to have to do this.",
             "parameters": [
                 {
                     "name": "IP address",
@@ -168,9 +138,9 @@
                     "explanation": "The IP address to be identified to the interface"
                 },
                 {
-                    "name": "Subnet mask",
+                    "name": "subnet mask",
                     "type": "string",
-                    "explanation": "The subnet process to the IP address"
+                    "explanation": "The subnet procession to the IP address"
                 }
             ]
         }
@@ -178,12 +148,12 @@
     "router ospf 1": {
         "template": "router ospf [parameter1]",
         "command": "router ospf 1",
-        "explanation": "Enter OSF project, protocol ID 1",
+        "explanation": "Enter OSPF router configuration, process ID 1",
         "parameters": [
             {
                 "name": "process id",
                 "type": "integer",
-                "explanation": "OSS Project ID"
+                "explanation": "OSS Process ID"
             }
         ],
         "network 1.1.1.1 0.0.0.0 area 0": {
@@ -204,14 +174,14 @@
                 {
                     "name": "area",
                     "type": "integer",
-                    "explanation": "OAS Area Number"
+                    "explanation": "OSPF Area Number"
                 }
             ]
         },
         "network 192.168.1.0 0.0.0.255 area 0": {
             "template": "network [parameter1] [parameter2] area [parameter3]",
             "command": "network 192.168.1.0 0.0.0.255 area 0",
-            "explanation": "192.168.1.0/24 on the OAS area",
+            "explanation": "192.168.1.0/24 on the OSPF area",
             "parameters": [
                 {
                     "name": "network address",
@@ -226,7 +196,7 @@
                 {
                     "name": "area",
                     "type": "integer",
-                    "explanation": "OAS Area Number"
+                    "explanation": "OSPF Area Number"
                 }
             ]
         }
@@ -234,7 +204,7 @@
     "end": {
         "command": "end",
         "template": "end",
-        "explanation": "Exit from the current contact mode and return to the Privileged EXEC mode",
+        "explanation": "Exit the current situation and revert to the previous move or to the Privileged EXEC mode.",
         "parameters": []
     }
 }

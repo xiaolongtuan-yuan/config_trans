@@ -2,35 +2,106 @@
     "set system host-name DeviceB": {
         "template": "set system host-name [parameter1]",
         "command": "set system host-name DeviceB",
-        "explanation": "Confusion the host name of the deal.",
+        "explanation": "Configure the host name of the device.",
         "parameters": [
             {
                 "name": "hostname",
                 "type": "string",
-                "explanation": "The host name of the equipment used to educate the equipment in the network."
+                "explanation": "The host name of the equipment used to identify the equipment in the network."
             }
         ]
     },
-    "set interfaces t1-2/0/0": {
-        "template": "set interfaces [parameter1]",
-        "command": "set interfaces t1-2/0/0",
-        "explanation": "Creates a polymer interface.",
+    "set chassis fpc 2": {
+        "template": "set chassis fpc [parameter1]",
+        "command": "set chassis fpc 2",
+        "explanation": "Sets the protected parent for a Flexible PIC Concentrator (FPC) in the Junos chasis, cofiguring hardware-specific before or national state.",
         "parameters": [
             {
-                "name": "interface",
-                "type": "string",
-                "explanation": "Interface name, e.g., g-1/0/0."
+                "name": "fpc",
+                "type": "integer",
+                "explanation": "FPC number."
             }
         ],
-        "encapsulation ppp": {
-            "template": "encapsulation [parameter2]",
-            "command": "encapsulation ppp",
-            "explanation": "Set the encapsulation program for a specific interface",
+        "pic 0 e1 0 channel-set 1 timeslot-list 1-31": {
+            "template": "pic [parameter2] e1 [parameter3] channel-set [parameter4] timeslot-list [parameter5]",
+            "command": "pic 0 e1 0 channel-set 1 timeslot-list 1-31",
+            "explanation": "A list of channel sets and time gaps for the E1 interface.",
             "parameters": [
                 {
-                    "name": "encapsulation protocol",
+                    "name": "pic",
+                    "type": "integer",
+                    "explanation": "PIC (Physical Interface Card) number."
+                },
+                {
+                    "name": "e1",
+                    "type": "integer",
+                    "explanation": "E1 interface number."
+                },
+                {
+                    "name": "channel-set",
+                    "type": "integer",
+                    "explanation": "Channel set number."
+                },
+                {
+                    "name": "timeslot-list",
                     "type": "string",
-                    "explanation": "The encapsulation program to be set on the interface"
+                    "explanation": "list, specify the gap range to be used."
+                }
+            ]
+        },
+        "pic 0 e1 0 loopback-type remote": {
+            "template": "pic [parameter2] e1 [parameter3] loopback-type [parameter4]",
+            "command": "pic 0 e1 0 loopback-type remote",
+            "explanation": "The type of loop return that configures the E1 interface is a remote loop return.",
+            "parameters": [
+                {
+                    "name": "pic",
+                    "type": "integer",
+                    "explanation": "PIC (Physical Interface Card) number."
+                },
+                {
+                    "name": "e1",
+                    "type": "integer",
+                    "explanation": "E1 interface number."
+                },
+                {
+                    "name": "loopback-type",
+                    "type": "string",
+                    "explanation": "Ringback type, e.g. remote means long-range ringback."
+                }
+            ]
+        }
+    },
+    "deactivate chassis fpc 2": {
+        "template": "deactivate chassis fpc [parameter1]",
+        "command": "deactivate chassis fpc 2",
+        "explanation": "The company develops the Specialized Flexible PIC Concentrator in a Junos Chassis, disabling its operations.",
+        "parameters": [
+            {
+                "name": "fpc",
+                "type": "integer",
+                "explanation": "FPC (Flexible PIC Concentrator) number."
+            }
+        ],
+        "pic 0 e1 0 loopback-type remote": {
+            "template": "pic [parameter2] e1 [parameter3] loopback-type [parameter4]",
+            "command": "pic 0 e1 0 loopback-type remote",
+            "explanation": "Cancels the remote loop back configuration for the E1 interface.",
+            "parameters": [
+                {
+                    "name": "pic",
+                    "type": "integer",
+                    "explanation": "PIC (Physical Interface Card) number."
+                },
+                {
+                    "name": "e1",
+                    "type": "integer",
+                    "explanation": "E1 interface number."
+                },
+                {
+                    "name": "loopback-type",
+                    "type": "string",
+                    "explanation": "Ringback type, e.g. remote means long-range ringback."
                 }
             ]
         }

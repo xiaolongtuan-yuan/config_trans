@@ -1,22 +1,18 @@
 set system host-name DeviceA
+set system domain-name huawei.com
 
-set services l2tp disable
-set services l2tp tunnel secret "<tunnel-password>"
-set services l2tp tunnel source-address 10.38.160.1
-set services l2tp tunnel destination 10.38.160.2
+set access radius-server 10.20.20.1 secret "shared-key"
+set access radius-server 10.20.20.1 port 1812
+set access radius-server 10.20.20.1 accounting-port 1813
+set access profile radius-profile authentication-order radius
+set access profile radius-profile accounting-order radius
 
-set system radius-server 10.20.20.1 secret "<shared-key>"
-set system accounting destination-server 10.20.20.1 secret "<shared-key>"
+set interfaces ge-0/0/0 unit 0 family inet address 10.38.160.1/24
 
-set access profile default-auth-profile authentication-order radius
-set access profile default-auth-profile radius authentication-server 10.20.20.1
+set services l2tp tunnel local-gateway-address 10.38.160.1
+set services l2tp tunnel remote-gateway-address 10.38.160.2
+set services l2tp tunnel authentication shared-secret "tunnel-password"
+set services l2tp session authentication client username "username" password "password"
 
-set interfaces ge-1/0/0 unit 0 family inet address 10.38.160.1/24
-
-set interfaces ge-2/0/0 flexible-vlan-tagging
-set interfaces ge-2/0/0 encapsulation flexible-ethernet-services
-set interfaces ge-2/0/0 unit 100 encapsulation ppp-over-ether
-
-set interfaces lt-1/0/0 unit 1 tunnel source-address 10.38.160.1
-set interfaces lt-1/0/0 unit 1 tunnel destination 10.38.160.2
-set interfaces lt-1/0/0 unit 1 family inet
+set access profile ppp-profile authentication-order radius
+set access profile ppp-profile accounting-order radius

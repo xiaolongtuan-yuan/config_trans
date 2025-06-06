@@ -1,8 +1,9 @@
 set system host-name DeviceA
 
-set interfaces e1-1/0/0 encapsulation ethernet-ccc
-!set interfaces e1-1/0/0 gigether-options 802.3ad lacp force-up
+set chassis fpc 0 pic 0 channelized-t1
+set chassis fpc 0 pic 0 t1 1/0/0 channel-group 1 timeslots 1-24
 
-set interfaces se-1/0/0:1 encapsulation ppp
-!set interfaces se-1/0/0:1 clocking-mode internal
-!set interfaces se-1/0/0:1 tdr-options test-interval 20
+set interfaces t1-1/0/0:1 framing extended-superframe
+
+set interfaces t1-1/0/0:1 unit 0 encapsulation ppp
+set interfaces t1-1/0/0:1 unit 0 family inet address 10.10.1.1/24

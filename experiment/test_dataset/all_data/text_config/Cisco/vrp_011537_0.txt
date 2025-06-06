@@ -2,24 +2,15 @@ hostname CE1
 !
 vlan 2
 !
-ethernet cfm ieee
-ethernet cfm domain md1 level 1
+ethernet cfm
+ ethernet cfm global
 !
-ethernet cfm service ma2 vlan 2 direction down
-!
-ethernet cfm mep 3 domain md1 service ma2
- interface GigabitEthernet1/0/1
-
-!
-ethernet cfm remote-mep 4 domain md1 service ma2
- !continuity-check
-!
-ethernet cfm traceroute cache
-ethernet cfm sla 2 mep 3 domain md1 service ma2
- !loss-measurement consecutive 10
+ethernet cfm domain md1 level 4
+ service ma2 evc MA2
 !
 interface GigabitEthernet1/0/1
- switchport access vlan 2
  no shutdown
+ switchport access vlan 2
+ ethernet cfm mep domain md1 service ma2 mpid 3 direction down
 !
 end

@@ -7,87 +7,94 @@
             {
                 "name": "hostname",
                 "type": "string",
-                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+                "explanation": "The host name of the equipment used to identify the equipment in the network."
             }
         ]
     },
-    "set interfaces [parameter1] [parameter2]": {
-        "template": "set interfaces [parameter1] [parameter2]",
-        "command": "set interfaces ge-1/0/0 disable",
-        "explanation": "Disable a specific interface",
-        "parameters": [
-            {
-                "name": "interface name",
-                "type": "string",
-                "explanation": "The name of the interface to be disabled"
-            },
-            {
-                "name": "action",
-                "type": "string",
-                "explanation": "The action to be taken on the interface, in this case, 'disable'"
-            }
-        ]
-    },
-    "set interfaces [interface]": {
-        "template": "set interfaces [interface]",
+    "set interfaces [parameter1]": {
+        "template": "set interfaces [parameter1]",
         "command": "set interfaces ge-1/0/0",
-        "explanation": "The command `set interfaces [interface]` in Junos OS configures or modifies settings for a specified network interface, such as IP address, MTU, or description.",
+        "explanation": "Creates a polymer interface.",
         "parameters": [
             {
                 "name": "interface",
                 "type": "string",
-                "explanation": "The name of the interface to be configured."
+                "explanation": "Interface name, e.g., g-1/0/0."
             }
         ],
-        "unit [unit_number] family [family_type] vlan members [vlan_id]": {
-            "template": "unit [unit_number] family [family_type] vlan members [vlan_id]",
-            "command": "unit 10 family ethernet-switching vlan members 10",
-            "explanation": "Configures a VLAN membership for a specific interface unit under the Ethernet switching family.",
+        "flexible-vlan-tagging": {
+            "template": "flexible-vlan-tagging",
+            "command": "flexible-vlan-tagging",
+            "explanation": "Allowable flexible VLAN tagging on the protected interface",
+            "parameters": []
+        },
+        "encapsulation [parameter2]": {
+            "template": "encapsulation [parameter2]",
+            "command": "encapsulation flexible-ethernet-services",
+            "explanation": "Consider the encapsulation type for an interface",
+            "parameters": [
+                {
+                    "name": "encapsulation type",
+                    "type": "string",
+                    "explanation": "The type of involvement to be applied to the interface"
+                }
+            ]
+        },
+        "unit [unit_number] encapsulation [encapsulation_type]": {
+            "template": "unit [unit_number] encapsulation [encapsulation_type]",
+            "command": "unit 10 encapsulation vlan",
+            "explanation": "As a matter of fact, it's a matter of time.",
             "parameters": [
                 {
                     "name": "unit_number",
                     "type": "integer",
-                    "explanation": "The logical unit number of the interface."
+                    "explanation": "Unit number of the interface"
                 },
                 {
-                    "name": "family_type",
+                    "name": "encapsulation_type",
                     "type": "string",
-                    "explanation": "The protocol family type, in this case, 'ethernet-switching'."
+                    "explanation": "Type of encapsulation to be applied"
+                }
+            ]
+        },
+        "unit [unit_number] vlan-id [vlan_id]": {
+            "template": "unit [unit_number] vlan-id [vlan_id]",
+            "command": "unit 10 vlan-id 10",
+            "explanation": "If you're going to be able to use VLAN IID for a spectic interface unit",
+            "parameters": [
+                {
+                    "name": "unit_number",
+                    "type": "integer",
+                    "explanation": "Unit number of the interface"
                 },
                 {
                     "name": "vlan_id",
                     "type": "integer",
-                    "explanation": "The VLAN ID to which the interface unit is to be assigned."
+                    "explanation": "VLAN ID to be identified"
                 }
             ]
         },
         "unit [unit_number] family [family_type] address [ip_address]": {
             "template": "unit [unit_number] family [family_type] address [ip_address]",
             "command": "unit 10 family inet address 172.16.1.2/24",
-            "explanation": "Configure an interface with a specific unit, family type, and IP address",
+            "explanation": "It's not like I'm going to have to do this.",
             "parameters": [
                 {
                     "name": "unit_number",
                     "type": "integer",
-                    "explanation": "The unit number for the interface configuration"
+                    "explanation": "The unit number on the interface."
                 },
                 {
                     "name": "family_type",
                     "type": "string",
-                    "explanation": "The family type for the interface configuration (e.g., inet for IPv4)"
+                    "explanation": "The family type."
                 },
                 {
                     "name": "ip_address",
                     "type": "string",
-                    "explanation": "The IP address and subnet mask for the interface"
+                    "explanation": "The IP address and subnet matter in CIDR notification."
                 }
             ]
-        },
-        "enable": {
-            "template": "enable",
-            "command": "enable",
-            "explanation": "Enable a specific interface",
-            "parameters": []
         }
     }
 }
