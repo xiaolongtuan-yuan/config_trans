@@ -88,9 +88,9 @@ def main():
                                 break
                     if not has_mapping:  # 若没有匹配的映射，认为是错误映射
                         error_statistic[map_rule[0]] += count
-                        error_mapping_statistic[map_rule[0]] += 1
-                    else:
                         error_mapping_statistic[map_rule[0]] += 0
+                    else:
+                        error_mapping_statistic[map_rule[0]] += 1
 
 
                 missing_template_count_result = Counter(result_data["missed_templates"])
