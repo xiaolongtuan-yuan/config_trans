@@ -1,0 +1,28 @@
+hostname U-PE1
+ethernet cfm ma ma1 md md1
+interface GigabitEthernet1/0/1.1
+ mpls ip
+ mpls ldp
+ ip ospf 1 area 0
+ ospfv3 1 ipv6 area 0.0.0.0
+mpls ldp remote-peer none none
+bfd-template single-hop pwt
+router ospfv3 3
+ router-id 3.3.3.9
+bfd-template single-hop BFD_TEMPLATE
+ control-word include
+interface GigabitEthernet1/0/0
+interface GigabitEthernet1/0/0.0
+ no shutdown
+interface GigabitEthernet1/0/0.100
+ mpls l2transport route none 100 pw-class pwt
+interface GigabitEthernet2/0/0
+ ip address 10.1.1.1 255.255.255.0
+interface GigabitEthernet2/0/0.0
+ no shutdown
+ mpls ip
+interface LoopBack0
+ ip address 1.1.1.9 255.255.255.255
+ ip address 10.1.1.0 0.0.0.255
+ ip address 1.1.1.9 0.0.0.0
+redundancy

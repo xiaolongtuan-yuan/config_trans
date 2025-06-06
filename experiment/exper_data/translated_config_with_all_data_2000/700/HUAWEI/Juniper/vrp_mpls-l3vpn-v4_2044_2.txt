@@ -1,0 +1,29 @@
+set system host-name CE1
+set interfaces ge-1/0/0 unit 0 family mpls
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 40.1.1.2/24
+set interfaces ge-1/0/0 unit 1 family mpls
+set protocols l2vpn vpls vpls-id 1
+set interfaces ge-0/0/0 unit 0 family mpls
+set interfaces ge-0/0/0 unit 1 family mpls
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 11.1.1.1/24
+set interfaces ge-2/0/0 unit 0 family mpls
+set interfaces lo0.1 disable
+set interfaces lo0 unit 0 family inet address 2.2.2.9/32
+set routing-options autonomous-system 200
+set protocols bgp group 200 type external
+set protocols bgp group 200 neighbor 11.1.1.2 peer-as 100
+set protocols bgp group 200 export BGP-EXPORT-100
+set protocols bgp group 200 family inet unicast
+set protocols bgp group 200 local-as 200
+set protocols bgp group 200 neighbor-11.1.1.2 peer-as 200
+set protocols bgp group 200 export policy1
+set protocols ospf area 0.0.0.0 interface 0.0.0.0
+set protocols ospf area 0.0.0.0 interface gr-0/0/0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.0
+set protocols isis export policy1
+set routing-options static route 192.168.1.0/24 permit
+set class-of-service rewrite-rules dscp EF-REWRITE forwarding-class best-effort loss-priority low code-point 0

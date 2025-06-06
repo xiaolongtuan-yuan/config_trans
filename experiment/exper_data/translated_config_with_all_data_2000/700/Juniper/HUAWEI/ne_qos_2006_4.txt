@@ -1,0 +1,15 @@
+sysname CE2
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 10.2.1.1 255.255.255.0
+user-group BGP-PEER
+bgp 600
+ import-route direct
+ network 10.2.1.2 0.0.0.0
+ ipv4-family unicast
+  peer 5.5.5.5 route-policy bgp-export export
+bgp 100
+ confederation peer-as none 100
+traffic-policy bgp-export inbound
+traffic-policy 24 10.2.1.0
+traffic-policy 1 inbound

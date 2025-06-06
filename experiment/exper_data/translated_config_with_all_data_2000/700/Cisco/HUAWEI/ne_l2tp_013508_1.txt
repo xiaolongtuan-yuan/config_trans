@@ -1,0 +1,43 @@
+sysname Device
+scp server enable
+aaa authorization-scheme default
+aaa authentication-scheme default
+authentication-mode radius
+#
+aaa scheme default ppp
+radius-server group default
+radius-client none mask 255.255.255.255 shared-key-cipher none server-group radius
+aaa accounting-scheme default start-stop radius
+radius-server 10.20.20.1 auth-port 1812 acct-port 1813
+radius-server shared-key cipher <key>
+interface Virtual-Template1
+ pppoe-client dial-pool-number BAS-POOL
+ ip unnumbered LoopBack0
+interface Virtual-Template1.1492
+ mpls te bandwidth max-reservable-bandwidth 1492
+ ppp authentication-mode pap
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.11.11.1 255.255.255.0
+interface LoopBack0
+ ip address 192.168.10.1 255.255.255.255
+ospf 1
+ ospf 1
+ area 0
+ network 10.11.11.0 0.0.0.255
+ network 192.168.10.1 0.0.0.0
+dhcp server pool BAS-POOL
+ network 192.168.0.0 mask 255.255.255.0
+ gateway-list 192.168.0.1
+ipv6 pool BAS-POOL bas delegation
+ dns-server 2001:DB8:1::2
+lns-group 1
+ allow l2tp virtual-template 1
+l2tp-group 1
+ tunnel source LoopBack0
+ allow l2tp virtual-template 1 remote l2tp
+l2tp-group LNS
+ tunnel password 0 <password>
+ tunnel authentication disable
+ tunnel password 4 <password>
+telnet server-source -i LoopBack0

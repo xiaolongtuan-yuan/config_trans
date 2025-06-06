@@ -1,0 +1,21 @@
+set system host-name DeviceC
+set interfaces ge-3/0/1 unit 3/0/1 disable
+set interfaces ge-3/0/1 disable
+set interfaces ge-3/0/1 unit 0 family inet address 172.16.4.2/24
+interfaces ge-3/0/1.0
+set interfaces ge-3/0/3 unit 0 disable
+set interfaces ge-3/0/3 disable
+set interfaces ge-3/0/3 unit 0 family inet address 172.16.5.1/24
+interfaces ge-3/0/3.0
+set routing-options autonomous-system 200
+set protocols bgp group IBGP type external
+set protocols bgp group IBGP neighbor 172.16.4.1 peer-as 65009
+set protocols bgp group IBGP export 65009
+set protocols bgp group IBGP neighbor 172.16.5.2 peer-as 65009
+set protocols bgp local-as 65410
+set policy-options policy-statement BGP-NETWORKS term 172.16.4.0 from route-filter 24/exact none
+set policy-options policy-statement BGP-NETWORKS term 172.16.4.0 then 255.255.255.0
+set policy-options policy-statement BGP-NETWORKS term none from route-filter 172.16.5.0/24 exact
+set policy-options policy-statement BGP-NETWORKS term 172.16.5.0 then 255.255.255.0
+set routing-options autonomous-system 65000
+set protocols isis export REDIST-CONNECTED

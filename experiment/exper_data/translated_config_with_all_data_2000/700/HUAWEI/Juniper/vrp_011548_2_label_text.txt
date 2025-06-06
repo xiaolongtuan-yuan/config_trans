@@ -1,0 +1,35 @@
+set system host-name PE2
+
+# MPLS and LDP Configuration
+set protocols mpls interface ge-1/0/2
+set protocols mpls interface lo0.1
+set protocols ldp router-id 3.3.3.3
+set protocols ldp interface ge-1/0/2
+set protocols ldp interface lo0.1
+
+# Interface Configuration
+set interfaces ge-1/0/1 flexible-vlan-tagging
+set interfaces ge-1/0/1 unit 0 family ethernet-switching interface-mode trunk
+set interfaces ge-1/0/1 unit 1 vlan-id 10
+set interfaces ge-1/0/1 unit 1 encapsulation vlan-ccc
+set interfaces ge-1/0/1 unit 1 family ccc
+
+# L2Circuit Configuration
+set protocols l2circuit neighbor 1.1.1.1 interface ge-1/0/1.1 virtual-circuit-id 100
+set protocols l2circuit neighbor 1.1.1.1 interface ge-1/0/1.1 encapsulation-type ethernet
+
+# MPLS Core Interface
+set interfaces ge-1/0/2 unit 0 family inet address 10.2.1.2/30
+set interfaces ge-1/0/2 unit 0 family mpls
+
+# Loopback Configuration
+set interfaces lo0 unit 1 family inet address 3.3.3.3/32
+
+# OSPF Configuration
+set protocols ospf area 0.0.0.0 interface ge-1/0/2.0 interface-type p2p
+set protocols ospf area 0.0.0.0 interface lo0.1 passive
+
+# CFM Configuration
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 level 6
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 vlan 10
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 mep 32 interface ge-1/0/1.1 direction inward

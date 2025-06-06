@@ -1,0 +1,31 @@
+sysname PE1
+mpls l2vpn 1to3 encapsulation ethernet
+interface 1to3.1
+ mpls static-l2vc pw-template 1to3 none transmit-vpn-label none receive-vpn-label none
+interface GigabitEthernet1/0/0.100
+ mpls l2vc none none mpls
+controller e1 1/0/1
+controller E1 1/0/1
+ framing crc4
+ channel-group 1 timeslots 1-31
+controller e1 1/0/2
+controller E1 1/0/2
+ framing crc4
+ channel-group 1 timeslots 1-31
+interface Serial1/0/1:1
+ ptp notslave disable
+ mpls l2vc 192.168.3.3 100 encapsulation vlan
+interface Serial1/0/2:1
+ ptp notslave disable
+ mpls l2vc 192.168.3.3 200 encapsulation ethernet
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls
+interface LoopBack0
+ ip address 192.168.2.2 255.255.255.255
+ospf 1
+ network 192.168.2.2 0.0.0.0
+ area 0
+ network 10.1.1.0 0.0.0.255
+stp region-configuration

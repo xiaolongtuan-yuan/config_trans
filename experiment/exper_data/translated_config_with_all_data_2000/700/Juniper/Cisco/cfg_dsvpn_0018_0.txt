@@ -1,0 +1,76 @@
+hostname Hub1
+access-list 1 permit 192.168.0.0 0.0.0.255
+access-list 2000 permit 192.168.0.0
+route-map ACL2000 permit 1
+router bgp 1
+ address-family ipv4
+  neighbor none route-map none none
+  neighbor none route-map ROUTE-MAP-2 none
+access-list 2001 permit 192.168.1.0 0.0.0.255
+access-list 1 permit 192.168.1.0 0.0.0.255
+access-list 2001 permit 192.168.1.0
+access-list 2 permit 192.168.2.0 0.0.0.255
+access-list 2001 permit 192.168.2.0
+route-map ACL2001 permit 1
+router bgp 600
+ address-family ipv4
+  neighbor none route-map none none
+  neighbor none route-map ROUTE-MAP-1 none
+  neighbor none route-map ROUTE-MAP-2 none
+route-map ACL2001 permit 2
+interface Tunnel0
+ route-map ROUTE-MAP-1 permit 10
+ match ip address prefix-list 192.168.0.0/24
+ip address 172.16.1.1 255.255.255.0
+tunnel source GigabitEthernet1/0/0
+tunnel mode gre ip
+tunnel key 0
+route-map ROUTE-MAP-1 permit 1
+interface GigabitEthernet1/0/0
+ route-map route-map-2 permit 1
+ match ip address prefix-list 192.168.1.0/24
+ ip prefix-list PL-192.168.1.0 seq 1 permit 192.168.1.0/24
+ match ip address prefix-list PL-192.168.1.0
+ route-map route-map-2 permit 20
+ match ip address 192.168.2.0 0.0.0.255
+ no shutdown
+ ip address 10.1.1.10 255.255.255.0
+ interface GigabitEthernet1/0/0
+ tunnel source 10.1.1.10
+ tunnel mode gre ip
+ !
+ interface Tunnel0
+ ip address 192.168.0.1 255.255.255.255
+ ip address 172.16.1.1 255.255.255.0
+route-map ROUTE-MAP-2 permit 1
+route-map ROUTE-MAP-2 permit 2
+interface ge-1/0/0.0
+ tunnel source GigabitEthernet1/0/0
+ tunnel key 0
+interface gr-0/0/0.0
+ tunnel mode gre multipoint
+ encapsulation gre
+crypto map IPSEC-MAP 10 ipsec-isakmp
+match address ACL-VPN
+set peer <peer-ip>
+set transform-set <transform-set-name>
+set pfs group5
+set security-association lifetime seconds 28800
+crypto map IPSEC-MAP interface gr-0/0/0
+network 172.16.1.0 0.0.0.255 area 0
+ip ospf network point-to-multipoint
+ router ospf 1
+router ospf 1
+ crypto map IPSEC-MAP local-interface GigabitEthernet0/0/0
+  router ospf 1
+  area 0 interface Tunnel0 network point-to-multipoint
+ interface gr-0/0/0
+ ip ospf network point-to-multipoint
+router ospf 1 vrf ROUTE-MAP-1
+route-map ospf permit 10 ROUTE-MAP-2
+ip route 172.16.1.0 255.255.255.0 Null0 track 1
+ip route 172.16.1.0 255.255.255.0 discard none
+ip route 10.1.1.0 255.255.255.0 Null0 track 1
+ip route 10.1.1.0 255.255.255.0 Null0 0.0.0.0
+ip route 192.168.0.0 255.255.255.0 Null0 track 1
+ip route 192.168.0.0 255.255.255.0 discard none

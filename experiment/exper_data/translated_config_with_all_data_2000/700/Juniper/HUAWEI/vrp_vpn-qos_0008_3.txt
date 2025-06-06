@@ -1,0 +1,60 @@
+sysname PE2
+router id 3.3.3.9
+ospf 1 router-id 3.3.3.9
+interface ge-0/0/0.0 p2p
+mpls rsvp-te
+interface GigabitEthernet0/0/0
+ undo shutdown
+ interface GigabitEthernet0/0/0.0
+ mpls
+ mpls ldp
+ mpls mtu 1500
+ mpls label protocol ldp
+ mpls max-label 5
+interface ge-0/0/0.0
+interface ge-0/0/0:0
+ ip address unnumbered interface ge-0/0/0
+ ip address 10.2.2.1 255.255.255.0
+interface GigabitEthernet0/0/1.20
+vlan-type dot1q 20
+mpls l2vc encapsulation vlan
+ interface GigabitEthernet0/0/1.0
+ mpls
+interface GigabitEthernet0/0/1.0
+ interface GigabitEthernet0/0/0.0
+ mpls
+ mpls ldp
+ mpls label maximum 5
+ #
+ interface GigabitEthernet0/0/1.0
+  mpls ldp transport-address 3.3.3.9
+  mpls mtu 1500
+  mpls label-ctrl-mode private
+ vlan 20
+ interface GigabitEthernet0/0/1.20
+ dot1q termination vid 20
+interface ge-0/0/1.20
+interface lo0.0
+interface lo0:0
+ ip address unnumbered interface LoopBack1
+ ip address 3.3.3.9 255.255.255.255
+mpls label protocol ldp
+lldp management-address 1.1.1.9
+lldp management-address 3.3.3.9
+area 0.0.0.0
+network 10.2.2.0 0.0.0.255
+network 3.3.3.9 0.0.0.0
+ ospf 1
+ospf 1
+ interface GigabitEthernet0/0/0.0
+ mpls
+ mpls ldp
+ mpls rsvp-te
+  ospf enable 0 area 0
+ ospf 1
+  area 0.0.0.0
+  network 3.3.3.9 0.0.0.0
+traffic-policy policy1 inbound
+bgp 600
+ peer 10.1.1.2 enable
+ ipv4-family unicast

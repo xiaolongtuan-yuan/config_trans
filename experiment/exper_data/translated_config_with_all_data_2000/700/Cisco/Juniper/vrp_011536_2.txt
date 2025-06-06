@@ -1,0 +1,28 @@
+set system host-name PE2
+set interfaces ge-1/0/0 unit 0 family inet mpls
+set interfaces ge-1/0/0 .none unit LDP_PW family none interface-mode none
+set interfaces ge-1/0/0 encapsulation mpls
+set protocols ldp router-id 1.1.1.9
+set protocols l2vpn vsi LDP1 l2vpn-id 1
+set interfaces ge-1/0/1.1 unit 1 family ethernet-switching interface-mode trunk
+set interfaces ge-1/0/0.1 encapsulation dot1q 2
+set interfaces ge-1/0/0.1 set interfaces ge-1/0/1.1 family ccc
+set interfaces ge-1/0/0.1 set routing-instances LDP1 instance-type virtual-switch
+set interfaces ge-1/0/0.1 set routing-instances LDP1 interface ge-1/0/1.1
+set interfaces ge-1/0/0.1 set routing-instances LDP1 route-distinguisher 1.1.1.1:1
+set interfaces ge-1/0/0.1 set routing-instances LDP1 vrf-target target:1:1
+set interfaces ge-1/0/2 unit 2 disable
+set interfaces ge-1/0/2 disable
+set interfaces ge-1/0/2 unit 0 family inet address 10.1.1.2/24
+set interfaces ge-1/0/2 unit 0 family inet mpls ip
+set interfaces ge-1/0/2 set protocols ldp interface ge-1/0/2.0 targeted-hello accept
+interfaces ge-1/0/2.0
+set interfaces lo0 unit 0 disable
+set interfaces lo0 disable
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+set protocols ospf area 0.0.0.1 interface lo0.0
+set protocols ospf area 0.0.0.1 interface 1.1.1.1
+set protocols ospf area 0 interface gr-0/0/0.0 set protocols ospf area 0 interface lo0.0
+set protocols ospf area 0.0.0.0 interface lo0.0 set protocols ospf area 0 interface ge-1/0/2.0
+set ethernet-switching-options cfm version standard
+set protocols oam ethernet connectivity-fault-management domain MA1 service LDP1 mep none interface none

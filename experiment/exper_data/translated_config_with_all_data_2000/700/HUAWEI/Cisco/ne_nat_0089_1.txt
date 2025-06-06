@@ -1,0 +1,33 @@
+hostname HUAWEI
+license accept end user agreement
+license boot level securityk9
+route-target import 0:1
+ip nat inside source static network none none none
+ip nat inside source static 1 1
+ip dhcp pool 1
+ network 10.0.0.0 255.255.255.0
+ network 11.11.11.0 255.255.255.0
+ip nat inside source static 192.168.10.10 1.1.1.100
+ip nat inside source static 10 1
+ethernet cfm sla 1 mep 1 domain md1 service ma1
+ethernet cfm sla 0 mep 1 domain md1 service ma1
+aaa accounting exec default0 start-stop group group1
+ethernet cfm sla 1 mep none domain none service none
+ip nat pool 1 none none netmask 255.255.255.0
+ip nat pool 10 none none netmask none
+route-map 3001 permit 10
+ match tag 3001
+route-map 3001 permit 1
+class-map c1
+track 3001 interface none line-protocol
+mpls traffic-eng router-id Loopback1
+crypto isakmp policy 1
+policy-map p1
+ class c1
+  set precedence 1
+interface GigabitEthernet2/0/0
+ ip address 10.1.1.1 255.255.255.0
+ service-policy input p1
+interface GigabitEthernet2/0/0.0
+ no shutdown
+redundancy

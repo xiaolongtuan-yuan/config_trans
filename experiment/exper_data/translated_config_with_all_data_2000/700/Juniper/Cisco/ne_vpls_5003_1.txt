@@ -1,0 +1,22 @@
+hostname P
+ip route 2.2.2.9 255.255.255.255 none
+mpls ldp advertise-labels interface GigabitEthernet0/0/0
+mpls ldp advertise-labels interface GigabitEthernet0/0/1
+mpls ldp discovery transport-address ge-0/0/0
+mpls ldp discovery transport-address GigabitEthernet0/0/1
+mpls ldp router-id 2.2.2.9
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls ip
+ ip address 10.2.2.1 255.255.255.0
+interface GigabitEthernet0/0/1
+ no shutdown
+interface Loopback0
+ ip address 2.2.2.9 255.255.255.255
+router ospfv3 1
+network 0.0.0.0 0.0.0.0 area 0
+ interface GigabitEthernet0/0/1
+ mpls ip
+ mpls ldp autoconfig
+ ip ospf 1 area 0

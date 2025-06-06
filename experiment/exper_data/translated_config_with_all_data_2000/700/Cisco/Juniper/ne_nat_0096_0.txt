@@ -1,0 +1,19 @@
+set system host-name NATA
+set services nat pool NAT_POOL1 address none/none to GigabitEthernet1/0/1/none
+set interfaces ge-1/0/1 unit 1 disable
+set interfaces ge-1/0/1 disable
+set interfaces ge-1/0/1 unit 0 family inet address 192.168.10.1/24
+set interfaces ge-1/0/1 unit 0 family inet address 2.2.2.1/24
+set interfaces ge-1/0/1 unit 2 disable
+set interfaces ge-1/0/1 unit 1 tunnel encapsulation ip-ip
+interfaces ge-1/0/1.0
+interfaces ge-1/0/2.0
+set interfaces ge-1/0/2 unit 0 family inet address 2.2.2.1/24
+set routing-options static route 0.0.0.0/0 next-hop 2.2.2.2
+set policy-options prefix-list any any/any
+set routing-options static route 0.0.0.0/0 discard
+set protocols isis export POLICY1
+set policy-options as-path POLICY1 1.1.1.100
+set protocols ospf area 0.0.0.1 interface gr-0/0/0.0
+set protocols ospf area 0 interface ge-0/0/0.0
+set protocols isis export REDIST-CONNECTED

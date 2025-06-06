@@ -1,0 +1,36 @@
+sysname P
+router id 10.35.5.9
+ospf 1 router-id 10.35.5.9
+mpls label protocol ldp
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 192.168.1.2 255.255.255.0
+ interface GigabitEthernet0/0/0
+ mpls
+ interface GigabitEthernet0/0/1
+interface GigabitEthernet0/0/1
+ undo shutdown
+ ip address 192.168.2.1 255.255.255.0
+ interface GigabitEthernet0/0/0.0
+ mpls
+ interface GigabitEthernet0/0/1.0
+interface 0.100
+interface lo0:0
+ ip address unnumbered interface LoopBack0
+ ip address 10.35.5.9 255.255.255.255
+area 0.0.0.0
+network 10.35.5.9 0.0.0.0
+network 192.168.1.0 0.0.0.255
+network 192.168.2.0 0.0.0.255
+ ospf 1
+ospf 1
+ ospf 1
+  area 0.0.0.0
+  network 10.35.5.9 0.0.0.0
+  quit
+  network 192.168.2.1 0.0.0.255
+ mpls ldp
+ interface GigabitEthernet0/0/0.0
+ ospf 1 area 0.0.0.0
+ network 192.168.1.2 0.0.0.255
+ interface GigabitEthernet0/0/1.0

@@ -1,0 +1,17 @@
+set system host-name CE2
+set vlans vlan10 vlan-id 10
+set ethernet-switching-options cfm version standard
+set interfaces ge-1/0/1 unit 0 disable
+set interfaces ge-1/0/1 disable
+set interfaces ge-1/0/1 unit 0 family ethernet-switching interface-mode trunk
+set interfaces ge-1/0/1 unit 0 family ethernet-switching port-mode trunk
+set interfaces ge-1/0/1 vlan-id 10
+interfaces ge-0/0/1.0
+set ethernet-switching-options cfm mep-database md md1 ma ma1 vlan-id 2 mep-id none interface none direction none
+set ethernet-switching-options cfm mep-database md md1 ma ma1 vlan-id 10 mep-id 2 interface ge-1/0/1 direction outward
+set ethernet-switching-options cfm mep-database md md1 ma ma1 vlan-id 10 mep-id 2 ccm-enable
+set ethernet-switching-options cfm mep-database md md1 ma ma1 vlan-id 6 mep-id 2 interface ge-1/0/1 direction outward
+set ethernet-switching-options cfm mep-database md md1 ma ma1 vlan-id none mep-id 1 remote-mep 1
+set ethernet-switching-options cfm mep-database md md1 ma ma1 vlan-id 6 mep-id 1 ccm-enable
+set ethernet-switching-options cfm maintenance-domain md1 level 6
+set protocols isis export REDIST-CONNECTED

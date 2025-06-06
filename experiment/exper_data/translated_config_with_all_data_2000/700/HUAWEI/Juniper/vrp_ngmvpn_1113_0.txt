@@ -1,0 +1,13 @@
+set system host-name CE1
+set routing-options multicast
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address none vrrp-group 0 preempt hold-time 0
+set interfaces ge-1/0/0 unit 0 family inet address 2001:DB8:3::2/64
+set interfaces ge-1/0/0 unit 10 tunnel encapsulation ipip6
+set interfaces ge-1/0/0 unit 0 family inet address inet vrrp-group none preempt hold-time none
+set interfaces ge-1/0/0 unit 0 family inet address 2001:DB8:1::1/64
+set interfaces ge-1/0/0 unit 2 tunnel encapsulation ipip6
+set interfaces ge-1/0/0 unit 0 family inet address 2001:DB8:4::2/64
+set interfaces ge-1/0/0 unit 1 tunnel encapsulation ipip6
+set class-of-service rewrite-rules dscp EF-REWRITE forwarding-class EF loss-priority low code-point 34

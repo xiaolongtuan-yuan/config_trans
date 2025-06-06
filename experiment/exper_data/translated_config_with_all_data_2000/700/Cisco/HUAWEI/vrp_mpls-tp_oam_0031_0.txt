@@ -1,0 +1,27 @@
+sysname LSRA
+mpls ldp router-id LoopBack1
+interface GigabitEthernet1/0/0.100
+ mpls traffic-eng passive-interface none
+interface GigabitEthernet0/0/1
+ undo shutdown
+ ip address 2.1.1.1 255.255.255.0
+ mpls
+interface GigabitEthernet0/0/1.
+ mpls traffic-eng passive-interface GigabitEthernet0/0/1
+interface GigabitEthernet0/0/1.1
+ vlan-type dot1q 1
+ mpls
+ mpls l2vc 3.3.3.3 30000 tunnel-policy none
+ mpls l2vc 3.3.3.3 30000
+interface LoopBack1
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+interface Tunnel10
+ ip unnumbered LoopBack1
+interface Tunnel.10
+ tunnel destination 2.2.2.2
+ip route-static 2.2.2.2 255.255.255.255 none preference 60
+ip route-static 2.2.2.2 255.255.255.255 Tunnel10
+ip route-static 3.3.3.3 255.255.255.255 Tunnel10 preference 60
+ip route-static 3.3.3.3 255.255.255.255 Tunnel10
+stp region-configuration

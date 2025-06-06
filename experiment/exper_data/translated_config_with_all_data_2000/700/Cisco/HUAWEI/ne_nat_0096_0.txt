@@ -1,0 +1,22 @@
+sysname NATA
+nat instance nat1 id 1 simple-configuration
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 192.168.10.1 255.255.255.0
+ ip address none
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip address 2.2.2.1 255.255.255.0
+interface GigabitEthernet1/0/2.0
+ nat bind acl none instance none
+ip route-static 0.0.0.0 0.0.0.0 2.2.2.2 preference 60
+ip route-static 0.0.0.0 0.0.0.0 2.2.2.2
+ip ip-prefix any index 100 permit any any greater-equal none less-equal none
+route-policy POLICY1 permit node 10
+ if-match acl 100
+tunnel-policy POLICY1
+ tunnel binding destination 1.1.1.100 te Tunnel10
+ospf 1
+ network 2.2.2.0 0.0.0.255
+ area 0
+stp region-configuration

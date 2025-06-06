@@ -1,0 +1,28 @@
+hostname CGN1
+interface GigabitEthernet0/0/3
+ no shutdown
+ ip address 10.0.0.1 255.255.255.0
+ interface GigabitEthernet0/0/3
+ vrrp 10 ip 10.0.0.3
+ vrrp 10 ip 10.0.0.3 priority 150
+interface 0.10.0.0.3
+ vrrp 10 ip 10.0.0.3
+ standby 10.0.0.3 ip 10
+controller SONET 1/0/1
+controller SONET 1/0
+ sts-1 0
+ip route 10.0.0.2 255.255.255.255 ge-0/0/3 none
+service-interface ge-0/0/3
+ip nat inside source interface ge-0/0/3
+ logging host 10.0.0.2
+logging host 10.0.0.2
+ logging host 10.0.0.2
+ service instance-group service-instance-group-21 interface-service service-interface GigabitEthernet0/0/3
+ service instance-group 21 next-hop interface GigabitEthernet0/0/3
+ip sla 1
+ icmp-echo 1.1.1.0 source-ip 24
+ icmp-echo none source-ip group1
+ icmp-echo 1:1:1::12 source-ip 128
+ icmp-echo 2001:db8:1:: source-ip 41
+ip sla 21
+ip sla 4096

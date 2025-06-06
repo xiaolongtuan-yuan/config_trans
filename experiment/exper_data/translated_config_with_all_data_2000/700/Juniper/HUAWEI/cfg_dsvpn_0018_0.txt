@@ -1,0 +1,65 @@
+sysname Hub1
+ip as-path-filter 1 deny _30_
+ip as-path-filter 1 deny _24_
+ip as-path-filter 1 permit 192.168.0.0
+traffic policy 1
+bgp 600
+ peer 10.1.1.2 enable
+ ipv4-family unicast
+ip as-path-filter 1 deny _2001_
+ip as-path-filter 1 permit .*
+ip as-path-filter 2001 deny _24_
+ip as-path-filter 1 permit 192\.168\.2\\d*
+traffic policy 2
+acl number 2000
+ route-policy ROUTE-MAP-1 permit node 1
+ if-match ip-prefix 192.168.0.0 24
+ route-policy ROUTE-MAP-2 permit node 1
+ if-match ip-prefix 192.168.1.0 24
+ route-policy ROUTE-MAP-2 permit node 2
+ if-match ip-prefix 192.168.2.0 24
+rule 1 permit source 192.168.0.0 0.0.0.255
+acl number 2001
+rule 1 permit source 192.168.1.0 0.0.0.255
+rule 2 permit source 192.168.2.0 0.0.0.255
+traffic policy ROUTE-MAP-1
+
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.10 255.255.255.0
+ interface GigabitEthernet1/0/0
+ tunnel-protocol gre
+ source 10.1.1.10
+ #
+ interface Tunnel0/0/0
+ ip address 192.168.0.1 255.255.255.255
+interface GigabitEthernet0/0/0
+ ip address 172.16.1.1 255.255.255.0
+ binding tunnel gre none
+ mpls te tunnel-id 0
+ tunnel key 0
+interface ge-1/0/0.0
+ source GigabitEthernet1/0/0
+ipsec-profile <profile-name> binding tunnel gr-0/0/0
+area 0.0.0.0
+network 172.16.1.1 0.0.0.0
+p2mp enable
+ ospf 1
+ospf 1
+ ipsec profile <profile-name>
+ tunnel local gr-0/0/0
+ 
+  ospf 1
+  network 172.16.1.1 0.0.0.255
+   area 0.0.0.0
+   p2mp enable
+ ospf 1
+  area 0.0.0.0
+  network 172.16.1.0 0.0.0.255
+  p2mp enable
+ import-route static type 1
+ospf 1 router-id ROUTE-MAP-2
+ import-route ospf 1 route-policy ROUTE-MAP-2
+ip route-static 172.16.1.0 255.255.255.0 discard
+ip route-static 10.1.1.0 255.255.255.0 discard
+ip route-static 192.168.0.0 255.255.255.0 discard

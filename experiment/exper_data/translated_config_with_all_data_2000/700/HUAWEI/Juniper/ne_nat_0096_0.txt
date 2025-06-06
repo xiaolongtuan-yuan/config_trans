@@ -1,0 +1,31 @@
+set system host-name NATA
+set chassis e1 0/0/0 enable
+set services service-set 6RD_SS interface-service service-interface 1
+set services service-set 1 interface-service service-interface 1
+set services aps group group1
+set services service-set group1 interface-service service-interface group1
+set services nat rule nat1
+set security nat destination pool nat1 term 1 then translated-source pool nat1
+set security nat destination pool nat1 address 1.1.1.105/1
+set security nat destination pool nat1 address 192.168.10.10/32
+set access class 3001 acl-name 3001
+set access class 3001 acl-name ACL-3001
+set class-of-service classifiers classifier1 or
+set class-of-service classifiers inet classifier1
+set class-of-service forwarding-classes class behavior1
+set class-of-service forwarding-classes class nat1
+set policy-options policy-statement policy1 term 1 from protocol policy1
+set policy-options policy-statement policy1 term 1 from protocol classifier1
+set policy-options policy-statement policy1 term 1 then local-preference 100
+set interfaces ge-1/0/1 disable
+set interfaces ge-1/0/1 unit 0 disable
+set interfaces ge-1/0/1 unit 0 family inet address 192.168.10.1/24
+set interfaces ge-1/0/1 set interfaces ge-1/0/1 unit 0 family inet filter input policy1
+set interfaces ge-1/0/2 disable
+set interfaces ge-1/0/2 unit 0 disable
+set interfaces ge-1/0/2 unit 0 family inet address 2.2.2.1/24
+set interfaces ge-1/0/0 unit 0 family mpls
+set protocols ospf area 0.0.0.0 interface 0.0.0.0
+set protocols ospf area 0.0.0.0 interface gr-0/0/0.0
+set routing-options static route 0.0.0.0/0 next-hop 2.2.2.2
+set class-of-service rewrite-rules dscp EF-REWRITE forwarding-class best-effort loss-priority low code-point 0

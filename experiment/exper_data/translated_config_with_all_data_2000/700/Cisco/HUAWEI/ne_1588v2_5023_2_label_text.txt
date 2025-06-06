@@ -1,0 +1,27 @@
+#
+sysname PE1
+#
+ptp enable
+clock bits-type bits1 1pps input
+ptp clock-source bits1 on
+ptp clock-source bits1 priority1 2
+ptp device-type bc
+ptp domain 1
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 172.16.0.1 255.255.255.0
+ ptp enable
+ ptp delay-mechanism pdelay
+#
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.0.0.1 255.255.255.0
+ ptp enable
+ ptp delay-mechanism pdelay
+#
+ ospf 1
+ area 0.0.0.0
+ network 10.0.0.0 0.0.0.255
+ network 172.16.0.0 0.0.0.255
+#

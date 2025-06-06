@@ -1,0 +1,27 @@
+sysname CE1
+vlan 2
+interface GigabitEthernet1/0/0.2
+ vlan-type dot1q 2
+cfm version 0
+interface GigabitEthernet1/0/1
+ undo shutdown
+ portswitch
+ port link-type trunk
+ port default vlan 2
+ port trunk allow-pass vlan 2
+cfm md md3
+ ma ma3
+  mep mep-id 3 interface GigabitEthernet1/0/1 outward
+  remote-mep ccm-receive mep-id 3 enable
+  mep ccm-send mep-id 3 enable
+  remote-mep ccm-receive mep-id 4 enable
+  loss-measure dual-ended none test-id 1
+  loss-measure single-ended receive test-id 1
+cfm md md3 level 0
+ ma md3
+  ais level 0
+cfm md ma3 level 7
+cfm md ma3 level 3
+ ma ma3
+  mep mep-id 3 interface GigabitEthernet1/0/1 outward
+  remote-mep mep-id 4

@@ -1,0 +1,16 @@
+set system host-name LSRC
+set access accounting-server 10.0.0.249
+set protocols ldp router-id 1.1.1.1
+set interfaces ge-1/0/1 unit 0 disable
+set interfaces ge-1/0/1 disable
+set interfaces ge-1/0/1 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-1/0/1 unit 0 family inet mpls ip
+set interfaces ge-1/0/1 unit 0 family inet mpls ldp igp autoconfig
+interfaces ge-0/0/1.0
+set interfaces lo0 unit 0 disable
+set interfaces lo0 disable
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+set protocols ospf area 0.0.0.1 interface lo0.0
+set protocols ospf area 0.0.0.0 interface 1.1.1.9
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.0
+set protocols isis export REDIST-CONNECTED

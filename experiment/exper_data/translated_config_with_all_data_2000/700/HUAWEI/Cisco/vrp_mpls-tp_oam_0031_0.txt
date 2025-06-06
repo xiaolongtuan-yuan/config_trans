@@ -1,0 +1,51 @@
+hostname LSRA
+ethernet cfm ma MA1 md MD1
+interface GigabitEthernet1/0/1.1
+ mpls ip
+ mpls ldp
+mpls ldp remote-peer none none
+mpls traffic-eng tunnel 10
+tunnel destination 2.1.1.2
+mpls traffic-eng tunnel 20
+bfd-template single-hop tpatoc
+router ospfv3 3
+ router-id 3.3.3.3
+ control-word
+interface GigabitEthernet1/0/0
+ ip address 2.1.1.1 255.255.255.0
+interface GigabitEthernet1/0/0.0
+ no shutdown
+ mpls ip
+ mpls ldp
+interface GigabitEthernet1/0/0.1
+ encapsulation dot1q 1
+ mpls ip
+ mpls l2transport route none 30000 pw-class tpatoc
+ mpls traffic-eng record-route
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+interface Tunnel10
+ tunnel key 100
+ mpls traffic-eng tunnels
+ ip route 2.2.2.2 255.255.255.255 2.1.1.2
+ ip route 3.3.3.3 255.255.255.255 2.1.1.2
+interface Tunnel10.None
+ ip unnumbered Loopback1
+ tunnel mode mpls te
+ tunnel destination 2.2.2.2
+interface Tunnel.10
+ mpls l2transport route cr-static none none
+ mpls ip
+policy-map tpatoc
+ class tpatoc
+  service-policy tpatoc
+  set ip next-hop 2.2.2.2
+ class test
+  set ip next-hop 3.3.3.3
+  set ipv6 next-hop 2001:DB8:2::1
+  police cir 1000000
+   conform-action transmit
+  police cir 1000000 conform-action transmit
+tunnel protection ipsec profile tpatoc
+cablelength dual-ended enable
+redundancy

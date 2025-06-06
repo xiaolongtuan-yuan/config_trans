@@ -1,0 +1,37 @@
+set system host-name PE2
+set protocols oam ethernet connectivity-fault-management version standard
+set ethernet-switching-options cfm version standard
+set protocols mpls router-id 1.1.1.1
+set interfaces ge-1/0/0 unit 0 family mpls
+set protocols l2vpn vpls PE3-VPLS vpls-id 2
+set routing-instances ldp1 instance-type l2vpn protocols l2vpn vlan-id 1;
+set routing-instances ldp1 instance-type l2vpn protocols l2vpn neighbor 2.2.2.2;
+set routing-instances ldp1 interface GigabitEthernet1/0/1.1
+set routing-instances ldp1 protocols l2vpn site 1 site-id 1 remote-site-id 2
+interfaces ge-1/0/1 unit 1 family ethernet-switching vlan members 2
+interfaces ge-1/0/1 unit 1 set interfaces ge-1/0/1 unit 1 family ethernet-switching interface-mode trunk vlan members 2
+interfaces ge-1/0/1 unit 1 set interfaces ge-1/0/1 unit 1 family ethernet-switching vlan members ldp1
+interfaces ge-1/0/1 unit 1 set interfaces ge-1/0/1 unit 1 encapsulation vlan-bridge
+interfaces ge-1/0/1 unit 1 set interfaces ge-1/0/1 unit 1 vlan-id 2
+interfaces ge-1/0/1 unit 1 set interfaces ge-1/0/1 unit 1 family bridge interface-mode trunk
+interfaces ge-1/0/1 unit 1 set routing-instances ldp1 interface ge-1/0/1.1
+set interfaces ge-1/0/2 unit 0 family mpls set interfaces ge-1/0/2 unit 0 family inet address 10.1.1.2/24
+set interfaces ge-1/0/2 disable
+set interfaces ge-1/0/2 unit 0 disable
+set interfaces ge-1/0/2 unit 0 family mpls
+set interfaces ge-1/0/2 set interfaces lo0 unit 0 family inet address 1.1.1.1/24
+set interfaces ge-1/0/2 unit 0 family inet address 10.1.1.2/24 set interfaces ge-1/0/2 unit 0 family inet address 10.1.1.2/24
+set interfaces lo0 unit 0 family inet address 1.1.1.1/24 set interfaces lo0 unit 0 family inet address 1.1.1.1/24
+set interfaces lo0 unit 0 family inet address 1.1.1.1/24 set protocols ospf area 0.0.0.0
+set protocols ospf area 0.0.0.0 set protocols ospf area 0.0.0.0 set protocols ospf area 0.0.0.0 interface lo0.0
+set protocols ospf area 0.0.0.0 set protocols ospf area 0.0.0.0 set protocols ospf area 0.0.0.0 network 10.1.1.0/24
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 level 5 set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 set forwarding-options cfm-mep maintenance-domain md1 maintenance-association ma1 l2-vpn-vsi ldp1
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 level 5 set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 mep 2 interface ge-1/0/1.1 direction inward
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 level 5 set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 mep 2 continuity-check transmission enable
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 level 5 set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 remote-mep 1
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 level 5 set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 set interfaces ge-1/0/1 unit 1 oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 remote-mep 1
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 level 5 set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 set protocols oam ethernet connectivity-fault-management continuity-check test-profile TEST1 peer-address 2.2.2.2
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 level 5 set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 mep 2 test-profile TEST1
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 level 5 set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 continuity-check transmission enable
+set protocols oam ethernet connectivity-fault-management maintenance-domain md1 level 5 set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 loss-measurement single-ended test-id 1
+set class-of-service rewrite-rules dscp EF-REWRITE forwarding-class best-effort loss-priority low code-point 0

@@ -1,0 +1,42 @@
+hostname PE2
+interface Loopback0
+ no shutdown
+ ip address 4.4.4.4 255.255.255.255
+ tag-switching ip
+ interface GigabitEthernet0/0/0.10
+ encapsulation dot1q 10
+ bridge-domain 10
+ encapsulation dot1Q 10
+ bridge-group 10
+ switchport mode trunk
+interface ge-0/0/0
+ interface GigabitEthernet0/0/0
+ service instance 10 ethernet
+ encapsulation dot1q 10
+ rewrite ingress tag pop 1 symmetric
+interface 10.10
+ switchport access vlan 10
+interface GigabitEthernet0/0/2
+ no shutdown
+ ip address 10.10.3.4 255.255.255.0
+interface 0/0/2.10
+ mtu 1500
+network 0.0.0.0 0.0.0.0 area 0
+network 0.0.0.0 255.255.255.255 area 0
+mpls ldp advertise-labels interface GigabitEthernet0/0/2
+mpls ldp discovery transport-address ge-0/0/2.0
+mpls ldp router-id 4.4.4.4
+aaa authentication login default0 group evpn local
+aaa authentication login evpn group 4.4.4.4 local
+aaa authentication login default group tacacs+ local
+ address-family l2vpn evpn
+ neighbor 3.3.3.3 activate
+redistribute bgp
+aaa authentication login default0 group rd5 local
+ address-family vpnv4 unicast
+route-target import 100:2
+network 192.168.1.0 0.0.0.255 area 0
+router isis
+ interface Loopback0
+  isis network vxlan
+route-target import 100:1

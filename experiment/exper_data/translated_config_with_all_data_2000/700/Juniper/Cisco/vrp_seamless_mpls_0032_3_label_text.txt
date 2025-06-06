@@ -1,0 +1,45 @@
+hostname Core_ASBR
+
+
+ip cef
+mpls ip
+mpls ldp router-id Loopback1
+
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.3.1.2 255.255.255.0
+ mpls ip
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.4.1.1 255.255.255.0
+ mpls ip
+
+interface Loopback1
+ ip address 4.4.4.4 255.255.255.255
+
+
+router bgp 200
+ neighbor 5.5.5.5 remote-as 200
+ neighbor 5.5.5.5 update-source Loopback1
+ neighbor 10.3.1.1 remote-as 100
+ !
+ address-family ipv4 labeled-unicast
+  neighbor 5.5.5.5 activate
+  neighbor 5.5.5.5 send-label
+  neighbor 10.3.1.1 activate
+  neighbor 10.3.1.1 send-label
+ exit-address-family
+
+
+router ospf 2
+ network 4.4.4.4 0.0.0.0 area 0
+ network 10.4.1.0 0.0.0.255 area 0
+
+
+route-map policy1 permit 10
+ match ip address prefix-list ALL
+ set mpls-label
+!
+ip prefix-list ALL seq 5 permit 0.0.0.0/0 le 32

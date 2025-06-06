@@ -1,0 +1,25 @@
+hostname Spoke1
+interface GigabitEthernet1/0/0
+ ip address 10.1.2.10 255.255.255.0
+interface gre.p2mp
+ tunnel mode gre multipoint
+ tunnel mode gre multipoint
+ tunnel mode gre p2mp
+interface LoopBack0
+ ip address 192.168.1.1 255.255.255.255
+interface Tunnel0
+ ip address 172.16.1.2 255.255.255.0
+ tunnel source GigabitEthernet1/0/0
+ tunnel protection ipsec profile <profile_name>
+ isis network point-to-multipoint
+ ip address 172.16.1.0 255.255.255.0
+ ip address 192.168.1.0 0.0.0.255
+ ip address 10.1.2.0 0.0.0.255
+router ospf 1
+ network 172.16.1.1 0.0.0.0 area 0
+interface gre1.1
+ ospfv3 1 ipv6 area 0.0.0.0
+router ospf 2
+interface 2.10.1.2.10
+ ospfv3 2 ipv6 area 0.0.0.1
+redundancy

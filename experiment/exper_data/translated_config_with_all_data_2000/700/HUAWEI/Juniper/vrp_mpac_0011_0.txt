@@ -1,0 +1,12 @@
+set system host-name DeviceA
+set policy-options prefix-list 10.0.0.0 8/
+set security ipsec policy test proposal-set standard
+set policy-options prefix-list test ipv4/0
+set protocols isis interface ge-1/0/0.0 level 1 passive
+set policy-options prefix-list test 0.0.0.0/0
+set policy-options prefix-list test 10.10.1.1/32
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.10.1.2/24
+set interfaces ge-1/0/0 unit 0 tunnel protection ipsec-profile test
+set interfaces ge-1/0/0 unit 0 family inet service input test

@@ -1,0 +1,47 @@
+hostname PE1
+ethernet cfm ma ma1 md md1
+interface GigabitEthernet1/0/1.1
+ mpls ip
+ mpls ldp remote-peer 192.168.3.3
+ ip address 192.168.3.3 255.255.255.0
+ no shutdown
+ ip ospf 1 area 0
+ ospfv3 1 ipv6 area 0.0.0.0
+mpls ldp remote-peer none none
+bfd-template single-hop 1to3
+router ospfv3 1
+ router-id 192.168.3.3
+ area 8
+ address-family ipv4 unicast
+  area 8
+   interface 24
+interface GigabitEthernet0.1
+ mpls ldp
+controller E1 1/0/1
+ linecode crc4
+ channel-group 1 timeslots 1-31
+controller E1 1/0/2
+ linecode crc4
+ channel-group 1 timeslots 1-31
+interface GigabitEthernet1/0/2.1
+ no shutdown
+interface Serial1/0/1:1
+interface Serial1/0/1.1
+ ppp authentication chap pap
+interface serial1/0/1.1
+ mpls l2transport route none 100 pw-class 1to3
+ no shutdown
+interface serial1/0/2.1
+ ppp authentication chap pap
+ mpls l2transport route none 200 pw-class 1to3
+ no shutdown
+interface GigabitEthernet2/0/0
+ ip address 10.1.1.1 255.255.255.0
+interface GigabitEthernet2/0/0.0
+ no shutdown
+ mpls ip
+ mpls ldp
+interface LoopBack0
+ ip address 192.168.2.2 255.255.255.255
+ ip address 10.1.1.0 0.0.0.255
+redundancy

@@ -1,0 +1,20 @@
+set system host-name CE1
+set services 6rd ipv6-prefix 2001:db8::/32
+set interfaces ge-1/0/0 unit ge-1/0/0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 family inet6 address 2001:DB8:3::2/64
+set interfaces ge-1/0/0 set protocols pim interface <interface-name> family inet6 mode sparse-dense
+set interfaces ge-1/0/0 unit 2 disable
+set interfaces ge-1/0/0 family inet6 address 2001:DB8:1::1/64
+set interfaces ge-1/0/0 set protocols pim interface all mode sparse
+set interfaces ge-1/0/0 set protocols pim interface <interface-name> mode sparse
+set interfaces ge-1/0/0 set protocols pim interface ge-1/0/0 mode sparse
+set interfaces ge-1/0/0 set protocols pim interface ge-1/0/1 mode sparse
+set interfaces ge-1/0/0 set protocols pim interface ge-1/0/2 mode sparse
+set interfaces ge-1/0/0 unit 0 disable
+interfaces ge-0/0/0
+interfaces ge-1/0/2.0
+interfaces ge-1/0/1.0
+set interfaces ge-1/0/1 family inet6 address 2001:DB8:4::2/64
+set interfaces ge-1/0/1 set protocols pim interface <interface-name> family inet6 mode sparse
+set protocols isis export REDIST-CONNECTED

@@ -1,0 +1,15 @@
+set system host-name CE1
+set interfaces ge-1/0/1.1 unit 1 disable
+set interfaces ge-1/0/1.1 disable
+set interfaces ge-1/0/1.1 unit 0 family inet address 192.168.1.2/24
+interfaces ge-1/0/1.1
+set interfaces ge-1/0/2.1 unit 1 disable
+set interfaces ge-1/0/2.1 disable
+set interfaces ge-1/0/2.1 unit 0 family inet address 172.16.1.2/24
+interfaces ge-1/0/2.1
+set routing-options autonomous-system 65410
+set protocols bgp group IBGP type external
+set protocols bgp group IBGP neighbor 192.168.1.1 peer-as 100
+set protocols bgp group IBGP export 100
+set protocols bgp group IBGP neighbor 172.16.1.1 peer-as 100
+set protocols bgp local-as 65410

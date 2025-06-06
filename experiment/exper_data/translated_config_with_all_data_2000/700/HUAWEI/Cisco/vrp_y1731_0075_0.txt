@@ -1,0 +1,20 @@
+hostname CE1
+vlan batch 2
+vlan 2
+ssh version 2
+ethernet cfm
+interface GigabitEthernet1/0/1
+ switchport
+ switchport mode access
+ switchport trunk allowed vlan 2
+ switchport access vlan 2
+interface GigabitEthernet1/0/1.1
+ no shutdown
+ ethernet cfm mep domain md3 service none 3 inward
+ ethernet cfm mep domain md3 service ma3 3 outward
+ ethernet cfm mep domain md3 service ma3 mpid 3 direction outward
+ ethernet cfm mep domain md3 service ma3 4 inward
+ ptp clock min-delay-request interval 1
+interface GigabitEthernet1/0/1.3
+ ethernet cfm mep domain md3 service ma3 3 inward
+redundancy

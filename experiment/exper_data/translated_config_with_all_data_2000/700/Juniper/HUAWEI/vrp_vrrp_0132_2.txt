@@ -1,0 +1,18 @@
+sysname DeviceC
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 192.168.1.2 255.255.255.0
+ stp enable
+ ip address 192.168.2.2 255.255.255.0
+ ip address 172.16.1.1 255.255.255.0
+interface GigabitEthernet2/0/0
+ undo shutdown
+ospfv3 0.0.0.0
+ area 0.0.0.0
+ospf 1 router-id 0.0.0.0
+ area 0.0.0.0
+  network 0.0.0.0 ge-1/0/1.0
+  network 0.0.0.0 ge-1/0/2.0
+ospf 0.0.0.0 router-id ge-2/0/0.0
+ area 0.0.0.0
+  network 0.0.0.0 ge-2/0/0.0

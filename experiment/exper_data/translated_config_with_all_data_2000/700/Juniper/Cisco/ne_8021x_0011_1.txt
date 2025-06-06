@@ -1,0 +1,26 @@
+hostname Router
+radius-server host 192.168.7.249 auth-port 1812 acct-port 1813 key \"$ABC123$%^%#`E)v.Q@BHVzxxZ;ij{>&_M0!TGP7YRA@8a7mq<\\/%^%#\" 7
+radius-server host 192.168.7.249 auth-port none acct-port none key $ABC123$%^%#`E)v.Q@BHVzxxZ;ij{>&_M0!TGP7YRA@8a7mq<\/%^%#
+radius-server host 192.168.7.249 auth-port 1812 acct-port 1813 key "$ABC123$%^%#`E)v.Q@BHVzxxZ;ij{>&_M0!TGP7YRA@8a7mq<\/%^%#" 7
+aaa authorization network dot1x-profile group rd5 local
+aaa authorization network dot1x-profile group 192.168.7.249 local
+aaa authorization network default group radius
+authentication remote radius
+switchport mode access
+switchport access vlan 100
+ip address 10.82.1.1 255.255.255.0
+ interface GigabitEthernet0/0/2
+interface GigabitEthernet0/0/2
+ interface GigabitEthernet0/0/2
+  ip address 10.82.1.1 255.255.255.0
+ switchport mode access
+ switchport access vlan 100
+ip dhcp pool dhcp-group
+network none none area none
+ipv6 dhcp pool pool4
+ address prefix 10.82.1.0/24 lifetime infinite infinite
+ ip dhcp pool pool4
+ network 10.82.1.0 255.255.255.0
+ range 10.82.1.2 10.82.1.254
+ dns-server 192.168.7.252
+ipv6 pim rp-address 2001:db8:6::3

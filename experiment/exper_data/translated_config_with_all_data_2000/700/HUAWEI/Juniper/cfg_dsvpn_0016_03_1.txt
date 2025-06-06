@@ -1,0 +1,29 @@
+set system host-name Spoke1
+set interfaces ge-0/0/0 unit 0 family inet address none/none vrrp-group none virtual-address none
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.2.10/24
+set interfaces ge-1/0/0 unit 0 tunnel protocol gre
+set interfaces ge-1/0/0 unit 0 tunnel protection ipsec-profile IPSEC-PROFILE
+set interfaces ge-1/0/0 unit 0 family inet address none/none vrrp-group none virtual-address none
+set interfaces ge-1/0/0 unit 0 tunnel destination none
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.10 vrrp-group 1 preempt hold-time 300
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.1.1/24
+set interfaces tun0 disable
+set interfaces tun0 unit 0 family inet address 172.16.1.2/24
+set interfaces gr-0/0/0 unit gre tunnel protocol p2mp
+set routing-options autonomous-system 200
+set protocols bgp group 200 type external
+set protocols bgp group 200 cluster 172.16.1.2
+set protocols bgp group 200 neighbor 172.16.1.1 peer-as 100
+set protocols bgp group 200 export BGP-NETWORKS
+set protocols bgp group 200 family inet unicast
+set protocols bgp group 200 local-as 200
+set protocols bgp group 200 neighbor-172.16.1.1 peer-as 200
+set routing-options router-id 172.16.1.2
+set protocols ospf area 0.0.0.0 interface 0.0.0.0
+set protocols ospf area 0.0.0.0 interface 0.0.0.255
+set routing-options router-id 10.1.2.10
+set protocols ospf area 0.0.0.1 interface 0.0.0.1
+set protocols ospf area 0.0.0.1 interface gr-0/0/0.0
+set class-of-service rewrite-rules dscp EF-REWRITE forwarding-class EF loss-priority low code-point 34

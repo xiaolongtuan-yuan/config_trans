@@ -1,0 +1,29 @@
+sysname U-PE1
+ip address 192.168.1.1 255.255.255.0
+ interface GigabitEthernet1/0/0
+ mpls
+interface GigabitEthernet1/0/0
+ interface GigabitEthernet1/0/0
+  ip address 192.168.1.1 255.255.255.0
+interface ge-1/0/0.0
+ mpls l2vc pw-template none 0
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ ip address 1.1.1.9 255.255.255.255
+interface ge-2/0/0.0
+ mpls l2vc pw-template none 0
+ospfv3 1
+ area 0.0.0.0
+ospf 0.0.0.0 router-id 1
+ area 0.0.0.0
+  network 0.0.0.0 ge-2/0/0.0
+mpls rsvp-te
+mpls label protocol ldp
+lldp management-address 1.1.1.9
+ptp-adaptive local-ip 3.3.3.9
+ospf 3.3.3.9 router-id ge-1/0/0.0
+ area 0.0.0.0
+  network 3.3.3.9 ge-1/0/0.0
+bfd pst bind peer-ip 3.3.3.9 interface GigabitEthernet1/0/0
+ discriminator remote 100

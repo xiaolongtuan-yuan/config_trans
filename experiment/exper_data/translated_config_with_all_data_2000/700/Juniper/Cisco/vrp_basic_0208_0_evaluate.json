@@ -1,0 +1,81 @@
+{
+    "command_accuracy": 0.5,
+    "missed_commands": [
+        "ip address 10.1.1.1 255.255.255.0",
+        "crypto key generate rsa general-keys modulus 2048",
+        "username client001 privilege 3 secret 0 @%@%uyqs4,kttswjo(4qmw#k,lc:@%@%",
+        "username client002 privilege 3 secret 0 <password_for_client002>",
+        "ip ssh source-interface gigabitethernet0/0/0",
+        "privilege level 3",
+        "end",
+        "ip address 10.1.1.1 255.255.255.0",
+        "crypto key generate rsa general-keys modulus 2048",
+        "username client001 privilege 3 secret 0 @%@%uyqs4,kttswjo(4qmw#k,lc:@%@%",
+        "username client002 privilege 3 secret 0 <password_for_client002>",
+        "ip ssh source-interface gigabitethernet0/0/0",
+        "privilege level 3",
+        "end"
+    ],
+    "grammatical_accuracy": 0.6428571428571429,
+    "missed_templates": [
+        "crypto key generate rsa general-keys modulus [parameter1]",
+        "username [username] privilege [privilege_level] secret [encryption_type] <password>",
+        "ip ssh source-interface [parameter1]",
+        "privilege level [parameter1]",
+        "end"
+    ],
+    "llm_command_accuracy": 0.2857142857142857,
+    "llm_command_ratio": 0.6216216216216216,
+    "command_for_llm": [
+        "authentication encrypted-password \"$XYZ456\" # Replace with encrypted password",
+        "authentication ssh-rsa \"ssh-rsa AAAAB3...\" # Optional: Add SSH public key",
+        "set system services ssh"
+    ],
+    "llm_trans_commands": [
+        "ip ssh version 2",
+        "ip ssh authentication-retries 5",
+        "ip ssh maxsessions 10",
+        "no ip ssh server algorithm encryption aes128-cbc  # Implicit in Juniper's v2-only setting",
+        "line vty 0 15",
+        "transport input ssh",
+        "login local",
+        "hostname SSH-Server",
+        "ip ssh version 2",
+        "ip ssh authentication-retries 5",
+        "ip ssh maxstartups 10",
+        "no ip ssh server algorithm mac hmac-md5",
+        "line vty 0 4",
+        "transport input ssh",
+        "login local",
+        "hostname SSH-Server",
+        "ip ssh version 2",
+        "ip ssh maxstartups 10",
+        "ip ssh time-out 60",
+        "ip ssh authentication-retries 5",
+        "no ip ssh server algorithm mac hmac-md5",
+        "username client001 privilege 15 secret 5 $ABC123",
+        "username client002 privilege 15 secret 5 $XYZ456"
+    ],
+    "source_commands": [
+        "authentication encrypted-password \"$XYZ456\" # Replace with encrypted password",
+        "set system services ssh root-login deny",
+        "set interfaces ge-0/0/0",
+        "set system host-name SSH-Server",
+        "set system services ssh protocol-version v2",
+        "set security zones security-zone untrust",
+        "set system services ssh rate-limit 5",
+        "set system login user client002",
+        "set system services ssh connection-limit 10",
+        "authentication encrypted-password \"$ABC123\" # Replace with encrypted password",
+        "authentication ssh-rsa \"ssh-rsa AAAAB3...\" # Optional: Add SSH public key",
+        "class operator",
+        "set system login user client001",
+        "interfaces ge-0/0/0.0",
+        "host-inbound-traffic system-services ssh",
+        "unit 0 family inet address 10.1.1.1/16",
+        "set system services ssh"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

@@ -1,0 +1,33 @@
+sysname Router
+radius-server 192.168.7.249 auth-port 1812 acct-port 1813
+radius-client 192.168.7.249 mask 255.255.255.255 shared-key-cipher "$ABC123$%^%#`E)v.Q@BHVzxxZ;ij{>&_M0!TGP7YRA@8a7mq<\\/%^%#" server-group none
+ipsec policy IPSEC_PROFILE 10 isakmp
+ipsec policy dot1x-profile 10 isakmp
+ proposal 10
+  transform none 192.168.7.249
+ssh server authentication-type default radius
+dot1q termination vid 100
+ip address 10.82.1.1 255.255.255.0
+ interface GigabitEthernet0/0/2.0
+interface GigabitEthernet0/0/2.0
+ interface GigabitEthernet0/0/2
+ port link-type access
+ port default vlan 100
+ interface GigabitEthernet0/0/2.0
+  ip address 10.82.1.1 255.255.255.0
+dhcp-server group dhcp-group
+ospf 1 router-id 192.168.1.1
+ area 0.0.0.0
+  network none ge-0/0/2.0
+ipv6 pool pool4 bas local
+ prefix 10.82.1.0/24
+ dhcp server ip-pool pool4
+ network 10.82.1.0 mask 255.255.255.0
+ gateway-list 10.82.1.1
+ excluded-ip-address 10.82.1.1
+ dns-list 192.168.7.252
+ lease day 0 hour 24 minute 0
+ #
+ prefix 10.82.1.1
+ dhcp server dns-list 192.168.7.252
+ipv6 pool pool4 bas delegation

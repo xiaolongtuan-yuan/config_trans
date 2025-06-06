@@ -1,0 +1,47 @@
+hostname PE2
+router-id 4.4.4.4
+tunnel protection ipsec profile s1
+tunnel source GigabitEthernet1/0/0
+tunnel protection ipsec profile IPSEC_PROFILE
+ethernet cfm ma ma1 md md1
+interface GigabitEthernet1/0/1.1
+ mpls ip
+ mpls ldp
+ ip ospf 1 area 0
+ ospfv3 1 ipv6 area 0.0.0.0
+mpls ldp remote-peer none none
+virtual-service v1
+mpls ldp advertise-labels interface GigabitEthernet2/0/0
+l2vpn vfi context v1
+ vpn id 10.10.3.4:1
+ vpn id 100
+ip vrf vrf_name
+interface GigabitEthernet1/0/0.1
+ encapsulation dot1q 10
+interface GigabitEthernet2/0/0
+ ip address 10.10.3.4 255.255.255.0
+interface GigabitEthernet2/0/0.0
+ no shutdown
+ mpls ip
+ mpls ldp
+interface LoopBack1
+ ip address 4.4.4.4 255.255.255.255
+ ip address 4.4.4.4 0.0.0.0
+ ip address 10.10.3.0 0.0.0.255
+router bgp 200
+ neighbor 3.3.3.3 remote-as 200
+ neighbor 3.3.3.3 update-source LoopBack1
+ address-family l2vpn-ad
+ address-family l2vpn-ad-family
+  redistribute bgp
+  neighbor 3.3.3.3 send-community
+ bgp confederation peers none none
+neighbor 3.3.3.3 remote-as 200
+router ospfv3 1
+ router-id 1.1.1.1
+policy-map p1
+ class p1
+  service-policy p1
+  set ip dscp 1
+tunnel protection ipsec profile p1
+redundancy

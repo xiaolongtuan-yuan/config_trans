@@ -1,0 +1,37 @@
+set system host-name PE1
+
+set protocols ospf area 0.0.0.0 interface lo0.0 passive
+set protocols ospf area 0.0.0.0 interface ge-1/0/0.1
+set protocols ospf area 0.0.0.0 interface ge-2/0/0.0
+set protocols ospf traffic-engineering
+set protocols ldp track-igp-metric
+
+set protocols mpls interface ge-1/0/0.1
+set protocols mpls interface ge-2/0/0.0
+set protocols mpls interface lo0.0
+set protocols ldp interface ge-1/0/0.1
+set protocols ldp interface ge-2/0/0.0
+set protocols ldp router-id 1.1.1.1
+
+!set routing-instances v1 instance-type vpls
+set routing-instances v1 route-distinguisher 100:1
+set routing-instances v1 vrf-target target:100:1
+!set routing-instances v1 protocols vpls no-tunnel-services
+!set routing-instances v1 protocols vpls interface ge-1/0/0.1
+
+set interfaces ge-1/0/0 flexible-vlan-tagging
+set interfaces ge-1/0/0 unit 0 family ethernet-switching vlan members 10
+set interfaces ge-1/0/0 unit 10 encapsulation vlan-ccc
+set interfaces ge-1/0/0 unit 10 vlan-id 10
+set interfaces ge-1/0/0 unit 10 family ccc
+set interfaces ge-2/0/0 unit 0 family inet address 10.10.1.1/24
+set interfaces ge-2/0/0 unit 0 family mpls
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+
+set protocols bgp group vpls type internal
+set protocols bgp group vplp local-address 1.1.1.1
+set protocols bgp group vpls neighbor 2.2.2.2
+set protocols bgp group vpls family l2vpn signaling
+
+set policy-options policy-statement p1 then accept
+!set routing-options forwarding-table export p1

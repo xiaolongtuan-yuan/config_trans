@@ -1,0 +1,18 @@
+hostname CE1
+interface GigabitEthernet1/0/1
+ no shutdown
+ tag-switching ip
+ ip address 192.168.1.2 255.255.255.0
+ ip address 172.16.1.2 255.255.255.0
+interface 1/0/1.1
+ switchport access vlan 1
+interface 1/0/2.1
+ switchport access vlan 1
+router bgp 65410
+ address-family ipv4
+  neighbor none route-map IMPORT-DIRECT in
+ip route 192.168.1.0 255.255.255.0 192.168.1.2
+route-map IMPORT-DIRECT permit 1
+aaa authentication login default group EBGP local
+redistribute bgp
+redistribute connected

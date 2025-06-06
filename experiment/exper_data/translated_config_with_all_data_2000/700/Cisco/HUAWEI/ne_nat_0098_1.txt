@@ -1,0 +1,16 @@
+sysname CGN2
+info-center source default channel 2 log level informational
+nat instance NAT_ACL id 1
+ nat outbound any address-group address-group1
+  rule permit ip source 192.168.10.0 0.0.0.255 destination any
+nat ip-pool pool1
+nat instance pool1 id 1 simple-configuration
+ section 0 11.11.11.110 mask 24
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 192.168.10.1 255.255.255.0
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 11.11.11.1 255.255.255.0
+ip route-static 0.0.0.0 0.0.0.0 GigabitEthernet1/0/0
+stp region-configuration

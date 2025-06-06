@@ -1,0 +1,21 @@
+hostname DeviceA
+interface GigabitEthernet1/0/0
+ ipv6 address 2001:db8:1::1/64
+interface GigabitEthernet1/0/0.None
+ no shutdown
+interface GigabitEthernet1/0/0.0
+ ipv6 enable
+interface GigabitEthernet2/0/0
+ ipv6 address 2001:db8:100::1/96
+interface GigabitEthernet2/0/0.0
+ no shutdown
+interface GigabitEthernet2/0/0.None
+ ipv6 enable
+router bgp 100
+ bgp router-id 1.1.1.1
+ neighbor 2001:db8:100::2 remote-as 200
+ address-family ipv6 unicast
+  network 2001:db8:1::/64
+ no synchronization
+neighbor 2001:db8:100::2 remote-as 200
+redundancy

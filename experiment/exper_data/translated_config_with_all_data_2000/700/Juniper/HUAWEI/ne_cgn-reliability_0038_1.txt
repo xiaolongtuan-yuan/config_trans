@@ -1,0 +1,27 @@
+sysname CGN1
+interface GigabitEthernet0/0/3
+ undo shutdown
+ ip address 10.0.0.1 255.255.255.0
+ interface GigabitEthernet0/0/3.0
+ vrrp vrid 10 virtual-ip 10.0.0.3
+ vrrp vrid 10 priority 150
+interface 0.10
+ vrrp vrid 10 preempt-mode timer delay 400
+ vrrp vrid 10 virtual-ip 10.0.0.3
+clock source cesacr slot 1 card none recovery-domain 1 synchronization enable
+controller E1 1/0
+ip route-static 10.0.0.2 255.255.255.255 none none
+ip route-static 10.0.0.2 255.255.255.255 ge-0/0/3
+syslog host 10.0.0.2 service-set service-instance-group-21
+ syslog host 10.0.0.2 service-instance-group service-instance-group-21
+ service-set service-instance-group-21 interface-service service-interface GigabitEthernet0/0/3
+ service-set service-instance-group-21 next-hop-service inside-service-interface GigabitEthernet0/0/3
+service-set service-instance-group-21 interface ge-0/0/3
+service-set service-instance-group-21 next-hop inside interface ge-0/0/3
+service-security global-binding ipv6 dslite1
+service-security global-binding ipv4 dslite1
+service-security global-binding ipv4 service-instance-group-21
+service-security global-binding group1 1
+service-security global-binding ipv4 group1
+service-security global-binding ipv4 all
+service-security global-binding ipv4 full-cone

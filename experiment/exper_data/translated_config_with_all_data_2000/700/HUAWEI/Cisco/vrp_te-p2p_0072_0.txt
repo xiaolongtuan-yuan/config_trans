@@ -1,0 +1,38 @@
+hostname PE1
+ethernet cfm ma ma1 md md1
+interface GigabitEthernet1/0/1.1
+ mpls ip
+ mpls ldp
+ mpls traffic-eng passive-interface
+mpls ip
+ip as-path access-list tope2 permit .*
+ip as-path access-list 10 permit _10.1.1.2$
+ip as-path access-list 10 permit _10.2.1.2$
+ip as-path access-list 10.4.1.2 permit .*
+ip as-path access-list 5 permit 5.5.5.5
+router isis 1
+ mpls traffic-eng level-2
+ metric-style wide
+ net 86.4501.0010.0100.1001.00
+interface GigabitEthernet1/0/0
+ ip address 10.1.1.1 255.255.255.252
+ isis enable 1
+interface GigabitEthernet1/0/0.0
+ no shutdown
+ mpls ip
+ mpls traffic-eng passive-interface
+interface GigabitEthernet1/0/0.1
+ mpls ldp
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+ isis enable 1
+interface Tunnel10
+ tunnel key 100
+interface Tunnel10.None
+ ip unnumbered Loopback1
+ mpls traffic-eng fast-reroute
+interface Tunnel.10
+ tunnel mode mpls te
+ tunnel destination 5.5.5.5
+ mpls traffic-eng record-route
+redundancy

@@ -1,0 +1,36 @@
+hostname SRX-NAT-Gateway
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+tunnel protection ipsec profile trust
+tunnel protection ipsec profile IPSEC_PROFILE
+interface GigabitEthernet0/0/1
+ ip address 11.11.11.101 255.255.255.0
+ip nat inside source static network 11.11.11.0 TCP-256 /24
+ip nat inside source list trust pool STATIC-NETWORK overload
+ip nat inside source list NAT_ACL_2464 pool ADDRESS_GROUPA overload
+ip nat translation max-entries 100
+ip nat inside source static network 11.11.11.0 11.11.11.0 /24
+ip nat inside source list PORT-MAPPING-256 pool trust overload
+ip nat inside source static network 10.0.0.0 11.11.11.0 /24
+ ip nat inside source static network 10.0.0.0 11.11.11.0 /24
+ ip nat inside source static tcp 10.0.0.0 256 11.11.11.101 256
+ ip nat inside source static tcp 10.0.0.0 1023 11.11.11.101 1023
+ip nat translation max-entries 256
+ip nat inside source static network 11.11.11.101 10.0.0.0 /32
+ ip nat inside source static network 10.0.0.0 11.11.11.0 /24
+ ip nat inside source static tcp 10.0.0.0 256 11.11.11.101 256
+ ip nat inside source static tcp 10.0.0.0 1023 11.11.11.101 1023
+ interface GigabitEthernet0/0
+ ip address 10.1.1.1 255.255.255.0
+ ip nat inside
+ !
+ interface GigabitEthernet0/1
+ ip address 11.11.11.101 255.255.255.0
+ ip nat outside
+ip nat inside source static network 11.11.11.101 11.11.11.101 /32
+ip nat inside source list PORT-MAPPING-1023 pool trust overload
+ip nat inside source static network 10.0.0.0 11.11.11.101 /24
+ ip nat inside source static network 10.0.0.0 11.11.11.0 /24
+ip nat inside source static network 11.11.11.101 TCP-1023 PORT-MAPPING-1023
+ip nat translation max-entries 1023

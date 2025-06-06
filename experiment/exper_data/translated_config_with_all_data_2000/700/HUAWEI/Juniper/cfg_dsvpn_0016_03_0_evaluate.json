@@ -1,0 +1,80 @@
+{
+    "command_accuracy": 0.47058823529411764,
+    "missed_commands": [
+        "set interfaces gr-0/0/0 unit 0 tunnel source 10.1.1.10",
+        "set interfaces gr-0/0/0 unit 0 tunnel destination 0.0.0.0/0  # 多播隧道配置",
+        "set protocols bgp group bgp-peers local-address 172.16.1.1",
+        "set protocols bgp group bgp-peers neighbor 172.168.1.2 peer-as 200",
+        "set protocols bgp group bgp-peers neighbor 172.168.1.3 peer-as 300",
+        "set protocols bgp group bgp-peers neighbor 172.168.1.2 peer-as 200",
+        "set protocols bgp group bgp-peers neighbor 172.168.1.3 peer-as 300",
+        "set protocols ospf area 0.0.0.0 interface lo0.0 passive",
+        "set protocols ospf area 0.0.0.0 interface gr-0/0/0.0",
+        "set protocols ospf3 area 0.0.0.1 interface ge-0/0/0.0",
+        "set policy-options policy-statement export-ospf term 1 from protocol ospf",
+        "set policy-options policy-statement export-ospf term 1 then accept",
+        "set interfaces gr-0/0/0 unit 0 tunnel source 10.1.1.10",
+        "set interfaces gr-0/0/0 unit 0 tunnel destination 0.0.0.0/0  # 多播隧道配置",
+        "set protocols bgp group bgp-peers local-address 172.16.1.1",
+        "set protocols bgp group bgp-peers neighbor 172.168.1.2 peer-as 200",
+        "set protocols bgp group bgp-peers neighbor 172.168.1.3 peer-as 300",
+        "set protocols ospf area 0.0.0.0 interface gr-0/0/0.0",
+        "set protocols ospf3 area 0.0.0.1 interface ge-0/0/0.0",
+        "set policy-options policy-statement export-ospf term 1 from protocol ospf",
+        "set policy-options policy-statement export-ospf term 1 then accept"
+    ],
+    "grammatical_accuracy": 0.5882352941176471,
+    "missed_templates": [
+        "set interfaces [interface_name] unit [unit_number] tunnel source [source_ip]",
+        "set interfaces [parameter1] unit [parameter2] tunnel destination [parameter3]",
+        "set protocols bgp group [parameter1] local-address [parameter2]",
+        "set protocols ospf area [area_id] interface [interface_name] passive",
+        "set protocols ospf3 area [parameter1] interface [parameter2]",
+        "set policy-options policy-statement [parameter1] term [parameter2] from protocol [parameter3]",
+        "set policy-options policy-statement [parameter1] term [parameter2] then [parameter3]"
+    ],
+    "llm_command_accuracy": 0.0,
+    "llm_command_ratio": 0.1935483870967742,
+    "command_for_llm": [
+        "import-route ospf 1"
+    ],
+    "llm_trans_commands": [
+        "set policy-options policy-statement OSPF-IMPORT from protocol ospf",
+        "set policy-options policy-statement OSPF-IMPORT then accept",
+        "set protocols bgp import OSPF-IMPORT",
+        "set protocols ospf export ospf-to-bgp",
+        "set policy-options policy-statement ospf-to-bgp from protocol ospf",
+        "set policy-options policy-statement ospf-to-bgp then accept"
+    ],
+    "source_commands": [
+        "ip address 172.16.1.1 255.255.255.0",
+        "undo synchronization",
+        "import-route ospf 1",
+        "network 10.1.1.0 0.0.0.255",
+        "area 0.0.0.0",
+        "network 192.168.0.0 0.0.0.255",
+        "peer 172.16.1.2 enable",
+        "ospf 1 router-id 172.16.1.1",
+        "return",
+        "ipv4-family unicast",
+        "peer 172.16.1.2 as-number 200",
+        "ospf 2 router-id 10.1.1.10",
+        "interface GigabitEthernet1/0/0",
+        "peer 172.16.1.3 enable",
+        "interface Tunnel0",
+        "tunnel-protocol gre p2mp",
+        "ip address 10.1.1.10 255.255.255.0",
+        "area 0.0.0.1",
+        "ip address 192.168.0.1 255.255.255.255",
+        "sysname Hub",
+        "bgp 100",
+        "interface LoopBack0",
+        "router-id 172.16.1.1",
+        "source GigabitEthernet1/0/0",
+        "peer 172.16.1.3 as-number 300",
+        "aggregate 192.168.0.0 255.255.0.0"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

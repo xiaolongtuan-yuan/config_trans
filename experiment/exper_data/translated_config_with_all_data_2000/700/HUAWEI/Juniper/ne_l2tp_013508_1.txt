@@ -1,0 +1,32 @@
+set system host-name Device
+set services l2tp access-profile lns1
+set access radius-server radius1 none
+set access radius-server 10.20.20.1 authentication-port 1812
+set access radius-server 10.20.20.1 accounting-port 1813
+set access radius-server 10.20.20.1 secret <key>
+set access radius-server 10.20.20.1 accounting-vsa
+set access radius-server radius1
+set interfaces vt-1/0/0 disable
+set interfaces vt-1/0/0 unit 1 description "Virtual-Template1"
+set interfaces vt-1 aggregated-ether-options lacp active
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.11.11.1/32
+set interfaces ge-1/0/0 unit 1 family mpls
+set interfaces lo0 disable
+set interfaces lo0 unit 0 family inet address 192.168.10.1/32
+set protocols ospf area 0.0.0.0 interface 0.0.0.0
+set protocols ospf area 0.0.0.0 interface gr-0/0/0.0
+set protocols oam ethernet connectivity-fault-management maintenance-association lns1 vlan lns1
+set protocols oam ethernet connectivity-fault-management maintenance-association lns1 vlan default
+set services l2tp tunnel-group <password> tunnel-password $9$hx7Z-8v3T2q1P0o9
+set services l2tp tunnel-group LNS local-name LNS
+set services l2tp tunnel-group group1 remote-address 1
+set services l2tp lns tunnel-group group1 interface lo0.0
+set access address-assignment pool 1
+set system services dhcp pool 1 router 192.168.0.2
+set system services dhcp pool 1 network 192.168.0.0/255.255.255.0
+set access address-assignment pool local family inet range range1 low 192.168.0.10 high 192.168.0.100
+set access address-assignment pool local family inet range 192.168.0.10 to 192.168.0.100
+delete set protocols isis level 1
+interfaces default

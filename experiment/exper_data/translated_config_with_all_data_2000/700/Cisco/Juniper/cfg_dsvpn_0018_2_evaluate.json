@@ -1,0 +1,59 @@
+{
+    "command_accuracy": 0.5833333333333334,
+    "missed_commands": [
+        "set interfaces gr-0/0/0 unit 0 tunnel source 10.1.2.10",
+        "set interfaces gr-0/0/0 unit 0 tunnel destination 172.16.1.1",
+        "set interfaces gr-0/0/0 unit 0 encapsulation gre",
+        "set security ipsec vpn gre_over_ipsec bind-interface gr-0/0/0",
+        "set security ipsec vpn gre_over_ipsec ike ipsec-policy ipsec_profile",
+        "set interfaces gr-0/0/0 unit 0 tunnel source 10.1.2.10",
+        "set interfaces gr-0/0/0 unit 0 tunnel destination 172.16.1.1",
+        "set interfaces gr-0/0/0 unit 0 encapsulation gre",
+        "set security ipsec vpn gre_over_ipsec bind-interface gr-0/0/0",
+        "set security ipsec vpn gre_over_ipsec ike ipsec-policy ipsec_profile"
+    ],
+    "grammatical_accuracy": 0.6666666666666666,
+    "missed_templates": [
+        "set interfaces [parameter1] unit [parameter2] tunnel destination [parameter3]",
+        "set interfaces [parameter1] unit [parameter2] encapsulation [parameter3]",
+        "set security ipsec vpn [parameter1] bind-interface [parameter2]",
+        "set security ipsec vpn [parameter1] ike ipsec-policy [parameter2]"
+    ],
+    "llm_command_accuracy": 0.0,
+    "llm_command_ratio": 0.13043478260869565,
+    "command_for_llm": [
+        "network 172.16.1.0 0.0.0.255 area 0",
+        "network 10.1.2.0 0.0.0.255 area 1",
+        "network 192.168.1.0 0.0.0.255 area 0"
+    ],
+    "llm_trans_commands": [
+        "set protocols ospf area 0 interface 172.16.1.0/24",
+        "set protocols ospf area 0 interface lo0",
+        "set protocols ospf area 1 interface ge-1/0/0"
+    ],
+    "source_commands": [
+        "network 172.16.1.0 0.0.0.255 area 0",
+        "ip address 192.168.1.1 255.255.255.255",
+        "tunnel protection ipsec profile <profile_name>",
+        "no passive-interface Tunnel0",
+        "no passive-interface GigabitEthernet1/0/0",
+        "interface Loopback0",
+        "network 192.168.1.0 0.0.0.255 area 0",
+        "tunnel source GigabitEthernet1/0/0",
+        "router ospf 2",
+        "router ospf 1",
+        "hostname Spoke1",
+        "router-id 172.16.1.2",
+        "network 10.1.2.0 0.0.0.255 area 1",
+        "interface GigabitEthernet1/0/0",
+        "ip address 172.16.1.2 255.255.255.0",
+        "end",
+        "router-id 10.1.2.10",
+        "interface Tunnel0",
+        "ip address 10.1.2.10 255.255.255.0",
+        "passive-interface default"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

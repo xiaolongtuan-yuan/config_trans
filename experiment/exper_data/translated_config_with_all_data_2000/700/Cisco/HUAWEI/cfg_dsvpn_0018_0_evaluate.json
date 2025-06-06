@@ -1,0 +1,80 @@
+{
+    "command_accuracy": 0.7575757575757576,
+    "missed_commands": [
+        "acl number 2001",
+        "rule 5 permit source 192.168.0.0 0.0.0.255",
+        "rule 5 permit source 192.168.1.0 0.0.0.255",
+        "rule 10 permit source 192.168.2.0 0.0.0.255",
+        "binding tunnel gre",
+        "ospf network-type p2mp",
+        "ipsec policy <profile-name>",
+        "return",
+        "rule 5 permit source 192.168.0.0 0.0.0.255",
+        "acl number 2001",
+        "rule 5 permit source 192.168.1.0 0.0.0.255",
+        "rule 10 permit source 192.168.2.0 0.0.0.255",
+        "binding tunnel gre",
+        "ospf network-type p2mp",
+        "ipsec policy <profile-name>",
+        "return"
+    ],
+    "grammatical_accuracy": 0.7878787878787878,
+    "missed_templates": [
+        "rule [parameter1] permit source [parameter2] [parameter3]",
+        "binding tunnel [parameter1]",
+        "ospf network-type [parameter1]",
+        "ipsec policy [parameter1]",
+        "return"
+    ],
+    "llm_command_accuracy": 0.030303030303030304,
+    "llm_command_ratio": 0.15384615384615385,
+    "command_for_llm": [
+        "access-list 2001 permit ip 192.168.2.0 0.0.0.255 any",
+        "access-list 2001 permit ip 192.168.1.0 0.0.0.255 any",
+        "access-list 2000 permit ip 192.168.0.0 0.0.0.255 any"
+    ],
+    "llm_trans_commands": [
+        "acl number 2000",
+        "rule 5 permit ip source 192.168.0.0 0.0.0.255 destination any",
+        "acl 2001",
+        "rule 5 permit ip source 192.168.1.0 0.0.0.255 destination any",
+        "acl 2001",
+        "rule permit ip source 192.168.2.0 0.0.0.255 destination any"
+    ],
+    "source_commands": [
+        "network 172.16.1.0 0.0.0.255 area 0",
+        "tunnel key 0",
+        "hostname Hub1",
+        "router ospf 3",
+        "match ip address 2001",
+        "router-id 192.168.0.1",
+        "redistribute ospf 1 subnets route-map 2",
+        "router-id 172.16.1.1",
+        "ip address 10.1.1.10 255.255.255.0",
+        "route-map 1 permit 10",
+        "tunnel source 10.1.1.10",
+        "tunnel mode gre multipoint",
+        "interface Loopback0",
+        "router-id 10.1.1.10",
+        "tunnel source GigabitEthernet1/0/0",
+        "ip address 172.16.1.1 255.255.255.0",
+        "route-map 2 permit 10",
+        "router ospf 2",
+        "router ospf 1",
+        "redistribute ospf 3 subnets route-map 1",
+        "access-list 2001 permit ip 192.168.2.0 0.0.0.255 any",
+        "interface GigabitEthernet1/0/0",
+        "ip address 192.168.0.1 255.255.255.255",
+        "tunnel protection ipsec profile <profile-name>",
+        "match ip address 2000",
+        "end",
+        "access-list 2001 permit ip 192.168.1.0 0.0.0.255 any",
+        "network 192.168.0.0 0.0.0.255 area 0",
+        "interface Tunnel0",
+        "network 10.1.1.0 0.0.0.255 area 1",
+        "access-list 2000 permit ip 192.168.0.0 0.0.0.255 any"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

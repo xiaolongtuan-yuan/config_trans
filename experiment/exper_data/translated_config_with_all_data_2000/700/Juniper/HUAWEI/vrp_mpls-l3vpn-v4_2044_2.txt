@@ -1,0 +1,60 @@
+sysname CE1
+router id 2.2.2.9
+ospf 1 router-id 2.2.2.9
+ area 0
+  network 0.0.0.0 ge-0/0/0.0
+mpls rsvp-te
+mpls label protocol ldp
+interface GigabitEthernet0/0/0
+ undo shutdown
+interface ge-0/0/0.0
+interface ge-0/0/0:0
+ ip address unnumbered interface LoopBack1
+ ip address 40.1.1.2 255.255.255.0
+ip address 11.1.1.1 255.255.255.0
+ interface GigabitEthernet0/0/1.0
+ mpls
+interface GigabitEthernet0/0/1.0
+ interface GigabitEthernet0/0/1
+ ip address 11.1.1.1 255.255.255.0
+ interface GigabitEthernet0/0/0.0
+ mpls
+ interface GigabitEthernet0/0/1.0
+ip address 2.2.2.9 255.255.255.255
+ interface LoopBack0
+interface LoopBack0
+ interface LoopBack0
+  ip address 2.2.2.9 255.255.255.255
+ip route-static 0.0.0.0 0 40.1.1.1
+ip route-static 0.0.0.0 0.0.0.0 40.1.1.1
+user-group peer-AS100
+ bgp 100
+ peer 11.1.1.2 connect-interface GigabitEthernet 0/0/1
+ peer 11.1.1.2 as-number 100
+bgp 600
+ import-route direct
+ ipv4-family unicast
+  peer peer-AS100 route-policy policy1 export
+  undo synchronization
+qppb local-policy policy1
+ ip extcommunity-filter basic policy1 permit bgp
+ route-policy policy1 permit node 1
+ apply ip next-hop 11.1.1.1
+ peer 11.1.1.2 as-number 100
+ ipv4-family unicast
+ policy policy1 export
+ peer 11.1.1.2 enable
+ospfv3 0
+ area 0.0.0.0
+ospfv3 1
+ mpls
+ mpls ldp
+ area 0.0.0.0
+  mpls lsr-id 2.2.2.9
+  interface GigabitEthernet0/0/1.0
+  ospf enable 0 area 0
+  ospf 1
+  area 0.0.0.0
+  network 2.2.2.9 0.0.0.0
+ospf 1
+ import-route static type policy1

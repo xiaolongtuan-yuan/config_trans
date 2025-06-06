@@ -1,0 +1,16 @@
+hostname DeviceA
+bfd
+interface Eth-Trunk1
+ ip address 10.1.1.1 255.255.255.0
+interface GigabitEthernet3/0/0
+ switchport trunk allowed vlan 1
+interface GigabitEthernet3/0/0.0
+ no shutdown
+interface GigabitEthernet3/0/1
+ switchport trunk allowed vlan 1
+interface Gigabitethernet3/0/1.None
+ no shutdown
+ipv6 bfd atob bind peer-ipv6 2001:db8::2 source-ipv6 2001:db8::1
+ipv6 bfd atob bind peer-ipv6 none source-ipv6 10.1.1.1
+ bfd atob discriminator local 10
+redundancy

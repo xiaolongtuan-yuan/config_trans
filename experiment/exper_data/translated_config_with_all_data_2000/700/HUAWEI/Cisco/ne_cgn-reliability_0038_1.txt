@@ -1,0 +1,29 @@
+hostname CGN1
+interface GigabitEthernet1/0/3
+ ip address 10.0.0.1 255.255.255.0
+ vrrp 10 ip 10.0.0.3
+ vrf forwarding 10
+ vrrp 10 priority 150
+ standby 10 preempt delay minimum 400
+ track 50 interface GigabitEthernet1/0/2 line-protocol
+ track 50 interface GigabitEthernet1/0/1 line-protocol
+interface GigabitEthernet1/0/2.10
+interface GigabitEthernet1/0/3.10
+ vrrp 10 ip none
+ track 21 interface GigabitEthernet1/0/3 line-protocol
+ vrrp 10 priority 50
+ethernet cfm sla 21 mep 0 domain none service GigabitEthernet1/0/3
+ethernet cfm sla 21 mep 0 domain md_none service ma_GigabitEthernet1/0/3
+service remote-backup
+ethernet cfm sla 21 mep 10 domain md21 service ma10
+ethernet cfm sla 21 mep 10 domain none service GigabitEthernet1/0/3
+aaa accounting exec default0 start-stop group 21
+ethernet cfm sla 21 mep none domain none service none
+ip msdp originator-id dslite1
+aaa session-id common
+ip nat pool none none 4096 netmask none
+aaa accounting exec default0 start-stop group rd5
+ip msdp originator-id Loopback0
+ip nat inside source list 24 pool dslite1
+ip msdp originator-id Loopback41
+redundancy

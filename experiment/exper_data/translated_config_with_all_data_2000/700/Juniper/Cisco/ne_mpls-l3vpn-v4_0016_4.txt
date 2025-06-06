@@ -1,0 +1,16 @@
+hostname CE3
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.3.1.1 255.255.255.0
+interface ge-1/0/0.0
+router bgp 800
+ address-family ipv4
+  neighbor none route-map ADVERTISE_NETWORK out
+  neighbor 10.3.1.0 route-map ADVERTISE_NETWORK out
+aaa authentication login none group BGP_GROUP local
+redistribute bgp
+redistribute unicast
+aaa authentication login BGP_GROUP group inet local
+redistribute connected
+route-map ADVERTISE_NETWORK permit 1
+route-map ADVERTISE_NETWORK deny 10

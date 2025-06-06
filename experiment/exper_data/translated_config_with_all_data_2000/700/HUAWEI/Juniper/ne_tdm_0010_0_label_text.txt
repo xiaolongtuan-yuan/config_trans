@@ -1,0 +1,22 @@
+set system host-name PE1
+
+set interfaces lo0 unit 0 family inet address 192.168.2.2/32
+
+set interfaces ge-2/0/0 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-2/0/0 unit 0 family mpls
+
+set interfaces e1-1/0/1 framing crc4
+!set interfaces e1-1/0/1 channelized e1 timeslots 1-31
+set interfaces e1-1/0/1 unit 0 encapsulation ppp
+
+set interfaces e1-1/0/2 framing crc4
+!set interfaces e1-1/0/2 channelized e1 timeslots 1-31
+set interfaces e1-1/0/2 unit 0 encapsulation ppp
+
+set protocols mpls interface ge-2/0/0.0
+set protocols ldp router-id 192.168.2.2
+
+set protocols ldp targeted-hello accept from 192.168.3.3
+
+set protocols ospf area 0.0.0.0 interface lo0.0 passive
+set protocols ospf area 0.0.0.0 interface ge-2/0/0.0

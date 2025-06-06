@@ -1,0 +1,23 @@
+set system host-name Router
+set protocols oam ethernet connectivity-fault-management version standard
+set system authentication-order radius
+set protocols dot1x authenticator authentication-profile radius
+set system radius-server radius-server-ip
+set system radius-server 192.168.7.249 port authentication 1646
+set access radius-server 192.168.7.249 secret "$9$13061E0108035C7D1D"
+set system radius-server 5 timeout 5
+set system radius-server 10.6.55.55 retry 3
+set access radius-server 192.168.7.249 accounting-vsa
+set interfaces ge-1/0/2.1 unit 1 disable
+set interfaces ge-1/0/2.1 disable
+set interfaces ge-1/0/2.1 encapsulation dot1q 100
+set interfaces ge-1/0/2.1 unit 0 family inet address 10.82.1.1/24
+set interfaces ge-1/0/2.1 .ethernet unit 1 family inet interface-mode auto
+set interfaces ge-1/0/2.1 encapsulation dot1q 1
+set interfaces ge-1/0/2.1 unit 1 family inet address none vrrp-group none preempt hold-time 1800
+set interfaces ge-1/0/2.1 unit 1 family inet address none vrrp-group none preempt hold-time 15
+set interfaces ge-1/0/2.1 unit 0 family inet address inet vrrp-group none preempt hold-time 20
+set system services dhcp pool pool4 network 10.82.1.0/255.255.255.0
+set system services dhcp pool pool4 default-router 10.82.1.1
+set access address-assignment pool pool4 family inet dns-server 192.168.7.252
+set protocols isis export REDIST-CONNECTED

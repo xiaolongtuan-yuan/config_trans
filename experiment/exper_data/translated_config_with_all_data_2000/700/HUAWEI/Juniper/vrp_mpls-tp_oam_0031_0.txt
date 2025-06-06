@@ -1,0 +1,36 @@
+set system host-name LSRA
+set system host-name CE1 control-word;
+set interfaces ge-1/0/0 unit 0 family mpls
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 2.1.1.1/24
+set interfaces ge-1/0/0 unit 30000 family mpls
+set interfaces ge-1/0/0 unit enable disable
+set protocols l2vpn vpls PE3-VPLS vpls-id 2
+set services 6rd tunnel-context ipv4 protocol esp
+set forwarding-options port-mirroring input ingress interface gr-0/0/0.20
+set system host-name tpatoc
+delete set protocols tpatoc
+set interfaces ge-1/0/0.1 unit 1 family ethernet-switching interface-mode trunk
+set interfaces ge-1/0/0.1 unit 1 vlan-id 1
+set interfaces ge-1/0/0.1 unit 3000 family mpls
+set interfaces ge-1/0/0.1 unit 0 family inet mpls static-l2vc pw-template tpatoc 30000 transmit-vpn-label 101 receive-vpn-label 101
+set interfaces ge-1/0/0.1 unit 30000 family mpls
+set interfaces ge-1/0/0.1 description VLAN 101 Interface
+set interfaces ge-1/0/0.1 unit 0 family inet mpls l2vpn pw traffic-statistics enable
+set interfaces lo0.1 disable
+set interfaces lo0.1 unit 0 family inet address 1.1.1.1/32
+set interfaces tun10 disable
+set interfaces tun10 unit 0 family inet mpls signal-protocol cr-static
+set interfaces tun10 set routing-options static route 2.2.2.2/32 next-hop 2.1.1.2
+interfaces lo0.1
+set interfaces lt-1/0/0.10 unit 10 tunnel protocol mpls
+set interfaces tunnel10 tunnel destination 2.2.2.2
+set interfaces tunnel10 unit 10 tunnel key 100
+set interfaces tunnel10 unit 0 family inet mpls bidirectional
+set interfaces tunnel10 unit 0 family inet mpls reserved-for-binding
+set interfaces tunnel10 set routing-options static route 3.3.3.3/32 next-hop 2.1.1.2
+set services 6rd tunnel-context tpatoc
+set security ipsec proposal test protocol mpls-tp
+set security ipsec proposal tpatoc protocol esp
+set class-of-service rewrite-rules dscp EF-REWRITE forwarding-class EF loss-priority low code-point 34

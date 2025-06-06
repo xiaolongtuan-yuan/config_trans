@@ -1,0 +1,20 @@
+sysname DeviceC
+interface GigabitEthernet3/0/1
+ undo shutdown
+ ip address 172.16.4.2 255.255.255.0
+interface GigabitEthernet3/0/3
+ undo shutdown
+ ip address 172.16.5.1 255.255.255.0
+bgp 200
+ router-id 3.3.3.3
+ peer 172.16.4.1 as-number 65009
+ peer 172.16.4.1 enable
+ ipv4-family unicast
+  undo synchronization
+  peer 172.16.4.1 advertise-community
+  peer 172.16.5.2 advertise-community
+ peer 172.16.5.2 as-number 65009
+ peer 172.16.5.2 enable
+ network 172.16.4.0 0.0.0.255
+ network 172.16.5.0 0.0.0.255
+stp region-configuration

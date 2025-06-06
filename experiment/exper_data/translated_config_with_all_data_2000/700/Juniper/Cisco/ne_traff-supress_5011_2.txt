@@ -1,0 +1,43 @@
+hostname PE1
+mpls ldp advertise-labels interface GigabitEthernet1/0/0.1
+mpls ldp advertise-labels interface GigabitEthernet2/0/0
+mpls ldp discovery transport-address 1.1.1.1
+mpls ldp discovery transport-address Loopback0
+mpls ldp discovery targeted-hello accept
+interface GigabitEthernet1/0/0
+ no shutdown
+ tag-switching ip
+ switchport
+ switchport mode trunk
+ interface GigabitEthernet1/0/0.1
+ encapsulation dot1Q 10
+ xconnect 3.3.3.3 2 encapsulation mpls
+interface 1.vlan-ccc
+ encapsulation vlan-ccc
+interface GigabitEthernet2/0/0
+ ip address 172.16.1.1 255.255.255.0
+ interface GigabitEthernet2/0/0.0
+ mpls ip
+interface Loopback0
+ no shutdown
+ ip address 1.1.1.1 255.255.255.255
+ip route 3.3.3.3 255.255.255.255 172.16.1.2
+ip route 3.3.3.3 255.255.255.255 none 172.16.1.2
+ip route 172.16.1.0 255.255.255.0 none 172.16.1.2
+ip route 172.16.1.0 255.255.255.0 none none
+network 1.1.1.1 0.0.0.0 area 0
+network 172.16.1.0 0.0.0.255 area 0
+passive-interface Loopback0
+ router ospf 1
+router ospf 1
+ router ospf 1
+  passive-interface loopback0
+ mpls ip
+  interface GigabitEthernet2/0/0
+  ip ospf 1 area 0
+neighbor 3.3.3.3 remote-as 2
+neighbor 3.3.3.3 remote-as ethernet
+vlan batch 2
+interface 10.1
+ switchport access vlan 10
+switchport trunk allowed vlan 10

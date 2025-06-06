@@ -1,0 +1,18 @@
+sysname SSH_Server
+aaa authorization-scheme default
+ssh user client001 publickey rsa client001_key
+local-user client001 password cipher @%@%.OuC6Vo7Z,A'y~/KB&,vmd@%@%
+ssh user client001 level 3
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 10.137.217.223 255.255.0.0
+interface LoopBack0
+ ip address 10.1.1.1 255.255.255.255
+ssh server-source -i loopback 0
+ssh server version 2
+scp client-source -a
+ssh user-interface vty 0 4
+user-interface vty 0 4
+ authentication-mode aaa
+ protocol inbound ssh
+stp region-configuration

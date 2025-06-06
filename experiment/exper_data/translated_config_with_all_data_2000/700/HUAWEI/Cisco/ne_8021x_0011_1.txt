@@ -1,0 +1,29 @@
+hostname Router
+license boot level network-advantage
+route-target import none:1
+radius server rd4
+ address ipv4 192.168.7.249 auth-port 1645 acct-port 1646
+aaa group server radius rd4
+radius server plus11
+interface GigabitEthernet1/0/2.1
+ switchport access vlan 100
+ dot1x timeout reauth-period 1800
+ service-policy type control subscriber isp4
+ ppp authentication dot1x
+ip nat inside source list 100 pool pool4
+ip dhcp pool BAS_POOL
+ network 10.82.1.0 255.255.255.0
+ip dhcp pool pool4
+ network 10.82.1.0 255.255.255.0
+ipv6 dhcp pool POOL4
+ dns-server 2001:DB8::2:2
+ip domain-name example.com
+encapsulation dot1q 20
+encapsulation dot1q 1800
+encapsulation dot1q 15
+aaa authentication enable default enable
+interface GigabitEthernet1/0/1.1
+ ppp authorization auth4
+aaa authentication enable default acct4
+ip domain-name isp4
+redundancy

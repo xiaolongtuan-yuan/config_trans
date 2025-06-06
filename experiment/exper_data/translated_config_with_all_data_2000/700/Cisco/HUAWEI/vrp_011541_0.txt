@@ -1,0 +1,15 @@
+sysname CE1
+vlan 2
+cfm md md3 level 3
+interface GigabitEthernet1/0/1
+ port link-type trunk
+ port trunk allow-pass vlan 2
+ undo shutdown
+cfm md md3 level 2
+cfm md md3
+ ma ma3
+  mep mep-id 3 interface GigabitEthernet1/0/1 outward
+  mep mep-id 3 interface GigabitEthernet1/0/1 inward
+igmp-snooping enable
+efm enable
+stp region-configuration

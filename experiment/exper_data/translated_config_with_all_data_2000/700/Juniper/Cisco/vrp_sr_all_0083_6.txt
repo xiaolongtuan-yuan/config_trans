@@ -1,0 +1,17 @@
+hostname CE2
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 10.2.1.1 255.255.255.0
+interface Loopback0
+ ip address 10.22.2.2 255.255.255.255
+aaa authentication login default group external-peers local
+redistribute bgp
+redistribute export-policy
+router bgp AS number
+ address-family ipv4
+  neighbor none route-map export-policy out
+route-map export-policy permit 1
+router bgp 600
+ address-family ipv4
+  neighbor 10.22.2.2 route-map export-policy out
+  neighbor none route-map export-policy out

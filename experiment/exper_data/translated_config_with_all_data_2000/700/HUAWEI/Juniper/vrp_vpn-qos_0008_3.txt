@@ -1,0 +1,37 @@
+set system host-name PE2
+set system host-name CE1
+set interfaces ge-0/0/0 unit 0 family mpls
+set interfaces ge-1/0/0 unit 0 family mpls
+set interfaces ge-1/0/0 unit 0 family inet mpls 1.1.1.9
+set interfaces ge-1/0/0 tunnel destination 1.1.1.9
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.2.2.1/24
+set interfaces ge-1/0/0 unit 5000 family mpls
+set interfaces ge-1/0/0 set protocols mpls interface ge-1/0/0 bandwidth 4000
+set interfaces ge-1/0/0 unit 3000 family mpls
+set interfaces ge-1/0/0 set protocols mpls traffic-engineering
+set interfaces ge-1/0/0 set protocols mpls traffic-engineering protocols rsvp
+set interfaces ge-1/0/0 unit 1 family mpls
+set class-of-service rewrite-rules exp MPLS-EXP-OUTBOUND forwarding-class best-effort code-point 0
+set protocols l2vpn vpls PE3-VPLS vpls-id 2
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0.1 disable
+set interfaces ge-2/0/0.1 unit 1 vlan-id 20
+set interfaces ge-2/0/0.1 unit 1 tunnel key 101
+set interfaces ge-2/0/0.1 unit 3000 family mpls
+set interfaces lo0.1 disable
+set interfaces lo0.1 unit 0 family inet address 3.3.3.9/32
+set interfaces tun-10 disable
+interfaces lo0.1
+set interfaces Tunnel10 tunnel destination 1.1.1.9
+set interfaces tun10 set protocols mpls traffic-engineering bandwidth 2000
+set interfaces tunnel10 unit 10 tunnel key 101
+set protocols ospf3 area 0.0.0.1
+set protocols ospf area 0.0.0.0 interface 0.0.0.0
+set protocols ospf area 0.0.0.0 interface gr-0/0/0.0
+set protocols ospf3 area 0.0.0.0
+set services 6rd tunnel-context policy1
+set services 6rd tunnel-context ipv4
+set class-of-service rewrite-rules dscp EF-REWRITE forwarding-class EF loss-priority low code-point 34

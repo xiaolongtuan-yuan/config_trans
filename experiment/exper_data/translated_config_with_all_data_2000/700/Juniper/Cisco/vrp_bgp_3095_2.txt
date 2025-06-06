@@ -1,0 +1,20 @@
+hostname DeviceC
+interface GigabitEthernet0/0/1
+ no shutdown
+ ip address 172.16.4.2 255.255.255.0
+ ip address 172.16.5.1 255.255.255.0
+interface GigabitEthernet0/0/3
+ no shutdown
+ip route 3.3.3.3 255.255.255.255 none
+aaa authentication login default0 group 200 local
+ router bgp 200
+ neighbor 172.16.4.1 remote-as 65009
+ neighbor 172.16.5.2 remote-as 65009
+redistribute bgp
+aaa authentication login default group 200 local
+ neighbor 172.16.4.1 remote-as 65009
+redistribute EXPORT-POLICY
+router bgp 600
+ address-family ipv4
+  neighbor none route-map EXPORT-POLICY out
+route-map EXPORT-POLICY permit 1

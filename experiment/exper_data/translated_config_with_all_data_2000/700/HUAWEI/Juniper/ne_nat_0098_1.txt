@@ -1,0 +1,35 @@
+set system host-name CGN2
+set services nat pool nat_pool address 11.11.11.106/32 to 11.11.11.110/32
+set services nat rule nat_rule match-direction input-output
+set services nat rule nat_rule then source-nat pool nat_pool
+set services nat rule nat_rule then translation-type napt
+set services nat session limit 1048576
+set interfaces irb unit 0
+set access class 3001 acl-name 3001
+set access class 3001 acl-name ACL-3001
+set class-of-service classifiers inet classifier1
+set class-of-service forwarding-classes class behavior1
+set class-of-service forwarding-classes class nat
+set policy-options policy-statement policy1 term policy1 from protocol direct
+set services service-set 1 interface-service service-interface 1
+set services service-set 6RD_SS interface-service service-interface gr-1/0/0
+set services service-set 6RD_SS interface-service service-interface group1
+set services aps group group1
+set services service-set group1 interface-service service-interface group1
+set protocols bgp group group1
+set services nat rule nat1
+set security nat destination pool nat1 term 1 then translated-source pool nat
+set security nat destination pool nat1 address 11.11.11.110/1
+set security nat destination pool nat1 address address-group1/3001
+set security nat destination pool address-group1 address 11.11.11.110/24
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.10.1/24
+set interfaces ge-2/0/0 unit 0 family inet service input policy1
+set interfaces serviceif 1 disable
+set interfaces serviceif unit 0 family inet address 10.1.1.2/24
+set interfaces serviceif set interfaces service-if unit 1 family inet address 10.1.1.2/24
+set interfaces serviceif set interfaces service-if unit 1 service-set group1
+set interfaces serviceif set services service-set group1 interface-monitor group1
+set routing-options static route 0.0.0.0/0 next-hop st0.1
+set class-of-service rewrite-rules dscp EF-REWRITE forwarding-class EF loss-priority low code-point 34

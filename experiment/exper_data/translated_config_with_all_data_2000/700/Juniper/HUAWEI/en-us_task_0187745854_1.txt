@@ -1,0 +1,53 @@
+sysname PE1
+area 0.0.0.0
+network 1.1.1.1 0.0.0.0
+network 10.10.1.1 0.0.0.255
+ ospf 1
+ospf 1
+ ospf 1
+  area 0.0.0.0
+  network 1.1.1.1 0.0.0.0
+  silent-interface LoopBack0
+ospf 1 router-id 0.0.0.0
+ area 0.0.0.0
+  network 2.2.2.2 0.0.0.255
+network 2.2.2.2 0.0.0.255
+mpls ldp igp sync
+mpls rsvp-te
+mpls label protocol ldp
+router id 1.1.1.1
+route-policy v1 permit node 1
+route-policy permit 100:1 node 1
+route-policy permit 1 node vrf-target target:100:1
+interface GigabitEthernet1/0/0
+ undo shutdown
+ stp bpdu vlan 100
+ interface GigabitEthernet1/0/0.0
+ port link-type access
+ port default vlan 10
+ vlan-type dot1q 10
+ interface GigabitEthernet1/0/0.10
+ ccc
+ ip address 10.10.1.1 255.255.255.0
+ ip address 1.1.1.1 255.255.255.255
+interface ge-2/0/0.0
+ mpls l2vc pw-template none 0
+user-group vpls
+ peer 2.2.2.2 enable
+ peer 2.2.2.2 l2vpn-family
+bgp 600
+ import-route internal
+ network 2.2.2.2 0.0.0.0
+ peer 10.1.1.2 enable
+ ipv4-family unicast
+bgp 1
+peer 2.2.2.2 connect-interface LoopBack0
+#
+
+Note:
+1. In Huawei, we typically specify the BGP AS number first (I used 1 as a placeholder - this should match your actual AS)
+2. The "peer x.x.x.x connect-interface" command serves the same purpose as "local-address" in Juniper
+3. Assuming 1.1.1.1 is configured on LoopBack0 interface (common practice)
+4. The neighbor address (2.2.2.2) is taken from the neighbor statement in the original config
+ip route-monitor-group vplp
+traffic-policy p1 inbound

@@ -1,0 +1,31 @@
+sysname PE2
+cfm md md1 level 6
+ospf 1
+ cfm md S1
+  ma S1
+   map vsi S1
+ network 3.3.3.3 0.0.0.0
+ area 0
+ network 10.2.1.0 0.0.0.3
+interface GigabitEthernet1/0/1.1
+ vlan-type dot1q 10
+ mpls l2vc 1.1.1.1 100 mpls
+ospf S1
+ cfm md S1
+  ma S1
+   map vsi S1
+    interface gigabitethernet 1/0/1
+    ethernet ais enable
+interface GigabitEthernet1/0/0.100
+ mpls ldp
+mpls l2vpn l2vpn1 encapsulation none
+interface GigabitEthernet1/0/1
+ undo shutdown
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip address 10.2.1.2 255.255.255.252
+ mpls
+interface LoopBack1
+interface Loopback1
+ ip address 3.3.3.3 255.255.255.255
+stp region-configuration

@@ -1,0 +1,45 @@
+sysname PE1
+mpls rsvp-te
+lldp management-address 1.1.1.1
+mpls label protocol ldp
+interface GigabitEthernet1/0/0
+ undo shutdown
+ stp bpdu vlan 100
+ portswitch
+ port link-type trunk
+ vlan 10
+ #
+ interface GigabitEthernet1/0/0.1
+ dot1q termination vid 10
+ mpls l2vc 3.3.3.3 2 encapsulation ethernet
+ ip address 172.16.1.1 255.255.255.0
+ interface GigabitEthernet2/0/0.0
+ mpls enable
+ ip address 1.1.1.1 255.255.255.255
+interface ge-1/0/0.1
+interface GigabitEthernet2/0/0
+ undo shutdown
+ip route-static 3.3.3.3 32 172.16.1.2
+ip route-static 3.3.3.3 255.255.255.255 172.16.1.2
+ip route-static 172.16.1.0 255.255.255.0 none none
+ip route-static 172.16.1.0 255.255.255.0 172.16.1.2
+ return
+area 0.0.0.0
+network 1.1.1.1 0.0.0.0
+network 172.16.1.0 0.0.0.255
+ ospf 1
+ospf 1
+ ospf 1
+  area 0.0.0.0
+  network 1.1.1.1 0.0.0.0
+ interface GigabitEthernet2/0/0.0
+ mpls enable
+ ospf enable 1 area 0.0.0.0
+ptp-adaptive local-ip 3.3.3.3
+bfd pst bind peer-ip 3.3.3.3 interface ge-1/0/0.1
+bfd pst bind peer-ip 3.3.3.3 interface ethernet
+vlan 2
+interface 10.1
+ vlan-type dot1q 10
+vlan 10
+ access-vlan 10 to 10

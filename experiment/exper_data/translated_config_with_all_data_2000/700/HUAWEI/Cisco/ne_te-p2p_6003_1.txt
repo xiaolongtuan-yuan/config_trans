@@ -1,0 +1,63 @@
+hostname P1
+ethernet cfm ma ma1 md md1
+interface GigabitEthernet1/0/1.1
+ mpls ip
+ mpls ldp
+ mpls traffic-eng passive-interface
+ mpls ldp remote-peer
+ ip address 4.4.4.4 255.255.255.0
+ ip ospf 1 area 0
+mpls ip
+mpls ldp router-id Loopback1
+ip vrf vpn1
+interface GigabitEthernet1/0/0
+ ip address 10.1.1.2 255.255.255.0
+interface GigabitEthernet1/0/0.0
+ no shutdown
+ mpls ldp
+interface GigabitEthernet1/0/0.None
+ mpls ip
+interface GigabitEthernet1/0/0.1
+interface GigabitEthernet2/0/0
+ ip address 10.2.1.1 255.255.255.0
+interface GigabitEthernet2/0/0.0
+ no shutdown
+ mpls ip
+ mpls ldp
+ mpls traffic-eng bandwidth 20000
+ mpls traffic-eng passive-interface
+interface LoopBack1
+ ip address 2.2.2.2 255.255.255.255
+interface Tunnel1
+ tunnel key 100
+ isis metric 1 level-1
+interface Tunnel.1
+ ip unnumbered LoopBack1
+ tunnel mode mpls te
+ tunnel destination 4.4.4.4
+interface Tunnel1.0
+ mpls traffic-eng bandwidth 10000
+interface Tunnel1.1
+ mpls l2transport route 1.1.1.9 1
+ mpls af2
+interface Tunnel2
+ tunnel key 200
+ isis metric 1 none
+ ip address 2.2.2.2 0.0.0.0
+ ip address 10.1.1.0 255.255.255.0
+ ip address 10.2.1.0 0.0.0.255
+interface Tunnel.2
+ ip unnumbered Loopback1
+ mpls traffic-eng bandwidth 10000
+ mpls l2transport route 1.1.1.1 1
+interface Tunnel2.None
+ tunnel mode mpls te
+ tunnel destination 4.4.4.4
+ mpls default
+router ospf 1
+ passive-interface default
+ mpls traffic-eng area 0
+ mpls traffic-eng area
+interface 1.0.0.0.0
+ ospfv3 1 ipv6 area 0.0.0.0
+redundancy

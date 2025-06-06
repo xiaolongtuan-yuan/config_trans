@@ -1,0 +1,53 @@
+hostname PE1
+network 1.1.1.1 0.0.0.0 area 0
+passive-interface loopback0
+network 10.10.1.0 0.0.0.255 area 0
+ router ospf 1
+router ospf 1
+ router ospf 1
+  passive-interface Loopback0
+network 0.0.0.0 0.0.0.0 area 0
+router ospf none
+mpls ldp igp sync
+mpls ldp advertise-labels interface GigabitEthernet1/0/0.1
+mpls ldp advertise-labels interface GigabitEthernet2/0/0
+mpls ldp advertise-labels interface Loopback0
+mpls ldp discovery transport-address GigabitEthernet1/0/0.1
+mpls ldp discovery transport-address GigabitEthernet2/0/0
+mpls ldp router-id 1.1.1.1
+route-target import 100:2
+router isis
+route-target import 100:1
+interface GigabitEthernet1/0/0
+ no shutdown
+ tag-switching ip
+ interface GigabitEthernet1/0/0.0
+ switchport trunk allowed vlan 10
+ switchport mode trunk
+ interface GigabitEthernet1/0/0.10
+ encapsulation dot1q 10
+ xconnect 1.1.1.1 10 encapsulation mpls
+ encapsulation dot1Q 10
+ mpls ip
+ ip address 1.1.1.1 255.255.255.255
+interface 1/0/0.10
+ switchport access vlan 10
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.10.1.1 255.255.255.0
+aaa authentication login vpls group vpls local
+redistribute bgp
+aaa authentication login vpls group l2vpn local
+ router bgp <AS_NUMBER>
+ neighbor <NEIGHBOR_IP> send-community both
+ address-family l2vpn vpls
+ neighbor <NEIGHBOR_IP> activate
+neighbor vpls update-source Loopback0
+ router bgp <AS_NUMBER>
+router bgp <AS_NUMBER>
+ router bgp <AS_NUMBER>
+  neighbor vpls update-source Loopback0
+router bgp 600
+ address-family ipv4
+  neighbor none route-map p1 none
+route-map p1 permit 10

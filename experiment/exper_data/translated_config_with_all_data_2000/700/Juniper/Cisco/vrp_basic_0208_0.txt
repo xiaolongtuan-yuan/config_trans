@@ -1,0 +1,37 @@
+hostname SSH-Server
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.0.0
+ip ssh version 2
+ip ssh authentication-retries 5
+ip ssh maxsessions 10
+no ip ssh server algorithm encryption aes128-cbc  # Implicit in Juniper's v2-only setting
+line vty 0 15
+ transport input ssh
+ login local
+ip ssh server v2
+ip ssh authentication-retries 3
+ip ssh authentication-retries 10
+ip ssh time-out 5
+username client001
+ hostname SSH-Server
+ ip ssh version 2
+ ip ssh authentication-retries 5
+ ip ssh maxstartups 10
+ no ip ssh server algorithm mac hmac-md5
+ line vty 0 4
+ transport input ssh
+ login local
+aaa authentication login default none
+username client002
+ hostname SSH-Server
+ ip ssh version 2
+ ip ssh maxstartups 10
+ ip ssh time-out 60
+ ip ssh authentication-retries 5
+ no ip ssh server algorithm mac hmac-md5
+ username client001 privilege 15 secret 5 $ABC123
+ username client002 privilege 15 secret 5 $XYZ456
+tunnel protection ipsec profile IP_SEC_PROFILE
+tunnel protection ipsec profile IPSEC_PROFILE
+crypto ipsec transform-set TRANSFORM_SET esp-aes esp-sha-hmac

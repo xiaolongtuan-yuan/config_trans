@@ -1,0 +1,19 @@
+set system host-name CGN2
+set system license ipbasek9
+set security nat destination pool NAT_ACL address NAT_ACL/32
+set security nat destination pool NAT_ACL address 192.168.10.0/24 set firewall filter NAT_ACL term 1 from source-address 192.168.10.0/24
+set security nat destination pool NAT_ACL address 192.168.10.0/24 set firewall filter NAT_ACL term 1 then accept
+set services nat pool pool1 address 11.11.11.106/24 to 11.11.11.110/24
+set security nat source pool pool1
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.10.1/24
+set interfaces ge-2/0/0 unit 0 family inet address inside/255.255.255.0
+interfaces ge-2/0/0.0
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 11.11.11.1/24
+set interfaces ge-1/0/0 unit 0 family inet address outside/24
+interfaces ge-1/0/0
+set routing-options static route 0.0.0.0/0 next-hop gigabit-ethernet-1/0/0
+set protocols isis export REDIST-CONNECTED

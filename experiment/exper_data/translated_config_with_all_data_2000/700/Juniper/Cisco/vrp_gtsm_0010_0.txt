@@ -1,0 +1,25 @@
+hostname DeviceA
+ip route 1.1.1.1 255.255.255.255 none
+router ospf 1
+ ip ospf authentication message-digest
+  network 192.168.0.0 0.0.0.255 area 0
+  interface GigabitEthernet0/0/0
+   ip ospf message-digest-key 1 md5 h3llow0rld
+  network 192.168.1.0 0.0.0.255 area 1
+  interface GigabitEthernet0/1
+  ip ospf message-digest-key 1 md5 h3llow0rld
+ interface GigabitEthernet0/0/0.0
+ ip ospf message-digest-key 1 md5 H3LloW0rld
+ interface GigabitEthernet0/0/1.0
+network 192.168.0.0 0.0.0.255 area 0
+ip ospf authentication message-digest
+ip ospf message-digest-key 1 md5 h3llow0rld
+ interface GigabitEthernet0/0/0
+network 192.168.1.0 0.0.0.255 area 1
+interface GigabitEthernet0/0/1
+ no shutdown
+ ip address 192.168.1.1 255.255.255.0
+ip rsvp bandwidth 10000000
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 192.168.0.1 255.255.255.0

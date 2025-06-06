@@ -1,0 +1,26 @@
+hostname U-PE1
+ip address 192.168.1.1 255.255.255.0
+ interface GigabitEthernet1/0/0
+ mpls ip
+interface GigabitEthernet1/0/0
+ interface GigabitEthernet1/0/0
+  ip address 192.168.1.1 255.255.255.0
+ mpls ip
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ mpls ip
+interface lo0
+ no shutdown
+ ip address 1.1.1.9 255.255.255.255
+network 0.0.0.0 0.0.0.0 area 0
+interface Loopback0
+mpls ldp advertise-labels interface GigabitEthernet1/0/0
+mpls ldp advertise-labels interface GigabitEthernet2/0/0
+mpls ldp discovery transport-address GigabitEthernet1/0/0
+mpls ldp discovery transport-address GigabitEthernet2/0/0
+mpls ldp discovery transport-address 1.1.1.9
+neighbor 3.3.3.9 remote-as 100
+network none none area 0
+neighbor 3.3.3.9 remote-as ethernet
+neighbor 3.3.3.9 remote-as none

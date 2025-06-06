@@ -1,0 +1,21 @@
+hostname CE2
+vlan 2
+ssh version 2
+ethernet cfm
+interface GigabitEthernet1/0/1
+ switchport
+ switchport mode access
+ switchport trunk allowed vlan 2
+ switchport access vlan 2
+interface GigabitEthernet1/0/1.1
+ no shutdown
+ ethernet cfm mep domain md3 service ma3 4 inward
+ ethernet cfm mep domain md3 service ma3 3 inward
+interface GigabitEthernet1/0/1.4
+ ethernet cfm mep domain md3 service ma3 4 outward
+ ethernet cfm mep domain md3 service ma3 mpid 4 direction outward
+interface md3.ma3
+ ethernet cfm mep domain md3 service ma3 4 inward
+router ospf 1
+ mpls traffic-eng area 1000
+redundancy

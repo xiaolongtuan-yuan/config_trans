@@ -1,0 +1,17 @@
+hostname LSRB
+router isis 1
+ address-family vpnv4
+  redistribute ldp
+router isis
+ is-type level-1
+ metric-style wide
+ interface Loopback0
+ passive-interface lo0
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.2.2 255.255.255.0
+ ip address 10.10.3.1 255.255.255.255
+mpls ldp advertise-labels interface GigabitEthernet1/0/0
+mpls ldp discovery transport-address GigabitEthernet1/0/0
+interface loopback0
+ no shutdown

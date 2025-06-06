@@ -1,0 +1,22 @@
+sysname P
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 172.21.1.2 255.255.255.0
+ ip address 2.2.2.9 255.255.255.255
+interface ge-1/0/0.0
+ mpls l2vc pw-template 1to3 100
+mpls rsvp-te
+mpls label protocol ldp
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 172.22.1.1 255.255.255.0
+interface ge-2/0/0.0
+ mpls l2vc pw-template none 0
+router id 2.2.2.9
+ospfv3 0
+ area 0
+ospf 1 router-id 0.0.0.0
+ area 0
+  network none 0.0.0.255
+  network 0.0.0.0 ge-1/0/0
+  network 0.0.0.0 ge-2/0/0.0

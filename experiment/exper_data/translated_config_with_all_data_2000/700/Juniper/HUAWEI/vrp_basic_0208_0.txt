@@ -1,0 +1,53 @@
+sysname SSH-Server
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.0.0
+stelnet server enable
+ssh server protocol-version 2
+ssh server authentication-retries 5
+ssh server rekey interval 60
+ssh server timeout 60
+ssh authorization-type default password
+ssh user client001 authentication-type password
+ssh user client001 service-type stelnet
+ssh user client002 authentication-type password
+ssh user client002 service-type stelnet
+ssh server max-sessions 10
+ssh server version 2
+ssh authentication-type default deny
+ssh server-source -i loopback 10
+ssh server port 5
+user-group client001
+ ssh server protocol v2
+user-group operator
+ sysname SSH-Server
+ 
+ interface GigabitEthernet0/0/0
+ ip address 10.1.1.1 255.255.0.0
+ ssh authentication-type default password
+ ssh user client001 authentication-type password
+ ssh user client001 service-type stelnet
+ ssh user client001 password cipher ABC123
+ ssh authorization-type default none
+ ssh server-source -i GigabitEthernet0/0/0
+ ssh server max-sessions 10
+ ssh server rekey interval 60
+ acl 2000
+ rule permit source 0.0.0.0 0
+ user-interface vty 0 4
+ acl 2000 inbound
+ authentication-mode aaa
+ protocol inbound ssh
+ local-user client001 class manage
+ local-user client001 password cipher ABC123
+ local-user client001 service-type ssh
+ local-user client001 privilege level 3
+ local-user client002 class manage
+ local-user client002 password cipher XYZ456
+ local-user client002 service-type ssh
+ local-user client002 privilege level 3
+user-group grp1
+user-group client002
+aaa
+ipsec policy untrust 1 isakmp
+ipsec policy IPSEC_PROFILE 10 isakmp

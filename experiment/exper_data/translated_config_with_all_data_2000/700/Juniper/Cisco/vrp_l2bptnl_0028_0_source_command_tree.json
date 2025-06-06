@@ -1,0 +1,108 @@
+{
+    "set system host-name CE1": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name CE1",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment is used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set vlans vlan-100": {
+        "template": "set vlans [parameter1]",
+        "command": "set vlans vlan-100",
+        "explanation": "Configure VLAN.",
+        "parameters": [
+            {
+                "name": "vlan-name",
+                "type": "string",
+                "explanation": "VLAN's name, like Vlan100."
+            }
+        ],
+        "vlan-id 100": {
+            "template": "vlan-id [parameter2]",
+            "command": "vlan-id 100",
+            "explanation": "Configure VLAN's ID.",
+            "parameters": [
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN's ID number, for the sole identification of a VLAN."
+                }
+            ]
+        }
+    },
+    "set protocols stp bridge-priority 8": {
+        "template": "set protocols stp bridge-priority [parameter1]",
+        "command": "set protocols stp bridge-priority 8",
+        "explanation": "The command sets the Spanning Tree Protocol (STP) bridge priority to `[parameter1]`, influencing root bridge election in the network.",
+        "parameters": [
+            {
+                "name": "bridge-priority",
+                "type": "integer",
+                "explanation": "The higher the value of the STP Bridge, the smaller the priority."
+            }
+        ],
+        "vlan vlan-100": {
+            "template": "vlan [parameter2]",
+            "command": "vlan vlan-100",
+            "explanation": "Configure the STP bridge priority and associated VLAN.",
+            "parameters": [
+                {
+                    "name": "vlan",
+                    "type": "string",
+                    "explanation": "Associated VLAN name."
+                }
+            ]
+        }
+    },
+    "set interfaces ge-0/0/1": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-0/0/1",
+        "explanation": "Configure the specified interface",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0 family ethernet-switching port-mode trunk": {
+            "template": "unit [parameter2] family ethernet-switching port-mode [parameter3]",
+            "command": "unit 0 family ethernet-switching port-mode trunk",
+            "explanation": "Configures the interface with trunk exchange mode.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "port-mode",
+                    "type": "string",
+                    "explanation": "Port mode for interfaces, such as trunk."
+                }
+            ]
+        },
+        "unit 0 family ethernet-switching vlan members vlan-100": {
+            "template": "unit [parameter2] family ethernet-switching vlan members [parameter3]",
+            "command": "unit 0 family ethernet-switching vlan members vlan-100",
+            "explanation": "Configure the VLAN members of the interface.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "vlan-members",
+                    "type": "string",
+                    "explanation": "VLAN members of interfaces, such as Vlan-100."
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,21 @@
+hostname CE1
+!
+vlan 2
+!
+interface GigabitEthernet1/0/1
+ no shutdown
+ switchport trunk allowed vlan 2
+ switchport mode trunk
+!
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+!
+ip sla 1
+ ethernet jitter dest-mac 0000.0000.0002 vlan 2
+  frequency 10
+!
+track 1 ip sla 1 reachability
+!
+ip sla schedule 1 start-time now
+!
+end

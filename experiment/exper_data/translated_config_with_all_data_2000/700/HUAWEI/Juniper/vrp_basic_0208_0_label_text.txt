@@ -1,0 +1,23 @@
+set system host-name SSH-Server
+
+# Interface Configuration
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.1/16
+
+# SSH Service Configuration
+set system services ssh
+set system services ssh protocol-version v2
+set system services ssh root-login deny
+set system services ssh connection-limit 10
+set system services ssh rate-limit 5
+
+# User Authentication Configuration
+set system login user client001 class operator
+set system login user client001 authentication encrypted-password "$ABC123"  # Replace with encrypted password
+set system login user client001 authentication ssh-rsa "ssh-rsa AAAAB3..."  # Optional: Add SSH public key
+
+set system login user client002 class operator
+set system login user client002 authentication encrypted-password "$XYZ456"  # Replace with encrypted password
+
+# Security Zone Configuration
+set security zones security-zone untrust interfaces ge-0/0/0.0
+set security zones security-zone untrust host-inbound-traffic system-services ssh

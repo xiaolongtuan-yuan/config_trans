@@ -1,0 +1,38 @@
+sysname PE1
+interface GigabitEthernet1/0/1
+ undo shutdown
+ vlan-type dot1q 2
+ ip address 10.1.1.1 255.255.255.0
+interface ge-1/0/1.1
+interface ge-1/0/2.0
+ip address 2.2.2.2 255.255.255.255
+ interface LoopBack0
+interface LoopBack0
+ interface LoopBack0
+  ip address 2.2.2.2 255.255.255.255
+ospfv3 1
+ area 0.0.0.0
+ospf 1 router-id 0.0.0.0
+ area 0.0.0.0
+  network 0.0.0.0 255.255.255.255
+  network 0.0.0.0 ge-1/0/2.0
+mpls label protocol ldp
+router id 2.2.2.2
+vlan 2
+interface vlan-ccc-instance-2.2
+ vlan-type ccc 2
+ospf 1 router-id 192.168.1.1
+ area 0.0.0.0
+  network 192.168.1.0 0.0.0.255
+  network none ge-1/0/1.1
+bridge-domain 1
+interface bd1.0
+ vlan-type none none
+cfm md md1
+ ma ma1
+  loss-measure 1s single-ended test-id receive
+  mep mep-id 1 interface GigabitEthernet1/0/1.1 inward
+cfm md md1 level 0
+ ma md1
+  ais level 0
+cfm md ma1 level 7

@@ -1,0 +1,35 @@
+set system host-name Router
+set system license-key autoupdate
+set interfaces irb unit 1
+set access radius-server rd4 accounting-vsa
+set access radius-server 192.168.7.249 authentication-port 1645
+set access radius-server 192.168.7.249 secret $ABC123
+set access radius-server 192.168.7.249 accounting-port 1646
+set access radius-server 192.168.7.249 secret %^%#`E)v.Q@BHVzxxZ;ij{>&_M0!TGP7YRA@8a7mq<\/%^%#
+set access radius-server 192.168.7.249 port 1812
+set access radius-server 192.168.7.249 accounting-vsa
+set access radius-server plus11 none
+set interfaces ge-1/0/2.1 disable
+set interfaces ge-1/0/2.1 unit 1 vlan-id 100
+set interfaces ge-1/0/2.1 unit 0 family inet address none vrrp-group 1 priority 100
+set interfaces ge-1/0/2.1 .dot1x unit 0 family inet interface-mode access
+interfaces ge-1/0/2.1
+set access address-assignment pool pool4 family inet range range1 low 10.82.1.2 high 10.82.1.200
+set access address-assignment pool pool4 family inet range 10.82.1.2 to 10.82.1.200
+set access address-assignment pool pool4 family inet dns-server 192.168.7.252
+set system services dhcp pool pool4 router 10.82.1.1
+set system services dhcp pool pool4 network 10.82.1.0/255.255.255.0
+set protocols l2vpn site PE1 site-identifier 4
+set protocols bfd template btoa min-transmit-interval 20 min-receive-interval 20
+set protocols bfd template btoa min-transmit-interval 15 min-receive-interval 1800
+set protocols bfd template 20 min-transmit-interval 20 min-receive-interval 20
+set protocols bfd template 4 min-transmit-interval 15 min-receive-interval 20
+delete set protocols isis level 1
+interfaces auth4
+set protocols oam ethernet connectivity-fault-management maintenance-association acct4 vlan acct4
+set protocols oam ethernet connectivity-fault-management maintenance-association acct4 vlan pool4
+set protocols oam ethernet connectivity-fault-management maintenance-association isp4 md isp4
+interfaces ge-0/0/0.0
+set access radius-server rd4 none
+set protocols l2vpn site 4 site-identifier 4
+set class-of-service rewrite-rules dscp EF-REWRITE forwarding-class best-effort loss-priority low code-point 0

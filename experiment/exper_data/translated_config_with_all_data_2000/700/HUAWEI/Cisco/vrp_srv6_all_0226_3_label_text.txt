@@ -1,0 +1,28 @@
+hostname Tail
+
+! 
+mpls ip
+!
+
+! 
+vrf definition vpna
+ rd 500:1
+ address-family ipv4
+  route-target export 111:1
+  route-target import 111:1
+ exit-address-family
+!
+
+! 
+interface GigabitEthernet2/0/0
+ vrf forwarding vpna
+ ip address 10.5.1.2 255.255.255.252
+!
+
+! 
+router isis
+ net 49.0000.0000.0004.00
+ is-type level-1
+ metric-style wide
+!
+end

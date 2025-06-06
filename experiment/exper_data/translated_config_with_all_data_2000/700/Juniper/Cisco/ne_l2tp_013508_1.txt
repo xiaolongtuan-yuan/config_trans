@@ -1,0 +1,34 @@
+hostname Device
+l2tp enable
+aaa authorization network default group radius
+aaa authorization network radius-profile group rd5 local
+aaa authentication login radius-profile radius
+radius-server host none auth-port none acct-port 1813
+interface Loopback0
+ no shutdown
+ ip address 192.168.10.1 255.255.255.255
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.11.11.1 255.255.255.0
+interface Vt1/0/0
+ no shutdown
+interface Vlan1
+ interface Loopback0
+ ip address 192.168.10.1 255.255.255.255
+ interface GigabitEthernet1/0/0
+ ip address 10.11.11.1 255.255.255.0
+ interface Virtual-Template1
+ ip unnumbered Loopback0
+network 0.0.0.0 0.0.0.0 area 0
+ router ospf 1
+ passive-interface Loopback0
+ router ospf 1 ; passive-interface Loopback0
+ipv6 dhcp pool bas
+ ip local pool bas 192.168.0.10 192.168.0.100
+ address prefix 192.168.0.100 lifetime infinite range1
+ipv6 pim rp-address 2001:db8:6::3
+l2tp tunnel authentication
+ip ftp password $9$<password>
+ptp local-ip 192.168.10.1
+l2vpn bridge-group LNS
+radius-server vsa send accounting

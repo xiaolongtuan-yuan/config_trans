@@ -1,0 +1,16 @@
+set system host-name LSRC
+set system host-name CE1
+set interfaces ge-1/0/0 unit 0 family mpls
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.2.1.2/30
+set interfaces ge-0/0/0 unit 0 family mpls
+set interfaces ge-0/0/0 unit 1 family mpls
+set protocols igmp static group 224.0.0.0
+set protocols igmp static-group 225.1.1.1
+set interfaces lo0.1 disable
+set interfaces lo0.1 unit 0 family inet address 3.3.3.9/32
+set protocols ospf area 0.0.0.0 interface 0.0.0.0
+set protocols ospf area 0.0.0.0 interface gr-0/0/0.0
+set protocols ospf area 0.0.0.0 interface 10.2.1.0/30
+set class-of-service rewrite-rules dscp EF-REWRITE forwarding-class EF loss-priority low code-point 46

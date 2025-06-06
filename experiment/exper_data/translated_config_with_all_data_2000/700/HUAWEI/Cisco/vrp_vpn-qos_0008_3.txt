@@ -1,0 +1,50 @@
+hostname PE2
+ethernet cfm ma ma1 md md1
+interface GigabitEthernet1/0/1.1
+ mpls ip
+ mpls ldp
+ mpls traffic-eng passive-interface
+ mpls ldp ipv4
+ ip address 1.1.1.9 255.255.255.0
+ ip ospf 1 area 0
+ ospfv3 1 ipv6 area 0.0.0.0
+mpls ip
+mpls ldp remote-peer none none
+interface GigabitEthernet1/0/0
+ ip address 10.2.2.1 255.255.255.0
+ mpls traffic-eng bandwidth sub-pool 4000
+interface GigabitEthernet1/0/0.0
+ no shutdown
+ mpls ip
+ mpls ldp
+ mpls traffic-eng bandwidth 5000
+ mpls traffic-eng passive-interface
+interface GigabitEthernet2/0/0
+interface GigabitEthernet2/0/0.0
+ no shutdown
+interface GigabitEthernet2/0/0.1
+ encapsulation dot1q 20
+ mpls l2transport route 1.1.1.9 101 pw-class policy1
+ ip rsvp bandwidth 3000 3000
+interface LoopBack1
+ ip address 3.3.3.9 255.255.255.255
+interface Tunnel10
+ tunnel mode mpls traffic-eng
+ mpls traffic-eng signalling rsvp
+ mpls traffic-eng bandwidth 0 2000
+ tunnel key 101
+ ip address 3.3.3.9 0.0.0.0
+ ip address 10.2.2.0 0.0.0.255
+interface Tunnel10.10
+ ip unnumbered Loopback1
+interface Tunnel10.None
+ tunnel destination 1.1.1.9
+router ospfv3 1
+ bfd all-interfaces enable
+router ospf 1
+ mpls traffic-eng enable
+policy-map policy1
+ class policy1
+  service-policy policy1
+  set precedence 1
+redundancy

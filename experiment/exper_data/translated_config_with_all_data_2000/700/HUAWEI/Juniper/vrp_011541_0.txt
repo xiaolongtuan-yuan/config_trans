@@ -1,0 +1,21 @@
+set system host-name CE1
+set vlans vlan2 vlan-id 2
+set protocols oam cfm version 0
+set ethernet-switching-options cfm version standard
+set interfaces ge-1/0/1 disable
+set interfaces ge-1/0/1 unit 0 family ethernet-switching port-mode trunk
+set interfaces ge-1/0/1 unit 0 disable
+set interfaces ge-1/0/1 unit 1 family ethernet-switching vlan members 2
+set interfaces ge-1/0/1 unit 0 family inet service input policy-p1
+set interfaces ge-1/0/1 unit 0 family inet service input ma3
+set interfaces ge-1/0/1 unit 1 vlan-id 2
+set interfaces ge-1/0/1 unit 1 vlan-id 3
+set interfaces ge-1/0/1 unit 3 description outward
+set interfaces ge-1/0/1 unit 1 encapsulation vlan-ccc vlan-id 3
+set interfaces ge-1/0/1 unit 0 family inet address none vrrp-group enable priority none
+set interfaces ge-1/0/1 .none unit none vlan-id 4
+set interfaces ge-1/0/1 unit 1 vlan-id 4
+set interfaces ge-1/0/1 unit 1 vlan-id 1
+set interfaces ge-1/0/1 unit continual encapsulation vlan-id dual-ended
+set interfaces ge-1/0/1 vlan-id 1
+set class-of-service rewrite-rules dscp EF-REWRITE forwarding-class best-effort loss-priority low code-point 0

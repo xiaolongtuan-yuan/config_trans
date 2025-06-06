@@ -1,0 +1,29 @@
+set system host-name PE2
+
+set interfaces lo0 unit 0 family inet address 4.4.4.4/32
+set interfaces ge-0/0/0 flexible-vlan-tagging
+set interfaces ge-0/0/0 encapsulation flexible-ethernet-services
+set interfaces ge-0/0/0 unit 10 encapsulation vlan-bridge
+set interfaces ge-0/0/0 unit 10 vlan-id 10
+set interfaces ge-0/0/0 unit 10 family bridge interface-mode trunk
+
+set interfaces ge-0/0/2 unit 0 family inet address 10.10.3.4/24
+set interfaces ge-0/0/2 mtu 1500
+
+set protocols ospf area 0.0.0.0 interface ge-0/0/2.0
+
+set protocols mpls interface ge-0/0/2.0
+set protocols ldp interface ge-0/0/2.0                 
+set protocols ldp router-id 4.4.4.4
+
+set protocols bgp group evpn local-address 4.4.4.4
+set protocols bgp group evpn family evpn signaling
+set protocols bgp group evpn peer-as 200
+set protocols bgp group evpn neighbor 3.3.3.3
+set protocols bgp group evpn family inet-vpn unicast
+set protocols bgp group evpn export advertise-community
+
+set routing-instances v1 interface ge-0/0/0.10
+set routing-instances v1 route-distinguisher 10.10.3.4:1
+set routing-instances v1 vrf-target target:100:1
+set routing-instances v1 protocols evpn encapsulation vxlan

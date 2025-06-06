@@ -1,0 +1,41 @@
+hostname Hub1
+route-map 2000 permit 10
+ match tag 2000
+route-map 2000 permit 5
+route-map 2001 permit 10
+ match tag 2001
+route-map 0.0.0.255 permit 5
+route-map 0.0.0.255 permit 10
+route-map 1 permit 1
+track 2000 interface none line-protocol
+route-map 2 permit 2
+track 1 interface GigabitEthernet1/0/1 line-protocol
+interface GigabitEthernet1/0/0
+ ip address 10.1.1.10 255.255.255.0
+interface GigabitEthernet1/0/0.gre
+ tunnel mode gre
+interface LoopBack0
+ ip address 192.168.0.1 255.255.255.255
+interface Tunnel0
+ ip address 172.16.1.1 255.255.255.0
+ tunnel source GigabitEthernet1/0/0
+ isis network point-to-multipoint
+ tunnel protection ipsec profile <profile-name>
+ ip address 172.16.1.0 255.255.255.0
+ ip address 10.1.1.0 0.0.0.255
+ ip address 192.168.0.0 255.255.255.0
+interface Tunnel.0
+ tunnel mode gre p2mp
+ tunnel mode gre multipoint
+router ospf 1
+ redistribute ospf 3 subnets route-map 1
+interface gre.1
+ ospfv3 1 ipv6 area 0.0.0.0
+router ospf 2
+interface gre.2
+ ospfv3 2 ipv6 area 0.0.0.1
+router ospf 3
+ redistribute ospf 1 subnets route-map 2
+interface gre.3
+ ospfv3 3 ipv6 area 0.0.0.0
+redundancy

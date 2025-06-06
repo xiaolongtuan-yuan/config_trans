@@ -1,0 +1,29 @@
+set system host-name PE2
+set protocols ospf area 0.0.0.1 interface gr-0/0/0.0
+set protocols ospf area 0 interface lo0.0
+set protocols ospf area 0.0.0.0 interface gr-0/0/0.0
+set protocols l2vpn vsi v1 l2vpn-id 1
+set interfaces ge-1/0/0.1 unit 1 disable
+set interfaces ge-1/0/0.1 disable
+set interfaces ge-1/0/0.1 encapsulation dot1q 10
+set interfaces ge-1/0/0.1 set interfaces ge-1/0/0.1 encapsulation vlan-vpls
+set interfaces ge-1/0/0.1 set interfaces ge-1/0/0.1 vlan-id 10
+set interfaces ge-1/0/0.1 set interfaces ge-1/0/0.1 family vpls
+set interfaces ge-1/0/0.1 set protocols vpls interface ge-1/0/0.1 vpls-id 1001
+set interfaces ge-1/0/0.1 set protocols vpls interface ge-1/0/0.1 neighbor 3.3.3.3
+set interfaces ge-1/0/0.1 unit 0 tunnel destination 192.168.1.1
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 10.10.3.4/24
+set interfaces ge-2/0/0 unit 0 family inet mpls
+set interfaces ge-2/0/0 unit 0 family mpls
+interfaces ge-2/0/0.0
+set interfaces lo0.1 unit 1 disable
+set interfaces lo0.1 disable
+set interfaces lo0.1 unit 0 family inet address 4.4.4.4/32
+set routing-options autonomous-system 200
+set protocols bgp group IBGP type internal
+set protocols bgp group IBGP neighbor 3.3.3.3 peer-as 200
+set protocols bgp group IBGP export BGP-200
+set protocols bgp local-as 200 set protocols bgp group <group-name> neighbor 3.3.3.3 family inet-vpn unicast
+set protocols isis export REDIST-CONNECTED

@@ -1,0 +1,20 @@
+sysname CE1
+interface GigabitEthernet1/0/1
+ undo shutdown
+ multicast user-aggregation vlan 81
+ vlan-type dot1q 1
+ ip address 192.168.1.2 255.255.255.0
+ ip address 172.16.1.2 255.255.255.0
+bgp 65410
+ import-route direct
+ ipv4-family unicast
+  peer none route-policy IMPORT-DIRECT export
+ peer 10.1.1.2 enable
+ confederation peer-as 100 none
+ network 192.168.1.1 0.0.0.0
+ network 172.16.1.1 0.0.0.0
+router id 192.168.1.2
+ospf 1 router-id 192.168.1.2
+traffic-policy IMPORT-DIRECT inbound
+traffic policy 1
+user-group EBGP

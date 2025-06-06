@@ -1,0 +1,33 @@
+hostname CE1
+!
+vlan 2
+!
+! 启用CFM全局功能（Cisco标准语法）
+ethernet cfm global
+!
+! 接口配置
+interface GigabitEthernet1/0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 2
+ no shutdown
+!
+! 定义CFM域和服务（Level 3对应华为的md3）
+ethernet cfm domain md3 level 3
+!
+ethernet cfm service ma3 vlan 2
+!
+! MEP配置（Maintenance End Point）
+ethernet cfm mep 3 domain md3 service ma3
+ ethernet cfm mep 3 domain md3 service ma3 inward
+ ethernet cfm mep 3 domain md3 service ma3 continuity-check
+!
+! 远程MEP配置
+ethernet cfm mep crosscheck
+ ethernet cfm mep crosscheck start-delay 30
+ ethernet cfm mep remote 4 domain md3 service ma3
+!
+! 性能监测配置
+ethernet cfm loss-measurement
+
+!
+end

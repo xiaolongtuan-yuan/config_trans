@@ -1,0 +1,77 @@
+{
+    "command_accuracy": 0.2857142857142857,
+    "missed_commands": [
+        "set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.1/16",
+        "set system services ssh connection-limit 10",
+        "set system services ssh rate-limit 5",
+        "set system services ssh protocol-version v2",
+        "set system services ssh root-login deny",
+        "set system services ssh connection-limit 10",
+        "set system services ssh rate-limit 5",
+        "set system login user client001 class operator",
+        "set system login user client002 class operator",
+        "set system login user client001 authentication encrypted-password \"$abc123\"  # replace with encrypted password",
+        "set system login user client002 authentication encrypted-password \"$xyz456\"  # replace with encrypted password",
+        "set system login user client001 authentication ssh-rsa \"ssh-rsa aaaab3...\"  # optional: add ssh public key",
+        "set system login user client001 authentication encrypted-password \"$abc123\"  # replace with encrypted password",
+        "set system login user client002 authentication encrypted-password \"$xyz456\"  # replace with encrypted password",
+        "set security zones security-zone untrust interfaces ge-0/0/0.0",
+        "set security zones security-zone untrust host-inbound-traffic system-services ssh",
+        "set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.1/16",
+        "set system services ssh connection-limit 10",
+        "set system services ssh rate-limit 5",
+        "set system login user client001 class operator",
+        "set system login user client001 authentication encrypted-password \"$abc123\"  # replace with encrypted password",
+        "set system login user client001 authentication ssh-rsa \"ssh-rsa aaaab3...\"  # optional: add ssh public key",
+        "set system login user client002 class operator",
+        "set system login user client002 authentication encrypted-password \"$xyz456\"  # replace with encrypted password",
+        "set security zones security-zone untrust interfaces ge-0/0/0.0",
+        "set security zones security-zone untrust host-inbound-traffic system-services ssh"
+    ],
+    "grammatical_accuracy": 0.21428571428571427,
+    "missed_templates": [
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+        "set system services ssh protocol-version [parameter1]",
+        "set system services ssh root-login [parameter1]",
+        "set system services ssh rate-limit [parameter1]",
+        "set system login user [parameter1] class [parameter2]",
+        "set system login user [parameter1] authentication encrypted-password [parameter2]",
+        "set system login user [username] authentication ssh-rsa [ssh_key]",
+        "set system login user [username] authentication encrypted-password [encrypted-password]",
+        "set security zones security-zone [parameter1] interfaces [parameter2]",
+        "set security zones security-zone [parameter1] host-inbound-traffic system-services [parameter2]"
+    ],
+    "llm_command_accuracy": 0.0,
+    "llm_command_ratio": 0.09090909090909091,
+    "command_for_llm": [
+        "system-view"
+    ],
+    "llm_trans_commands": [
+        "edit"
+    ],
+    "source_commands": [
+        "local-user client001 service-type ssh",
+        "ssh server-source -i GigabitEthernet0/0/0",
+        "interface GigabitEthernet0/0/0",
+        "ssh user client001 authentication-type password",
+        "sysname SSH_Server",
+        "stelnet server enable",
+        "local-user client001 password irreversible-cipher @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%",
+        "aaa",
+        "2048",
+        "ssh user client002 authentication-type password",
+        "protocol inbound ssh",
+        "local-user client002 password irreversible-cipher <password_for_client002>",
+        "authentication-mode aaa",
+        "rsa local-key-pair create",
+        "user privilege level 3",
+        "user-interface vty 0 4",
+        "local-user client002 privilege level 3",
+        "local-user client002 service-type ssh",
+        "system-view",
+        "local-user client001 privilege level 3"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

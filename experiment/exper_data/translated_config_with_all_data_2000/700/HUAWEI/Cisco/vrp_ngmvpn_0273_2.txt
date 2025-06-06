@@ -1,0 +1,41 @@
+hostname ASBR1
+ethernet cfm ma ma1 md md1
+interface GigabitEthernet1/0/1.1
+ mpls ip
+ mpls ldp
+ ip ospf 1 area 0
+ ospfv3 1 ipv6 area 0.0.0.0
+mpls ldp address-family
+interface GigabitEthernet1/0/2
+ ip address 10.0.7.5 255.255.255.0
+interface GigabitEthernet1/0/2.0
+ no shutdown
+interface GigabitEthernet1/0/2.None
+ mpls ip
+ mpls ldp
+interface GigabitEthernet1/0/4
+ ip address 10.0.2.5 255.255.255.0
+interface GigabitEthernet1/0/4.None
+ no shutdown
+ mpls ip
+interface GigabitEthernet1/0/4.0
+ mpls ldp
+interface LoopBack0
+ ip address 1.1.1.2 255.255.255.255
+ ip address 10.0.2.0 0.0.0.255
+ ip address 1.1.1.2 0.0.0.0
+ ip address 10.0.7.7 255.255.255.255
+router bgp 100
+ neighbor 10.0.7.7 remote-as 200
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 update-source LoopBack0
+ address-family ipv4 unicast
+ no synchronization
+ neighbor 10.0.7.7 remote-as 100
+ address-family vpnv6 multicast
+ address-family ipv6 vrf none
+ address-family ipv6 unicast
+ address-family ipv6 vrf vpnv6
+neighbor 10.0.7.7 remote-as 200
+neighbor 1.1.1.1 remote-as 100
+redundancy

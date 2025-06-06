@@ -1,0 +1,22 @@
+sysname CE1
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ ip address 11.11.11.11 255.255.255.255
+user-group external
+ bgp 100
+ peer 10.1.1.2 as-number 100
+bgp 600
+ import-route direct
+ ipv4-family unicast
+  undo synchronization
+  peer none route-policy EXPORT_DIRECT export
+ peer accept enable
+bgp 100
+ peer 10.1.1.2 as-number 100
+ ipv4-family unicast
+  peer 10.1.1.2 next-hop-local
+traffic-policy EXPORT_DIRECT inbound
+tunnel-policy direct
+ip route-static 11.11.11.11 255.255.255.255 NULL0 0.0.0.0
+ip route-static 11.11.11.11 255.255.255.255 reject

@@ -1,0 +1,17 @@
+hostname DeviceD
+interface GigabitEthernet3/0/1
+ ip address 1.1.2.2 255.255.255.0
+interface GigabitEthernet3/0/1.None
+ no shutdown
+interface GigabitEthernet3/0/2
+ ip address 1.1.4.1 255.255.255.0
+interface GigabitEthernet3/0/2.None
+ no shutdown
+router bgp 200
+ neighbor 1.1.2.1 remote-as 200
+ neighbor 1.1.4.2 remote-as 100
+ address-family ipv4 unicast
+ no synchronization
+ neighbor 1.1.4.2 remote-as 200
+neighbor 1.1.2.1 remote-as 200
+neighbor 1.1.4.2 remote-as 100

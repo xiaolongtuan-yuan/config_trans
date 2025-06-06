@@ -1,0 +1,46 @@
+hostname PE2
+ethernet cfm global
+ethernet cfm domain standard level 7
+ethernet cfm
+mpls ldp router-id Loopback0
+interface GigabitEthernet1/0/1.1
+ mpls ip
+ mpls ldp
+ encapsulation dot1q 2
+ l2vpn xconnect context ldp1
+ xconnect 2.2.2.2 1 encapsulation mpls
+mpls ldp remote-peer none none
+l2vpn vfi context ldp1
+ mpls l2vpn signaling protocol ldp
+  vpn id 1
+  neighbor 2.2.2.2
+ l2 vfi VFI_NAME manual
+ neighbor 2.2.2.2 encapsulation mpls
+  vpn id 1
+vpn id 1
+neighbor 2.2.2.2 encapsulation mpls
+encapsulation dot1Q 2
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+interface GigabitEthernet1/0/2.1
+ no shutdown
+ mpls ldp
+interface GigabitEthernet1/0/2.0
+ mpls ip
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.0
+router ospf 1
+ area 0
+  network 1.1.1.1 0.0.0.0 area 0
+  network 10.1.1.0 0.0.0.255 area 0
+ethernet cfm domain md1 level 7
+ ethernet cfm domain md1 service ma1
+  xconnect 2.2.2.2 1 encapsulation mpls
+  ethernet cfm mep domain md1 service ma1 mep 2 interface GigabitEthernet1/0/1.1 direction up
+  ethernet cfm mep 2 service instance 1 continuity-check transmission
+  mep ccm-receive remote-mep-id 1
+  ethernet cfm mep crosscheck mep-id 1
+  ethernet cfm mep crosscheck 1 peer ipv4 2.2.2.2 mep-id 1
+  ethernet cfm loss measurement single-ended reply test-id 1
+redundancy

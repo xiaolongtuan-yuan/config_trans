@@ -1,0 +1,13 @@
+hostname DeviceA
+access-list 1 permit test 0.0.0.0
+access-list 1 permit 10.10.1.1 0.0.0.0
+access-list 1 permit 10.10.1.1
+route-map policy1 permit 10
+router bgp 1
+ address-family ipv4
+  neighbor none route-map none none
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.10.1.2 255.255.255.0
+interface 1/0/0.0
+ ipv6 traffic-filter test in
