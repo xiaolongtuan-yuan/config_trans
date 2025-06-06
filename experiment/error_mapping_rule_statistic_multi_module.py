@@ -89,6 +89,8 @@ def main():
                     if not has_mapping:  # 若没有匹配的映射，认为是错误映射
                         error_statistic[map_rule[0]] += count
                         error_mapping_statistic[map_rule[0]] += 1
+                    else:
+                        error_mapping_statistic[map_rule[0]] += 0
 
 
                 missing_template_count_result = Counter(result_data["missed_templates"])
@@ -104,9 +106,9 @@ def main():
             error_statistic_path = f'./exper_res/scale_{scale}_error_mapping_rules_freq/{vendor1}_{vendor2}_error_mapping_rules_freq.json'
             with open(error_statistic_path, mode='w', encoding='utf-8') as f:
                 json.dump(error_statistic, f, ensure_ascii=False, indent=2)
-            # error_mapping_rules = [rule for rule, used in error_mapping_statistic.items() if used == 0]
-            # with open(f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{vendor1}_{vendor2}.json', mode='w', encoding='utf-8') as f:
-            #     json.dump(error_mapping_rules, f, ensure_ascii=False, indent=2)
+            error_mapping_rules = [rule for rule, used in error_mapping_statistic.items() if used == 0]
+            with open(f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{vendor1}_{vendor2}.json', mode='w', encoding='utf-8') as f:
+                json.dump(error_mapping_rules, f, ensure_ascii=False, indent=2)
             print(f"Error mapping rules frequency saved to {error_statistic_path}")
             missing_template = sorted(missing_template.items(), key=lambda x: x[1], reverse=True)
             missing_template_path = f'./exper_res/scale_{scale}_error_mapping_rules_freq/{vendor1}_{vendor2}_missing_template_statistic.json'
