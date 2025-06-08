@@ -47,7 +47,7 @@ def query_main(missing_temp, vendor1, vendor2):
 
 def missing_template_peer_statistic_main():
     name = 'all_data_2000'
-    num = 'valid_data_100_from_400&200'
+    num = 'valid_data_100_from_2000'
     vendors = ['HUAWEI', 'Juniper', 'Cisco']
     for vendor1 in vendors:
         for vendor2 in vendors:
@@ -125,6 +125,45 @@ def missing_template_peer_statistic_main():
                 with open(save_path, mode='w', encoding='utf-8') as f:
                     json.dump(unmatch_template, f, ensure_ascii=False, indent=2)
                 # return None
+    statistic_missing_template_relationship(name, num, vendors)
+
+def statistic_missing_template_relationship(name, num, vendors):
+    """统计缺失模板与映射规则的频率关系"""
+    for vendor1 in vendors:
+        for vendor2 in vendors:
+            if vendor1 == vendor2:
+                continue
+            folder_path = f'./exper_data/translated_config_with_{name}/{num}/{vendor1}/{vendor2}/'
+            unmatch_template_extension = '_unmatch_template.json'
+            # 获取所有匹配的文件
+            _files = find_files(folder_path.format(vendor1, vendor2), unmatch_template_extension)
+            missing_template_relationship = {}
+            for file_name in _files:
+                unmatch_rule_data = load_json_file(file_name)
+                for source_template in unmatch_rule_data['rule_source']:
+                    if source_template not in missing_template_relationship:
+                        missing_template_relationship[source_template] = {}
+                        missing_template_relationship[source_template]['target_template'] = {}
+                        missing_template_relationship[source_template]['frequency'] = 1
+                    else:
+                        missing_template_relationship[source_template]['frequency'] += 1
+                    for target_template in unmatch_rule_data['target']:
+                        if target_template not in missing_template_relationship[source_template]['target_template']:
+                            missing_template_relationship[source_template]['target_template'][target_template] = 1
+                        else:
+                            missing_template_relationship[source_template]['target_template'][target_template] += 1
+            # 对结果进行排序, 按频率降序排列
+            missing_template_relationship = dict(sorted(missing_template_relationship.items(), key=lambda item: item[1]['frequency'], reverse=True))
+            # 对missing_template_relationship[source_template]['target_template']进行排序, 按频率降序排列，并只保留前五项
+            for source_template in missing_template_relationship:
+                target_template = missing_template_relationship[source_template]['target_template']
+                sorted_target_template = dict(sorted(target_template.items(), key=lambda item: item[1], reverse=True))
+                # 只保留前五项
+                missing_template_relationship[source_template]['target_template'] = dict(list(sorted_target_template.items())[:5])
+            # 保存数据
+            save_path = f'./exper_data/translated_config_with_{name}/{num}/{vendor1}/{vendor2}_missing_template_relationship.json'
+            with open(save_path, mode='w', encoding='utf-8') as f:
+                json.dump(missing_template_relationship, f, ensure_ascii=False, indent=2)
 
 
 if __name__ == "__main__":
