@@ -1,0 +1,616 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "set system host-name Spoke1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "set interfaces ge-1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "set interfaces ge-1/0/0 unit 0 family inet address 10.1.2.10/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "set interfaces ge-1/0/0 unit 0 tunnel source-address 10.1.2.10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "set interfaces ge-1/0/1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "set interfaces ge-1/0/1 unit 0 family inet address 192.168.1.1/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "set interfaces gr-0/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s8",
+            "text": "set interfaces gr-0/0/0 unit 0 tunnel source ge-1/0/0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s9",
+            "text": "set interfaces gr-0/0/0 unit 0 tunnel destination 172.16.1.1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "set interfaces gr-0/0/0 unit 0 family inet address 172.16.1.2/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "set interfaces gr-0/0/0 unit 0 encapsulation gre",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s12",
+            "text": "set security ipsec vpn IPSEC-VPN",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s13",
+            "text": "set security ipsec vpn IPSEC-VPN bind-interface gr-0/0/0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s14",
+            "text": "set security ipsec vpn IPSEC-VPN ike gateway IKE-GATEWAY",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s15",
+            "text": "set protocols bgp group BGP-TO-PEER",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s16",
+            "text": "set protocols bgp group BGP-TO-PEER type external",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s17",
+            "text": "set protocols bgp group BGP-TO-PEER local-address 172.16.1.2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s18",
+            "text": "set protocols bgp group BGP-TO-PEER neighbor 172.16.1.1 peer-as 100",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s19",
+            "text": "set protocols bgp group BGP-TO-PEER family inet unicast",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s20",
+            "text": "set protocols bgp group BGP-TO-PEER export EXPORT-OSPF-ROUTES",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s21",
+            "text": "set policy-options policy-statement EXPORT-OSPF-ROUTES",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s22",
+            "text": "set policy-options policy-statement EXPORT-OSPF-ROUTES term 1 from protocol ospf",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s23",
+            "text": "set policy-options policy-statement EXPORT-OSPF-ROUTES term 1 then accept",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s24",
+            "text": "set protocols ospf area 0.0.0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s25",
+            "text": "set protocols ospf area 0.0.0.0 interface ge-1/0/1.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s26",
+            "text": "set protocols ospf area 0.0.0.1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s27",
+            "text": "set protocols ospf area 0.0.0.1 interface ge-1/0/0.0",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t1077",
+            "text": "sysname Spoke1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1078",
+            "text": "interface GigabitEthernet1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1079",
+            "text": "undo shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1081",
+            "text": "ip address 10.1.2.10 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1083",
+            "text": "source GigabitEthernet1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1084",
+            "text": "binding tunnel gre 10.1.2.10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1088",
+            "text": "ip address 192.168.1.1 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1092",
+            "text": "source GigabitEthernet1/0/0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1093",
+            "text": "interface GigabitEthernet0/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1094",
+            "text": "destination 172.16.1.1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1096",
+            "text": "ip address 172.16.1.2 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1097",
+            "text": "interface GR-0/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1098",
+            "text": "interface gr-0/0/0 mode l2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1099",
+            "text": "encapsulation dot1q vid 0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1100",
+            "text": "ipsec policy IPSEC-VPN 10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1102",
+            "text": "ipsec policy-binding IPSEC-VPN interface Tunnel0/0/0",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1103",
+            "text": "ipsec policy IPSEC-VPN 10 isakmp",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1104",
+            "text": "bgp BGP-TO-PEER",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1105",
+            "text": "l2vpn-family evpn",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1106",
+            "text": "peer BGP-TO-PEER import none",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1107",
+            "text": "bgp 600",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1108",
+            "text": "import-route external",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1110",
+            "text": "l2vpn-family evpn",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1111",
+            "text": "peer 2001:DB8:22::2 advertise irb",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1118",
+            "text": "ipv4-family unicast",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1119",
+            "text": "peer none route-policy EXPORT-OSPF-ROUTES export",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1123",
+            "text": "import-route ospf",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1127",
+            "text": "peer 10.1.1.2 enable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1112",
+            "text": "bgp 100",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1113",
+            "text": "peer 172.16.1.1 as-number 100",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1114",
+            "text": "ipv4-family unicast",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1115",
+            "text": "peer 172.16.1.1 next-hop-local",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1116",
+            "text": "ipv4-family unicast",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1120",
+            "text": "traffic-policy 1 inbound",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1121",
+            "text": "traffic policy 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1129",
+            "text": "area 0.0.0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1130",
+            "text": "ospf 0.0.0.0 router-id 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1131",
+            "text": "area 0.0.0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1132",
+            "text": "network 0.0.0.0 ge-1/0/1.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1133",
+            "text": "area 0.0.0.1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1134",
+            "text": "ospf 1 router-id 0.0.0.1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1135",
+            "text": "area 0.0.0.1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1136",
+            "text": "network 0.0.0.1 ge-1/0/0.0",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t1077"
+        },
+        {
+            "source": "s2",
+            "target": "t1078"
+        },
+        {
+            "source": "s2",
+            "target": "t1079"
+        },
+        {
+            "source": "s3",
+            "target": "t1081"
+        },
+        {
+            "source": "s4",
+            "target": "t1083"
+        },
+        {
+            "source": "s4",
+            "target": "t1084"
+        },
+        {
+            "source": "s5",
+            "target": "t1079"
+        },
+        {
+            "source": "s6",
+            "target": "t1088"
+        },
+        {
+            "source": "s7",
+            "target": "t1079"
+        },
+        {
+            "source": "s8",
+            "target": "t1092"
+        },
+        {
+            "source": "s9",
+            "target": "t1093"
+        },
+        {
+            "source": "s9",
+            "target": "t1094"
+        },
+        {
+            "source": "s10",
+            "target": "t1096"
+        },
+        {
+            "source": "s11",
+            "target": "t1097"
+        },
+        {
+            "source": "s11",
+            "target": "t1098"
+        },
+        {
+            "source": "s11",
+            "target": "t1099"
+        },
+        {
+            "source": "s12",
+            "target": "t1100"
+        },
+        {
+            "source": "s13",
+            "target": "t1102"
+        },
+        {
+            "source": "s14",
+            "target": "t1103"
+        },
+        {
+            "source": "s15",
+            "target": "t1104"
+        },
+        {
+            "source": "s15",
+            "target": "t1105"
+        },
+        {
+            "source": "s15",
+            "target": "t1106"
+        },
+        {
+            "source": "s16",
+            "target": "t1107"
+        },
+        {
+            "source": "s16",
+            "target": "t1108"
+        },
+        {
+            "source": "s17",
+            "target": "t1110"
+        },
+        {
+            "source": "s17",
+            "target": "t1111"
+        },
+        {
+            "source": "s18",
+            "target": "t1112"
+        },
+        {
+            "source": "s18",
+            "target": "t1113"
+        },
+        {
+            "source": "s18",
+            "target": "t1114"
+        },
+        {
+            "source": "s18",
+            "target": "t1115"
+        },
+        {
+            "source": "s19",
+            "target": "t1116"
+        },
+        {
+            "source": "s20",
+            "target": "t1118"
+        },
+        {
+            "source": "s20",
+            "target": "t1119"
+        },
+        {
+            "source": "s21",
+            "target": "t1120"
+        },
+        {
+            "source": "s22",
+            "target": "t1121"
+        },
+        {
+            "source": "s22",
+            "target": "t1123"
+        },
+        {
+            "source": "s22",
+            "target": "t1118"
+        },
+        {
+            "source": "s23",
+            "target": "t1127"
+        },
+        {
+            "source": "s23",
+            "target": "t1118"
+        },
+        {
+            "source": "s24",
+            "target": "t1129"
+        },
+        {
+            "source": "s25",
+            "target": "t1130"
+        },
+        {
+            "source": "s25",
+            "target": "t1131"
+        },
+        {
+            "source": "s25",
+            "target": "t1132"
+        },
+        {
+            "source": "s26",
+            "target": "t1133"
+        },
+        {
+            "source": "s27",
+            "target": "t1134"
+        },
+        {
+            "source": "s27",
+            "target": "t1135"
+        },
+        {
+            "source": "s27",
+            "target": "t1136"
+        }
+    ]
+}

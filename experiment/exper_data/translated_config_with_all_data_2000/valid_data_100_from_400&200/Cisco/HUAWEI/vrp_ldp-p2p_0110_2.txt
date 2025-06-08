@@ -1,0 +1,15 @@
+sysname LSRB
+interface GigabitEthernet2/0/0
+mpls ldp router-id LoopBack0
+isis 1
+ network-entity 49.0001.0010.0300.0001.00
+ is-level level-1
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.2.2 255.255.255.0
+ mpls te binding-sid label 1000
+interface GigabitEthernet1/0/0 mode l2
+ mpls l2vc none none raw
+interface LoopBack0
+ ip address 10.10.3.1 255.255.255.255
+stp region-configuration

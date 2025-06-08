@@ -1,0 +1,19 @@
+hostname CE1
+vlan 100
+ name v100
+network none none area 0
+network 0.0.0.0 0 area 0
+interface Bundle-Ether0
+ no shutdown
+ switchport
+ switchport access vlan 100
+ switchport trunk allowed vlan 100
+interface Port-channel0
+ interface Port-channel1
+ channel-group 1 mode active
+ lacp min-links 1
+ ipv6 address 2001:DB8::/64 eui-64
+interface GigabitEthernet1/0/0
+ no shutdown
+interface range ge-1/0/0 - 0
+ no shutdown

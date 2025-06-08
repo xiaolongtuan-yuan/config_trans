@@ -1,0 +1,39 @@
+hostname Device
+l2tp enable
+radius-server group radius1
+ radius-server host 10.20.20.1 auth-port 1812 key <key>
+ radius-server host 10.20.20.1 auth-port 1812 acct-port 1813 key <key>
+ radius-server key <key>
+ ip radius source-interface LoopBack0
+aaa group server radius radius1
+interface Virtual-Template1
+ ppp authentication auto none
+ ip unnumbered LoopBack0
+interface GigabitEthernet1/0/0
+ ip address 10.11.11.1 255.255.255.255
+interface range GigabitEthernet1/0/0 - 0
+ no shutdown
+interface LoopBack0
+ ip address 192.168.10.1 255.255.255.255
+ ip ospf 1 area 0
+  network 0.0.0.0 255.255.255.255 area 0
+ ip address 10.202.160.0 255.255.255.0
+ ip address 192.168.0.1 0.0.0.0
+vpdn-group lns1
+ l2tp tunnel password <password>
+vpdn-group LNS
+vpdn-group group1
+ accept-dialin
+  virtual-template 1
+l2vpn bridge-group VPN1
+ bridge-domain LoopBack0
+  interface LoopBack0
+ip local pool 1 192.168.0.10 192.168.0.100
+ip dhcp pool 1
+ network 192.168.0.2 255.255.255.0
+ network 192.168.0.0 255.255.255.0
+aaa new-model
+ aaa authentication ppp default group radius1
+ aaa accounting default group radius1
+ radius-server group radius1
+ aaa group server radius radius1

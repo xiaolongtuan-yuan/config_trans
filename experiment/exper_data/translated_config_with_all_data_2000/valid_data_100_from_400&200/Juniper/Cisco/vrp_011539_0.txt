@@ -1,0 +1,22 @@
+hostname PE1
+interface GigabitEthernet1/0/1
+ no shutdown
+ interface GigabitEthernet1/0/1.1
+ encapsulation dot1Q 2
+ encapsulation vlan-ccc
+ ip address 10.1.1.1 255.255.255.0
+ ipv6 address mpls eui-64
+ ip address 2.2.2.2 255.255.255.255
+ switchport access vlan none
+network 0.0.0.0 0.0.0.0 area 0
+network 0.0.0.0 255.255.255.255 area 0
+mpls ldp discovery transport-address GigabitEthernet1/0/2
+mpls ldp router-id 2.2.2.2
+vlan 2
+ name vlan-ccc-instance-2
+network none none area none
+bridge-domain bd1
+network none none area 1
+ethernet cfm maintenance-association ma1 md1
+ethernet cfm maintenance-association ma3 md md1
+ethernet cfm maintenance-association md1 ma1

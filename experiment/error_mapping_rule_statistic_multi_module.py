@@ -24,7 +24,7 @@ def find_files(directory, extension):
 
 def main():
     name = 'all_data_2000'
-    num = 700
+    num = "valid_data_100_from_2000"
     scale = '680'
     vendors = ['HUAWEI', 'Juniper', 'Cisco']
     grammatical_accuracy = {}

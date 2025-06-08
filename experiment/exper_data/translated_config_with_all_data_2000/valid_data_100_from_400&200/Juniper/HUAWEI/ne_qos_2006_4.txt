@@ -1,0 +1,29 @@
+sysname CE2
+ peer 10.2.1.2 as-number 100
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 10.2.1.1 255.255.255.0
+
+ip address 10.2.1.1 255.255.255.0
+bgp 100
+peer 10.2.1.2 as-number 100
+peer 10.2.1.2 enable
+#
+peer 10.2.1.2 route-policy bgp-export export
+route-policy bgp-export permit node 1
+if-match ip-prefix 10.2.1.0/24
+ip ip-prefix 10.2.1.0/24 index 10 permit 10.2.1.0 24
+ ipv4-family unicast
+bgp 600
+ import-route bgp
+ network 10.2.1.2 0.0.0.0
+ ipv4-family unicast
+  peer 5.5.5.5 route-policy bgp-export export
+ peer 10.2.1.0 enable
+  undo synchronization
+  import-route direct
+ peer 10.1.1.2 enable
+ip ip-prefix BGP-EXPORT index 10 permit 10.2.1.0 24
+route-policy bgp-export permit node 10
+if-match ip-prefix BGP-EXPORT
+traffic policy 1

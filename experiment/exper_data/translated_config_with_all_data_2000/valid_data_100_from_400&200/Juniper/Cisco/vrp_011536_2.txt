@@ -1,0 +1,45 @@
+hostname PE2
+mpls ldp advertise-labels interface GigabitEthernet1/0/2
+mpls ldp advertise-labels interface Loopback0
+mpls ldp discovery transport-address GigabitEthernet1/0/2
+router ldp
+transport-address 1.1.1.1
+ip route 1.1.1.1 255.255.255.255 none
+neighbor 2.2.2.2 activate
+ l2 vfi PE2-VFI manual
+ vpn id 1
+ neighbor 2.2.2.2 encapsulation mpls
+ #
+ interface GigabitEthernet1/0/1.1
+ encapsulation dot1Q 2
+ xconnect 2.2.2.2 1 encapsulation mpls
+ no pseudowire-class l2circuit encapsulation mpls control-word
+neighbor 2.2.2.2 remote-as 1
+interface GigabitEthernet1/0/1
+ no shutdown
+ interface GigabitEthernet1/0/1.1
+ encapsulation dot1Q 2
+ encapsulation dot1q
+interface range ge-1/0/1 - 1
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+network 0.0.0.0 0.0.0.0 area 0
+ethernet cfm domain md1 level 7
+ ethernet cfm maintenance-association ma1 md1
+ethernet cfm maintenance-association ma3 md md3
+ethernet cfm domain md1 level 2
+ ethernet cfm maintenance-association ma1 md1
+  ethernet cfm mep ma1 ma 2 interface GigabitEthernet1/0/1.1 inward
+  ethernet cfm mep ma1 ma 2 interface GigabitEthernet1/0/1.1 down
+  ethernet cfm remote-mep ma1 ma 2
+  ethernet cfm cc remote-mep 1 ma ma1 enable
+  ethernet cfm slm mep 2 ma ma1 test-id 1
+  ethernet cfm slm mep 2 ma ma1 test-id 2 remote-mep 3
+ service ma1
+ethernet cfm domain md1 level 1
+ ethernet cfm maintenance-association ma1 md1
+  ethernet cfm remote-mep 1 ma ma1
+interface lo0
+ no shutdown
+ ip address 1.1.1.1 255.255.255.255

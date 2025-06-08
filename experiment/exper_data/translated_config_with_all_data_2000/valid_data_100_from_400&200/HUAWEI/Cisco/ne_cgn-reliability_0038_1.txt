@@ -1,0 +1,43 @@
+hostname CGN1
+interface GigabitEthernet1/0/3
+ ip address 10.0.0.1 255.255.255.0
+ vrrp 10 ip 10.0.0.3
+ vrrp 10 track shutdown
+ vrrp 10 priority 150
+ standby 10 preempt delay minimum 400
+ track 50 interface GigabitEthernet1/0/2 line-protocol
+ track 50 interface GigabitEthernet1/0/1 line-protocol
+ vrrp 10 ip none
+ vrrp 10 priority 50
+redundancy
+ service location 21 rack 1 chassis 0
+ interface GigabitEthernet1/0/3
+ vrrp 10 ip 10.0.0.3
+protocol hsrp
+track 21 interface GigabitEthernet1/0/3
+service service-location
+ethernet cfm sla none mep 10 domain none service none
+service-group 21
+ track 21 interface GigabitEthernet0/0/2 line-protocol
+ track 22 interface GigabitEthernet0/0/1 line-protocol
+ !
+ vrrp 10
+ address-family ipv4
+ address 10.0.0.3
+ priority 150
+ preempt delay 400
+ track 21 decrement 50
+ track 22 decrement 50
+ interface GigabitEthernet0/0/3
+service-policy 21
+cgn instance dslite1 id 21
+ nat port block size 4096
+ service-group 21
+ ipv6 nat ds-lite pool group1 1.1.1.1/24
+ ip nat pool group1 1.1.1.1 1.1.1.255 prefix-length 24
+ ipv6 nat v6v4 source list DS-Lite pool group1
+ ipv6 route 2001:db8:1::/41 <next-hop-ipv6-or-interface>
+ ip nat ds-lite alg
+ ip nat service fullcone
+ip msdp originator-id Loopback0
+end

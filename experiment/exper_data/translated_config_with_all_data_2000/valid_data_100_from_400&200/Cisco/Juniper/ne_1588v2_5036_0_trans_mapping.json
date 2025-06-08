@@ -1,0 +1,141 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "hostname DeviceA",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "ptp",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "ptp profile default",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "end",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "interface Loopback0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "ip address 1.1.1.1 255.255.255.255",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t1007",
+            "ids": [
+                1007
+            ],
+            "text": "set system host-name DeviceA",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1009",
+            "ids": [
+                1008,
+                1009
+            ],
+            "text": "set interfaces ge-1/0/0 unit 0 family inet address inet vrrp-group 0.0.0.0 preempt hold-time 0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1012",
+            "ids": [
+                1008,
+                1011,
+                1012
+            ],
+            "text": "set interfaces ge-1/0/0 unit 0 family inet address none vrrp-group 0 preempt hold-time 300 set protocols ptp profile default",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1013",
+            "ids": [
+                1013
+            ],
+            "text": "set protocols isis export REDIST-CONNECTED",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1015",
+            "ids": [
+                1014,
+                1015
+            ],
+            "text": "set interfaces lo0 unit 0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1016",
+            "ids": [
+                1014,
+                1016
+            ],
+            "text": "set interfaces lo0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1018",
+            "ids": [
+                1014,
+                1018
+            ],
+            "text": "set interfaces lo0 unit 0 family inet address 1.1.1.1/32",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t1007"
+        },
+        {
+            "source": "s2",
+            "target": "t1009"
+        },
+        {
+            "source": "s3",
+            "target": "t1012"
+        },
+        {
+            "source": "s4",
+            "target": "t1013"
+        },
+        {
+            "source": "s5",
+            "target": "t1015"
+        },
+        {
+            "source": "s5",
+            "target": "t1016"
+        },
+        {
+            "source": "s6",
+            "target": "t1018"
+        }
+    ]
+}

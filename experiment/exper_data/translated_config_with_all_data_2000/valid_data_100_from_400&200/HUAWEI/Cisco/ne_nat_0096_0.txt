@@ -1,0 +1,46 @@
+hostname NATA
+card type e1 0 1
+service internal SERVICE_LOCATION_1 location slot 1
+ service location flash0:
+ip nat pool group1 1.1.1.101 1.1.1.105 prefix-length 24
+ service location 1 slot 1
+ip nat inside source list 1 pool group1
+ip nat inside source static 192.168.10.10 1.1.1.100
+ip nat pool POOL1 1.1.1.101 1.1.1.105 netmask 255.255.255.0
+ service-policy group1
+ip nat pool address-group1 1.1.1.101 1.1.1.105 netmask 255.255.255.0
+ip nat inside source static network none 192.168.10.10 none
+ip nat inside source static network 192.168.10.10 1.1.1.100 /32
+line vty 0 4
+ access-class 3001 in
+route-map TEST permit 1
+ match ip address prefix-list ALL
+class-map match-any classifier1
+ match access-group 3001
+match access-group 3001
+class-map behavior1
+ ip nat inside source list NAT_ACL pool NAT_POLICY overload
+class-map match-all classifier1
+!
+policy-map policy1
+ class classifier1
+  set precedence 1
+class classifier1
+nat (inside,outside) dynamic interface
+interface GigabitEthernet1/0/1
+ service-policy input policy1
+interface GigabitEthernet1/0/1 point-to-point
+interface GigabitEthernet 1/0/1
+ ip address 192.168.10.1 255.255.255.0
+interface GigabitEthernet1/0/2
+ ip address 2.2.2.1 255.255.255.0
+interface GigabitEthernet1/0/2 point-to-point
+interface GigabitEthernet 1/0/2
+interface GigabitEthernet2/0/0
+ ip ospf 1 area 0
+  router ospf 1
+  network 2.2.2.0 0.0.0.255 area 0
+ ip address 2.2.2.0 0.0.0.255
+ tunnel destination 2.2.2.2
+ ip address 2.2.2.2 255.255.255.255
+end

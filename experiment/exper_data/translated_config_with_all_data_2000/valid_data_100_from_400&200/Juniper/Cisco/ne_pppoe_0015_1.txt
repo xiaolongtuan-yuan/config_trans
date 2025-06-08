@@ -1,0 +1,25 @@
+hostname Device
+ip domain-name isp5
+radius-server host radius auth-port 1812 acct-port 1813 key 7 none
+aaa new-model
+ interface GigabitEthernet0/0/1
+ ip address 10.1.1.1 255.255.255.0
+radius-server host 10.6.55.55 auth-port 1645 acct-port 1646 key 051b1c224d0a324e1d
+radius-server host 10.6.55.55 auth-port 1645 acct-port 1646 key 0 051B1C224D0A324E1D
+aaa accounting system default start-stop group radius
+radius-server host 10.6.55.55 acct-port 1646 key 051b1c224d0a324e1d
+ipv6 dhcp pool pool1
+ address prefix 10.10.10.0 lifetime none none
+ address prefix 10.10.10.100 lifetime infinite infinite
+ ipv6 local pool pool1 2001:db8:3::/64 64
+ipv6 dhcp pool POOL1
+ ip local pool pool1 10.10.10.3 10.10.10.100 mask 255.255.255.0
+ipv6 address 2001:db8:102::2/96
+username radius-access
+ aaa authentication login default group radius
+ aaa authentication login radius-access group radius
+ interface GigabitEthernet0/0/1
+ ip address 10.1.1.1 255.255.255.0
+interface GigabitEthernet0/0/1
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0

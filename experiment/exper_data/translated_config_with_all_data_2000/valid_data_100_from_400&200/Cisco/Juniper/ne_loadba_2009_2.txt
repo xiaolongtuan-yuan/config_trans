@@ -1,0 +1,14 @@
+set system host-name routerC
+set protocols isis interface ge-1/0/0.0
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 delete interfaces GigabitEthernet1/0/0 disable
+set interfaces ge-1/0/0 delete interfaces GigabitEthernet2/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.40.1.2/24
+set interfaces ge-1/0/0 set protocols isis interface <interface_name> point-to-point
+set interfaces ge-1/0/0 unit 0 family inet address 10.70.1.2/24
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 set protocols isis interface ge-1/0/0 point-to-point
+set interfaces ge-2/0/0 set protocols isis interface ge-2/0/0 point-to-point
+set protocols isis export REDIST-CONNECTED

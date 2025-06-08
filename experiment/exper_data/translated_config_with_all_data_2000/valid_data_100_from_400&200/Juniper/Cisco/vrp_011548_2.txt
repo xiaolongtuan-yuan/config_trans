@@ -1,0 +1,33 @@
+hostname PE2
+mpls ldp advertise-labels interface GigabitEthernet1/0/2
+mpls ldp advertise-labels interface Loopback0
+mpls ldp router-id 3.3.3.3
+mpls ldp discovery transport-address GigabitEthernet1/0/2
+mpls ldp discovery transport-address Loopback0
+interface GigabitEthernet1/0/1
+ no shutdown
+ interface GigabitEthernet1/0/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ interface GigabitEthernet1/0/1.1
+ encapsulation dot1Q 10
+ encapsulation vlan-ccc
+ ipv6 address 2001:DB8::/64 eui-64
+interface range GigabitEthernet1/0/1 - 2
+neighbor 1.1.1.1 activate
+ l2vpn xconnect context PE2_PE1
+ member GigabitEthernet1/0/1.1
+ neighbor 1.1.1.1 100 encapsulation mpls
+ l2vpn xconnect context PE2-PE1
+ neighbor 1.1.1.1 100 encapsulation ethernet
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 10.2.1.2 255.255.255.252
+ ipv6 address 2001:DB8::/64 eui-64
+interface lo0
+ no shutdown
+ ip address 3.3.3.3 255.255.255.255
+network 0.0.0.0 255.255.255.255 area 0
+router ospf 1 vrf none
+ethernet cfm maintenance-association ma1 md1
+ethernet cfm maintenance-association ma3 md md1

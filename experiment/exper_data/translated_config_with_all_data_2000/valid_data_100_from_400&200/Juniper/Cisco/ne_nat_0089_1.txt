@@ -1,0 +1,32 @@
+hostname SRX-NAT-Gateway
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ interface GigabitEthernet0/0/0
+  ip address 10.1.1.1 255.255.255.0
+  zone-member security trust
+ip address 10.1.1.1 255.255.255.0
+zone-member security trust
+ interface GigabitEthernet0/0/0
+interface GigabitEthernet0/0/1
+ ip address 11.11.11.101 255.255.255.0
+ interface GigabitEthernet0/0/1
+  ip address 11.11.11.101 255.255.255.0
+  zone-member security untrust
+ip address 11.11.11.101 255.255.255.0
+zone-member security untrust
+ interface GigabitEthernet0/0/1
+ip nat inside source static network 11.11.11.0 10.0.0.0 /24
+permit none none 24 trust
+permit 10.0.0.0 0.0.0.255 none trust
+ip nat inside source static network 11.11.11.0 TCP-256 /24
+permit none none none trust
+permit 10.0.0.0 0.0.0.255 24 trust
+ip nat translation max-entries 256
+ip nat inside source static network 11.11.11.101 11.11.11.101 /32
+ip nat inside source static network 11.11.11.101 11.11.11.0 /24
+permit none none trust none
+permit tcp 10.0.0.0 0.0.0.255 trust
+ip nat inside source static network 11.11.11.101 TCP-1023 /32
+ip nat translation max-entries 1023
+ip nat inside source static network 11.11.11.101 none 32

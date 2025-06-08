@@ -1,0 +1,190 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "set system host-name DeviceA",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "set firewall family inet filter test",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "set firewall family inet filter test term 1 from source-address 10.10.1.1/32",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "set firewall family inet filter test term 1 then discard",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "set interfaces ge-1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "set interfaces ge-1/0/0 unit 0 family inet address 10.10.1.2/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "set interfaces ge-1/0/0 unit 0 family inet filter input test",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t659",
+            "text": "hostname DeviceA",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t660",
+            "text": "ip access-list extended test",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t662",
+            "text": "deny ip host 10.10.1.1 any",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t679",
+            "text": "permit ip any any",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t680",
+            "text": "access-list 1 permit 10.10.1.1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t681",
+            "text": "policy-map test",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t682",
+            "text": "class 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t683",
+            "text": "police cir 1m pir 2m",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t684",
+            "text": "violate-action discard",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t685",
+            "text": "interface GigabitEthernet1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t686",
+            "text": "no shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t688",
+            "text": "ip address 10.10.1.2 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t690",
+            "text": "ipv6 traffic-filter test in",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t691",
+            "text": "ip access-group test in",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t659"
+        },
+        {
+            "source": "s2",
+            "target": "t660"
+        },
+        {
+            "source": "s2",
+            "target": "t662"
+        },
+        {
+            "source": "s2",
+            "target": "t679"
+        },
+        {
+            "source": "s3",
+            "target": "t680"
+        },
+        {
+            "source": "s4",
+            "target": "t681"
+        },
+        {
+            "source": "s4",
+            "target": "t682"
+        },
+        {
+            "source": "s4",
+            "target": "t683"
+        },
+        {
+            "source": "s4",
+            "target": "t684"
+        },
+        {
+            "source": "s5",
+            "target": "t685"
+        },
+        {
+            "source": "s5",
+            "target": "t686"
+        },
+        {
+            "source": "s6",
+            "target": "t688"
+        },
+        {
+            "source": "s7",
+            "target": "t690"
+        },
+        {
+            "source": "s7",
+            "target": "t691"
+        }
+    ]
+}

@@ -1,0 +1,281 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "sysname LSRC",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "mpls lsr-id 3.3.3.9",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "mpls",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "mpls ldp",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "gtsm peer 2.2.2.9 valid-ttl-hops 6",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "interface GigabitEthernet1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "undo shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s8",
+            "text": "ip address 10.2.1.2 255.255.255.252",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s9",
+            "text": "interface LoopBack1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "ip address 3.3.3.9 255.255.255.255",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "ospf 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s12",
+            "text": "area 0.0.0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s13",
+            "text": "network 3.3.3.9 0.0.0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s14",
+            "text": "network 10.2.1.0 0.0.0.3",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t1001",
+            "ids": [
+                1001
+            ],
+            "text": "set system host-name LSRC",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1002",
+            "ids": [
+                1002
+            ],
+            "text": "set system host-name CE1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1003",
+            "ids": [
+                1003
+            ],
+            "text": "set system host-name mpls",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1007",
+            "ids": [
+                1004,
+                1005,
+                1007
+            ],
+            "text": "set interfaces ge-1/0/0 unit 0 family inet mpls ldp",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1012",
+            "ids": [
+                1004,
+                1010,
+                1012
+            ],
+            "text": "set interfaces ge-1/0/0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1013",
+            "ids": [
+                1004,
+                1013
+            ],
+            "text": "set interfaces ge-1/0/0 unit 0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1015",
+            "ids": [
+                1004,
+                1015
+            ],
+            "text": "set interfaces ge-1/0/0 unit 0 family inet address 10.2.1.2/30",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1021",
+            "ids": [
+                1004,
+                1021
+            ],
+            "text": "set interfaces ge-1/0/0 unit 0 family inet service input none",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1008",
+            "ids": [
+                1008
+            ],
+            "text": "set protocols ldp gtsm peer 2.2.2.9 maximum-ttl 6",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1017",
+            "ids": [
+                1016,
+                1017
+            ],
+            "text": "set interfaces lo0.1 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1019",
+            "ids": [
+                1016,
+                1019
+            ],
+            "text": "set interfaces lo0.1 unit 0 family inet address 3.3.3.9/32",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1023",
+            "ids": [
+                1022,
+                1023
+            ],
+            "text": "set protocols ospf area 0.0.0.0 interface 0.0.0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1027",
+            "ids": [
+                1022,
+                1025,
+                1027
+            ],
+            "text": "set protocols ospf area 0.0.0.0 interface ge-0/0/1.0",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t1001"
+        },
+        {
+            "source": "s2",
+            "target": "t1002"
+        },
+        {
+            "source": "s3",
+            "target": "t1003"
+        },
+        {
+            "source": "s4",
+            "target": "t1007"
+        },
+        {
+            "source": "s5",
+            "target": "t1008"
+        },
+        {
+            "source": "s6",
+            "target": "t1012"
+        },
+        {
+            "source": "s7",
+            "target": "t1012"
+        },
+        {
+            "source": "s7",
+            "target": "t1013"
+        },
+        {
+            "source": "s8",
+            "target": "t1015"
+        },
+        {
+            "source": "s9",
+            "target": "t1017"
+        },
+        {
+            "source": "s10",
+            "target": "t1019"
+        },
+        {
+            "source": "s11",
+            "target": "t1021"
+        },
+        {
+            "source": "s12",
+            "target": "t1023"
+        },
+        {
+            "source": "s13",
+            "target": "t1027"
+        },
+        {
+            "source": "s14",
+            "target": "t1027"
+        }
+    ]
+}

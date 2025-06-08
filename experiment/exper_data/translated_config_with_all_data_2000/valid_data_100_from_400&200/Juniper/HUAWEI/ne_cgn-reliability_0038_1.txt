@@ -1,0 +1,45 @@
+sysname CGN1
+interface GigabitEthernet0/0/3
+ undo shutdown
+ ip address 10.0.0.1 255.255.255.0
+ interface GigabitEthernet0/0/3.0
+ vrrp vrid 10 virtual-ip 10.0.0.3
+ vrrp vrid 10 track interface ge-0/0/3 reduced 100
+ vrrp vrid 10 priority 150
+ vrrp vrid 10 track interface ge-0/0/3 reduced none
+ vrrp vrid 10 preempt-mode timer delay 400
+ slot 1
+slot 1
+ slot 1
+ip route-static 10.0.0.2 255.255.255.255 none none
+ip route-static 10.0.0.2 32 ge-0/0/3
+syslog host 10.0.0.2 service-instance-group service-instance-group-21
+ syslog server 10.0.0.2
+ service-instance-group service-instance-group-21 interface ge-0/0/3
+ service-instance-group service-instance-group-21
+ next-hop-service inside-service-interface GigabitEthernet0/0/3
+service-instance-group service-instance-group-21
+interface-service ge-0/0/3
+next-hop inside-service-interface ge-0/0/3
+ds-lite instance dslite1 port-range 4096
+ds-lite instance dslite1 service-instance-group service-instance-group-21
+ds-lite instance dslite1 address-group group1 group-id 1
+ds-lite instance dslite1 address-group group1 section 0 prefix 1.1.1.0/24
+ds-lite instance dslite1 outbound any address-group group1
+ds-lite instance dslite1 local-ipv6 1:1:1::12 128
+ds-lite instance dslite1 remote-ipv6 2001:db8:1:: 41
+ds-lite instance dslite1 alg all enable
+ds-lite instance dslite1 filter mode full-cone
+ ds-lite instance dslite1 id 21
+ds-lite instance dslite1 id 21
+ ds-lite instance dslite1 id 21
+ ds-lite instance dslite1 port-range 4096
+ ds-lite instance dslite1 service-set service-instance-group-21
+ ipv6 address-group group1 group-id 1
+ ipv6 address-group group1 1 1.1.1.0 24
+ ds-lite instance dslite1 outbound any address-group group1
+ ipv6 local address 1:1:1::12 128
+ ipv6 route-static 2001:db8:1:: 41 Dialer1
+ alg enable all
+ ds-lite instance dslite1 alg all enable
+ nat64 instance dslite1 filter-mode full-cone

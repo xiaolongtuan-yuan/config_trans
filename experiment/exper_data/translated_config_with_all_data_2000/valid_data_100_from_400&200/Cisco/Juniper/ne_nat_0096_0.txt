@@ -1,0 +1,27 @@
+set system host-name NATA
+set security nat source rule-set NAT_ACL from zone trust
+set security nat source rule-set NAT_ACL to zone untrust
+set security nat source rule-set NAT_ACL rule NAT_RULE match source-address 0.0.0.0/0
+set security nat source rule-set NAT_ACL rule NAT_RULE then source-nat interface
+set interfaces ge-1/0/1 unit 0 disable
+set interfaces ge-1/0/1 disable
+set interfaces ge-1/0/1 set interfaces ge-1/0/1 disable delete
+set interfaces ge-1/0/1 set interfaces ge-1/0/1 description "Active interface"
+set interfaces ge-1/0/1 unit 0 family inet address 192.168.10.1/24
+set interfaces ge-1/0/1 unit 0 family inet address none vrrp-group none
+set interfaces ge-1/0/1 delete interfaces GigabitEthernet1/0/1 disable
+set interfaces ge-1/0/1 unit 0 family inet address 2.2.2.1/24
+set interfaces ge-1/0/1 set interfaces ge-1/0/2 unit 0 family inet nat destination
+set interfaces ge-1/0/2 unit 0 disable
+set interfaces ge-1/0/2 disable
+set routing-options static route 0.0.0.0/0 next-hop 2.2.2.2
+set firewall family inet filter NAT_ACL term permit-all from source-address 0.0.0.0/0
+set firewall family inet filter NAT_ACL term permit-all from destination-address 0.0.0.0/0
+set firewall family inet filter NAT_ACL term permit-all then accept
+set protocols ospf import POLICY1 match source-address 0.0.0.0/0
+set protocols ospf import POLICY1 set routing-options static route 0.0.0.0/0 next-hop 1.1.1.100
+set protocols ospf import POLICY1 set policy-options policy-statement POLICY1 then next-hop 1.1.1.100
+set policy-options as-path POLICY1 ^.*_10_.*$
+set protocols ospf area 0.0.0.1 interface 1
+set protocols ospf area 0 interface ge-0/0/1.0
+set protocols isis export REDIST-CONNECTED

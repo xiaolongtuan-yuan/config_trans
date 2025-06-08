@@ -1,0 +1,21 @@
+sysname CE1
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ ip address 11.11.11.11 255.255.255.255
+bgp 600
+ l2vpn-family evpn
+  peer 1.1.1.1 import reoriginate
+ import-route bgp
+ network 10.1.1.2 0.0.0.0
+ peer 10.1.1.2 as-number 100
+ ipv4-family unicast
+  peer 10.1.1.2 next-hop-local
+  peer none route-policy EXPORT_DIRECT export
+ peer 10.1.1.2 enable
+traffic-policy EXPORT_DIRECT inbound
+ ip ip-prefix EXPORT_DIRECT permit 0.0.0.0 0
+ route-policy EXPORT_DIRECT permit node 10
+ if-match ip-prefix EXPORT_DIRECT
+ #
+ip route-static 11.11.11.11 32 NULL0

@@ -1,0 +1,20 @@
+hostname Router
+radius-server host 192.168.7.249 auth-port 1812 acct-port 1813 key 0 $ABC123$%^%#`E)v.Q@BHVzxxZ;ij{>&_M0!TGP7YRA@8a7mq<\/%^%#
+username dot1x-profile
+aaa authorization network default0 group rd5 local
+aaa authorization network default0 group 192.168.7.249 local
+radius-server host radius auth-port 1812 acct-port 1813 key 7
+aaa authentication login default group radius
+aaa authentication login console group radius
+interface GigabitEthernet0/0/2
+ no shutdown
+ switchport
+ switchport access vlan 100
+ switchport trunk allowed vlan 100
+ ip address 10.82.1.1 255.255.255.0
+ip dhcp pool dhcp-group
+network none none area 0
+ipv6 dhcp pool pool4
+ ip dhcp pool pool4
+ network 10.82.1.0 255.255.255.0
+ address prefix 10.82.1.0/24 lifetime infinite infinite

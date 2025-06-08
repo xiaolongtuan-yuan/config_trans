@@ -1,0 +1,246 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "set system host-name SSH_Server",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "set system login user client001",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "set system login user client001 authentication encrypted-password \"$1$abc123$xyz4567890abcdefghijk\"",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "set system login user client001 class super-user",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "set system login user client001 full-name \"SSH Client Account\"",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "set system login user client001 authentication ssh-rsa \"ssh-rsa AAAAB3NzaC1yc2E...\"",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "set interfaces ge-0/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s8",
+            "text": "set interfaces ge-0/0/0 unit 0 family inet address 10.137.217.223/16",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s9",
+            "text": "set interfaces lo0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "set interfaces lo0 unit 0 family inet address 10.1.1.1/32",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "set system services ssh",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s12",
+            "text": "set system services ssh protocol-version v2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s13",
+            "text": "set system services ssh connection-limit 10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s14",
+            "text": "set system services ssh root-login deny",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t1244",
+            "text": "sysname SSH_Server",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1245",
+            "text": "user-group client001",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1246",
+            "text": "user-group grp1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1247",
+            "text": "user-group super-user",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1250",
+            "text": "ssh server permit-root-login disable",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1252",
+            "text": "ssh user client001 assign rsa-key \"ssh-rsa AAAAB3NzaC1yc2E...\"",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1248",
+            "text": "stelnet server enable",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1253",
+            "text": "interface GigabitEthernet0/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1254",
+            "text": "undo shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1256",
+            "text": "ip address 10.137.217.223 255.255.0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1260",
+            "text": "ip address 10.1.1.1 255.255.255.255",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1261",
+            "text": "remote-backup-service rbsv8",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1262",
+            "text": "ssh server version 2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1263",
+            "text": "ssh server-source -i none 10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1264",
+            "text": "ssh authentication-type default deny",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t1244"
+        },
+        {
+            "source": "s2",
+            "target": "t1245"
+        },
+        {
+            "source": "s3",
+            "target": "t1246"
+        },
+        {
+            "source": "s4",
+            "target": "t1247"
+        },
+        {
+            "source": "s5",
+            "target": "t1248"
+        },
+        {
+            "source": "s5",
+            "target": "t1250"
+        },
+        {
+            "source": "s6",
+            "target": "t1252"
+        },
+        {
+            "source": "s7",
+            "target": "t1253"
+        },
+        {
+            "source": "s7",
+            "target": "t1254"
+        },
+        {
+            "source": "s8",
+            "target": "t1256"
+        },
+        {
+            "source": "s9",
+            "target": "t1254"
+        },
+        {
+            "source": "s10",
+            "target": "t1260"
+        },
+        {
+            "source": "s11",
+            "target": "t1261"
+        },
+        {
+            "source": "s12",
+            "target": "t1262"
+        },
+        {
+            "source": "s13",
+            "target": "t1263"
+        },
+        {
+            "source": "s14",
+            "target": "t1264"
+        }
+    ]
+}

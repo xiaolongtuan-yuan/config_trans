@@ -1,0 +1,23 @@
+sysname CE2
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 10.2.1.1 255.255.255.0
+interface LoopBack1
+ ip address 10.22.2.2 255.255.255.255
+bgp 600
+ l2vpn-family evpn
+  peer external-peers import none
+ import-route direct
+ network 10.2.1.2 0.0.0.0
+ ipv4-family unicast
+  peer 5.5.5.5 route-policy export-policy export
+ peer 10.22.2.2 enable
+  undo synchronization
+  import-route direct
+ peer 10.1.1.2 enable
+bgp 100
+ l2vpn-family evpn
+  peer external-peers import none
+   peer 10.2.1.2 as-number 100
+traffic-policy export-policy outbound
+traffic policy 1

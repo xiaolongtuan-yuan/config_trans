@@ -1,0 +1,29 @@
+set system host-name PE2
+set interfaces ge-0/0/0 unit 0 family inet mpls
+set protocols ldp router-id 1.1.1.9
+set protocols l2circuit pseudowire-type ethernet encapsulation mpls-over-udp;
+set routing-instances LDP1 instance-type vpls vpn-id 1;
+set routing-instances LDP1 vlan-id 1
+set interfaces ge-1/0/1.1 unit 1 disable
+set interfaces ge-1/0/1.1 disable
+set interfaces ge-1/0/0.1 encapsulation dot1q 2
+set interfaces ge-1/0/0.1 set interfaces ge-1/0/1.1 unit 0 family ccc
+set interfaces ge-1/0/0.1 set routing-instances LDP1 instance-type l2vpn
+set interfaces ge-1/0/0.1 set routing-instances LDP1 interface ge-1/0/1.0
+set interfaces ge-1/0/0.1 set routing-instances LDP1 route-distinguisher 1.1.1.1:1
+set interfaces ge-1/0/0.1 set routing-instances LDP1 vrf-target target:1:1
+set interfaces ge-1/0/2 unit 0 disable
+set interfaces ge-1/0/2 disable
+set interfaces ge-1/0/2 delete disable
+set interfaces ge-1/0/2 unit 0 family inet address 10.1.1.2/24
+set interfaces ge-1/0/2 unit 0 family inet mpls
+set interfaces ge-1/0/2 set protocols ldp interface all targeted-hello accept
+set interfaces lo0 unit 0 disable
+set interfaces lo0 disable
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+set protocols ospf area 0.0.0.1 interface ospf.0
+set protocols ospf area 0.0.0.1 interface ge-0/0/0.0 authentication md5 1 key $9$H3LloW0rld
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf area 0 interface ge-0/0/1.0
+set protocols oam ethernet connectivity-fault-management
+set protocols oam ethernet connectivity-fault-management domain MA1 service LDP1 mep 2 interface ge-1/0/1.1

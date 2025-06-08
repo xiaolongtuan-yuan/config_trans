@@ -1,0 +1,15 @@
+sysname SSH_Server
+user-group client001
+user-group grp1
+user-group super-user
+ ssh server permit-root-login disable
+ ssh user client001 assign rsa-key "ssh-rsa AAAAB3NzaC1yc2E..."
+stelnet server enable
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 10.137.217.223 255.255.0.0
+ ip address 10.1.1.1 255.255.255.255
+remote-backup-service rbsv8
+ssh server version 2
+ssh server-source -i none 10
+ssh authentication-type default deny

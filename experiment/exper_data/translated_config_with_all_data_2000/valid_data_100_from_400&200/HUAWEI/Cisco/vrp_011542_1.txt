@@ -1,0 +1,25 @@
+hostname CE2
+vlan 2
+ethernet cfm ieee
+ethernet enable
+interface GigabitEthernet1/0/1
+ switchport
+ switchport mode access
+ switchport trunk allowed vlan 2
+ ethernet cfm mep domain md3 service none 4 inward
+interface range GigabitEthernet1/0/1 - 2
+ no shutdown
+interface ma3
+ service instance 2 ethernet
+ encapsulation dot1q 2
+ ethernet cfm mep domain md3 service ma3 4 outward
+ ethernet cfm mep domain md3 service ma3 mpid 4 direction outward
+ ethernet cfm mep domain md3 service ma3 4 inward
+ ethernet cfm mep domain md3 service ma3 3 inward
+ ethernet cfm mep crosscheck test-id 1 mep-id 4
+ ethernet cfm delay one-way receive test-id 1
+ ethernet cfm continuity-check mep 4 service ma3 direction outward
+ ethernet cfm delay measurement one-way transmit test-id 2 interval 1000 continuous
+interface GigabitEthernet3
+ ethernet cfm mep crosscheck start 4 peer-mep 3
+end

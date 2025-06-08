@@ -1,0 +1,39 @@
+sysname Router
+radius-server shared-key cipher $abc123$%^%#`e)v.q@bhvzxxz;ij{>&_m0!tgp7yra@8a7mq<\/%^%#
+ interface GigabitEthernet0/0/2
+ port link-type access
+ port default vlan 100
+ interface GigabitEthernet0/0/2.0
+ ip address 10.82.1.1 255.255.255.0
+radius-server dynamic-author shared-key cipher $abc123$%^%#`e)v.q@bhvzxxz;ij{>&_m0!tgp7yra@8a7mq<\/%^%#
+radius-server shared-key cipher %^%#`E)v.Q@BHVzxxZ;ij{>&_M0!TGP7YRA@8a7mq<\/%^%#
+radius-server authentication 192.168.7.249
+radius-server accounting 192.168.7.249
+ radius-server template dot1x-profile
+radius-server template dot1x-profile
+ radius-server template dot1x-profile
+  accounting-mode radius
+  accounting-server shared-key cipher %^%#`E)v.Q@BHVzxxZ;ij{>&_M0!TGP7YRA@8a7mq<\/%^%#
+  accounting-server 192.168.7.249
+ radius-server authentication 192.168.7.249 1812 weight 80
+authentication-order radius
+aaa authentication-scheme radius
+ssh authentication-type default radius
+interface GigabitEthernet0/0/2
+ undo shutdown
+ portswitch
+ port default vlan 100
+ port trunk allow-pass vlan 100
+ ip address 10.82.1.1 255.255.255.0
+dhcp enable
+interface GigabitEthernet0/0/2.0
+dhcp select interface
+#
+ospf 1 router-id 192.168.1.1
+ area 0.0.0.0
+  network none ge-0/0/2.0
+ipv6 pool pool4 bas local
+ ip pool pool4 network 10.82.1.0 mask 255.255.255.0
+ prefix 10.82.1.2 10.82.1.254
+ prefix 2001:DB8::/64
+ ip pool pool4 dns-list 192.168.7.252

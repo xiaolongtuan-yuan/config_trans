@@ -1,0 +1,46 @@
+hostname SSH-Server
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.0.0
+service ssh
+ip ssh version 2
+no ip ssh server permit-root
+ip ssh maxconnections 10
+ip ssh maxstartups 5
+username client001 privilege 15 secret 5 $abc123
+ username client001 privilege 1 password 0 encrypted-password
+ username client002 privilege 1 password 0 encrypted-password
+ hostname SSH-Server
+ ip ssh version 2
+ ip ssh authentication-retries 5
+ ip ssh time-out 60
+ line vty 0 4
+ transport input ssh
+ login local
+ session-limit 10
+ip ssh pubkey-chain
+username client001
+key-string
+ssh-rsa AAAAB3...
+exit
+aaa authentication login default ssh-rsa
+username client002 privilege 15 secret xyz456
+ username client001 privilege 15 secret 0 <password>
+ username client002 privilege 15 secret 0 <password>
+aaa authentication login XYZ456 ssh-rsa
+interface GigabitEthernet0/0
+ interface GigabitEthernet0/0/0
+ zone-member security untrust
+ ip access-group SSH_ACCESS_IN in
+ access-list SSH_ACCESS_IN permit tcp any any eq 22
+zone-member security untrust
+!
+class-map type inspect match-any SSH-CLASS
+match protocol ssh
+policy-map type inspect SSH-POLICY
+class type inspect SSH-CLASS
+inspect
+zone security untrust
+description Untrust Zone
+zone-pair security UNTRUST-TO-SELF source untrust destination self
+service-policy type inspect SSH-POLICY

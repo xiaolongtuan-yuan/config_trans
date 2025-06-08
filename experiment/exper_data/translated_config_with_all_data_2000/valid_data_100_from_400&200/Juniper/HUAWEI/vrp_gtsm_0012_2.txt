@@ -1,0 +1,17 @@
+sysname LSRC
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 10.2.1.2 255.255.255.252
+interface LoopBack0
+ ip address 3.3.3.9 255.255.255.255
+area 0.0.0.0
+ospf 1 router-id 0.0.0.0
+ area 0.0.0.0
+  network 0.0.0.0 ge-0/0/0.0
+ silent-interface LoopBack0
+mpls rsvp-te
+mpls label protocol ldp
+router id 3.3.3.9
+mpls ldp remote-peer 2.2.2.9
+remote-ip 2.2.2.9
+ttl 6

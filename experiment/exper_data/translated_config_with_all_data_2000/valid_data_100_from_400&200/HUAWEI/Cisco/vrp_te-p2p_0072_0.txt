@@ -1,0 +1,51 @@
+hostname PE1
+ethernet cfm ma ma1 md md1
+ mpls ip
+ mpls traffic-eng tunnels
+mpls ip
+ mpls traffic-eng signalling rsvp-te
+ mpls traffic-eng signalling hello
+ip explicit-path name tope2 enable
+ next-hop 10.1.1.2
+ next-hop 10.2.1.2
+ next-hop 10.4.1.2
+ next-address 5.5.5.5
+next-hop 10.1.1.2
+next-hop 10.2.1.2
+next-hop 10.4.1.2
+next-hop 5.5.5.5
+router isis 1
+ mpls traffic-eng level-2
+ metric-style wide
+ net 86.4501.0010.0100.1001.00
+interface GigabitEthernet1/0/0
+ ip address 10.1.1.1 255.255.255.252
+ router isis 1
+ net 86.4501.0010.0100.1001.00
+ is-type level-2-only
+ metric-style wide
+ mpls ip
+ mpls traffic-eng tunnels
+ mpls traffic-eng signalling rsvp-te
+ mpls traffic-eng signalling hello
+ ip rsvp signalling hello
+interface range GigabitEthernet1/0/0 - 0
+ no shutdown
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+ router isis 1
+ net 86.4501.0010.0100.1001.00
+ is-type level-2
+ metric-style wide
+ mpls traffic-eng router-id Loopback1
+ mpls traffic-eng level-2
+ ip router isis 1
+interface Tunnel10
+ ip unnumbered Loopback1
+ tunnel mode mpls traffic-eng
+ tunnel destination 5.5.5.5
+ mpls traffic-eng record-route
+ mpls traffic-eng fast-reroute
+ tunnel mpls traffic-eng 100
+interface tope2
+end

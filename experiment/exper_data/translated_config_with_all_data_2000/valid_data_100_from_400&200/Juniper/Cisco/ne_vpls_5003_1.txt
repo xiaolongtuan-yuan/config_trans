@@ -1,0 +1,22 @@
+hostname P
+ip route 2.2.2.9 255.255.255.255 none
+mpls ldp advertise-labels interface GigabitEthernet0/0/0
+mpls ldp advertise-labels interface GigabitEthernet0/0/1
+mpls ldp discovery transport-address GigabitEthernet0/0/0
+mpls ldp discovery transport-address GigabitEthernet0/0/1
+mpls ldp router-id 2.2.2.9
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ ipv6 address mpls eui-64
+ ip address 10.2.2.1 255.255.255.0
+ ipv6 address 2001:DB8::/64 eui-64
+interface GigabitEthernet0/0/1
+ no shutdown
+interface Loopback0
+ no shutdown
+ ip address 2.2.2.9 255.255.255.255
+router ospf 1
+network 0.0.0.0 0.0.0.0 area 0
+network 0.0.0.0 255.255.255.255 area 0
+network none none area 0.0.0.0

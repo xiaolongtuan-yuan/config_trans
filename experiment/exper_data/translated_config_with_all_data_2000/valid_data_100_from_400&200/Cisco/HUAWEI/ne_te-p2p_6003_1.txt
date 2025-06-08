@@ -1,0 +1,33 @@
+sysname P1
+interface GigabitEthernet2/0/0
+ mpls traffic-eng passive-interface GigabitEthernet0/0/1
+ ip address 10.2.1.1 255.255.255.0
+ mpls te bandwidth bc0 20000
+interface LoopBack1
+ ip address 2.2.2.2 255.255.255.255
+interface GigabitEthernet1/0/0
+interface GigabitEthernet1/0
+ undo shutdown
+ ip address 10.1.1.2 255.255.255.0
+interface GigabitEthernet1/0 mode l2
+ mpls l2vc none none raw
+interface GigabitEthernet2/0
+ undo shutdown
+ mpls traffic-eng passive-interface GigabitEthernet2/0
+interface GigabitEthernet2/0 mode l2
+ mpls l2vc none none raw
+interface Tunnel1
+ ip unnumbered LoopBack1
+ tunnel destination 4.4.4.4
+interface Tunnel2
+ ip unnumbered LoopBack1
+ destination 4.4.4.4
+ospf 1
+ network 2.2.2.2 0.0.0.0
+ area 0
+ network 10.1.1.0 0.0.0.255
+ network 10.2.1.0 0.0.0.255
+ mpls te router-id Loopback1
+ospf 1 router-id 2.2.2.2
+ area 0
+stp region-configuration

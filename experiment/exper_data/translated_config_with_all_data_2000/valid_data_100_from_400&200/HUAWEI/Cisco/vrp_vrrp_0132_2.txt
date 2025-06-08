@@ -1,0 +1,19 @@
+hostname DeviceC
+interface GigabitEthernet1/0/1
+ ip address 192.168.1.2 255.255.255.0
+interface range GigabitEthernet1/0/1 - 2
+ no shutdown
+interface GigabitEthernet1/0/2
+ ip address 192.168.2.2 255.255.255.0
+interface GigabitEthernet2/0/0
+ ip address 172.16.1.1 255.255.255.0
+ ip ospf 1 area 0
+  router ospf 1
+  network 192.168.1.0 0.0.0.255 area 0
+  network 192.168.2.0 0.0.0.255 area 0
+  network 172.16.1.0 0.0.0.255 area 0
+ ip address 192.168.1.0 255.255.255.0
+ ip address 192.168.2.0 255.255.255.0
+ ip address 172.16.1.0 0.0.0.255
+interface range GigabitEthernet2/0/0 - None
+ no shutdown

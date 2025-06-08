@@ -1,0 +1,45 @@
+sysname PE2
+mpls rsvp-te
+mpls label protocol ldp
+mpls ldp transport-address 1.1.1.1
+router id 1.1.1.1
+ospf 1 router-id 1.1.1.1
+ area 0.0.0.0
+  network 0.0.0.0 ge-1/0/2.0
+ silent-interface LoopBack0
+ptp-adaptive local-ip 2.2.2.2
+ l2vpn
+ peer 2.2.2.2
+ mpls signaling static
+ vsi PE2 static
+ peer 2.2.2.2 vc-id 1 trans-interface ge-1/0/1.0 encapsulation ethernet
+ negotiation-vc-id 1
+ no control-word
+interface GigabitEthernet1/0/1
+ undo shutdown
+ vlan-type dot1q 2
+ switch-mode trunk
+interface Vlanif1
+interface GigabitEthernet1/0/1.1 mode l2
+ encapsulation dot1q vid 1
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip address 10.1.1.2 255.255.255.0
+area 0.0.0.0
+cfm md md1
+ ma ma1
+  mep mep-id 2 interface GigabitEthernet1/0/1.1 down
+ cfm md md1 level 1
+ mep 2 interface GigabitEthernet1/0/1.1 inward
+ cc interval 1s
+ cfm mep loss-threshold ma1 mep-id 2 threshold 3
+ cfm remote-mep 1 ma-name ma1 md-name md1
+cfm md md1 level 1
+ ma md1
+  ais level 1
+cfm md md1 level 6
+ ma ma1
+  mep mep-id 2 interface ge-1/0/1.1 down
+interface LoopBack0
+ undo shutdown
+ ip address 1.1.1.1 255.255.255.255

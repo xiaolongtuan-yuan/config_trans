@@ -1,0 +1,157 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "sysname CE1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "vlan batch 100",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "stp enable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "interface GigabitEthernet1/0/1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "portswitch",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "port link-type trunk",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "port trunk allow-pass vlan 100",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s8",
+            "text": "stp bpdu vlan 100",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t896",
+            "ids": [
+                896
+            ],
+            "text": "set system host-name CE1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t898",
+            "ids": [
+                897,
+                898
+            ],
+            "text": "set vlans vlan100 vlan-id 100",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t899",
+            "ids": [
+                899
+            ],
+            "text": "set protocols rstp",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t901",
+            "ids": [
+                900,
+                901
+            ],
+            "text": "set interfaces ge-1/0/1 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t905",
+            "ids": [
+                900,
+                903,
+                905
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching port-mode trunk",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t907",
+            "ids": [
+                900,
+                907
+            ],
+            "text": "set interfaces ge-1/0/1 unit ge-1/0/1 family ethernet-switching vlan members 100",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t909",
+            "ids": [
+                900,
+                909
+            ],
+            "text": "set interfaces ge-1/0/1 set protocols rstp interface ge-1/0/1 vlan 100",
+            "description": "",
+            "type": "llm"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t896"
+        },
+        {
+            "source": "s2",
+            "target": "t898"
+        },
+        {
+            "source": "s3",
+            "target": "t899"
+        },
+        {
+            "source": "s4",
+            "target": "t901"
+        },
+        {
+            "source": "s5",
+            "target": "t905"
+        },
+        {
+            "source": "s6",
+            "target": "t905"
+        },
+        {
+            "source": "s7",
+            "target": "t907"
+        },
+        {
+            "source": "s8",
+            "target": "t909"
+        }
+    ]
+}

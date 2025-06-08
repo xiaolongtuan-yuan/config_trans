@@ -1,0 +1,30 @@
+hostname CE1
+vlan 2
+ name vlan2
+ethernet cfm
+ethernet cfm domain md3 service ma3
+ethernet cfm domain md3 service ma3 continuity-check interval 1s
+ethernet cfm mep domain md3 service ma3 mep-id 3 direction outward interface GigabitEthernet0/0/1
+ethernet cfm domain md3 service ma3 remote-mep 4
+ethernet cfm domain md3 service ma3 remote-mep 4 continuity-check enable
+ ethernet cfm domain md3 level 0
+ethernet cfm maintenance-association ma1s md3
+ethernet cfm maintenance-association ma3 md md3
+ethernet cfm maintenance-association ma3 md3
+ ethernet cfm domain md3 level 0
+ ethernet cfm service ma3 evc ma3 vlan 2
+ ethernet cfm mep crosscheck 3 service ma3
+ interface GigabitEthernet0/0/1
+ ethernet cfm mep domain md3 service ma3 mpid 3 inward
+ interface gigabitethernet0/0/1
+ ethernet cfm mep domain md3 service ma3 mpid 3
+ ethernet cfm service ma3 evc ma3
+ ethernet cfm mep crosscheck start 3 service ma3 evc ma3
+ ethernet cfm mep crosscheck mep 4 service ma3 evc ma3
+ ethernet cfm remote-mep 4 continuity-check enable
+interface GigabitEthernet0/0/1
+ no shutdown
+ switchport
+ switchport access vlan 2
+ switchport trunk allowed vlan 2
+interface range ge-0/0/1 - 0

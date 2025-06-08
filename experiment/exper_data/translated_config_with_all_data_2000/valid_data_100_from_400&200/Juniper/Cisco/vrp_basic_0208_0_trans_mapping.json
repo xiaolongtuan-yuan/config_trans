@@ -1,0 +1,576 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "set system host-name SSH-Server",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "set interfaces ge-0/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.1/16",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "set system services ssh",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "set system services ssh protocol-version v2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "set system services ssh root-login deny",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "set system services ssh connection-limit 10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s8",
+            "text": "set system services ssh rate-limit 5",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s9",
+            "text": "set system login user client001",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "set system login user client001 class operator",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "set system login user client001 authentication encrypted-password \"$ABC123\" # Replace with encrypted password",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s12",
+            "text": "set system login user client001 authentication ssh-rsa \"ssh-rsa AAAAB3...\" # Optional: Add SSH public key",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s13",
+            "text": "set system login user client002",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s14",
+            "text": "set system login user client002 class operator",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s15",
+            "text": "set system login user client002 authentication encrypted-password \"$XYZ456\" # Replace with encrypted password",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s16",
+            "text": "set security zones security-zone untrust",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s17",
+            "text": "set security zones security-zone untrust interfaces ge-0/0/0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s18",
+            "text": "set security zones security-zone untrust host-inbound-traffic system-services ssh",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t863",
+            "text": "hostname SSH-Server",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t864",
+            "text": "interface GigabitEthernet0/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t865",
+            "text": "no shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t867",
+            "text": "ip address 10.1.1.1 255.255.0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t868",
+            "text": "service ssh",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t869",
+            "text": "ip ssh version 2",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t870",
+            "text": "no ip ssh server permit-root",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t871",
+            "text": "ip ssh maxconnections 10",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t872",
+            "text": "ip ssh maxstartups 5",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t873",
+            "text": "username client001 privilege 15 secret 5 $abc123",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t880",
+            "text": "username client001 privilege 1 password 0 encrypted-password",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t881",
+            "text": "username client002 privilege 1 password 0 encrypted-password",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t883",
+            "text": "hostname SSH-Server",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t884",
+            "text": "ip ssh version 2",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t885",
+            "text": "ip ssh authentication-retries 5",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t886",
+            "text": "ip ssh time-out 60",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t887",
+            "text": "line vty 0 4",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t888",
+            "text": "transport input ssh",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t889",
+            "text": "login local",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t890",
+            "text": "session-limit 10",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t874",
+            "text": "ip ssh pubkey-chain",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t875",
+            "text": "username client001",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t876",
+            "text": "key-string",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t877",
+            "text": "ssh-rsa AAAAB3...",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t878",
+            "text": "exit",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t891",
+            "text": "aaa authentication login default ssh-rsa",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t892",
+            "text": "username client002 privilege 15 secret xyz456",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t894",
+            "text": "username client001 privilege 15 secret 0 <password>",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t895",
+            "text": "username client002 privilege 15 secret 0 <password>",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t896",
+            "text": "aaa authentication login XYZ456 ssh-rsa",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t897",
+            "text": "interface GigabitEthernet0/0",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t964",
+            "text": "interface GigabitEthernet0/0/0",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t965",
+            "text": "zone-member security untrust",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t967",
+            "text": "ip access-group SSH_ACCESS_IN in",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t968",
+            "text": "access-list SSH_ACCESS_IN permit tcp any any eq 22",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t898",
+            "text": "zone-member security untrust",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t899",
+            "text": "!",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t900",
+            "text": "class-map type inspect match-any SSH-CLASS",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t901",
+            "text": "match protocol ssh",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t902",
+            "text": "policy-map type inspect SSH-POLICY",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t903",
+            "text": "class type inspect SSH-CLASS",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t927",
+            "text": "inspect",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t928",
+            "text": "zone security untrust",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t929",
+            "text": "description Untrust Zone",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t930",
+            "text": "zone-pair security UNTRUST-TO-SELF source untrust destination self",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t962",
+            "text": "service-policy type inspect SSH-POLICY",
+            "description": "",
+            "type": "llm"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t863"
+        },
+        {
+            "source": "s2",
+            "target": "t864"
+        },
+        {
+            "source": "s2",
+            "target": "t865"
+        },
+        {
+            "source": "s3",
+            "target": "t867"
+        },
+        {
+            "source": "s4",
+            "target": "t868"
+        },
+        {
+            "source": "s5",
+            "target": "t869"
+        },
+        {
+            "source": "s6",
+            "target": "t870"
+        },
+        {
+            "source": "s7",
+            "target": "t871"
+        },
+        {
+            "source": "s8",
+            "target": "t872"
+        },
+        {
+            "source": "s9",
+            "target": "t873"
+        },
+        {
+            "source": "s9",
+            "target": "t874"
+        },
+        {
+            "source": "s9",
+            "target": "t875"
+        },
+        {
+            "source": "s9",
+            "target": "t876"
+        },
+        {
+            "source": "s9",
+            "target": "t877"
+        },
+        {
+            "source": "s9",
+            "target": "t878"
+        },
+        {
+            "source": "s10",
+            "target": "t880"
+        },
+        {
+            "source": "s10",
+            "target": "t881"
+        },
+        {
+            "source": "s11",
+            "target": "t883"
+        },
+        {
+            "source": "s11",
+            "target": "t884"
+        },
+        {
+            "source": "s11",
+            "target": "t885"
+        },
+        {
+            "source": "s11",
+            "target": "t886"
+        },
+        {
+            "source": "s11",
+            "target": "t887"
+        },
+        {
+            "source": "s11",
+            "target": "t888"
+        },
+        {
+            "source": "s11",
+            "target": "t889"
+        },
+        {
+            "source": "s11",
+            "target": "t890"
+        },
+        {
+            "source": "s12",
+            "target": "t891"
+        },
+        {
+            "source": "s13",
+            "target": "t892"
+        },
+        {
+            "source": "s14",
+            "target": "t894"
+        },
+        {
+            "source": "s14",
+            "target": "t895"
+        },
+        {
+            "source": "s15",
+            "target": "t896"
+        },
+        {
+            "source": "s16",
+            "target": "t897"
+        },
+        {
+            "source": "s16",
+            "target": "t898"
+        },
+        {
+            "source": "s16",
+            "target": "t899"
+        },
+        {
+            "source": "s16",
+            "target": "t900"
+        },
+        {
+            "source": "s16",
+            "target": "t901"
+        },
+        {
+            "source": "s16",
+            "target": "t902"
+        },
+        {
+            "source": "s16",
+            "target": "t903"
+        },
+        {
+            "source": "s16",
+            "target": "t927"
+        },
+        {
+            "source": "s16",
+            "target": "t928"
+        },
+        {
+            "source": "s16",
+            "target": "t929"
+        },
+        {
+            "source": "s16",
+            "target": "t930"
+        },
+        {
+            "source": "s16",
+            "target": "t962"
+        },
+        {
+            "source": "s17",
+            "target": "t964"
+        },
+        {
+            "source": "s17",
+            "target": "t965"
+        },
+        {
+            "source": "s18",
+            "target": "t967"
+        },
+        {
+            "source": "s18",
+            "target": "t968"
+        }
+    ]
+}

@@ -1,0 +1,160 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "sysname DeviceB",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "interface Lmpif1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "undo shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "link-protocol ppp",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "ip address 10.110.0.2 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "ppp pap local-user rtb password cipher <password>",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "return",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t2736",
+            "ids": [
+                2736
+            ],
+            "text": "set system host-name DeviceB",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2738",
+            "ids": [
+                2737,
+                2738
+            ],
+            "text": "set interfaces lm-1/0/0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2743",
+            "ids": [
+                2737,
+                2743
+            ],
+            "text": "set interfaces lm-1/0/0 set interfaces Lmpif1/0/0 encapsulation ppp",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2745",
+            "ids": [
+                2737,
+                2745
+            ],
+            "text": "set interfaces lm-1/0/0 unit 0 family inet address 10.110.0.2/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2740",
+            "ids": [
+                2739,
+                2740
+            ],
+            "text": "set interfaces ge-1/0/0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2741",
+            "ids": [
+                2739,
+                2741
+            ],
+            "text": "set interfaces ge-1/0/0 unit 0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2747",
+            "ids": [
+                2746,
+                2747
+            ],
+            "text": "set interfaces Lmpif1/0/0 set interfaces lt-1/0/0 unit 0 ppp-authentication pap local-name rtb password \"<password>\"",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2749",
+            "ids": [
+                2749
+            ],
+            "text": "set system host-name CE1",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t2736"
+        },
+        {
+            "source": "s2",
+            "target": "t2738"
+        },
+        {
+            "source": "s3",
+            "target": "t2740"
+        },
+        {
+            "source": "s3",
+            "target": "t2741"
+        },
+        {
+            "source": "s4",
+            "target": "t2743"
+        },
+        {
+            "source": "s5",
+            "target": "t2745"
+        },
+        {
+            "source": "s6",
+            "target": "t2747"
+        },
+        {
+            "source": "s7",
+            "target": "t2749"
+        }
+    ]
+}

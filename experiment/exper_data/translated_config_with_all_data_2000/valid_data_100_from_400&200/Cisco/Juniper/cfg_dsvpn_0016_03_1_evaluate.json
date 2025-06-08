@@ -1,0 +1,72 @@
+{
+    "command_accuracy": 0.6842105263157895,
+    "missed_commands": [
+        "set interfaces ge-1/0/0 unit 0 tunnel source-address 10.1.2.10",
+        "set interfaces gr-0/0/0 unit 0 tunnel source ge-1/0/0.0",
+        "set interfaces gr-0/0/0 unit 0 tunnel destination 172.16.1.1",
+        "set interfaces gr-0/0/0 unit 0 encapsulation gre",
+        "set security ipsec vpn ipsec-vpn bind-interface gr-0/0/0.0",
+        "set security ipsec vpn ipsec-vpn ike gateway ike-gateway",
+        "set protocols bgp group bgp-to-peer local-address 172.16.1.2",
+        "set protocols bgp group bgp-to-peer family inet unicast",
+        "set interfaces ge-1/0/0 unit 0 tunnel source-address 10.1.2.10",
+        "set interfaces gr-0/0/0 unit 0 tunnel source ge-1/0/0.0",
+        "set interfaces gr-0/0/0 unit 0 tunnel destination 172.16.1.1",
+        "set interfaces gr-0/0/0 unit 0 encapsulation gre",
+        "set security ipsec vpn ipsec-vpn bind-interface gr-0/0/0.0",
+        "set security ipsec vpn ipsec-vpn ike gateway ike-gateway",
+        "set protocols bgp group bgp-to-peer local-address 172.16.1.2",
+        "set protocols bgp group bgp-to-peer family inet unicast"
+    ],
+    "grammatical_accuracy": 0.631578947368421,
+    "missed_templates": [
+        "set interfaces [interface_name] unit [unit_number] tunnel source-address [ip_address]",
+        "set interfaces [parameter1] unit [parameter2] tunnel destination [parameter3]",
+        "set interfaces [parameter1] unit [parameter2] encapsulation [parameter3]",
+        "set security ipsec vpn [parameter1] bind-interface [parameter2]",
+        "set security ipsec vpn [parameter1] ike gateway [parameter2]",
+        "set protocols bgp group [parameter1] local-address [parameter2]",
+        "set protocols bgp group [parameter1] family inet [parameter2]"
+    ],
+    "llm_command_accuracy": 0.10526315789473684,
+    "llm_command_ratio": 0.10344827586206896,
+    "command_for_llm": [
+        "redistribute ospf 1"
+    ],
+    "llm_trans_commands": [
+        "set policy-options policy-statement OSPF-TO-BGP term 1 from protocol ospf",
+        "set policy-options policy-statement OSPF-TO-BGP term 1 then accept",
+        "set protocols bgp group EBGP export OSPF-TO-BGP"
+    ],
+    "source_commands": [
+        "ip address 192.168.1.1 255.255.255.0",
+        "ip address 172.16.1.2 255.255.255.0",
+        "address-family ipv4",
+        "network 10.1.2.0 0.0.0.255 area 1",
+        "interface Tunnel0",
+        "end",
+        "router-id 10.1.2.10",
+        "interface GigabitEthernet2/0/0",
+        "network 192.168.1.0 0.0.0.255 area 0",
+        "neighbor 172.16.1.1 activate",
+        "router ospf 2",
+        "neighbor 172.16.1.1 remote-as 100",
+        "redistribute ospf 1",
+        "interface Loopback0",
+        "router ospf 1",
+        "hostname Spoke1",
+        "neighbor 172.16.1.1 update-source Loopback0",
+        "tunnel source GigabitEthernet1/0/0",
+        "exit-address-family",
+        "router-id 172.16.1.2",
+        "router bgp 200",
+        "tunnel key 100",
+        "bgp router-id 172.16.1.2",
+        "ip address 10.1.2.10 255.255.255.0",
+        "ip address 172.16.1.2 255.255.255.255",
+        "interface GigabitEthernet1/0/0"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

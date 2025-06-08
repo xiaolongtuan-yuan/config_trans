@@ -47,7 +47,7 @@ def query_main(missing_temp, vendor1, vendor2):
 
 def missing_template_peer_statistic_main():
     name = 'all_data_2000'
-    num = 'valid_data_100_from_2000'
+    num = 'valid_data_100_from_400&200'
     vendors = ['HUAWEI', 'Juniper', 'Cisco']
     for vendor1 in vendors:
         for vendor2 in vendors:

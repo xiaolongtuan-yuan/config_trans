@@ -1,0 +1,35 @@
+sysname PE2
+mpls rsvp-te
+router id 3.3.3.3
+mpls label protocol ldp
+interface GigabitEthernet1/0/1
+ undo shutdown
+ vlan protocol passthrough enable
+ switch-mode trunk
+ vlan-type dot1q 10
+ ipv6 address 2001::DB8/64 eui-64
+interface GigabitEthernet1/0/1.1 mode l2
+ encapsulation dot1q vid 1
+ptp-adaptive local-ip 1.1.1.1
+ mpls l2vc 1.1.1.1 100 ethernet
+ip route-static vpn-instance none 1.1.1.1 none none
+interface GigabitEthernet1/0/2
+ undo shutdown
+ ip address 10.2.1.2 255.255.255.252
+ ipv6 address 2001::DB8/64 eui-64
+interface loopback0
+ undo shutdown
+interface LoopBack0
+ ip address 3.3.3.3 255.255.255.255
+area 0.0.0.0
+ospfv3 1
+ area 0.0.0.0
+ospf 1 router-id 0.0.0.0
+ silent-interface LoopBack0.1
+cfm md md1
+ ethernet cfm md md1 level 6 ma ma1 vlan 10
+ ma ma1
+  mep mep-id 32 interface GigabitEthernet1/0/1.1 inward
+cfm md md1 level 6
+ ma 6
+  ais level 6

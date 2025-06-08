@@ -1,0 +1,65 @@
+set system host-name NATA
+set chassis vsm on-board-mode enable
+set services service-set 1 interface-service service-interface 1
+set services service-set 6RD_SS interface-service service-interface gr-1/0/0 set services service-set group1 interface-service slot 1
+services {
+service-set group1 {
+nat rules nat1; }
+set services service-set group1 interface-service service-interface group1
+set security nat source pool nat1 address 1.1.1.101/32 to 1.1.1.105/32 services {
+set security nat source pool nat1 address 1.1.1.101/32 to 1.1.1.105/32 service-set group1 {
+set security nat source pool nat1 address 1.1.1.101/32 to 1.1.1.105/32 nat-rules nat1;
+set security nat source pool nat1 address 1.1.1.101/32 to 1.1.1.105/32 }
+set security nat source pool nat1 address 1.1.1.101/32 to 1.1.1.105/32 set security nat source pool address-group1 address 1.1.1.101/32 to 1.1.1.105/32
+set security nat source pool nat1 address 1.1.1.101/32 to 1.1.1.105/32 set security nat source rule-set NAT-RULE-set from zone untrust
+set security nat source pool nat1 address 1.1.1.101/32 to 1.1.1.105/32 set security nat source rule-set NAT-RULE-set to zone trust
+set security nat source pool nat1 address 1.1.1.101/32 to 1.1.1.105/32 set security nat source rule-set NAT-RULE-set rule NAT-RULE match source-address 0.0.0.0/0
+set security nat source pool nat1 address 1.1.1.101/32 to 1.1.1.105/32 set security nat source rule-set NAT-RULE-set rule NAT-RULE then source-nat interface
+set security nat source pool nat1 address 1.1.1.101/32 to 1.1.1.105/32 set security nat destination pool DST-POOL address 192.168.10.10/32
+set security nat source pool nat1 address 1.1.1.101/32 to 1.1.1.105/32 set security nat destination rule-set DST-RULE-set from zone untrust
+set security nat source pool nat1 address 1.1.1.101/32 to 1.1.1.105/32 set security nat destination rule-set DST-RULE-set rule DST-RULE match destination-address 1.1.1.100/32
+set security nat source pool nat1 address 1.1.1.101/32 to 1.1.1.105/32 set security nat destination rule-set DST-RULE-set rule DST-RULE then destination-nat pool DST-POOL
+set security nat source pool nat1 address 1.1.1.101/32 to 1.1.1.105/32 set security nat static rule-set NAT1 from zone untrust
+set security nat source pool nat1 address 1.1.1.101/32 to 1.1.1.105/32 set security nat static rule-set NAT1 rule R1 match destination address 1.1.1.100
+set security nat source pool nat1 address 1.1.1.101/32 to 1.1.1.105/32 set security nat static rule-set NAT1 rule R1 then static-nat prefix 192.168.10.10
+set security nat source rule-set nat1 rule nat1 match source-address 192.168.10.0/24
+set security nat source rule-set nat1 rule nat1 then source-nat pool nat1
+set security nat static rule-set nat1 rule nat1 match destination-address 1.1.1.100/32
+set security nat static rule-set nat1 rule nat1 then static-nat prefix 192.168.10.10/32
+set system login vty 0 4 set firewall filter ACL-3001 term 1 from source-address 192.168.10.0/24
+set system login vty 0 4 set firewall filter ACL-3001 term 1 then accept
+set system ports auxiliary disable
+firewall filter classifier1 term term1 from source-address 192.168.10.0/24 from term classifier1 then forwarding-class class1
+firewall filter classifier1 term term1 from source-address 192.168.10.0/24 from classifier1 term term1 then count
+firewall filter classifier1 term term1 from source-address 192.168.10.0/24 from classifier1 term term1 then next term
+firewall filter classifier1 term term1 from source-address 192.168.10.0/24 family inet {
+firewall filter classifier1 term term1 from source-address 192.168.10.0/24 filter classifier1 {
+firewall filter classifier1 term term1 from source-address 192.168.10.0/24 term term1 {
+firewall filter classifier1 term term1 from source-address 192.168.10.0/24 from {
+firewall filter classifier1 term term1 from source-address 192.168.10.0/24 source-address {
+firewall filter classifier1 term term1 from source-address 192.168.10.0/24 192.168.10.0/24;
+firewall filter classifier1 term term1 from source-address 192.168.10.0/24 }
+firewall filter classifier1 term term1 from source-address 192.168.10.0/24 then accept;
+firewall filter classifier1 term term1 then accept
+set firewall family inet filter behavior1 term term1 then nat set security nat destination pool nat1 address 192.168.10.10/32
+set firewall family inet filter behavior1 term term1 then nat set security nat destination rule-set nat1 from interface ge-1/0/2
+set firewall family inet filter behavior1 term term1 then nat set security nat destination rule-set nat1 rule nat1 match destination address 1.1.1.100
+set firewall family inet filter behavior1 term term1 then nat set security nat destination rule-set nat1 rule nat1 then destination-nat pool nat1
+firewall { classifier classifier1 then behavior behavior1
+filter policy1 {
+term term1 {
+from {
+source-address {
+192.168.10.0/24;
+then {
+routing-instance nat1; }
+set services pppoe-client interface ge-1/0/1.0 set interfaces ge-1/0/1 unit 0 family inet filter input policy1
+set interfaces ge-1/0/1 unit 0 family inet service input null
+set interfaces ge-1/0/1 unit 0 family inet address 192.168.10.1/24
+set services pppoe-client interface ge-1/0/2.0
+set interfaces ge-1/0/2 unit 0 family inet service input shutdown
+set interfaces ge-1/0/2 unit 0 family inet address 2.2.2.1/24
+set interfaces ge-1/0/0 unit 0 family inet service input shutdown
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set routing-options static route 0.0.0.0/0 next-hop 2.2.2.2
+set routing-options static route 0.0.0.0/0 exit

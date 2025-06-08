@@ -1,0 +1,35 @@
+set system host-name CGN1
+set interfaces ge-1/0/3 disable
+set interfaces ge-1/0/3 unit 0 family inet address 10.0.0.1/24
+set interfaces ge-1/0/3 unit 21 family inet address 10.0.0.3/24 vrrp-group 10 virtual-address 10.0.0.3
+set interfaces ge-1/0/3 unit 21 family inet address 10.1.1.2/24 vrrp-group 10 virtual-address 10.1.1.10
+set interfaces ge-1/0/3 set protocols vrrp group 10 priority 150
+set interfaces ge-1/0/3 unit 0 family inet address none vrrp-group 10 preempt hold-time 400
+set interfaces ge-1/0/3 set interfaces ge-1/0/3 unit 0 family inet address 10.0.0.1/24 vrrp-group 10 track interface ge-1/0/2 priority-cost 50
+set interfaces ge-1/0/3 set interfaces ge-1/0/1 unit 0 family inet address 10.0.0.1/24 vrrp-group 10 track interface ge-1/0/1 priority-cost 50
+set interfaces ge-1/0/3 unit 0 family inet address none vrrp-group 10 preempt hold-time none
+set interfaces ge-1/0/3 unit 21 family inet address 10.0.0.3/24 vrrp-group 10 virtual-address 10.0.0.1
+set interfaces ge-1/0/3 unit 0 family inet address none vrrp-group 10 priority 50
+set services service-set 21 interface-service service-interface 21
+set services service-set 21 interface-service service-interface gr-0/0/0
+set services service-set 21 redundancy-group 10
+set services service-set 21 interface-service service-interface ge-0/0/3
+set services service-set SS21 next-hop-service inside-service-interface s-1/0/0.0
+set services service-set SS21 next-hop-service outside-service-interface s-1/0/1.0
+set services ds-lite instance dslite1 id 21
+set services ds-lite instance dslite1 set services nat port overloading port-range 4096
+set services ds-lite instance dslite1 services {
+set services ds-lite instance dslite1 service-set 21;
+set services ds-lite instance dslite1 }
+set services ds-lite instance dslite1 service-set 21 {
+set services ds-lite instance dslite1 interface-service;
+set services ds-lite instance dslite1 address-group group1 group-id 1
+set services ds-lite instance dslite1 set services softwire ds-lite address-assignment address-group group1 address 1.1.1.1/24
+set services ds-lite instance dslite1 address-group group1 group-id 21
+set services ds-lite instance dslite1 outbound any address-group group1
+set services ds-lite instance dslite1 local-ipv6 1:1:1::12/128
+set services ds-lite instance dslite1 remote-ipv6 2001:db8:1::/41
+set services ds-lite instance dslite1 local-ipv6 2001:db8:1::/41
+set services ds-lite instance dslite1 alg enable all
+set services ds-lite instance dslite1 filter mode full-cone
+set system host-name CE1

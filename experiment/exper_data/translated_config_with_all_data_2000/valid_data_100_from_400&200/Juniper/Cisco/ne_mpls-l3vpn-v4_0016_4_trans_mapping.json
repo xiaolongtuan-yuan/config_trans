@@ -1,0 +1,314 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "set system host-name CE3",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "set interfaces ge-1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "set interfaces ge-1/0/0 unit 0 family inet address 10.3.1.1/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "set interfaces ge-1/0/0 unit 0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "set routing-options autonomous-system 800",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "set protocols bgp group BGP_GROUP",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "set protocols bgp group BGP_GROUP type external",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s9",
+            "text": "set protocols bgp group BGP_GROUP family inet unicast",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "set protocols bgp group BGP_GROUP neighbor 10.3.1.2 family inet unicast",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "set protocols bgp group BGP_GROUP export ADVERTISE_NETWORK",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s13",
+            "text": "set policy-options policy-statement ADVERTISE_NETWORK term 1 from route-filter 10.3.1.0/24 exact",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s14",
+            "text": "set policy-options policy-statement ADVERTISE_NETWORK term 1 then accept",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s15",
+            "text": "set policy-options policy-statement ADVERTISE_NETWORK then reject",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t494",
+            "text": "hostname CE3",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t495",
+            "text": "interface GigabitEthernet1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t496",
+            "text": "no shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t498",
+            "text": "ip address 10.3.1.1 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t500",
+            "text": "service instance 0 ethernet",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t501",
+            "text": "router bgp 800",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t509",
+            "text": "neighbor 10.3.1.2 remote-as 100",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t510",
+            "text": "neighbor 10.3.1.2 address-family ipv4 unicast",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t517",
+            "text": "route-map ADVERTISE_NETWORK permit 10",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t518",
+            "text": "match ip address prefix-list ADVERTISE_NETWORK_PREFIX",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t519",
+            "text": "ip prefix-list ADVERTISE_NETWORK_PREFIX seq 5 permit 10.3.1.0/24",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t503",
+            "text": "neighbor 10.3.1.2 remote-as 100",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t504",
+            "text": "neighbor 10.3.1.2 activate",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t505",
+            "text": "network 10.3.1.0 mask 255.255.255.0",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t506",
+            "text": "redistribute bgp",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t513",
+            "text": "redistribute connected",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t520",
+            "text": "policy-map ADVERTISE_NETWORK",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t521",
+            "text": "class ADVERTISE_NETWORK",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t522",
+            "text": "police cir 1m pir 2m",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t523",
+            "text": "violate-action accept",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t526",
+            "text": "police cir 1m pir 1m",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t527",
+            "text": "violate-action reject",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t494"
+        },
+        {
+            "source": "s2",
+            "target": "t495"
+        },
+        {
+            "source": "s2",
+            "target": "t496"
+        },
+        {
+            "source": "s3",
+            "target": "t498"
+        },
+        {
+            "source": "s4",
+            "target": "t500"
+        },
+        {
+            "source": "s5",
+            "target": "t501"
+        },
+        {
+            "source": "s6",
+            "target": "t503"
+        },
+        {
+            "source": "s6",
+            "target": "t504"
+        },
+        {
+            "source": "s6",
+            "target": "t505"
+        },
+        {
+            "source": "s7",
+            "target": "t506"
+        },
+        {
+            "source": "s9",
+            "target": "t509"
+        },
+        {
+            "source": "s9",
+            "target": "t510"
+        },
+        {
+            "source": "s10",
+            "target": "t510"
+        },
+        {
+            "source": "s11",
+            "target": "t513"
+        },
+        {
+            "source": "s13",
+            "target": "t517"
+        },
+        {
+            "source": "s13",
+            "target": "t518"
+        },
+        {
+            "source": "s13",
+            "target": "t519"
+        },
+        {
+            "source": "s14",
+            "target": "t520"
+        },
+        {
+            "source": "s14",
+            "target": "t521"
+        },
+        {
+            "source": "s14",
+            "target": "t522"
+        },
+        {
+            "source": "s14",
+            "target": "t523"
+        },
+        {
+            "source": "s15",
+            "target": "t521"
+        },
+        {
+            "source": "s15",
+            "target": "t526"
+        },
+        {
+            "source": "s15",
+            "target": "t527"
+        }
+    ]
+}

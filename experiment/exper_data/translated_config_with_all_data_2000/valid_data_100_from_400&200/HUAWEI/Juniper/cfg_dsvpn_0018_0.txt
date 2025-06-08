@@ -1,0 +1,39 @@
+set system host-name Hub1
+set system login vty 0 4 set firewall family inet filter ACL_2000 term rule5 from source-address 192.168.0.0/24
+set system login vty 0 4 set firewall family inet filter ACL_2000 term rule5 then accept
+set system login vty 0 4 set firewall filter ACL_2001 term term5 from source-address 192.168.1.0/24
+set system login vty 0 4 set firewall filter ACL_2001 term term5 then accept
+set system login vty 0 4 set firewall filter 2001 term 10 from source-address 192.168.2.0/24
+set system login vty 0 4 set firewall filter 2001 term 10 then accept
+set system ports auxiliary disable
+set policy-options policy-statement 1 term 1 from route-filter 192.168.0.0/24 exact from {
+set policy-options policy-statement 1 term 1 from route-filter 192.168.0.0/24 exact protocol ospf;
+set policy-options policy-statement 1 term 1 from route-filter 192.168.0.0/24 exact route-filter 192.168.0.0/24 exact;
+set policy-options policy-statement 1 term 1 from route-filter 192.168.0.0/24 exact }
+set policy-options policy-statement 1 term 1 then accept
+set policy-options policy-statement 2 term 2 from route-filter 192.168.1.0/24 exact from policy-options policy-statement 2 term 2 then accept
+set policy-options policy-statement 2 term 2 from route-filter 192.168.1.0/24 exact from policy-options policy-statement 2 term 2 from route-filter 192.168.1.0/24 exact
+set policy-options policy-statement 2 term 2 from route-filter 192.168.1.0/24 exact from policy-options policy-statement 2 term 2 from route-filter 192.168.2.0/24 exact
+set policy-options policy-statement 2 term 2 from route-filter 192.168.2.0/24 exact
+set policy-options policy-statement 2 term 2 then accept
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.10/24
+set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 tunnel gre
+set interfaces ge-1/0/0 unit 0 family inet address 172.16.1.1/24
+set interfaces ge-1/0/0 set interfaces gr-0/0/0 unit 0 tunnel encapsulation gre
+set interfaces ge-1/0/0 set interfaces gr-0/0/0 unit 0 tunnel multipoint
+set interfaces ge-1/0/0 set interfaces gr-0/0/0 unit 0 tunnel source ge-1/0/0.0
+set interfaces ge-1/0/0 set protocols ospf area 0.0.0.0 interface Tunnel0 interface-type p2mp
+set interfaces ge-1/0/0 set security ipsec vpn <profile-name> bind-interface Tunnel0
+set interfaces lo0 disable
+set interfaces lo0 unit 0 family inet address 192.168.0.1/32
+set routing-options router-id 172.16.1.1
+set protocols ospf import 1
+set protocols ospf area 0.0.0.0 interface 0.0.0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set routing-options router-id 10.1.1.10
+set protocols ospf area 0.0.0.1 interface 0.0.0.1
+set protocols ospf area 0.0.0.1 interface ge-0/0/1.0
+set routing-options router-id 192.168.0.1
+set protocols ospf import 2
+set system host-name CE1

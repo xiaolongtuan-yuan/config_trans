@@ -1,0 +1,20 @@
+set system host-name CE2
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.2.1.2/24
+set interfaces ge-1/0/0 unit 0 family inet address 10.3.1.2/24
+set interfaces ge-1/0/0 unit 0 family inet address 22.22.22.22/32
+set interfaces lo0.1 disable
+set routing-options autonomous-system 65420
+set protocols bgp group 65420 type internal
+set protocols bgp group 65420 family inet unicast
+set protocols bgp group 65420 local-as 65420
+set protocols bgp group 65420 peer-as 65420
+set protocols bgp group IBGP_65420 type external
+set protocols bgp group IBGP_65420 neighbor 10.2.1.1 peer-as 100
+set protocols bgp group IBGP_65420 export BGP-NETWORKS
+set protocols bgp group IBGP type external
+set protocols bgp group IBGP neighbor 10.3.1.1 peer-as 100
+set protocols bgp group IBGP export 100
+set protocols ospf area 0.0.0.22 interface ge-0/0/1.0
+set system host-name CE1

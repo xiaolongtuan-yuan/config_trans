@@ -1,0 +1,51 @@
+sysname Core_ASBR
+mpls rsvp-te
+mpls label protocol ldp
+router id 4.4.4.4
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.3.1.2 255.255.255.0
+ ipv6 address 2001::DB8/64 mpls
+ ip address 10.4.1.1 255.255.255.0
+ ipv6 address none mpls
+interface GigabitEthernet2/0/0
+ undo shutdown
+interface LoopBack1
+ ip address 4.4.4.4 255.255.255.255
+bgp 200
+ import-route direct
+ peer 5.5.5.5 as-number 200
+ ipv4-family unicast
+  peer 5.5.5.5 next-hop-local
+  peer none route-policy policy1 export
+ peer 5.5.5.5 connect-interface LoopBack0
+peer 5.5.5.5 as-number 200
+peer 5.5.5.5 connect-interface LoopBack0
+peer 5.5.5.5 ebgp-max-hop 255
+route-policy policy1 export peer 5.5.5.5
+bgp 100
+ import-route direct
+ peer 10.3.1.1 as-number 100
+ ipv4-family unicast
+  peer 10.3.1.1 next-hop-local
+  peer 5.5.5.5 route-policy policy1 export
+ peer 10.3.1.1 connect-interface GigabitEthernet1/0/0.0
+peer 10.3.1.1 as-number 100
+peer 10.3.1.1 connect-interface GigabitEthernet1/0/0.0
+peer 10.3.1.1 ebgp-max-hop 255
+peer 10.3.1.1 enable
+peer 10.3.1.1 route-policy policy1 export
+ ipv4-family unicast
+area 0.0.0.0
+ospf 1 router-id 0.0.0.0
+ silent-interface LoopBack0.1
+ area 0.0.0.0
+  network 0.0.0.0 ge-2/0/0.0
+ip ip-prefix policy1 index 10 permit 0.0.0.0 0 less-equal 32
+route-policy policy1 permit node 10
+if-match ip-prefix policy1
+traffic policy 10
+bgp 600
+ import-route bgp
+ ipv4-family unicast
+ peer 10.1.1.2 enable

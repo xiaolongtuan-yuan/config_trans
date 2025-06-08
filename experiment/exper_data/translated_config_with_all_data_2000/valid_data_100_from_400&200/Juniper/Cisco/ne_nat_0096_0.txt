@@ -1,0 +1,29 @@
+hostname NATA
+ip route 0.0.0.0 0.0.0.0 none 2.2.2.2
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 192.168.10.1 255.255.255.0
+ ipv6 traffic-filter route-map-policy1 in
+ ip access-group route-map-policy1 in
+ interface GigabitEthernet1/0/1
+  zone-member security trust
+ ip address 2.2.2.1 255.255.255.0
+zone-member security trust
+ interface GigabitEthernet1/0/1
+zone-member security untrust
+ interface GigabitEthernet1/0/2
+interface GigabitEthernet1/0/2
+ interface GigabitEthernet1/0/2
+  zone-member security untrust
+ip nat inside source list 100 pool NAT_POOL
+radius-server host 192.168.10.0 auth-port 1812 acct-port 1813
+ip nat inside source list NAT_RULES pool NAT_POOL overload
+permit ip 192.168.10.0 0.0.0.255 trust
+permit ip 192.168.10.0 0.0.0.255 untrust
+ip nat inside source list 1 pool NAT_POOL overload
+ip access-list extended route-map-policy1
+permit ip 0.0.0.0 0.0.0.0 any
+10 permit ip 0.0.0.0 0.0.0.0 any
+access-list 1 permit 0.0.0.0
+network 0.0.0.0 0.0.0.0 area 0
+network 0.0.0.0 255.255.255.255 area 0

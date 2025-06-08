@@ -1,0 +1,298 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "set system host-name Router",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "set access radius-server 192.168.7.249",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "set access profile dot1x-profile",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "set access profile dot1x-profile radius authentication-server 192.168.7.249",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "set access profile dot1x-profile radius accounting-server 192.168.7.249",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s8",
+            "text": "set system authentication-order radius",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s9",
+            "text": "set system services ssh authentication-order radius",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "set interfaces ge-0/0/2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "set interfaces ge-0/0/2 unit 0 family ethernet-switching vlan members 100",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s12",
+            "text": "set interfaces ge-0/0/2 unit 0 family inet address 10.82.1.1/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s13",
+            "text": "set system services dhcp-local-server group dhcp-group",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s14",
+            "text": "set system services dhcp-local-server group dhcp-group interface ge-0/0/2.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s15",
+            "text": "set access address-assignment pool pool4",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s16",
+            "text": "set access address-assignment pool pool4 family inet network 10.82.1.0/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s17",
+            "text": "set access address-assignment pool pool4 family inet range dhcp-range low 10.82.1.2 high 10.82.1.254",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t166",
+            "text": "hostname Router",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t167",
+            "text": "radius-server host 192.168.7.249 auth-port 1812 acct-port 1813 key 0 $ABC123$%^%#`E)v.Q@BHVzxxZ;ij{>&_M0!TGP7YRA@8a7mq<\\/%^%#",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t170",
+            "text": "username dot1x-profile",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t171",
+            "text": "aaa authorization network default0 group rd5 local",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t172",
+            "text": "aaa authorization network default0 group 192.168.7.249 local",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t173",
+            "text": "radius-server host radius auth-port 1812 acct-port 1813 key 7",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t174",
+            "text": "aaa authentication login default group radius",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t175",
+            "text": "aaa authentication login console group radius",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t176",
+            "text": "interface GigabitEthernet0/0/2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t177",
+            "text": "no shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t179",
+            "text": "switchport",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t180",
+            "text": "switchport access vlan 100",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t181",
+            "text": "switchport trunk allowed vlan 100",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t183",
+            "text": "ip address 10.82.1.1 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t184",
+            "text": "ip dhcp pool dhcp-group",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t185",
+            "text": "network none none area 0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t186",
+            "text": "ipv6 dhcp pool pool4",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t188",
+            "text": "ip dhcp pool pool4",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t189",
+            "text": "network 10.82.1.0 255.255.255.0",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t191",
+            "text": "address prefix 10.82.1.0/24 lifetime infinite infinite",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t166"
+        },
+        {
+            "source": "s2",
+            "target": "t167"
+        },
+        {
+            "source": "s5",
+            "target": "t170"
+        },
+        {
+            "source": "s6",
+            "target": "t171"
+        },
+        {
+            "source": "s7",
+            "target": "t172"
+        },
+        {
+            "source": "s8",
+            "target": "t173"
+        },
+        {
+            "source": "s9",
+            "target": "t174"
+        },
+        {
+            "source": "s9",
+            "target": "t175"
+        },
+        {
+            "source": "s10",
+            "target": "t176"
+        },
+        {
+            "source": "s10",
+            "target": "t177"
+        },
+        {
+            "source": "s11",
+            "target": "t179"
+        },
+        {
+            "source": "s11",
+            "target": "t180"
+        },
+        {
+            "source": "s11",
+            "target": "t181"
+        },
+        {
+            "source": "s12",
+            "target": "t183"
+        },
+        {
+            "source": "s13",
+            "target": "t184"
+        },
+        {
+            "source": "s14",
+            "target": "t185"
+        },
+        {
+            "source": "s15",
+            "target": "t186"
+        },
+        {
+            "source": "s16",
+            "target": "t188"
+        },
+        {
+            "source": "s16",
+            "target": "t189"
+        },
+        {
+            "source": "s17",
+            "target": "t191"
+        }
+    ]
+}

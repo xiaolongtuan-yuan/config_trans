@@ -1,0 +1,25 @@
+sysname CE2
+ip route-static 22.22.22.22 255.255.255.255 none none
+ip route-static 22.22.22.22 255.255.255.255 discard
+ 22.22.22.22/32
+traffic-policy 1 inbound
+traffic policy 1
+bgp 600
+ import-route static
+ ipv4-family unicast
+  peer none route-policy EXPORT-LOOPBACK export
+ peer 10.1.1.2 enable
+ l2vpn-family evpn
+  peer 1.1.1.1 import internal
+  peer 22:22:22:22:: advertise irb
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.2.1.2 255.255.255.0
+ ip address 22.22.22.22 255.255.255.255
+bgp 1
+ import-route internal
+bgp 100
+ peer 10.2.1.1 as-number 100
+ ipv4-family unicast
+  peer 10.2.1.1 next-hop-local
+ ipv4-family unicast

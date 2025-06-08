@@ -1,0 +1,40 @@
+sysname CE1
+router id 2.2.2.9
+ospf 1 router-id 2.2.2.9
+ area 0
+  network 0.0.0.0 ge-0/0/0.0
+  network 0.0.0.0 0.0.0.255
+ area 0.0.0.0
+  network 0.0.0.0 0.255.255.255
+mpls rsvp-te
+mpls label protocol ldp
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 40.1.1.2 255.255.255.0
+ ipv6 address 2001::DB8/64 mpls
+ ip address 11.1.1.1 255.255.255.0
+ ip address 2.2.2.9 255.255.255.255
+interface GigabitEthernet0/0/1
+ undo shutdown
+ ipv6 address 2001::DB8/64 mpls
+ip route-static 0.0.0.0 0 none none
+ip route-static 0.0.0.0 0.0.0.0 40.1.1.1
+bgp 100
+ l2vpn-family evpn
+  peer peer-AS100 import none
+  peer 11.1.1.1 advertise irb
+ import-route bgp
+ peer 11.1.1.2 as-number 100
+ ipv4-family unicast
+  peer 11.1.1.2 next-hop-local
+  peer none route-policy policy1 export
+traffic-policy policy1 inbound
+traffic policy 1
+tunnel-policy policy1
+ tunnel binding destination 2.2.2.2 te Tunnel10
+bgp 600
+ peer 10.1.1.2 enable
+ ipv4-family unicast
+area 0.0.0.0
+ospf 1
+ import-route static type policy1

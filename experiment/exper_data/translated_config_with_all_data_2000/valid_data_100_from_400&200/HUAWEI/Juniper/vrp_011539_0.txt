@@ -1,0 +1,33 @@
+set system host-name PE1
+set protocols oam cfm version 0
+set protocols oam ethernet connectivity-fault-management
+set system host-name 2.2.2.2
+set system host-name mpls
+set protocols l2circuit
+set interfaces ge-1/0/0 unit 0 family inet mpls ldp
+set interfaces ge-1/0/0 unit 0 family inet service input md1
+set interfaces ge-1/0/0 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 interface ge-1/0/1.1 vlan-id 2 l2vpn-id ldp1
+set interfaces ge-1/0/0 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 remote-mep 2
+set interfaces ge-1/0/0 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 remote-mep 2 continuity-check reception enable
+set interfaces ge-1/0/0 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 continuity-check interval 1s loss-threshold 20
+set interfaces ge-1/0/0 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 mep 1 direction inward
+set interfaces ge-1/0/0 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 test-profile test1 two-way-delay-measurement peer-ip 1.1.1.1 test-id 1
+set interfaces ge-1/0/0 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 continuity-check transmission interval 1s
+set interfaces ge-1/0/0 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 continuity-check transmission loss-measurement two-way
+set interfaces ge-1/0/0 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 mep 1 loss-measurement two-way packets 20
+set interfaces ge-1/0/0.1 disable
+set interfaces ge-1/0/1.1 unit 1 vlan-id 2
+set interfaces ge-1/0/1.1 unit none family inet address none/none vrrp-group none virtual-address ldp1
+set interfaces ge-1/0/1.1 unit 1 vlan-id 1
+set interfaces ge-1/0/1.1 unit 1 description inward
+set interfaces ge-1/0/2 disable
+set interfaces ge-1/0/2 unit 0 disable
+set interfaces ge-1/0/2 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-1/0/2 unit 0 family inet mpls
+set interfaces ge-1/0/2 unit 0 family inet mpls ldp
+set interfaces lo0 disable
+set interfaces lo0 unit 0 family inet address 2.2.2.2/24
+set interfaces ge-0/0/0 unit 0 family inet service input policy-p1
+set interfaces ge-0/0/0 unit 1 vlan-id 2
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set system host-name CE1

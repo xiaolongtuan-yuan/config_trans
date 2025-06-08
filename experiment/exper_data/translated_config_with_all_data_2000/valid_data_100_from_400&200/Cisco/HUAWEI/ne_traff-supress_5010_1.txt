@@ -1,0 +1,17 @@
+sysname Device
+vlan 10
+interface GigabitEthernet1/0/0
+ undo shutdown
+ portswitch
+ port default vlan 10
+ broadcast-suppression cir 1.5m cbs 3m inbound vlan none
+ traffic storm-control multicast pps 1500 3000
+ traffic storm-control unicast cir 1500 cbs 3000
+interface GigabitEthernet2/0/0
+ undo shutdown
+ portswitch
+ port default vlan 10
+ broadcast-suppression cir 1500 cbs 3000 inbound vlan none
+ traffic storm-control multicast pps 1500 3000
+ broadcast-suppression unicast packets 1500 3000
+stp region-configuration

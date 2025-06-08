@@ -1,0 +1,23 @@
+sysname DeviceC
+interface GigabitEthernet0/0/1
+ undo shutdown
+ ip address 172.16.4.2 255.255.255.0
+ ip address 172.16.5.1 255.255.255.0
+interface GigabitEthernet0/0/3
+ undo shutdown
+router id 3.3.3.3
+ospf 1 router-id 3.3.3.3
+bgp 200
+ l2vpn-family evpn
+  peer 200 import none
+   peer 172.16.4.1 as-number 65009
+   peer 172.16.5.2 as-number 65009
+ import-route bgp
+ network 172.16.4.1 0.0.0.0
+ network 172.16.5.2 0.0.0.0
+ ipv4-family unicast
+  peer 200 route-policy EXPORT-POLICY export
+ import-route direct
+ peer 10.1.1.2 enable
+traffic-policy 1 inbound
+traffic policy 1

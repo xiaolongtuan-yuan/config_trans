@@ -1,0 +1,72 @@
+{
+    "command_accuracy": 0.5,
+    "missed_commands": [
+        "ethernet cfm domain cfm",
+        "switchport mode trunk",
+        "ethernet cfm mep domain cfm md md3 ma ma3 mep-id 4",
+        "ethernet cfm remote-mep domain cfm md md3 ma ma3 mep-id 3",
+        "ethernet cfm delay-measure domain cfm md md3 ma ma3 mep mep-id 4 test-id 1",
+        "ethernet cfm delay-measure domain cfm md md3 ma ma3 mep mep-id 4 remote-mep mep-id 3 test-id 2",
+        "ethernet cfm domain cfm",
+        "switchport mode trunk",
+        "ethernet cfm mep domain cfm md md3 ma ma3 mep-id 4",
+        "ethernet cfm remote-mep domain cfm md md3 ma ma3 mep-id 3",
+        "ethernet cfm delay-measure domain cfm md md3 ma ma3 mep mep-id 4 test-id 1",
+        "ethernet cfm delay-measure domain cfm md md3 ma ma3 mep mep-id 4 remote-mep mep-id 3 test-id 2"
+    ],
+    "grammatical_accuracy": 0.5833333333333334,
+    "missed_templates": [
+        "ethernet cfm domain [parameter1]",
+        "ethernet cfm mep domain [parameter1] md [parameter2] ma [parameter3] mep-id [parameter4]",
+        "ethernet cfm remote-mep domain [parameter1] md [parameter2] ma [parameter3] mep-id [parameter4]",
+        "ethernet cfm delay-measure domain [parameter1] md [parameter2] ma [parameter3] mep mep-id [parameter4] test-id [parameter5]",
+        "ethernet cfm delay-measure domain [parameter1] md [parameter2] ma [parameter3] mep mep-id [parameter4] remote-mep mep-id [parameter5] test-id [parameter6]"
+    ],
+    "llm_command_accuracy": 0.0,
+    "llm_command_ratio": 0.36,
+    "command_for_llm": [
+        "test-id 1 mep 4",
+        "delay-measure one-way continual send test-id 2 interval 1000",
+        "test-id 2 mep 4 remote-mep 3",
+        "return",
+        "delay-measure one-way receive test-id 1",
+        "cfm version standard",
+        "map vlan 2"
+    ],
+    "llm_trans_commands": [
+        "ethernet cfm ieee",
+        "service instance 2 ethernet",
+        "encapsulation dot1q 2",
+        "ethernet cfm mep crosscheck test-id 1 mep-id 4",
+        "ethernet cfm delay one-way receive test-id 1",
+        "ethernet cfm mep crosscheck start 4 peer-mep 3",
+        "ethernet cfm continuity-check mep 4 service ma3 direction outward",
+        "ethernet cfm delay measurement one-way transmit test-id 2 interval 1000 continuous",
+        "end"
+    ],
+    "source_commands": [
+        "interface GigabitEthernet1/0/1",
+        "test-id 1 mep 4",
+        "sysname CE2",
+        "portswitch",
+        "remote-mep mep-id 3",
+        "cfm version standard",
+        "delay-measure one-way continual send test-id 2 interval 1000",
+        "vlan 2",
+        "return",
+        "map vlan 2",
+        "port trunk allow-pass vlan 2",
+        "ma ma3",
+        "undo shutdown",
+        "delay-measure one-way receive test-id 1",
+        "cfm enable",
+        "remote-mep ccm-receive mep-id 3 enable",
+        "mep mep-id 4 interface GigabitEthernet1/0/1 outward",
+        "cfm md md3",
+        "mep ccm-send mep-id 4 enable",
+        "test-id 2 mep 4 remote-mep 3"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

@@ -1,0 +1,17 @@
+set system host-name SSH_Server
+set interfaces ge-0/0/0 unit 0 disable
+set interfaces ge-0/0/0 disable
+set interfaces ge-0/0/0 set interfaces ge-0/0/0 disable
+set interfaces ge-0/0/0 delete interfaces ge-0/0/0 disable
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.1/24
+set system services ssh hostkey-algorithm ssh-rsa
+set system login user client001 class super-user authentication encrypted-password "@%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%"
+set system login user client002 class super-user authentication plain-text-password
+set system login user client002 class super-user authentication plain-text-password "<password_for_client002>"
+set system services ssh protocol-version v2
+set system services ssh connection-limit source-address GigabitEthernet0/0/0
+set system services ssh connection-limit 5 set system login user [username] class super-user
+set system services ssh
+set system services ssh root-login deny
+set system login user admin authentication plain-text-password
+set protocols isis export REDIST-CONNECTED

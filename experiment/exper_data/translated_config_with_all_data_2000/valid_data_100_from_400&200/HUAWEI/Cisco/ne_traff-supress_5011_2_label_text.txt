@@ -1,0 +1,49 @@
+hostname PE1
+
+! MPLS基础配置
+mpls ip
+mpls ldp router-id Loopback1 force
+mpls ldp discovery targeted-hello accept
+
+! 接口配置
+interface GigabitEthernet1/0/0
+ no shutdown
+
+interface GigabitEthernet1/0/0.1
+ encapsulation dot1Q 10
+ service instance 10 ethernet
+  bridge-domain 2
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 172.16.1.1 255.255.255.0
+ mpls ip
+
+interface Loopback1
+ ip address 1.1.1.1 255.255.255.255
+
+! 静态路由
+ip route 3.3.3.3 255.255.255.255 GigabitEthernet2/0/0
+ip route 172.16.1.0 255.255.255.0 Null0
+
+! OSPF配置
+router ospf 1
+ router-id 1.1.1.1
+ network 1.1.1.1 0.0.0.0 area 0
+ network 172.16.1.0 0.0.0.255 area 0
+
+
+pseudowire-class DEFAULT
+ encapsulation mpls
+!
+l2vpn vfi context A2
+ vpn id 2
+ !neighbor 3.3.3.3 pw-class DEFAULT
+!
+bridge-domain 2
+ !member vfi A2
+ !storm-control broadcast level 1.00
+ !storm-control multicast level 1.00
+ !storm-control action trap
+!
+end

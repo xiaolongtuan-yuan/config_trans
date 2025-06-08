@@ -1,0 +1,48 @@
+hostname CGN2
+license boot level network-advantage
+ ip nat translation max-entries 6
+line vty 0 4
+ access-class 3001 in
+route-map 192.168.10.0 permit 0.0.0.255
+ match ip address prefix-list 192.168.10.0
+class-map match-any classifier1
+ match access-group 3001
+match access-group 3001
+class-map behavior1
+ ip nat inside source list NAT_ACL pool NAT_POOL overload
+!
+policy-map policy1
+class classifier1
+nat pool address-group1 overload
+ class-map match-all classifier1
+class-map match-all classifier1
+ class-map match-all classifier1
+  match access-group 3001
+  policy-map policy1
+  class classifier1
+  nat pool address-group1 overload
+service internal
+ service location slot 1
+ service context 0
+service-policy 1
+service-group group1
+ service-insertion service-location 1
+track 1 ip route 10.1.1.2 reachability
+ service-policy 1 type nat
+ location chassis 1 module 0
+ip nat pool 1 11.11.11.106 11.11.11.110 netmask 255.255.255.0
+ service instance-group group1
+ service location 1
+ip nat pool none none address-group1 netmask none
+interface GigabitEthernet2/0/0
+ ip address 192.168.10.1 255.255.255.0
+ interface GigabitEthernet 2/0/0
+ service-policy input policy1
+interface GigabitEthernet 2/0/0 point-to-point
+interface serviceif 1
+ ip address 10.1.1.2 255.255.255.0
+ ip igmp join-group group1
+  subscriber default-group group1
+interface serviceif 1 point-to-point
+ip route 0.0.0.0 0.0.0.0 Service-Engine1/0
+end

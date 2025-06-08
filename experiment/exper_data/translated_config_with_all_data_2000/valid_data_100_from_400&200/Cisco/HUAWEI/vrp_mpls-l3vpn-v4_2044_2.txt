@@ -1,0 +1,34 @@
+sysname CE1
+mpls ldp router-id LoopBack1
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 40.1.1.2 255.255.255.0
+ mpls ldp
+interface GigabitEthernet1/0/0 mode l2
+ mpls l2vc none none raw
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 11.1.1.1 255.255.255.0
+interface GigabitEthernet2/0/0 mode l2
+ mpls l2vc none none raw
+interface LoopBack1
+ ip address 2.2.2.9 255.255.255.255
+bgp 200
+ peer 11.1.1.2 as-number 100
+ peer 11.1.1.2 enable
+ ipv4-family unicast
+  undo synchronization
+  peer 11.1.1.2 enable
+  peer 11.1.1.2 route-policy policy1 export
+  peer 11.1.1.2 next-hop-local
+ network 2.2.2.9 0.0.0.0
+ospf 1
+ network 200 0.0.0.0
+ network 2.2.2.9 0.0.0.0
+ area 0
+ network 40.1.1.0 0.0.0.255
+ network 11.1.1.0 0.0.0.255
+route-policy policy1 permit node 10
+ apply mpls-label
+ip as-path-filter 10 permit .*
+stp region-configuration

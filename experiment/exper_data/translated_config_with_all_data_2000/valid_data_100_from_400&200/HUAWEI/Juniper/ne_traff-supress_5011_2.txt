@@ -1,0 +1,44 @@
+set system host-name PE1
+set system host-name 1.1.1.1
+set system host-name mpls
+set protocols l2vpn
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set routing-instances a2 protocols vpls vlan-id 2
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set routing-instances a2 protocols vplv vpls-id 2
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set protocols l2vpn interface ge-1/0/0.1 vpls neighbor 3.3.3.3
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set protocols l2vpn interface ge-1/0/0.1 vlan-id 10
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set protocols l2vpn interface ge-1/0/0.1 vpls-instance a2
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set protocols mpls interface ge-2/0/0
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set protocols ldp interface ge-2/0/0
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set routing-instances a2 instance-type vpls
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set routing-instances a2 interface ge-1/0/0.1
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set routing-instances a2 route-distinguisher 1.1.1.1:2
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set routing-instances a2 vrf-target target:1:2
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set routing-instances a2 protocols vpls site-range 10
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set routing-instances a2 protocols vpls site PE1 site-id 1
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set routing-instances a2 protocols vpls neighbor 3.3.3.3 pseudowire-status-tlv
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set forwarding-options storm-control interface <interface> broadcast bandwidth-limit 1000
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set protocols l2circuit neighbor 3.3.3.3 interface ge-1/0/0.1 multicast-statistics bandwidth 1m
+set protocols l2vpn vsi a2 interface ge-0/0/1.0 protocols l2vpn set forwarding-options storm-control-profiles default unknown-unicast bandwidth 1000
+set protocols ldp interface ge-0/0/0.0 hold-time 5
+set interfaces ge-1/0/0 unit 0 family inet mpls ldp
+set interfaces ge-1/0/0 unit 0 family inet mpls 3.3.3.3
+set interfaces ge-1/0/0 unit 0 family inet mpls remote-ip 3.3.3.3 set protocols ldp interface lo0.0
+set interfaces ge-1/0/0 unit 0 family inet mpls remote-ip 3.3.3.3 set protocols ldp neighbor 3.3.3.3
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet service input none
+set interfaces ge-1/0/0.1 disable
+set interfaces ge-1/0/0.1 unit 0 disable
+set interfaces ge-1/0/0.1 unit 1 vlan-id 10
+set interfaces ge-1/0/0.1 unit none family inet address none/none vrrp-group none virtual-address a2
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 172.16.1.1/24
+set interfaces ge-2/0/0 unit 0 family inet mpls
+set interfaces ge-2/0/0 unit 0 family inet mpls ldp
+set interfaces lo0.1 disable
+set interfaces lo0.1 unit 0 family inet address 1.1.1.1/32
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set routing-options static route 3.3.3.3/32 next-hop GigabitEthernet2/0/0
+set routing-options static route 172.16.1.0/24 next-hop null
+set system host-name CE1

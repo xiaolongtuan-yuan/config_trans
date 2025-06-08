@@ -1,0 +1,15 @@
+set system host-name DeviceA
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet6
+set interfaces ge-1/0/0 unit 0 tunnel ipv6-prefix-length 64
+set interfaces ge-1/0/0 unit 0 tunnel ipv6-prefix-length 96
+set routing-options autonomous-system 100 set routing-options router-id 1.1.1.1
+set routing-options autonomous-system 100 family inet6 unicast
+set protocols bgp group 100 type external
+set protocols bgp group 100 neighbor 2001:db8:100::2 peer-as 200
+set protocols bgp group 100 export BGP-NETWORKS
+set protocols bgp group 100 local-as 100
+set protocols bgp group 100 peer-as 100
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set system host-name CE1

@@ -1,0 +1,438 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "set system host-name NATA",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "set routing-options static route 0.0.0.0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "set routing-options static route 0.0.0.0/0 next-hop 2.2.2.2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "set interfaces ge-1/0/1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "set interfaces ge-1/0/1 unit 0 family inet address 192.168.10.1/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "set interfaces ge-1/0/1 unit 0 family inet filter input route-map-policy1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "set security zones security-zone trust",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s9",
+            "text": "set interfaces ge-1/0/2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "set interfaces ge-1/0/2 unit 0 family inet address 2.2.2.1/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s13",
+            "text": "set security nat source pool NAT_POOL",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s14",
+            "text": "set security nat source pool NAT_POOL address 192.168.10.0/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s15",
+            "text": "set security nat source rule-set NAT_RULES",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s16",
+            "text": "set security nat source rule-set NAT_RULES from zone trust",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s17",
+            "text": "set security nat source rule-set NAT_RULES to zone untrust",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s18",
+            "text": "set security nat source rule-set NAT_RULES rule 1 match source-address 192.168.10.0/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s19",
+            "text": "set security nat source rule-set NAT_RULES rule 1 then source-nat pool NAT_POOL",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s20",
+            "text": "set firewall family inet filter route-map-policy1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s21",
+            "text": "set firewall family inet filter route-map-policy1 term 10 from source-address 0.0.0.0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s22",
+            "text": "set protocols ospf area 0.0.0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s23",
+            "text": "set protocols ospf area 0.0.0.0 interface ge-1/0/2.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s24",
+            "text": "set protocols ospf area 0.0.0.0 interface lo0.0 passive",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t2880",
+            "text": "sysname NATA",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2881",
+            "text": "ip route-static 0.0.0.0 0 none none",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2882",
+            "text": "ip route-static 0.0.0.0 0.0.0.0 2.2.2.2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2903",
+            "text": "nat-policy zone trust",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2905",
+            "text": "nat outbound nat_rules zone untrust",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2907",
+            "text": "nat address-group NAT_POOL 192.168.10.0 192.168.10.255",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2908",
+            "text": "nat-policy inter-zone trust untrust outbound",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2909",
+            "text": "rule name rule1",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2910",
+            "text": "source address 192.168.10.0 255.255.255.0",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2911",
+            "text": "action nat address-group NAT_POOL",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2913",
+            "text": "ip route-static 0.0.0.0 0.0.0.0 2.2.2.2",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2883",
+            "text": "interface GigabitEthernet1/0/1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2884",
+            "text": "undo shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2886",
+            "text": "ip address 192.168.10.1 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2888",
+            "text": "ip address none 255.255.255.252 sub",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2889",
+            "text": "policy-based-route route-map-policy1 permit node 0 map-instance 0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2890",
+            "text": "if-match acl name route-map-policy1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2896",
+            "text": "ip address 2.2.2.1 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2891",
+            "text": "ipsec policy IPSEC_PROFILE 10 isakmp",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2899",
+            "text": "ip route-static 0.0.0.0 0.0.0.0 2.2.2.2",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2900",
+            "text": "radius-server 192.168.10.0 auth-port 1812 acct-port 1813",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2901",
+            "text": "ip route-static 0.0.0.0 0.0.0.0 2.2.2.2",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2914",
+            "text": "acl 2000",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2915",
+            "text": "rule 10 permit source 0.0.0.0 0.0.0.0",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2916",
+            "text": "ip as-path-filter 1 permit .*",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2917",
+            "text": "area 0.0.0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2918",
+            "text": "ospf 1 router-id 0.0.0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2919",
+            "text": "area 0.0.0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2920",
+            "text": "network 0.0.0.0 0.0.0.255",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2922",
+            "text": "silent-interface LoopBack0",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t2880"
+        },
+        {
+            "source": "s2",
+            "target": "t2881"
+        },
+        {
+            "source": "s3",
+            "target": "t2882"
+        },
+        {
+            "source": "s4",
+            "target": "t2883"
+        },
+        {
+            "source": "s4",
+            "target": "t2884"
+        },
+        {
+            "source": "s5",
+            "target": "t2886"
+        },
+        {
+            "source": "s6",
+            "target": "t2888"
+        },
+        {
+            "source": "s6",
+            "target": "t2889"
+        },
+        {
+            "source": "s6",
+            "target": "t2890"
+        },
+        {
+            "source": "s7",
+            "target": "t2891"
+        },
+        {
+            "source": "s9",
+            "target": "t2884"
+        },
+        {
+            "source": "s10",
+            "target": "t2896"
+        },
+        {
+            "source": "s13",
+            "target": "t2899"
+        },
+        {
+            "source": "s14",
+            "target": "t2900"
+        },
+        {
+            "source": "s15",
+            "target": "t2901"
+        },
+        {
+            "source": "s16",
+            "target": "t2903"
+        },
+        {
+            "source": "s17",
+            "target": "t2905"
+        },
+        {
+            "source": "s18",
+            "target": "t2907"
+        },
+        {
+            "source": "s18",
+            "target": "t2908"
+        },
+        {
+            "source": "s18",
+            "target": "t2909"
+        },
+        {
+            "source": "s18",
+            "target": "t2910"
+        },
+        {
+            "source": "s18",
+            "target": "t2911"
+        },
+        {
+            "source": "s19",
+            "target": "t2913"
+        },
+        {
+            "source": "s20",
+            "target": "t2914"
+        },
+        {
+            "source": "s20",
+            "target": "t2915"
+        },
+        {
+            "source": "s21",
+            "target": "t2916"
+        },
+        {
+            "source": "s22",
+            "target": "t2917"
+        },
+        {
+            "source": "s23",
+            "target": "t2918"
+        },
+        {
+            "source": "s23",
+            "target": "t2919"
+        },
+        {
+            "source": "s23",
+            "target": "t2920"
+        },
+        {
+            "source": "s24",
+            "target": "t2922"
+        }
+    ]
+}

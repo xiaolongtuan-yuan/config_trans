@@ -1,0 +1,34 @@
+hostname P
+
+! MPLS全局配置
+mpls ip
+mpls ldp router-id Loopback1 force
+mpls ldp discovery targeted-hello accept
+!
+
+! 接口配置
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 172.21.1.2 255.255.255.0
+ mpls ip
+ mpls ldp igp autoconfig
+!
+
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 172.22.1.1 255.255.255.0
+ mpls ip
+ mpls ldp igp autoconfig
+!
+
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255
+!
+
+! OSPF配置
+router ospf 1
+ network 2.2.2.9 0.0.0.0 area 0
+ network 172.21.1.0 0.0.0.255 area 0
+ network 172.22.1.0 0.0.0.255 area 0
+!
+end

@@ -1,0 +1,19 @@
+sysname CGN1
+interface GigabitEthernet1/0/3
+ ip address 10.0.0.1 255.255.255.0
+ vrrp vrid 10 track interface GigabitEthernet1/0/3 reduced 50
+ vrrp vrid 10 virtual-ip 10.0.0.3
+ vrrp vrid 10 preempt-mode timer delay none
+ vrrp vrid 10 priority 150
+ vrrp vrid 10 preempt-mode timer delay 400
+ vrrp recover-delay 400
+interface GigabitEthernet1/0/2
+ vrrp vrid 10 track interface GigabitEthernet1/0/2 reduced 50
+interface GigabitEthernet1/0/1
+ vrrp vrid 1 track interface GigabitEthernet1/0/1 reduced 50
+ipv6 traffic-filter DS_LITE_FILTER inbound
+acl ipv6 name DS_LITE_FILTER
+rule permit ipv6 source any destination any
+dhcpv6-server group group1
+ dhcpv6-server destination any
+stp region-configuration

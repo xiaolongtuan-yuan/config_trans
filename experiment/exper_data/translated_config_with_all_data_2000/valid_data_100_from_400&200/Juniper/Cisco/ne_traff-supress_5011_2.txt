@@ -1,0 +1,43 @@
+hostname PE1
+mpls ldp advertise-labels interface GigabitEthernet1/0/0.1
+mpls ldp advertise-labels interface GigabitEthernet2/0/0
+mpls ldp router-id lo0 force
+mpls ldp discovery transport-address 1.1.1.1
+mpls ldp discovery transport-address Loopback0
+mpls ldp neighbor none targeted-hello accept
+interface GigabitEthernet1/0/0
+ no shutdown
+ interface GigabitEthernet1/0/0
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ interface GigabitEthernet1/0/0.1
+ encapsulation dot1Q 10
+ encapsulation vlan-ccc
+ ipv6 address 2001:DB8::/64 eui-64
+interface range ge-1/0/0 - 0
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 172.16.1.1 255.255.255.0
+ ipv6 address mpls eui-64
+interface lo0
+ no shutdown
+ ip address 1.1.1.1 255.255.255.255
+ip route 3.3.3.3 255.255.255.255 none 172.16.1.2
+ip route 172.16.1.0 255.255.255.0 none none
+network 0.0.0.0 0.0.0.0 area 0
+neighbor 3.3.3.3 activate
+ l2 vfi PE1-3.3.3.3 manual
+ vpn id 2
+ neighbor 3.3.3.3 encapsulation mpls
+ !
+ interface GigabitEthernet1/0/0.1
+ xconnect vfi PE1-3.3.3.3
+neighbor 3.3.3.3 remote-as ethernet
+vlan 2
+ name a2
+vlan 10
+ no shutdown
+ name a2
+  vlan 10
+  name a2
+  interface Vlan10

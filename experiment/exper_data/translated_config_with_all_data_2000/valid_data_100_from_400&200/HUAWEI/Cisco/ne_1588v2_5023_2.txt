@@ -1,0 +1,26 @@
+hostname PE1
+interface GigabitEthernet1/0/1
+ ptp enable
+ clock source bits1 on
+ptp clock source bits1 type 1pps input
+ptp source 1pps 1 priority1 2
+interface GigabitEthernet2/0/0
+ ptp device-type bc
+ ip address 10.0.0.1 255.255.255.0
+ ptp enable
+ ptp delay-mechanism pdelay
+ ip ospf 1 area 0
+ router ospf 1
+ network 10.0.0.0 0.0.0.255 area 0
+ network 172.16.0.0 0.0.0.255 area 0
+ ip address 10.0.0.0 255.255.255.0
+ ip address 172.16.0.0 255.255.255.0
+ptp domain 1
+interface GigabitEthernet1/0/0
+ ip address 172.16.0.1 255.255.255.0
+ ptp enable
+ ptp delay-mechanism pdelay
+interface range GigabitEthernet1/0/0 - 1
+ no shutdown
+interface range GigabitEthernet2/0/0 - 0
+ no shutdown

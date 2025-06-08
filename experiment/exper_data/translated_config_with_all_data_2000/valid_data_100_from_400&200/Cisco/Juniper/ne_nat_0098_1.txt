@@ -1,0 +1,24 @@
+set system host-name CGN2
+set system license boot level ip-base
+set firewall family inet filter NAT_ACL term 1 from source-address 192.168.10.0/24
+set firewall family inet filter NAT_ACL term 1 then accept
+set services nat rule NAT_RULE1 term permit_ip from source-address 192.168.10.0/24
+set security nat source pool pool1 address 11.11.11.106/32 to 11.11.11.110/32
+set security nat source rule-set NAT_RS from zone trust
+set security nat source rule-set NAT_RS to zone untrust
+set security nat source rule-set NAT_RS rule NAT_RULE match source-address 192.168.10.0/24
+set security nat source rule-set NAT_RS rule NAT_RULE then source-nat pool pool1
+set security nat source pool pool1 port no-translation
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 set interfaces ge-1/0/0 disable false
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.10.1/24
+set interfaces ge-2/0/0 unit 0 family inet address none vrrp-group none
+set interfaces ge-1/0/0 unit 1/0/0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 set interfaces gigabit-ethernet-2/0/0 disable false
+set interfaces ge-1/0/0 set interfaces gigabit-ethernet-1/0/0 disable false
+set interfaces ge-1/0/0 unit 0 family inet address 11.11.11.1/24
+set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet nat outside
+set routing-options static route 0.0.0.0/0 next-hop GigabitEthernet1/0/0
+set protocols isis export REDIST-CONNECTED

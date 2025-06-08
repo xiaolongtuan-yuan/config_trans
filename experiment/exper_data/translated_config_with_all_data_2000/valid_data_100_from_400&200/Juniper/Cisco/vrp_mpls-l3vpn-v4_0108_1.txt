@@ -1,0 +1,20 @@
+hostname CE2
+ip route 22.22.22.22 255.255.255.255 none none
+router bgp 100
+ route-map EXPORT-LOOPBACK permit 10
+ match protocol static
+neighbor 10.2.1.1 route-map EXPORT-LOOPBACK out
+policy-map EXPORT-LOOPBACK
+ class 1
+  police cir 15m pir 20m
+   violate-action accept
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.2.1.2 255.255.255.0
+ ip address 22.22.22.22 255.255.255.255
+vpdn-group internal
+ router bgp 100
+ neighbor 10.2.1.1 update-source Loopback0
+ neighbor 10.2.1.1 activate
+redistribute bgp
+redistribute connected

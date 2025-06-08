@@ -1,0 +1,120 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "hostname client001",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "interface GigabitEthernet0/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "no shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "ip address 10.1.2.2 255.255.0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "ip ssh client enable first-time",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t1829",
+            "ids": [
+                1829
+            ],
+            "text": "set system host-name client001",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1831",
+            "ids": [
+                1830,
+                1831
+            ],
+            "text": "set interfaces ge-0/0/0 unit 0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1832",
+            "ids": [
+                1830,
+                1832
+            ],
+            "text": "set interfaces ge-0/0/0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1834",
+            "ids": [
+                1830,
+                1834
+            ],
+            "text": "set interfaces ge-0/0/0 delete interfaces ge-0/0/0 disable",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1836",
+            "ids": [
+                1830,
+                1836
+            ],
+            "text": "set interfaces ge-0/0/0 unit 0 family inet address 10.1.2.2/16",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1837",
+            "ids": [
+                1837
+            ],
+            "text": "set system services ssh client-first-time enable",
+            "description": "",
+            "type": "llm"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t1829"
+        },
+        {
+            "source": "s2",
+            "target": "t1831"
+        },
+        {
+            "source": "s2",
+            "target": "t1832"
+        },
+        {
+            "source": "s3",
+            "target": "t1834"
+        },
+        {
+            "source": "s4",
+            "target": "t1836"
+        },
+        {
+            "source": "s5",
+            "target": "t1837"
+        }
+    ]
+}

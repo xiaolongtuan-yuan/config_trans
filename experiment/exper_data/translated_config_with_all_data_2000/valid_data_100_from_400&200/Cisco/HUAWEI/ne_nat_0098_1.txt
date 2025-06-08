@@ -1,0 +1,21 @@
+sysname CGN2
+license active ipbasek9
+nat instance NAT_ACL id 1
+ nat outbound any address-group address-group1
+ service-instance-group groupa
+  section 192.168.10.0 192.168.10.255 any
+nat ip-pool pool1
+ip pool pool1 bas remote
+ section 0 11.11.11.110 mask 24
+nat outbound 2000 address-group pool1 overload
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 192.168.10.1 255.255.255.0
+ nat bind inside
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 11.11.11.1 255.255.255.0
+ nat outbound
+ip route-static 0.0.0.0 0.0.0.0 GigabitEthernet1/0/0 preference 60
+ip route-static 0.0.0.0 0.0.0.0 GigabitEthernet1/0/0
+stp region-configuration

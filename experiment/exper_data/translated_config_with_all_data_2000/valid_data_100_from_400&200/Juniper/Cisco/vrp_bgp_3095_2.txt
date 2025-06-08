@@ -1,0 +1,30 @@
+hostname DeviceC
+interface GigabitEthernet0/0/1
+ no shutdown
+ ip address 172.16.4.2 255.255.255.0
+interface GigabitEthernet0/0/3
+ ip address 172.16.5.1 255.255.255.0
+ip route 3.3.3.3 255.255.255.255 none
+vpdn-group 200
+ router bgp 65009
+ neighbor 172.16.4.1 activate
+ neighbor 172.16.5.2 activate
+redistribute bgp
+redistribute bgp 65009
+redistribute EXPORT-POLICY
+router bgp 65009
+ route-map EXPORT-POLICY permit 10
+ match protocol connected
+neighbor 172.16.4.1 remote-as 65009
+neighbor 172.16.5.2 remote-as 65009
+network 0.0.0.0
+!
+
+route-map EXPORT-POLICY permit 10
+match protocol connected
+neighbor 172.16.4.1 route-map EXPORT-POLICY out
+neighbor 172.16.5.2 route-map EXPORT-POLICY out
+policy-map EXPORT-POLICY
+ class class-default
+  police cir 1m pir 2m
+   violate-action accept

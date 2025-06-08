@@ -1,0 +1,82 @@
+{
+    "command_accuracy": 0.46153846153846156,
+    "missed_commands": [
+        "l2vpn vfi context 1to3",
+        "pseudowire-class 1to3",
+        "encapsulation mpls",
+        "channel-group 1 timeslots 1-31",
+        "channel-group 1 timeslots 1-31",
+        "no keepalive",
+        "no keepalive",
+        "xconnect 192.168.3.3 100 pw-class 1to3",
+        "xconnect 192.168.3.3 200 pw-class 1to3",
+        "mpls ip",
+        "router ospf 1",
+        "network 192.168.2.2 0.0.0.0 area 0",
+        "network 10.1.1.0 0.0.0.255 area 0",
+        "end",
+        "l2vpn vfi context 1to3",
+        "pseudowire-class 1to3",
+        "encapsulation mpls",
+        "channel-group 1 timeslots 1-31",
+        "channel-group 1 timeslots 1-31",
+        "no keepalive",
+        "xconnect 192.168.3.3 100 pw-class 1to3",
+        "no keepalive",
+        "xconnect 192.168.3.3 200 pw-class 1to3",
+        "mpls ip",
+        "router ospf 1",
+        "network 192.168.2.2 0.0.0.0 area 0",
+        "network 10.1.1.0 0.0.0.255 area 0",
+        "end"
+    ],
+    "grammatical_accuracy": 0.5769230769230769,
+    "missed_templates": [
+        "l2vpn vfi context [parameter1]",
+        "pseudowire-class [parameter1]",
+        "channel-group [parameter1] timeslots [parameter2]",
+        "no keepalive",
+        "xconnect [peer_ip_address] [vc_id] pw-class [pw_class_name]",
+        "mpls ip",
+        "router ospf [parameter1]",
+        "end"
+    ],
+    "llm_command_accuracy": 0.07692307692307693,
+    "llm_command_ratio": 0.3333333333333333,
+    "command_for_llm": [
+        "set protocols ldp targeted-hello accept from 192.168.3.3",
+        "framing crc4"
+    ],
+    "llm_trans_commands": [
+        "controller E1 1/0/1",
+        "framing crc4",
+        "!",
+        "controller E1 1/0/2",
+        "controller E1 1/1/0",
+        "framing crc4",
+        "!",
+        "controller E1 1/1/2",
+        "mpls ldp neighbor 192.168.3.3 targeted"
+    ],
+    "source_commands": [
+        "unit 0 family inet address 192.168.2.2/32",
+        "set system host-name PE1",
+        "set interfaces e1-1/0/2",
+        "set protocols mpls interface ge-2/0/0.0",
+        "set interfaces lo0",
+        "framing crc4",
+        "set protocols ldp router-id 192.168.2.2",
+        "set protocols ospf area 0.0.0.0",
+        "set protocols ldp targeted-hello accept from 192.168.3.3",
+        "interface lo0.0 passive",
+        "interface ge-2/0/0.0",
+        "unit 0 family mpls",
+        "set interfaces ge-2/0/0",
+        "unit 0 encapsulation ppp",
+        "unit 0 family inet address 10.1.1.1/24",
+        "set interfaces e1-1/0/1"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

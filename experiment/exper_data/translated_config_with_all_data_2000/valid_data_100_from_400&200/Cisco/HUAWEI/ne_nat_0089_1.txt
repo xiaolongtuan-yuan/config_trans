@@ -1,0 +1,26 @@
+sysname HUAWEI
+nat ip-pool inside-pool
+ip pool inside-pool bas remote
+ section 0 10.0.0.254 mask 24
+nat ip-pool global-pool
+ip pool global-pool bas remote
+ section 11.11.11.1 11.11.11.100 mask 24
+nat static global 11.11.11.0 255.255.255.0 inside 10.0.0.0 255.255.255.0
+acl number 3000
+rule 5 permit ip source 10.0.0.0 0.0.0.255 destination any
+traffic classifier NAT-CLASS
+ traffic classifier NAT-CLASS operator and
+ if-match acl 100
+tunnel-policy NAT-POLICY
+ traffic classifier NAT-CLASS operator and
+ if-match acl 100
+interface GigabitEthernet2/0/0
+ ip address 10.1.1.1 255.255.255.0
+ undo shutdown
+ service-security binding ipv4 NAT-POLICY
+ nat static enable
+interface GigabitEthernet2/0/1
+ ip address 11.11.11.2 255.255.255.0
+ undo shutdown
+ nat outbound
+stp region-configuration

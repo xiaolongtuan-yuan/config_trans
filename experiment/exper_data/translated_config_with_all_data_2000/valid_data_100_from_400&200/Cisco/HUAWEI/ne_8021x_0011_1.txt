@@ -1,0 +1,36 @@
+sysname Router
+aaa authorization-scheme default
+aaa
+authentication-scheme default
+authentication-mode radius
+#
+aaa authentication-scheme default
+radius-server none auth-port 1812 acct-port 1813
+radius-server group default
+radius-client none mask 255.255.255.255 shared-key-cipher 13061E0108035C7D1D server-group radius
+radius-server host 192.168.7.249 shared-key cipher 13061E0108035C7D1D authentication-port 1645 accounting-port 1646
+radius-server shared-key cipher 13061E0108035C7D1D
+radius-client none mask 255.255.255.255 shared-key-cipher 13061E0108035D1D server-group radius
+radius-server timer response-timeout 5
+radius-server retransmit-count 3
+radius-server attribute send accounting
+interface GigabitEthernet1/0/2.1
+ ip address 10.82.1.1 255.255.255.0
+ dot1x port-control auto
+ dot1x authentication-method chap
+ dot1x timer reauthenticate-period 1800
+ dot1x timer quiet-period 15
+ dot1x timer server-timeout 20
+interface GigabitEthernet1/0/2.1 mode l2
+ encapsulation dot1q vid 100
+dhcp enable
+ gateway-list 10.82.1.1
+ dns-list 192.168.7.252
+ip pool pool4
+gateway-list 10.82.1.1
+network 10.82.1.0 mask 255.255.255.0
+dns-list 192.168.7.252
+dhcp server pool pool4
+ network 10.82.1.0 mask 255.255.255.0
+dot1x enable
+stp region-configuration

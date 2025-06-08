@@ -1,0 +1,55 @@
+set system host-name CGN2
+set system host-name CE1 set services nat session-table size 6
+set system login vty 0 4 set firewall family inet filter ACL_3001 term rule1 from source-address 192.168.10.0/24
+set system login vty 0 4 set firewall family inet filter ACL_3001 term rule1 then accept
+set system ports auxiliary disable
+firewall filter classifier1 term term1 from source-address 192.168.10.0/24 from-zone trust to-zone untrust match source-address 192.168.10.0/24
+set firewall filter behavior1 term term1 then nat target pool nat set security nat destination pool nat address 11.11.11.106/32 to 11.11.11.110/32
+set firewall filter behavior1 term term1 then nat target pool nat set security nat destination rule-set nat from zone trust
+set firewall filter behavior1 term term1 then nat target pool nat set security nat destination rule-set nat rule nat match destination-address 192.168.10.0/24
+set firewall filter behavior1 term term1 then nat target pool nat set security nat destination rule-set nat rule nat then destination-nat pool nat
+filter policy1 {
+term term1 {
+from {
+source-address {
+192.168.10.0/24;
+then {
+routing-instance nat; firewall {
+routing-instance nat; }
+firewall { firewall {
+firewall { } filter policy1 {
+firewall { } term classifier1 {
+firewall { } from {
+firewall { } source-address {
+firewall { } 192.168.10.0/24;
+firewall { } then {
+firewall { } routing-instance nat;
+set services service-set 1 interface-service service-interface 1
+set services service-set 6RD_SS interface-service service-interface gr-0/0/0
+services {
+service-set group1 {
+nat-rules nat_rule1; }
+set services service-set group1 interface-service service-interface group1
+set services service-set group1 interface-service service-interface ms-1/0/0
+set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 services {
+set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 service-set group1 {
+set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 nat-rules NAT-RULE-1;
+set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 next-hop-service {
+set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 inside-interface ge-2/0/0.0;
+set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 outside-interface serviceif.1;
+set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 }
+set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 set security nat source pool address-group1 address 11.11.11.106/32 to 11.11.11.110/32
+set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 set security nat source rule-set NAT-RULE from zone untrust
+set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 set security nat source rule-set NAT-RULE to zone untrust
+set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 set security nat source rule-set NAT-RULE rule RULE1 match source-address 192.168.10.0/24
+set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 set security nat source rule-set NAT-RULE rule RULE1 then source-nat pool address-group1
+set services nat rule nat rule-set rs1 match-direction input-output
+set services nat rule nat rule-set rs1 from source-address 192.168.10.0/24
+set services nat rule nat rule-set rs1 then source-nat pool nat
+set services pppoe-client interface ge-2/0/0.0 set interfaces ge-2/0/0 unit 0 family inet filter input policy1
+set interfaces ge-2/0/0 unit 0 family inet service input none
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.10.1/24
+set services pppoe-client interface ge-0/0/0.0
+set interfaces serviceif 1 unit 0 family inet address 10.1.1.2/24
+set services pppoe-client interface group1
+set routing-options static route 0.0.0.0/0 next-hop st0.1

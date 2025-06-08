@@ -1,0 +1,39 @@
+hostname Tail
+vrf definition vpna
+ip vrf vpna
+ rd 500:1
+ route-target export 111:1
+ route-target import 111:1
+router isis 1
+ mpls traffic-eng router-id Loopback0
+  segment-routing srv6
+  encapsulation source-address 5::5
+  segment-routing locator as1
+  prefix 2001:db8:15::/64 static 32
+ mpls traffic-eng router-id Loopback1
+  segment-routing locator as1
+   segment-routing prefix-sid index 1 explicit-null
+   segment-routing local-block 2001:db8:15::/64
+   segment-routing prefix-sid-map 2001:db8:15::100/128 vrf vpna end-dt4
+ mpls traffic-eng level-1
+ metric-style wide
+ net 10.0000.0000.0004.00
+ router isis 1
+ address-family ipv6 unicast
+ address-family ipv6
+interface GigabitEthernet1/0/0
+ ipv6 enable
+ ipv6 address 2001:db8:3::2/96
+ ipv6 router isis 1
+interface range GigabitEthernet1/0/0 - 0
+ no shutdown
+interface GigabitEthernet2/0/0
+ vrf forwarding vpna
+ ip address 10.5.1.2 255.255.255.252
+interface range GigabitEthernet2/0/0 - 0
+ no shutdown
+interface LoopBack1
+ ipv6 enable
+ ipv6 address 5::5/128
+ ipv6 router isis 1
+end

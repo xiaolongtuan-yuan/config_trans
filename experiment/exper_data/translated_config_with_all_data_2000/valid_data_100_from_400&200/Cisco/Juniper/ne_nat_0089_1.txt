@@ -1,0 +1,35 @@
+set system host-name HUAWEI
+set security nat source pool inside-pool address 10.0.0.1/24 to 10.0.0.254/24
+set security nat source pool global-pool address 11.11.11.1/24 to 11.11.11.100/24
+set security nat static rule-set NAT-RULE from zone untrust
+set security nat static rule-set NAT-RULE rule NETWORK-NAT match destination-address 11.11.11.0/24
+set security nat static rule-set NAT-RULE rule NETWORK-NAT then static-nat prefix 10.0.0.0/24
+set firewall family inet filter ACL-100 term 10 from source-address 10.0.0.0/24
+set firewall family inet filter ACL-100 term 10 then accept
+class NAT-CLASS { from firewall family inet filter NAT-FILTER term 1 then accept
+class NAT-CLASS { classifier NAT-CLASS firewall-filter NAT-FILTER
+match-all; }
+firewall { class NAT-CLASS
+policy NAT-POLICY {
+match {
+from zone inside;
+to zone outside;
+then {
+permit; }
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-2/0/0 delete interfaces GigabitEthernet2/0/0 disable
+set interfaces ge-2/0/0 delete interfaces GigabitEthernet2/0/1 disable
+set interfaces ge-2/0/0 unit 0 family inet service input NAT-POLICY
+set interfaces ge-2/0/0 unit 0 family inet address none vrrp-group none
+set interfaces ge-2/0/0 delete interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 delete interfaces ge-2/0/1 disable
+set interfaces ge-2/0/0 set interfaces ge-2/0/0 enable
+set interfaces ge-2/0/0 set interfaces ge-2/0/1 enable
+set interfaces ge-2/0/1 unit 2/0/1 disable
+set interfaces ge-2/0/1 disable
+set interfaces ge-2/0/1 unit 0 family inet address 11.11.11.2/24
+set interfaces ge-2/0/1 set security nat source rule-set NAT-RULE-SET from interface ge-2/0/1
+set interfaces ge-2/0/1 set security nat source rule-set NAT-RULE-SET to interface ge-2/0/0
+set protocols isis export REDIST-CONNECTED

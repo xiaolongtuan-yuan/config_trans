@@ -1,0 +1,659 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "sysname CE2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "vlan 2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "cfm version standard",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "cfm enable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "interface GigabitEthernet1/0/1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "portswitch",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "undo shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s8",
+            "text": "port trunk allow-pass vlan 2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s9",
+            "text": "cfm md md3",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "ma ma3",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "map vlan 2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s12",
+            "text": "mep mep-id 4 interface GigabitEthernet1/0/1 outward",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s13",
+            "text": "mep ccm-send mep-id 4 enable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s14",
+            "text": "remote-mep mep-id 3",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s15",
+            "text": "remote-mep ccm-receive mep-id 3 enable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s16",
+            "text": "test-id 1 mep 4",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s17",
+            "text": "delay-measure one-way receive test-id 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s18",
+            "text": "test-id 2 mep 4 remote-mep 3",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s19",
+            "text": "delay-measure one-way continual send test-id 2 interval 1000",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s20",
+            "text": "return",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t1192",
+            "ids": [
+                1192
+            ],
+            "text": "set system host-name CE2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1193",
+            "ids": [
+                1193
+            ],
+            "text": "set interfaces vlan unit 2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1194",
+            "ids": [
+                1194
+            ],
+            "text": "set protocols oam cfm version 0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1195",
+            "ids": [
+                1195
+            ],
+            "text": "set protocols oam ethernet connectivity-fault-management",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1201",
+            "ids": [
+                1196,
+                1197,
+                1201
+            ],
+            "text": "set interfaces ge-1/0/1 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1199",
+            "ids": [
+                1196,
+                1199
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching port-mode trunk",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1202",
+            "ids": [
+                1196,
+                1202
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1204",
+            "ids": [
+                1196,
+                1204
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching vlan members 2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1206",
+            "ids": [
+                1196,
+                1206
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family inet service input md3",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1211",
+            "ids": [
+                1196,
+                1208,
+                1210,
+                1247,
+                1250,
+                1253,
+                1256,
+                1262,
+                1266,
+                1211
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management domain md3 association ma3 interface vlan.2",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1248",
+            "ids": [
+                1196,
+                1208,
+                1210,
+                1247,
+                1250,
+                1253,
+                1256,
+                1262,
+                1266,
+                1248
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching storm-control default set oam ethernet connectivity-fault-management maintenance-domain md3 maintenance-association ma3 remote-mep 3",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1251",
+            "ids": [
+                1196,
+                1208,
+                1210,
+                1247,
+                1250,
+                1253,
+                1256,
+                1262,
+                1266,
+                1251
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md3 maintenance-association ma3 remote-mep 3 continuity-check reception enable",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1254",
+            "ids": [
+                1196,
+                1208,
+                1210,
+                1247,
+                1250,
+                1253,
+                1256,
+                1262,
+                1266,
+                1254
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md3 maintenance-association ma3 continuity-check-test test-id 1 mep 4",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1257",
+            "ids": [
+                1196,
+                1208,
+                1210,
+                1247,
+                1250,
+                1253,
+                1256,
+                1262,
+                1266,
+                1257
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md3 maintenance-association ma3 continuity-check transmission interval 1s",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1258",
+            "ids": [
+                1196,
+                1208,
+                1210,
+                1247,
+                1250,
+                1253,
+                1256,
+                1262,
+                1266,
+                1258
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md3 maintenance-association ma3 mep 4 direction outward",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1259",
+            "ids": [
+                1196,
+                1208,
+                1210,
+                1247,
+                1250,
+                1253,
+                1256,
+                1262,
+                1266,
+                1259
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md3 maintenance-association ma3 remote-mep 3",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1260",
+            "ids": [
+                1196,
+                1208,
+                1210,
+                1247,
+                1250,
+                1253,
+                1256,
+                1262,
+                1266,
+                1260
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md3 maintenance-association ma3 delay-management one-way receive test-id 1",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1263",
+            "ids": [
+                1196,
+                1208,
+                1210,
+                1247,
+                1250,
+                1253,
+                1256,
+                1262,
+                1266,
+                1263
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md3 maintenance-association ma3 continuity-check transmission-interval 1s",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1264",
+            "ids": [
+                1196,
+                1208,
+                1210,
+                1247,
+                1250,
+                1253,
+                1256,
+                1262,
+                1266,
+                1264
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md3 maintenance-association ma3 mep 4 remote-mep 3",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1267",
+            "ids": [
+                1196,
+                1208,
+                1210,
+                1247,
+                1250,
+                1253,
+                1256,
+                1262,
+                1266,
+                1267
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management continuity-check interval 1s",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1268",
+            "ids": [
+                1196,
+                1208,
+                1210,
+                1247,
+                1250,
+                1253,
+                1256,
+                1262,
+                1266,
+                1268
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management linktrace receive",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1269",
+            "ids": [
+                1196,
+                1208,
+                1210,
+                1247,
+                1250,
+                1253,
+                1256,
+                1262,
+                1266,
+                1269
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management mep 4 direction outward",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1270",
+            "ids": [
+                1196,
+                1208,
+                1210,
+                1247,
+                1250,
+                1253,
+                1256,
+                1262,
+                1266,
+                1270
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management mep 4 continuity-check transmission interval 1s",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1271",
+            "ids": [
+                1196,
+                1208,
+                1210,
+                1247,
+                1250,
+                1253,
+                1256,
+                1262,
+                1266,
+                1271
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management mep 4 one-way-delay-sender test-id 2 interval 1s",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1245",
+            "ids": [
+                1196,
+                1242,
+                1245
+            ],
+            "text": "set interfaces ge-1/0/1 unit 4 vlan-id 4",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1243",
+            "ids": [
+                1196,
+                1243
+            ],
+            "text": "set interfaces ge-1/0/1 unit 4 description outward",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1272",
+            "ids": [
+                1272
+            ],
+            "text": "set system host-name CE1",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t1192"
+        },
+        {
+            "source": "s2",
+            "target": "t1193"
+        },
+        {
+            "source": "s3",
+            "target": "t1194"
+        },
+        {
+            "source": "s4",
+            "target": "t1195"
+        },
+        {
+            "source": "s5",
+            "target": "t1201"
+        },
+        {
+            "source": "s6",
+            "target": "t1199"
+        },
+        {
+            "source": "s7",
+            "target": "t1201"
+        },
+        {
+            "source": "s7",
+            "target": "t1202"
+        },
+        {
+            "source": "s8",
+            "target": "t1204"
+        },
+        {
+            "source": "s9",
+            "target": "t1206"
+        },
+        {
+            "source": "s10",
+            "target": "t1211"
+        },
+        {
+            "source": "s11",
+            "target": "t1211"
+        },
+        {
+            "source": "s12",
+            "target": "t1245"
+        },
+        {
+            "source": "s12",
+            "target": "t1243"
+        },
+        {
+            "source": "s13",
+            "target": "t1245"
+        },
+        {
+            "source": "s14",
+            "target": "t1211"
+        },
+        {
+            "source": "s14",
+            "target": "t1248"
+        },
+        {
+            "source": "s15",
+            "target": "t1211"
+        },
+        {
+            "source": "s15",
+            "target": "t1251"
+        },
+        {
+            "source": "s16",
+            "target": "t1211"
+        },
+        {
+            "source": "s16",
+            "target": "t1254"
+        },
+        {
+            "source": "s17",
+            "target": "t1211"
+        },
+        {
+            "source": "s17",
+            "target": "t1257"
+        },
+        {
+            "source": "s17",
+            "target": "t1258"
+        },
+        {
+            "source": "s17",
+            "target": "t1259"
+        },
+        {
+            "source": "s17",
+            "target": "t1260"
+        },
+        {
+            "source": "s18",
+            "target": "t1211"
+        },
+        {
+            "source": "s18",
+            "target": "t1263"
+        },
+        {
+            "source": "s18",
+            "target": "t1264"
+        },
+        {
+            "source": "s19",
+            "target": "t1211"
+        },
+        {
+            "source": "s19",
+            "target": "t1267"
+        },
+        {
+            "source": "s19",
+            "target": "t1268"
+        },
+        {
+            "source": "s19",
+            "target": "t1269"
+        },
+        {
+            "source": "s19",
+            "target": "t1270"
+        },
+        {
+            "source": "s19",
+            "target": "t1271"
+        },
+        {
+            "source": "s20",
+            "target": "t1272"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+hostname DeviceA
+ip access-list extended test
+deny ip host 10.10.1.1 any
+permit ip any any
+access-list 1 permit 10.10.1.1
+policy-map test
+ class 1
+  police cir 1m pir 2m
+   violate-action discard
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.10.1.2 255.255.255.0
+ ipv6 traffic-filter test in
+ ip access-group test in

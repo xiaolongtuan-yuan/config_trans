@@ -1,0 +1,478 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "set system host-name Hub",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "set interfaces ge-1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.10/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "set interfaces lo0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "set interfaces lo0 unit 0 family inet address 192.168.0.1/32",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "set interfaces gr-0/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "set interfaces gr-0/0/0 unit 0 family inet address 172.16.1.1/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s8",
+            "text": "set interfaces gr-0/0/0 unit 0 tunnel source 10.1.1.10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s9",
+            "text": "set interfaces gr-0/0/0 unit 0 tunnel destination 0.0.0.0/0 # 多播隧道配置",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "set protocols bgp group BGP-PEERS",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "set protocols bgp group BGP-PEERS type external",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s12",
+            "text": "set protocols bgp group BGP-PEERS local-address 172.16.1.1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s13",
+            "text": "set protocols bgp group BGP-PEERS neighbor 172.168.1.2 peer-as 200",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s14",
+            "text": "set protocols bgp group BGP-PEERS neighbor 172.168.1.3 peer-as 300",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s15",
+            "text": "set protocols bgp group BGP-PEERS export EXPORT-OSPF",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s16",
+            "text": "set protocols ospf area 0.0.0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s19",
+            "text": "set protocols ospf area 0.0.0.0 interface gr-0/0/0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s20",
+            "text": "set protocols ospf3 area 0.0.0.1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s21",
+            "text": "set protocols ospf3 area 0.0.0.1 interface ge-0/0/0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s22",
+            "text": "set policy-options policy-statement EXPORT-OSPF",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s23",
+            "text": "set policy-options policy-statement EXPORT-OSPF term 1 from protocol ospf",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s24",
+            "text": "set policy-options policy-statement EXPORT-OSPF term 1 then accept",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t584",
+            "text": "hostname Hub",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t585",
+            "text": "interface GigabitEthernet1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t586",
+            "text": "no shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t588",
+            "text": "ip address 10.1.1.10 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t592",
+            "text": "ip address 192.168.0.1 255.255.255.255",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t596",
+            "text": "ip address 172.16.1.1 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t598",
+            "text": "tunnel source 10.1.1.10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t600",
+            "text": "router bgp [local_as_number]",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t601",
+            "text": "neighbor 172.168.1.2 remote-as 200",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t602",
+            "text": "vpdn-group BGP-PEERS",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t605",
+            "text": "router bgp <AS_NUMBER>",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t606",
+            "text": "neighbor <GROUP_NAME> update-source 172.16.1.1",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t603",
+            "text": "redistribute bgp",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t607",
+            "text": "redistribute bgp 200",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t608",
+            "text": "redistribute bgp 300",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t609",
+            "text": "redistribute ospf",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t610",
+            "text": "network 0.0.0.0 0.0.0.0 area 0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t613",
+            "text": "network 0.0.0.0 255.255.255.255 area 0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t614",
+            "text": "router ospfv3 1",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t615",
+            "text": "area 0.0.0.1 interface GigabitEthernet0/0/0",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t616",
+            "text": "network none none area 0.0.0.1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t617",
+            "text": "router bgp 100",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t624",
+            "text": "route-map EXPORT-OSPF permit 10",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t625",
+            "text": "match ip ospf",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t618",
+            "text": "neighbor 172.168.1.2 remote-as 200",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t619",
+            "text": "neighbor 172.168.1.3 remote-as 300",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t620",
+            "text": "neighbor 172.168.1.2 update-source 172.16.1.1",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t621",
+            "text": "neighbor 172.168.1.3 update-source 172.16.1.1",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t622",
+            "text": "redistribute ospf 1",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t626",
+            "text": "policy-map EXPORT-OSPF",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t627",
+            "text": "class EXPORT-OSPF",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t628",
+            "text": "police cir 1m pir 2m",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t629",
+            "text": "violate-action accept",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t584"
+        },
+        {
+            "source": "s2",
+            "target": "t585"
+        },
+        {
+            "source": "s2",
+            "target": "t586"
+        },
+        {
+            "source": "s3",
+            "target": "t588"
+        },
+        {
+            "source": "s4",
+            "target": "t586"
+        },
+        {
+            "source": "s5",
+            "target": "t592"
+        },
+        {
+            "source": "s6",
+            "target": "t586"
+        },
+        {
+            "source": "s7",
+            "target": "t596"
+        },
+        {
+            "source": "s8",
+            "target": "t598"
+        },
+        {
+            "source": "s9",
+            "target": "t600"
+        },
+        {
+            "source": "s9",
+            "target": "t601"
+        },
+        {
+            "source": "s10",
+            "target": "t602"
+        },
+        {
+            "source": "s11",
+            "target": "t603"
+        },
+        {
+            "source": "s12",
+            "target": "t605"
+        },
+        {
+            "source": "s12",
+            "target": "t606"
+        },
+        {
+            "source": "s13",
+            "target": "t607"
+        },
+        {
+            "source": "s14",
+            "target": "t608"
+        },
+        {
+            "source": "s15",
+            "target": "t609"
+        },
+        {
+            "source": "s16",
+            "target": "t610"
+        },
+        {
+            "source": "s19",
+            "target": "t613"
+        },
+        {
+            "source": "s20",
+            "target": "t614"
+        },
+        {
+            "source": "s20",
+            "target": "t615"
+        },
+        {
+            "source": "s21",
+            "target": "t616"
+        },
+        {
+            "source": "s22",
+            "target": "t617"
+        },
+        {
+            "source": "s22",
+            "target": "t618"
+        },
+        {
+            "source": "s22",
+            "target": "t619"
+        },
+        {
+            "source": "s22",
+            "target": "t620"
+        },
+        {
+            "source": "s22",
+            "target": "t621"
+        },
+        {
+            "source": "s22",
+            "target": "t622"
+        },
+        {
+            "source": "s23",
+            "target": "t624"
+        },
+        {
+            "source": "s23",
+            "target": "t625"
+        },
+        {
+            "source": "s24",
+            "target": "t626"
+        },
+        {
+            "source": "s24",
+            "target": "t627"
+        },
+        {
+            "source": "s24",
+            "target": "t628"
+        },
+        {
+            "source": "s24",
+            "target": "t629"
+        }
+    ]
+}

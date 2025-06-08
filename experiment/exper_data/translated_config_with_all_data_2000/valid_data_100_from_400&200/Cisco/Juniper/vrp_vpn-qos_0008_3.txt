@@ -1,0 +1,26 @@
+set system host-name PE2
+set protocols ldp router-id Loopback0
+set protocols ldp advertise-bgp-direct
+set protocols ldp targeted-session peer 1.1.1.9
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 set interfaces ge-1/0/0 disable false
+set interfaces ge-1/0/0 unit 0 family inet address 10.2.2.1/24
+set interfaces ge-1/0/0 unit 0 family inet mpls
+set interfaces ge-1/0/0 delete interfaces GigabitEthernet1/0/0 disable
+set interfaces ge-1/0/0 unit 1 tunnel source-address 1.1.1.9
+set interfaces ge-1/0/0 unit 101 family inet ccc encapsulation l2circuit
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0.1 unit 1 disable
+set interfaces ge-2/0/0.1 disable
+set interfaces ge-1/0/0.1 encapsulation dot1q 20
+set interfaces lo0 unit 1 disable
+set interfaces lo0 disable
+set interfaces lo0.1 unit 0 family inet address 3.3.3.9/32
+set protocols ospf area 0.0.0.1 interface ge-0/0/1.0
+set protocols ospf area 0 interface ge-0/0/1.0 set protocols ldp interface all area 0
+set protocols ospf area 0 interface ge-0/0/1.0 set protocols ldp interface ge-1/0/0.0 area 0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.0
+set protocols isis export REDIST-CONNECTED

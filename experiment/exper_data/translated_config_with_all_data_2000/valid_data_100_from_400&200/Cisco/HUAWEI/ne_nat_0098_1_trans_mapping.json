@@ -1,0 +1,298 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "hostname CGN2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "license boot level ipbasek9",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "ip access-list extended NAT_ACL",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "permit ip 192.168.10.0 0.0.0.255 any",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "ip nat pool pool1 11.11.11.106 11.11.11.110 netmask 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "ip nat inside source list NAT_ACL pool pool1 overload",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "interface GigabitEthernet2/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s8",
+            "text": "no shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s9",
+            "text": "ip address 192.168.10.1 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "ip nat inside",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "interface GigabitEthernet1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s12",
+            "text": "ip address 11.11.11.1 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s13",
+            "text": "ip nat outside",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s14",
+            "text": "ip route 0.0.0.0 0.0.0.0 GigabitEthernet1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s15",
+            "text": "end",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t2146",
+            "text": "sysname CGN2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2147",
+            "text": "license active ipbasek9",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2148",
+            "text": "nat instance NAT_ACL id 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2149",
+            "text": "nat outbound any address-group address-group1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2151",
+            "text": "service-instance-group groupa",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2152",
+            "text": "section 192.168.10.0 192.168.10.255 any",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2153",
+            "text": "nat ip-pool pool1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2154",
+            "text": "ip pool pool1 bas remote",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2155",
+            "text": "section 0 11.11.11.110 mask 24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2156",
+            "text": "nat outbound 2000 address-group pool1 overload",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2157",
+            "text": "interface GigabitEthernet2/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2159",
+            "text": "undo shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2161",
+            "text": "ip address 192.168.10.1 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2163",
+            "text": "nat bind inside",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2164",
+            "text": "interface GigabitEthernet1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2168",
+            "text": "ip address 11.11.11.1 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2170",
+            "text": "nat outbound",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2171",
+            "text": "ip route-static 0.0.0.0 0.0.0.0 GigabitEthernet1/0/0 preference 60",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2172",
+            "text": "ip route-static 0.0.0.0 0.0.0.0 GigabitEthernet1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2173",
+            "text": "stp region-configuration",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t2146"
+        },
+        {
+            "source": "s2",
+            "target": "t2147"
+        },
+        {
+            "source": "s3",
+            "target": "t2148"
+        },
+        {
+            "source": "s3",
+            "target": "t2149"
+        },
+        {
+            "source": "s4",
+            "target": "t2151"
+        },
+        {
+            "source": "s4",
+            "target": "t2152"
+        },
+        {
+            "source": "s5",
+            "target": "t2153"
+        },
+        {
+            "source": "s5",
+            "target": "t2154"
+        },
+        {
+            "source": "s5",
+            "target": "t2155"
+        },
+        {
+            "source": "s6",
+            "target": "t2156"
+        },
+        {
+            "source": "s7",
+            "target": "t2157"
+        },
+        {
+            "source": "s8",
+            "target": "t2159"
+        },
+        {
+            "source": "s9",
+            "target": "t2161"
+        },
+        {
+            "source": "s10",
+            "target": "t2163"
+        },
+        {
+            "source": "s11",
+            "target": "t2164"
+        },
+        {
+            "source": "s12",
+            "target": "t2168"
+        },
+        {
+            "source": "s13",
+            "target": "t2170"
+        },
+        {
+            "source": "s14",
+            "target": "t2171"
+        },
+        {
+            "source": "s14",
+            "target": "t2172"
+        },
+        {
+            "source": "s15",
+            "target": "t2173"
+        }
+    ]
+}

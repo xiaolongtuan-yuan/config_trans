@@ -1,0 +1,24 @@
+sysname Hub
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.10 255.255.255.0
+ ip address 192.168.0.1 255.255.255.255
+ ip address 172.16.1.1 255.255.255.0
+ destination dynamic
+interface LoopBack0
+ undo shutdown
+interface GigabitEthernet0/0/0
+ undo shutdown
+ source 10.1.1.10
+interface gre0/0/0 mode l2
+ encapsulation dot1q vid 0
+area 0.0.0.0
+ospf 0.0.0.0 router-id gr-0/0/0.0
+ area 0.0.0.0
+  network 0.0.0.0 0.0.0.255
+ospf 1 router-id 0.0.0.0
+ silent-interface LoopBack0
+area 0.0.0.1
+ospf 0.0.0.1 router-id ge-1/0/0.0
+ area 0.0.0.1
+  network 0.0.0.1 ge-1/0/0.0

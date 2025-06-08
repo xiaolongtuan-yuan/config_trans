@@ -1,0 +1,265 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "hostname CE2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "vlan 2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "ethernet cfm domain CFM",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "interface GigabitEthernet1/0/1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "switchport mode trunk",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "switchport trunk allowed vlan 2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "no shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s8",
+            "text": "ethernet cfm mep domain CFM md md3 ma ma3 mep-id 4",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s9",
+            "text": "ethernet cfm remote-mep domain CFM md md3 ma ma3 mep-id 3",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "ethernet cfm delay-measure domain CFM md md3 ma ma3 mep mep-id 4 test-id 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "ethernet cfm delay-measure domain CFM md md3 ma ma3 mep mep-id 4 remote-mep mep-id 3 test-id 2",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t1069",
+            "ids": [
+                1069
+            ],
+            "text": "set system host-name CE2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1071",
+            "ids": [
+                1070,
+                1071
+            ],
+            "text": "set vlans vlan2 vlan-id 2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1072",
+            "ids": [
+                1072
+            ],
+            "text": "set protocols oam ethernet cfm domain CFM",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1074",
+            "ids": [
+                1073,
+                1074
+            ],
+            "text": "set interfaces ge-1/0/1 unit GigabitEthernet1/0/1 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1086",
+            "ids": [
+                1073,
+                1075,
+                1086
+            ],
+            "text": "set interfaces ge-1/0/1 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1077",
+            "ids": [
+                1073,
+                1077
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching interface-mode trunk",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1078",
+            "ids": [
+                1073,
+                1078
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 family ethernet-switching port-mode trunk",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1080",
+            "ids": [
+                1073,
+                1080
+            ],
+            "text": "set interfaces ge-1/0/1 set interfaces ge-1/0/1 unit 0 family ethernet-switching vlan members 2",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1082",
+            "ids": [
+                1073,
+                1082
+            ],
+            "text": "set interfaces ge-1/0/1 set interfaces ge-1/0/1 disable false",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1085",
+            "ids": [
+                1073,
+                1085
+            ],
+            "text": "set interfaces ge-1/0/1 unit 0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t1083",
+            "ids": [
+                1083
+            ],
+            "text": "set protocols oam ethernet connectivity-fault-management domain CFM maintenance-domain md3 maintenance-association ma3 mep 4",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1087",
+            "ids": [
+                1087
+            ],
+            "text": "set protocols oam ethernet connectivity-fault-management domain CFM maintenance-domain md3 maintenance-association ma3 remote-mep 3",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1088",
+            "ids": [
+                1088
+            ],
+            "text": "set protocols oam ethernet connectivity-fault-management domain CFM md md3 ma ma3 mep 4 delay-measurement test-id 1",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t1089",
+            "ids": [
+                1089
+            ],
+            "text": "set protocols oam ethernet connectivity-fault-management domain CFM maintenance-domain md3 maintenance-association ma3 mep 4 remote-mep 3 continuity-check transmission interval 1s",
+            "description": "",
+            "type": "llm"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t1069"
+        },
+        {
+            "source": "s2",
+            "target": "t1071"
+        },
+        {
+            "source": "s3",
+            "target": "t1072"
+        },
+        {
+            "source": "s4",
+            "target": "t1074"
+        },
+        {
+            "source": "s4",
+            "target": "t1086"
+        },
+        {
+            "source": "s4",
+            "target": "t1085"
+        },
+        {
+            "source": "s5",
+            "target": "t1077"
+        },
+        {
+            "source": "s5",
+            "target": "t1078"
+        },
+        {
+            "source": "s6",
+            "target": "t1080"
+        },
+        {
+            "source": "s7",
+            "target": "t1082"
+        },
+        {
+            "source": "s8",
+            "target": "t1083"
+        },
+        {
+            "source": "s9",
+            "target": "t1087"
+        },
+        {
+            "source": "s10",
+            "target": "t1088"
+        },
+        {
+            "source": "s11",
+            "target": "t1089"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+sysname SSH_Server
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+set rsa key pair bits 2048
+local-user client001 password cipher @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@%
+ local-user client001 privilege level 3
+ local-user client002 privilege level 3
+ssh server version 2
+ssh server-source -i GigabitEthernet 0/0/0
+ssh user-interface vty 0 4
+user-interface vty 0 4
+ user privilege level 3
+ authentication-mode aaa
+stp region-configuration

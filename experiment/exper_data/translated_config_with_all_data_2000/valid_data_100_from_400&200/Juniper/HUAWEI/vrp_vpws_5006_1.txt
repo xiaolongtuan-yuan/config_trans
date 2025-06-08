@@ -1,0 +1,25 @@
+sysname U-PE1
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 192.168.1.1 255.255.255.0
+ ipv6 address none mpls
+ ip address 10.1.1.1 255.255.255.0
+ ip address 1.1.1.9 255.255.255.255
+interface GigabitEthernet2/0/0
+ undo shutdown
+area 0.0.0.0
+ospf 1 router-id 0.0.0.0
+ area 0.0.0.0
+  network 0.0.0.0 255.255.255.255
+ silent-interface LoopBack0
+mpls rsvp-te
+mpls label protocol ldp
+mpls ldp transport-address 1.1.1.9
+ptp-adaptive local-ip 3.3.3.9
+ mpls l2vc 3.3.3.9 100 ethernet
+ l2vpn
+ encapsulation ethernet
+ neighbor 3.3.3.9 control-word
+ospf 1 router-id 3.3.3.9
+ area 0.0.0.0
+  network 3.3.3.9 ge-1/0/0.0

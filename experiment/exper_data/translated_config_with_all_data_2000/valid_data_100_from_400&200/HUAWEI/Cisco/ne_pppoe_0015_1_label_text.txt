@@ -1,0 +1,42 @@
+hostname Device
+!
+aaa new-model
+!
+radius-server host 10.6.55.55 auth-port 1645 acct-port 1646 key 7 051B1C224D0A324E1D
+!
+interface Virtual-Template5
+ ppp authentication pap
+!
+ip dhcp pool pool1
+ network 10.10.10.0 255.255.255.0
+ default-router 10.10.10.1
+!
+ipv6 unicast-routing
+!
+!ipv6 local pool pool1 2001:DB8::/32 64
+!
+ipv6 dhcp pool pool1
+ !address prefix 2001:DB8::/32 lifetime infinite infinite
+!
+aaa authentication ppp default group radius
+aaa authentication login auth5 group radius
+!
+aaa accounting network acct5 start-stop group radius
+!
+ip domain-name isp5
+!
+!bba-group pppoe global
+ !virtual-template 5
+!
+interface GigabitEthernet1/0/2
+ !pppoe enable group global
+ ipv6 enable
+ ipv6 address autoconfig
+!
+interface GigabitEthernet1/0/1
+ ipv6 enable
+ ipv6 address 2001:db8:3::/64 eui-64
+ ipv6 address autoconfig
+ ip address 10.1.1.1 255.255.255.0
+!
+end

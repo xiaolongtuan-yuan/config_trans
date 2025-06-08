@@ -1,0 +1,43 @@
+set system host-name PE2
+set protocols oam cfm version 0
+set protocols oam ethernet connectivity-fault-management
+set system host-name 1.1.1.1
+set system host-name mpls
+set protocols l2vpn
+set protocols l2vpn vsi ldp1 static interface ge-0/0/1.0
+set protocols l2vpn vsi ldp1 interface ge-0/0/1.0 protocols l2vpn set routing-instances ldp1 vrf-target target:1:1
+set protocols l2vpn vsi ldp1 interface ge-0/0/1.0 protocols l2vpn neighbor 2.2.2.2;
+set interfaces ge-1/0/0 unit 0 family inet mpls
+set interfaces ge-1/0/0 unit 1 family inet service input inet set protocols ospf area 0.0.0.0
+set interfaces ge-1/0/0 unit 0 family inet service input md1 set protocols ospf area 0.0.0.0 set protocols ospf area 0.0.0.0 interface lo0.0
+set interfaces ge-1/0/0 unit 0 family inet service input md1 set protocols ospf area 0.0.0.0 set protocols ospf area 0.0.0.0 network 10.1.1.0/24
+set interfaces ge-1/0/0 unit 0 family ethernet-switching storm-control default set ethernet-cfm maintenance-domain md1 maintenance-association ma1 l2-vpn-vsi ldp1
+set interfaces ge-1/0/0 unit 0 family ethernet-switching storm-control default set oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 remote-mep 1
+set interfaces ge-1/0/0 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 remote-mep 1 continuity-check reception enable
+set interfaces ge-1/0/0 unit 0 family ethernet-switching storm-control default set protocols oam ethernet connectivity-fault-management maintenance-domain md1 maintenance-association ma1 continuity-check test-id 1 mep 2 peer-ip 2.2.2.2
+set interfaces ge-1/0/0 unit 1 vlan-id 2
+set interfaces ge-1/0/0 vlan-id 1
+set interfaces ge-1/0/0.1 disable
+set interfaces ge-1/0/0.1 set interfaces ge-1/0/1 unit 1 family ethernet-switching interface-mode trunk vlan members 2
+set interfaces ge-1/0/0.1 set interfaces ge-1/0/1 unit 1 family ethernet-switching vlan members ldp1
+set interfaces ge-1/0/0.1 set protocols l2circuit interface ge-1/0/1.1 virtual-circuit-id ldp1
+set interfaces ge-1/0/1.1 family ethernet-switching vlan members 2
+set interfaces ge-1/0/1.1 encapsulation flexible-ethernet-services;
+set interfaces ge-1/0/1.1 interfaces {
+set interfaces ge-1/0/1.1 ge-1/0/1 {
+set interfaces ge-1/0/1.1 unit 1 {
+set interfaces ge-1/0/1.1 encapsulation vlan-bridge;
+set interfaces ge-1/0/1.1 vlan-id 2;
+set interfaces ge-1/0/1.1 family bridge;
+set interfaces ge-1/0/1.1 }
+set interfaces ge-1/0/1.1 unit 1 vlan-id 2
+set interfaces ge-1/0/1.1 unit 2 description inward
+set interfaces ge-1/0/2 disable
+set interfaces ge-1/0/2 unit 0 disable
+set interfaces ge-1/0/2 set interfaces ge-1/0/2 unit 0 family inet address 10.1.1.2/24
+set interfaces ge-1/0/2 unit 0 family inet mpls
+set interfaces ge-1/0/2 unit 0 family inet mpls ldp
+set interfaces lo0 disable
+set interfaces lo0 set interfaces lo0 unit 0 family inet address 1.1.1.1/24
+set interfaces lo0 unit 0 family inet service input policy-p1
+set system host-name CE1

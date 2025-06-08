@@ -1,0 +1,41 @@
+hostname Spoke1
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.2.10 255.255.255.0
+ tunnel source 10.1.2.10
+ bfd source-ip 10.1.2.10
+ ip address 192.168.1.1 255.255.255.0
+ tunnel source GigabitEthernet1/0/0
+ interface Tunnel0
+ tunnel destination 172.16.1.1
+ ip address 172.16.1.2 255.255.255.0
+ encapsulation gre
+interface GigabitEthernet1/0/1
+ no shutdown
+tunnel protection ipsec profile IPSEC-VPN
+ router bgp [your-local-as-number]
+ neighbor 172.16.1.1 remote-as 100
+ neighbor 172.16.1.1 update-source 172.16.1.2
+ network 172.16.1.0 mask 255.255.255.0
+ redistribute ospf
+vpdn-group BGP-TO-PEER
+ router bgp [AS_NUMBER]
+ neighbor 172.16.1.1 update-source 172.16.1.2
+ neighbor [NEIGHBOR_IP] address-family ipv4 unicast
+redistribute bgp
+redistribute ospf
+router bgp [LOCAL_AS_NUMBER]
+ route-map EXPORT-OSPF-ROUTES permit 10
+ match protocol ospf
+neighbor 172.16.1.1 remote-as 100
+neighbor 172.16.1.1 update-source 172.16.1.2
+network 172.16.1.0 mask 255.255.255.0
+redistribute ospf [OSPF_PROCESS_ID]
+policy-map EXPORT-OSPF-ROUTES
+ class 1
+  police cir 1 pir accept
+   violate-action accept
+network 0.0.0.0 0.0.0.0 area 0
+network 0.0.0.0 255.255.255.255 area 0
+network 0.0.0.0 0.0.0.0 area 0.0.0.1
+network 0.0.0.0 0.0.0.1 area ge-1/0/0.0

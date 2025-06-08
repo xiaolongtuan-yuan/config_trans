@@ -1,0 +1,13 @@
+set system host-name ASG2
+set system ntp source internal
+set protocols ptp clock-mode boundary domain 255
+set protocols ptp clock-option priority1 1
+set protocols ptp clock-mode boundary
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 set protocols ptp interface <interface-name> clock-type boundary
+set interfaces ge-1/0/0 set protocols ptp clock-mode boundary
+set interfaces ge-1/0/0 set protocols ptp clock-mode boundary clock domain 255
+set interfaces ge-1/0/0 unit 0 family inet address none vrrp-group 0 preempt hold-time 0
+set interfaces ge-1/0/0 aggregated-ether-options link-speed 1g
+set interfaces ge-1/0/0 unit 0 family inet ptp delay-mechanism delay

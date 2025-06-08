@@ -1,0 +1,11 @@
+hostname DeviceA
+ip access-list extended test_global
+ip access-list extended test
+ remark rule 10 is deny ip packet which from 10.10.1.1
+ sequence 10
+ access-list 10 deny ip host 10.10.1.1 any
+interface GigabitEthernet1/0/0
+ ip address 10.10.1.2 255.255.255.0
+ ip access-group test in
+interface range GigabitEthernet1/0/0 - 1
+ no shutdown

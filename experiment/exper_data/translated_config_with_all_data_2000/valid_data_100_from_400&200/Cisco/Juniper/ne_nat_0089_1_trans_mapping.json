@@ -1,0 +1,600 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "hostname HUAWEI",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "ip nat pool inside-pool 10.0.0.1 10.0.0.254 netmask 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "ip nat pool global-pool 11.11.11.1 11.11.11.100 netmask 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "ip nat inside source static network 10.0.0.0 11.11.11.0 /24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "access-list 100 permit ip 10.0.0.0 0.0.0.255 any",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "class-map match-all NAT-CLASS",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "match access-group 100",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s8",
+            "text": "policy-map NAT-POLICY",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s9",
+            "text": "class NAT-CLASS",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "interface GigabitEthernet2/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "ip address 10.1.1.1 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s12",
+            "text": "no shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s13",
+            "text": "service-policy input NAT-POLICY",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s14",
+            "text": "ip nat inside",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s15",
+            "text": "interface GigabitEthernet2/0/1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s16",
+            "text": "ip address 11.11.11.2 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s17",
+            "text": "ip nat outside",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s18",
+            "text": "end",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t3132",
+            "ids": [
+                3132
+            ],
+            "text": "set system host-name HUAWEI",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3133",
+            "ids": [
+                3133
+            ],
+            "text": "set security nat source pool inside-pool address 10.0.0.1/24 to 10.0.0.254/24",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3134",
+            "ids": [
+                3134
+            ],
+            "text": "set security nat source pool global-pool address 11.11.11.1/24 to 11.11.11.100/24",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3135",
+            "ids": [
+                3135
+            ],
+            "text": "set security nat static rule-set NAT-RULE from zone untrust",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3136",
+            "ids": [
+                3136
+            ],
+            "text": "set security nat static rule-set NAT-RULE rule NETWORK-NAT match destination-address 11.11.11.0/24",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3137",
+            "ids": [
+                3137
+            ],
+            "text": "set security nat static rule-set NAT-RULE rule NETWORK-NAT then static-nat prefix 10.0.0.0/24",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3138",
+            "ids": [
+                3138
+            ],
+            "text": "set firewall family inet filter ACL-100 term 10 from source-address 10.0.0.0/24",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3139",
+            "ids": [
+                3139
+            ],
+            "text": "set firewall family inet filter ACL-100 term 10 then accept",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3144",
+            "ids": [
+                3140,
+                3144
+            ],
+            "text": "class NAT-CLASS { from firewall family inet filter NAT-FILTER term 1 then accept",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3145",
+            "ids": [
+                3140,
+                3145
+            ],
+            "text": "class NAT-CLASS { classifier NAT-CLASS firewall-filter NAT-FILTER",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3142",
+            "ids": [
+                3141,
+                3142
+            ],
+            "text": "match-all; }",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3155",
+            "ids": [
+                3146,
+                3155
+            ],
+            "text": "firewall { class NAT-CLASS",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3147",
+            "ids": [
+                3147
+            ],
+            "text": "policy NAT-POLICY {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3148",
+            "ids": [
+                3148
+            ],
+            "text": "match {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3149",
+            "ids": [
+                3149
+            ],
+            "text": "from zone inside;",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3150",
+            "ids": [
+                3150
+            ],
+            "text": "to zone outside;",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3151",
+            "ids": [
+                3151
+            ],
+            "text": "then {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3153",
+            "ids": [
+                3152,
+                3153
+            ],
+            "text": "permit; }",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3157",
+            "ids": [
+                3156,
+                3157
+            ],
+            "text": "set interfaces ge-2/0/0 unit 0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3158",
+            "ids": [
+                3156,
+                3158
+            ],
+            "text": "set interfaces ge-2/0/0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3160",
+            "ids": [
+                3156,
+                3160
+            ],
+            "text": "set interfaces ge-2/0/0 unit 0 family inet address 10.1.1.1/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3162",
+            "ids": [
+                3156,
+                3162
+            ],
+            "text": "set interfaces ge-2/0/0 delete interfaces GigabitEthernet2/0/0 disable",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3163",
+            "ids": [
+                3156,
+                3163
+            ],
+            "text": "set interfaces ge-2/0/0 delete interfaces GigabitEthernet2/0/1 disable",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3165",
+            "ids": [
+                3156,
+                3165
+            ],
+            "text": "set interfaces ge-2/0/0 unit 0 family inet service input NAT-POLICY",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3167",
+            "ids": [
+                3156,
+                3167
+            ],
+            "text": "set interfaces ge-2/0/0 unit 0 family inet address none vrrp-group none",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3174",
+            "ids": [
+                3156,
+                3174
+            ],
+            "text": "set interfaces ge-2/0/0 delete interfaces ge-2/0/0 disable",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3175",
+            "ids": [
+                3156,
+                3175
+            ],
+            "text": "set interfaces ge-2/0/0 delete interfaces ge-2/0/1 disable",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3176",
+            "ids": [
+                3156,
+                3176
+            ],
+            "text": "set interfaces ge-2/0/0 set interfaces ge-2/0/0 enable",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3177",
+            "ids": [
+                3156,
+                3177
+            ],
+            "text": "set interfaces ge-2/0/0 set interfaces ge-2/0/1 enable",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3169",
+            "ids": [
+                3168,
+                3169
+            ],
+            "text": "set interfaces ge-2/0/1 unit 2/0/1 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3170",
+            "ids": [
+                3168,
+                3170
+            ],
+            "text": "set interfaces ge-2/0/1 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3172",
+            "ids": [
+                3168,
+                3172
+            ],
+            "text": "set interfaces ge-2/0/1 unit 0 family inet address 11.11.11.2/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3179",
+            "ids": [
+                3168,
+                3179
+            ],
+            "text": "set interfaces ge-2/0/1 set security nat source rule-set NAT-RULE-SET from interface ge-2/0/1",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3180",
+            "ids": [
+                3168,
+                3180
+            ],
+            "text": "set interfaces ge-2/0/1 set security nat source rule-set NAT-RULE-SET to interface ge-2/0/0",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3181",
+            "ids": [
+                3181
+            ],
+            "text": "set protocols isis export REDIST-CONNECTED",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t3132"
+        },
+        {
+            "source": "s2",
+            "target": "t3133"
+        },
+        {
+            "source": "s3",
+            "target": "t3134"
+        },
+        {
+            "source": "s4",
+            "target": "t3135"
+        },
+        {
+            "source": "s4",
+            "target": "t3136"
+        },
+        {
+            "source": "s4",
+            "target": "t3137"
+        },
+        {
+            "source": "s5",
+            "target": "t3138"
+        },
+        {
+            "source": "s5",
+            "target": "t3139"
+        },
+        {
+            "source": "s6",
+            "target": "t3144"
+        },
+        {
+            "source": "s6",
+            "target": "t3142"
+        },
+        {
+            "source": "s7",
+            "target": "t3144"
+        },
+        {
+            "source": "s7",
+            "target": "t3145"
+        },
+        {
+            "source": "s8",
+            "target": "t3155"
+        },
+        {
+            "source": "s8",
+            "target": "t3147"
+        },
+        {
+            "source": "s8",
+            "target": "t3148"
+        },
+        {
+            "source": "s8",
+            "target": "t3149"
+        },
+        {
+            "source": "s8",
+            "target": "t3150"
+        },
+        {
+            "source": "s8",
+            "target": "t3151"
+        },
+        {
+            "source": "s8",
+            "target": "t3153"
+        },
+        {
+            "source": "s9",
+            "target": "t3155"
+        },
+        {
+            "source": "s10",
+            "target": "t3157"
+        },
+        {
+            "source": "s10",
+            "target": "t3158"
+        },
+        {
+            "source": "s11",
+            "target": "t3160"
+        },
+        {
+            "source": "s12",
+            "target": "t3162"
+        },
+        {
+            "source": "s12",
+            "target": "t3163"
+        },
+        {
+            "source": "s12",
+            "target": "t3174"
+        },
+        {
+            "source": "s12",
+            "target": "t3175"
+        },
+        {
+            "source": "s12",
+            "target": "t3176"
+        },
+        {
+            "source": "s12",
+            "target": "t3177"
+        },
+        {
+            "source": "s13",
+            "target": "t3165"
+        },
+        {
+            "source": "s14",
+            "target": "t3167"
+        },
+        {
+            "source": "s15",
+            "target": "t3169"
+        },
+        {
+            "source": "s15",
+            "target": "t3170"
+        },
+        {
+            "source": "s16",
+            "target": "t3172"
+        },
+        {
+            "source": "s17",
+            "target": "t3179"
+        },
+        {
+            "source": "s17",
+            "target": "t3180"
+        },
+        {
+            "source": "s18",
+            "target": "t3181"
+        }
+    ]
+}

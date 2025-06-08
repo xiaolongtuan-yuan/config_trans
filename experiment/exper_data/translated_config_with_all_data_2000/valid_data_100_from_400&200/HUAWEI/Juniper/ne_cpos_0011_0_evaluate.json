@@ -1,0 +1,56 @@
+{
+    "command_accuracy": 0.5,
+    "missed_commands": [
+        "set chassis cpos oc3-3/0/0 channelization sonet",
+        "set interfaces so-3/0/0 sonet-options payload-compatibility c-bit",
+        "set interfaces ge-3/0/1 unit 0 family inet address 10.1.1.1/24",
+        "set chassis cpos oc3-3/0/0 channelization sonet",
+        "set interfaces so-3/0/0 sonet-options payload-compatibility c-bit",
+        "set interfaces ge-3/0/1 unit 0 family inet address 10.1.1.1/24"
+    ],
+    "grammatical_accuracy": 0.6666666666666666,
+    "missed_templates": [
+        "set chassis [parameter1] [parameter2] channelization [parameter3]",
+        "set interfaces [parameter1] sonet-options payload-compatibility [parameter2]"
+    ],
+    "llm_command_accuracy": 0.16666666666666666,
+    "llm_command_ratio": 0.75,
+    "command_for_llm": [
+        "e1 2 channel-set 1 timeslot-list 16-31",
+        "e1 1 channel-set 1 timeslot-list 1-15",
+        "ppp mp Mp-group3/0/1",
+        "link-protocol ppp",
+        "controller Cpos3/0/0"
+    ],
+    "llm_trans_commands": [
+        "set chassis cpos 3/0/0",
+        "set chassis cpos 3/0/0",
+        "set interfaces e1-3/0/0 channel 1 timeslots 1-15",
+        "set chassis cpos 3/0/0",
+        "set interfaces ct3-3/0/0 e1 2 channel-group 1 timeslots 16-31",
+        "encapsulation ppp",
+        "set interfaces se-3/0/0 unit 1 family ppp multilink-bundle mp-3/0/1",
+        "set interfaces se-3/0/0 unit 2 family ppp multilink-bundle mp-3/0/1",
+        "set interfaces serial-3/0/0/1:1 encapsulation ppp",
+        "set interfaces serial-3/0/0/2:1 encapsulation ppp",
+        "set interfaces se-3/0/0 unit 1 family inet multilink-master mp-group3/0/1",
+        "set interfaces se-3/0/0 unit 2 family inet multilink-master mp-group3/0/1"
+    ],
+    "source_commands": [
+        "interface Serial3/0/0/1:1",
+        "e1 2 channel-set 1 timeslot-list 16-31",
+        "e1 1 channel-set 1 timeslot-list 1-15",
+        "ppp mp Mp-group3/0/1",
+        "interface Serial3/0/0/2:1",
+        "interface Mp-group3/0/1",
+        "undo shutdown",
+        "sysname DeviceA",
+        "return",
+        "ip address 10.1.1.1 255.255.255.0",
+        "link-protocol ppp",
+        "controller Cpos3/0/0"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

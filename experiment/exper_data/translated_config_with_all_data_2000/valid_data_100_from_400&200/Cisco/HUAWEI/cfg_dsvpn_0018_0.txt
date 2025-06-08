@@ -1,0 +1,39 @@
+sysname Hub1
+acl number 2000
+rule 5 permit ip source 192.168.0.0 0.0.0.255 destination any
+acl number 2001
+rule 5 permit ip source 192.168.1.0 0.0.0.255 destination any
+acl 2001
+rule 10 permit ip source 192.168.2.0 0.0.0.255 destination any
+route-policy 1 permit node 10
+ if-match acl 2000
+ip as-path-filter 10 permit .*
+route-policy 2 permit node 10
+ if-match acl 2001
+interface GigabitEthernet1/0/0
+ ip address 10.1.1.10 255.255.255.0
+ source GigabitEthernet1/0/0
+ tunnel-protocol gre p2mp
+interface LoopBack0
+ ip address 192.168.0.1 255.255.255.255
+interface Tunnel0
+ ip address 172.16.1.1 255.255.255.0
+ source GigabitEthernet1/0/0
+ tunnel-protocol gre p2mp
+ tunnel key 0
+ ipsec policy <profile-name> profile
+ospf 1
+ network 172.16.1.0 0.0.0.255
+ area 0
+ospf 1 router-id 172.16.1.1
+ import-route ospf 3 route-policy 1
+ospf 2
+ network 10.1.1.0 0.0.0.255
+ area 1
+ospf 2 router-id 10.1.1.10
+ospf 3
+ network 192.168.0.0 0.0.0.255
+ area 0
+ospf 3 router-id 192.168.0.1
+ import-route ospf 3 route-policy 2
+stp region-configuration

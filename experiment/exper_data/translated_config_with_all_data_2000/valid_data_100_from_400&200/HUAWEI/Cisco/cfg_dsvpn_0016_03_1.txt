@@ -1,0 +1,34 @@
+hostname Spoke1
+ip nhrp enable
+interface GigabitEthernet1/0/0
+ ip address 10.1.2.10 255.255.255.0
+ tunnel mode gre multipoint
+ tunnel protection ipsec profile IPSEC-PROFILE
+interface GigabitEthernet2/0/0
+ ip address 192.168.1.1 255.255.255.0
+interface Tunnel0
+ ip address 172.16.1.2 255.255.255.0
+ tunnel mode gre p2mp
+ tunnel mode gre multipoint
+ tunnel source GigabitEthernet1/0/0
+ ip nhrp enable
+ ip nhrp shortcut
+ ip nhrp map 172.16.1.1 10.1.1.10
+ ip nhrp nhs 172.16.1.1 nbma 10.1.1.10
+ tunnel protection ipsec profile IPSEC-PROFILE
+ tunnel protection ipsec profile IPSEC-PROFILE shared
+ ip address 192.168.1.0 0.0.0.255
+ ip address 10.1.2.0 0.0.0.255
+router bgp 200
+ bgp router-id 172.16.1.2
+ neighbor 172.16.1.1 remote-as 100
+ address-family ipv4 unicast
+  redistribute ospf 1 route-map none
+ no synchronization
+ redistribute ospf 1
+neighbor 172.16.1.1 remote-as 100
+router ospf 1
+ area 0
+router ospf 2
+ area 1
+end

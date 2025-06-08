@@ -1,0 +1,296 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "set system host-name CE2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "set routing-options static route 22.22.22.22/32",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "set policy-options policy-statement EXPORT-LOOPBACK",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "set policy-options policy-statement EXPORT-LOOPBACK term 1 from protocol static",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "set policy-options policy-statement EXPORT-LOOPBACK term 1 then accept",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "set interfaces ge-1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s8",
+            "text": "set interfaces ge-1/0/0 unit 0 family inet address 10.2.1.2/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s9",
+            "text": "set interfaces lo0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "set interfaces lo0 unit 0 family inet address 22.22.22.22/32",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "set protocols bgp group internal",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s12",
+            "text": "set protocols bgp group internal type internal",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s13",
+            "text": "set protocols bgp group internal local-address 22.22.22.22",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s15",
+            "text": "set protocols bgp group internal family inet unicast",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s16",
+            "text": "set protocols bgp group internal export EXPORT-LOOPBACK",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t2542",
+            "text": "hostname CE2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2543",
+            "text": "ip route 22.22.22.22 255.255.255.255 none none",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2545",
+            "text": "router bgp 100",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2548",
+            "text": "route-map EXPORT-LOOPBACK permit 10",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2549",
+            "text": "match protocol static",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2546",
+            "text": "neighbor 10.2.1.1 route-map EXPORT-LOOPBACK out",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2550",
+            "text": "policy-map EXPORT-LOOPBACK",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2551",
+            "text": "class 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2552",
+            "text": "police cir 15m pir 20m",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2553",
+            "text": "violate-action accept",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2554",
+            "text": "interface GigabitEthernet1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2555",
+            "text": "no shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2557",
+            "text": "ip address 10.2.1.2 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2561",
+            "text": "ip address 22.22.22.22 255.255.255.255",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2562",
+            "text": "vpdn-group internal",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2565",
+            "text": "router bgp 100",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2566",
+            "text": "neighbor 10.2.1.1 update-source Loopback0",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2569",
+            "text": "neighbor 10.2.1.1 activate",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2563",
+            "text": "redistribute bgp",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2570",
+            "text": "redistribute connected",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t2542"
+        },
+        {
+            "source": "s2",
+            "target": "t2543"
+        },
+        {
+            "source": "s4",
+            "target": "t2545"
+        },
+        {
+            "source": "s4",
+            "target": "t2546"
+        },
+        {
+            "source": "s5",
+            "target": "t2548"
+        },
+        {
+            "source": "s5",
+            "target": "t2549"
+        },
+        {
+            "source": "s6",
+            "target": "t2550"
+        },
+        {
+            "source": "s6",
+            "target": "t2551"
+        },
+        {
+            "source": "s6",
+            "target": "t2552"
+        },
+        {
+            "source": "s6",
+            "target": "t2553"
+        },
+        {
+            "source": "s7",
+            "target": "t2554"
+        },
+        {
+            "source": "s7",
+            "target": "t2555"
+        },
+        {
+            "source": "s8",
+            "target": "t2557"
+        },
+        {
+            "source": "s9",
+            "target": "t2555"
+        },
+        {
+            "source": "s10",
+            "target": "t2561"
+        },
+        {
+            "source": "s11",
+            "target": "t2562"
+        },
+        {
+            "source": "s12",
+            "target": "t2563"
+        },
+        {
+            "source": "s13",
+            "target": "t2565"
+        },
+        {
+            "source": "s13",
+            "target": "t2566"
+        },
+        {
+            "source": "s15",
+            "target": "t2569"
+        },
+        {
+            "source": "s16",
+            "target": "t2570"
+        }
+    ]
+}

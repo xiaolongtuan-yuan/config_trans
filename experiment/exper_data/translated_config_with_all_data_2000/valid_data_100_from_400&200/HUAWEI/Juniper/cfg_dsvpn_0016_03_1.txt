@@ -1,0 +1,35 @@
+set system host-name Spoke1
+set interfaces ge-1/0/0 unit 0 family inet address none/none vrrp-group none virtual-address none
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.2.10/24
+set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet address 10.1.2.10/24
+set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet tunnel gre
+set interfaces ge-1/0/0 set interfaces gt-0/0/0 unit 0 tunnel ipsec-vpn profile IPSEC-PROFILE
+set interfaces ge-1/0/0 set interfaces gr-0/0/0 unit 0 tunnel source interface ge-1/0/0
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.1.1/24
+set interfaces tun0 disable
+set interfaces tun0 unit 0 family inet address 172.16.1.2/24
+set interfaces tun0 unit 0 family inet address none/none vrrp-group none virtual-address none
+set interfaces tun0 unit none tunnel destination none
+set interfaces tun0 set protocols nhrp interface tun.0 shortcut
+set interfaces tun0 set protocols nhrp interface tun.0 registry-holdtime 300
+set interfaces tun0 set protocols nhrp interface tun.0 record 172.16.1.1/32 nhs 10.1.1.10
+set interfaces gr-0/0/0.0 set interfaces gr-0/0/0 unit 0 tunnel encapsulation gre
+set interfaces gr-0/0/0.0 set interfaces gr-0/0/0 unit 0 tunnel multipoint
+set interfaces tunnel0 set security ipsec vpn IPSEC-PROFILE bind-interface st0.0
+set routing-options autonomous-system 200 set routing-options router-id 172.16.1.2
+set protocols bgp group 200 type external
+set protocols bgp group 200 neighbor 172.16.1.1 peer-as 100
+set protocols bgp group 200 export BGP-NETWORKS
+set protocols bgp group 200 family inet unicast
+set protocols bgp group 200 local-as 200
+set protocols bgp group 200 term 1 then accept
+set protocols bgp group 200 peer-as 200
+set routing-options router-id 172.16.1.2
+set protocols ospf area 0.0.0.0 interface 0.0.0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set routing-options router-id 10.1.2.10
+set protocols ospf area 0.0.0.1 interface 0.0.0.1
+set protocols ospf area 0.0.0.1 interface ge-0/0/1.0
+set system host-name CE1

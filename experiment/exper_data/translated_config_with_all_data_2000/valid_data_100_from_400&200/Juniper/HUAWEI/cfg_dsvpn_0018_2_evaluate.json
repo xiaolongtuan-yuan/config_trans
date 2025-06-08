@@ -1,0 +1,72 @@
+{
+    "command_accuracy": 0.47619047619047616,
+    "missed_commands": [
+        "binding tunnel gre p2mp",
+        "tunnel-protocol gre p2mp",
+        "source gigabitethernet1/0/0",
+        "ipsec profile <profile_name>",
+        "ospf network-type p2mp",
+        "ospf 2 router-id 10.1.2.10",
+        "network 172.16.1.0 0.0.0.255",
+        "network 192.168.1.0 0.0.0.255",
+        "network 10.1.2.0 0.0.0.255",
+        "neighbor 172.16.1.1",
+        "return",
+        "binding tunnel gre p2mp",
+        "tunnel-protocol gre p2mp",
+        "source gigabitethernet1/0/0",
+        "ipsec profile <profile_name>",
+        "ospf network-type p2mp",
+        "network 172.16.1.0 0.0.0.255",
+        "network 192.168.1.0 0.0.0.255",
+        "neighbor 172.16.1.1",
+        "ospf 2 router-id 10.1.2.10",
+        "network 10.1.2.0 0.0.0.255",
+        "return"
+    ],
+    "grammatical_accuracy": 0.7142857142857143,
+    "missed_templates": [
+        "binding tunnel [parameter1] [parameter2]",
+        "tunnel-protocol [parameter1] [parameter2]",
+        "ipsec profile [parameter1]",
+        "ospf network-type [parameter1]",
+        "neighbor [parameter1]",
+        "return"
+    ],
+    "llm_command_accuracy": 0.0,
+    "llm_command_ratio": 0.19230769230769232,
+    "command_for_llm": [
+        "ike ipsec-policy IPSEC_PROFILE",
+        "bind-interface gr-0/0/0"
+    ],
+    "llm_trans_commands": [
+        "ipsec vpn-instance GRE_OVER_IPSEC",
+        "ipsec binding gre tunnel gr-0/0/0",
+        "interface Tunnel0",
+        "tunnel-protocol gre",
+        "destination 172.16.1.1"
+    ],
+    "source_commands": [
+        "interface ge-0/0/0.0",
+        "unit 0 family inet address 192.168.1.1/32",
+        "set interfaces ge-0/0/0",
+        "unit 0 encapsulation gre",
+        "set security ipsec vpn GRE_OVER_IPSEC",
+        "set interfaces lo0",
+        "set interfaces gr-0/0/0",
+        "unit 0 family inet address 172.16.1.2/24",
+        "set protocols ospf area 0.0.0.0",
+        "interface gr-0/0/0.0",
+        "unit 0 family inet address 10.1.2.10/24",
+        "ike ipsec-policy IPSEC_PROFILE",
+        "unit 0 tunnel source 10.1.2.10",
+        "interface lo0.0",
+        "set protocols ospf area 0.0.0.1",
+        "set system host-name Spoke1",
+        "bind-interface gr-0/0/0",
+        "unit 0 tunnel destination 172.16.1.1"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

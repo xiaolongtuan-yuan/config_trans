@@ -1,0 +1,30 @@
+hostname HUAWEI
+!
+ip nat pool inside-pool 10.0.0.1 10.0.0.254 netmask 255.255.255.0
+ip nat pool global-pool 11.11.11.1 11.11.11.100 netmask 255.255.255.0
+!
+ip nat inside source static network 10.0.0.0 11.11.11.0 /24
+!ip nat inside source static tcp 10.0.0.1 256 11.11.11.1 256 extendable
+!ip nat inside source static tcp 10.0.0.1 1024 11.11.11.1 1024 extendable
+!
+access-list 100 permit ip 10.0.0.0 0.0.0.255 any
+!
+class-map match-all NAT-CLASS
+ match access-group 100
+!
+policy-map NAT-POLICY
+ class NAT-CLASS
+ ! nat dynamic global-pool
+!
+interface GigabitEthernet2/0/0
+ ip address 10.1.1.1 255.255.255.0
+ no shutdown
+ service-policy input NAT-POLICY
+ ip nat inside
+!
+interface GigabitEthernet2/0/1
+ ip address 11.11.11.2 255.255.255.0
+ no shutdown
+ ip nat outside
+!
+end

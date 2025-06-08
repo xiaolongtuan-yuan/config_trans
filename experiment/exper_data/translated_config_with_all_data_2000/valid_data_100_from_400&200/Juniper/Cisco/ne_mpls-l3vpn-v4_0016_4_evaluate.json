@@ -1,0 +1,63 @@
+{
+    "command_accuracy": 0.7272727272727273,
+    "missed_commands": [
+        "address-family ipv4",
+        "no synchronization",
+        "exit-address-family",
+        "address-family ipv4",
+        "no synchronization",
+        "exit-address-family"
+    ],
+    "grammatical_accuracy": 0.7272727272727273,
+    "missed_templates": [
+        "address-family [parameter1]",
+        "no synchronization",
+        "exit-address-family"
+    ],
+    "llm_command_accuracy": 0.36363636363636365,
+    "llm_command_ratio": 0.6818181818181818,
+    "command_for_llm": [
+        "set protocols bgp group BGP_GROUP",
+        "term 1 from route-filter 10.3.1.0/24 exact",
+        "neighbor 10.3.1.2 family inet unicast",
+        "family inet unicast",
+        "set policy-options policy-statement ADVERTISE_NETWORK"
+    ],
+    "llm_trans_commands": [
+        "router bgp 800",
+        "neighbor 10.3.1.2 remote-as 100",
+        "neighbor 10.3.1.2 activate",
+        "network 10.3.1.0 mask 255.255.255.0",
+        "router bgp 800",
+        "neighbor 10.3.1.2 remote-as 100",
+        "neighbor 10.3.1.2 address-family ipv4 unicast",
+        "router bgp 800",
+        "neighbor 10.3.1.2 address-family ipv4 unicast",
+        "router bgp 800",
+        "neighbor 10.3.1.2 remote-as 100",
+        "router bgp 800",
+        "route-map ADVERTISE_NETWORK permit 10",
+        "match ip address prefix-list ADVERTISE_NETWORK_PREFIX",
+        "ip prefix-list ADVERTISE_NETWORK_PREFIX seq 5 permit 10.3.1.0/24"
+    ],
+    "source_commands": [
+        "set policy-options policy-statement ADVERTISE_NETWORK",
+        "export ADVERTISE_NETWORK",
+        "set protocols bgp group BGP_GROUP",
+        "term 1 from route-filter 10.3.1.0/24 exact",
+        "term 1 then accept",
+        "set routing-options autonomous-system 800",
+        "then reject",
+        "neighbor 10.3.1.2 family inet unicast",
+        "family inet unicast",
+        "set system host-name CE3",
+        "unit 0 family inet address 10.3.1.1/24",
+        "unit 0 disable",
+        "neighbor 10.3.1.2 peer-as 100",
+        "set interfaces ge-1/0/0",
+        "type external"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

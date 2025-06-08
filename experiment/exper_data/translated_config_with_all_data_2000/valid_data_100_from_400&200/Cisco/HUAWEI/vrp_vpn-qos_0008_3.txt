@@ -1,0 +1,23 @@
+sysname PE2
+mpls ldp router-id LoopBack0
+mpls label protocol ldp
+mpls ldp remote-peer 1.1.1.9
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.2.2.1 255.255.255.0
+interface GigabitEthernet1/0/0 mode l2
+ mpls l2vc none none raw
+interface GigabitEthernet2/0/0
+ undo shutdown
+interface GigabitEthernet2/0/0.1
+ mpls l2vc 1.1.1.9 101 tunnel-policy none
+ mpls static-l2vc pw-template none 101 transmit-vpn-label 101 receive-vpn-label none
+interface GigabitEthernet2/0/0.1 mode l2
+ encapsulation dot1q vid 20
+interface LoopBack1
+ ip address 3.3.3.9 255.255.255.255
+ospf 1
+ network 3.3.3.9 0.0.0.0
+ area 0
+ network 10.2.2.0 0.0.0.255
+stp region-configuration

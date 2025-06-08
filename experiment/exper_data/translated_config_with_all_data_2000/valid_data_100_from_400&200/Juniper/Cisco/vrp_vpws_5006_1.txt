@@ -1,0 +1,22 @@
+hostname U-PE1
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.1.1 255.255.255.0
+ ipv6 address 2001:DB8::/64 eui-64
+ ip address 10.1.1.1 255.255.255.0
+ ip address 1.1.1.9 255.255.255.255
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 address 2001:DB8::/64 eui-64
+network 0.0.0.0 0.0.0.0 area 0
+network 0.0.0.0 255.255.255.255 area 0
+mpls ldp advertise-labels interface GigabitEthernet1/0/0
+mpls ldp advertise-labels interface GigabitEthernet2/0/0
+mpls ldp discovery transport-address GigabitEthernet1/0/0
+mpls ldp discovery transport-address GigabitEthernet2/0/0
+mpls ldp router-id 1.1.1.9 force
+neighbor 3.3.3.9 activate
+network none none area 0
+neighbor 3.3.3.9 remote-as 100
+neighbor 3.3.3.9 remote-as ethernet
+neighbor 3.3.3.9 remote-as none

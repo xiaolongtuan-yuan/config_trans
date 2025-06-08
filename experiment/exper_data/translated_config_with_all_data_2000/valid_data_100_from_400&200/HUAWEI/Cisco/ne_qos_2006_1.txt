@@ -1,0 +1,28 @@
+hostname P
+ethernet cfm ma ma1 md md1
+ mpls ip
+interface GigabitEthernet2/0/0
+ mpls ldp autoconfig
+ ip address 172.22.1.1 255.255.255.0
+ mpls ip
+ mpls ldp neighbor 2.2.2.9 password default
+interface range GigabitEthernet1/0/0 - 1
+ no shutdown
+interface GigabitEthernet1/0/0
+ ip address 172.21.1.2 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+ mpls ldp neighbor 2.2.2.9 password default
+interface range GigabitEthernet2/0/0 - 0
+ no shutdown
+interface LoopBack1
+ ip address 2.2.2.9 255.255.255.255
+ ip ospf 1 area 0
+  router ospf 1
+  network 2.2.2.9 0.0.0.0 area 0
+  network 172.21.1.0 0.0.0.255 area 0
+  network 172.22.1.0 0.0.0.255 area 0
+ ip address 2.2.2.9 0.0.0.0
+ ip address 172.21.1.0 255.255.255.0
+ ip address 172.22.1.0 0.0.0.255
+end

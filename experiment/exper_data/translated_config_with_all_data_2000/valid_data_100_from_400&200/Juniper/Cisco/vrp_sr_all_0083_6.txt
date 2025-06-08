@@ -1,0 +1,20 @@
+hostname CE2
+interface GigabitEthernet0/0/0
+ no shutdown
+interface GigabitEthernet0/0
+ ip address 10.2.1.1 255.255.255.0
+interface Loopback0
+ no shutdown
+ ip address 10.22.2.2 255.255.255.255
+vpdn-group external-peers
+redistribute bgp
+match ip address prefix-list 10.22.2.2
+ route-map export-policy permit 10
+route-map export-policy permit 10
+ route-map export-policy permit 10
+  match ip address prefix-list exact-route
+  ip prefix-list exact-route permit 10.22.2.2/32
+policy-map export-policy
+ class class-default
+  police cir 1m pir 2m
+   violate-action accept

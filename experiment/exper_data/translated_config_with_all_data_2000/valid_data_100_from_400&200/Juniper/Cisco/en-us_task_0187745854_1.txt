@@ -1,0 +1,43 @@
+hostname PE1
+network 0.0.0.0 0.0.0.0 area 0
+network none 0.0.0.0 area 0
+router ospf 1
+mpls ldp sync
+mpls ldp advertise-labels interface GigabitEthernet1/0/0.1
+mpls ldp advertise-labels interface GigabitEthernet2/0/0
+mpls ldp advertise-labels interface Loopback0
+mpls ldp discovery transport-address GigabitEthernet1/0/0.1
+mpls ldp discovery transport-address GigabitEthernet2/0/0
+mpls ldp router-id 1.1.1.1
+route-target import 100:2
+route-target import 100:1
+ vrf definition v1
+ rd 100:1
+ route-target both 100:1
+interface GigabitEthernet1/0/0
+ no shutdown
+ interface GigabitEthernet1/0/0
+ switchport
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport access vlan 10
+ switchport trunk allowed vlan 10
+ encapsulation vlan-ccc
+ interface GigabitEthernet1/0/0.10
+ encapsulation dot1Q 10
+ ipv6 address 2001:DB8::/64 eui-64
+ ip address 1.1.1.1 255.255.255.255
+interface GigabitEthernet2/0/0
+ ip address 10.10.1.1 255.255.255.0
+vpdn-group vpls
+ neighbor 2.2.2.2 activate
+ neighbor 2.2.2.2 send-community both
+ address-family l2vpn vpls
+redistribute bgp
+vpdn-group vplp
+ router bgp [AS_NUMBER]
+ neighbor 2.2.2.2 update-source Loopback0
+policy-map p1
+ class class-default
+  police cir 15m pir 20m
+   violate-action accept

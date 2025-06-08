@@ -1,0 +1,41 @@
+hostname PE1
+ethernet cfm ma ma1 md md1
+ mpls ip
+mpls ldp remote-peer none none
+l2vpn vfi context a2
+ vpn id 3.3.3.3
+ vpn id 1
+ storm-control broadcast level 1.00
+ storm-control multicast level 1.00
+ storm-control unicast level 1.00
+controller a2 static
+controller vsi a2
+ no ldp
+  storm-control broadcast level 1.00
+controller T1 1/0/1
+interface GigabitEthernet1/0/0
+ mpls ldp autoconfig
+interface GigabitEthernet2/0/0
+ mpls ldp ipv4
+ ptp adaptive remote-server1-ip 3.3.3.3
+ ip address 172.16.1.1 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+interface range GigabitEthernet1/0/0 - 1
+ no shutdown
+interface GigabitEthernet1/0/0.1
+ encapsulation dot1q 10
+interface range GigabitEthernet2/0/0 - 0
+ no shutdown
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+ ip ospf 1 area 0
+  router ospf 1
+  network 1.1.1.1 0.0.0.0 area 0
+  network 172.16.1.0 0.0.0.255 area 0
+ ip address 1.1.1.1 0.0.0.0
+ ip address 172.16.1.0 255.255.255.0
+ tunnel destination 3.3.3.3
+ ip address 3.3.3.3 255.255.255.255
+ tunnel destination 172.16.1.0
+end

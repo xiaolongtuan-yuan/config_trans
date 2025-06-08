@@ -1,0 +1,45 @@
+set system host-name Device
+set protocols l2tp
+set system aaa new-model
+set system authentication-order radius
+set services pppoe-client profile default client-name radius
+set system radius-server radius
+set system radius-options accounting start-stop
+set system aaa session-options common-session-id
+set system radius-server 10.20.20.1 auth-port 1812 acct-port 1813
+set access radius-server 10.20.20.1 secret "<key>"
+set interfaces vt-1/0/0 unit 0 disable
+set interfaces vt-1/0/0 disable
+set interfaces vt-1/0/0 unit 1 family inet BAS-POOL
+set interfaces vt-1 set interfaces vt-1 mtu 1492
+set interfaces vt-1 set interfaces pp0 unit 0 ppp-authentication pap chap
+set interfaces vt-1 set interfaces vt-1 unit 0 family inet unnumbered-address lo0.0
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 delete interfaces GigabitEthernet1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.11.11.1/24
+set interfaces lo0 unit 0 disable
+set interfaces lo0 disable
+set interfaces lo0 unit 0 family inet address 192.168.10.1/32
+set protocols ospf area 0.0.0.1 interface lo0
+set protocols ospf area 0 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set system services dhcp pool BAS-POOL network 192.168.0.0/24 set system services dhcp-local-server group BAS-POOL address-range low 192.168.0.1 high 192.168.0.254
+set system services dhcp pool BAS-POOL network 192.168.0.0/24 set access address-assignment pool BAS-POOL family inet default-router 192.168.0.1
+set system services dhcp pool BAS-POOL network 192.168.0.0/24 set system services dhcp pool BAS-POOL default-router 192.168.0.1
+set system services dhcp pool BAS-POOL network 192.168.0.0/24 set access address-assignment pool BAS-POOL dns-server 8.8.8.8 8.8.4.4
+set system services dhcp pool BAS-POOL network 192.168.0.0/24 set system services dhcp-local-server group BAS-POOL overrides lease-time infinite
+set system services dhcp pool BAS-POOL default-router 192.168.0.1
+set system services dhcp pool BAS-POOL name-server 8.8.8.8
+set system services dhcp pool BAS-POOL name-server 8.8.4.4
+set system services dhcp pool BAS-POOL lease-time infinite
+set access l2tp-access-profile "1" tunnel authentication
+set access l2tp-access-profile "1" tunnel destination-address 10.11.11.1
+set access l2tp-access-profile "1" tunnel local-name "Device"
+set services l2tp lns tunnel-group 1 interface none
+set services l2tp lns tunnel-group 1 interface lt-0/0/0.0 set protocols l2tp
+set services l2tp lns tunnel-group 1 interface vt-1 set interfaces vt-1 unit 0 family inet
+set protocols l2tp lns LNS set access profile LNS client l2tp password "<password>"
+set protocols l2tp lns LNS set protocols l2tp tunnel password <password> secret
+set protocols l2tp lns LNS set system l2tp tunnel cookie size 4
+set system radius-server source-interface lo0

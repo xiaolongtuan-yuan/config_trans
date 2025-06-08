@@ -1,0 +1,23 @@
+hostname CE2
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 10.2.1.1 255.255.255.0
+neighbor 10.2.1.2 remote-as 100
+neighbor 10.2.1.2 activate
+neighbor 10.2.1.2 route-map BGP-PEER-OUT out
+ router bgp 100
+redistribute bgp
+router bgp 100
+ router bgp 100
+  neighbor 10.2.1.2 activate
+route-map bgp-export permit 10
+ route-map bgp-export permit 1
+ match ip address prefix-list BGP-EXACT-10.2.1.0
+ ip prefix-list BGP-EXACT-10.2.1.0 permit 10.2.1.0/24
+match ip address prefix-list BGP-FILTER
+!
+ip prefix-list BGP-FILTER permit 10.2.1.0/24
+policy-map bgp-export
+ class 1
+  police cir 1m pir 2m
+   violate-action accept

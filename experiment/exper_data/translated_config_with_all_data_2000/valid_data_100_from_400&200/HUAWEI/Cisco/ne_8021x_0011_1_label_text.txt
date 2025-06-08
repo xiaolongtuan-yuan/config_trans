@@ -1,0 +1,31 @@
+hostname Router
+!
+aaa new-model
+!
+aaa authentication login default group radius
+aaa authentication dot1x default group radius
+aaa authorization network default group radius
+!
+radius-server host 192.168.7.249 auth-port 1645 acct-port 1646
+radius-server key 7 13061E0108035C7D1D
+radius-server timeout 5
+radius-server retransmit 3
+radius-server vsa send accounting
+!
+interface GigabitEthernet1/0/2.1
+ encapsulation dot1Q 100
+ ip address 10.82.1.1 255.255.255.0
+ authentication port-control auto
+ dot1x pae authenticator
+ dot1x timeout reauth-period 1800
+ dot1x timeout quiet-period 15
+ dot1x timeout server-timeout 20
+!
+ip dhcp pool pool4
+ network 10.82.1.0 255.255.255.0
+ default-router 10.82.1.1
+ dns-server 192.168.7.252
+!
+dot1x system-auth-control
+!
+end

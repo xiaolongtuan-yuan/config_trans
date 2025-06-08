@@ -1,0 +1,853 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "hostname Hub1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "access-list 2000 permit ip 192.168.0.0 0.0.0.255 any",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "access-list 2001 permit ip 192.168.1.0 0.0.0.255 any",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "access-list 2001 permit ip 192.168.2.0 0.0.0.255 any",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "route-map 1 permit 10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "match ip address 2000",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "route-map 2 permit 10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s8",
+            "text": "match ip address 2001",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s9",
+            "text": "interface GigabitEthernet1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "ip address 10.1.1.10 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "tunnel source 10.1.1.10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s12",
+            "text": "tunnel mode gre multipoint",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s13",
+            "text": "interface Loopback0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s14",
+            "text": "ip address 192.168.0.1 255.255.255.255",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s15",
+            "text": "interface Tunnel0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s16",
+            "text": "ip address 172.16.1.1 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s17",
+            "text": "tunnel source GigabitEthernet1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s18",
+            "text": "tunnel key 0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s19",
+            "text": "tunnel protection ipsec profile <profile-name>",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s20",
+            "text": "router ospf 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s21",
+            "text": "router-id 172.16.1.1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s22",
+            "text": "redistribute ospf 3 subnets route-map 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s23",
+            "text": "network 172.16.1.0 0.0.0.255 area 0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s24",
+            "text": "router ospf 2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s25",
+            "text": "router-id 10.1.1.10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s26",
+            "text": "network 10.1.1.0 0.0.0.255 area 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s27",
+            "text": "router ospf 3",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s28",
+            "text": "router-id 192.168.0.1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s29",
+            "text": "redistribute ospf 1 subnets route-map 2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s30",
+            "text": "network 192.168.0.0 0.0.0.255 area 0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s31",
+            "text": "end",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t2184",
+            "ids": [
+                2184
+            ],
+            "text": "set system host-name Hub1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2185",
+            "ids": [
+                2185
+            ],
+            "text": "set firewall family inet filter ACL2000 term 1 from source-address 192.168.0.0/24",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2186",
+            "ids": [
+                2186
+            ],
+            "text": "set firewall family inet filter ACL2000 term 1 then accept",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2187",
+            "ids": [
+                2187
+            ],
+            "text": "set firewall family inet filter ACL2001 term term1 from source-address 192.168.1.0/24",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2188",
+            "ids": [
+                2188
+            ],
+            "text": "set firewall family inet filter ACL2001 term term1 then accept",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2189",
+            "ids": [
+                2189
+            ],
+            "text": "set firewall family inet filter ACL2001 term permit-192.168.2.0 from source-address 192.168.2.0/24",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2190",
+            "ids": [
+                2190
+            ],
+            "text": "set firewall family inet filter ACL2001 term permit-192.168.2.0 then accept",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2194",
+            "ids": [
+                2191,
+                2194
+            ],
+            "text": "set protocols ospf import 1 set policy-options policy-statement 1 term 10 from route-filter 192.168.0.0/24 exact",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2192",
+            "ids": [
+                2192
+            ],
+            "text": "set policy-options as-path as-path-1 ^10$",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2198",
+            "ids": [
+                2195,
+                2198
+            ],
+            "text": "set protocols ospf import 2 from {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2199",
+            "ids": [
+                2195,
+                2199
+            ],
+            "text": "set protocols ospf import 2 prefix-list 2001;",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2200",
+            "ids": [
+                2195,
+                2200
+            ],
+            "text": "set protocols ospf import 2 }",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2196",
+            "ids": [
+                2196
+            ],
+            "text": "set policy-options as-path as-path-2 ^.*_10_.*$",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2202",
+            "ids": [
+                2201,
+                2202
+            ],
+            "text": "set interfaces ge-1/0/0 unit 0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2203",
+            "ids": [
+                2201,
+                2203
+            ],
+            "text": "set interfaces ge-1/0/0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2205",
+            "ids": [
+                2201,
+                2205
+            ],
+            "text": "set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.10/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2207",
+            "ids": [
+                2201,
+                2207
+            ],
+            "text": "set interfaces ge-1/0/0 unit 0 tunnel source 10.1.1.10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2209",
+            "ids": [
+                2201,
+                2209
+            ],
+            "text": "set interfaces ge-1/0/0 set interfaces <interface-name> tunnel protocol gre multipoint",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2219",
+            "ids": [
+                2201,
+                2219
+            ],
+            "text": "set interfaces ge-1/0/0 unit 0 family inet address 172.16.1.1/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2221",
+            "ids": [
+                2201,
+                2221
+            ],
+            "text": "set interfaces ge-1/0/0 unit 0 tunnel source GigabitEthernet1/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2225",
+            "ids": [
+                2201,
+                2225
+            ],
+            "text": "set interfaces ge-1/0/0 unit 0 tunnel key 0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2227",
+            "ids": [
+                2201,
+                2227
+            ],
+            "text": "set interfaces ge-1/0/0 set security ipsec vpn <profile-name> bind-interface st0.0",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2211",
+            "ids": [
+                2210,
+                2211
+            ],
+            "text": "set interfaces lo0 unit 0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2212",
+            "ids": [
+                2210,
+                2212
+            ],
+            "text": "set interfaces lo0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2214",
+            "ids": [
+                2210,
+                2214
+            ],
+            "text": "set interfaces lo0 unit 0 family inet address 192.168.0.1/32",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2216",
+            "ids": [
+                2215,
+                2216
+            ],
+            "text": "set interfaces gr-0/0/0 unit 0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2217",
+            "ids": [
+                2215,
+                2217
+            ],
+            "text": "set interfaces gr-0/0/0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2223",
+            "ids": [
+                2222,
+                2223
+            ],
+            "text": "set interfaces gr-1/0/0 set interfaces <interface-name> tunnel encapsulation gre-multipoint",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2229",
+            "ids": [
+                2228,
+                2229
+            ],
+            "text": "set protocols ospf area 0.0.0.1 interface 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2231",
+            "ids": [
+                2230,
+                2231
+            ],
+            "text": "set protocols ospf area 1 interface ge-0/0/0.0 authentication md5 1 key $9$H3LloW0rld",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2234",
+            "ids": [
+                2230,
+                2233,
+                2245,
+                2234
+            ],
+            "text": "set protocols ospf area 1 interface ge-0/0/1.0 set protocols ospf export ospf3-to-ospf1",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2235",
+            "ids": [
+                2230,
+                2233,
+                2245,
+                2235
+            ],
+            "text": "set protocols ospf area 1 interface ge-0/0/1.0 set policy-options policy-statement ospf3-to-ospf1 from protocol ospf",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2236",
+            "ids": [
+                2230,
+                2233,
+                2245,
+                2236
+            ],
+            "text": "set protocols ospf area 1 interface ge-0/0/1.0 set policy-options policy-statement ospf3-to-ospf1 from process 3",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2237",
+            "ids": [
+                2230,
+                2233,
+                2245,
+                2237
+            ],
+            "text": "set protocols ospf area 1 interface ge-0/0/1.0 set policy-options policy-statement ospf3-to-ospf1 then accept",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2239",
+            "ids": [
+                2238,
+                2239
+            ],
+            "text": "set protocols ospf area 0 interface ge-0/0/0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2258",
+            "ids": [
+                2238,
+                2258
+            ],
+            "text": "set protocols ospf area 0 interface ge-0/0/1.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2241",
+            "ids": [
+                2240,
+                2241
+            ],
+            "text": "set protocols ospf area 0.0.0.2 interface ge-0/0/1.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2243",
+            "ids": [
+                2240,
+                2243
+            ],
+            "text": "set protocols ospf area 0.0.0.2 interface lo0 authentication md5 1 key $9$placeholder",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2247",
+            "ids": [
+                2246,
+                2247
+            ],
+            "text": "set protocols ospf area 0.0.0.3 interface 3",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2249",
+            "ids": [
+                2246,
+                2249
+            ],
+            "text": "set protocols ospf area 0.0.0.3 interface lo0.0 authentication md5 1 key $9$defaultkey",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2252",
+            "ids": [
+                2246,
+                2251,
+                2252
+            ],
+            "text": "set protocols ospf area 0.0.0.3 interface ge-0/0/3.0 set protocols ospf export 2",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2253",
+            "ids": [
+                2246,
+                2251,
+                2253
+            ],
+            "text": "set protocols ospf area 0.0.0.3 interface ge-0/0/3.0 set protocols ospf export ospf-export-policy",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2254",
+            "ids": [
+                2246,
+                2251,
+                2254
+            ],
+            "text": "set protocols ospf area 0.0.0.3 interface ge-0/0/3.0 set policy-options policy-statement ospf-export-policy from protocol ospf",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2255",
+            "ids": [
+                2246,
+                2251,
+                2255
+            ],
+            "text": "set protocols ospf area 0.0.0.3 interface ge-0/0/3.0 set policy-options policy-statement ospf-export-policy from instance 1",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2256",
+            "ids": [
+                2246,
+                2251,
+                2256
+            ],
+            "text": "set protocols ospf area 0.0.0.3 interface ge-0/0/3.0 set policy-options policy-statement ospf-export-policy then accept",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2259",
+            "ids": [
+                2259
+            ],
+            "text": "set protocols isis export REDIST-CONNECTED",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t2184"
+        },
+        {
+            "source": "s2",
+            "target": "t2185"
+        },
+        {
+            "source": "s2",
+            "target": "t2186"
+        },
+        {
+            "source": "s3",
+            "target": "t2187"
+        },
+        {
+            "source": "s3",
+            "target": "t2188"
+        },
+        {
+            "source": "s4",
+            "target": "t2189"
+        },
+        {
+            "source": "s4",
+            "target": "t2190"
+        },
+        {
+            "source": "s5",
+            "target": "t2194"
+        },
+        {
+            "source": "s5",
+            "target": "t2192"
+        },
+        {
+            "source": "s6",
+            "target": "t2194"
+        },
+        {
+            "source": "s7",
+            "target": "t2198"
+        },
+        {
+            "source": "s7",
+            "target": "t2196"
+        },
+        {
+            "source": "s8",
+            "target": "t2198"
+        },
+        {
+            "source": "s8",
+            "target": "t2199"
+        },
+        {
+            "source": "s8",
+            "target": "t2200"
+        },
+        {
+            "source": "s9",
+            "target": "t2202"
+        },
+        {
+            "source": "s9",
+            "target": "t2203"
+        },
+        {
+            "source": "s10",
+            "target": "t2205"
+        },
+        {
+            "source": "s11",
+            "target": "t2207"
+        },
+        {
+            "source": "s12",
+            "target": "t2209"
+        },
+        {
+            "source": "s12",
+            "target": "t2223"
+        },
+        {
+            "source": "s13",
+            "target": "t2211"
+        },
+        {
+            "source": "s13",
+            "target": "t2212"
+        },
+        {
+            "source": "s14",
+            "target": "t2214"
+        },
+        {
+            "source": "s15",
+            "target": "t2216"
+        },
+        {
+            "source": "s15",
+            "target": "t2217"
+        },
+        {
+            "source": "s16",
+            "target": "t2219"
+        },
+        {
+            "source": "s17",
+            "target": "t2221"
+        },
+        {
+            "source": "s18",
+            "target": "t2225"
+        },
+        {
+            "source": "s19",
+            "target": "t2227"
+        },
+        {
+            "source": "s20",
+            "target": "t2229"
+        },
+        {
+            "source": "s21",
+            "target": "t2231"
+        },
+        {
+            "source": "s22",
+            "target": "t2234"
+        },
+        {
+            "source": "s22",
+            "target": "t2235"
+        },
+        {
+            "source": "s22",
+            "target": "t2236"
+        },
+        {
+            "source": "s22",
+            "target": "t2237"
+        },
+        {
+            "source": "s23",
+            "target": "t2239"
+        },
+        {
+            "source": "s24",
+            "target": "t2241"
+        },
+        {
+            "source": "s25",
+            "target": "t2243"
+        },
+        {
+            "source": "s26",
+            "target": "t2234"
+        },
+        {
+            "source": "s27",
+            "target": "t2247"
+        },
+        {
+            "source": "s28",
+            "target": "t2249"
+        },
+        {
+            "source": "s29",
+            "target": "t2252"
+        },
+        {
+            "source": "s29",
+            "target": "t2253"
+        },
+        {
+            "source": "s29",
+            "target": "t2254"
+        },
+        {
+            "source": "s29",
+            "target": "t2255"
+        },
+        {
+            "source": "s29",
+            "target": "t2256"
+        },
+        {
+            "source": "s30",
+            "target": "t2258"
+        },
+        {
+            "source": "s31",
+            "target": "t2259"
+        }
+    ]
+}

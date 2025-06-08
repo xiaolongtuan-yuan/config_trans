@@ -1,0 +1,14 @@
+set system host-name DeviceB
+set system ntp clock-period 17179979
+set interfaces ge-1/0/0 unit 1/0/0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 set protocols ptp interface <interface-name> priority1 1
+set interfaces ge-1/0/0 set protocols ntp broadcast interface ge-1/0/0
+set interfaces ge-1/0/0 set protocols ntp broadcast interface ge-2/0/0
+set interfaces ge-1/0/0 set protocols ntp interface ge-1/0/0 broadcast
+set interfaces ge-1/0/0 set protocols ntp interface ge-2/0/0 broadcast
+set interfaces ge-2/0/0 unit 2/0/0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 set protocols ptp interface ge-1/0/0 priority1 1
+set interfaces ge-2/0/0 set protocols ptp interface ge-2/0/0 priority1 1
+set protocols isis export REDIST-CONNECTED

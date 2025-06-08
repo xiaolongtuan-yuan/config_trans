@@ -1,0 +1,32 @@
+set system host-name Core ASBR
+set system host-name 4.4.4.4
+set system host-name mpls
+set interfaces ge-1/0/0 unit 0 family inet mpls ldp
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.3.1.2/24
+set interfaces ge-1/0/0 unit 0 family inet mpls maximum-labels 5
+set interfaces ge-1/0/0 unit 0 family inet service input none
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 10.4.1.1/24
+set interfaces ge-2/0/0 unit 0 family inet mpls
+set interfaces ge-2/0/0 unit 0 family inet mpls ldp
+set interfaces lo0.1 disable
+set interfaces lo0 unit 0 family inet address 4.4.4.4/32
+set routing-options autonomous-system 200
+set protocols bgp group 200 type 200
+set protocols bgp group 200 type external
+set protocols bgp group 200 neighbor 5.5.5.5 peer-as 200
+set protocols bgp group 200 export 200
+set protocols bgp group 200 peer-as 200
+set protocols bgp group 200 neighbor 10.3.1.1 peer-as 100
+set protocols bgp group 200 export 100
+set protocols bgp group 200 family inet unicast set protocols bgp group <group-name> neighbor 5.5.5.5 labeled-unicast
+set protocols bgp group 200 family inet unicast set protocols bgp group <group-name> neighbor 10.3.1.1 labeled-unicast tunneling
+set protocols bgp group 200 export policy1
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.0 set policy-options policy-statement policy1 term 1 then accept
+set policy-options policy-statement policy1 term 1 then accept from protocol mpls;
+set policy-options policy-statement policy1 term 1 then accept set policy-options policy-statement policy1 term 1 then accept
+set system host-name CE1

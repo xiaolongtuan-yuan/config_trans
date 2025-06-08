@@ -1,0 +1,74 @@
+{
+    "command_accuracy": 0.08333333333333333,
+    "missed_commands": [
+        "set interfaces ge-0/0/1 unit 0 family inet address 172.16.4.2/24",
+        "set interfaces ge-0/0/3 unit 0 family inet address 172.16.5.1/24",
+        "set routing-options router-id 3.3.3.3",
+        "set protocols bgp group 200 type external",
+        "set protocols bgp group 200 peer-as 65009",
+        "set protocols bgp group 200 neighbor 172.16.4.1",
+        "set protocols bgp group 200 neighbor 172.16.5.2",
+        "set protocols bgp group 200 neighbor 172.16.4.1",
+        "set protocols bgp group 200 neighbor 172.16.5.2",
+        "set protocols bgp group 200 family inet unicast",
+        "set policy-options policy-statement export-policy term 1 from protocol direct",
+        "set policy-options policy-statement export-policy term 1 then accept",
+        "set protocols bgp group 200 export export-policy",
+        "set interfaces ge-0/0/1 unit 0 family inet address 172.16.4.2/24",
+        "set interfaces ge-0/0/3 unit 0 family inet address 172.16.5.1/24",
+        "set routing-options router-id 3.3.3.3",
+        "set protocols bgp group 200 type external",
+        "set protocols bgp group 200 peer-as 65009",
+        "set protocols bgp group 200 neighbor 172.16.4.1",
+        "set protocols bgp group 200 neighbor 172.16.5.2",
+        "set protocols bgp group 200 family inet unicast",
+        "set policy-options policy-statement export-policy term 1 from protocol direct",
+        "set policy-options policy-statement export-policy term 1 then accept",
+        "set protocols bgp group 200 export export-policy"
+    ],
+    "grammatical_accuracy": 0.6666666666666666,
+    "missed_templates": [
+        "set routing-options router-id [parameter1]",
+        "set protocols bgp group [group_number] peer-as [as_number]",
+        "set protocols bgp group [parameter1] family [parameter2] [parameter3]",
+        "set policy-options policy-statement [parameter1] term [parameter2] from protocol [parameter3]"
+    ],
+    "llm_command_accuracy": 0.0,
+    "llm_command_ratio": 0.28,
+    "command_for_llm": [
+        "no synchronization",
+        "no shutdown"
+    ],
+    "llm_trans_commands": [
+        "delete interfaces GigabitEthernet3/0/1 disable",
+        "delete interfaces GigabitEthernet3/0/3 disable",
+        "set interfaces ge-3/0/1 disable",
+        "set interfaces ge-3/0/3 disable",
+        "set interfaces ge-3/0/1 disable false",
+        "set interfaces ge-3/0/3 disable false",
+        "set protocols bgp group <group_name> no-synchronize"
+    ],
+    "source_commands": [
+        "hostname DeviceC",
+        "router bgp 200",
+        "neighbor 172.16.4.1 remote-as 65009",
+        "no synchronization",
+        "neighbor 172.16.4.1 activate",
+        "address-family ipv4",
+        "neighbor 172.16.5.2 activate",
+        "neighbor 172.16.5.2 remote-as 65009",
+        "exit-address-family",
+        "network 172.16.5.0 mask 255.255.255.0",
+        "end",
+        "network 172.16.4.0 mask 255.255.255.0",
+        "interface GigabitEthernet3/0/1",
+        "ip address 172.16.5.1 255.255.255.0",
+        "bgp router-id 3.3.3.3",
+        "interface GigabitEthernet3/0/3",
+        "ip address 172.16.4.2 255.255.255.0",
+        "no shutdown"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

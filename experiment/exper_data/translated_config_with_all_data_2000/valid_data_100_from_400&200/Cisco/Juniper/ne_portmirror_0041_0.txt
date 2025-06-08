@@ -1,0 +1,22 @@
+set system host-name Device
+set vlans vlan10 vlan-id 10
+set interfaces ge-1/0/0 unit 1/0/0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family ethernet-switching port-mode access
+set interfaces ge-1/0/0 unit 0 family ethernet-switching interface-mode access
+set interfaces ge-1/0/0 unit 0 family ethernet-switching vlan members 10
+set interfaces ge-1/0/0 set forwarding-options port-mirroring input interface ge-1/0/0
+set interfaces ge-1/0/0 set forwarding-options port-mirroring family ethernet-switching input ingress
+set interfaces ge-1/0/0 set forwarding-options port-mirroring output interface ge-1/0/1
+set interfaces ge-1/0/0 set forwarding-options port-mirroring output interface ge-1/0/2
+set interfaces ge-1/0/0 set forwarding-options analyzer SPAN-1 input ingress interface ge-1/0/0.0
+set interfaces ge-1/0/0 set forwarding-options analyzer SPAN-1 output interface ge-1/0/1.0
+set interfaces ge-1/0/0 set forwarding-options analyzer SPAN-1 output interface ge-1/0/2
+set interfaces ge-1/0/0 unit 0 family inet address 10.10.1.1/24
+set interfaces ge-1/0/0 set forwarding-options analyzer SPAN-1 input interface ge-2/0/0
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.2/24
+set interfaces ge-1/0/0 set forwarding-options analyzer SPAN-1 input interface ge-3/0/0
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-3/0/0 unit 0 disable
+set interfaces ge-3/0/0 disable

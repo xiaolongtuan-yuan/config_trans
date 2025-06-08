@@ -1,0 +1,47 @@
+sysname Hub1
+ip as-path-filter 1 permit .*
+traffic policy 1
+bgp 600
+ peer 10.1.1.2 enable
+ ipv4-family unicast
+ peer 192.168.0.0 enable
+  undo synchronization
+  import-route direct
+ peer 192.168.1.0 enable
+  undo synchronization
+  import-route direct
+ peer 192.168.2.0 enable
+  undo synchronization
+  import-route direct
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.10 255.255.255.0
+ source 10.1.1.10
+ binding tunnel gre none
+ ip address 192.168.0.1 255.255.255.255
+ ip address 172.16.1.1 255.255.255.0
+ source GigabitEthernet1/0/0
+ interface Tunnel0/0/0
+ tunnel-key 0
+ip address 10.1.1.10 255.255.255.0
+ip as-path-filter 1 permit 192.168.1.0/24
+traffic policy 2001
+traffic policy 2
+traffic-policy 1 inbound
+bgp 65000
+ peer 10.1.1.2 enable
+ ipv4-family unicast
+ipsec profile <profile-name> binding tunnel interface Tunnel0/0/0
+area 0.0.0.0
+ospf 1 router-id 0.0.0.0
+ area 0.0.0.0
+  network 0.0.0.0 0.0.0.255
+ospfv3 1
+ area 0.0.0.0
+ospf 1
+ import-route static type ROUTE-MAP-1
+ospf 1 router-id 192.168.1.1
+ import-route ospf 1 route-policy ROUTE-MAP-2
+ip route-static 172.16.1.0 255.255.255.0 NULL0
+ip route-static 10.1.1.0 255.255.255.0 NULL0
+ip route-static 192.168.0.0 255.255.255.0 NULL0

@@ -1,0 +1,31 @@
+sysname Device
+domain name isp5
+aaa authentication-scheme radius
+radius-server shared-key cipher 051b1c224d0a324e1d
+ interface GigabitEthernet0/0/1
+ ip address 10.1.1.1 255.255.255.0
+ radius-server shared-key cipher 051B1C224D0A324E1D
+ radius-server 10.6.55.55 1646 accounting
+radius-server authentication 10.6.55.55 1645 weight 80
+radius-server accounting 10.6.55.55 1646 weight 80
+radius-server accounting shared-key cipher 051b1c224d0a324e1d
+ interface GigabitEthernet0/0/1
+ ip address 10.1.1.1 255.255.255.0
+ipv6 pool pool1 bas local
+ ip pool pool1 network 10.10.10.0 mask 255.255.255.0
+ipv6 pool pool1 bas delegation
+ prefix 10.10.10.3
+ prefix 10.10.10.100
+ipv6 pool 2001:db8:3:: bas local
+ prefix 2001:db8:3::/64
+radius-server none auth-port 1812 acct-port 1813
+ aaa authentication-scheme radius-access
+ authentication-mode radius
+ #
+ aaa accounting-scheme radius-access
+ accounting-mode radius
+radius-server 10.6.55.55 auth-port 1812 acct-port 1813
+ sysname Device
+interface GigabitEthernet0/0/1
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0

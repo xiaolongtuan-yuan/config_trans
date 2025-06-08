@@ -1,0 +1,40 @@
+set system host-name PE1
+set protocols ospf area 0.0.0.1 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.1 interface 1.1.1.1 authentication md5 1 key $9$YourKeyValueHere
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf area 0 interface ge-0/0/1.0
+set interfaces ge-1/0/0 unit 0 family inet mpls ldp autoconfig
+set protocols ldp router-id 1.1.1.9
+set routing-instances v1 instance-type vpls vpn-id 1;
+set routing-instances v1 vpn-id 1
+set interfaces ge-1/0/0.1 unit 1 disable
+set interfaces ge-1/0/0.1 disable
+set interfaces ge-1/0/0.1 encapsulation dot1q 10
+set interfaces ge-1/0/0.1 set interfaces ge-1/0/0.1 vlan-id 10
+set interfaces ge-1/0/0.1 set interfaces ge-1/0/0.1 family ccc
+set interfaces ge-1/0/0.1 set routing-instances v1 instance-type vpls
+set interfaces ge-1/0/0.1 set routing-instances v1 interface ge-1/0/0.1
+set interfaces ge-1/0/0.1 set routing-instances v1 vpls-vlan-id 10
+set interfaces ge-1/0/0.1 set routing-instances v1 protocols vpls vpls-id 1
+set interfaces ge-2/0/0 unit 2/0/0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 delete interfaces GigabitEthernet2/0/0 disable
+set interfaces ge-2/0/0 (No equivalent command needed - Juniper interfaces are enabled by default)
+set interfaces ge-2/0/0 unit 0 family inet address 10.10.1.1/24
+set interfaces ge-2/0/0 unit 0 family inet mpls
+set interfaces ge-2/0/0 unit 0 family inet mpls label-protocol ldp
+set interfaces lo0 unit 1 disable
+set interfaces lo0 disable
+set interfaces lo0.1 unit 0 family inet address 1.1.1.1/32
+set routing-options autonomous-system 100 set routing-options autonomous-system 100
+set routing-options autonomous-system 100 set protocols bgp group ibgp type internal
+set routing-options autonomous-system 100 set protocols bgp group ibgp local-address 1.1.1.1
+set routing-options autonomous-system 100 set protocols bgp group ibgp neighbor 2.2.2.2
+set routing-options autonomous-system 100 set protocols bgp group ibgp family l2vpn
+set protocols bgp group IBGP type internal
+set protocols bgp group IBGP neighbor 2.2.2.2 peer-as 100
+set protocols bgp group IBGP export BGP-100
+set protocols bgp local-as 100
+set protocols ospf import p1 set policy-options policy-statement p1 term 10 then mpls-label
+set policy-options as-path p1 ^.*_10_.*$
+set protocols isis export REDIST-CONNECTED

@@ -1,0 +1,949 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "sysname CGN2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "license",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "active nat session-table size 6 slot 1 engine 0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "acl number 3001",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "rule 1 permit ip source 192.168.10.0 0.0.0.255",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "traffic classifier classifier1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "if-match acl 3001",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s8",
+            "text": "traffic behavior behavior1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s9",
+            "text": "nat bind instance nat",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "traffic policy policy1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "classifier classifier1 behavior behavior1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s12",
+            "text": "service-location 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s13",
+            "text": "location slot 1 engine 0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s14",
+            "text": "service-instance-group group1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s15",
+            "text": "monitor-location-group group1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s16",
+            "text": "nat instance nat id 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s17",
+            "text": "nat address-group address-group1 group-id 1 11.11.11.106 11.11.11.110",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s18",
+            "text": "nat outbound 3001 address-group address-group1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s19",
+            "text": "interface GigabitEthernet 2/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s20",
+            "text": "undo shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s21",
+            "text": "ip address 192.168.10.1 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s22",
+            "text": "traffic-policy policy1 inbound",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s23",
+            "text": "interface serviceif 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s24",
+            "text": "ip address 10.1.1.2 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s25",
+            "text": "track monitor-location-group group1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s26",
+            "text": "ip route-static 0.0.0.0 0.0.0.0 serviceif 1",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t3439",
+            "ids": [
+                3439
+            ],
+            "text": "set system host-name CGN2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3442",
+            "ids": [
+                3440,
+                3442
+            ],
+            "text": "set system host-name CE1 set services nat session-table size 6",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3446",
+            "ids": [
+                3443,
+                3446
+            ],
+            "text": "set system login vty 0 4 set firewall family inet filter ACL_3001 term rule1 from source-address 192.168.10.0/24",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3447",
+            "ids": [
+                3443,
+                3447
+            ],
+            "text": "set system login vty 0 4 set firewall family inet filter ACL_3001 term rule1 then accept",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3444",
+            "ids": [
+                3444
+            ],
+            "text": "set system ports auxiliary disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3450",
+            "ids": [
+                3448,
+                3450
+            ],
+            "text": "firewall filter classifier1 term term1 from source-address 192.168.10.0/24 from-zone trust to-zone untrust match source-address 192.168.10.0/24",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3453",
+            "ids": [
+                3451,
+                3453
+            ],
+            "text": "set firewall filter behavior1 term term1 then nat target pool nat set security nat destination pool nat address 11.11.11.106/32 to 11.11.11.110/32",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3454",
+            "ids": [
+                3451,
+                3454
+            ],
+            "text": "set firewall filter behavior1 term term1 then nat target pool nat set security nat destination rule-set nat from zone trust",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3455",
+            "ids": [
+                3451,
+                3455
+            ],
+            "text": "set firewall filter behavior1 term term1 then nat target pool nat set security nat destination rule-set nat rule nat match destination-address 192.168.10.0/24",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3456",
+            "ids": [
+                3451,
+                3456
+            ],
+            "text": "set firewall filter behavior1 term term1 then nat target pool nat set security nat destination rule-set nat rule nat then destination-nat pool nat",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3457",
+            "ids": [
+                3457
+            ],
+            "text": "filter policy1 {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3458",
+            "ids": [
+                3458
+            ],
+            "text": "term term1 {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3459",
+            "ids": [
+                3459
+            ],
+            "text": "from {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3460",
+            "ids": [
+                3460
+            ],
+            "text": "source-address {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3461",
+            "ids": [
+                3461
+            ],
+            "text": "192.168.10.0/24;",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3462",
+            "ids": [
+                3462
+            ],
+            "text": "then {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3464",
+            "ids": [
+                3463,
+                3464
+            ],
+            "text": "routing-instance nat; firewall {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3465",
+            "ids": [
+                3463,
+                3465
+            ],
+            "text": "routing-instance nat; }",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3467",
+            "ids": [
+                3466,
+                3467
+            ],
+            "text": "firewall { firewall {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3469",
+            "ids": [
+                3466,
+                3468,
+                3469
+            ],
+            "text": "firewall { } filter policy1 {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3470",
+            "ids": [
+                3466,
+                3468,
+                3470
+            ],
+            "text": "firewall { } term classifier1 {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3471",
+            "ids": [
+                3466,
+                3468,
+                3471
+            ],
+            "text": "firewall { } from {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3472",
+            "ids": [
+                3466,
+                3468,
+                3472
+            ],
+            "text": "firewall { } source-address {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3473",
+            "ids": [
+                3466,
+                3468,
+                3473
+            ],
+            "text": "firewall { } 192.168.10.0/24;",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3474",
+            "ids": [
+                3466,
+                3468,
+                3474
+            ],
+            "text": "firewall { } then {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3475",
+            "ids": [
+                3466,
+                3468,
+                3475
+            ],
+            "text": "firewall { } routing-instance nat;",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3477",
+            "ids": [
+                3476,
+                3477
+            ],
+            "text": "set services service-set 1 interface-service service-interface 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3479",
+            "ids": [
+                3478,
+                3479
+            ],
+            "text": "set services service-set 6RD_SS interface-service service-interface gr-0/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3480",
+            "ids": [
+                3480
+            ],
+            "text": "services {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3481",
+            "ids": [
+                3481
+            ],
+            "text": "service-set group1 {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3483",
+            "ids": [
+                3482,
+                3483
+            ],
+            "text": "nat-rules nat_rule1; }",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3488",
+            "ids": [
+                3484,
+                3485,
+                3488
+            ],
+            "text": "set services service-set group1 interface-service service-interface group1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3486",
+            "ids": [
+                3486
+            ],
+            "text": "set services service-set group1 interface-service service-interface ms-1/0/0",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3494",
+            "ids": [
+                3489,
+                3494
+            ],
+            "text": "set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 services {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3495",
+            "ids": [
+                3489,
+                3495
+            ],
+            "text": "set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 service-set group1 {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3496",
+            "ids": [
+                3489,
+                3496
+            ],
+            "text": "set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 nat-rules NAT-RULE-1;",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3497",
+            "ids": [
+                3489,
+                3497
+            ],
+            "text": "set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 next-hop-service {",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3498",
+            "ids": [
+                3489,
+                3498
+            ],
+            "text": "set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 inside-interface ge-2/0/0.0;",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3499",
+            "ids": [
+                3489,
+                3499
+            ],
+            "text": "set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 outside-interface serviceif.1;",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3500",
+            "ids": [
+                3489,
+                3500
+            ],
+            "text": "set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 }",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3502",
+            "ids": [
+                3489,
+                3502
+            ],
+            "text": "set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 set security nat source pool address-group1 address 11.11.11.106/32 to 11.11.11.110/32",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3504",
+            "ids": [
+                3489,
+                3504
+            ],
+            "text": "set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 set security nat source rule-set NAT-RULE from zone untrust",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3505",
+            "ids": [
+                3489,
+                3505
+            ],
+            "text": "set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 set security nat source rule-set NAT-RULE to zone untrust",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3506",
+            "ids": [
+                3489,
+                3506
+            ],
+            "text": "set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 set security nat source rule-set NAT-RULE rule RULE1 match source-address 192.168.10.0/24",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3507",
+            "ids": [
+                3489,
+                3507
+            ],
+            "text": "set services nat pool nat source address-range 11.11.11.106 to 11.11.11.110 set security nat source rule-set NAT-RULE rule RULE1 then source-nat pool address-group1",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3490",
+            "ids": [
+                3490
+            ],
+            "text": "set services nat rule nat rule-set rs1 match-direction input-output",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3491",
+            "ids": [
+                3491
+            ],
+            "text": "set services nat rule nat rule-set rs1 from source-address 192.168.10.0/24",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3492",
+            "ids": [
+                3492
+            ],
+            "text": "set services nat rule nat rule-set rs1 then source-nat pool nat",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3514",
+            "ids": [
+                3508,
+                3514
+            ],
+            "text": "set services pppoe-client interface ge-2/0/0.0 set interfaces ge-2/0/0 unit 0 family inet filter input policy1",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t3510",
+            "ids": [
+                3509,
+                3510
+            ],
+            "text": "set interfaces ge-2/0/0 unit 0 family inet service input none",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3512",
+            "ids": [
+                3509,
+                3512
+            ],
+            "text": "set interfaces ge-2/0/0 unit 0 family inet address 192.168.10.1/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3515",
+            "ids": [
+                3515
+            ],
+            "text": "set services pppoe-client interface ge-0/0/0.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3517",
+            "ids": [
+                3516,
+                3517
+            ],
+            "text": "set interfaces serviceif 1 unit 0 family inet address 10.1.1.2/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3518",
+            "ids": [
+                3518
+            ],
+            "text": "set services pppoe-client interface group1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t3519",
+            "ids": [
+                3519
+            ],
+            "text": "set routing-options static route 0.0.0.0/0 next-hop st0.1",
+            "description": "",
+            "type": "llm"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t3439"
+        },
+        {
+            "source": "s2",
+            "target": "t3442"
+        },
+        {
+            "source": "s3",
+            "target": "t3442"
+        },
+        {
+            "source": "s4",
+            "target": "t3446"
+        },
+        {
+            "source": "s4",
+            "target": "t3444"
+        },
+        {
+            "source": "s5",
+            "target": "t3446"
+        },
+        {
+            "source": "s5",
+            "target": "t3447"
+        },
+        {
+            "source": "s6",
+            "target": "t3450"
+        },
+        {
+            "source": "s7",
+            "target": "t3450"
+        },
+        {
+            "source": "s8",
+            "target": "t3453"
+        },
+        {
+            "source": "s9",
+            "target": "t3453"
+        },
+        {
+            "source": "s9",
+            "target": "t3454"
+        },
+        {
+            "source": "s9",
+            "target": "t3455"
+        },
+        {
+            "source": "s9",
+            "target": "t3456"
+        },
+        {
+            "source": "s10",
+            "target": "t3457"
+        },
+        {
+            "source": "s10",
+            "target": "t3458"
+        },
+        {
+            "source": "s10",
+            "target": "t3459"
+        },
+        {
+            "source": "s10",
+            "target": "t3460"
+        },
+        {
+            "source": "s10",
+            "target": "t3461"
+        },
+        {
+            "source": "s10",
+            "target": "t3462"
+        },
+        {
+            "source": "s10",
+            "target": "t3464"
+        },
+        {
+            "source": "s10",
+            "target": "t3465"
+        },
+        {
+            "source": "s11",
+            "target": "t3467"
+        },
+        {
+            "source": "s11",
+            "target": "t3469"
+        },
+        {
+            "source": "s11",
+            "target": "t3470"
+        },
+        {
+            "source": "s11",
+            "target": "t3471"
+        },
+        {
+            "source": "s11",
+            "target": "t3472"
+        },
+        {
+            "source": "s11",
+            "target": "t3473"
+        },
+        {
+            "source": "s11",
+            "target": "t3474"
+        },
+        {
+            "source": "s11",
+            "target": "t3475"
+        },
+        {
+            "source": "s12",
+            "target": "t3477"
+        },
+        {
+            "source": "s12",
+            "target": "t3488"
+        },
+        {
+            "source": "s13",
+            "target": "t3479"
+        },
+        {
+            "source": "s14",
+            "target": "t3480"
+        },
+        {
+            "source": "s14",
+            "target": "t3481"
+        },
+        {
+            "source": "s14",
+            "target": "t3483"
+        },
+        {
+            "source": "s14",
+            "target": "t3494"
+        },
+        {
+            "source": "s14",
+            "target": "t3495"
+        },
+        {
+            "source": "s14",
+            "target": "t3496"
+        },
+        {
+            "source": "s14",
+            "target": "t3497"
+        },
+        {
+            "source": "s14",
+            "target": "t3498"
+        },
+        {
+            "source": "s14",
+            "target": "t3499"
+        },
+        {
+            "source": "s14",
+            "target": "t3500"
+        },
+        {
+            "source": "s15",
+            "target": "t3486"
+        },
+        {
+            "source": "s16",
+            "target": "t3494"
+        },
+        {
+            "source": "s16",
+            "target": "t3490"
+        },
+        {
+            "source": "s16",
+            "target": "t3491"
+        },
+        {
+            "source": "s16",
+            "target": "t3492"
+        },
+        {
+            "source": "s17",
+            "target": "t3502"
+        },
+        {
+            "source": "s18",
+            "target": "t3504"
+        },
+        {
+            "source": "s18",
+            "target": "t3505"
+        },
+        {
+            "source": "s18",
+            "target": "t3506"
+        },
+        {
+            "source": "s18",
+            "target": "t3507"
+        },
+        {
+            "source": "s19",
+            "target": "t3514"
+        },
+        {
+            "source": "s20",
+            "target": "t3510"
+        },
+        {
+            "source": "s21",
+            "target": "t3512"
+        },
+        {
+            "source": "s22",
+            "target": "t3514"
+        },
+        {
+            "source": "s23",
+            "target": "t3515"
+        },
+        {
+            "source": "s24",
+            "target": "t3517"
+        },
+        {
+            "source": "s25",
+            "target": "t3518"
+        },
+        {
+            "source": "s26",
+            "target": "t3519"
+        }
+    ]
+}

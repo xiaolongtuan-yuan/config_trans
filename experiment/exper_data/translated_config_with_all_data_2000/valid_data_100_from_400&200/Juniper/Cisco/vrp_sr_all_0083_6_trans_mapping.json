@@ -1,0 +1,258 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "set system host-name CE2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "set interfaces ge-0/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "set interfaces ge-0/0/0 unit 0 family inet address 10.2.1.1/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "set interfaces lo0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "set interfaces lo0 unit 1 family inet address 10.22.2.2/32",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "set protocols bgp group external-peers",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "set protocols bgp group external-peers type external",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "set policy-options policy-statement export-policy",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s12",
+            "text": "set policy-options policy-statement export-policy term 1 from route-filter 10.22.2.2/32 exact",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s13",
+            "text": "set policy-options policy-statement export-policy term 1 then accept",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t2095",
+            "text": "hostname CE2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2096",
+            "text": "interface GigabitEthernet0/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2097",
+            "text": "no shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2098",
+            "text": "interface GigabitEthernet0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2099",
+            "text": "ip address 10.2.1.1 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2100",
+            "text": "interface Loopback0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2101",
+            "text": "no shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2103",
+            "text": "ip address 10.22.2.2 255.255.255.255",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2104",
+            "text": "vpdn-group external-peers",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2105",
+            "text": "redistribute bgp",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2109",
+            "text": "match ip address prefix-list 10.22.2.2",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2110",
+            "text": "route-map export-policy permit 10",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2111",
+            "text": "route-map export-policy permit 10",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2113",
+            "text": "match ip address prefix-list exact-route",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2114",
+            "text": "ip prefix-list exact-route permit 10.22.2.2/32",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2115",
+            "text": "policy-map export-policy",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2116",
+            "text": "class class-default",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2117",
+            "text": "police cir 1m pir 2m",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2118",
+            "text": "violate-action accept",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t2095"
+        },
+        {
+            "source": "s2",
+            "target": "t2096"
+        },
+        {
+            "source": "s2",
+            "target": "t2097"
+        },
+        {
+            "source": "s3",
+            "target": "t2098"
+        },
+        {
+            "source": "s3",
+            "target": "t2099"
+        },
+        {
+            "source": "s4",
+            "target": "t2100"
+        },
+        {
+            "source": "s4",
+            "target": "t2101"
+        },
+        {
+            "source": "s5",
+            "target": "t2103"
+        },
+        {
+            "source": "s6",
+            "target": "t2104"
+        },
+        {
+            "source": "s7",
+            "target": "t2105"
+        },
+        {
+            "source": "s11",
+            "target": "t2109"
+        },
+        {
+            "source": "s11",
+            "target": "t2110"
+        },
+        {
+            "source": "s12",
+            "target": "t2111"
+        },
+        {
+            "source": "s12",
+            "target": "t2113"
+        },
+        {
+            "source": "s12",
+            "target": "t2114"
+        },
+        {
+            "source": "s13",
+            "target": "t2115"
+        },
+        {
+            "source": "s13",
+            "target": "t2116"
+        },
+        {
+            "source": "s13",
+            "target": "t2117"
+        },
+        {
+            "source": "s13",
+            "target": "t2118"
+        }
+    ]
+}

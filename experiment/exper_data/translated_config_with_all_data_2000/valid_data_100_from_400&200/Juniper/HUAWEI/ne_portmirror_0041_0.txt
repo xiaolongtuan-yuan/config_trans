@@ -1,0 +1,24 @@
+sysname Device
+vlan 10
+interface GigabitEthernet1/0/0
+ undo shutdown
+ portswitch
+ port link-type access
+ port default vlan 10
+ port trunk allow-pass vlan 10
+ ip address 10.1.1.2 255.255.255.0
+observe-port interface GigabitEthernet 1/0/1
+observe-port interface GigabitEthernet 1/0/2
+port-mirroring to observe-port 1 inbound interface GigabitEthernet 1/0/0
+port-mirroring to observe-port 1 inbound interface GigabitEthernet 2/0/0
+port-mirroring to observe-port 1 inbound interface GigabitEthernet 3/0/0
+ospf 1 router-id 192.168.1.1
+ area 0.0.0.0
+  network none GigabitEthernet1/0/0
+  network none GigabitEthernet3/0/0
+ospf 1 router-id 172.16.1.1
+ area 0.0.0.0
+  network none GigabitEthernet2/0/0
+observe-port interface GigabitEthernet1/0/1
+interface GigabitEthernet2/0/0
+ ip address 10.10.1.1 255.255.255.0

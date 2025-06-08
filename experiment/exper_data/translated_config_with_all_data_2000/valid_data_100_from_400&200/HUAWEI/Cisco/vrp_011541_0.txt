@@ -1,0 +1,24 @@
+hostname CE1
+vlan batch 2
+vlan 2
+ethernet cfm global
+ethernet cfm domain md3 level 3
+ethernet cfm
+interface GigabitEthernet1/0/1
+ switchport
+ switchport mode access
+ switchport trunk allowed vlan 2
+ ethernet cfm mep domain md3 service ma3 3 inward
+interface range GigabitEthernet1/0/1 - 2
+ no shutdown
+interface ma3
+ ethernet cfm domain md3 service ma3 vlan 2
+ ethernet cfm mep domain md3 service ma3 3 outward
+ ethernet cfm mep domain md3 service ma3 mpid 3 direction outward
+ ethernet cfm mep ccm send 3
+ ethernet cfm mep domain md3 service ma3 4 inward
+ ethernet cfm mep ccm-receive 4 enable
+ ethernet cfm continuity-check mep mpid 3 vlan 2 domain md3 service ma3
+ ethernet cfm traceroute cache mep mpid 3 vlan 2 domain md3 service ma3
+ ethernet cfm loss measurement dual-ended continuity-check interval 1s
+end

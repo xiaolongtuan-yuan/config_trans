@@ -1,0 +1,24 @@
+hostname routerC
+router isis 1
+ mpls traffic-eng level-1
+ net 10.0000.0000.0003.00
+interface GigabitEthernet1/0/0
+ ip address 10.40.1.2 255.255.255.0
+ router isis 1
+ net 10.0000.0000.0003.00
+ is-type level-1
+ interface GigabitEthernet1/0/0
+ ip router isis 1
+ !
+ interface GigabitEthernet2/0/0
+ ip address 10.70.1.2 255.255.255.0
+interface range GigabitEthernet1/0/0 - 0
+ no shutdown
+interface GigabitEthernet2/0/0
+ ip address 10.70.1.2 255.255.255.0
+ router isis 1
+ net 10.0000.0000.0003.00
+ ip router isis 1
+interface range GigabitEthernet2/0/0 - 0
+ no shutdown
+end

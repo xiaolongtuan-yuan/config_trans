@@ -1,0 +1,46 @@
+hostname LSRA
+ethernet cfm ma ma1 md md1
+ mpls ip
+ mpls traffic-eng tunnels
+mpls ldp remote-peer none none
+interface Tunnel10
+ mpls traffic-eng static bidirectional explicit-path name Tunnel10 in-label 20
+ ip unnumbered LoopBack1
+ tunnel mode mpls traffic-eng
+ tunnel destination 2.2.2.2
+ mpls label protocol cr-static
+ tunnel mpls traffic-eng 100
+ tunnel mpls traffic-eng tunnel-id 100
+ mpls traffic-eng link-protection
+ mpls traffic-eng passive-interface
+ ip route 2.2.2.2 255.255.255.255 2.1.1.2
+ ip route 3.3.3.3 255.255.255.255 2.1.1.2
+mpls traffic-eng bidirectional static-cr-lsp
+tunnel destination 2.1.1.2
+mpls traffic-eng tunnel 20
+l2vpn pw-class tpatoc
+ neighbor 3.3.3.3
+ control-word
+ l2vpn xconnect context tpatoc
+interface GigabitEthernet1/0/0
+ ip address 2.1.1.1 255.255.255.0
+ mpls ip
+ mpls traffic-eng tunnels
+interface range GigabitEthernet1/0/0 - 1
+ no shutdown
+interface GigabitEthernet1/0/0.1
+ encapsulation dot1q 1
+ mpls ip
+ mpls l2transport route none 30000 pw-class tpatoc
+ l2vpn xconnect context statistics enable
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+tunnel policy tpatoc
+ tunnel mpls traffic-eng binding sid 2.2.2.2 type tunnel-te tunnel-id 100
+ mpls tp meg test
+  mpls oam l2vc peer 3.3.3.3 vcid 30000 vlan mep 1 remote-mep 2
+  mpls oam cc send
+  mpls oam cc receive
+tunnel destination 2.2.2.2 binding Tunnel10
+mpls tp loss-measurement dual-ended
+end

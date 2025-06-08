@@ -1,0 +1,300 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "sysname PE2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "interface GigabitEthernet1/0/1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "undo shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "interface GigabitEthernet1/0/1.1 mode l2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "encapsulation dot1q vid 10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s6",
+            "text": "bridge-domain 10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s7",
+            "text": "interface GigabitEthernet1/0/1.2 mode l2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s8",
+            "text": "encapsulation dot1q vid 30",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s9",
+            "text": "rewrite map 1-to-1 vid 10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "interface GigabitEthernet1/0/2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "interface GigabitEthernet1/0/2.1 mode l2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s12",
+            "text": "return",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t2017",
+            "text": "hostname PE2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2018",
+            "text": "interface GigabitEthernet1/0/1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2019",
+            "text": "interface range GigabitEthernet1/0/1 - 2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2020",
+            "text": "no shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2021",
+            "text": "interface GigabitEthernet1/0/1.1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2023",
+            "text": "encapsulation dot1q 10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2025",
+            "text": "bridge-domain 10",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2026",
+            "text": "l2vpn bridge group 10",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2027",
+            "text": "bridge 10 protocol ieee",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2028",
+            "text": "interface GigabitEthernet1/0/1.2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2030",
+            "text": "encapsulation dot1q 30",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2032",
+            "text": "switchport access vlan 10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2035",
+            "text": "l2vpn bridge group 1",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2036",
+            "text": "bridge 10 protocol vlan-bridge",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2037",
+            "text": "interface GigabitEthernet1/0/2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2038",
+            "text": "interface range GigabitEthernet1/0/2 - 2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2040",
+            "text": "interface GigabitEthernet1/0/2.1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2042",
+            "text": "encapsulation dot1q 10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t2044",
+            "text": "interface GigabitEthernet1/0/1.1",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2045",
+            "text": "service instance 10 ethernet",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2047",
+            "text": "rewrite ingress tag pop 1 symmetric",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t2049",
+            "text": "end",
+            "description": "",
+            "type": "llm"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t2017"
+        },
+        {
+            "source": "s2",
+            "target": "t2018"
+        },
+        {
+            "source": "s3",
+            "target": "t2019"
+        },
+        {
+            "source": "s3",
+            "target": "t2020"
+        },
+        {
+            "source": "s3",
+            "target": "t2038"
+        },
+        {
+            "source": "s4",
+            "target": "t2021"
+        },
+        {
+            "source": "s5",
+            "target": "t2023"
+        },
+        {
+            "source": "s6",
+            "target": "t2025"
+        },
+        {
+            "source": "s6",
+            "target": "t2026"
+        },
+        {
+            "source": "s6",
+            "target": "t2027"
+        },
+        {
+            "source": "s6",
+            "target": "t2035"
+        },
+        {
+            "source": "s6",
+            "target": "t2036"
+        },
+        {
+            "source": "s6",
+            "target": "t2044"
+        },
+        {
+            "source": "s6",
+            "target": "t2045"
+        },
+        {
+            "source": "s6",
+            "target": "t2042"
+        },
+        {
+            "source": "s6",
+            "target": "t2047"
+        },
+        {
+            "source": "s7",
+            "target": "t2028"
+        },
+        {
+            "source": "s8",
+            "target": "t2030"
+        },
+        {
+            "source": "s9",
+            "target": "t2032"
+        },
+        {
+            "source": "s10",
+            "target": "t2037"
+        },
+        {
+            "source": "s11",
+            "target": "t2040"
+        },
+        {
+            "source": "s12",
+            "target": "t2049"
+        }
+    ]
+}

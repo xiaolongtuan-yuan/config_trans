@@ -1,0 +1,42 @@
+hostname PE2
+interface Loopback0
+ no shutdown
+ ip address 4.4.4.4 255.255.255.255
+ interface GigabitEthernet0/0/0
+ encapsulation dot1q
+ interface GigabitEthernet0/0/0.10
+ encapsulation dot1Q 10
+interface GigabitEthernet0/0/0
+ interface GigabitEthernet0/0/0
+ encapsulation dot1q
+ service instance 10 ethernet
+ encapsulation default
+ encapsulation vlan-bridge
+interface range ge-0/0/0 - 10
+interface ge-0/0/2
+ no shutdown
+interface GigabitEthernet0/0/2
+ ip address 10.10.3.4 255.255.255.0
+ interface GigabitEthernet0/0/2
+ mtu 1500
+network 0.0.0.0 0.0.0.0 area 0
+mpls ldp advertise-labels interface GigabitEthernet0/0/2
+mpls ldp discovery transport-address GigabitEthernet0/0/2
+mpls ldp router-id 4.4.4.4
+vpdn-group evpn
+ router bgp 200
+ neighbor 3.3.3.3 update-source Loopback0
+ address-family l2vpn evpn
+ neighbor 3.3.3.3 activate
+ address-family vpnv4 unicast
+redistribute bgp
+route-target import 100:2
+ evpn encapsulation vxlan
+network none none area 0
+route-target import 10.10.3.4:1
+ vrf definition v1
+ rd 10.10.3.4:1
+route-target import 100:1
+ vrf definition v1
+ rd 10.10.3.4:1
+ route-target both 100:1

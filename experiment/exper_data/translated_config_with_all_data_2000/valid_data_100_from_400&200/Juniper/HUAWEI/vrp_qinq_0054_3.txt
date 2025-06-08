@@ -1,0 +1,29 @@
+sysname CE1
+interface GigabitEthernet1/0/1
+ undo shutdown
+ interface GigabitEthernet1/0/1
+ port link-type trunk
+ interface GigabitEthernet1/0/2
+ vlan-type dot1q 1
+ ip address 192.168.1.2 255.255.255.0
+ #
+ ip address 172.16.1.2 255.255.255.0
+bgp 65410
+ import-route direct
+ ipv4-family unicast
+  peer 5.5.5.5 route-policy IMPORT-DIRECT export
+ peer 10.1.1.2 enable
+ l2vpn-family evpn
+  peer EBGP import none
+ network 192.168.1.1 0.0.0.0
+ network 172.16.1.1 0.0.0.0
+router id 192.168.1.2
+ospf 1 router-id 192.168.1.2
+traffic-policy IMPORT-DIRECT inbound
+traffic policy 1
+bgp 100
+ l2vpn-family evpn
+  peer 1.1.1.1 import none
+   peer 192.168.1.1 as-number 100
+   peer 172.16.1.1 as-number 100
+   peer <ip_address> as-number <as_number>

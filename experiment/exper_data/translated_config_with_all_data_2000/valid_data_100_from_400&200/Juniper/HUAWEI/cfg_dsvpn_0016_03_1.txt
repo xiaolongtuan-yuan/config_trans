@@ -1,0 +1,43 @@
+sysname Spoke1
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.2.10 255.255.255.0
+ source GigabitEthernet1/0/0
+ binding tunnel gre 10.1.2.10
+ ip address 192.168.1.1 255.255.255.0
+ source GigabitEthernet1/0/0.0
+interface GigabitEthernet0/0/0
+ destination 172.16.1.1
+ ip address 172.16.1.2 255.255.255.0
+interface GR-0/0/0
+interface gr-0/0/0 mode l2
+ encapsulation dot1q vid 0
+ipsec policy IPSEC-VPN 10
+ ipsec policy-binding IPSEC-VPN interface Tunnel0/0/0
+ipsec policy IPSEC-VPN 10 isakmp
+bgp BGP-TO-PEER
+ l2vpn-family evpn
+  peer BGP-TO-PEER import none
+bgp 600
+ import-route external
+ l2vpn-family evpn
+  peer 2001:DB8:22::2 advertise irb
+ ipv4-family unicast
+  peer none route-policy EXPORT-OSPF-ROUTES export
+ import-route ospf
+ peer 10.1.1.2 enable
+bgp 100
+ peer 172.16.1.1 as-number 100
+ ipv4-family unicast
+  peer 172.16.1.1 next-hop-local
+ ipv4-family unicast
+traffic-policy 1 inbound
+traffic policy 1
+area 0.0.0.0
+ospf 0.0.0.0 router-id 1
+ area 0.0.0.0
+  network 0.0.0.0 ge-1/0/1.0
+area 0.0.0.1
+ospf 1 router-id 0.0.0.1
+ area 0.0.0.1
+  network 0.0.0.1 ge-1/0/0.0

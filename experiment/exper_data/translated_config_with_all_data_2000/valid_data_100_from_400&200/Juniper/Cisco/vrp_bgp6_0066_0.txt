@@ -1,0 +1,20 @@
+hostname DeviceA
+neighbor 2001:db8:100::2 remote-as 200
+neighbor 2001:db8:100::2 update-source 2001:db8:100::1
+ router bgp 200
+neighbor 2001:db8:100::2 ebgp-multihop 255
+neighbor 2001:db8:100::2 route-map EXPORT-POLICY out
+ router bgp 200
+redistribute bgp
+router bgp 200
+ neighbor 2001:db8:100::2 update-source 2001:db8:100::1
+ route-map EXPORT-POLICY permit 1
+ match interface *
+ match ipv6 address connected
+redistribute bgp 200
+redistribute EXPORT-POLICY
+ip route 1.1.1.1 255.255.255.255 none
+policy-map EXPORT-POLICY
+ class EXPORT-POLICY
+  police cir 1m pir 2m
+   violate-action accept

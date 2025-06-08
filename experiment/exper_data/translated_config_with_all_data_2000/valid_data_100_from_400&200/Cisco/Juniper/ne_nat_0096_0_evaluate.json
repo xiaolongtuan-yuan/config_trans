@@ -1,0 +1,76 @@
+{
+    "command_accuracy": 0.5333333333333333,
+    "missed_commands": [
+        "set security zones security-zone trust interfaces ge-1/0/1.0",
+        "set security zones security-zone untrust interfaces ge-1/0/2.0",
+        "set interfaces ge-1/0/1 unit 0 family inet filter input route-map-policy1",
+        "set security nat source pool nat_pool address 192.168.10.0/24",
+        "set security nat source rule-set nat_rules rule 1 match source-address 192.168.10.0/24",
+        "set security nat source rule-set nat_rules rule 1 then source-nat pool nat_pool",
+        "set firewall family inet filter route-map-policy1 term 10 from source-address 0.0.0.0/0",
+        "set protocols ospf area 0.0.0.0 interface lo0.0 passive",
+        "set security zones security-zone trust interfaces ge-1/0/1.0",
+        "set interfaces ge-1/0/1 unit 0 family inet filter input route-map-policy1",
+        "set security zones security-zone untrust interfaces ge-1/0/2.0",
+        "set security nat source pool nat_pool address 192.168.10.0/24",
+        "set security nat source rule-set nat_rules rule 1 match source-address 192.168.10.0/24",
+        "set security nat source rule-set nat_rules rule 1 then source-nat pool nat_pool",
+        "set firewall family inet filter route-map-policy1 term 10 from source-address 0.0.0.0/0"
+    ],
+    "grammatical_accuracy": 0.6,
+    "missed_templates": [
+        "set security zones security-zone [parameter1] interfaces [parameter2]",
+        "set interfaces [interface] unit [unit] family [family] filter [direction] [policy]",
+        "set security nat source pool [parameter1] address [parameter2]/[parameter3]",
+        "set security nat source rule-set [parameter1] rule [parameter2] then source-nat pool [parameter3]",
+        "set protocols ospf area [parameter1] interface [parameter2] passive"
+    ],
+    "llm_command_accuracy": 0.0,
+    "llm_command_ratio": 0.5185185185185185,
+    "command_for_llm": [
+        "match ip address 100",
+        "ip nat inside source list NAT_ACL interface GigabitEthernet1/0/1 overload",
+        "set ip next-hop 1.1.1.100",
+        "access-list 100 permit ip any any",
+        "ip nat outside",
+        "no shutdown"
+    ],
+    "llm_trans_commands": [
+        "set security nat source rule-set NAT_ACL from zone trust",
+        "set security nat source rule-set NAT_ACL to zone untrust",
+        "set security nat source rule-set NAT_ACL rule NAT_RULE match source-address 0.0.0.0/0",
+        "set security nat source rule-set NAT_ACL rule NAT_RULE then source-nat interface",
+        "set interfaces ge-1/0/1 disable delete",
+        "set interfaces ge-1/0/1 description \"Active interface\"",
+        "delete interfaces GigabitEthernet1/0/1 disable",
+        "set interfaces ge-1/0/2 unit 0 family inet nat destination",
+        "set firewall family inet filter NAT_ACL term permit-all from source-address 0.0.0.0/0",
+        "set firewall family inet filter NAT_ACL term permit-all from destination-address 0.0.0.0/0",
+        "set firewall family inet filter NAT_ACL term permit-all then accept",
+        "match source-address 0.0.0.0/0",
+        "set routing-options static route 0.0.0.0/0 next-hop 1.1.1.100",
+        "set policy-options policy-statement POLICY1 then next-hop 1.1.1.100"
+    ],
+    "source_commands": [
+        "match ip address 100",
+        "ip nat inside source list NAT_ACL interface GigabitEthernet1/0/1 overload",
+        "interface GigabitEthernet1/0/1",
+        "ip nat inside",
+        "hostname NATA",
+        "set ip next-hop 1.1.1.100",
+        "ip address 2.2.2.1 255.255.255.0",
+        "network 2.2.2.0 0.0.0.255 area 0",
+        "ip address 192.168.10.1 255.255.255.0",
+        "access-list 100 permit ip any any",
+        "ip nat outside",
+        "route-map POLICY1 permit 10",
+        "router ospf 1",
+        "ip route 0.0.0.0 0.0.0.0 2.2.2.2",
+        "interface GigabitEthernet1/0/2",
+        "end",
+        "no shutdown"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

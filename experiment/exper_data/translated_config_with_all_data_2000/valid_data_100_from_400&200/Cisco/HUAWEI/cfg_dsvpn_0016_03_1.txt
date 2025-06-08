@@ -1,0 +1,29 @@
+sysname Spoke1
+interface LoopBack0
+ ip address 172.16.1.2 255.255.255.255
+interface GigabitEthernet1/0/0
+ ip address 10.1.2.10 255.255.255.0
+interface GigabitEthernet2/0/0
+ ip address 192.168.1.1 255.255.255.0
+interface Tunnel0
+ ip address 172.16.1.2 255.255.255.0
+ source GigabitEthernet1/0/0
+ tunnel-key 100
+bgp 200
+ router-id 172.16.1.2
+ peer 172.16.1.1 as-number 100
+ peer 172.16.1.1 enable
+ ipv4-family unicast
+  peer 172.16.1.1 next-hop-self
+  import-route ospf 1
+  peer 172.16.1.1 enable
+ peer 172.16.1.1 connect-interface Loopback0
+ospf 1
+ network 192.168.1.0 0.0.0.255
+ area 0
+ospf 1 router-id 172.16.1.2
+ospf 2
+ network 10.1.2.0 0.0.0.255
+ area 1
+ospf 2 router-id 10.1.2.10
+stp region-configuration

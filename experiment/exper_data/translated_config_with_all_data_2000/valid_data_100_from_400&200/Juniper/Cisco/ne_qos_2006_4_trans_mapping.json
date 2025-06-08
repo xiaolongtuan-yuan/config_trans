@@ -1,0 +1,282 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "set system host-name CE2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "set interfaces ge-0/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "set interfaces ge-0/0/0 unit 0 family inet address 10.2.1.1/24",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "set protocols bgp group BGP-PEER",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "set protocols bgp group BGP-PEER type external",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s8",
+            "text": "set protocols bgp group BGP-PEER family inet unicast",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s10",
+            "text": "set policy-options policy-statement bgp-export",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s11",
+            "text": "set policy-options policy-statement bgp-export term 1 from route-filter 10.2.1.0/24 exact",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s12",
+            "text": "set policy-options policy-statement bgp-export term 1 then accept",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t334",
+            "text": "hostname CE2",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t335",
+            "text": "interface GigabitEthernet0/0/0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t336",
+            "text": "no shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t338",
+            "text": "ip address 10.2.1.1 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t339",
+            "text": "neighbor 10.2.1.2 remote-as 100",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t340",
+            "text": "neighbor 10.2.1.2 activate",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t341",
+            "text": "neighbor 10.2.1.2 route-map BGP-PEER-OUT out",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t342",
+            "text": "router bgp 100",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t343",
+            "text": "redistribute bgp",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t346",
+            "text": "router bgp 100",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t348",
+            "text": "neighbor 10.2.1.2 activate",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t350",
+            "text": "route-map bgp-export permit 10",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t355",
+            "text": "route-map bgp-export permit 1",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t356",
+            "text": "match ip address prefix-list BGP-EXACT-10.2.1.0",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t357",
+            "text": "ip prefix-list BGP-EXACT-10.2.1.0 permit 10.2.1.0/24",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t351",
+            "text": "match ip address prefix-list BGP-FILTER",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t352",
+            "text": "!",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t353",
+            "text": "ip prefix-list BGP-FILTER permit 10.2.1.0/24",
+            "description": "",
+            "type": "llm"
+        },
+        {
+            "id": "t358",
+            "text": "policy-map bgp-export",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t359",
+            "text": "class 1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t360",
+            "text": "police cir 1m pir 2m",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t361",
+            "text": "violate-action accept",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t334"
+        },
+        {
+            "source": "s2",
+            "target": "t335"
+        },
+        {
+            "source": "s2",
+            "target": "t336"
+        },
+        {
+            "source": "s3",
+            "target": "t338"
+        },
+        {
+            "source": "s4",
+            "target": "t339"
+        },
+        {
+            "source": "s4",
+            "target": "t340"
+        },
+        {
+            "source": "s4",
+            "target": "t341"
+        },
+        {
+            "source": "s4",
+            "target": "t342"
+        },
+        {
+            "source": "s5",
+            "target": "t343"
+        },
+        {
+            "source": "s8",
+            "target": "t346"
+        },
+        {
+            "source": "s8",
+            "target": "t348"
+        },
+        {
+            "source": "s10",
+            "target": "t350"
+        },
+        {
+            "source": "s10",
+            "target": "t351"
+        },
+        {
+            "source": "s10",
+            "target": "t352"
+        },
+        {
+            "source": "s10",
+            "target": "t353"
+        },
+        {
+            "source": "s11",
+            "target": "t355"
+        },
+        {
+            "source": "s11",
+            "target": "t356"
+        },
+        {
+            "source": "s11",
+            "target": "t357"
+        },
+        {
+            "source": "s12",
+            "target": "t358"
+        },
+        {
+            "source": "s12",
+            "target": "t359"
+        },
+        {
+            "source": "s12",
+            "target": "t360"
+        },
+        {
+            "source": "s12",
+            "target": "t361"
+        }
+    ]
+}

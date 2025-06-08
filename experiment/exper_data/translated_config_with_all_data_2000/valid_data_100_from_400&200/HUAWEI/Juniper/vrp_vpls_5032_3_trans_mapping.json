@@ -1,0 +1,112 @@
+{
+    "source_cmds": [
+        {
+            "id": "s1",
+            "text": "sysname CE1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s2",
+            "text": "interface GigabitEthernet1/0/0.1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s3",
+            "text": "undo shutdown",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s4",
+            "text": "vlan-type dot1q 10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "s5",
+            "text": "ip address 10.1.1.1 255.255.255.0",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "target_cmds": [
+        {
+            "id": "t1",
+            "ids": [
+                1
+            ],
+            "text": "set system host-name CE1",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t5",
+            "ids": [
+                2,
+                3,
+                5
+            ],
+            "text": "set interfaces ge-1/0/0.1 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t6",
+            "ids": [
+                2,
+                6
+            ],
+            "text": "set interfaces ge-1/0/0.1 unit 0 disable",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t8",
+            "ids": [
+                2,
+                8
+            ],
+            "text": "set interfaces ge-1/0/0.1 unit 1 vlan-id 10",
+            "description": "",
+            "type": "rule"
+        },
+        {
+            "id": "t10",
+            "ids": [
+                2,
+                10
+            ],
+            "text": "set interfaces ge-1/0/0.1 unit 0 family inet address 10.1.1.1/24",
+            "description": "",
+            "type": "rule"
+        }
+    ],
+    "edges": [
+        {
+            "source": "s1",
+            "target": "t1"
+        },
+        {
+            "source": "s2",
+            "target": "t5"
+        },
+        {
+            "source": "s3",
+            "target": "t5"
+        },
+        {
+            "source": "s3",
+            "target": "t6"
+        },
+        {
+            "source": "s4",
+            "target": "t8"
+        },
+        {
+            "source": "s5",
+            "target": "t10"
+        }
+    ]
+}

@@ -1,0 +1,43 @@
+sysname PE1
+mpls rsvp-te
+mpls ldp lsr-id 1.1.1.1
+mpls label protocol ldp
+link-protocol ldp
+interface GigabitEthernet1/0/0
+ undo shutdown
+ interface GigabitEthernet1/0/0
+ port link-type hybrid
+ port hybrid tagged vlan 10
+ port hybrid pvid vlan 10
+ switch-mode trunk
+ vlan-type dot1q 10
+ ipv6 address 2001::DB8/64 eui-64
+interface GigabitEthernet1/0/0.1
+interface GigabitEthernet1/0/0.1 mode l2
+ encapsulation dot1q vid 1
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 172.16.1.1 255.255.255.0
+ ipv6 address 2001::DB8/64 eui-64
+interface LoopBack0
+ undo shutdown
+ ip address 1.1.1.1 255.255.255.255
+ip route-static 3.3.3.3 255.255.255.255 none none
+ip route-static 3.3.3.3 255.255.255.255 172.16.1.2
+ip route-static 172.16.1.0 255.255.255.0 none none
+ip route-static 172.16.1.0 255.255.255.0 172.16.1.2
+ 172.16.1.0/24
+area 0.0.0.0
+ospf 1 router-id 0.0.0.0
+ silent-interface LoopBack0
+ area 0.0.0.0
+  network 0.0.0.0 ge-2/0/0.0
+ptp-adaptive local-ip 3.3.3.3
+ l2vpn
+ peer 3.3.3.3
+ encapsulation ethernet
+ip route-static vpn-instance  3.3.3.3 255.255.255.255
+vlan 2
+vlan 10
+ vlan 10
+ interface Vlanif10

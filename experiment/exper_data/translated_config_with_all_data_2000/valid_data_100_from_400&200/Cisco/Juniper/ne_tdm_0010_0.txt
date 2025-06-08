@@ -1,0 +1,35 @@
+set system host-name PE1
+set routing-instances 1to3 instance-type l2vpn
+set routing-instances 1to3 interface ge-2/0/0.0
+set routing-instances 1to3 route-distinguisher 192.168.2.2:1
+set routing-instances 1to3 vrf-target target:1:100
+set protocols l2circuit pseudowire-class 1to3 encapsulation-type mpls encapsulation-type mpls;
+set interfaces e1-1/0/1 set interfaces e1-fpc/pic/port framing crc4
+set interfaces e1-1/0/1 set interfaces e1-1/0/1 channel-group 1 timeslots 1-31
+set interfaces e1-1/0/2 framing crc4 framing crc4;
+set interfaces e1-1/0/2 framing crc4 set interfaces e1-1/0/1 channel-group 1 timeslots 1-31
+set interfaces e1-1/0/2 framing crc4 set interfaces e1-1/0/2 channel-group 1 timeslots 1-31
+set interfaces e1-1/0/2 channelized timeslots 1-31
+set interfaces se-1/0/1.1 unit 1/0/1:1 disable
+set interfaces se-1/0/1.1 disable
+set interfaces se-1/0/1:1 set interfaces Serial1/0/1:1 no-keepalives
+set interfaces se-1/0/1:1 set interfaces Serial1/0/2:1 no-keepalives
+set interfaces se-1/0/1:1 unit 1 tunnel source-address 192.168.3.3
+set interfaces se-1/0/2:1 unit 2 disable
+set interfaces se-1/0/2:1 disable
+set interfaces se-1/0/2:1 set interfaces se-1/0/1:1 no-keepalives
+set interfaces se-1/0/2:1 set interfaces se-1/0/2:1 no-keepalives
+set interfaces se-1/0/2:1 unit 192.168.3.3 tunnel source-address 1to3
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 set interfaces gigabit-etherne 2/0/0 disable
+set interfaces ge-2/0/0 delete interfaces gigabit-etherne 2/0/0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-2/0/0 unit 0 family inet mpls
+set interfaces lo0 unit 0 disable
+set interfaces lo0 disable
+set interfaces lo0 unit 0 family inet address 192.168.2.2/32
+set protocols ospf area 0.0.0.1 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf area 0 interface ge-0/0/1.0
+set protocols isis export REDIST-CONNECTED

@@ -1,0 +1,45 @@
+set system host-name PE1
+set routing-options router-id 1.1.1.1
+set policy-options policy-statement s1 term 10 then next policy p1 set policy-options policy-statement s1 then tunnel-policy p1
+set system host-name CE1
+set system host-name mpls
+set protocols l2circuit
+set interfaces ge-0/0/0 unit 0 family inet mpls ldp
+set interfaces ge-0/0/0 unit 0 family inet service input policy-p1
+set routing-instances v1 instance-type vpls set routing-instances v1 protocols l2vpn encapsulation-type ethernet route-distinguisher 10.10.1.1:1;
+set routing-instances v1 instance-type vpls set routing-instances v1 protocols l2vpn encapsulation-type ethernet set routing-instances v1 vrf-target import target:100:1
+set routing-instances v1 instance-type vpls set routing-instances v1 protocols l2vpn encapsulation-type ethernet set routing-instances v1 route-distinguisher 10.10.1.1:1
+set routing-instances v1 instance-type vpls set routing-instances v1 protocols l2vpn encapsulation-type ethernet set routing-instances v1 vrf-target target:100:1
+set routing-instances v1 instance-type vpls set routing-instances v1 protocols l2vpn control-plane bgp
+set interfaces ge-1/0/0.1 disable
+set interfaces ge-1/0/0.1 unit 1 vlan-id 10
+set interfaces ge-1/0/0.1 unit 0 family inet address none/none vrrp-group none virtual-address v1
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 10.10.1.1/24
+set interfaces ge-2/0/0 unit 0 family inet mpls
+set interfaces ge-2/0/0 unit 0 family inet mpls ldp
+set interfaces lo0.1 disable
+set interfaces lo0.1 unit 0 family inet address 1.1.1.1/32
+set routing-options autonomous-system 100 family l2vpn signaling set routing-instances v1 vrf-target target:100:1
+set routing-options autonomous-system 100 family l2vpn signaling set routing-instances v1 vrf-import import-policy
+set routing-options autonomous-system 100 family l2vpn signaling set routing-instances v1 vrf-export export-policy
+set routing-options autonomous-system 100 family l2vpn signaling set policy-options tunnel-selector s1
+set protocols bgp group 100 type external
+set protocols bgp group 100 type internal
+set protocols bgp group 100 neighbor 2.2.2.2 peer-as 100
+set protocols bgp group 100 export BGP-100
+set protocols bgp group 100 peer-as 100
+set interfaces ge-1/0/0 unit 1 family inet service input none set protocols ospf traffic-engineering bgp-ls
+set protocols ospf area 0.0.0.0 interface 0.0.0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set policy-options policy-statement p1 term 10 then accept set policy-options policy-statement p1 then accept
+set policy-options policy-statement p1 term 10 then accept set policy-options policy-statement p1 then next-hop self
+set policy-options policy-statement p1 term 10 then accept set policy-options policy-statement p1 then family inet labeled-unicast
+set protocols mpls policy p1 then load-balance per-flow set protocols mpls traffic-engineering bgp-te
+set protocols mpls policy p1 then load-balance per-flow set protocols mpls traffic-engineering ldp-te
+set protocols mpls policy p1 then load-balance per-flow set protocols mpls load-balance label
+set protocols mpls policy p1 then load-balance per-flow set protocols mpls load-balance per-flow
+set protocols mpls policy p1 then load-balance per-flow set routing-options mpls label-range flow-label
+set protocols mpls policy p1 then load-balance per-flow set routing-instances v1 protocols vpls flow-label
+set protocols mpls policy p1 then preference [ bgp ldp ]

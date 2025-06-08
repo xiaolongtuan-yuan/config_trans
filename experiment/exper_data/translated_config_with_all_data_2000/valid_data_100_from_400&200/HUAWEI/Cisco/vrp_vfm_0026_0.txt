@@ -1,0 +1,26 @@
+hostname SSH Server
+aaa new-model
+ username client001 secret @%@%.OuC6Vo7Z,A'y~/KB&,vmd@%@%
+ username client001 privilege 3
+aaa authentication enable default none
+interface GigabitEthernet0/0/0
+ ip address 10.137.217.223 255.255.0.0
+interface range GigabitEthernet0/0/0 - 0
+ no shutdown
+interface LoopBack0
+ ip address 10.1.1.1 255.255.255.255
+interface LoopBack 0 point-to-point
+ip ssh sftp
+ip ssh server source-interface Loopback0
+ip ssh source-interface loopback0
+username client001 privilege 3 secret @%@%.OuC6Vo7Z,A'y~/KB&,vmd@%@%
+ip ssh version 2
+line vty 0 4
+ transport input ssh
+ login local
+username client001 secret @%@%.OuC6Vo7Z,A'y~/KB&,vmd@%@%
+ip ssh password-authentication
+ip ssh user client001 service-type sftp stelnet
+username client001 privilege 15 secret <password>
+ip ssh user client001 sftp-directory home:/
+end

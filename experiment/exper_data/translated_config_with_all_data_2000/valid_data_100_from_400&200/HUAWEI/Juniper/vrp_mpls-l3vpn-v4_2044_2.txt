@@ -1,0 +1,30 @@
+set system host-name CE1
+set interfaces ge-1/0/0 unit 0 family inet mpls lsr-id 2.2.2.9
+set interfaces ge-1/0/0 unit 0 family inet mpls lsp-trigger bgp-label-route set protocols mpls traffic-engineering bgp-igp
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 40.1.1.2/24
+set interfaces ge-1/0/0 unit 0 family inet mpls
+set interfaces ge-1/0/0 unit 0 family inet mpls ldp
+set interfaces ge-0/0/0 unit 0 family inet mpls ldp
+set interfaces ge-0/0/0 unit 1 family inet service input none
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 11.1.1.1/24
+set interfaces ge-2/0/0 unit 0 family inet mpls maximum-labels 5
+set interfaces lo0.1 disable
+set interfaces lo0 unit 0 family inet address 2.2.2.9/32
+set routing-options autonomous-system 200
+set protocols bgp group 200 type external
+set protocols bgp group 200 neighbor 11.1.1.2 peer-as 100
+set protocols bgp group 200 export BGP-NETWORKS
+set protocols bgp group 200 family inet unicast set protocols bgp group <group-name> neighbor 11.1.1.2 family inet labeled-unicast
+set protocols bgp group 200 local-as 200
+set protocols bgp group 200 term 1 then accept
+set protocols bgp group 200 peer-as 200
+set protocols bgp group 200 export policy1
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set policy-options policy-statement policy1 term 1 then accept then set forwarding-class mpls
+set policy-options policy-statement policy1 term 1 then accept then tag mpls
+set policy-options policy-statement policy1 term 1 then accept then next-hop-self
+set policy-options policy-statement policy1 term 1 then mpls-label
