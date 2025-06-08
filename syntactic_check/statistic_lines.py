@@ -31,7 +31,7 @@ def statistic_config_lines(range_num):
             # 统计行数
             with open(config_file_path, 'r', encoding='utf-8') as f:
                 lines = f.readlines()
-                non_blank_lines = [line for line in lines if line.strip()]
+                non_blank_lines = [line for line in lines if line.strip() and not line.startswith('!')]
                 all_config_line[config_name] = len(non_blank_lines)
                 all_lines_count += len(non_blank_lines)
         # 测试的配置文件行数
@@ -42,7 +42,7 @@ def statistic_config_lines(range_num):
             # 统计行数
             with open(config_file_path, 'r', encoding='utf-8') as f:
                 lines = f.readlines()
-                non_blank_lines = [line for line in lines if line.strip()]
+                non_blank_lines = [line for line in lines if line.strip() and not line.startswith('!')]
                 test_config_line[config_name] = len(non_blank_lines)
                 test_lines_count += len(non_blank_lines)
         config_lines[vendor] = {'average_all_lines': all_lines_count/len(all_config), 
@@ -56,7 +56,8 @@ def statistic_config_lines(range_num):
 
 if __name__ == "__main__":
 
-    range_num = ['400', '1200', '2000','2800']
+    # range_num = ['400', '1200', '2000','2800']
+    range_num = ['400', '2000']
     all_config_lines = {j:0 for j in ['Cisco', 'HUAWEI','Juniper']}
     for i in range_num:
         config_lines = statistic_config_lines(i)
