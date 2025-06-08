@@ -1,0 +1,45 @@
+set system host-name NPE
+set protocols l2vpn site vpn1
+set security ipsec proposal ipsec-proposal protocol routing-enable
+set protocols l2vpn vsi 100:1 l2vpn-id 100
+set protocols l2vpn site PE1 site-identifier 2
+set system host-name 3.3.3.3
+set system host-name mpls
+set interfaces ge-0/0/0 unit 0 family inet mpls ldp
+set protocols isis level 1
+set protocols isis interface ge-1/0/0.0
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.2.1.2/24
+set interfaces ge-1/0/0 set protocols isis interface ge-1/0/0.0
+set interfaces ge-1/0/0 unit 0 family inet mpls
+set interfaces ge-1/0/0 unit 0 family inet mpls ldp
+set interfaces ge-1/0/0 unit 0 family inet policer input none
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 set interfaces ge-2/0/0 family inet vrf vpn1
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.30.1/24
+set interfaces lo1 disable
+set interfaces lo0.1 unit 0 family inet address 3.3.3.3/32
+set interfaces lo0.1 set protocols isis interface ge-1/0/0.0
+set routing-options autonomous-system 100
+set protocols bgp group 100 type external
+set protocols bgp group 100 type internal
+set protocols bgp group 100 neighbor 2.2.2.2 peer-as 100
+set protocols bgp group 100 export BGP-100
+set protocols bgp group 100 peer-as 100
+set protocols bgp group 100 family inet unicast
+set protocols bgp group 100 local-as 100
+set protocols bgp group 100 neighbor none family vpn1 unicast
+set protocols bgp group 100 import direct
+set protocols bgp group 100 neighbor 3.3.3.4.9 peer-as 100
+set protocols bgp group 100 family evpn
+set protocols bgp group 100 import vpn1-import
+set policy-options as-path as-path-10 ^.*_10_.*$
+set routing-options static route none deny
+set protocols isis export default
+set protocols isis export SPE
+set routing-options static route none 20
+set protocols oam ethernet connectivity-fault-management mep 10 md md1 ma ma1 continuity-check enable
+set system host-name esqm
+set system host-name CE1

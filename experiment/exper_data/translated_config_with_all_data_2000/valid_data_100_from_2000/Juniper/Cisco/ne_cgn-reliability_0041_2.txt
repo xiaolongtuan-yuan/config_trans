@@ -1,0 +1,16 @@
+hostname CR
+mpls label protocol ldp
+router isis 1
+ address-family vpnv4
+  redistribute ldp
+mpls ldp discovery transport-address GigabitEthernet1/0/3
+mpls ldp discovery transport-address GigabitEthernet1/0/4
+mpls ldp router-id Loopback0
+interface GigabitEthernet1/0/3
+ no shutdown
+ ip address 10.2.1.2 255.255.255.0
+ ipv6 address 2001:DB8::/64 eui-64
+ ip address 10.3.1.1 255.255.255.0
+network 0.0.0.0 0.0.0.0 area 0
+network 0.0.0.0 255.255.255.255 area 0
+network 0.0.0.0 0.0.0.0 area 0.0.0.1

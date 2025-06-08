@@ -1,0 +1,71 @@
+{
+    "command_accuracy": 0.2727272727272727,
+    "missed_commands": [
+        "acl number 3001",
+        "acl number 3002",
+        "rule 5 permit ip source 10.100.0.11 0.0.0.255",
+        "rule 5 permit ip source 10.110.0.11 0.0.0.255",
+        "interface tunnel40",
+        "interface gigabitethernet1/0/0",
+        "interface gigabitethernet2/0/0",
+        "policy-based-route aaa permit node 5 map-instance 5",
+        "policy-based-route aaa permit node 10 map-instance 10",
+        "if-match acl name a3002",
+        "apply output-interface tunnel30",
+        "apply output-interface tunnel40",
+        "undo shutdown",
+        "ip policy-based-route aaa",
+        "ip policy-based-route aaa",
+        "return",
+        "acl number 3001",
+        "rule 5 permit ip source 10.100.0.11 0.0.0.255",
+        "acl number 3002",
+        "rule 5 permit ip source 10.110.0.11 0.0.0.255",
+        "interface tunnel40",
+        "policy-based-route aaa permit node 5 map-instance 5",
+        "apply output-interface tunnel30",
+        "policy-based-route aaa permit node 10 map-instance 10",
+        "if-match acl name a3002",
+        "apply output-interface tunnel40",
+        "interface gigabitethernet1/0/0",
+        "ip policy-based-route aaa",
+        "interface gigabitethernet2/0/0",
+        "undo shutdown",
+        "ip policy-based-route aaa",
+        "return"
+    ],
+    "grammatical_accuracy": 0.5909090909090909,
+    "missed_templates": [
+        "acl number [parameter1]",
+        "rule [parameter1] permit ip source [parameter2] [parameter3]",
+        "apply output-interface [parameter1]",
+        "ip policy-based-route [parameter1]",
+        "return"
+    ],
+    "llm_command_accuracy": 0.0,
+    "llm_command_ratio": 0.058823529411764705,
+    "command_for_llm": [
+        "set routing-instances tunnel-instance"
+    ],
+    "llm_trans_commands": [
+        "ip vpn-instance tunnel-instance"
+    ],
+    "source_commands": [
+        "instance-type virtual-router",
+        "filter aaa term 5 then routing-instance tunnel-instance",
+        "set interfaces ge-2/0/0",
+        "unit 0 family inet filter input aaa",
+        "set routing-instances tunnel-instance",
+        "filter aaa term 10 then routing-instance tunnel-instance",
+        "set firewall family inet",
+        "set interfaces ge-1/0/0",
+        "filter aaa term 5 from source-address 10.100.0.11/32",
+        "unit 0 family inet address 10.110.0.10/24",
+        "set system host-name DeviceA",
+        "unit 0 family inet address 10.100.0.10/24",
+        "filter aaa term 10 from source-address 10.110.0.11/32"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

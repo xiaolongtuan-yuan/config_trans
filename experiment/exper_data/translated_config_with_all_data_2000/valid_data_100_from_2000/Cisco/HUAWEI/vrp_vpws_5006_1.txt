@@ -1,0 +1,24 @@
+sysname U-PE1
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+interface GigabitEthernet1/0/0 mode l2
+ mpls l2vc none none raw
+mpls lsr-id 3.3.3.9
+mpls
+interface GigabitEthernet1/0/0
+ undo shutdown
+interface GigabitEthernet2/0/0 mode l2
+ mpls l2vc none none raw
+interface LoopBack0
+ ip address 1.1.1.9 255.255.255.255
+ospf 1
+ network 10.1.1.0 0.0.0.255
+ area 0
+ network 1.1.1.9 0.0.0.0
+bgp 100
+ peer 3.3.3.9 as-number 100
+ peer 3.3.3.9 enable
+ ipv4-family unicast
+  peer 3.3.3.9 next-hop-self
+ peer 3.3.3.9 connect-interface Loopback0

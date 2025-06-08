@@ -1,0 +1,22 @@
+sysname Tail
+route-distinguisher 500:1
+vpn-target 111:1 export-extcommunity
+vpn-target 111:1 import-extcommunity
+ ipv4-family
+  ip vpn-instance vpna
+segment-routing mpls
+ip vpn-instance vpna
+ ip vpn-instance vpna
+  route-distinguisher 500:1
+  vpn-target 111:1 export-extcommunity
+  vpn-target 111:1 import-extcommunity
+mpls rsvp-te
+interface GigabitEthernet0/0/1
+ undo shutdown
+ ip address 10.5.1.2 255.255.255.252
+interface GigabitEthernet0/0/0.0
+interface LoopBack0
+ mpls traffic-eng passive-interface LoopBack0
+isis 1
+ is-level level-1
+link-protocol ppp

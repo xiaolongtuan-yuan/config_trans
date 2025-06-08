@@ -9,7 +9,7 @@
     ],
     "set routing-options static route [parameter1]/[parameter2]": [
         "ip route-static [parameter1] [parameter2] [parameter3] preference [parameter4]",
-        "ip route-static [parameter1] [parameter2] [parameter3]"
+        "ip route-static [parameter1] [parameter2] [parameter3] [parameter4]"
     ],
     "set protocols bgp group [parameter1]": [
         "user-group [parameter1]",
@@ -45,7 +45,7 @@
     ],
     "set protocols l2vpn neighbor [parameter1]": [
         "ipv4-family vpn-instance [parameter1]",
-        "ptp-adaptive local-ip [parameter1]"
+        "ip route-static vpn-instance [vpn_instance_name] [destination_address] [netmask] [next_hop]"
     ],
     "set routing-options router-id [parameter1]": [
         "ip route-static [parameter1] [parameter2] [parameter3] preference [parameter4]",
@@ -55,6 +55,10 @@
         "ip route-static [parameter1] [parameter2] [parameter3] preference [parameter4]",
         "bgp [parameter1]"
     ],
+    "set protocols ospf area [area_id]": [
+        "area [parameter1]",
+        "ospf [parameter1] router-id [parameter2]"
+    ],
     "set protocols oam ethernet connectivity-fault-management maintenance-domain [parameter1]": [
         "cfm md [parameter1] level [parameter2]",
         "cfm md [parameter1]"
@@ -62,6 +66,10 @@
     "set protocols mpls interface [parameter1]": [
         "mpls",
         "mpls rsvp-te"
+    ],
+    "set protocols l2circuit neighbor [neighbor_ip]": [
+        "ptp-adaptive local-ip [parameter1]",
+        "ip route-static vpn-instance [vpn_instance_name] [destination_address] [netmask] [next_hop]"
     ],
     "set protocols ospf traffic-engineering": [
         "ospf valid-ttl-hops [parameter1]",
@@ -91,6 +99,10 @@
         "multicast routing-enable",
         "multicast ipv6 routing-enable"
     ],
+    "set system services [service]": [
+        "remote-backup-service [parameter1]",
+        "Sysname [parameter1]"
+    ],
     "set system login user [parameter1]": [
         "user-group [parameter1]",
         "Sysname [parameter1]"
@@ -109,15 +121,11 @@
     ],
     "set routing-options static route [parameter1] [parameter2]": [
         "ip route-static [parameter1] [parameter2] [parameter3] [parameter4]",
-        "ip route-static [parameter1] [parameter2] [parameter3]"
+        "ip route-static [parameter1] [parameter2] [parameter3] preference [parameter4]"
     ],
     "set protocols bgp local-as [parameter1]": [
         "bgp [parameter1]",
         "ipv6 prefix [parameter1] local"
-    ],
-    "set protocols ospf area [parameter1]": [
-        "area [parameter1]",
-        "ospfv3 [parameter1]"
     ],
     "set routing-options [parameter1]": [
         "multicast routing-enable",
@@ -127,13 +135,13 @@
         "isis [parameter1]",
         "interface [parameter1]:[parameter2]"
     ],
-    "set vlans [parameter1]": [
-        "vlan [parameter1]",
-        "vlan batch [parameter1]"
+    "set vlans [vlan_name]": [
+        "vlan batch [parameter1]",
+        "vlan batch [parameter1] [parameter2]"
     ],
     "set routing-instances [parameter1]": [
-        "route-policy [parameter1] [parameter2] node [parameter3]",
-        "ip route-static [parameter1] [parameter2] [parameter3] [parameter4]"
+        "ip route-static vpn-instance [vpn_instance_name] [destination_address] [netmask] [next_hop]",
+        "route-policy [parameter1] [parameter2] node [parameter3]"
     ],
     "set protocols ldp transport-address [parameter1]": [
         "mpls label protocol [parameter1]",
@@ -141,7 +149,7 @@
     ],
     "set system services ssh protocol-version [parameter1]": [
         "ssh server version [parameter1]",
-        "ssh server compatibility-ssh2 enable"
+        "ssh version [version]"
     ],
     "set system services ssh hostkey-algorithm [parameter1]": [
         "ssh user [parameter1] publickey [parameter2] [parameter3]",
@@ -162,10 +170,6 @@
     "set protocols [parameter1] [parameter2]": [
         "ospf [parameter1]",
         "ospfv3 [parameter1]"
-    ],
-    "set system services [parameter1]": [
-        "ssh user [parameter1] service-type [parameter2]",
-        "ssh user [parameter1] publickey [parameter2] [parameter3]"
     ],
     "set system services ssh root-login [parameter1]": [
         "ssh server authentication-type default [parameter1]",
@@ -255,6 +259,10 @@
         "ssh client hmac [parameter1] [parameter2]",
         "ssh client cipher [parameter1] [parameter2] [parameter3]"
     ],
+    "delete set protocols bgp group [group_name]": [
+        "lns-group [parameter1]",
+        "l2tp-group [parameter1]"
+    ],
     "set chassis fpc [parameter1]": [
         "controller E1 [parameter1]",
         "clock source cesacr slot [parameter1] card [parameter2] recovery-domain [parameter3] synchronization enable"
@@ -276,8 +284,8 @@
         "interface [parameter1].[parameter2]"
     ],
     "set services pppoe-client profile [parameter1]": [
-        "ppp authentication-mode [parameter1]",
-        "qos-profile [parameter1]"
+        "ptp profile [profile_name] enable",
+        "ppp authentication-mode [parameter1]"
     ],
     "set access profile [parameter1]": [
         "ipsec policy [parameter1] [parameter2] isakmp",
@@ -296,8 +304,8 @@
         "igmp-snooping enable"
     ],
     "set interfaces vlan unit [parameter1]": [
-        "vlan [parameter1]",
-        "interface [parameter1].[parameter2]"
+        "interface [parameter1].[parameter2]",
+        "vlan batch [parameter1]"
     ],
     "set access radius-server [parameter1]": [
         "radius-server [parameter1] auth-port [parameter2] acct-port [parameter3]",
@@ -312,6 +320,10 @@
         "dhcp relay"
     ],
     "set forwarding-options dhcp-relay active-server-group [parameter1]": [
+        "dhcp relay",
+        "dhcp-server group [parameter1]"
+    ],
+    "set forwarding-options dhcp-relay group [group-name]": [
         "dhcp relay",
         "dhcp-server group [parameter1]"
     ],
@@ -333,7 +345,7 @@
     ],
     "set class-of-service rewrite-rules dscp [parameter1]": [
         "service-security global-binding [parameter1] [parameter2]",
-        "ptp-adaptive dscp [parameter1]"
+        "ip as-path-filter [parameter1] permit [parameter2]"
     ],
     "set system services ssh authentication-order [parameter1]": [
         "ssh authentication-type default [parameter1]",
@@ -346,6 +358,10 @@
     "set protocols bfd interface [parameter1]": [
         "bfd [parameter1] bind peer-ip [parameter2] interface [parameter3] source-ip [parameter4] auto",
         "bfd [parameter1] bind link-bundle peer-ip [parameter2] interface [parameter3] source-ip [parameter4]"
+    ],
+    "set protocols bfd peer [peer_ip]": [
+        "bfd [parameter1] bind link-bundle peer-ip [parameter2] interface [parameter3] source-ip [parameter4]",
+        "bfd pst bind peer-ip [parameter1] interface [parameter2]"
     ],
     "delete set policy-options load-balancing [parameter1]": [
         "load-balance packet [parameter1]",
@@ -399,10 +415,6 @@
         "isis [parameter1]",
         "segment-routing global-block [parameter1] [parameter2]"
     ],
-    "delete set protocols bgp group [parameter1]": [
-        "lns-group [parameter1]",
-        "bgp [parameter1]"
-    ],
     "set protocols ldp export [parameter1]": [
         "mpls label protocol [parameter1]",
         "qppb local-policy [parameter1]"
@@ -422,6 +434,10 @@
     "set protocols vstp interface [parameter1]": [
         "port trunk allow-pass vlan [parameter1] to [parameter2]",
         "interface [parameter1]:[parameter2]"
+    ],
+    "delete set interfaces [interface_name]": [
+        "undo shutdown",
+        "interface [parameter1]"
     ],
     "set services l2tp tunnel-group [parameter1]": [
         "l2tp-group [parameter1]",
@@ -462,10 +478,6 @@
     "set protocols ldp session [parameter1]": [
         "lldp management-address [parameter1]",
         "bfd [parameter1] bind peer-ip [parameter2] interface [parameter3] source-ip [parameter4] auto"
-    ],
-    "set protocols l2circuit neighbor [parameter1]": [
-        "bfd pst bind peer-ip [parameter1] interface [parameter2]",
-        "ptp-adaptive local-ip [parameter1]"
     ],
     "set system scripts language [parameter1]": [
         "user-interface vty [parameter1] [parameter2]",
@@ -567,6 +579,10 @@
         "traffic classifier [parameter1] operator [parameter2]",
         "traffic classifier [parameter1]"
     ],
+    "delete interfaces [interface_name]": [
+        "interface [parameter1]",
+        "interface [parameter1].[parameter2]"
+    ],
     "set protocols router-advertisement interface [parameter1]": [
         "multicast routing-enable",
         "ip route-static [parameter1] [parameter2] [parameter3] [parameter4]"
@@ -587,6 +603,10 @@
         "segment-routing global-block [parameter1] [parameter2]",
         "ip route-static [parameter1] [parameter2] [parameter3] preference [parameter4]"
     ],
+    "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]": [
+        "ma [parameter1]",
+        "link-protocol [parameter1]"
+    ],
     "set protocols oam ethernet connectivity-fault-management mep [parameter1]": [
         "link-protocol [parameter1]",
         "lldp management-address [parameter1]"
@@ -595,9 +615,13 @@
         "bfd [parameter1] bind peer-ip [parameter2] interface [parameter3] source-ip [parameter4] auto",
         "ptp-adaptive remote-server1-ip [parameter1]"
     ],
+    "set protocols oam ethernet connectivity-fault-management delay-measurement test-id [test-id]": [
+        "nqa reflector [reflector_id] interface [interface_name] test-flow [flow_id] exchange-port agetime [age_time]",
+        "nqa test-flow [parameter1]"
+    ],
     "set chassis ethernet-switch-options [parameter1]": [
         "portswitch",
-        "vlan-swap enable"
+        "nqa reflector [reflector_id] interface [interface_type] [interface_number] ipv4 [ipv4_address] vlan [vlan_id]"
     ],
     "set ethernet-switching-options [parameter1]": [
         "qinq termination pe-vid [parameter1] ce-vid [parameter2] to [parameter3]",
@@ -697,13 +721,17 @@
     ],
     "set services rpm probe [parameter1]": [
         "snmp-agent local-engineid [parameter1]",
-        "snmp-agent sys-info contact [parameter1]"
+        "nqa reflector [reflector_id] interface [interface_name] test-flow [flow_id] exchange-port agetime [age_time]"
     ],
     "set protocols sflow agent-address [parameter1]": [
         "sflow agent ip [parameter1]",
         "sflow server ip [parameter1]"
     ],
     "set protocols sflow collector [parameter1]": [
+        "sflow agent ip [parameter1]",
+        "sflow server ip [parameter1]"
+    ],
+    "set protocols sflow interfaces [interface]": [
         "sflow agent ip [parameter1]",
         "sflow server ip [parameter1]"
     ],
@@ -724,8 +752,8 @@
         "evpn vpn-instance [parameter1] bd-mode"
     ],
     "set system services ftp connection-limit source-address [parameter1]": [
-        "ftp server enable",
-        "scp client-source [parameter1]"
+        "ftp server-source -i [interface_name]",
+        "ftp server enable"
     ],
     "set system services ftp rate-limit [parameter1]": [
         "ftp server enable",
@@ -744,8 +772,8 @@
         "bfd btoa bind link-bundle peer-ip [parameter1] interface [parameter2] source-ip [parameter3]"
     ],
     "set forwarding-options port-mirroring output interface [parameter1]": [
-        "telnet server-source -i [parameter1]",
-        "interface [parameter1]"
+        "nqa reflector [reflector_id] interface [interface_name] test-flow [flow_id] exchange-port agetime [age_time]",
+        "telnet server-source -i [parameter1]"
     ],
     "set protocols ldp transport-address interface [parameter1]": [
         "lldp management-address [parameter1]",
@@ -767,13 +795,13 @@
         "ip as-path-filter [parameter1] permit [parameter2]",
         "ip as-path-filter [parameter1] deny [parameter2]"
     ],
-    "set protocols oam ethernet connectivity-fault-management maintenance-association [parameter1]": [
+    "set protocols oam ethernet connectivity-fault-management linktrace test-id [test-id]": [
         "link-protocol [parameter1]",
-        "interface mp-group [parameter1]"
+        "nqa reflector [reflector_id] interface [interface_name] test-flow [flow_id] exchange-port agetime [age_time]"
     ],
-    "set protocols oam ethernet connectivity-fault-management delay-measurement test-id [parameter1]": [
-        "nqa test-flow [parameter1]",
-        "nqa test-instance [parameter1] [parameter2]"
+    "set services service-set [service-instance-group]": [
+        "service-instance-group [parameter1]",
+        "flexe client-instance [parameter1] flexe-group [parameter2] flexe-type [parameter3] port-id [parameter4]"
     ],
     "set services ds-lite instance [parameter1]": [
         "service-security global-binding [parameter1] [parameter2]",
@@ -787,10 +815,6 @@
         "nat instance [parameter1] id [parameter2] simple-configuration",
         "service-security global-binding [parameter1] [parameter2]"
     ],
-    "delete interfaces [parameter1]": [
-        "interface [parameter1]",
-        "interface [parameter1].[parameter2]"
-    ],
     "set forwarding-options port-mirroring instance [parameter1]": [
         "mirror instance [parameter1] location",
         "user-interface vty [parameter1] [parameter2]"
@@ -802,10 +826,6 @@
     "set policy-options as-path [parameter1] [parameter2]": [
         "ip as-path-filter [parameter1] permit [parameter2]",
         "ip as-path-filter [parameter1] deny [parameter2]"
-    ],
-    "set protocols oam ethernet connectivity-fault-management linktrace test-id [parameter1]": [
-        "link-protocol [parameter1]",
-        "ipv6 route-static [parameter1] [parameter2] [parameter3] [parameter4] preference [parameter5] track bfd-session [parameter6]"
     ],
     "set system accounting order [parameter1]": [
         "clock source cesacr slot [parameter1] card [parameter2] recovery-domain [parameter3] priority [parameter4]",
@@ -832,8 +852,8 @@
         "ospf valid-ttl-hops [parameter1]"
     ],
     "set routing-options static route [parameter1]/[parameter2] [parameter3]": [
-        "ip route-static [parameter1] [parameter2] [parameter3]",
-        "ip route-static [parameter1] [parameter2] [parameter3] [parameter4]"
+        "ip route-static [parameter1] [parameter2] [parameter3] [parameter4]",
+        "ip route-static [parameter1] [parameter2] [parameter3] preference [parameter4]"
     ],
     "delete set protocols [parameter1]": [
         "mpls te cspf",
@@ -847,13 +867,9 @@
         "bfd [parameter1] bind link-bundle peer-ip [parameter2] interface [parameter3] source-ip [parameter4]",
         "bfd [parameter1] bind peer-ip [parameter2] interface [parameter3] source-ip [parameter4] auto"
     ],
-    "delete set interfaces [parameter1]": [
-        "interface [parameter1]:[parameter2]",
-        "interface [parameter1].[parameter2]"
-    ],
     "delete set routing-options static route [parameter1]": [
         "ip route-static [parameter1] [parameter2] [parameter3] [parameter4]",
-        "ip route-static [parameter1] [parameter2] [parameter3]"
+        "ip route-static [parameter1] [parameter2] [parameter3] preference [parameter4]"
     ],
     "delete set routing-options forwarding-table load-balance [parameter1]": [
         "load-balance unequal-cost enable",
@@ -861,7 +877,7 @@
     ],
     "set routing-options forwarding-table [parameter1]": [
         "ip route-static [parameter1] [parameter2] [parameter3] preference [parameter4]",
-        "ip route-static [parameter1] [parameter2] [parameter3]"
+        "ip rpf-route-static [parameter1] [parameter2] [parameter3]"
     ],
     "set protocols evpn encapsulation [parameter1]": [
         "mpls l2vpn [parameter1] encapsulation [parameter2]",
@@ -910,14 +926,6 @@
     "set forwarding-options hash-key family [parameter1]": [
         "ipv6 prefix [parameter1] delegation",
         "ipv4-family [parameter1]"
-    ],
-    "set protocols bfd peer [parameter1]": [
-        "bfd [parameter1] bind peer-ip [parameter2] source-ip [parameter3]",
-        "bfd pst bind peer-ip [parameter1] interface [parameter2]"
-    ],
-    "set services service-set [parameter1]": [
-        "remote-backup-service [parameter1]",
-        "service-security policy [parameter1] [parameter2]"
     ],
     "set services 6rd service-set [parameter1]": [
         "remote-backup-service [parameter1]",
@@ -971,6 +979,10 @@
         "l2tp enable",
         "tunnel-selector [parameter1] permit node [parameter2]"
     ],
+    "set services l2tp session authentication client username [username]": [
+        "ppp authentication-mode [parameter1]",
+        "l2tp enable"
+    ],
     "set security ike proposal [parameter1]": [
         "ike proposal [parameter1]",
         "ike peer [parameter1]"
@@ -987,9 +999,13 @@
         "ssh client first-time [parameter1]",
         "ssh server port [parameter1]"
     ],
+    "set protocols l2circuit peer [peer_ip]": [
+        "ike peer [parameter1]",
+        "mpls ldp remote-peer [parameter1]"
+    ],
     "set ethernet-switching-options aging-time [parameter1]": [
         "mac-address aging-time [parameter1]",
-        "ma [parameter1]"
+        "nqa reflector [reflector_id] interface [interface_name] test-flow [flow_id] exchange-port agetime [age_time]"
     ],
     "set ethernet-switching-options secure-access-port interface [parameter1]": [
         "user-interface vty [parameter1] [parameter2]",
@@ -1007,6 +1023,10 @@
         "multicast ipv6 routing-enable",
         "multicast routing-enable"
     ],
+    "set protocols mld static-group [group_address]": [
+        "multicast shaping enable",
+        "interface mp-group [parameter1]"
+    ],
     "set ethernet-switching-options cfm mep-database md [parameter1]": [
         "cfm md [parameter1] level [parameter2]",
         "cfm md [parameter1]"
@@ -1021,7 +1041,7 @@
     ],
     "set services l2tp tunnel password [parameter1]": [
         "l2tp enable",
-        "local-user [parameter1] password cipher [parameter2]"
+        "snmp-agent password min-length [parameter1]"
     ],
     "set services l2tp lns local-address [parameter1]": [
         "l2tp enable",
@@ -1132,7 +1152,7 @@
         "traffic classifier [parameter1] operator [parameter2]"
     ],
     "set system root-authentication encrypted-password [parameter1]": [
-        "local-user [parameter1] password cipher [parameter2]",
+        "local-user [username] password cipher [password]",
         "radius-server shared-key cipher [parameter1]"
     ],
     "set system syslog host [parameter1]": [
@@ -1263,10 +1283,6 @@
         "mpls label protocol [parameter1]",
         "mpls ldp router-id [parameter1]"
     ],
-    "set protocols l2circuit peer [parameter1]": [
-        "ike peer [parameter1]",
-        "mpls ldp remote-peer [parameter1]"
-    ],
     "set protocols l2circuit interface [parameter1]": [
         "interface [parameter1] mode l2",
         "interface [parameter1] mode [parameter2]"
@@ -1285,7 +1301,7 @@
     ],
     "delete set protocols pim rp static address [parameter1]": [
         "ptp-adaptive remote-server1-ip [parameter1]",
-        "ip route-static [parameter1] [parameter2] [parameter3]"
+        "ip address [parameter1] [parameter2]"
     ],
     "set protocols pim rp-candidate interface [parameter1]": [
         "interface [parameter1]:[parameter2]",

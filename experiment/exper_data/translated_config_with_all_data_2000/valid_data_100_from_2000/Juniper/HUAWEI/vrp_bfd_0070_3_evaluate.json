@@ -1,0 +1,51 @@
+{
+    "command_accuracy": 0.875,
+    "missed_commands": [
+        "load-balance packet all",
+        "bfd ce1_to_pe1 bind peer-ip 10.1.1.2 interface gigabitethernet1/0/0 source-ip 10.1.1.1 auto",
+        "bfd ce1_to_pe2 bind peer-ip 10.2.1.2 interface gigabitethernet2/0/0 source-ip 10.2.1.1 auto",
+        "return",
+        "load-balance packet all",
+        "return"
+    ],
+    "grammatical_accuracy": 0.9375,
+    "missed_templates": [
+        "return"
+    ],
+    "llm_command_accuracy": 0.0,
+    "llm_command_ratio": 0.13793103448275862,
+    "command_for_llm": [
+        "interface ge-0/0/1.0",
+        "interface ge-0/0/0.0"
+    ],
+    "llm_trans_commands": [
+        "bfd ce1 bind peer-ip 10.1.1.2 interface GigabitEthernet0/0/0 source-ip 10.1.1.1",
+        "bfd ce1 bind peer-ip 10.1.1.2 interface GigabitEthernet0/0/0 min-tx-interval 100 min-rx-interval 100 detect-multiplier 3",
+        "bfd ge-0/0/1 bind peer-ip 10.2.1.2 interface GigabitEthernet0/0/1",
+        "bfd ge-0/0/1 min-tx-interval 100 min-rx-interval 100 detect-multiplier 3"
+    ],
+    "source_commands": [
+        "interface ge-0/0/1.0",
+        "unit 0 family inet address 10.2.1.1/24",
+        "set routing-options forwarding-table export load-balance",
+        "delete set policy-options load-balancing per-packet",
+        "next-hop 10.1.1.2",
+        "set interfaces ge-0/0/1",
+        "unit 0 family inet address 10.1.1.1/24",
+        "minimum-interval 100 multiplier 3",
+        "interface ge-0/0/0.0",
+        "unit 0 family inet address 1.1.1.1/32",
+        "set protocols bfd interface ge-0/0/0.0",
+        "set routing-options static route 0.0.0.0/0",
+        "set interfaces lo0",
+        "set protocols bfd interface ge-0/0/1.0",
+        "set protocols bfd peer 10.1.1.2",
+        "set system host-name CE1",
+        "next-hop 10.2.1.2",
+        "set interfaces ge-0/0/0",
+        "set protocols bfd peer 10.2.1.2"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

@@ -1,0 +1,27 @@
+sysname RR
+interface GigabitEthernet0/0/3
+ undo shutdown
+ ip address 172.16.4.1 255.255.255.0
+ ip address 172.16.2.2 255.255.255.0
+ ip address 172.16.5.1 255.255.255.0
+interface LoopBack0
+ ip address 5.5.5.5 255.255.255.255
+user-group RR
+bgp 600
+ import-route direct
+ ipv4-family unicast
+  peer 5.5.5.5 next-hop-local
+  bestroute add-path path-number multiple-as
+  peer RR route-policy export-direct export
+ ipv6-family unicast
+ peer 10.1.1.2 enable
+bgp 65008
+ peer 172.16.2.1 as-number 65008
+ ipv4-family unicast
+  peer 172.16.2.1 next-hop-local
+  peer 172.16.4.2 next-hop-local
+  peer 172.16.5.2 next-hop-local
+ peer 172.16.4.2 as-number 65008
+ peer 172.16.5.2 as-number 65008
+traffic-policy export-direct inbound
+traffic policy 1

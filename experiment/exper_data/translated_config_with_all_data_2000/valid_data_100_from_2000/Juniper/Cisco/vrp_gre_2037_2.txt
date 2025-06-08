@@ -1,0 +1,26 @@
+hostname DeviceC
+vlan 10
+name vlan10
+vlan 20
+name vlan20
+interface Vlan1
+ no shutdown
+interface Vlan10
+ ip address 172.16.1.2 255.255.255.0
+interface Vlan20
+ ip address 172.17.1.1 255.255.255.0
+interface ge-0/0/0
+ no shutdown
+interface vlan10
+ switchport
+ switchport access vlan 10
+ switchport trunk allowed vlan 10
+interface ge-0/0/1
+ no shutdown
+interface vlan20
+ switchport
+ switchport access vlan 20
+ switchport trunk allowed vlan 20
+clock protocol ptp
+bridge 1 protocol ieee
+network 0.0.0.0 0.0.0.0 area 0

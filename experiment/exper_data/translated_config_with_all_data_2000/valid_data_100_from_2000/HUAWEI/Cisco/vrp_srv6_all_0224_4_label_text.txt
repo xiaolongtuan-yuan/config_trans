@@ -1,0 +1,45 @@
+hostname Tail
+
+
+vrf definition VPNA
+ rd 500:1
+ address-family ipv4
+  route-target export 111:1
+  route-target import 111:1
+ exit-address-family
+!
+
+
+ipv6 unicast-routing
+ipv6 prefix-list AS1 seq 5 permit 2001:DB8:15::/64
+ipv6 route 2001:DB8:15::/64 Null0
+ipv6 route 2001:DB8:15::/96 GigabitEthernet1/0/1
+!
+
+
+router isis 
+ net 49.0000.0000.0005.00
+ metric-style wide
+ address-family ipv6
+  multi-topology
+!
+!
+
+
+interface GigabitEthernet1/0/1
+ no shutdown
+ ipv6 enable
+ ipv6 address 2001:DB8:4::2/96
+ ipv6 router isis 
+!
+
+interface GigabitEthernet1/0/2
+ no shutdown
+ vrf forwarding VPNA
+ ip address 10.5.1.2 255.255.255.252
+!
+
+interface Loopback1
+ ipv6 address 5::5/128
+!
+end

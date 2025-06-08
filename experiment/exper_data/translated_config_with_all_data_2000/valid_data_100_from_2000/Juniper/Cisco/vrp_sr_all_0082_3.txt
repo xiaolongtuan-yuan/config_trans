@@ -1,0 +1,29 @@
+hostname P2
+router isis 1
+ address-family ipv4
+  redistribute ldp
+mpls ldp router-id 4.4.4.9
+mpls ldp discovery transport-address GigabitEthernet1/0/0
+mpls ldp advertise-labels interface ge-1/0/0
+mpls ldp discovery transport-address ge-1/0/0
+mpls ldp discovery transport-address GigabitEthernet2/0/0
+mpls ldp advertise-labels interface GigabitEthernet2/0/0
+mpls ldp remote-peer accept none
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.13.1.2 255.255.255.0
+ ipv6 address 2001:DB8::/64 eui-64
+router isis
+ interface GigabitEthernet1/0/0
+ interface GigabitEthernet2/0/0
+ interface Loopback0
+ is-type level-1
+ metric-style wide
+ is-type level-2
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.14.1.1 255.255.255.0
+ ipv6 address 2001:DB8::/64 eui-64
+ ip address 4.4.4.9 255.255.255.255
+interface range GigabitEthernet1/0/1 - 2
+ no shutdown

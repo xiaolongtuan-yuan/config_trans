@@ -1,0 +1,11 @@
+hostname DeviceA
+aaa authentication login default group external local
+redistribute bgp
+aaa authentication login external group 2001:db8:100::1 local
+redistribute bgp 200
+redistribute EXPORT-POLICY
+ip route 1.1.1.1 255.255.255.255 none
+router bgp 200
+policy-map EXPORT-POLICY
+ route-map EXPORT-POLICY permit 10
+ match interface

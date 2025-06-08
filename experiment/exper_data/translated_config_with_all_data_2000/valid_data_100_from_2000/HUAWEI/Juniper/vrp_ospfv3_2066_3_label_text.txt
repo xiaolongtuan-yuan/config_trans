@@ -1,0 +1,18 @@
+set system host-name DeviceE
+
+delete interfaces ge-1/0/1 unit 0 family inet6 ospfv3 metric 5
+
+set protocols router-advertisement interface all
+
+set protocols ospf3 area 0.0.0.1 interface ge-1/0/0
+set protocols ospf3 area 0.0.0.1 interface ge-2/0/0
+set protocols ospf3 area 0.0.0.1 interface ge-3/0/0
+set protocols ospf3 area 0.0.0.1 interface ge-1/0/1 metric 5
+
+set protocols bfd interface ge-1/0/0 minimum-interval 300
+set protocols bfd interface ge-2/0/0 minimum-interval 300
+set protocols bfd interface ge-3/0/0 minimum-interval 300
+set protocols bfd interface ge-1/0/1 minimum-interval 300
+set protocols bfd multiplier 3
+
+set routing-options rib inet6.0 static route ::/0 reject

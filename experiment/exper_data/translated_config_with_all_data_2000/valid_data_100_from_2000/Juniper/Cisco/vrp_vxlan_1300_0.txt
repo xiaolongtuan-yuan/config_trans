@@ -1,0 +1,20 @@
+hostname Device1
+router isis
+ interface GigabitEthernet0/0/0
+  isis network point-to-point
+ interface GigabitEthernet0/0/1
+  isis network point-to-point
+ interface Loopback0
+interface Loopback0
+ no shutdown
+ ip address 1.1.1.1 255.255.255.255
+interface GigabitEthernet0/0/0
+ ip address 192.168.3.2 255.255.255.0
+interface GigabitEthernet0/0/1
+ no shutdown
+ ip address 192.168.2.2 255.255.255.0
+aaa authentication login default group ibgp local
+redistribute bgp
+aaa authentication login ibgp group 1.1.1.1 local
+policy-map evpn-export
+ route-map evpn-export permit 10

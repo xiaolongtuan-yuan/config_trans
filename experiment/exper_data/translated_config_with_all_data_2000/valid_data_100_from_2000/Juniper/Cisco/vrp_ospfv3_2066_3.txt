@@ -1,0 +1,46 @@
+hostname DeviceE
+interface GigabitEthernet1/0/1
+ isis metric 5
+ip route none none all none
+router ospfv3 1
+ address-family ipv4 unicast
+  area 0.0.0.1
+   interface GigabitEthernet1/0/1
+area 1 interface GigabitEthernet1/0/0
+area 1 interface GigabitEthernet2/0/0
+area 1 interface GigabitEthernet3/0/0
+area 1 interface GigabitEthernet1/0/1 cost 5
+network none none area 0.0.0.1
+network 0.0.0.0 0.0.0.1 area ge-2/0/0
+bfd map ipv4 none ge-1/0/0
+bfd map ipv4 10.1.1.1/24 ge-1/0/0
+ interface GigabitEthernet1/0/0
+ bfd interval 300 min_rx 300 multiplier 3
+ !
+ interface GigabitEthernet2/0/0
+ interface GigabitEthernet3/0/0
+ interface GigabitEthernet1/0/1
+bfd map ipv4 10.1.1.1/24 ge-2/0/0
+bfd map ipv4 none ge-2/0/0
+ interface GigabitEthernet1/0/0
+ bfd interval 300 min_rx 300 multiplier 3
+ interface GigabitEthernet2/0/0
+ interface GigabitEthernet3/0/0
+ interface GigabitEthernet1/0/1
+bfd map ipv4 none ge-3/0/0
+ interface GigabitEthernet1/0/0
+ bfd interval 300 min_rx 300 multiplier 3
+ !
+ interface GigabitEthernet2/0/0
+ interface GigabitEthernet3/0/0
+ interface GigabitEthernet1/0/1
+bfd map ipv4 none ge-1/0/1
+ interface GigabitEthernet1/0/0
+ bfd interval 300 min_rx 300 multiplier 3
+ !
+ interface GigabitEthernet2/0/0
+ interface GigabitEthernet3/0/0
+ interface GigabitEthernet1/0/1
+bfd interval none min_rx none multiplier 3
+ipv6 route 2001:DB8::/62 Null0
+ipv6 route ::/0 reject

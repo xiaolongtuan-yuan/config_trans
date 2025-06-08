@@ -1,0 +1,19 @@
+set system host-name CE2
+set protocols pim rp static address 2001:db8:6::3
+set routing-options multicast interface all
+set protocols isis level 2
+set protocols isis interface ge-1/0/0.0 level 2 metric none
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet6
+set interfaces ge-1/0/0 unit 0 family inet address 2001:db8:3::1/64
+set interfaces ge-1/0/0 set protocols isis interface <interface_name> ipv6 enable
+set interfaces ge-1/0/0 unit none family inet address none/none vrrp-group FF3E::1 virtual-address none
+set interfaces ge-1/0/0 unit 0 tunnel source 2001:DB8:5::2
+set interfaces ge-1/0/0 unit 4 family inet6
+set interfaces ge-1/0/0 unit 0 family inet address 2001:db8:14::1/64
+set interfaces ge-1/0/0 set protocols isis interface <interface-name> ipv6-router-id <ipv6_address>
+set interfaces ge-1/0/0 set protocols isis interface <interface-name> level 2
+set system host-name pim-ipv6
+set interfaces irb unit 2001 family inet6 address 2001:db8:6::3/128
+set system host-name CE1

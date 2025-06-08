@@ -1,0 +1,29 @@
+sysname CE1
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ ip address 4.4.4.4 255.255.255.255
+interface mp-group ge-0/0/0
+ ip address ge-0/0/0.0 255.255.255.0
+interface mp-group 1
+ ip address sparse 24
+interface GigabitEthernet0/0/1
+ undo shutdown
+ ip address 10.1.2.1 255.255.255.0
+interface mp-group 1/0/1
+ ip address ge-0/0/1.0 255.255.255.255
+interface mp-group 1/0/0
+ ip address sparse 32
+ ip address none none
+ ip address sparse none
+area 0.0.0.0
+ ospf 1
+ area 0.0.0.0
+ network 4.4.4.4 0.0.0.0
+ospf 0.0.0.0 router-id ge-0/0/0.0
+ area 0.0.0.0
+  network 0.0.0.0 ge-0/0/0.0
+ospf 1 router-id 0.0.0.0
+ area 0.0.0.0
+  network 0.0.0.0 ge-0/0/1.0
+ipv6 route-static :: 0 4.4.4.4

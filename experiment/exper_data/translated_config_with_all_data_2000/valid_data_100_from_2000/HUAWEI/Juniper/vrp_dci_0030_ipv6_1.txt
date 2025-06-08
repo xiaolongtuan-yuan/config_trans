@@ -1,0 +1,24 @@
+set system host-name P
+set system host-name 2.2.2.2
+set system host-name mpls
+set interfaces ge-1/0/0 unit 0 family inet mpls te
+set interfaces ge-1/0/0 unit 0 family inet mpls rsvp-te
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 192.168.1.2/24
+set interfaces ge-1/0/0 unit 0 family inet mpls
+set class-of-service rewrite-rules exp MPLS-EXP-OUTBOUND forwarding-class AF4 code-point 5
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.10.1/24
+set interfaces ge-2/0/0 unit 0 family inet mpls maximum-labels 5
+set interfaces ge-2/0/0 unit 0 family inet mpls te
+set interfaces ge-2/0/0 unit 0 family inet mpls rsvp-te
+set interfaces lo0.1 disable
+set interfaces lo0.1 unit 0 family inet address 2.2.2.2/32
+set interfaces ge-0/0/0 unit 0 family inet service input none
+set protocols ospf3 area 0.0.0.1
+set protocols ospf area 0.0.0.0 interface 0.0.0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.0 set protocols ospf area 0.0.0.0 interface all traffic-engineering
+set system host-name CE1

@@ -1,0 +1,142 @@
+{
+    "hostname CE3": {
+        "template": "hostname [parameter1]",
+        "command": "hostname CE3",
+        "explanation": "Sets the device's hostname \"CE3\"",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "Host Name"
+            }
+        ]
+    },
+    "interface GigabitEthernet1/0/0": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "Configure interface 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "Interface Name"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "Enable interface (the interface is closed by default)",
+            "parameters": []
+        },
+        "ip address 172.16.1.1 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 172.16.1.1 255.255.255.0",
+            "explanation": "The IPv4 address for the configuration interface is 172.16.1.1 The subnet mask is 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 Address"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "Subnet mask"
+                }
+            ]
+        }
+    },
+    "router bgp 65410": {
+        "template": "router bgp [parameter1]",
+        "command": "router bgp 65410",
+        "explanation": "Configure BGP Route Process, AS 65410",
+        "parameters": [
+            {
+                "name": "AS number",
+                "type": "integer",
+                "explanation": "Autonomous System Number"
+            }
+        ],
+        "neighbor 172.16.1.2 remote-as 200": {
+            "template": "neighbor [parameter1] remote-as [parameter2]",
+            "command": "neighbor 172.16.1.2 remote-as 200",
+            "explanation": "Configure BGP Neighbor, IP address 17216.1.2, remote AS 200",
+            "parameters": [
+                {
+                    "name": "neighbor ip address",
+                    "type": "IPv4",
+                    "explanation": "Neighbor's IPv4 address"
+                },
+                {
+                    "name": "remote AS number",
+                    "type": "integer",
+                    "explanation": "Remote Autonomy System"
+                }
+            ]
+        },
+        "address-family ipv4": {
+            "template": "address-family [parameter1]",
+            "command": "address-family ipv4",
+            "explanation": "Enter IPv4 Addresser Configuration Mode",
+            "parameters": [
+                {
+                    "name": "address family",
+                    "type": "string",
+                    "explanation": "Address family type"
+                }
+            ],
+            "no synchronization": {
+                "template": "no synchronization",
+                "command": "no synchronization",
+                "explanation": "Disable BGP and IGP Sync",
+                "parameters": []
+            },
+            "neighbor 172.16.1.2 activate": {
+                "template": "neighbor [parameter1] activate",
+                "command": "neighbor 172.16.1.2 activate",
+                "explanation": "Activate the IPv4 address of the neighbor 172.16.1.2",
+                "parameters": [
+                    {
+                        "name": "neighbor ip address",
+                        "type": "IPv4",
+                        "explanation": "Neighbor's IPv4 address"
+                    }
+                ]
+            },
+            "neighbor 172.16.1.2 route-map direct in": {
+                "template": "neighbor [parameter1] route-map [parameter2] [parameter3]",
+                "command": "neighbor 172.16.1.2 route-map direct in",
+                "explanation": "172.16.1.2 Apply a route map called `direct' in the direction of entry station",
+                "parameters": [
+                    {
+                        "name": "neighbor ip address",
+                        "type": "IPv4",
+                        "explanation": "Neighbor's IPv4 address"
+                    },
+                    {
+                        "name": "route-map name",
+                        "type": "string",
+                        "explanation": "Route Map Name"
+                    },
+                    {
+                        "name": "direction",
+                        "type": "string",
+                        "explanation": "Apply direction (in or out)"
+                    }
+                ]
+            }
+        },
+        "exit-address-family": {
+            "command": "exit-address-family",
+            "template": "exit-address-family",
+            "explanation": "Exit from endless-family configation mode",
+            "parameters": []
+        }
+    },
+    "end": {
+        "command": "end",
+        "template": "end",
+        "explanation": "Exit from the current conjurement mode and return to the Privileged EXEC mode",
+        "parameters": []
+    }
+}

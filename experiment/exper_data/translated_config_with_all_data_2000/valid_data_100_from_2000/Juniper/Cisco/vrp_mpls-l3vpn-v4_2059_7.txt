@@ -1,0 +1,14 @@
+hostname CE4
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 172.16.2.1 255.255.255.0
+aaa authentication login default group neighbor-172.16.2.2 local
+redistribute bgp
+redistribute bgp 300
+redistribute unicast
+redistribute connected
+policy-map EXPORT-DIRECT
+ route-map EXPORT-DIRECT permit 10
+ match interface
+ match ip address connected
+ip route 172.16.2.0 255.255.255.0 Null0

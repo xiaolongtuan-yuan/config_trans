@@ -1,0 +1,17 @@
+sysname P
+ipsec policy IPSEC_PROFILE 10
+mpls rsvp-te
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 192.168.10.2 255.255.255.0
+ ipv6 address none mpls
+ ip address 2.2.2.9 255.255.255.255
+interface GigabitEthernet2/0/0
+ ip address 192.168.20.1 255.255.255.0
+router id 2.2.2.9
+ospf 1 router-id 2.2.2.9
+ area 0.0.0.0
+  network 0.0.0.0 ge-1/0/0.0
+  network 0.0.0.0 ge-2/0/0.0
+  network 0.0.0.0 255.255.255.255
+area 0.0.0.0

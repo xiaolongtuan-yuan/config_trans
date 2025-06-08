@@ -1,0 +1,25 @@
+hostname Core_ASBR
+mpls ldp advertise-labels interface GigabitEthernet1/0/0
+mpls ldp advertise-labels interface GigabitEthernet2/0/0
+mpls ldp discovery transport-address GigabitEthernet1/0/0
+mpls ldp discovery transport-address GigabitEthernet2/0/0
+mpls ldp router-id 4.4.4.4
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.3.1.2 255.255.255.0
+ ipv6 address 2001:DB8::/64 eui-64
+ ip address 4.4.4.4 255.255.255.255
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.4.1.1 255.255.255.0
+ ipv6 address 2001:DB8::/64 eui-64
+aaa authentication login remote-as-200 group tacacs+ local
+redistribute bgp
+aaa authentication login default group remote-as-200 local
+aaa authentication login default group remote-as-100 local
+aaa authentication login remote-as-100 group 10.3.1.2 local
+redistribute policy1
+network 0.0.0.0 0.0.0.0 area 0
+policy-map policy1
+ route-map policy1 permit 10
+ match protocol bgp

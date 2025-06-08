@@ -1,0 +1,17 @@
+sysname CE4
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 172.16.2.1 255.255.255.0
+user-group neighbor-172.16.2.2
+bgp 600
+ import-route direct
+ network 172.16.2.2 0.0.0.0
+ ipv6-family unicast
+ ipv4-family unicast
+  peer 172.16.2.2 route-policy EXPORT-DIRECT export
+ peer 10.1.1.2 enable
+bgp 300
+ confederation peer-as none 300
+traffic-policy EXPORT-DIRECT none
+traffic policy 1
+ip route-static 172.16.2.0 255.255.255.0 NULL0

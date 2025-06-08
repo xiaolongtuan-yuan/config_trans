@@ -1,0 +1,25 @@
+hostname CE1
+ipv6 multicast-routing
+interface GigabitEthernet1/0/0
+ no switchport
+ ip address 10.1.1.1 255.255.255.0
+ ip pim sparse-mode
+interface range GigabitEthernet1/0/0 - 1
+ no shutdown
+interface GigabitEthernet2/0/0
+ no switchport
+ ip address 10.1.2.1 255.255.255.0
+ ip pim sparse-mode
+interface range GigabitEthernet2/0/0 - 0
+ no shutdown
+interface LoopBack1
+ ip address 4.4.4.4 255.255.255.255
+ ip pim sparse-mode
+ ip ospf 2 area 0
+ ospfv3 2 ipv6 area 0.0.0.0
+ ip address 4.4.4.4 0.0.0.0
+ ip address 10.1.1.0 255.255.255.0
+ ip address 10.1.2.0 255.255.255.0
+ethernet cfm ma ma1 md md1
+net 4.4.4.4
+ethernet cfm ma MA_name md MD_name

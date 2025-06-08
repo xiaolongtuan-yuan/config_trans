@@ -1,0 +1,19 @@
+hostname CE2
+ipv6 multicast-routing
+interface GigabitEthernet1/0/0
+ ip address 192.168.2.2 255.255.255.0
+ ip pim sparse-mode
+interface range GigabitEthernet1/0/1 - 2
+ no shutdown
+interface GigabitEthernet1/0/1
+ ip address 10.1.5.1 255.255.255.0
+ ip pim sparse-mode
+ ip igmp version 3
+ ip igmp static-group 225.0.0.1
+ ip ospf 2 area 0
+ ospfv3 2 ipv6 area 0.0.0.0
+ ip address 10.1.5.0 0.0.0.255
+ ip address 192.168.2.0 0.0.0.255
+ethernet cfm ma pim md none
+net 4.4.4.4
+ethernet cfm ma ma1 md md1

@@ -1,0 +1,16 @@
+hostname CE2
+aaa authentication login default group external local
+redistribute bgp
+aaa authentication login external group 2001:db8:9::1 local
+redistribute inet6 unicast
+redistribute connected
+vpdn-group external
+aaa authentication login default0 group external local
+redistribute unicast
+vpdn-group LAC1
+ accept-dialin
+  protocol inet6 unicast no synchronization
+policy-map EXPORT-CONNECTED
+ route-map EXPORT-CONNECTED permit 10
+ match interface
+ match ip address connected

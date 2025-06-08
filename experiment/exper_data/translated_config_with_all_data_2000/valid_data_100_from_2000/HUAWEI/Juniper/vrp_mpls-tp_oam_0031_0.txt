@@ -1,0 +1,41 @@
+set system host-name LSRA
+set system host-name CE1
+set system host-name mpls
+set interfaces ge-1/0/0 unit 0 family inet mpls te
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 2.1.1.1/24
+set interfaces ge-1/0/0 unit 0 family inet mpls
+set interfaces ge-1/0/0 set protocols mpls interface tunnel-interface.0
+set protocols l2circuit
+set protocols mpls static-label-switched-path ingress Tunnel10 bidirectional set protocols mpls static-label-switched-path ingress-lsp-name transit 2.1.1.2 next-hop 2.1.1.2 out-label 20
+set protocols mpls static-label-switched-path ingress Tunnel10 bidirectional set protocols mpls static-label-switched-path ingress-LSP-name reverse-path in-label 20
+set system host-name tpatoc
+delete set protocols tpatoc
+set interfaces ge-1/0/0.1 disable
+set interfaces ge-1/0/0.1 unit 1 vlan-id 1
+set interfaces ge-1/0/0.1 unit 0 family inet mpls
+set interfaces ge-1/0/0.1 unit 1 tunnel protocol tpatoc
+set interfaces ge-1/0/0.1 unit 30000 family inet mpls static-l2vc pw-template tpatoc
+set interfaces ge-1/0/0.1 description VLAN 101 Interface
+set interfaces ge-1/0/0.1 unit 1 family inet mpls l2vpn
+set interfaces lo0.1 disable
+set interfaces lo0.1 unit 0 family inet address 1.1.1.1/32
+set interfaces tun10 disable
+set interfaces tun10 unit 0 family inet mpls signal-protocol cr-static
+set interfaces lt-0/0/0.10 set interfaces Tunnel10 family inet unnumbered-address lo0.1
+set interfaces Tunnel10 set protocols mpls static-label-switched-path lsp-name to 2.2.2.2
+set interfaces Tunnel10 set routing-options static route 3.3.3.3/32 next-hop 2.1.1.2
+set interfaces tunnel10 set protocols mpls label-switched-path Tunnel10 tunnel-id 100
+set interfaces tunnel10 set interfaces Tunnel10 tunnel-id 100
+set interfaces tunnel10 unit 10 family inet mpls bidirectional
+set interfaces tunnel10 set routing-options static route 2.2.2.2/32 next-hop 2.1.1.2
+set interfaces tun-10 unit 0 family inet mpls reserved-for-binding
+set protocols mpls label-switched-path tpatoc-to-2.2.2.2 to 2.2.2.2 set protocols mpls static-label-switched-path Tunnel10 to 2.2.2.2
+set protocols mpls label-switched-path tpatoc-to-2.2.2.2 to 2.2.2.2 set oam ethernet connectivity-fault-management maintenance-domain test maintenance-association test-continuity-check mip half-function set protocols oam ethernet connectivity-fault-management mep 1 interface ge-1/0/0.1 vlan-id 1 peer 3.3.3.3 vc-id 30000 remote-mep 2
+set protocols mpls label-switched-path tpatoc-to-2.2.2.2 to 2.2.2.2 set oam ethernet connectivity-fault-management maintenance-domain test maintenance-association test-continuity-check mip half-function set protocols mpls-oam meg test continuity-check transmit
+set protocols mpls label-switched-path tpatoc-to-2.2.2.2 to 2.2.2.2 set oam ethernet connectivity-fault-management maintenance-domain test maintenance-association test-continuity-check mip half-function set protocols oam ethernet connectivity-fault-management mep ccm-receive enable
+set protocols mpls label-switched-path tpatoc-to-2.2.2.2 to 2.2.2.2 set oam ethernet connectivity-fault-management maintenance-domain test maintenance-association test-continuity-check continuity-check transmission interval 1s
+set protocols mpls label-switched-path tpatoc-to-2.2.2.2 to 2.2.2.2 set oam ethernet connectivity-fault-management maintenance-domain test maintenance-association test-continuity-check continuity-check enable
+set protocols mpls static-label-switched-path tpatoc-to-2.2.2.2 transit 2.1.1.2 outgoing-label 20
+set protocols oam ethernet connectivity-fault-management mep ccm-loss-measurement dual-ended enable

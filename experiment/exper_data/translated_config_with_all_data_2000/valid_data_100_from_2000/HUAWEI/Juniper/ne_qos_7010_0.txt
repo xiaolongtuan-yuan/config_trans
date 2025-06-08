@@ -1,0 +1,23 @@
+set system host-name DeviceA
+set firewall family inet filter 3001 set firewall family inet filter ACL_3001 term rule5 from source-address 10.100.0.11/24
+set firewall family inet filter 3001 set firewall family inet filter ACL_3001 term rule5 then accept
+set firewall family inet filter a3002 set firewall family inet filter a3002 term rule5 from source-address 10.110.0.11/32
+set firewall family inet filter a3002 set firewall family inet filter a3002 term rule5 from source-prefix-list 10.110.0.0/24
+set firewall family inet filter a3002 set firewall family inet filter a3002 term rule5 then accept
+set interfaces Tunnel30 disable
+set interfaces tun-40 disable
+set interfaces Tunnel40 unit 0 family inet filter input aaa
+set interfaces Tunnel40 unit 5 tunnel key none
+set interfaces Tunnel40 unit 0 family inet filter input a3001
+set interfaces Tunnel40 unit 0 family inet filter output a3002
+set interfaces tun-30 unit 0 family inet filter input aaa
+set interfaces tun-30 unit 10 tunnel key 0
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.100.0.10/24
+set interfaces ge-1/0/0 unit 0 family inet service input aaa
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 10.110.0.10/24
+set interfaces ge-2/0/0 unit 0 family inet service input aaa
+set system host-name CE1

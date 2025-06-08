@@ -1,0 +1,27 @@
+set system host-name U-PE1
+set forwarding-options enhanced-hash-key family inet
+set forwarding-options enhanced-hash-key family mpls
+set forwarding-options hash-key family inet
+set forwarding-options hash-key family mpls
+set interfaces ge-0/0/0 unit 0 family inet mpls
+set protocols ldp router-id Loopback0
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet mpls
+interfaces ge-1/0/0.0
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-2/0/0 unit 0 family inet mpls
+interfaces ge-2/0/0.0
+set interfaces lo0 unit 0 disable
+set interfaces lo0 disable
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+set protocols ospf area 1 interface 1
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.0
+set routing-options autonomous-system 100
+set protocols bgp group IBGP type internal
+set protocols bgp group IBGP neighbor 3.3.3.9 peer-as 100
+set protocols bgp group IBGP export BGP-100
+set protocols bgp local-as 100

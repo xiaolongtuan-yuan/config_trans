@@ -1,0 +1,27 @@
+hostname U-PE2
+ethernet cfm ma ma1 md md1
+ethernet cfm ma mpls md none
+mpls ldp remote-peer none none
+l2vpn xconnect context pwt
+ neighbor 3.3.3.9
+ethernet cfm ma MA name md MD name
+interface GigabitEthernet1/0/0
+ mpls ldp autoconfig
+ ip address 10.4.1.2 255.255.255.0
+ mpls ip
+interface GigabitEthernet2/0/0
+ mpls ldp ipv4
+ mpls ldp autoconfig
+  neighbor 3.3.3.9 remote-as [AS-number]
+  mpls ldp neighbor 3.3.3.9 targeted
+ xconnect 3.3.3.9 200 encapsulation mpls
+interface range GigabitEthernet1/0/1 - 2
+ no shutdown
+interface range GigabitEthernet2/0/0 - 0
+ no shutdown
+interface LoopBack0
+ ip address 5.5.5.9 255.255.255.255
+ ip ospf 1 area 0
+ ospfv3 1 ipv6 area 0.0.0.0
+ ip address 5.5.5.9 0.0.0.0
+ ip address 10.4.1.0 255.255.255.0

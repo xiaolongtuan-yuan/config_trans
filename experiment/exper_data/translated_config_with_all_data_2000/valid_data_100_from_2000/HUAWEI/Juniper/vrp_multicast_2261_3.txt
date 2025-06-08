@@ -1,0 +1,18 @@
+set system host-name CE1
+set routing-options multicast family inet
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 delete interfaces ge-1/0/0 unit 0 family ethernet-switching
+set interfaces ge-1/0/0 delete interfaces ge-2/0/0 unit 0 family ethernet-switching
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-1/0/0 unit 0 family inet policer output policer_default
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.2.1/24
+set interfaces ge-1/0/0 unit 0 family inet policer input policer_default
+set interfaces ge-1/0/0 unit 0 family inet address 4.4.4.4/32
+set interfaces ge-1/0/0 unit 0 family inet service input none
+set interfaces lo0.1 disable
+set interfaces lo0.1 unit 0 family inet policer input policer_loopback1
+set protocols ospf area 0.0.0.0 interface 0.0.0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set system host-name pim
+set interfaces irb unit 100 family inet address 4.4.4.4

@@ -1,0 +1,28 @@
+set system host-name RR
+set interfaces ge-3/0/3 unit 0 disable
+set interfaces ge-3/0/3 disable
+set interfaces ge-3/0/3 unit 0 family inet address 172.16.4.1/24
+interfaces ge-3/0/3.0
+set interfaces ge-1/0/1 unit 0 disable
+set interfaces ge-1/0/1 disable
+set interfaces ge-1/0/1 unit 0 family inet address 172.16.2.2/24
+interfaces ge-0/0/1.0
+set interfaces ge-1/0/2 unit 2 disable
+set interfaces ge-1/0/2 disable
+set interfaces ge-1/0/2 unit 0 family inet address 172.16.5.1/24
+interfaces ge-1/0/2.0
+set routing-options autonomous-system 65008
+set protocols bgp group IBGP type internal
+set protocols bgp group IBGP neighbor 172.16.2.1 peer-as 65008
+set protocols bgp group IBGP export BGP-65008
+set protocols bgp group IBGP neighbor 172.16.4.2 peer-as 65008
+set protocols bgp group IBGP export 65008
+set protocols bgp group IBGP neighbor 172.16.5.2 peer-as 65008
+set protocols bgp local-as 65008 set protocols bgp no-synchronize
+set policy-options policy-statement BGP-NETWORKS term none from route-filter 172.16.2.0/24 exact
+set policy-options policy-statement BGP-NETWORKS term 172.16.2.0 then 255.255.255.0
+set policy-options policy-statement BGP-NETWORKS term 172.16.4.0 from route-filter 24/longer exact
+set policy-options policy-statement BGP-NETWORKS term 172.16.4.0 then 255.255.255.0
+set policy-options policy-statement BGP-NETWORKS term 24 from route-filter 172.16.5.0/24 exact
+set policy-options policy-statement BGP-NETWORKS term 172.16.5.0 then 255.255.255.0
+set protocols isis export REDIST-CONNECTED

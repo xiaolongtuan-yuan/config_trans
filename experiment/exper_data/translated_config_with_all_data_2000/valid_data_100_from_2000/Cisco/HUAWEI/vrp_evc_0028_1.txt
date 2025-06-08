@@ -1,0 +1,21 @@
+sysname PE2
+mpls ldp router-id LoopBack0 force
+mpls label protocol ldp
+interface GigabitEthernet1/0/0
+ undo shutdown
+interface GigabitEthernet1/0/0.10
+ dot1q termination vid 10
+ mpls ldp remote-peer PE2
+ mpls l2vc 1.1.1.9 100 raw
+ mpls l2vc 1.1.1.9 100 control-word tdm-encapsulation-number mpls
+interface GigabitEthernet1/0/0.10 mode l2
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.1.1.2 255.255.255.0
+interface GigabitEthernet2/0/0 mode l2
+ mpls l2vc none none raw
+ospf 1
+ network 2.2.2.9 0.0.0.0
+ area 0
+ network 10.1.1.0 0.0.0.255
+return

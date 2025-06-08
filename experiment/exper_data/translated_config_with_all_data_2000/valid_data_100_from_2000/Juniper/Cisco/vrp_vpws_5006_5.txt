@@ -1,0 +1,20 @@
+hostname U-PE2
+mpls ldp discovery transport-address GigabitEthernet1/0/0
+mpls ldp remote-peer 3.3.3.9 3.3.3.9
+l2vpn evpn instance 1 vlan-based
+neighbor none remote-as 200
+switchport trunk encapsulation dot1q
+l2vpn xconnect context context_name
+ control-word
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.4.1.2 255.255.255.0
+ ipv6 address 2001:DB8::/64 eui-64
+ encapsulation ethernet-ccc
+interface GigabitEthernet2/0/0
+ no shutdown
+ ipv6 address 2001:DB8::/64 eui-64
+interface Loopback0
+ ip address 5.5.5.9 255.255.255.255
+network 0.0.0.0 0.0.0.0 area 0
+network 0.0.0.0 0 area 0

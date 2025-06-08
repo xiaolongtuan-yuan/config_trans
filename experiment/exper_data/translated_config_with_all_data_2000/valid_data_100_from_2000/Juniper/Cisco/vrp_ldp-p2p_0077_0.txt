@@ -1,0 +1,37 @@
+hostname LSRA
+mpls ldp advertise-labels interface GigabitEthernet1/0/0
+mpls ldp advertise-labels interface GigabitEthernet1/0/1
+mpls ldp discovery transport-address GigabitEthernet1/0/0
+mpls ldp discovery transport-address GigabitEthernet1/0/1
+router isis
+ interface GigabitEthernet1/0/0.0
+ interface GigabitEthernet1/0/1.0
+ interface Loopback0
+ passive-interface default
+ is-type level-2
+ metric-style wide
+bfd map ipv4 none ge-1/0/0
+ bfd interval 300 min_rx 300 multiplier 3
+ interface GigabitEthernet1/0/0
+ bfd echo
+ !
+ interface GigabitEthernet1/0/1
+bfd map ipv4 none ge-1/0/1
+bfd map ipv4 10.1.1.1/24 ge-1/0/1
+ interface GigabitEthernet1/0/0
+ bfd interval 300 min_rx 300 multiplier 3
+ !
+ interface GigabitEthernet1/0/1
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ ipv6 address 2001:DB8::/64 eui-64
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 10.1.2.1 255.255.255.0
+ ipv6 address mpls eui-64
+interface Loopback0
+ no shutdown
+ ip address 1.1.1.9 255.255.255.255
+policy-map fec-policy
+ route-map fec-policy permit 10

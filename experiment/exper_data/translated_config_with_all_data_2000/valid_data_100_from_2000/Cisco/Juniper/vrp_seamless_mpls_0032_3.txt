@@ -1,0 +1,38 @@
+set system host-name Core_ASBR
+set forwarding-options enhanced-hash-key family inet
+set interfaces ge-0/0/0 unit 0 family inet mpls
+set protocols ldp router-id 1.1.1.1
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.3.1.2/24
+set interfaces ge-1/0/0 unit 0 family inet mpls null
+interfaces ge-1/0/0.0
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 10.4.1.1/24
+set interfaces ge-2/0/0 unit 0 family inet mpls null
+interfaces ge-2/0/0.0
+set interfaces lo0.1 unit 1 disable
+set interfaces lo0.1 disable
+set interfaces lo0 unit 0 family inet address 4.4.4.4/32
+set routing-options autonomous-system 200 family inet labeled-unicast set protocols bgp group INTERNAL neighbor 5.5.5.5 family inet labeled-unicast
+set routing-options autonomous-system 200 family inet labeled-unicast set protocols bgp group EBGP neighbor 10.3.1.1 family inet labeled-unicast
+set protocols bgp group IBGP type internal
+set protocols bgp group IBGP neighbor 5.5.5.5 peer-as 200
+set protocols bgp group IBGP export 200
+set protocols bgp group IBGP type external
+set protocols bgp group IBGP neighbor 10.3.1.1 peer-as 100
+set protocols bgp group IBGP export BGP-100
+set protocols bgp local-as 200
+set protocols ospf area 0.0.0.2 interface 2
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.0
+set protocols ospf area 0 interface ge-0/0/1.0
+set protocols ospf import policy1 from policy-options policy-statement policy1 term 10 {
+set protocols ospf import policy1 from {
+set protocols ospf import policy1 prefix-list ALL;
+set protocols ospf import policy1 }
+set protocols ospf import policy1 then accept;
+set protocols ospf import policy1 from prefix-list ALL;
+set protocols ospf import policy1 then label
+set policy-options as-path policy1 ^.*_10_.*$
+set policy-options prefix-list ALL 0.0.0.0/0 upto /32

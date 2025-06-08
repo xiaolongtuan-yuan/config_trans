@@ -1,0 +1,27 @@
+sysname DeviceE
+interface GigabitEthernet1/0/1
+ ospfv3 cost 5
+ip route-static none none all none
+ospfv3 1
+ area 0.0.0.1
+ospf 1 router-id 0.0.0.1
+ area 0.0.0.1
+  network 0.0.0.1 ge-1/0/0
+  network 0.0.0.1 ge-2/0/0
+  network 0.0.0.1 ge-3/0/0
+ospfv3 5
+bfd bfd_session bind peer-ip none interface GigabitEthernet1/0/0 source-ip none auto
+bfd bfd_session bind link-bundle peer-ip 0.0.0.0 interface ge-1/0/0 source-ip 0.0.0.0
+ min-rx-interval 300
+bfd session_ge_2_0_0 bind peer-ip none interface GigabitEthernet2/0/0 source-ip none auto
+bfd bfd_session bind link-bundle peer-ip peer_ip_value interface ge-2/0/0 source-ip source_ip_value
+ min-rx-interval 300
+bfd bfd_session bind peer-ip none interface GigabitEthernet3/0/0 source-ip none auto
+bfd bfd_session bind link-bundle peer-ip 10.1.1.2 interface ge-3/0/0 source-ip 10.1.1.1
+ min-rx-interval 300
+bfd bfd_session bind peer-ip none interface GigabitEthernet1/0/1 source-ip none auto
+bfd bfd_session bind link-bundle peer-ip 10.1.1.2 interface ge-1/0/1 source-ip 10.1.1.1
+ min-rx-interval 300
+bfd atob bind link-bundle peer-ip 10.1.1.2 interface Eth-Trunk1 source-ip 10.1.1.1
+ipv6 route-static :: 0 inet6.0 ::
+ipv6 route-static :: 0 reject none

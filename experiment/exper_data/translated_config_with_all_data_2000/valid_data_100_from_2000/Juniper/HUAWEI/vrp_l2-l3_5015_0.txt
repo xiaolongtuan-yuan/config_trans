@@ -1,0 +1,29 @@
+sysname UPE
+l2vpn
+peer 3.3.3.9
+vsi-id 101
+encapsulation ethernet
+interface GigabitEthernet1/0/0.1
+quit
+ signaling vpls
+ospf 1 router-id 3.3.3.9
+ area 0.0.0.0
+  network 3.3.3.9 ge-1/0/0.1
+bfd pst bind peer-ip 3.3.3.9 interface 101
+ discriminator remote 101
+bfd pst bind peer-ip 3.3.3.9 interface ethernet
+interface GigabitEthernet1/0/0
+ undo shutdown
+ vlan-type dot1q 10
+ ipv6 address :: none
+mpls rsvp-te
+mpls label protocol ldp
+router id 1.1.1.9
+ospf 1.1.1.9 router-id 1
+area 0.0.0.0
+ ospf 1
+ area 0.0.0.0
+ network 1.1.1.9 0.0.0.0
+ospf 1 router-id 0.0.0.0
+ area 0.0.0.0
+  network 0.0.0.0 255.255.255.0

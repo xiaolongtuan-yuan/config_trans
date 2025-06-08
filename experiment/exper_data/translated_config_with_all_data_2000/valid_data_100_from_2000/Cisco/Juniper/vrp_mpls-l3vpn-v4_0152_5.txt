@@ -1,0 +1,15 @@
+set system host-name CE2
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.2.1.1/24
+interfaces ge-1/0/0.0
+set routing-options autonomous-system 65002
+set protocols bgp group IBGP type external
+set protocols bgp group IBGP neighbor 10.2.1.2 peer-as 200
+set protocols bgp group IBGP export 200
+set protocols bgp group IBGP family inet unicast
+family inet unicast no synchronization;
+family inet unicast set policy-options policy-statement export-connected term 1 from protocol direct
+family inet unicast set policy-options policy-statement export-connected then accept
+family inet unicast set protocols bgp export export-connected
+set protocols isis export REDIST-CONNECTED

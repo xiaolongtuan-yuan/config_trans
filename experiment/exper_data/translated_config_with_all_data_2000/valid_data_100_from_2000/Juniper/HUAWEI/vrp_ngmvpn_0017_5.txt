@@ -1,0 +1,20 @@
+sysname CE2
+multicast ipv6 routing-enable
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 192.168.2.2 255.255.255.0
+interface mp-group 1/0/0
+ ip address ge-1/0/0 24
+ ip address sparse 24
+ ip address ge-1/0/1 none
+ ip address sparse none
+ ip address none none
+interface GigabitEthernet1/0/1
+ ip address 10.1.5.1 255.255.255.0
+interface mp-group 225.0.0.1
+area 0
+ospf 1 router-id 0.0.0.0
+ area 0
+  network 0.0.0.0 ge-1/0/0
+  network 0.0.0.0 ge-1/0/1
+ipv6 route-static :: 0 4.4.4.4

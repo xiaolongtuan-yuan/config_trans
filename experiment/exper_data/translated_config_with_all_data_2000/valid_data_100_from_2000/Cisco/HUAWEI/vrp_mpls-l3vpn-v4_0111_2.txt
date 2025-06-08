@@ -1,0 +1,49 @@
+sysname ASBR1
+ipv4-family vpn-instance vpn1
+evpn vpn-instance vpn1 vpws
+ route-distinguisher 100:2
+bgp ipv4
+ ipv4-family unicast
+evpn vpn-instance vpn1 ipv4
+ vpn-target 1:1 export-extcommunity
+bgp 600
+ ipv4-family unicast
+  ipv4-family vpn-instance vpn1
+  route-target 1:1 import
+mpls ldp router-id LoopBack1
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.10.1.1 255.255.255.0
+interface GigabitEthernet1/0/0 mode l2
+ mpls l2vc none none raw
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip binding vpn-instance vpn1
+ ip address 12.12.12.1 255.255.255.0
+interface LoopBack1
+interface Loopback1
+ ip address 2.2.2.9 255.255.255.255
+bgp 100
+ peer 1.1.1.9 as-number 100
+ peer 1.1.1.9 enable
+ ipv4-family unicast
+  peer 1.1.1.9 next-hop-self
+  peer 1.1.1.9 advertise-community
+  peer 12.12.12.2 next-hop-local
+ peer 1.1.1.9 connect-interface Loopback1
+ l2vpn-ad-family
+  peer 1.1.1.9 send-community extended
+ ipv4-family vpnv4
+  peer 1.1.1.9 advertise-community
+  peer 1.1.1.9 advertise-community-ext
+  peer 12.12.12.2 advertise-community
+ ipv4-family vpn-instance vpn1
+ network 12.12.12.0 0.0.0.255
+ospf 1
+ network 2.2.2.9 0.0.0.0
+ area 0
+ network 10.10.1.0 0.0.0.255
+ ospf 1
+ silent-interface all
+ undo silent-interface GigabitEthernet1/0/0
+return

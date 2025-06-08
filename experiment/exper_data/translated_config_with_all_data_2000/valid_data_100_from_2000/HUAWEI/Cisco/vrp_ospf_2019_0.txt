@@ -1,0 +1,23 @@
+hostname DeviceA
+router-id 1.1.1.1
+interface GigabitEthernet1/0/0
+ ip address 192.168.0.1 255.255.255.0
+interface range GigabitEthernet1/0/0 - 0
+ no shutdown
+interface GigabitEthernet2/0/0
+ ip address 192.168.3.1 255.255.255.0
+interface range GigabitEthernet2/0/0 - 0
+ no shutdown
+interface GigabitEthernet3/0/0
+ ip address 192.168.1.1 255.255.255.0
+ ip ospf 1 area 0
+ ospfv3 1 ipv6 area 0.0.0.0
+ ip address 192.168.0.0 0.0.0.255
+ ospfv3 1 ipv6 area 0.0.0.1
+ ip address 192.168.1.0 0.0.0.255
+ ip address 192.168.3.0 0.0.0.255
+interface range GigabitEthernet3/0/0 - 3
+ no shutdown
+router ospf 1
+ default-information originate
+ethernet cfm ma ma1 md md1

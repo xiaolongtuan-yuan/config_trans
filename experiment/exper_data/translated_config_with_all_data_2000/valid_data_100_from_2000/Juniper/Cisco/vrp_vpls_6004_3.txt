@@ -1,0 +1,18 @@
+hostname P
+router isis 1
+ address-family ipv4
+  redistribute ldp
+mpls ldp advertise-labels interface GigabitEthernet1/0/0
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 192.168.10.2 255.255.255.0
+ ipv6 address 2001:DB8::/64 eui-64
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.20.1 255.255.255.0
+ ipv6 address 2001:DB8::/64 eui-64
+interface Loopback0
+ ip address 2.2.2.9 255.255.255.255
+ip route 0.0.0.0 0.0.0.0 2.2.2.9
+network 0.0.0.0 0.0.0.0 area 0
+network 0.0.0.0 255.255.255.255 area 0

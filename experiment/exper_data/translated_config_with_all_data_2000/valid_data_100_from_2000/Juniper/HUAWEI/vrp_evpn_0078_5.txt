@@ -1,0 +1,18 @@
+sysname CE2
+interface GigabitEthernet1/0/0
+ undo shutdown
+ stp enable
+interface Eth-Trunk10
+ undo shutdown
+ mode lacp-static
+ ipv6 address 2001::DB8/64 eui-64
+ switch-mode trunk
+ portswitch
+ port default vlan 10
+ port trunk allow-pass vlan 10
+ vlan-type dot1q 100
+interface Aggregate-Ethernet10
+ portswitch
+ port default vlan 10
+ port trunk allow-pass vlan 10
+vlan 10

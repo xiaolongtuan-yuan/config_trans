@@ -1,0 +1,35 @@
+set system host-name PE2
+set system host-name CE1
+set system host-name mpls
+set protocols l2vpn
+set interfaces ge-0/0/0 unit 0 family inet mpls ldp
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 1 vlan-id 2
+set interfaces ge-1/0/0 unit 2 description inward
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.10.2/24
+set interfaces ge-2/0/0 unit 0 family inet mpls
+set interfaces ge-2/0/0 unit 0 family inet mpls ldp
+set interfaces lo0.1 disable
+set interfaces lo0.1 unit 0 family inet address 3.3.3.9/32
+set protocols l2vpn encapsulation-type ethernet set routing-instances vpn1 route-distinguisher 100:1
+set protocols l2vpn vsi vpn1 l2vpn-id 200:1
+set protocols l2vpn vsi 200:1 l2vpn-id 200:1
+set protocols evpn encapsulation vxlan
+set protocols evpn encapsulation ethernet
+set routing-options autonomous-system 100 family l2vpn set routing-options vrf-import vpn1
+set protocols bgp group 100 type external
+set protocols bgp group 100 neighbor 1.1.1.9 peer-as 100
+set protocols bgp group 100 export 100
+set protocols bgp group 100 peer-as 100
+set protocols bgp group 100 family inet unicast
+set protocols bgp group 100 local-as 100
+set interfaces lo0 unit 0 family inet service input none
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set interfaces ma1 unit 0 family ethernet-switching storm-control default
+set interfaces ma1 unit 1 vlan-id 2
+set interfaces ma1 .none unit none vlan-id 1
+set protocols oam ethernet connectivity-fault-management maintenance-association ma1 continuity-check transmission-interval 1
+set protocols oam ethernet connectivity-fault-management domain ma1 ma ma1 mep none ccm-interval 100

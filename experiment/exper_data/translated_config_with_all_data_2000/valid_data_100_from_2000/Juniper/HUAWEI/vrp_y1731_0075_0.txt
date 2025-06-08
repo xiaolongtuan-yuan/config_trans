@@ -1,0 +1,21 @@
+sysname CE1
+vlan 2
+link-protocol ethernet
+cfm md md3
+ ma ma3
+  loss-measure single-ended continual send test-id 1 interval 1000
+  mep mep-id 3 interface GigabitEthernet1/0/1 outward
+  mep mep-id 3 interface GigabitEthernet0/0/1 outward
+  remote-mep mep-id 4
+  test-id 1 mep 4 remote-mep 3
+cfm md md3 level 0
+ ma md3
+  ais level 0
+cfm md md3 level 6
+cfm md md3 level 3
+interface GigabitEthernet0/0/1
+ undo shutdown
+ switch-mode trunk
+ portswitch
+ port default vlan 2
+ port trunk allow-pass vlan 2

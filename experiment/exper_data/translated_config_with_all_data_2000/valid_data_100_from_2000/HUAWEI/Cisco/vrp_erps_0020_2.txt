@@ -1,0 +1,30 @@
+hostname DeviceC
+vlan batch 400
+interface GigabitEthernet1/0/1
+ ptp enable
+ switchport
+ switchport mode access
+ spanning-tree portfast trunk
+ switchport trunk allowed vlan 400
+ ptp notslave disable
+ ptp clock-domain 2
+ptp mode boundary
+interface GigabitEthernet2/0/0
+ bridge-domain 2
+router isis 20
+router isis 2
+ spf-interval 1 6 50
+ spf-interval none 100 none
+ address-family ipv4
+  redistribute v2
+keyring VPN_KEYRING
+interface range GigabitEthernet1/0/1 - 2
+ no shutdown
+interface GigabitEthernet1/0/2
+ switchport
+ switchport mode access
+ spanning-tree portfast trunk
+ switchport trunk allowed vlan 400
+ ptp notslave disable
+ bridge-domain 2
+ethernet cfm ma ma1 md md1

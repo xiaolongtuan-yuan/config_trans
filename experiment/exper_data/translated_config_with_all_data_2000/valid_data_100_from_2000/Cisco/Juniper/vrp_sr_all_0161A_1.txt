@@ -1,0 +1,29 @@
+set system host-name P
+set interfaces ge-0/0/0 unit 0 family inet mpls None
+set interfaces ge-0/0/0 unit 0 family inet mpls advertise-labels
+set protocols ldp router-id 1.1.1.9
+set interfaces lo0.1 gigether-options 802.3ad ae10
+set interfaces lo0.1 unit 1 family inet filter input none
+set interfaces lo0.1 unit 153800 family inet filter input none
+set protocols ldp transport-preference ipv4
+set protocols isis interface ge-1/0/0.0
+set protocols isis interface level-1 disable level 1 metric wide
+set protocols ospf area 0.0.0.0 interface lo0.1 interface-type none
+set interfaces lo0 unit 1 disable
+set interfaces lo0 disable
+set interfaces lo0 unit 0 family inet address 2.2.2.2/32
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.2/24
+set interfaces ge-1/0/0 set protocols isis interface <interface-name> point-to-point
+set interfaces ge-1/0/0 .10 unit 2 family inet interface-mode access
+set interfaces ge-1/0/0 unit 0 family inet mpls maximum-labels 5
+interfaces ge-1/0/0.0
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 10.2.1.1/24
+set interfaces ge-2/0/0 set protocols isis interface <interface_name> point-to-point
+set interfaces ge-2/0/0 .inet unit 0 family none interface-mode none
+set interfaces ge-2/0/0 unit 0 family inet mpls maximum-labels 5
+interfaces ge-2/0/0.0
+set protocols isis export REDIST-CONNECTED

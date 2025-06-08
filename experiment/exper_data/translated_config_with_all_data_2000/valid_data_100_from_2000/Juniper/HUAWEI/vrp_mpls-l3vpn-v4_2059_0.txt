@@ -1,0 +1,20 @@
+sysname CE3
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 172.16.1.1 255.255.255.0
+user-group 65410
+bgp 65410
+ import-route direct
+ network 172.16.1.2 0.0.0.0
+ ipv6-family unicast
+ ipv4-family unicast
+  peer none route-policy EXPORT_DIRECT export
+bgp 200
+ confederation peer-as 65410 200
+traffic-policy 1 inbound
+ ip ip-prefix EXPORT_DIRECT index 10 permit 0.0.0.0 0 less-equal 32
+ route-policy EXPORT_DIRECT permit node 10
+ if-match ip-prefix EXPORT_DIRECT
+bgp 600
+ peer 10.1.1.2 enable
+ ipv4-family unicast

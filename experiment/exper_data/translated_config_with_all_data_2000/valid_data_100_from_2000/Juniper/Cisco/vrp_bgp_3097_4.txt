@@ -1,0 +1,16 @@
+hostname RR
+interface GigabitEthernet0/0/3
+ no shutdown
+ ip address 172.16.4.1 255.255.255.0
+ ip address 172.16.2.2 255.255.255.0
+ ip address 172.16.5.1 255.255.255.0
+ ip address 5.5.5.5 255.255.255.255
+interface GigabitEthernet2/0/3
+ no shutdown
+aaa authentication login default group RR local
+redistribute bgp
+aaa authentication login RR group 5.5.5.5 local
+redistribute bgp 65008
+redistribute inet unicast
+policy-map export-direct
+ route-map export-direct permit 10

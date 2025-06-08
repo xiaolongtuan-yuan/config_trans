@@ -1,0 +1,24 @@
+set system host-name CE1
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-1/0/0 unit 0 family inet bfd interval 100 min_rx 100 multiplier 3
+set interfaces ge-1/0/0 aggregated-ether-options minimum-links 100
+set interfaces ge-1/0/0 unit 3 tunnel multipoint
+set interfaces ge-1/0/0 unit 0 tunnel source-address 10.1.1.2
+set interfaces ge-1/0/0 unit 0 tunnel source-address 10.2.1.2
+set interfaces ge-1/0/0 unit 0 family inet per-packet load-sharing
+interfaces ge-0/0/0
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 10.2.1.1/24
+set interfaces ge-2/0/0 unit 100 family inet bfd none
+set interfaces ge-2/0/0 aggregated-ether-options minimum-links 100
+set interfaces ge-2/0/0 unit 3 tunnel multipoint
+interfaces ge-2/0/0.0
+set interfaces lo0 unit 1 disable
+set interfaces lo0 disable
+set interfaces lo0.1 unit 0 family inet address 1.1.1.1/32
+set routing-options static route 0.0.0.0/0 next-hop 10.1.1.2
+set routing-options static route 0.0.0.0/0 next-hop 10.2.1.2
+set protocols isis export REDIST-CONNECTED

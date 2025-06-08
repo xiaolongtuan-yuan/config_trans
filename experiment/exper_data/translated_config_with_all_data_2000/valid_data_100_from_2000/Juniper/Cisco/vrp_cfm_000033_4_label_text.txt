@@ -1,0 +1,34 @@
+hostname PE2
+!
+mpls ldp router-id Loopback1 force
+!
+interface GigabitEthernet1/0/0
+ no shutdown
+ xconnect 1.1.1.9 100 encapsulation mpls pw-class VPWS  
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.10.2 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+!
+interface Loopback1
+ ip address 3.3.3.9 255.255.255.255
+!
+router bgp 100
+ neighbor 1.1.1.9 remote-as 100
+ neighbor 1.1.1.9 update-source Loopback1
+ !
+ address-family vpnv4
+  neighbor 1.1.1.9 activate
+  neighbor 1.1.1.9 send-community extended
+ exit-address-family
+!
+pseudowire-class VPWS  ! 定义伪线类
+ encapsulation mpls
+!
+router ospf 1
+ network 3.3.3.9 0.0.0.0 area 0
+ network 192.168.10.0 0.0.0.255 area 0
+!
+end

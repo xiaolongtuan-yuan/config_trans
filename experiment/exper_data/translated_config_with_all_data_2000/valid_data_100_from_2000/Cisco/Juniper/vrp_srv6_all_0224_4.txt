@@ -1,0 +1,27 @@
+set system host-name Tail
+set protocols vrrp track interface VPNA
+set protocols vrrp track interface ge-0/0/1 set routing-instances VPNA route-distinguisher 500:1
+set protocols bgp local-as 65410 set routing-instances VPNA route-target export 111:1
+set protocols bgp local-as 65410 set routing-instances VPNA route-target import 111:1
+set protocols bgp local-as 65410 set protocols isis address-family inet6 multitopology
+set routing-options rib inet6.0 static route ::/0 discard
+set system static-host-mapping inet6 enable
+set routing-options autonomous-system 65000
+set services 6rd ipv4-prefix-length 5
+set services 6rd ipv6-prefix 2001:DB8:15::/64
+set services 6rd ipv6-prefix 2001:db8:15::/64
+set services 6rd ipv6-prefix 2001:DB8:15::/96
+set protocols isis interface ge-1/0/0.0 level none metric wide
+set interfaces ge-1/0/1 unit 0 disable
+set interfaces ge-1/0/1 disable
+set interfaces ge-1/0/1 set interfaces ge-1/0/1 unit 0 family inet6
+set interfaces ge-1/0/1 set interfaces ge-1/0/1 unit 0 family inet6 address 2001:db8:4::2/96
+set interfaces ge-1/0/1 set protocols isis interface ge-1/0/1.0
+set interfaces ge-1/0/1 unit 0 family inet address none/none vrrp-group none virtual-address VPNA
+set interfaces ge-1/0/1 unit 0 family inet address 10.5.1.2/30
+interfaces ge-1/0/1.0
+interfaces ge-1/0/2.0
+set interfaces lo0.1 unit 1 disable
+set interfaces lo0.1 disable
+set interfaces lo0.1 set interfaces lo0 unit 0 family inet6 address 5::5/128
+set protocols isis export REDIST-CONNECTED

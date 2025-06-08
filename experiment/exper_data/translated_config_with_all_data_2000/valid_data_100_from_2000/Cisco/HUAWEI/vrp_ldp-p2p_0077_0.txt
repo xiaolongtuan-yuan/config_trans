@@ -1,0 +1,30 @@
+sysname LSRA
+interface GigabitEthernet50
+ mpls te bfd min-tx-interval 50 min-rx-interval 50
+ mpls ldp remote-peer bfd
+mpls lsr-id 3.3.3.9
+mpls
+isis 1
+ network-entity 10.0000.0000.0001.00
+ cost-style wide
+ description log-adjacency-changes
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ ip route-static 0.0.0.0 255.255.255.255 none
+ mpls ldp
+ isis network-type p2p
+interface GigabitEthernet1/0/0 mode l2
+ mpls l2vc none none raw
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.1.2.1 255.255.255.0
+ ip route-static none none none
+ mpls ldp
+ isis network-type p2p
+interface GigabitEthernet1/0/1 mode l2
+ mpls l2vc none none raw
+interface LoopBack0
+ ip address 1.1.1.9 255.255.255.255
+ ip route-static none none none
+return

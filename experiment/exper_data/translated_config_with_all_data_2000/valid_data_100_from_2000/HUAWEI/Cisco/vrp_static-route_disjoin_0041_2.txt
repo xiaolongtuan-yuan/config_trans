@@ -1,0 +1,23 @@
+hostname DeviceC
+router-id 3.3.3.3
+interface GigabitEthernet1/0/0
+ ip address 172.16.6.1 255.255.255.0
+interface range GigabitEthernet1/0/0 - 1
+ no shutdown
+interface GigabitEthernet1/0/2
+ ip address 172.16.2.1 255.255.255.0
+interface range GigabitEthernet1/0/1 - 2
+ no shutdown
+interface GigabitEthernet2/0/3
+ ip address 172.16.4.2 255.255.255.0
+ ip ospf 1 area 0
+ ospfv3 1 ipv6 area 0.0.0.0
+ ip address 172.16.4.0 255.255.255.0
+ tunnel destination 172.16.6.2
+ ip address 172.16.6.2 255.255.255.0
+ ip address 172.16.6.2 255.255.255.0 none
+interface range GigabitEthernet2/0/3 - 3
+ no shutdown
+router ospf 20
+ redistribute ospf 1 subnets route-map 20
+ethernet cfm ma MA_name md MD_name

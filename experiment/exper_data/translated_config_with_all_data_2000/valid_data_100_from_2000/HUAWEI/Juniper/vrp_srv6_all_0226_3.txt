@@ -1,0 +1,26 @@
+set system host-name Tail
+set protocols l2vpn site vpna
+set security ipsec proposal ipsec-proposal
+set protocols l2vpn vsi 500:1 l2vpn-id 500:1
+set protocols l2vpn vsi 500:1 l2vpn-id 111:1
+set protocols l2vpn vsi vsi1 l2vpn-id 111
+set protocols isis interface ge-1/0/0.0 level level-1 metric 1
+set protocols isis interface ge-1/0/0.0 level wide metric 10
+set services 6rd ipv6-prefix 5::5/128
+set services 6rd ipv6-prefix 2001:db8::/32
+set services 6rd ipv6-prefix 2001:db8:15::/32
+set protocols isis level 1
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet6
+set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:3::2/96
+set interfaces ge-1/0/0 set protocols isis interface lo0.0 family inet6
+set interfaces ge-1/0/0 set protocols isis interface ge-1/0/0.0 family inet6
+set interfaces ge-1/0/0 set interfaces ge-2/0/0 unit 0 family inet vpn vpna
+set interfaces ge-1/0/0 unit 0 family inet address 10.5.1.2/30
+set interfaces ge-1/0/0 set interfaces lo0 unit 0 family inet6 address 5::5/128
+set interfaces ge-1/0/0 set protocols isis interface <interface-name> ipv6-address
+set interfaces ge-1/0/0 set protocols isis interface <interface-name> level 1
+set interfaces lo0.1 disable
+set interfaces lo0.1 unit 0 family inet6
+set system host-name CE1

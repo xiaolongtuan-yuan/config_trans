@@ -1,0 +1,108 @@
+{
+    "set system host-name DeviceA": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DeviceA",
+        "explanation": "Configure the host name of the device.",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "The host name of the equipment used to identify the equipment in the network."
+            }
+        ]
+    },
+    "set interfaces ge-1/0/0": {
+        "template": "set interfaces [parameter1]",
+        "command": "set interfaces ge-1/0/0",
+        "explanation": "Creates a polymer interface.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "unit 0 family inet address 10.1.1.1/24": {
+            "template": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "unit 0 family inet address 10.1.1.1/24",
+            "explanation": "Configure IPv4 addresses for interfaces and subnet masks.",
+            "parameters": [
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "Interface unit number to distinguish between multiple logical configurations under the same interface."
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "The IPv4 address assigned to the interface."
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "Bits of IPv4 subnet mask."
+                }
+            ]
+        }
+    },
+    "set protocols ospf area 0": {
+        "template": "set protocols ospf area [area_id]",
+        "command": "set protocols ospf area 0",
+        "explanation": "This company configures an OSF area in Junos OS, where `specifications the area ID, enabling OSF moving within the defined area.",
+        "parameters": [
+            {
+                "name": "area",
+                "type": "string",
+                "explanation": "OSF area ID."
+            }
+        ],
+        "interface ge-1/0/0 bfd-liveness-detection": {
+            "template": "interface [parameter2] bfd-liveness-detection",
+            "command": "interface ge-1/0/0 bfd-liveness-detection",
+            "explanation": "Enable BFD survival testing on specified interfaces in specific OSPF areas.",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "Interface name, e.g., g-1/0/0."
+                }
+            ]
+        }
+    },
+    "set protocols bfd interface ge-1/0/0": {
+        "template": "set protocols bfd interface [parameter1]",
+        "command": "set protocols bfd interface ge-1/0/0",
+        "explanation": "Allows the BFD programme on the treated environment.",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "Interface name, e.g., g-1/0/0."
+            }
+        ],
+        "minimum-interval 300": {
+            "template": "minimum-interval [parameter2]",
+            "command": "minimum-interval 300",
+            "explanation": "Configuration BFFD program setts for an interface with a trained minimum interval",
+            "parameters": [
+                {
+                    "name": "minimum interval",
+                    "type": "integer",
+                    "explanation": "The minimum input in milliseconds for BFD program packs"
+                }
+            ]
+        },
+        "multiplier 3": {
+            "template": "multiplier [parameter2]",
+            "command": "multiplier 3",
+            "explanation": "Configuration BFFD program settings for an interface into the multiplication",
+            "parameters": [
+                {
+                    "name": "multiplier value",
+                    "type": "integer",
+                    "explanation": "The multiplication value for BFD confusion"
+                }
+            ]
+        }
+    }
+}

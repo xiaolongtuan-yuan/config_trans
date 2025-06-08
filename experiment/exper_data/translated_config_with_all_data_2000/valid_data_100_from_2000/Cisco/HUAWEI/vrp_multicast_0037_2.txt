@@ -1,0 +1,19 @@
+sysname DeviceC
+interface multicast routing
+ip as-path-filter 1 deny _2001_
+ip as-path-filter 1 permit .*
+isis 1
+ network-entity 10.0000.0000.0003.00
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.110.2.2 255.255.255.0
+ pim sm
+ igmp version 3
+ isis network-type p2p
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 192.168.3.1 255.255.255.0
+ pim sm
+ isis network-type p2p
+clock source ptp ssm default
+ip address 192.168.4.1 255.255.255.255

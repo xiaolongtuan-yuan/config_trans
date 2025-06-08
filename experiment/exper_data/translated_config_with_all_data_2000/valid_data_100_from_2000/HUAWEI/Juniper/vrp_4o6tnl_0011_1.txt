@@ -1,0 +1,18 @@
+set system host-name DeviceB
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet6
+set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6 address 2001:DB8:100::2/64
+set interfaces ge-1/0/0 unit 0 family inet address 172.16.1.2/24
+set interfaces ge-1/0/0 set interfaces lo0 unit 1 family inet6 address 2001:DB8:300::2/64
+set interfaces ge-1/0/0 unit 0 family inet address 192.168.1.2/24
+set interfaces ge-1/0/0 set interfaces Tunnel1 tunnel protocol ipip
+set interfaces ge-1/0/0 set interfaces tunnel1 tunnel source interface lo0.1
+set interfaces ge-1/0/0 set interfaces tunnel1 tunnel destination 2001:DB8:200::1
+set interfaces ge-1/0/0 unit 0 family inet service input none
+set interfaces lo0.1 disable
+set interfaces lo0.1 set interfaces lo1 family inet6 tunnel encapsulation ip-ipv6
+set protocols ospf area 0.0.0.0 interface 0.0.0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set services 6rd ipv6-prefix 2001:DB8:100::/64
+set system host-name CE1

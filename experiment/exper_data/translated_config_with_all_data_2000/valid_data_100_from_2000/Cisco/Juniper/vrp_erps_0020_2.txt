@@ -1,0 +1,23 @@
+set system host-name DeviceC
+set vlans vlan20 vlan-id 20
+set vlans vlan300-400 vlan-id 300 to 400
+set protocols rstp vlan [ vlan-20 vlan-300 to vlan-400 ] root-priority 0
+set protocols rstp vlan vlan-20 bridge priority 0
+set protocols rstp vlan vlan-300 bridge priority 0
+set protocols rstp vlan vlan-400 bridge priority 0
+set protocols rstp vlan-range 300-400 bridge priority 0
+set interfaces ge-1/0/1 unit 1 disable
+set interfaces ge-1/0/1 disable
+set interfaces ge-1/0/1 unit 0 family ethernet-switching interface-mode trunk
+set interfaces ge-1/0/1 unit 0 family ethernet-switching port-mode trunk
+set interfaces ge-1/0/1 set interfaces ge-1/0/1 unit 0 family ethernet-switching vlan members [ 20 300-400 ]
+set interfaces ge-1/0/1 set interfaces ge-1/0/2 unit 0 family ethernet-switching vlan members [ 20 300-400 ]
+interfaces ge-1/0/1.0
+set interfaces ge-1/0/2 unit 0 disable
+set interfaces ge-1/0/2 disable
+set interfaces ge-1/0/2 unit 0 family ethernet-switching interface-mode trunk
+set interfaces ge-1/0/2 unit 0 family ethernet-switching port-mode trunk
+set interfaces ge-1/0/2 set interfaces ge-1/0/1 unit 0 family ethernet-switching vlan members [20 300-400]
+set interfaces ge-1/0/2 set interfaces ge-1/0/2 unit 0 family ethernet-switching vlan members [20 300-400]
+interfaces ge-0/0/2.0
+set protocols isis export REDIST-CONNECTED

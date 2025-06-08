@@ -1,0 +1,62 @@
+{
+    "command_accuracy": 0.7058823529411765,
+    "missed_commands": [
+        "bfd neighbor 10.1.1.2",
+        "bfd neighbor 10.2.1.2",
+        "ip route 0.0.0.0 0.0.0.0 10.1.1.2",
+        "ip route 0.0.0.0 0.0.0.0 10.2.1.2",
+        "end",
+        "bfd neighbor 10.1.1.2",
+        "bfd neighbor 10.2.1.2",
+        "ip route 0.0.0.0 0.0.0.0 10.1.1.2",
+        "ip route 0.0.0.0 0.0.0.0 10.2.1.2",
+        "end"
+    ],
+    "grammatical_accuracy": 0.8235294117647058,
+    "missed_templates": [
+        "bfd neighbor [parameter1]",
+        "end"
+    ],
+    "llm_command_accuracy": 0.11764705882352941,
+    "llm_command_ratio": 0.37037037037037035,
+    "command_for_llm": [
+        "interface ge-0/0/1.0",
+        "interface ge-0/0/0.0"
+    ],
+    "llm_trans_commands": [
+        "interface GigabitEthernet0/0/0",
+        "bfd interval 100 min_rx 100 multiplier 3",
+        "!",
+        "router bfd",
+        "neighbor 10.1.1.2 interface GigabitEthernet0/0/0",
+        "interface GigabitEthernet0/0/1",
+        "bfd interval 100 min_rx 100 multiplier 3",
+        "!",
+        "router bfd",
+        "neighbor 10.2.1.2 interface GigabitEthernet0/0/1"
+    ],
+    "source_commands": [
+        "interface ge-0/0/1.0",
+        "unit 0 family inet address 10.2.1.1/24",
+        "set routing-options forwarding-table export load-balance",
+        "delete set policy-options load-balancing per-packet",
+        "next-hop 10.1.1.2",
+        "set interfaces ge-0/0/1",
+        "unit 0 family inet address 10.1.1.1/24",
+        "minimum-interval 100 multiplier 3",
+        "interface ge-0/0/0.0",
+        "unit 0 family inet address 1.1.1.1/32",
+        "set protocols bfd interface ge-0/0/0.0",
+        "set routing-options static route 0.0.0.0/0",
+        "set interfaces lo0",
+        "set protocols bfd interface ge-0/0/1.0",
+        "set protocols bfd peer 10.1.1.2",
+        "set system host-name CE1",
+        "next-hop 10.2.1.2",
+        "set interfaces ge-0/0/0",
+        "set protocols bfd peer 10.2.1.2"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

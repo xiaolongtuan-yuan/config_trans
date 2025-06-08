@@ -1,0 +1,35 @@
+sysname NPE
+mpls rsvp-te
+router id 3.3.3.3
+mpls label protocol ldp
+interface GigabitEthernet1/0/0.0
+ undo shutdown
+isis 2
+ is-level level-2
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.2.1.2 255.255.255.0
+ ipv6 address 2001::DB8/64 eui-64
+ ip address 3.3.3.3 255.255.255.255
+interface GigabitEthernet2/0/0
+ ip address 192.168.30.1 255.255.255.0
+ip vpn-instance vpn1
+interface GigabitEthernet2/0/0.0
+ip binding vpn-instance vpn1
+segment-routing mpls
+ospf 1 router-id 192.168.1.1
+ area 0.0.0.0
+  network none ge-2/0/0.0
+user-group 100
+bgp 100
+ import-route internal
+ ipv4-family unicast
+  peer 3.3.3.3 next-hop-local
+  undo synchronization
+  peer 2.2.2.2 next-hop-local
+  peer 2.2.2.2 label-route-capability check-tunnel-reachable
+ peer 2.2.2.2 as-number 100
+traffic-policy SPE inbound
+bgp 600
+ peer accept enable
+ ipv4-family unicast

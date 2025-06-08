@@ -1,0 +1,17 @@
+hostname LSRB
+ip route 2.2.2.9 255.255.255.255 none
+mpls ldp discovery transport-address all
+mpls ldp router-id lo0
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ ipv6 address 2001:DB8::/64 eui-64
+router isis
+ interface GigabitEthernet0/0/0.0
+ interface GigabitEthernet0/0/1
+ interface Loopback0
+interface GigabitEthernet0/0/1
+ no shutdown
+ ip address 10.1.3.1 255.255.255.0
+ ipv6 address mpls eui-64
+ ip address 2.2.2.9 255.255.255.255

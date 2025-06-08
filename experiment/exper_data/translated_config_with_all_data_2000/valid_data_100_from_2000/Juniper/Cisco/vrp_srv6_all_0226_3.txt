@@ -1,0 +1,16 @@
+hostname Tail
+route-target import vpna
+router vpna
+ interface vpna
+  isis network point-to-point
+router isis
+ interface GigabitEthernet0/0/0
+ interface Loopback0
+ passive-interface default
+ is-type level-1
+ metric-style wide
+route-target import 111:1
+mpls ldp advertise-labels interface GigabitEthernet0/0/0
+interface ge-0/0/1
+ no shutdown
+ ip address 10.5.1.2 255.255.255.252

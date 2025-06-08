@@ -1,0 +1,33 @@
+sysname U-PE1
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 192.168.1.1 255.255.255.0
+ ipv6 address none mpls
+ ip address 10.1.1.1 255.255.255.0
+ ip address 1.1.1.9 255.255.255.255
+area 0.0.0.0
+ ospf 1
+ area 0.0.0.0
+ network 1.1.1.9 0.0.0.0
+ospf 1 router-id 0.0.0.0
+ area 0.0.0.0
+  network 0.0.0.0 ge-2/0/0.0
+mpls rsvp-te
+mpls label protocol ldp
+lldp management-address 1.1.1.9
+mpls l2vc 3.3.3.9 100 ethernet
+ l2vpn
+ pw-template TEMPLATE1 control-word enable
+ #
+ 
+ peer 3.3.3.9 pw-id 100
+ encapsulation ethernet
+ transmit-label transmit-label-value
+ receive-label receive-label-value
+mpls l2vc control-word enable
+ospf 3.3.3.9 router-id 1
+ area 0.0.0.0
+  network 3.3.3.9 ge-1/0/0.0
+bfd pst bind peer-ip 3.3.3.9 interface 100
+ discriminator remote 100
+bfd pst bind peer-ip 3.3.3.9 interface GigabitEthernet1/0/0

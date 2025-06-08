@@ -1,0 +1,14 @@
+hostname DeviceA
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ tunnel source 10.1.1.1
+ mpls traffic-eng backup-path tunnel 0
+aaa accounting exec default0 start-stop group 6RD_SS
+service gr-0/0/0
+service 6RD_SS
+tunnel mode gre ipv4
+ipv6 route 2001:db8::/32 gr-0/0/0.1
+ipv6 prefix-list none seq none none 8
+ipv6 route 2001:DB8::/62 gr-0/0/0.1
+ipv6 route 2001:db8::/32 gr-0/0/0.1 none

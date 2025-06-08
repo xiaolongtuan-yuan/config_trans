@@ -1,0 +1,15 @@
+set system host-name MasterA
+set forwarding-options enhanced-hash-key family inet
+set interfaces ge-0/0/0 unit 0 family inet mpls
+set interfaces ge-1/0/1 .ethernet-switching unit 1 family GigabitEthernet1/0/1 interface-mode trunk
+set interfaces ge-1/0/1 unit 0 disable
+set interfaces ge-1/0/1 disable
+set interfaces ge-1/0/1 unit 0 family inet address 10.1.3.2/30
+set interfaces ge-1/0/1 set protocols isis interface ge-1/0/1 point-to-point
+set interfaces ge-1/0/1 unit 0 family inet mpls
+set interfaces ge-1/0/2 .ethernet-switching unit 2 family bridge interface-mode access
+set protocols isis interface ge-1/0/0.0 level wide metric 1
+set protocols isis interface level-1 disable
+set protocols bgp local-as 65410 set protocols isis redistribute connected
+set protocols bgp local-as 65410 set protocols isis redistribute static
+set protocols isis export REDIST-CONNECTED

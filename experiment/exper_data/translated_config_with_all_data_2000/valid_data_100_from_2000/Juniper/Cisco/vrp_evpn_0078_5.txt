@@ -1,0 +1,25 @@
+hostname CE2
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 enable
+interface Bundle-Ether10
+ no shutdown
+ channel-group 10 mode active
+ ipv6 address 2001:DB8::/64 eui-64
+interface range ae10 - 0
+interface GigabitEthernet10
+interface ae10
+ switchport
+ switchport access vlan 10
+ switchport trunk allowed vlan 10
+ switchport access vlan 100
+interface range GigabitEthernet1/0/1 - 2
+interface GigabitEthernet10/1
+interface GigabitEthernet1/0/10
+ switchport
+ switchport access vlan 10
+ switchport trunk allowed vlan 10
+interface Port-channel10
+channel-protocol lacp
+channel-group 10 mode active
+vlan 10

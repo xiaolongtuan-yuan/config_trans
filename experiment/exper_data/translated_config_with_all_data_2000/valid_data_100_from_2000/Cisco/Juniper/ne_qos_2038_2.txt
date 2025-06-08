@@ -1,0 +1,13 @@
+set system host-name DeviceC
+set interfaces ge-1/0/0 unit 1/0/0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.20.1.1/24
+interfaces ge-1/0/0.0
+set routing-options autonomous-system 100 family inet set protocols bgp group internal-group import connected
+set protocols bgp group IBGP type internal
+set protocols bgp group IBGP neighbor 10.20.1.2 peer-as 100
+set protocols bgp group IBGP export BGP-NETWORKS
+set protocols bgp local-as 100
+set protocols ospf area 0.0.0.1 interface 1
+set protocols ospf area 0 interface ge-0/0/1.0
+set protocols isis export REDIST-CONNECTED

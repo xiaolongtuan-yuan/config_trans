@@ -1,0 +1,29 @@
+sysname CE1
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+interface GigabitEthernet0/0/1
+ undo shutdown
+ ip address 10.2.1.1 255.255.255.0
+interface LoopBack0
+ undo shutdown
+ ip address 1.1.1.1 255.255.255.255
+ip route-static 0.0.0.0 0 none none
+ip route-static 0.0.0.0 0.0.0.0 10.1.1.2
+ip route-static 0.0.0.0 0.0.0.0 10.2.1.2
+bfd bfd_session bind peer-ip none interface GigabitEthernet0/0/0 source-ip none auto
+bfd bfd_session bind link-bundle peer-ip 10.1.1.2 interface ge-0/0/0 source-ip 10.1.1.1
+ min-tx-interval 100
+bfd bfd_session bind peer-ip none interface GigabitEthernet0/0/1 source-ip none auto
+bfd bfd_session_name bind link-bundle peer-ip peer_ip interface ge-0/0/1 source-ip source_ip
+ min-tx-interval 100
+bfd pst bind peer-ip 10.1.1.2 interface none
+bfd pst bind peer-ip 10.1.1.2 interface GigabitEthernet0/0/0
+ bfd ce1 bind peer-ip 10.1.1.2 interface GigabitEthernet0/0/0 source-ip 10.1.1.1
+ bfd ce1 bind peer-ip 10.1.1.2 interface GigabitEthernet0/0/0 min-tx-interval 100 min-rx-interval 100 detect-multiplier 3
+bfd pst bind peer-ip 10.2.1.2 interface none
+bfd pst bind peer-ip 10.2.1.2 interface GigabitEthernet0/0/1
+ bfd ge-0/0/1 bind peer-ip 10.2.1.2 interface GigabitEthernet0/0/1
+ bfd ge-0/0/1 min-tx-interval 100 min-rx-interval 100 detect-multiplier 3
+load-balance packet per-packet
+load-balance packet load-balance

@@ -1,0 +1,21 @@
+hostname PE2
+mpls ldp advertise-labels interface GigabitEthernet2/0/0
+mpls ldp discovery transport-address GigabitEthernet2/0/0
+mpls ldp router-id 3.3.3.9
+route-target import 100:2
+network none none area 0
+route-target import 100:1
+router isis
+interface GigabitEthernet1/0/0
+ no shutdown
+ ipv6 address 2001:DB8::/64 eui-64
+ encapsulation vlan-vpls
+ ip address 192.168.10.2 255.255.255.0
+ ip address 3.3.3.9 255.255.255.255
+aaa authentication login vpnv4 group vpnv4 local
+redistribute bgp
+aaa authentication login vpnv4 group 3.3.3.9 local
+redistribute connected
+redistribute l2vpn
+network 0.0.0.0 0.0.0.0 area 0
+network 0.0.0.0 255.255.255.255 area 0

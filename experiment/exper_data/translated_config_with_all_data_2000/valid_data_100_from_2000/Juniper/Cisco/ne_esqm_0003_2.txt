@@ -1,0 +1,26 @@
+hostname NPE
+mpls ldp advertise-labels interface GigabitEthernet1/0/0
+mpls ldp router-id 3.3.3.3
+mpls ldp discovery transport-address GigabitEthernet1/0/0
+router isis
+ interface GigabitEthernet1/0/0.0
+  isis network vrf
+is-type level-2
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 3.3.3.3 255.255.255.255
+interface GigabitEthernet1/0/0.0
+ ip address 10.2.1.2 255.255.255.0
+ ipv6 address 2001:DB8::/64 eui-64
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 192.168.30.1 255.255.255.0
+route-target import 100:1
+network 0.0.0.0 0.0.0.0 area 0
+aaa authentication login none group 100 local
+redistribute bgp
+aaa authentication login 100 group 3.3.3.3 local
+redistribute 300
+policy-map SPE
+ route-map SPE permit 10
+ match any

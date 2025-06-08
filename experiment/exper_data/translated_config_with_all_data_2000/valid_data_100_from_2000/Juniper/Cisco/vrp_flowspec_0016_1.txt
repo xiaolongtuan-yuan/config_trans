@@ -1,0 +1,12 @@
+hostname DeviceB
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+ ip address 2.2.2.2 255.255.255.255
+aaa authentication login default group internal local
+redistribute bgp
+aaa authentication login internal group 2.2.2.2 local
+redistribute unicast
+network 0.0.0.0 0.0.0.0 area 0
+network 0.0.0.0 0 area lo0.1
+network 0.0.0.0 0 area ge-1/0/0

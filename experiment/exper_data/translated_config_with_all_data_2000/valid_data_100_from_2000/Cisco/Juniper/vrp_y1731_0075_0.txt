@@ -1,0 +1,15 @@
+set system host-name CE1
+set vlans vlan2 vlan-id 2
+set interfaces ge-1/0/1 unit 0 disable
+set interfaces ge-1/0/1 disable
+set interfaces ge-1/0/1 set interfaces ge-1/0/1 unit 0 family ethernet-switching vlan members 2
+set interfaces ge-1/0/1 unit 0 family ethernet-switching interface-mode trunk
+set interfaces ge-1/0/1 unit 0 family ethernet-switching port-mode trunk
+interfaces ge-1/0/1.0
+set interfaces lo0.1 unit 1 disable
+set interfaces lo0.1 disable
+set interfaces lo0.1 unit 0 family inet address 1.1.1.1/32
+services rpm probe test1 set services rpm probe TEST probe-type ethernet-jitter destination-mac 00:00:00:00:00:02 vlan-id 2 test-interval 10 set services rpm probe test probe-1 test test-1 probe-type ethernet-jitter destination-mac 00:00:00:00:00:02 vlan-id 2 interval 10
+set services rpm probe 1 test 1 track
+set services rpm probe test1 test test1 start now
+set protocols isis export REDIST-CONNECTED

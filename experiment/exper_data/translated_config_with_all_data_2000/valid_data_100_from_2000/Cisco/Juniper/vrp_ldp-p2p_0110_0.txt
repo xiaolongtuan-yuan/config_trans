@@ -1,0 +1,16 @@
+set system host-name LSRA
+set protocols ldp router-id Loopback0
+set protocols isis interface ge-1/0/0.0
+set protocols isis interface level-2 disable
+set protocols ospf area 0.0.0.0 interface lo0.0 interface-type lo
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-1/0/0 unit 0 family inet mpls
+set interfaces ge-1/0/0 unit 0 family inet address isis/255.255.255.255
+interfaces ge-1/0/0
+set interfaces lo0 unit 0 disable
+set interfaces lo0 disable
+set interfaces lo0 unit 0 family inet address 10.10.1.1/32
+set interfaces lo0 unit 0 family inet address isis/none
+set protocols isis export REDIST-CONNECTED

@@ -1,0 +1,16 @@
+sysname DeviceC
+vlan 20
+vlan batch 20
+vlan 300-400
+vlan batch 300 to 400
+stp instance 20 root primary
+stp instance 300-400 root primary
+interface GigabitEthernet1/0/1
+ port link-type trunk
+ port trunk allow-pass vlan 20 300 to 400
+ undo shutdown
+interface GigabitEthernet1/0/2
+ port link-type trunk
+ port trunk allow-pass vlan 20 300 to 400
+ undo shutdown
+return

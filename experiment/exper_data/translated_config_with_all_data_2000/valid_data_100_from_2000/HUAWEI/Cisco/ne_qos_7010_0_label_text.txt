@@ -1,0 +1,36 @@
+hostname DeviceA
+!
+
+ip access-list extended ACL_TUN30
+ permit ip host 10.100.0.11 any
+!
+ip access-list extended ACL_TUN40
+ permit ip host 10.110.0.11 any
+!
+
+route-map PBR_AAA permit 5
+ match ip address ACL_TUN30
+ set ip next-hop 10.1.1.1  
+!
+route-map PBR_AAA permit 10
+ match ip address ACL_TUN40
+ set ip next-hop 10.2.2.2
+!
+
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.100.0.10 255.255.255.0
+ ip policy route-map PBR_AAA
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.110.0.10 255.255.255.0
+!
+
+!
+
+router ospf 1
+ network 10.100.0.0 0.0.0.255 area 0
+ network 10.110.0.0 0.0.0.255 area 0
+!
+end

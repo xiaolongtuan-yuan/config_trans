@@ -1,0 +1,39 @@
+hostname Core
+ethernet cfm ma 4.4.4.4 md none
+ethernet cfm ma mpls md none
+interface GigabitEthernet2/0/0
+ mpls ldp autoconfig
+ ip address 10.4.1.1 255.255.255.0
+ mpls ip
+interface GigabitEthernet1/0/0
+ ip address 10.3.1.2 255.255.255.0
+ mpls ip
+interface range GigabitEthernet1/0/0 - 1
+ no shutdown
+interface range GigabitEthernet2/0/0 - 0
+ no shutdown
+interface LoopBack1
+ ip address 4.4.4.4 255.255.255.255
+ ip ospf 2 area 0
+ ospfv3 2 ipv6 area 0.0.0.0
+ ip address 10.4.1.0 255.255.255.0
+router bgp 200
+ neighbor 5.5.5.5 remote-as 200
+ neighbor 5.5.5.5 update-source LoopBack1
+ neighbor 10.3.1.1 remote-as 100
+ address-family ipv4 unicast
+  neighbor 5.5.5.5 capability add-path receive
+  neighbor 10.3.1.1 capability add-path receive
+ bgp router-id 5.5.5.5
+ address-family ipv4
+  neighbor 5.5.5.5 route-map policy1 out
+  neighbor 10.3.1.1 route-map policy1 out
+ neighbor 10.3.1.1 remote-as 200
+ bgp router-id 10.3.1.1
+neighbor 5.5.5.5 remote-as 200
+neighbor 10.3.1.1 remote-as 100
+route-map policy1 permit 1
+ match mpls labels
+ set mpls-label
+ip as-path access-list 1 permit .*
+ethernet cfm ma ma_name md md_name

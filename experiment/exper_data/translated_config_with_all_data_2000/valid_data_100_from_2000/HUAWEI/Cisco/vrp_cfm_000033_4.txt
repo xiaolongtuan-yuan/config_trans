@@ -1,0 +1,50 @@
+hostname PE2
+ethernet cfm ma MA1 md MD1
+ethernet cfm ma mpls md none
+mpls ldp remote-peer none none
+interface GigabitEthernet1/0/1
+ mpls ldp autoconfig
+interface GigabitEthernet1/0/0
+ ip ospf 1 area 0
+ ospfv3 1 ipv6 area 0.0.0.0
+ ip address 3.3.3.9 0.0.0.0
+ ip address 192.168.10.0 255.255.255.0
+ ethernet cfm mep domain md1 service ma1 2 inward
+ ethernet cfm mep domain md1 service ma1 mpid 2 direction inward
+interface range GigabitEthernet1/0/0 - 0
+ no shutdown
+interface GigabitEthernet2/0/0
+ ip address 192.168.10.2 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+interface range GigabitEthernet2/0/0 - 0
+ no shutdown
+interface LoopBack1
+ ip address 3.3.3.9 255.255.255.255
+l2vpn bridge-group vpn1
+ route-distinguisher 100:1
+l2vpn evpn instance 1 vlan-based
+l2vpn vfi context vpn1
+ vpn id 200:1
+l2vpn bridge-group VPN1
+ bridge-domain ce2
+  interface GigabitEthernet2/0/0
+  interface GigabitEthernet1/0/0
+router bgp 100
+ neighbor 1.1.1.9 remote-as 100
+ neighbor 1.1.1.9 update-source LoopBack1
+ address-family ipv4 unicast
+ no synchronization
+ address-family l2vpn-ad vrf 100
+ address-family l2vpn vrf 100
+ bgp confederation peers 65002 65003
+neighbor 1.1.1.9 remote-as 100
+interface ma1
+ ethernet cfm mep domain md1 service ma1 2 inward
+ ethernet cfm mep domain md1 service ma1 1 inward
+ethernet cfm ais ma vpn1 enable
+ethernet cfm ma ma1 md mpls l2vpn vpn1 ce 2 ce-offset 1
+ethernet cfm domain ma1 level 100
+ ethernet cfm maintenance-association ma1 100
+  ethernet cfm slm send continual test-id 1 interval 100
+ethernet cfm ma ma1 md md1

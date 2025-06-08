@@ -1,0 +1,27 @@
+sysname U-PE2
+interface GigabitEthernet1/0/0.1 mode l2
+ mpls l2vc 1.1.1.9 100 raw
+mpls lsr-id 3.3.3.9
+mpls
+interface PWT
+ mpls static-l2vc pw-template PWT none transmit-vpn-label none receive-vpn-label none
+interface mpls
+mpls label protocol ldp
+mpls ldp remote-peer 3.3.3.9
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.4.1.2 255.255.255.0
+ mpls ldp
+interface GigabitEthernet1/0/0 mode l2
+ mpls l2vc none none raw
+interface GigabitEthernet2/0/0
+ undo shutdown
+ mpls static-l2vc pw-template PWT 200 transmit-vpn-label none receive-vpn-label none
+ mpls l2vc 3.3.3.9 200
+interface LoopBack0
+ ip address 5.5.5.9 255.255.255.255
+ospf 1
+ network 5.5.5.9 0.0.0.0
+ area 0
+ network 10.4.1.0 0.0.0.255
+return

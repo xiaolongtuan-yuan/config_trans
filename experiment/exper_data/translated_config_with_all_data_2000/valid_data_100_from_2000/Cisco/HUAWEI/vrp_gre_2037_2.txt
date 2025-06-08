@@ -1,0 +1,24 @@
+sysname DeviceC
+vlan 10
+vlan batch 10
+vlan 20
+vlan batch 20
+interface Vlanif10
+ ip address 172.16.1.2 255.255.255.0
+interface Vlanif20
+ ip address 172.17.1.1 255.255.255.0
+interface GigabitEthernet1/0/0
+ portswitch
+ undo shutdown
+ port link-type access
+ port default vlan 10
+interface GigabitEthernet2/0/0
+ portswitch
+ undo shutdown
+ port link-type access
+ port default vlan 20
+ospf 1
+ network 172.16.1.0 0.0.0.255
+ area 0
+ network 172.17.1.0 0.0.0.255
+return

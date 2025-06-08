@@ -1,0 +1,172 @@
+{
+    "set system host-name DeviceA": {
+        "template": "set system host-name [parameter1]",
+        "command": "set system host-name DeviceA",
+        "explanation": "配置设备的主机名。",
+        "parameters": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "explanation": "设备的主机名，用于标识网络中的设备。"
+            }
+        ]
+    },
+    "set interfaces ge-1/0/1 unit 0 family inet address 10.1.1.1/24": {
+        "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+        "command": "set interfaces ge-1/0/1 unit 0 family inet address 10.1.1.1/24",
+        "explanation": "配置接口的IPv4地址及子网掩码。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如ge-1/0/1。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "ip-address",
+                "type": "string",
+                "explanation": "分配给接口的IPv4地址。"
+            },
+            {
+                "name": "subnet-mask",
+                "type": "integer",
+                "explanation": "IPv4子网掩码的位数。"
+            }
+        ]
+    },
+    "set interfaces gr-0/0/0 unit 1 tunnel source 10.1.1.1": {
+        "template": "set interfaces [parameter1] unit [parameter2] tunnel source [parameter3]",
+        "command": "set interfaces gr-0/0/0 unit 1 tunnel source 10.1.1.1",
+        "explanation": "配置隧道接口的源地址。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如gr-0/0/0。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "source-address",
+                "type": "string",
+                "explanation": "隧道接口的源IPv4地址。"
+            }
+        ]
+    },
+    "set interfaces gr-0/0/0 unit 1 tunnel destination 0.0.0.0": {
+        "template": "set interfaces [parameter1] unit [parameter2] tunnel destination [parameter3]",
+        "command": "set interfaces gr-0/0/0 unit 1 tunnel destination 0.0.0.0",
+        "explanation": "配置隧道接口的目的地址。",
+        "parameters": [
+            {
+                "name": "interface",
+                "type": "string",
+                "explanation": "接口名称，例如gr-0/0/0。"
+            },
+            {
+                "name": "unit",
+                "type": "integer",
+                "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+            },
+            {
+                "name": "destination-address",
+                "type": "string",
+                "explanation": "隧道接口的目的IPv4地址。"
+            }
+        ]
+    },
+    "set services service-set 6RD_SS interface-service service-interface gr-0/0/0": {
+        "command": "set services service-set 6RD_SS interface-service service-interface gr-0/0/0",
+        "template": "set services service-set [parameter1] interface-service service-interface [parameter2]",
+        "explanation": "Configure a service set with a specific service interface",
+        "parameters": [
+            {
+                "name": "service-set name",
+                "type": "string",
+                "explanation": "The name of the service set"
+            },
+            {
+                "name": "service-interface name",
+                "type": "string",
+                "explanation": "The name of the service interface"
+            }
+        ]
+    },
+    "set services 6rd service-set 6RD_SS": {
+        "command": "set services 6rd service-set 6RD_SS",
+        "template": "set services 6rd service-set [parameter1]",
+        "explanation": "Configure a 6rd service set",
+        "parameters": [
+            {
+                "name": "service-set name",
+                "type": "string",
+                "explanation": "Name of the 6rd service set"
+            }
+        ]
+    },
+    "set services 6rd tunnel-context ipv4": {
+        "command": "set services 6rd tunnel-context ipv4",
+        "template": "set services 6rd tunnel-context [parameter1]",
+        "explanation": "Configure 6rd tunnel context with IPv4",
+        "parameters": [
+            {
+                "name": "tunnel context type",
+                "type": "string",
+                "explanation": "Specifies the type of tunnel context, in this case, IPv4"
+            }
+        ]
+    },
+    "set services 6rd ipv6-prefix 2001:db8::/32": {
+        "command": "set services 6rd ipv6-prefix 2001:db8::/32",
+        "template": "set services 6rd ipv6-prefix [parameter1]",
+        "explanation": "Configure the IPv6 prefix for 6rd (IPv6 Rapid Deployment) service",
+        "parameters": [
+            {
+                "name": "IPv6 prefix",
+                "type": "string",
+                "explanation": "The IPv6 prefix to be used for the 6rd service"
+            }
+        ]
+    },
+    "set services 6rd ipv4-prefix-length 8": {
+        "command": "set services 6rd ipv4-prefix-length 8",
+        "template": "set services 6rd ipv4-prefix-length [parameter1]",
+        "explanation": "Configure the IPv4 prefix length for 6rd services",
+        "parameters": [
+            {
+                "name": "ipv4-prefix-length",
+                "type": "integer",
+                "explanation": "The length of the IPv4 prefix"
+            }
+        ]
+    },
+    "set routing-options rib inet6.0 static route 2001:db8::/32 next-hop gr-0/0/0.1": {
+        "template": "set routing-options rib [parameter1] static route [parameter2] next-hop [parameter3]",
+        "command": "set routing-options rib inet6.0 static route 2001:db8::/32 next-hop gr-0/0/0.1",
+        "explanation": "配置静态路由，指定下一跳地址。",
+        "parameters": [
+            {
+                "name": "rib",
+                "type": "string",
+                "explanation": "路由信息库名称，例如inet6.0。"
+            },
+            {
+                "name": "route",
+                "type": "string",
+                "explanation": "目标网络地址及前缀长度。"
+            },
+            {
+                "name": "next-hop",
+                "type": "string",
+                "explanation": "下一跳地址。"
+            }
+        ]
+    }
+}

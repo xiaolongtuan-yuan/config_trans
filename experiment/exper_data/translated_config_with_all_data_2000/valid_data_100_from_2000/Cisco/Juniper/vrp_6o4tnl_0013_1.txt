@@ -1,0 +1,25 @@
+set system host-name DeviceA
+set interfaces ge-1/0/1 unit 0 disable
+set interfaces ge-1/0/1 disable
+set interfaces ge-1/0/1 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-1/0/1 unit 2 disable
+set interfaces ge-1/0/1 unit 1 disable
+set interfaces ge-1/0/1 unit 0 tunnel source GigabitEthernet1/0/1
+set interfaces ge-1/0/1 tunnel encapsulation ipsec-ipv4
+set interfaces ge-1/0/1 unit 0 tunnel protocol gre
+interfaces ge-0/0/0.0
+set interfaces ge-1/0/2 unit 0 family inet6
+set interfaces ge-1/0/2 unit 0 family inet6 address 2001:db8:101:101::1/64
+set interfaces <interface-name> unit 0 family inet6 address 2001:DB8:101:100::1/56
+set interfaces gr-1/1/1 tunnel destination 203.0.113.5
+set interfaces gr-1/1/1.1 ipsec-sa vpn-profile VPN_PROFILE
+set services 6rd ipv6-prefix 2001:db8::/32
+set security ike proposal VPN_IKE_PROFILE
+set services l2tp tunnel remote-gateway-address 203.0.113.5
+set security nat destination pool NAT64_DEST_POOL address 203.0.113.5/32
+set system services ssh authentication-order password
+set system services telnet authentication-order password
+set security ipsec policy VPN_KEYRING
+set security ipsec proposal VPN_PROFILE
+set security ike policy VPN_IKE_PROFILE
+set protocols isis export REDIST-CONNECTED

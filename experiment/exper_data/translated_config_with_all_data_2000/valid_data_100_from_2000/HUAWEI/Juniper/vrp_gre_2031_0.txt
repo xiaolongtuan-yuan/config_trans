@@ -1,0 +1,19 @@
+set system host-name DeviceA
+interfaces ge-1/0/0 delete interfaces GigabitEthernet 1/0/0 disable
+interfaces ge-1/0/0 delete interfaces GigabitEthernet 2/0/0 disable
+interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet address 172.20.1.1/24
+interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet tunnel source 172.20.1.1
+interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet tunnel destination 172.21.1.2
+interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet tunnel protocol gre
+set interfaces ge-1/0/0 unit 0 family inet address 172.20.1.1/24
+set interfaces ge-1/0/0 set interfaces gr-1/1 tunnel source 172.20.1.1
+interfaces ge-2/0/0 delete disable
+set interfaces ge-2/0/0 unit 0 family inet address 10.1.1.2/24
+set interfaces Tunnel1 disable
+set interfaces Tunnel1 unit 0 family inet address 172.22.1.1/24
+set interfaces gr-1/0/0.1 set protocols gre tunnel tunnel1 encapsulation gre
+set interfaces tunnel1 set interfaces gr-1/1 tunnel destination 172.21.1.2
+set interfaces ge-0/0/0 unit 1 family inet service input none
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set routing-options static route 10.2.1.0/24 next-hop Tunnel1
+set system host-name CE1

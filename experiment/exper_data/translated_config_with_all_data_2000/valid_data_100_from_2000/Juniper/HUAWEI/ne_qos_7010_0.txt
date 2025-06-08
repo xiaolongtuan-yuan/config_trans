@@ -1,0 +1,17 @@
+sysname DeviceA
+ipv4-family unicast
+ peer 5.5.5.5 route-policy policy1 export
+service-security policy inet aaa
+ rule 5 deny protocol ip source-ip 10.100.0.11 0
+service-security policy ipv4 aaa
+ rule 10 deny protocol ip source-ip 10.110.0.11 0
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.100.0.10 255.255.255.0
+ ip address none 255.255.255.0 sub
+ policy-based-route aaa permit node 0 map-instance 0
+  if-match acl name aaa
+ ip address 10.110.0.10 255.255.255.0
+ ip address none 255.255.255.252 sub
+ip vpn-instance tunnel-instance
+segment-routing mpls

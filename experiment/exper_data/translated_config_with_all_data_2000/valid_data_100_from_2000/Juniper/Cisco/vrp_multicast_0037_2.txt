@@ -1,0 +1,23 @@
+hostname DeviceC
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.110.2.2 255.255.255.0
+ ip address 192.168.3.1 255.255.255.0
+ip multicast-routing distributed
+ip multicast-routing sparse
+ethernet cfm mep none ma none interface ge-1/0/0.0 none
+ethernet cfm mep 3 ma none interface GigabitEthernet1/0/0.0 inward
+interface GigabitEthernet2/0/0
+ no shutdown
+policy-map ssm-policy
+ route-map ssm-policy permit 10
+router bgp 600
+ class allow-ssm
+ address-family ipv4
+  service-policy ssm-policy
+  neighbor none route-map ssm-allowed none
+ip prefix-list ssm-allowed seq 10 permit 232.1.1.0/24
+ip prefix-list ssm-allowed seq 10 permit 232.1.1.0/24 le 32
+clock source ptp ssm prc
+ip pim rp-address 192.168.4.1
+aaa authentication login static-rp group inet local

@@ -1,0 +1,28 @@
+hostname LSRA
+ethernet cfm ma MA_name md MD_name
+ethernet cfm ma ma1 md md1
+ethernet cfm ma mpls md none
+net 10.0000.0000.0001.00
+router-id list1
+ip access-list standard list1
+access-list 2001 permit ip host 4.4.4.9 any
+interface GigabitEthernet1/0/0
+ mpls ldp autoconfig
+ ip address 10.1.1.1 255.255.255.0
+ isis enable 1
+ mpls ip
+router isis 1
+ mpls traffic-eng level-2
+ net 10.0000.0000.0001.00
+ is-type level-1
+ is-type level-2
+interface range GigabitEthernet1/0/1 - 2
+ no shutdown
+interface GigabitEthernet1/0/1
+ ip address 10.1.2.1 255.255.255.0
+ isis enable 1
+ mpls ip
+ mpls ldp autoconfig
+interface LoopBack0
+ ip address 1.1.1.9 255.255.255.255
+ isis enable 1

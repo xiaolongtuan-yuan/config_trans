@@ -1,0 +1,13 @@
+set system host-name DeviceC
+set interfaces ge-1/0/0 unit 0 family inet address 10.20.1.1/24
+
+set protocols bgp group internal type internal
+set protocols bgp group internal neighbor 10.20.1.2
+set protocols bgp group internal peer-as 100
+set protocols bgp group internal family inet unicast
+
+set policy-options policy-statement IMPORT-CONNECTED term 1 from protocol direct
+set policy-options policy-statement IMPORT-CONNECTED term 1 then accept
+set protocols bgp group internal import IMPORT-CONNECTED
+
+set protocols ospf area 0.0.0.0 interface ge-1/0/0.0

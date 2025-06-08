@@ -1,0 +1,18 @@
+hostname DeviceC
+ip route 3.3.3.3 255.255.255.255 none
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 172.16.6.1 255.255.255.0
+ ip address 172.16.2.1 255.255.255.0
+interface GigabitEthernet0/0/2
+ no shutdown
+interface GigabitEthernet0/0/3
+ no shutdown
+ ip address 172.16.4.2 255.255.255.0
+network 0.0.0.0 255.255.255.255 area 0
+network 0.0.0.0 0.0.0.0 area 0
+ip route 172.16.7.0 255.255.255.0 none 172.16.6.2
+policy-map OSPF-IMPORT
+ route-map OSPF-IMPORT permit 10
+ match ip address static
+router ospf 1 vrf OSPF-IMPORT

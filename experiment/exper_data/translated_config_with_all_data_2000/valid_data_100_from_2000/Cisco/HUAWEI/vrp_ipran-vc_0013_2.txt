@@ -1,0 +1,23 @@
+sysname MasterA
+interface GigabitEthernet2/0/0
+interface GigabitEthernet1/0/0 mode l2
+ mpls l2vc none none raw
+interface GigabitEthernet1/0/1
+ vrrp vrid 1 track interface GigabitEthernet1/0/1 reduced 50
+ ip address 10.1.3.2 255.255.255.252
+ isis network-type p2p
+interface GigabitEthernet1/0/2
+ vrrp vrid 10 track interface GigabitEthernet1/0/2 reduced 50
+interface GigabitEthernet1/0/1 mode l2
+ mpls l2vc none none raw
+isis 1
+ network-entity 49.0001.0555.5555.5502.00
+ is-level level-1
+ cost-style wide
+bgp 600
+ ipv4-family unicast
+  import-route isis 1
+  import-route static 1
+ import-route direct
+ import-route static
+return

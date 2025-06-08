@@ -1,0 +1,25 @@
+set system host-name PE2
+set protocols ldp router-id 1.1.1.9
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 encapsulation mpls
+set interfaces ge-1/0/0 encapsulation dot1q 100
+interfaces ge-1/0/0.0
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.10.2/24
+set interfaces ge-2/0/0 unit 0 family inet mpls
+set interfaces ge-2/0/0 unit 0 family inet mpls ldp autoconfig
+interfaces ge-2/0/0.0
+set interfaces lo0.1 unit 1 disable
+set interfaces lo0.1 disable
+set interfaces lo0.1 unit 0 family inet address 3.3.3.9/32
+set routing-options autonomous-system 100
+set protocols bgp group IBGP type internal
+set protocols bgp group IBGP neighbor 1.1.1.9 peer-as 100
+set protocols bgp group IBGP export BGP-100
+set protocols bgp local-as 100
+set protocols l2circuit pseudowire-class VPWS encapsulation-type mpls encapsulation-type mpls;
+set protocols ospf area 0.0.0.1 interface 1
+set protocols ospf area 0 interface ge-0/0/0.0
+set protocols isis export REDIST-CONNECTED

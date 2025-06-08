@@ -1,0 +1,30 @@
+hostname PE1
+ethernet cfm ma ma1 md md1
+ethernet cfm ma mpls-ma md mpls-md
+interface GigabitEthernet1/0/0
+ mpls traffic-eng tunnels
+ ip address 10.1.2.1 255.255.255.0
+ isis enable 1
+ mpls ip
+ethernet cfm ma pce-client md none
+net 10.0000.0000.0002.0002
+net 10.2.1.2
+ethernet cfm ma segment-routing md none
+router isis 1
+ mpls traffic-eng level-2
+ metric-style wide
+ net 10.0000.0000.0002.00
+ segment-routing mpls
+interface range GigabitEthernet1/0/0 - 1
+ no shutdown
+interface LoopBack0
+ ip address 1.1.1.1 255.255.255.255
+ isis enable 1
+interface Tunnel1
+ ip unnumbered LoopBack0
+ tunnel mode mpls traffic-eng
+ tunnel destination 3.3.3.3
+ tunnel mode mpls traffic-eng segment-routing
+ tunnel mpls traffic-eng 1
+ mpls traffic-eng tunnels
+ethernet cfm ma MA_name md MD_name

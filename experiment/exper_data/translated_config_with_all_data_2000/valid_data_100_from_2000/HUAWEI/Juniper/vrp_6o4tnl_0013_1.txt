@@ -1,0 +1,23 @@
+set system host-name DeviceA
+set interfaces ge-1/0/1 disable
+set interfaces ge-1/0/1 unit 0 disable
+set interfaces ge-1/0/1 set interfaces ge-1/0/1 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-1/0/1 unit 0 family inet6
+set interfaces ge-1/0/1 set interfaces ge-1/0/2 unit 0 family inet6 address 2001:db8:101:101::1/64
+set interfaces ge-1/0/1 unit 1 family inet6
+set interfaces ge-1/0/1 unit 0 family inet address 2001:db8:101:100::1/56
+set interfaces ge-1/0/1 unit 1 tunnel ipv6-prefix-length 32
+set interfaces ge-1/0/1 unit 1 tunnel ipv6-prefix-length 8
+interfaces gr-1/0/0 set protocols tunnel interface tun.1 family inet6
+interfaces gr-1/0/0 set protocols tunnel interface tun.1 tunnel source ge-1/0/1
+interfaces gr-1/0/0 set protocols tunnel interface tun.1 tunnel mode ipip6 6rd
+interfaces gr-1/0/0 set protocols tunnel interface tun.1 6rd br 2001:db8::/32
+interfaces gr-1/0/0 set protocols tunnel interface tun.1 6rd prefix-length 8
+interfaces gr-1/0/0 set interfaces tun unit 1 tunnel source ge-1/0/1
+interfaces gr-1/0/0 set interfaces tun unit 1 tunnel mode ipip6 6rd
+interfaces gr-1/0/0 set interfaces tun unit 1 6rd br 2001:db8::/32
+interfaces gr-1/0/0 set interfaces tun unit 1 6rd prefix-length 8
+interfaces gr-1/0/0 set interfaces tunnel1 source-address 10.1.1.1
+set protocols pim rp static address 2001:db8::
+set routing-options multicast multicast6-global
+set system host-name CE1

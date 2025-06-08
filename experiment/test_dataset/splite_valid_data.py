@@ -10,18 +10,18 @@ import shutil
 
 random.seed(42)
 
-
-device_list = os.listdir(f'all_data/text_config/Juniper')
+source_dir = 'test_data_2000'
+device_list = os.listdir(f'{source_dir}/text_config/Juniper')
 total_devices = [device.split('.')[0] for device in device_list]
-print(f"Cisco: {len(os.listdir('all_data/text_config/Cisco'))}")
-print(f"HUAWEI: {len(os.listdir('all_data/text_config/HUAWEI'))}")
-print(f"Juniper: {len(os.listdir('all_data/text_config/Juniper'))}")
-target_dir = 'valid_data'
+print(f"Cisco: {len(os.listdir(f'{source_dir}/text_config/Cisco'))}")
+print(f"HUAWEI: {len(os.listdir(f'{source_dir}/text_config/HUAWEI'))}")
+print(f"Juniper: {len(os.listdir(f'{source_dir}/text_config/Juniper'))}")
+target_dir = 'valid_data_100_from_2000'
 
 if os.path.exists(target_dir):
     shutil.rmtree(target_dir)
 # 从total_devices中随机抽取50个设备
-sample_data = random.sample(total_devices, 120)
+sample_data = random.sample(total_devices, 140)
 valid_devices = []
 
 for device in sample_data:

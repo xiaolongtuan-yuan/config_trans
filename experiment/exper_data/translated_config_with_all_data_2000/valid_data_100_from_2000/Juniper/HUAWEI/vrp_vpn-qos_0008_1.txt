@@ -1,0 +1,33 @@
+sysname PE1
+interface all none
+ipsec policy IPSEC_PROFILE 10
+interface GigabitEthernet1/0/0
+ undo shutdown
+ vlan-type dot1q 10
+interface GigabitEthernet1/0/0.1 mode l2
+ encapsulation dot1q vid 1
+l2vpn
+peer 3.3.3.9
+connection ce-id 101 interface GigabitEthernet1/0/0.1
+ip route-static vpn-instance 101 3.3.3.9 255.255.255.255 none
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+interface ge-2/0/0.0 p2p
+ ip address 1.1.1.9 255.255.255.0
+interface lo0
+ undo shutdown
+interface LoopBack0
+ ip address 1.1.1.9 255.255.255.255
+ip route-static 10.1.1.1 255.255.255.255 none none
+ip route-static 10.1.1.1 255.255.255.255 10.1.1.1
+network none 0.0.0.0
+area 0.0.0.0
+ ospf 1
+ area 0.0.0.0
+ network 1.1.1.9 0.0.0.0
+ospf 0.0.0.0 router-id 1
+ area 0.0.0.0
+  network 0.0.0.0 255.255.255.255
+router id 1.1.1.9
+ospf 1 router-id 1.1.1.9

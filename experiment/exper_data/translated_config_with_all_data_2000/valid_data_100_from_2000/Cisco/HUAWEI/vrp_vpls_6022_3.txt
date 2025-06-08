@@ -1,0 +1,31 @@
+sysname ASBR2
+interface GigabitEthernet1/0/0 mode l2
+ mpls l2vc none none raw
+mpls lsr-id 3.3.3.9
+mpls
+ospf 1
+ network 3.3.3.3 0.0.0.0
+ area 0
+ network 10.30.1.0 0.0.0.255
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.20.1.2 255.255.255.252
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip address 10.30.1.1 255.255.255.0
+interface GigabitEthernet2/0/0 mode l2
+ mpls l2vc none none raw
+interface LoopBack1
+ ip address 3.3.3.3 255.255.255.255
+bgp 200
+ peer 4.4.4.4 as-number 200
+ peer 4.4.4.4 enable
+ ipv4-family unicast
+  peer 4.4.4.4 next-hop-self
+  peer 4.4.4.4 advertise-community
+  peer 10.20.1.1 advertise-community
+ peer 4.4.4.4 connect-interface LoopBack1
+ peer 10.20.1.1 as-number 100
+ peer 10.20.1.1 enable
+ network 3.3.3.3 0.0.0.0
+return

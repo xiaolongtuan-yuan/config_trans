@@ -1,0 +1,47 @@
+sysname ASBR1
+route-distinguisher 100:2
+vpn-target 1:1 export-extcommunity
+vpn-target 1:1 import-extcommunity
+#
+interface GigabitEthernet0/0/1.0
+ip binding vpn-instance vpn1
+ ip vpn-instance vpn1
+ ipv4-family
+segment-routing mpls
+ locator vpn1 ipv6-prefix target:1:1 64 static 32
+  opcode target:1:1 end-as
+   cache source-address 1::1
+ip vpn-instance vpn1
+ ip vpn-instance vpn1
+  route-distinguisher 100:2
+segment-routing vpn1
+ locator vpn1 ipv6-prefix 2001:db8:15:: 64 static 32
+  opcode target:1:1 end-as
+   cache source-address 1::1
+ospf 1 router-id 172.16.1.3
+ area 0.0.0.0
+  network none 0.0.0.0
+mpls label protocol ldp
+router id 2.2.2.9
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 10.10.1.1 255.255.255.0
+ ipv6 address none mpls
+ ip address 2.2.2.9 255.255.255.255
+interface GigabitEthernet0/0/1
+ ip address 12.12.12.1 255.255.255.0
+interface LoopBack0
+ undo shutdown
+user-group external-neighbor
+bgp 600
+ import-route direct
+ ipv4-family unicast
+  peer 2.2.2.9 next-hop-local
+  undo synchronization
+area 0.0.0.0
+ ospf 1
+ area 0.0.0.0
+ network 2.2.2.9 0.0.0.0
+ospf 0.0.0.0 router-id 1
+ area 0.0.0.0
+  network 0.0.0.0 ge-0/0/0.0

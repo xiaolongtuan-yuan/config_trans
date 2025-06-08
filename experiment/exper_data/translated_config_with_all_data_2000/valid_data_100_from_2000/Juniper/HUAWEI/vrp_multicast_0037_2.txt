@@ -1,0 +1,21 @@
+sysname DeviceC
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.110.2.2 255.255.255.0
+ ip address 192.168.3.1 255.255.255.0
+interface mp-group 1/0/0
+ ip address ge-1/0/0.0 255.255.255.0
+ ip address sparse 24
+ ip address 192.168.1.1 255.255.255.0
+ ip address 3 24
+ ip address none none
+ ip address sparse none
+traffic-policy ssm-policy inbound
+tunnel-policy ssm-policy
+traffic-policy ssm-policy ssm-allowed
+bgp 600
+ peer 10.1.1.2 enable
+ ipv4-family unicast
+ip ip-prefix ssm-allowed index 10 permit 232.1.1.0 24
+qppb local-policy ssm-policy
+ip address 192.168.4.1 255.255.255.255

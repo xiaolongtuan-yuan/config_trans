@@ -1,0 +1,23 @@
+hostname P
+mpls ldp router-id 2.2.2.2
+mpls ldp discovery transport-address 2.2.2.2
+mpls ldp discovery transport-address GigabitEthernet0/0/0
+mpls ldp discovery transport-address GigabitEthernet0/0/1
+mpls ldp advertise-labels for ACL-to-advertise
+mpls ldp igp sync
+is-type level-2
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 10.1.1.2 255.255.255.0
+interface GigabitEthernet0/0/1
+ no shutdown
+ ip address 10.2.1.1 255.255.255.0
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.255
+mpls ldp advertise-labels interface GigabitEthernet0/0/0
+mpls ldp advertise-labels interface GigabitEthernet0/0/1
+router isis
+ interface GigabitEthernet0/0/0
+ interface GigabitEthernet0/0/1
+ interface Loopback0
+ passive-interface default

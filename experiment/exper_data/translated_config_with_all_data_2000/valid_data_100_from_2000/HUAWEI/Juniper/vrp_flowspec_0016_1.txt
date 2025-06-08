@@ -1,0 +1,19 @@
+set system host-name DeviceB
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.2/24
+set interfaces ge-1/0/0 unit 0 family inet address 2.2.2.2/32
+set interfaces ge-1/0/0 unit 0 family inet service input none
+set routing-options autonomous-system 100
+set protocols bgp group 100 type 100
+set protocols bgp group 100 neighbor 2.2.2.2 family inet unicast
+set protocols bgp group 100 type external
+set protocols bgp group 100 neighbor 3.3.3.3 peer-as 100
+set protocols bgp group 100 export BGP-NETWORKS
+set protocols bgp group 100 peer-as 100
+set protocols bgp group 100 family inet unicast
+set protocols bgp group 100 local-as 100
+set protocols bgp group 100 neighbor 2.2.2.2 family inet6 flow
+set protocols ospf area 0.0.0.0 interface 0.0.0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set system host-name CE1

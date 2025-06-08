@@ -1,0 +1,21 @@
+#
+ sysname DeviceB
+#
+ bfd
+#
+interface Eth-Trunk1
+ ip address 10.1.1.2 255.255.255.0
+#
+interface Gigabitethernet3/0/0
+ undo shutdown
+ eth-trunk 1
+#
+interface Gigabitethernet3/0/1
+ undo shutdown
+ eth-trunk 1
+#
+bfd btoa bind link-bundle peer-ip 10.1.1.1 interface Eth-Trunk1 source-ip 10.1.1.2
+ min-tx-interval 10
+ min-rx-interval 10
+#
+return

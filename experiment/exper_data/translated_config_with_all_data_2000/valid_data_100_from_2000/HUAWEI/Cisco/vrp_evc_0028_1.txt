@@ -1,0 +1,22 @@
+hostname PE2
+ethernet cfm ma ma1 md md1
+ethernet cfm ma mpls md none
+mpls ldp remote-peer 3.3.3.9 3.3.3.9
+interface GigabitEthernet2/0/0
+ mpls ldp autoconfig
+ ip address 10.1.1.2 255.255.255.0
+ mpls ip
+ ip ospf 1 area 0
+ ospfv3 1 ipv6 area 0.0.0.0
+ ip address 2.2.2.9 0.0.0.0
+ ip address 10.1.1.0 0.0.0.255
+interface GigabitEthernet1/0/0
+interface range GigabitEthernet1/0/0 - 1
+ no shutdown
+interface GigabitEthernet1/0/0.1
+ encapsulation dot1q 10
+ service instance 1 ethernet
+  rewrite ingress tag pop 1
+ mpls l2transport route 1.1.1.9 100
+interface range GigabitEthernet2/0/0 - 0
+ no shutdown

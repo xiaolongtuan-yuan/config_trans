@@ -2,6 +2,7 @@
 将训练数据集中的json文件合并为一个，作为该供应商的json文件，
 '''
 import json
+from collections import defaultdict
 from pathlib import Path
 import os
 from tqdm import tqdm
@@ -72,7 +73,7 @@ def template_to_regex(template: str) -> re.Pattern:
     return re.compile(regex_pattern)
 
 def placeholder_count(template: str):
-    pattern = r'\[parameter\d+\]'
+    pattern = r"\[[^\]]+\]"
     # 查找所有匹配的占位符
     matches = re.findall(pattern, template)
     return len(matches)
@@ -102,7 +103,7 @@ def merge_models(config1, config2, vendor_command, template_used_statistic):
             template_dict, regex = check_template_duplication(command_line, vendor_command)
             if template_dict:
                 # 如果 vendor_command 中已经存在这个命令对应的模版, 选择具有最大参数的模版
-                if len(value["parameters"]) <= len(template_dict['parameters']):# 需要模版库
+                if len(value["parameters"]) < len(template_dict['parameters']) or 'parameter' in template_dict['template']:# 需要模版库
                     value['template'] = template_dict['template']
                     key = template_dict['template']
                     value['parameters'] = template_dict['parameters']
@@ -213,7 +214,7 @@ if __name__ == "__main__":
     os.makedirs(vendor_model_dir, exist_ok=True)
     # for scale in [40, 80, 120]:
     for vendor in vendors:
-        template_used_statistic = {}
+        template_used_statistic = defaultdict(int)
         vendor_model = {}
         vendor_command_re = {}
         merge_count = 0

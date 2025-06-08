@@ -1,0 +1,19 @@
+sysname CE3
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 172.17.1.2 255.255.255.0
+user-group external
+bgp 600
+ import-route direct
+ ipv4-family unicast
+  peer 172.17.1.2 next-hop-local
+  peer 172.17.1.1 next-hop-local
+  peer 172.17.1.1 import IMPORT-DIRECT
+  peer 172.17.1.1 route-policy IMPORT-DIRECT import
+ peer 172.17.1.1 as-number 100
+ ipv6-family unicast
+ l2vpn-family EVPN
+ peer 10.1.1.2 enable
+traffic-policy IMPORT-DIRECT inbound
+traffic policy IMPORT-DIRECT
+traffic policy 1

@@ -1,0 +1,64 @@
+{
+    "command_accuracy": 0.5,
+    "missed_commands": [
+        "set firewall family inet filter aaa term 5 from source-address 10.100.0.11/32",
+        "set firewall family inet filter aaa term 10 from source-address 10.110.0.11/32",
+        "set firewall family inet filter aaa term 5 then routing-instance tunnel-instance",
+        "set firewall family inet filter aaa term 10 then routing-instance tunnel-instance",
+        "set routing-instances tunnel-instance instance-type virtual-router",
+        "set firewall family inet filter aaa term 5 from source-address 10.100.0.11/32",
+        "set firewall family inet filter aaa term 5 then routing-instance tunnel-instance",
+        "set firewall family inet filter aaa term 10 from source-address 10.110.0.11/32",
+        "set firewall family inet filter aaa term 10 then routing-instance tunnel-instance",
+        "set routing-instances tunnel-instance instance-type virtual-router"
+    ],
+    "grammatical_accuracy": 0.7,
+    "missed_templates": [
+        "set firewall family [parameter1] filter [parameter2] term [parameter3] then routing-instance [parameter4]",
+        "set routing-instances [parameter1] instance-type [parameter2]"
+    ],
+    "llm_command_accuracy": 0.0,
+    "llm_command_ratio": 0.391304347826087,
+    "command_for_llm": [
+        "acl number 3002",
+        "rule 5 permit ip source 10.100.0.11 0.0.0.255",
+        "rule 5 permit ip source 10.110.0.11 0.0.0.255",
+        "acl number 3001"
+    ],
+    "llm_trans_commands": [
+        "set firewall family inet filter 3001",
+        "set firewall family inet filter 3001",
+        "set firewall family inet filter ACL_3001 term rule5 from source-address 10.100.0.11/24",
+        "set firewall family inet filter ACL_3001 term rule5 then accept",
+        "set firewall family inet filter a3002",
+        "set firewall family inet filter a3002",
+        "set firewall family inet filter a3002 term rule5 from source-address 10.110.0.11/32",
+        "set firewall family inet filter a3002 term rule5 from source-prefix-list 10.110.0.0/24",
+        "set firewall family inet filter a3002 term rule5 then accept"
+    ],
+    "source_commands": [
+        "rule 5 permit ip source 10.100.0.11 0.0.0.255",
+        "ip address 10.100.0.10 255.255.255.0",
+        "policy-based-route aaa permit node 5 map-instance 5",
+        "interface Tunnel30",
+        "undo shutdown",
+        "interface GigabitEthernet2/0/0",
+        "return",
+        "apply output-interface Tunnel40",
+        "ip policy-based-route aaa",
+        "policy-based-route aaa permit node 10 map-instance 10",
+        "rule 5 permit ip source 10.110.0.11 0.0.0.255",
+        "acl number 3001",
+        "ip address 10.110.0.10 255.255.255.0",
+        "if-match acl name a3001",
+        "interface Tunnel40",
+        "apply output-interface Tunnel30",
+        "interface GigabitEthernet1/0/0",
+        "acl number 3002",
+        "sysname DeviceA",
+        "if-match acl name a3002"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

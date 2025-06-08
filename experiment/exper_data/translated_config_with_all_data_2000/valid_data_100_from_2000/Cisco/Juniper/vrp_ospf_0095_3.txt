@@ -1,0 +1,15 @@
+set system host-name DeviceD
+set protocols ospf area 0.0.0.1 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.1 interface ge-0/0/0.0 authentication md5 1 key $9$H3LloW0rld
+set protocols ospf area 0.0.0.1 interface ge-0/0/0.0 interface-type p2p
+set protocols ospf area 2 interface ge-0/0/1.0
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 family inet address 192.168.2.2/24
+interfaces ge-1/0/0.0
+set interfaces ge-2/0/0 unit 2/0/0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 172.17.1.1/24
+interfaces ge-2/0/0.0
+set routing-options static route 10.0.0.0/8 next-hop Null0
+set protocols isis export REDIST-CONNECTED

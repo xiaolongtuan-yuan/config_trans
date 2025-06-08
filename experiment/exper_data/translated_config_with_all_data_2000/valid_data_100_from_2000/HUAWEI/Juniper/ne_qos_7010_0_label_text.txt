@@ -1,0 +1,15 @@
+set system host-name DeviceA
+
+set firewall family inet filter aaa term 5 from source-address 10.100.0.11/32
+set firewall family inet filter aaa term 5 then routing-instance tunnel-instance
+
+set firewall family inet filter aaa term 10 from source-address 10.110.0.11/32
+set firewall family inet filter aaa term 10 then routing-instance tunnel-instance
+
+set interfaces ge-1/0/0 unit 0 family inet address 10.100.0.10/24
+set interfaces ge-1/0/0 unit 0 family inet filter input aaa
+
+set interfaces ge-2/0/0 unit 0 family inet address 10.110.0.10/24
+set interfaces ge-2/0/0 unit 0 family inet filter input aaa
+
+set routing-instances tunnel-instance instance-type virtual-router

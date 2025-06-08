@@ -1,0 +1,23 @@
+sysname Device1
+isis 1
+ network-entity 10.0000.0000.0001.00
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 192.168.3.2 255.255.255.0
+ isis network-type p2p
+interface GigabitEthernet1/0/1
+ ip address 192.168.2.2 255.255.255.0
+interface LoopBack0
+ ip address 1.1.1.1 255.255.255.255
+bgp 100
+ peer 2.2.2.2 as-number 100
+ peer 2.2.2.2 enable
+ ipv4-family unicast
+  peer 2.2.2.2 next-hop-self
+  peer 3.3.3.3 next-hop-self
+ peer 2.2.2.2 connect-interface LoopBack0
+ peer 3.3.3.3 as-number 100
+ peer 3.3.3.3 enable
+ peer 3.3.3.3 connect-interface Loopback0
+peer 2.2.2.2 reflect-client
+peer 3.3.3.3 reflect-client

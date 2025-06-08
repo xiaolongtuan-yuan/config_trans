@@ -1,0 +1,36 @@
+set system host-name MasterA
+
+set protocols bfd
+
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.3.2/30
+set interfaces ge-0/0/1 unit 0 family mpls
+set interfaces ge-0/0/1 unit 0 family iso
+
+set interfaces ge-0/0/2 unit 0 family inet address 10.3.4.1/30
+set interfaces ge-0/0/2 unit 0 family mpls
+set interfaces ge-0/0/2 unit 0 family iso
+
+set interfaces lo0 unit 0 family inet address 3.3.3.3/32
+set interfaces lo0 unit 0 family iso
+
+set interfaces ge-0/0/3 unit 0 family inet address 192.168.0.2/24
+set interfaces ge-0/0/4 unit 0 family inet address 192.168.1.2/24
+
+set protocols vrrp track interface ge-0/0/1
+set protocols vrrp track interface ge-0/0/2
+
+set protocols isis interface ge-0/0/1.0 point-to-point
+set protocols isis interface ge-0/0/2.0 point-to-point
+set protocols isis interface lo0.0 passive
+
+set protocols isis level 1 wide-metrics-only
+set protocols isis reference-bandwidth 1000000
+
+set policy-options policy-statement REDIST-CONNECTED term 1 from protocol direct
+set policy-options policy-statement REDIST-CONNECTED term 1 then accept
+
+set policy-options policy-statement REDIST-STATIC term 1 from protocol static
+set policy-options policy-statement REDIST-STATIC term 1 then accept
+
+set protocols isis export REDIST-CONNECTED
+set protocols isis export REDIST-STATIC

@@ -1,0 +1,29 @@
+hostname PE1
+ip ssh source-interface all
+router isis 1
+ address-family ipv4
+  redistribute ldp
+interface GigabitEthernet1/0/0
+ no shutdown
+ encapsulation flexible-ethernet-services
+ encapsulation vlan-vpls
+ switchport access vlan 10
+l2vpn xconnect context PE1
+neighbor 3.3.3.9 vc-id 101 encapsulation mpls
+interface GigabitEthernet1/0/0.1
+neighbor 3.3.3.9 remote-as 101
+interface GigabitEthernet2/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+ip ssh source-interface GigabitEthernet2/0/0
+ip rsvp bandwidth 5000
+ip rsvp bandwidth 80
+interface Loopback0
+ no shutdown
+ ip address 1.1.1.9 255.255.255.255
+ip route 10.1.1.1 255.255.255.255 none 10.1.1.1
+router ospf 1
+network 0.0.0.0 0.0.0.0 area 0
+network 0.0.0.0 255.255.255.255 area 0
+network none none area 0.0.0.0
+ip route 1.1.1.9 255.255.255.255 none

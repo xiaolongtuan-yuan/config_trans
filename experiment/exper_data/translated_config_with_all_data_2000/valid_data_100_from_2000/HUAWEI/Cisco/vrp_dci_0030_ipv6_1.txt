@@ -1,0 +1,27 @@
+hostname P
+ethernet cfm ma ma1 md md1
+ethernet cfm ma mpls md none
+interface GigabitEthernet2/0/0
+ mpls traffic-eng tunnels
+ ip address 192.168.10.1 255.255.255.0
+ mpls ip
+interface GigabitEthernet1/0/0
+ mpls ip
+ ip address 192.168.1.2 255.255.255.0
+ mpls traffic-eng tunnels
+mpls ip
+interface range GigabitEthernet1/0/0 - 1
+ no shutdown
+interface range GigabitEthernet2/0/0 - 0
+ no shutdown
+interface LoopBack1
+ ip address 2.2.2.2 255.255.255.255
+ ip ospf 1 area 0
+ capability opaque
+ ospfv3 1 ipv6 area 0.0.0.0
+ ip address 2.2.2.2 0.0.0.0
+ ip address 192.168.1.0 0.0.0.255
+ ip address 192.168.10.0 0.0.0.255
+router ospf 1
+ mpls traffic-eng enable
+ethernet cfm ma MA_name md MD_name

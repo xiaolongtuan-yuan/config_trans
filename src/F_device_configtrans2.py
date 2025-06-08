@@ -688,7 +688,7 @@ class Config_Translater:
         # 填充到目标模板
         if isinstance(params, types.GenericAlias):
             return dest_template
-        para_placeholders = re.findall(r'\[parameter\d+\]', dest_template)
+        para_placeholders = re.findall(r"\[[^\]]+\]", dest_template)
         for index, param in enumerate(params):
             if index >= len(para_placeholders):
                 break

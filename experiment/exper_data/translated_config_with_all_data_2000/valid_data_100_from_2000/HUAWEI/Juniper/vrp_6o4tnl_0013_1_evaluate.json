@@ -1,0 +1,77 @@
+{
+    "command_accuracy": 0.2,
+    "missed_commands": [
+        "set interfaces gr-0/0/0 unit 1 tunnel source 10.1.1.1",
+        "set interfaces gr-0/0/0 unit 1 tunnel destination 0.0.0.0",
+        "set services service-set 6rd_ss interface-service service-interface gr-0/0/0",
+        "set services 6rd service-set 6rd_ss",
+        "set services 6rd tunnel-context ipv4",
+        "set services 6rd ipv6-prefix 2001:db8::/32",
+        "set services 6rd ipv4-prefix-length 8",
+        "set routing-options rib inet6.0 static route 2001:db8::/32 next-hop gr-0/0/0.1",
+        "set interfaces gr-0/0/0 unit 1 tunnel source 10.1.1.1",
+        "set interfaces gr-0/0/0 unit 1 tunnel destination 0.0.0.0",
+        "set services service-set 6rd_ss interface-service service-interface gr-0/0/0",
+        "set services 6rd service-set 6rd_ss",
+        "set services 6rd tunnel-context ipv4",
+        "set services 6rd ipv6-prefix 2001:db8::/32",
+        "set services 6rd ipv4-prefix-length 8",
+        "set routing-options rib inet6.0 static route 2001:db8::/32 next-hop gr-0/0/0.1"
+    ],
+    "grammatical_accuracy": 0.3,
+    "missed_templates": [
+        "set interfaces [parameter1] unit [parameter2] tunnel destination [parameter3]",
+        "set services service-set [parameter1] interface-service service-interface [parameter2]",
+        "set services 6rd service-set [parameter1]",
+        "set services 6rd tunnel-context [parameter1]",
+        "set services 6rd ipv6-prefix [parameter1]",
+        "set services 6rd ipv4-prefix-length [parameter1]",
+        "set routing-options rib [parameter1] static route [parameter2] next-hop [parameter3]"
+    ],
+    "llm_command_accuracy": 0.1,
+    "llm_command_ratio": 0.6521739130434783,
+    "command_for_llm": [
+        "ipv6 address 2001:db8:101:101::1 64",
+        "ip address 10.1.1.1 255.255.255.0",
+        "tunnel-protocol ipv6-ipv4 6rd",
+        "source GigabitEthernet1/0/1",
+        "interface Tunnel 1"
+    ],
+    "llm_trans_commands": [
+        "set interfaces ge-1/0/1 unit 0 family inet address 10.1.1.1/24",
+        "set interfaces ge-1/0/2 unit 0 family inet6 address 2001:db8:101:101::1/64",
+        "interfaces gr-1/0/0",
+        "interfaces gr-1/0/0",
+        "set protocols tunnel interface tun.1 family inet6",
+        "set protocols tunnel interface tun.1 tunnel source ge-1/0/1",
+        "set protocols tunnel interface tun.1 tunnel mode ipip6 6rd",
+        "set protocols tunnel interface tun.1 6rd br 2001:db8::/32",
+        "set protocols tunnel interface tun.1 6rd prefix-length 8",
+        "set interfaces tun unit 1 tunnel source ge-1/0/1",
+        "set interfaces tun unit 1 tunnel mode ipip6 6rd",
+        "set interfaces tun unit 1 6rd br 2001:db8::/32",
+        "set interfaces tun unit 1 6rd prefix-length 8",
+        "interfaces gr-1/0/0",
+        "set interfaces tunnel1 source-address 10.1.1.1"
+    ],
+    "source_commands": [
+        "interface GigabitEthernet1/0/2",
+        "ipv6-prefix 2001:db8::/32",
+        "ipv6 address 2001:db8:101:101::1 64",
+        "ipv4-prefix length 8",
+        "return",
+        "sysname DeviceA",
+        "ip address 10.1.1.1 255.255.255.0",
+        "interface GigabitEthernet1/0/1",
+        "tunnel-protocol ipv6-ipv4 6rd",
+        "source GigabitEthernet1/0/1",
+        "ipv6 address 2001:db8:101:100::1 56",
+        "ipv6 route-static 2001:db8:: 32 Tunnel1",
+        "ipv6 enable",
+        "undo shutdown",
+        "interface Tunnel 1"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
+}

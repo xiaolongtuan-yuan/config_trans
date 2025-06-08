@@ -1,0 +1,13 @@
+hostname CE3
+interface GigabitEthernet1/0/1
+ no shutdown
+ ip address 172.17.1.2 255.255.255.0
+aaa authentication login external group external local
+redistribute bgp
+aaa authentication login default group external local
+redistribute 100
+redistribute unicast
+redistribute direct
+policy-map IMPORT-DIRECT
+ route-map IMPORT-DIRECT permit 10
+ match interface

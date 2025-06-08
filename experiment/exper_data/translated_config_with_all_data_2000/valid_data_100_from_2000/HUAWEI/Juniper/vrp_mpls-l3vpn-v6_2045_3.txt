@@ -1,0 +1,21 @@
+set system host-name CE
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 family inet6
+set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:1::1/64
+set interfaces ge-1/0/0 set interfaces ge-2/0/0 unit 0 family inet6 address 2001:db8:3::1/64
+set interfaces ge-1/0/0 unit 1 family inet6
+set interfaces ge-1/0/0 set interfaces lo0 unit 0 family inet6 address 2001:db8:0:1:2::1/128
+set interfaces lo0.1 disable
+set routing-options autonomous-system 65410
+set protocols bgp group 65410 type internal
+set protocols bgp group 65410 neighbor 10.10.10.10 family inet unicast
+set protocols bgp group 65410 type external
+set protocols bgp group 65410 neighbor 2001:db8:1::2 peer-as 100
+set protocols bgp group 65410 export BGP-NETWORKS
+set protocols bgp group 65410 neighbor 2001:db8:3::2 peer-as 100
+set protocols bgp group 65410 family inet unicast
+set protocols bgp group 65410 local-as 65410
+set protocols bgp group 65410 peer-as 65410
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set system host-name CE1

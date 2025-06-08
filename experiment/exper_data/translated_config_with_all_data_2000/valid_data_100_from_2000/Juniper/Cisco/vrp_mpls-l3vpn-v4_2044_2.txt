@@ -1,0 +1,29 @@
+hostname CE1
+ip route 2.2.2.9 255.255.255.255 none
+mpls ldp advertise-labels interface GigabitEthernet0/0/0
+mpls ldp advertise-labels interface GigabitEthernet0/0/1
+mpls ldp discovery transport-address GigabitEthernet0/0/0
+mpls ldp discovery transport-address GigabitEthernet0/0/1
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 40.1.1.2 255.255.255.0
+ ipv6 address 2001:DB8::/64 eui-64
+ ip address 11.1.1.1 255.255.255.0
+interface GigabitEthernet0/0/1
+ no shutdown
+ ipv6 address 2001:DB8::/64 eui-64
+interface Loopback0
+ no shutdown
+ ip address 2.2.2.9 255.255.255.255
+ip route 0.0.0.0 0.0.0.0 none 40.1.1.1
+aaa authentication login default0 group peer-AS100 local
+redistribute bgp
+aaa authentication login peer-AS100 group 11.1.1.1 local
+policy-map policy1
+ route-map policy1 permit 10
+ set ip next-hop self
+network 0.0.0.0 255.255.255.255 area 0
+network 0.0.0.0 0 area ge-0/0/0.0
+network 0.0.0.0 0 area ge-0/0/1.0
+network 0.0.0.0 0.0.0.0 area 0
+router ospf 1 vrf policy1

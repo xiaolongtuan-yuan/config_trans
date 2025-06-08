@@ -1,0 +1,30 @@
+sysname LSRA
+mpls rsvp-te
+mpls label protocol ldp
+interface GigabitEthernet1/0/0.0
+interface GigabitEthernet1/0/1.0
+interface LoopBack0
+ mpls traffic-eng passive-interface LoopBack0
+ undo shutdown
+ ip address 1.1.1.9 255.255.255.255
+isis 2
+ is-level level-2
+link-protocol ppp
+bfd none bind peer-ip none interface GigabitEthernet1/0/0 source-ip none auto
+bfd bfd_session_name bind link-bundle peer-ip peer_ip_value interface interface_name source-ip source_ip_value
+ min-rx-interval 300
+bfd session_ge_1_0_1 bind peer-ip none interface GigabitEthernet1/0/1 source-ip none auto
+bfd bfd_300 bind link-bundle peer-ip 192.168.1.2 interface ge-1/0/1 source-ip 192.168.1.1
+ min-rx-interval 300
+interface GigabitEthernet1/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.0
+ ipv6 address none mpls
+interface GigabitEthernet1/0/1
+ undo shutdown
+ ip address 10.1.2.1 255.255.255.0
+ ipv6 address 2001::DB8/64 eui-64
+traffic-policy fec-policy inbound
+bgp 600
+ peer 10.1.1.2 enable
+ ipv4-family unicast

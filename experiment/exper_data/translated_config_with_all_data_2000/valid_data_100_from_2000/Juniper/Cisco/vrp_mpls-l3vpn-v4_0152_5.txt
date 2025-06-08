@@ -1,0 +1,12 @@
+hostname CE2
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 10.2.1.1 255.255.255.0
+aaa authentication login EBGP group EBGP local
+redistribute bgp
+redistribute bgp 200
+redistribute connected
+router bgp 65002
+policy-map EXPORT_DIRECT
+ route-map EXPORT_DIRECT permit 10
+ match interface

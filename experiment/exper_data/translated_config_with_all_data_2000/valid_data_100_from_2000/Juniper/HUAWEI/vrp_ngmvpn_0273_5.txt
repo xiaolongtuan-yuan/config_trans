@@ -1,0 +1,35 @@
+sysname CE2
+multicast ipv6 routing-enable
+multicast routing-enable
+ qos-profile multicast6-global
+interface GigabitEthernet0/0/0
+ area 0.0.0.0
+ link-protocol pim
+ pim sm
+ ppp multilink group 1
+ mld static-group FF3E::1 source 2001:DB8:5::2
+interface GigabitEthernet0/0/4
+ area 0.0.0.0
+ undo pim ipv6 sparse-mode
+ policy-based-route ge-0/0/0 permit node 1 map-instance 1
+  apply output-interface GigabitEthernet0/0/0.0
+ospfv3 0.0.0.0
+ area 0.0.0.0
+ospf 0.0.0.0 router-id ge-0/0/0.0
+ area 0.0.0.0
+  network 0.0.0.0 ge-0/0/0.0
+ospf 0.0.0.0 router-id 1
+ area 0.0.0.0
+  network 0.0.0.0 ge-0/0/4.0
+ipv6 route-static 2001:db8:6::3 128 ::
+interface mp-group 1/0/0
+ ip address none none
+ ip address sparse none
+interface mp-group 0/0/0
+ ip address none none
+interface mp-group 1/0/4
+ ip address sparse none
+interface mp-group 1
+ ip address FF3E::1 none
+interface mp-group FF3E::1
+ ip address 2001:db8:5::2 FF3E::1

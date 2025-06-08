@@ -1,0 +1,20 @@
+hostname CE1
+ethernet cfm ma bfd md none
+interface GigabitEthernet1/0/0
+ ip address 10.1.1.1 255.255.255.0
+interface range GigabitEthernet1/0/1 - 2
+ no shutdown
+interface GigabitEthernet2/0/0
+ ip address 10.2.1.1 255.255.255.0
+interface range GigabitEthernet2/0/0 - None
+ no shutdown
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+ ip load-sharing per-packet
+ tunnel destination 10.1.1.2
+ ip address 10.1.1.2 255.255.255.255
+ tunnel destination 10.2.1.2
+ ip address 10.2.1.2 255.255.255.255
+ipv6 bfd ce1_to_pe1 bind peer-ipv6 2001:db8:3::2 source-ipv6 2001:db8:1::1
+ipv6 bfd ce1_to_pe2 bind peer-ipv6 none source-ipv6 10.2.1.1
+ethernet cfm ma MA_name md MD_name

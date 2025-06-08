@@ -1,0 +1,29 @@
+hostname CE1
+interface GigabitEthernet0/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+interface GigabitEthernet0/0/1
+ no shutdown
+ ip address 10.2.1.1 255.255.255.0
+interface Loopback0
+ no shutdown
+ ip address 1.1.1.1 255.255.255.255
+ip route 0.0.0.0 0.0.0.0 none 10.1.1.2
+ip route 0.0.0.0 0.0.0.0 none 10.2.1.2
+bfd map ipv4 none ge-0/0/0.0
+bfd all-interfaces
+bfd map ipv4 none ge-0/0/1.0
+ipv6 bfd none bind peer-ipv6 10.1.1.2 source-ipv6 none
+ interface GigabitEthernet0/0/0
+ bfd interval 100 min_rx 100 multiplier 3
+ !
+ router bfd
+ neighbor 10.1.1.2 interface GigabitEthernet0/0/0
+ipv6 bfd none bind peer-ipv6 10.2.1.2 source-ipv6 none
+ interface GigabitEthernet0/0/1
+ bfd interval 100 min_rx 100 multiplier 3
+ !
+ router bfd
+ neighbor 10.2.1.2 interface GigabitEthernet0/0/1
+ip load-sharing per-packet
+route-target export 100:2

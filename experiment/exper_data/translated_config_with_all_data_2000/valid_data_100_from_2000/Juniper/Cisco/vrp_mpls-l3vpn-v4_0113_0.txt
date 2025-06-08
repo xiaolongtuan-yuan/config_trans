@@ -1,0 +1,14 @@
+hostname CE1
+interface GigabitEthernet1/0/0
+ no shutdown
+ ip address 10.1.1.1 255.255.255.0
+interface Loopback1
+ ip address 11.11.11.11 255.255.255.255
+aaa authentication login default group external local
+redistribute bgp
+redistribute connected
+policy-map EXPORT_DIRECT
+ route-map EXPORT_DIRECT permit 10
+ match ip address prefix-list DIRECT_ROUTES
+ match source-protocol connected
+ip route 11.11.11.11 255.255.255.255 Null0

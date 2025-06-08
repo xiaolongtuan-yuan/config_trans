@@ -76,7 +76,7 @@
     "mpls ldp": [
         {
             "para_map": [],
-            "trans_command": "unit [parameter2] family mpls",
+            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -188,9 +188,9 @@
         {
             "para_map": [
                 0,
-                0
+                3
             ],
-            "trans_command": "aggregated-ether-options link-speed [parameter2]",
+            "trans_command": "unit [unit_number] family [family_type] storm-control [storm_control_type] packet-bandwidth [bandwidth_value]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -199,9 +199,9 @@
         {
             "para_map": [
                 1,
-                0
+                3
             ],
-            "trans_command": "aggregated-ether-options link-speed [parameter2]",
+            "trans_command": "unit [unit_number] family [family_type] storm-control [storm_control_type] packet-bandwidth [bandwidth_value]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -225,7 +225,7 @@
                 1,
                 2
             ],
-            "trans_command": "unit [parameter2] family [parameter3] interface-mode [parameter4]",
+            "trans_command": "unit [unit_number] family [family_type] interface-mode [mode]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -235,7 +235,7 @@
     "switchport": [
         {
             "para_map": [],
-            "trans_command": "unit [parameter2] family ethernet-switching port-mode [parameter3]",
+            "trans_command": "unit [unit] family [family] [port-mode] [mode]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -261,7 +261,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] family [parameter3] address [parameter4] vrrp-group [parameter5] priority [parameter6]",
+            "trans_command": "unit [parameter2] family [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -284,7 +284,7 @@
     "ipv6 enable": [
         {
             "para_map": [],
-            "trans_command": "disable",
+            "trans_command": "unit [unit_number] family [family_type]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -307,7 +307,7 @@
     "ipv6 nd other-config-flag": [
         {
             "para_map": [],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "trans_command": "unit [unit-number] tunnel ipv6-prefix [ipv6-prefix]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -320,7 +320,7 @@
                 0,
                 1
             ],
-            "trans_command": "family [parameter2] address [parameter3]",
+            "trans_command": "unit [unit-number] tunnel ipv6-prefix-length [prefix-length]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -333,7 +333,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "trans_command": "unit [unit-number] tunnel ipv6-prefix-length [prefix-length]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -343,7 +343,7 @@
     "ipv6 address autoconfig": [
         {
             "para_map": [],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4] vrrp-group [parameter5] virtual-address [parameter6]",
+            "trans_command": "unit [unit_number] family [family_type]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -380,6 +380,41 @@
                 0
             ],
             "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "xconnect [peer_ip] [vc_id] encapsulation [encapsulation_type]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "encapsulation [encapsulation_type] [vlan_id]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "unit [unit] encapsulation [encapsulation] vlan-id [vlan-id]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                0
+            ],
+            "trans_command": "encapsulation [encapsulation_type] [vlan_id]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -513,9 +548,9 @@
         {
             "para_map": [
                 0,
-                2
+                0
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "trans_command": "tunnel destination [parameter2]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -528,7 +563,7 @@
                 0,
                 2
             ],
-            "trans_command": "unit [parameter2] family [parameter3] interface-mode [parameter4]",
+            "trans_command": "unit [unit_number] family [family_type] interface-mode [mode]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -548,13 +583,36 @@
             "root": "set interfaces [parameter1]"
         }
     ],
+    "mpls ldp autoconfig": [
+        {
+            "para_map": [],
+            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "vrf forwarding [vrf_name]": [
+        {
+            "para_map": [
+                0,
+                4
+            ],
+            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4] vrrp-group [parameter5] virtual-address [parameter6]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
     "ipv6 address [parameter1]": [
         {
             "para_map": [
                 0,
                 1
             ],
-            "trans_command": "family [parameter2] address [parameter3]",
+            "trans_command": "unit [unit-number] tunnel ipv6-prefix-length [prefix-length]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -567,7 +625,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "trans_command": "unit [unit_number] family [family_type]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -576,9 +634,9 @@
         {
             "para_map": [
                 1,
-                2
+                1
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "trans_command": "unit [unit-number] tunnel ipv6-prefix-length [prefix-length]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -601,7 +659,7 @@
                 0,
                 0
             ],
-            "trans_command": "unit [parameter2] family mpls",
+            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -660,7 +718,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4] vrrp-group [parameter5] virtual-address [parameter6]",
+            "trans_command": "unit [unit-number] tunnel ipv6-prefix [ipv6-prefix]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -684,9 +742,9 @@
         {
             "para_map": [
                 0,
-                0
+                1
             ],
-            "trans_command": "unit [parameter2] family mpls",
+            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -697,9 +755,9 @@
         {
             "para_map": [
                 0,
-                0
+                3
             ],
-            "trans_command": "aggregated-ether-options link-speed [parameter2]",
+            "trans_command": "unit [unit_number] family [family_type] storm-control [storm_control_type] packet-bandwidth [bandwidth_value]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -710,9 +768,9 @@
         {
             "para_map": [
                 0,
-                0
+                3
             ],
-            "trans_command": "gigether-options speed [parameter2]",
+            "trans_command": "unit [unit_number] family [family_type] storm-control [storm_control_type] packet-bandwidth [bandwidth_value]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -728,19 +786,6 @@
             "trans_command": "interfaces [parameter2]",
             "parent_command": [],
             "root": "interfaces [parameter2]"
-        }
-    ],
-    "vrf forwarding [parameter1]": [
-        {
-            "para_map": [
-                0,
-                4
-            ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4] vrrp-group [parameter5] virtual-address [parameter6]",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
-            "root": "set interfaces [parameter1]"
         }
     ],
     "qos trust dscp": [
@@ -777,9 +822,9 @@
         {
             "para_map": [
                 0,
-                1
+                2
             ],
-            "trans_command": "unit [parameter2] encapsulation [parameter3] vlan-id [parameter4]",
+            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -788,9 +833,9 @@
         {
             "para_map": [
                 1,
-                2
+                0
             ],
-            "trans_command": "unit [parameter2] encapsulation [parameter3] vlan-id [parameter4]",
+            "trans_command": "encapsulation dot1q [parameter2]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -799,9 +844,9 @@
         {
             "para_map": [
                 2,
-                1
+                0
             ],
-            "trans_command": "unit [parameter2] encapsulation [parameter3] vlan-id [parameter4]",
+            "trans_command": "encapsulation [encapsulation_type] [vlan_id]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -821,9 +866,9 @@
         {
             "para_map": [
                 1,
-                1
+                2
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4] vrrp-group [parameter5] virtual-address [parameter6]",
+            "trans_command": "unit [unit_number] family [family_type] filter [direction] [filter_name]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -836,7 +881,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] family [parameter3] interface-mode [parameter4]",
+            "trans_command": "unit [unit_number] family [family_type] interface-mode [mode]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -858,9 +903,9 @@
         {
             "para_map": [
                 1,
-                0
+                3
             ],
-            "trans_command": "unit [parameter2] family [parameter3] interface-mode [parameter4]",
+            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -870,7 +915,7 @@
     "isis passive": [
         {
             "para_map": [],
-            "trans_command": "unit [parameter2] family [parameter3] filter [parameter4] [parameter5]",
+            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -896,7 +941,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "trans_command": "unit [unit-number] tunnel ipv6-prefix [ipv6-prefix]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -980,23 +1025,13 @@
             "root": "set interfaces [parameter1]"
         }
     ],
-    "mpls ldp autoconfig": [
-        {
-            "para_map": [],
-            "trans_command": "unit [parameter2] family mpls",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
-            "root": "set interfaces [parameter1]"
-        }
-    ],
     "dot1x pae [parameter1]": [
         {
             "para_map": [
                 0,
-                0
+                2
             ],
-            "trans_command": "encapsulation dot1q [parameter2]",
+            "trans_command": "unit [unit_number] family [family_type] port-mode [port_mode]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -1007,9 +1042,9 @@
         {
             "para_map": [
                 0,
-                3
+                2
             ],
-            "trans_command": ".[parameter2] unit [parameter3] family [parameter4] interface-mode [parameter5]",
+            "trans_command": "unit [unit] family [family] [port-mode] [mode]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -1029,13 +1064,37 @@
             "root": "set interfaces [parameter1]"
         }
     ],
+    "service-policy [direction] [policy-map-name]": [
+        {
+            "para_map": [
+                0,
+                2
+            ],
+            "trans_command": "unit [unit_number] family [family_type] policer [direction] [policer_name]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "unit [parameter2] family inet service input [parameter3]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
     "ptp clock-domain [parameter1]": [
         {
             "para_map": [
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] family inet service input [parameter3]",
+            "trans_command": "unit [parameter2] family [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -1087,7 +1146,7 @@
                 0,
                 0
             ],
-            "trans_command": "tunnel destination [parameter2]",
+            "trans_command": "tunnel source [parameter2]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -1098,7 +1157,7 @@
                 1,
                 0
             ],
-            "trans_command": "tunnel destination [parameter2]",
+            "trans_command": "tunnel source [parameter2]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -1111,10 +1170,8 @@
                 0,
                 0
             ],
-            "trans_command": "mtu [parameter2]",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
+            "trans_command": "set interfaces [parameter1]",
+            "parent_command": [],
             "root": "set interfaces [parameter1]"
         }
     ],
@@ -1176,6 +1233,30 @@
             "root": "set interfaces [parameter1]"
         }
     ],
+    "vrrp [group_id] preempt delay minimum [delay_time]": [
+        {
+            "para_map": [
+                0,
+                2
+            ],
+            "trans_command": "unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt hold-time [parameter5]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                3
+            ],
+            "trans_command": "unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt hold-time [parameter5]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
     "ntp broadcast client": [
         {
             "para_map": [],
@@ -1203,6 +1284,30 @@
         {
             "para_map": [],
             "trans_command": "unit [parameter2] tunnel encapsulation [parameter3]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "ppp authentication [method] [direction]": [
+        {
+            "para_map": [
+                0,
+                2
+            ],
+            "trans_command": "unit [unit_number] family [family_type] [protocol]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                2
+            ],
+            "trans_command": "unit [unit_number] family [family_type] policer [direction] [policer_name]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -1273,7 +1378,7 @@
                 0,
                 0
             ],
-            "trans_command": "encapsulation [parameter2]",
+            "trans_command": "encapsulation [encapsulation_type] [vlan_id]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -1323,9 +1428,9 @@
         {
             "para_map": [
                 0,
-                3
+                0
             ],
-            "trans_command": "unit [parameter2] family [parameter3] address [parameter4] vrrp-group [parameter5] priority [parameter6]",
+            "trans_command": "unit [parameter2] family [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -1414,13 +1519,13 @@
             "root": "set interfaces [parameter1]"
         }
     ],
-    "service-policy [parameter1] [parameter2]": [
+    "standby [group_number] track [tracked_object] decrement [value]": [
         {
             "para_map": [
                 0,
-                1
+                2
             ],
-            "trans_command": "unit [parameter2] family inet service input [parameter3]",
+            "trans_command": "unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt hold-time [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -1429,9 +1534,20 @@
         {
             "para_map": [
                 1,
-                1
+                2
             ],
-            "trans_command": "unit [parameter2] family inet service input [parameter3]",
+            "trans_command": "unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt hold-time [parameter5]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                4
+            ],
+            "trans_command": "unit [parameter2] family [parameter3] address [parameter4] vrrp-group [parameter5] priority [parameter6]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -1444,7 +1560,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] family [parameter3] interface-mode [parameter4]",
+            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -1454,7 +1570,7 @@
     "ipv6 nd managed-config-flag": [
         {
             "para_map": [],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4] vrrp-group [parameter5] virtual-address [parameter6]",
+            "trans_command": "unit [unit_number] family [family_type]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -1465,9 +1581,33 @@
         {
             "para_map": [
                 0,
-                4
+                2
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4] vrrp-group [parameter5] virtual-address [parameter6]",
+            "trans_command": "unit [unit_number] family [family_type] [protocol]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "ipv6 dhcp relay destination [ipv6_address] [interface]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "unit [unit_number] family [family_type]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "unit [unit_number] family [family_type]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -1490,7 +1630,7 @@
                 0,
                 2
             ],
-            "trans_command": "unit [parameter2] family [parameter3] interface-mode [parameter4]",
+            "trans_command": "unit [unit_number] family [family_type] interface-mode [mode]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -1537,9 +1677,9 @@
         {
             "para_map": [
                 0,
-                4
+                1
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4] vrrp-group [parameter5] virtual-address [parameter6]",
+            "trans_command": "unit [parameter2] family [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -1743,17 +1883,6 @@
             "root": "set protocols bgp local-as [parameter1]"
         }
     ],
-    "neighbor [parameter1] route-reflector-client": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "set routing-options autonomous-system [parameter1]",
-            "parent_command": [],
-            "root": "set routing-options autonomous-system [parameter1]"
-        }
-    ],
     "synchronization": [
         {
             "para_map": [],
@@ -1782,6 +1911,17 @@
             "trans_command": "set protocols bgp local-as [parameter1]",
             "parent_command": [],
             "root": "set protocols bgp local-as [parameter1]"
+        }
+    ],
+    "neighbor [parameter1] route-reflector-client": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set routing-options autonomous-system [parameter1]",
+            "parent_command": [],
+            "root": "set routing-options autonomous-system [parameter1]"
         }
     ],
     "redistribute ospf [parameter1]": [
@@ -1907,6 +2047,79 @@
             "root": "set protocols bgp local-as [parameter1]"
         }
     ],
+    "address-family [address_family]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set protocols bgp local-as [parameter1]",
+            "parent_command": [],
+            "root": "set protocols bgp local-as [parameter1]"
+        }
+    ],
+    "neighbor [ip_address] activate": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set routing-options autonomous-system [parameter1]",
+            "parent_command": [],
+            "root": "set routing-options autonomous-system [parameter1]"
+        }
+    ],
+    "neighbor [ip_address] next-hop-self": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set routing-options autonomous-system [parameter1]",
+            "parent_command": [],
+            "root": "set routing-options autonomous-system [parameter1]"
+        }
+    ],
+    "address-family [address_family] vrf [vrf_name]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set protocols bgp local-as [parameter1]",
+            "parent_command": [],
+            "root": "set protocols bgp local-as [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "set routing-options autonomous-system [parameter1]",
+            "parent_command": [],
+            "root": "set routing-options autonomous-system [parameter1]"
+        }
+    ],
+    "neighbor [ip_address] remote-as [asn]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set protocols bgp local-as [parameter1]",
+            "parent_command": [],
+            "root": "set protocols bgp local-as [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "set routing-options autonomous-system [parameter1]",
+            "parent_command": [],
+            "root": "set routing-options autonomous-system [parameter1]"
+        }
+    ],
     "bgp router-id [parameter1]": [
         {
             "para_map": [
@@ -1957,26 +2170,6 @@
             "trans_command": "set protocols bgp local-as [parameter1]",
             "parent_command": [],
             "root": "set protocols bgp local-as [parameter1]"
-        }
-    ],
-    "address-family [parameter1] vrf [parameter2]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "set routing-options autonomous-system [parameter1]",
-            "parent_command": [],
-            "root": "set routing-options autonomous-system [parameter1]"
-        },
-        {
-            "para_map": [
-                1,
-                0
-            ],
-            "trans_command": "set routing-options autonomous-system [parameter1]",
-            "parent_command": [],
-            "root": "set routing-options autonomous-system [parameter1]"
         }
     ],
     "bgp confederation peers [parameter1] [parameter2]": [
@@ -2156,9 +2349,11 @@
                 0,
                 0
             ],
-            "trans_command": "set protocols ospf area [parameter1]",
-            "parent_command": [],
-            "root": "set protocols ospf area [parameter1]"
+            "trans_command": "interface [parameter2] [parameter3]",
+            "parent_command": [
+                "set protocols ospf3 area [parameter1]"
+            ],
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "network [parameter1] [parameter2] area [parameter3]": [
@@ -2167,35 +2362,35 @@
                 0,
                 0
             ],
-            "trans_command": "set protocols ospf area [parameter1]",
+            "trans_command": "set protocols ospf3 area [parameter1]",
             "parent_command": [],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         },
         {
             "para_map": [
                 1,
                 0
             ],
-            "trans_command": "set protocols ospf area [parameter1]",
+            "trans_command": "set protocols ospf3 area [parameter1]",
             "parent_command": [],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         },
         {
             "para_map": [
                 2,
                 0
             ],
-            "trans_command": "set protocols ospf area [parameter1]",
+            "trans_command": "set protocols ospf3 area [parameter1]",
             "parent_command": [],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "capability opaque": [
         {
             "para_map": [],
-            "trans_command": "set protocols [parameter1] [parameter2]",
+            "trans_command": "set protocols ospf3 area [parameter1]",
             "parent_command": [],
-            "root": "set protocols [parameter1] [parameter2]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "mpls traffic-eng router-id [parameter1]": [
@@ -2204,11 +2399,11 @@
                 0,
                 0
             ],
-            "trans_command": "interface [parameter2] interface-type [parameter3]",
+            "trans_command": "interface [parameter2]",
             "parent_command": [
-                "set protocols ospf area [parameter1]"
+                "set protocols ospf3 area [parameter1]"
             ],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "mpls traffic-eng area [parameter1]": [
@@ -2217,9 +2412,9 @@
                 0,
                 0
             ],
-            "trans_command": "set protocols ospf area [parameter1]",
+            "trans_command": "set protocols ospf3 area [parameter1]",
             "parent_command": [],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "router-id [parameter1]": [
@@ -2228,11 +2423,11 @@
                 0,
                 0
             ],
-            "trans_command": "interface [parameter2]",
+            "trans_command": "interface [parameter2] [parameter3]",
             "parent_command": [
-                "set protocols ospf area [parameter1]"
+                "set protocols ospf3 area [parameter1]"
             ],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "redistribute connected subnets": [
@@ -2240,9 +2435,9 @@
             "para_map": [],
             "trans_command": "interface [parameter2] [parameter3]",
             "parent_command": [
-                "set protocols ospf area [parameter1]"
+                "set protocols ospf3 area [parameter1]"
             ],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "redistribute bgp [parameter1] subnets": [
@@ -2251,19 +2446,21 @@
                 0,
                 0
             ],
-            "trans_command": "set protocols [parameter1] [parameter2]",
-            "parent_command": [],
-            "root": "set protocols [parameter1] [parameter2]"
+            "trans_command": "interface [parameter2]",
+            "parent_command": [
+                "set protocols ospf3 area [parameter1]"
+            ],
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "passive-interface default": [
         {
             "para_map": [],
-            "trans_command": "interface [parameter2] passive",
+            "trans_command": "interface [parameter2] [parameter3]",
             "parent_command": [
-                "set protocols ospf area [parameter1]"
+                "set protocols ospf3 area [parameter1]"
             ],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "no passive-interface [parameter1]": [
@@ -2272,11 +2469,11 @@
                 0,
                 0
             ],
-            "trans_command": "interface [parameter2] passive",
+            "trans_command": "interface [parameter2]",
             "parent_command": [
-                "set protocols ospf area [parameter1]"
+                "set protocols ospf3 area [parameter1]"
             ],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "passive-interface [parameter1]": [
@@ -2287,9 +2484,9 @@
             ],
             "trans_command": "interface [parameter2] [parameter3]",
             "parent_command": [
-                "set protocols ospf area [parameter1]"
+                "set protocols ospf3 area [parameter1]"
             ],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "service [parameter1]": [
@@ -2298,9 +2495,11 @@
                 0,
                 0
             ],
-            "trans_command": "set protocols [parameter1] [parameter2]",
-            "parent_command": [],
-            "root": "set protocols [parameter1] [parameter2]"
+            "trans_command": "interface [parameter2] [parameter3]",
+            "parent_command": [
+                "set protocols ospf3 area [parameter1]"
+            ],
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "bridge-domain l2vpn [parameter1]": [
@@ -2311,9 +2510,9 @@
             ],
             "trans_command": "interface [parameter2]",
             "parent_command": [
-                "set protocols ospf area [parameter1]"
+                "set protocols ospf3 area [parameter1]"
             ],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "area [parameter1] nssa no-summary": [
@@ -2322,22 +2521,20 @@
                 0,
                 0
             ],
-            "trans_command": "set protocols ospf area [parameter1]",
+            "trans_command": "set protocols ospf3 area [parameter1]",
             "parent_command": [],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "mpls traffic-eng [parameter1]": [
         {
             "para_map": [
                 0,
-                1
+                0
             ],
-            "trans_command": "interface [parameter2] interface-type [parameter3]",
-            "parent_command": [
-                "set protocols ospf area [parameter1]"
-            ],
-            "root": "set protocols ospf area [parameter1]"
+            "trans_command": "set protocols [parameter1] [parameter2]",
+            "parent_command": [],
+            "root": "set protocols [parameter1] [parameter2]"
         }
     ],
     "mpls ldp autoconfig area [parameter1]": [
@@ -2346,9 +2543,9 @@
                 0,
                 0
             ],
-            "trans_command": "set protocols ospf area [parameter1]",
+            "trans_command": "set protocols ospf3 area [parameter1]",
             "parent_command": [],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "redistribute ospf [parameter1] subnets route-map [parameter2]": [
@@ -2357,26 +2554,26 @@
                 0,
                 0
             ],
-            "trans_command": "set protocols ospf area [parameter1]",
+            "trans_command": "set protocols ospf3 area [parameter1]",
             "parent_command": [],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         },
         {
             "para_map": [
                 1,
                 0
             ],
-            "trans_command": "set protocols ospf area [parameter1]",
+            "trans_command": "set protocols ospf3 area [parameter1]",
             "parent_command": [],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "default-information originate": [
         {
             "para_map": [],
-            "trans_command": "set protocols [parameter1] [parameter2]",
+            "trans_command": "set protocols ospf3 area [parameter1]",
             "parent_command": [],
-            "root": "set protocols [parameter1] [parameter2]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "redistribute [parameter1] [parameter2]": [
@@ -2402,24 +2599,24 @@
     "capability vrf-lite": [
         {
             "para_map": [],
-            "trans_command": "stub",
+            "trans_command": "interface [parameter2] [parameter3]",
             "parent_command": [
-                "set protocols ospf area [parameter1]"
+                "set protocols ospf3 area [parameter1]"
             ],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "redistribute static metric-type [parameter1] subnets": [
         {
             "para_map": [
                 0,
-                0
+                1
             ],
-            "trans_command": "interface [parameter2] interface-type [parameter3]",
+            "trans_command": "interface [interface_name] metric [metric_value]",
             "parent_command": [
-                "set protocols ospf area [parameter1]"
+                "set protocols ospf3 area [parameter1]"
             ],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "bfd [parameter1]": [
@@ -2430,9 +2627,9 @@
             ],
             "trans_command": "interface [parameter2] [parameter3]",
             "parent_command": [
-                "set protocols ospf area [parameter1]"
+                "set protocols ospf3 area [parameter1]"
             ],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "end": [
@@ -2787,11 +2984,11 @@
                 2,
                 1
             ],
-            "trans_command": "maintenance-association [parameter2] vlan-id [parameter3]",
+            "trans_command": "service [parameter2] mep [parameter3] interface [parameter4]",
             "parent_command": [
-                "set ethernet-switching-options cfm maintenance-domain [parameter1]"
+                "set protocols oam ethernet connectivity-fault-management domain [parameter1]"
             ],
-            "root": "set ethernet-switching-options cfm maintenance-domain [parameter1]"
+            "root": "set protocols oam ethernet connectivity-fault-management domain [parameter1]"
         }
     ],
     "service [parameter1] vlan [parameter2]": [
@@ -2874,7 +3071,7 @@
                 0,
                 1
             ],
-            "trans_command": "maintenance-association [parameter2] remote-mep [parameter3] continuity-check-receive [parameter4]",
+            "trans_command": "maintenance-association [parameter2] mep [parameter3] remote-mep-id [parameter4]",
             "parent_command": [
                 "set ethernet-switching-options cfm maintenance-domain [parameter1]"
             ],
@@ -3260,6 +3457,61 @@
             "root": "set system radius-options accounting [parameter1]"
         }
     ],
+    "radius-server host [ip_address] auth-port [auth_port] acct-port [acct_port] key [key_type] [key]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set system radius-server [parameter1]",
+            "parent_command": [],
+            "root": "set system radius-server [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "port [parameter2] secret [parameter3]",
+            "parent_command": [
+                "set system radius-server [parameter1]"
+            ],
+            "root": "set system radius-server [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                0
+            ],
+            "trans_command": "port [parameter2] secret [parameter3]",
+            "parent_command": [
+                "set system radius-server [parameter1]"
+            ],
+            "root": "set system radius-server [parameter1]"
+        },
+        {
+            "para_map": [
+                3,
+                0
+            ],
+            "trans_command": "secret [parameter2]",
+            "parent_command": [
+                "set system radius-server [parameter1]"
+            ],
+            "root": "set system radius-server [parameter1]"
+        },
+        {
+            "para_map": [
+                4,
+                1
+            ],
+            "trans_command": "port [parameter2] secret [parameter3]",
+            "parent_command": [
+                "set system radius-server [parameter1]"
+            ],
+            "root": "set system radius-server [parameter1]"
+        }
+    ],
     "ipv6 unicast-routing": [
         {
             "para_map": [],
@@ -3305,20 +3557,20 @@
                 0,
                 0
             ],
-            "trans_command": "family inet dns-server [parameter2]",
+            "trans_command": "domain-name-server [parameter2]",
             "parent_command": [
-                "set access address-assignment pool [parameter1]"
+                "set system services dhcp pool [parameter1]"
             ],
-            "root": "set access address-assignment pool [parameter1]"
+            "root": "set system services dhcp pool [parameter1]"
         }
     ],
     "address prefix [parameter1] lifetime [parameter2] [parameter3]": [
         {
             "para_map": [
                 0,
-                0
+                1
             ],
-            "trans_command": "family inet6 prefix [parameter2]/[parameter3]",
+            "trans_command": "family [parameter2] prefix [parameter3]",
             "parent_command": [
                 "set access address-assignment pool [parameter1]"
             ],
@@ -3863,11 +4115,11 @@
                 0,
                 0
             ],
-            "trans_command": "vlan-id [parameter2]",
+            "trans_command": "vlan-id [vlan_id]",
             "parent_command": [
-                "set vlans [parameter1]"
+                "set vlans [vlan_name]"
             ],
-            "root": "set vlans [parameter1]"
+            "root": "set vlans [vlan_name]"
         }
     ],
     "name [parameter1]": [
@@ -3876,27 +4128,29 @@
                 0,
                 0
             ],
-            "trans_command": "set vlans [parameter1]",
+            "trans_command": "set vlans [vlan_name]",
             "parent_command": [],
-            "root": "set vlans [parameter1]"
+            "root": "set vlans [vlan_name]"
         }
     ],
     "remote-span": [
         {
             "para_map": [],
-            "trans_command": "family inet address [parameter2]/[parameter3]",
+            "trans_command": "vlan-id [parameter2]",
             "parent_command": [
-                "set interfaces vlan unit [parameter1]"
+                "set vlans [vlan_name]"
             ],
-            "root": "set interfaces vlan unit [parameter1]"
+            "root": "set vlans [vlan_name]"
         }
     ],
     "private-vlan isolated": [
         {
             "para_map": [],
-            "trans_command": "set vlans [parameter1]",
-            "parent_command": [],
-            "root": "set vlans [parameter1]"
+            "trans_command": "vlan-id [vlan_id]",
+            "parent_command": [
+                "set vlans [vlan_name]"
+            ],
+            "root": "set vlans [vlan_name]"
         }
     ],
     "ip igmp snooping": [
@@ -3914,9 +4168,9 @@
             "para_map": [],
             "trans_command": "description [parameter2]",
             "parent_command": [
-                "set vlans [parameter1]"
+                "set vlans [vlan_name]"
             ],
-            "root": "set vlans [parameter1]"
+            "root": "set vlans [vlan_name]"
         }
     ],
     "private-vlan association [parameter1]": [
@@ -4075,6 +4329,28 @@
             "root": "set protocols l2vpn vsi [parameter1]"
         }
     ],
+    "ip ssh version [version]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set system services ssh protocol-version [parameter1]",
+            "parent_command": [],
+            "root": "set system services ssh protocol-version [parameter1]"
+        }
+    ],
+    "crypto key generate rsa modulus [bits]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set system services ssh ciphers [parameter1]",
+            "parent_command": [],
+            "root": "set system services ssh ciphers [parameter1]"
+        }
+    ],
     "router isis": [
         {
             "para_map": [],
@@ -4200,45 +4476,8 @@
                 1,
                 0
             ],
-            "trans_command": "unit [parameter2] family [parameter3] interface-mode [parameter4]",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
-            "root": "set interfaces [parameter1]"
-        }
-    ],
-    "xconnect [peer_ip] [vc_id] encapsulation [encapsulation_type]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "encapsulation [parameter2]",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
-            "root": "set interfaces [parameter1]"
-        },
-        {
-            "para_map": [
-                1,
-                0
-            ],
-            "trans_command": "encapsulation [parameter2]",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
-            "root": "set interfaces [parameter1]"
-        },
-        {
-            "para_map": [
-                2,
-                0
-            ],
-            "trans_command": "encapsulation [parameter2]",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
+            "trans_command": "set interfaces [parameter1]",
+            "parent_command": [],
             "root": "set interfaces [parameter1]"
         }
     ],
@@ -4298,9 +4537,44 @@
         {
             "para_map": [
                 0,
-                2
+                1
             ],
-            "trans_command": "unit [parameter2] family [parameter3] interface-mode [parameter4]",
+            "trans_command": "unit [unit-number] tunnel ipv6-prefix [ipv6-prefix]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "xconnect [peer_ip] [vc_id] pw-class [pw_class_name]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "unit [unit_number] tunnel source-address [ip_address]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "unit [unit_number] family [family_type] vlan members [vlan_id]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                1
+            ],
+            "trans_command": "unit [unit_number] tunnel source-address [ip_address]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4370,7 +4644,7 @@
     "authentication bind": [
         {
             "para_map": [],
-            "trans_command": "tunnel source [parameter2]",
+            "trans_command": "unit [parameter2] family [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4404,7 +4678,7 @@
                 1,
                 0
             ],
-            "trans_command": "unit [parameter2] family mpls",
+            "trans_command": "unit [parameter2] tunnel destination [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4427,7 +4701,7 @@
     "ip dhcp snooping trust": [
         {
             "para_map": [],
-            "trans_command": "unit [parameter2] tunnel encapsulation [parameter3]",
+            "trans_command": "unit [unit_number] family [family_type] [protocol]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4531,9 +4805,9 @@
         {
             "para_map": [
                 0,
-                3
+                1
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt hold-time [parameter5]",
+            "trans_command": "unit [unit_number] tunnel ttl [ttl_value]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4544,9 +4818,9 @@
         {
             "para_map": [
                 0,
-                3
+                1
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt hold-time [parameter5]",
+            "trans_command": "unit [unit_number] tunnel ttl [ttl_value]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4630,7 +4904,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "trans_command": "unit [unit_number] tunnel source-address [ip_address]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4643,7 +4917,7 @@
                 0,
                 2
             ],
-            "trans_command": "unit [parameter2] family [parameter3] storm-control [parameter4]",
+            "trans_command": "unit [unit_number] family [family_type] storm-control [storm_control_type] packet-bandwidth [bandwidth_value]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4654,7 +4928,7 @@
                 1,
                 2
             ],
-            "trans_command": "unit [parameter2] family [parameter3] storm-control [parameter4]",
+            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4667,7 +4941,7 @@
                 0,
                 2
             ],
-            "trans_command": "unit [parameter2] family [parameter3] storm-control [parameter4]",
+            "trans_command": "unit [unit_number] family [family_type] storm-control [storm_control_type] packet-bandwidth [bandwidth_value]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4678,7 +4952,7 @@
                 1,
                 2
             ],
-            "trans_command": "unit [parameter2] family [parameter3] storm-control [parameter4]",
+            "trans_command": "unit [unit_number] family [family_type] storm-control [storm_control_type] packet-bandwidth [bandwidth_value]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4689,9 +4963,9 @@
         {
             "para_map": [
                 0,
-                2
+                0
             ],
-            "trans_command": "unit [parameter2] family [parameter3] storm-control [parameter4]",
+            "trans_command": "unit [unit_number] family [family_type] storm-control [control_type]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4700,9 +4974,9 @@
         {
             "para_map": [
                 1,
-                2
+                3
             ],
-            "trans_command": "unit [parameter2] family [parameter3] storm-control [parameter4]",
+            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4713,9 +4987,9 @@
         {
             "para_map": [
                 0,
-                1
+                2
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4] vrrp-group [parameter5] virtual-address [parameter6]",
+            "trans_command": "unit [unit_number] family [family_type] [protocol]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4726,9 +5000,9 @@
         {
             "para_map": [
                 0,
-                0
+                1
             ],
-            "trans_command": "unit [parameter2] encapsulation vlan-bridge vlan-id [parameter3]",
+            "trans_command": ".[parameter2] unit [parameter3] family [parameter4] interface-mode [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4738,7 +5012,7 @@
     "ip nat inside": [
         {
             "para_map": [],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "trans_command": "unit [unit_number] family [family_type] address [ip_address] vrrp-group [group_number]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4834,7 +5108,7 @@
                 2,
                 0
             ],
-            "trans_command": "unit [parameter2] family [parameter3] storm-control [parameter4]",
+            "trans_command": "unit [parameter2] family [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4845,17 +5119,15 @@
                 3,
                 0
             ],
-            "trans_command": "unit [parameter2] family [parameter3] storm-control [parameter4]",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
-            "root": "set interfaces [parameter1]"
+            "trans_command": "set services gnss interface [parameter1]",
+            "parent_command": [],
+            "root": "set services gnss interface [parameter1]"
         }
     ],
     "spanning-tree portfast": [
         {
             "para_map": [],
-            "trans_command": "ether-options speed [parameter2]",
+            "trans_command": "unit [unit] family [family] [port-mode] [mode]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4907,7 +5179,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] tunnel protocol [parameter3]",
+            "trans_command": "unit [unit_number] tunnel protocol [protocol]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -4988,7 +5260,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] tunnel protocol [parameter3]",
+            "trans_command": "unit [parameter2] tunnel key [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5006,13 +5278,13 @@
             "root": "set services gnss interface [parameter1]"
         }
     ],
-    "mpls l2transport route [parameter1] [parameter2] [parameter3]": [
+    "service-policy [parameter1] [parameter2]": [
         {
             "para_map": [
                 0,
-                1
+                2
             ],
-            "trans_command": "unit [parameter2] tunnel destination [parameter3]",
+            "trans_command": "unit [unit_number] family [family_type] policer [direction] [policer_name]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5023,7 +5295,31 @@
                 1,
                 1
             ],
-            "trans_command": "unit [parameter2] tunnel destination [parameter3]",
+            "trans_command": "unit [parameter2] family inet service input [parameter3]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "mpls l2transport route [parameter1] [parameter2] [parameter3]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "tunnel destination [parameter2]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "tunnel destination [parameter2]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5081,7 +5377,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "trans_command": "family [parameter2] address [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5092,9 +5388,9 @@
         {
             "para_map": [
                 0,
-                0
+                3
             ],
-            "trans_command": "unit [parameter2] family mpls",
+            "trans_command": "unit [unit_number] family [family_type] storm-control [storm_control_type] packet-bandwidth [bandwidth_value]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5115,9 +5411,9 @@
         {
             "para_map": [
                 0,
-                0
+                1
             ],
-            "trans_command": "gigether-options speed [parameter2]",
+            "trans_command": "unit [unit_number] tunnel ttl [ttl_value]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5128,9 +5424,9 @@
         {
             "para_map": [
                 0,
-                1
+                0
             ],
-            "trans_command": "unit [parameter2] family [parameter3] interface-mode [parameter4]",
+            "trans_command": "ether-options 802.3ad [parameter2]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5163,7 +5459,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] vlan-id [parameter3]",
+            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5199,7 +5495,7 @@
                 0,
                 0
             ],
-            "trans_command": "unit [parameter2] family mpls",
+            "trans_command": "unit [parameter2] family [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5210,7 +5506,7 @@
                 1,
                 0
             ],
-            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
+            "trans_command": "unit [parameter2] family [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5233,7 +5529,7 @@
                 0,
                 0
             ],
-            "trans_command": "unit [parameter2] family [parameter3] storm-control [parameter4]",
+            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5303,9 +5599,9 @@
         {
             "para_map": [
                 0,
-                2
+                1
             ],
-            "trans_command": "unit [parameter2] family [parameter3] storm-control [parameter4]",
+            "trans_command": "unit [unit] family [family] [port-mode] [mode]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5325,7 +5621,7 @@
     "arp learning strict force-enable": [
         {
             "para_map": [],
-            "trans_command": "unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt hold-time [parameter5]",
+            "trans_command": "unit [unit_number] family [family_type] storm-control [control_type]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5336,9 +5632,9 @@
         {
             "para_map": [
                 0,
-                0
+                2
             ],
-            "trans_command": "aggregated-ether-options minimum-links [parameter2]",
+            "trans_command": "unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt hold-time [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5385,9 +5681,9 @@
         {
             "para_map": [
                 0,
-                0
+                1
             ],
-            "trans_command": "tunnel destination [parameter2]",
+            "trans_command": "unit [unit_number] tunnel [tunnel_type]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5420,7 +5716,7 @@
                 0,
                 0
             ],
-            "trans_command": "unit [parameter2] tunnel key [parameter3]",
+            "trans_command": "unit [unit_number] tunnel [tunnel_type]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5441,9 +5737,9 @@
         {
             "para_map": [
                 0,
-                0
+                1
             ],
-            "trans_command": "unit [parameter2] tunnel destination [parameter3]",
+            "trans_command": "unit [unit_number] tunnel [tunnel_type]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5467,44 +5763,9 @@
         {
             "para_map": [
                 0,
-                1
-            ],
-            "trans_command": "unit [parameter2] family inet service input [parameter3]",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
-            "root": "set interfaces [parameter1]"
-        }
-    ],
-    "xconnect [parameter1] [parameter2] pw-class [parameter3]": [
-        {
-            "para_map": [
-                0,
-                2
-            ],
-            "trans_command": ".[parameter2] unit [parameter3] family [parameter4] interface-mode [parameter5]",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
-            "root": "set interfaces [parameter1]"
-        },
-        {
-            "para_map": [
-                1,
                 0
             ],
-            "trans_command": "unit [parameter2] vlan-id [parameter3]",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
-            "root": "set interfaces [parameter1]"
-        },
-        {
-            "para_map": [
-                2,
-                2
-            ],
-            "trans_command": ".[parameter2] unit [parameter3] family [parameter4] interface-mode [parameter5]",
+            "trans_command": "tunnel destination [parameter2]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5515,9 +5776,9 @@
         {
             "para_map": [
                 0,
-                1
+                0
             ],
-            "trans_command": "unit [parameter2] family [parameter3] storm-control [parameter4]",
+            "trans_command": "unit [unit_number] family [family_type] storm-control [control_type]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5539,9 +5800,9 @@
         {
             "para_map": [
                 1,
-                1
+                0
             ],
-            "trans_command": "unit [parameter2] tunnel protocol [parameter3]",
+            "trans_command": "unit [parameter2] tunnel multipoint",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5552,9 +5813,9 @@
         {
             "para_map": [
                 0,
-                0
+                2
             ],
-            "trans_command": "unit [parameter2] family inet service input [parameter3]",
+            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5578,7 +5839,7 @@
                 1,
                 0
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "trans_command": "unit [parameter2] tunnel source [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5637,9 +5898,9 @@
         {
             "para_map": [
                 0,
-                1
+                0
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "trans_command": "unit [unit-number] tunnel ipv6-prefix [ipv6-prefix]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5650,7 +5911,7 @@
                 1,
                 1
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "trans_command": "unit [unit_number] family [family_type]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5687,9 +5948,9 @@
         {
             "para_map": [
                 0,
-                0
+                1
             ],
-            "trans_command": "tunnel destination [parameter2]",
+            "trans_command": "unit [parameter2] tunnel destination [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5722,7 +5983,7 @@
     "ipv6 dhcp relay": [
         {
             "para_map": [],
-            "trans_command": "unit [parameter2] tunnel encapsulation [parameter3]",
+            "trans_command": "unit [unit_number] family [family_type]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5743,9 +6004,9 @@
         {
             "para_map": [
                 0,
-                0
+                3
             ],
-            "trans_command": "unit [parameter2] family mpls",
+            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5754,9 +6015,9 @@
         {
             "para_map": [
                 1,
-                0
+                3
             ],
-            "trans_command": "unit [parameter2] family mpls",
+            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5793,7 +6054,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] tunnel source [parameter3]",
+            "trans_command": "unit [unit_number] tunnel source-address [ip_address]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5817,7 +6078,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] family inet filter input [parameter3]",
+            "trans_command": "unit [parameter2] family inet service input [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5865,9 +6126,9 @@
         {
             "para_map": [
                 0,
-                1
+                2
             ],
-            "trans_command": "unit [parameter2] family [parameter3] storm-control [parameter4]",
+            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5884,37 +6145,13 @@
             "root": "set interfaces [parameter1]"
         }
     ],
-    "ppp authentication [parameter1] [parameter2]": [
-        {
-            "para_map": [
-                0,
-                1
-            ],
-            "trans_command": "unit [parameter2] tunnel key [parameter3]",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
-            "root": "set interfaces [parameter1]"
-        },
-        {
-            "para_map": [
-                1,
-                1
-            ],
-            "trans_command": "unit [parameter2] tunnel key [parameter3]",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
-            "root": "set interfaces [parameter1]"
-        }
-    ],
     "ppp ipcp pool [parameter1]": [
         {
             "para_map": [
                 0,
-                1
+                2
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4] vrrp-group [parameter5] virtual-address [parameter6]",
+            "trans_command": "unit [unit_number] family [family_type] [protocol]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5948,7 +6185,7 @@
     "ip dhcp relay information option": [
         {
             "para_map": [],
-            "trans_command": "ether-options 802.3ad [parameter2]",
+            "trans_command": "unit [unit_number] family [family_type] [protocol]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5959,9 +6196,9 @@
         {
             "para_map": [
                 0,
-                0
+                1
             ],
-            "trans_command": "tunnel destination [parameter2]",
+            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4] vrrp-group [parameter5] virtual-address [parameter6]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -5973,6 +6210,41 @@
             "para_map": [
                 0,
                 1
+            ],
+            "trans_command": "unit [unit-number] tunnel ipv6-prefix [ipv6-prefix]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "ospfv3 [process_id] [address_family] area [area_id]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "unit [unit_number] family [family_type]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                0
             ],
             "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
             "parent_command": [
@@ -6007,6 +6279,154 @@
             "root": "set interfaces [parameter1]"
         }
     ],
+    "ptp device-type [parameter1]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "unit [parameter2] description [parameter3]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "ptp clock-source atr enable": [
+        {
+            "para_map": [],
+            "trans_command": "per-unit-scheduler",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "ptp priority [priority-value]": [
+        {
+            "para_map": [
+                0,
+                4
+            ],
+            "trans_command": "unit [parameter2] family [parameter3] address [parameter4] vrrp-group [parameter5] priority [parameter6]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "ptp adaptive enable": [
+        {
+            "para_map": [],
+            "trans_command": "unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt hold-time [parameter5]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "ptp adaptive time-profile": [
+        {
+            "para_map": [],
+            "trans_command": "per-unit-scheduler",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "ptp adaptive device-type [type]": [
+        {
+            "para_map": [
+                0,
+                2
+            ],
+            "trans_command": "unit [unit_number] family [family_type] [switching_type] native-vlan-id [vlan_id]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "ptp adaptive atr hop-by-hop": [
+        {
+            "para_map": [],
+            "trans_command": "unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt hold-time [parameter5]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "ptp adaptive local-ip [ip-address]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt hold-time [parameter5]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "ptp adaptive atr unicast-negotiation enable": [
+        {
+            "para_map": [],
+            "trans_command": "gigether-options no-auto-negotiation",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "ptp adaptive remote-server1-ip [ip-address]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt hold-time [parameter5]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "ptp adaptive dscp [dscp-value]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "unit [unit_number] family [family_type] storm-control [storm_control_type] packet-bandwidth [bandwidth_value]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "clock source ptp synchronization enable": [
+        {
+            "para_map": [],
+            "trans_command": "unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt hold-time [parameter5]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "ptp adaptive atr enable": [
+        {
+            "para_map": [],
+            "trans_command": "unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt hold-time [parameter5]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
     "ip nhrp nhs [parameter1] [parameter2]": [
         {
             "para_map": [
@@ -6031,29 +6451,14 @@
             "root": "set interfaces [parameter1]"
         }
     ],
-    "ptp priority [parameter1]": [
-        {
-            "para_map": [
-                0,
-                4
-            ],
-            "trans_command": "unit [parameter2] family [parameter3] address [parameter4] vrrp-group [parameter5] priority [parameter6]",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
-            "root": "set interfaces [parameter1]"
-        }
-    ],
     "ptp gps-glonass [parameter1]": [
         {
             "para_map": [
                 0,
                 0
             ],
-            "trans_command": "unit [parameter2] family mpls",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
+            "trans_command": "set interfaces [parameter1]",
+            "parent_command": [],
             "root": "set interfaces [parameter1]"
         }
     ],
@@ -6109,9 +6514,9 @@
         {
             "para_map": [
                 0,
-                2
+                0
             ],
-            "trans_command": "unit [parameter2] family [parameter3] storm-control [parameter4]",
+            "trans_command": "unit [parameter2] family inet service input [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6120,9 +6525,9 @@
         {
             "para_map": [
                 1,
-                2
+                0
             ],
-            "trans_command": "unit [parameter2] family [parameter3] storm-control [parameter4]",
+            "trans_command": "unit [parameter2] family inet service input [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6195,9 +6600,9 @@
         {
             "para_map": [
                 0,
-                0
+                3
             ],
-            "trans_command": "unit [parameter2] family mpls",
+            "trans_command": "unit [unit_number] family [family_type] storm-control [storm_control_type] packet-bandwidth [bandwidth_value]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6241,13 +6646,13 @@
             "root": "set interfaces [parameter1]"
         }
     ],
-    "mpls l2transport route [parameter1] [parameter2] pw-class [parameter3]": [
+    "xconnect [peer_ip] [vc_id] encapsulation [encapsulation_type] pw-class [pw_class_name]": [
         {
             "para_map": [
                 0,
                 0
             ],
-            "trans_command": "unit [parameter2] family mpls",
+            "trans_command": "encapsulation [encapsulation_type] [vlan_id]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6258,7 +6663,7 @@
                 1,
                 0
             ],
-            "trans_command": "unit [parameter2] family mpls",
+            "trans_command": "encapsulation [encapsulation_type] [vlan_id]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6269,7 +6674,53 @@
                 2,
                 0
             ],
-            "trans_command": "unit [parameter2] family mpls",
+            "trans_command": "encapsulation [encapsulation_type] [vlan_id]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                3,
+                0
+            ],
+            "trans_command": "encapsulation [encapsulation_type] [vlan_id]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "mpls l2transport route [parameter1] [parameter2] pw-class [parameter3]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "tunnel destination [parameter2]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "unit [parameter2] tunnel key [parameter3]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                2
+            ],
+            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6280,6 +6731,30 @@
         {
             "para_map": [],
             "trans_command": "ether-options speed [parameter2]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "ppp chap password [encryption_type] [password]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": ".[parameter2] encapsulation [parameter3]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "unit [parameter2] family [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6305,7 +6780,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] family inet filter input [parameter3]",
+            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6314,9 +6789,9 @@
         {
             "para_map": [
                 1,
-                2
+                1
             ],
-            "trans_command": "unit [parameter2] family [parameter3] filter [parameter4] [parameter5]",
+            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6342,7 +6817,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] family [parameter3] filter [parameter4] [parameter5]",
+            "trans_command": "unit [parameter2] family [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6353,7 +6828,7 @@
                 1,
                 0
             ],
-            "trans_command": "unit [parameter2] family [parameter3] filter [parameter4] [parameter5]",
+            "trans_command": "unit [parameter2] family [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6364,9 +6839,9 @@
         {
             "para_map": [
                 0,
-                0
+                3
             ],
-            "trans_command": "aggregated-ether-options link-speed [parameter2]",
+            "trans_command": "unit [unit_number] family [family_type] storm-control [storm_control_type] packet-bandwidth [bandwidth_value]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6402,20 +6877,20 @@
                 0,
                 0
             ],
-            "trans_command": "framing [parameter2]",
+            "trans_command": "unit [parameter2] family [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
             "root": "set interfaces [parameter1]"
         }
     ],
-    "ip ospf [parameter1] area [parameter2]": [
+    "ip ospf [process_id] area [area_id]": [
         {
             "para_map": [
                 0,
                 0
             ],
-            "trans_command": "unit [parameter2] tunnel destination [parameter3]",
+            "trans_command": "unit [unit_number] family [family_type] policer [direction] [policer_name]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6426,7 +6901,7 @@
                 1,
                 0
             ],
-            "trans_command": "unit [parameter2] tunnel destination [parameter3]",
+            "trans_command": "unit [unit_number] family [family_type] policer [direction] [policer_name]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6461,9 +6936,9 @@
         {
             "para_map": [
                 0,
-                2
+                1
             ],
-            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
+            "trans_command": "unit [parameter2] tunnel destination [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6474,31 +6949,7 @@
                 1,
                 0
             ],
-            "trans_command": "unit [parameter2] family mpls",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
-            "root": "set interfaces [parameter1]"
-        }
-    ],
-    "ppp chap password [parameter1] [parameter2]": [
-        {
-            "para_map": [
-                0,
-                1
-            ],
-            "trans_command": "unit [parameter2] tunnel key [parameter3]",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
-            "root": "set interfaces [parameter1]"
-        },
-        {
-            "para_map": [
-                1,
-                1
-            ],
-            "trans_command": "unit [parameter2] tunnel key [parameter3]",
+            "trans_command": "unit [parameter2] tunnel destination [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6511,7 +6962,7 @@
                 0,
                 1
             ],
-            "trans_command": "unit [parameter2] vlan-id [parameter3]",
+            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6533,9 +6984,9 @@
         {
             "para_map": [
                 0,
-                2
+                0
             ],
-            "trans_command": "unit [parameter2] family [parameter3] storm-control [parameter4]",
+            "trans_command": "unit [parameter2] family inet service input [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6546,9 +6997,44 @@
         {
             "para_map": [
                 0,
-                2
+                1
             ],
-            "trans_command": "unit [parameter2] family [parameter3] [parameter4] [parameter5]",
+            "trans_command": "unit [unit_number] tunnel protocol [protocol]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        }
+    ],
+    "arp [ip_address] [mac_address] [encapsulation_type]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                0
+            ],
+            "trans_command": "encapsulation [parameter2]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -6595,17 +7081,6 @@
             "trans_command": "set system services ssh hostkey-algorithm [parameter1]",
             "parent_command": [],
             "root": "set system services ssh hostkey-algorithm [parameter1]"
-        }
-    ],
-    "ip ssh version [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "set system services ssh protocol-version [parameter1]",
-            "parent_command": [],
-            "root": "set system services ssh protocol-version [parameter1]"
         }
     ],
     "line vty [parameter1] [parameter2]": [
@@ -6780,6 +7255,26 @@
             "root": "set system login vty [parameter1] [parameter2]"
         }
     ],
+    "exec-timeout [minutes] [seconds]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "set system login vty [parameter1] [parameter2]",
+            "parent_command": [],
+            "root": "set system login vty [parameter1] [parameter2]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "set system login vty [parameter1] [parameter2]",
+            "parent_command": [],
+            "root": "set system login vty [parameter1] [parameter2]"
+        }
+    ],
     "length [parameter1]": [
         {
             "para_map": [
@@ -6847,25 +7342,6 @@
         }
     ],
     "match access-group name [parameter1]": [
-        {
-            "para_map": [
-                0,
-                1
-            ],
-            "trans_command": "set class-of-service classifiers [parameter1] [parameter2]",
-            "parent_command": [],
-            "root": "set class-of-service classifiers [parameter1] [parameter2]"
-        }
-    ],
-    "match any": [
-        {
-            "para_map": [],
-            "trans_command": "set class-of-service classifiers [parameter1] [parameter2]",
-            "parent_command": [],
-            "root": "set class-of-service classifiers [parameter1] [parameter2]"
-        }
-    ],
-    "match cos [parameter1]": [
         {
             "para_map": [
                 0,
@@ -7502,6 +7978,14 @@
             "root": "set class-of-service classifiers dscp [parameter1]"
         }
     ],
+    "match any": [
+        {
+            "para_map": [],
+            "trans_command": "set class-of-service scheduler-maps [parameter1]",
+            "parent_command": [],
+            "root": "set class-of-service scheduler-maps [parameter1]"
+        }
+    ],
     "route-map [parameter1] permit [parameter2]": [
         {
             "para_map": [
@@ -7566,6 +8050,48 @@
             "root": "set protocols oam cfm maintenance-domain [parameter1]"
         }
     ],
+    "ethernet cfm mep [mep_id] ma [ma_name] interface [interface_name] [direction]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set ethernet-switching-options cfm mep [parameter1]",
+            "parent_command": [],
+            "root": "set ethernet-switching-options cfm mep [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]",
+            "parent_command": [],
+            "root": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]"
+        },
+        {
+            "para_map": [
+                2,
+                0
+            ],
+            "trans_command": "interface [parameter2]",
+            "parent_command": [
+                "set ethernet-switching-options cfm mep [parameter1]"
+            ],
+            "root": "set ethernet-switching-options cfm mep [parameter1]"
+        },
+        {
+            "para_map": [
+                3,
+                0
+            ],
+            "trans_command": "interface [parameter2]",
+            "parent_command": [
+                "set ethernet-switching-options cfm mep [parameter1]"
+            ],
+            "root": "set ethernet-switching-options cfm mep [parameter1]"
+        }
+    ],
     "ethernet cfm mep [parameter1] ma [parameter2] ccm-enable": [
         {
             "para_map": [
@@ -7579,13 +8105,40 @@
         {
             "para_map": [
                 1,
-                1
+                0
             ],
-            "trans_command": "remote-mep [parameter2] ccm-receive [parameter3]",
-            "parent_command": [
-                "set ethernet-switching-options cfm mep [parameter1]"
+            "trans_command": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]",
+            "parent_command": [],
+            "root": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]"
+        }
+    ],
+    "ethernet cfm remote-mep [mep_id] ma [ma_name] ccm-receive [action]": [
+        {
+            "para_map": [
+                0,
+                0
             ],
-            "root": "set ethernet-switching-options cfm mep [parameter1]"
+            "trans_command": "set protocols oam ethernet connectivity-fault-management remote-mep [parameter1]",
+            "parent_command": [],
+            "root": "set protocols oam ethernet connectivity-fault-management remote-mep [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]",
+            "parent_command": [],
+            "root": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]"
+        },
+        {
+            "para_map": [
+                2,
+                0
+            ],
+            "trans_command": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]",
+            "parent_command": [],
+            "root": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]"
         }
     ],
     "router [parameter1]": [
@@ -7642,11 +8195,9 @@
                 0,
                 0
             ],
-            "trans_command": "family inet6 dhcp-attributes name-server [parameter2]",
-            "parent_command": [
-                "set access address-assignment pool [parameter1]"
-            ],
-            "root": "set access address-assignment pool [parameter1]"
+            "trans_command": "set services 6rd ipv6-prefix [parameter1]",
+            "parent_command": [],
+            "root": "set services 6rd ipv6-prefix [parameter1]"
         }
     ],
     "permit ipv6 [source] [destination]": [
@@ -7669,7 +8220,7 @@
             "root": "set services 6rd ipv6-prefix [parameter1]"
         }
     ],
-    "permit ipv6 [parameter1] [parameter2]": [
+    "permit ipv6 [source_ipv6] [destination]": [
         {
             "para_map": [
                 0,
@@ -7743,16 +8294,47 @@
             "root": "set access radius-server [parameter1]"
         }
     ],
-    "server [parameter1] auth-port [parameter2] acct-port [parameter3]": [
+    "server [ipv6_address] auth-port [auth_port] acct-port [acct_port]": [
         {
             "para_map": [
                 0,
+                0
+            ],
+            "trans_command": "set access radius-server [parameter1]",
+            "parent_command": [],
+            "root": "set access radius-server [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
                 0
             ],
             "trans_command": "authentication-port [parameter2]",
             "parent_command": [
                 "set access radius-server [parameter1]"
             ],
+            "root": "set access radius-server [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                0
+            ],
+            "trans_command": "accounting-port [parameter2]",
+            "parent_command": [
+                "set access radius-server [parameter1]"
+            ],
+            "root": "set access radius-server [parameter1]"
+        }
+    ],
+    "server-private [server-ip] auth-port [auth-port-number] acct-port [acct-port-number] key [encryption-type] [key]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set access radius-server [parameter1]",
+            "parent_command": [],
             "root": "set access radius-server [parameter1]"
         },
         {
@@ -7772,6 +8354,28 @@
                 0
             ],
             "trans_command": "authentication-port [parameter2]",
+            "parent_command": [
+                "set access radius-server [parameter1]"
+            ],
+            "root": "set access radius-server [parameter1]"
+        },
+        {
+            "para_map": [
+                3,
+                0
+            ],
+            "trans_command": "authentication-port [parameter2]",
+            "parent_command": [
+                "set access radius-server [parameter1]"
+            ],
+            "root": "set access radius-server [parameter1]"
+        },
+        {
+            "para_map": [
+                4,
+                0
+            ],
+            "trans_command": "secret [parameter2]",
             "parent_command": [
                 "set access radius-server [parameter1]"
             ],
@@ -8030,17 +8634,6 @@
             "root": "set system services ssh connection-limit source-address [parameter1]"
         }
     ],
-    "crypto key generate rsa modulus [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "set system services ssh ciphers [parameter1]",
-            "parent_command": [],
-            "root": "set system services ssh ciphers [parameter1]"
-        }
-    ],
     "aaa authorization exec default local": [
         {
             "para_map": [],
@@ -8266,17 +8859,6 @@
             "root": "set services pppoe-client profile [parameter1]"
         }
     ],
-    "ptp device-type [parameter1]": [
-        {
-            "para_map": [
-                0,
-                1
-            ],
-            "trans_command": "set chassis [parameter1] [parameter2]",
-            "parent_command": [],
-            "root": "set chassis [parameter1] [parameter2]"
-        }
-    ],
     "mls qos map cos-dscp [parameter1] [parameter2]": [
         {
             "para_map": [
@@ -8352,6 +8934,30 @@
             "root": "set system radius-server [parameter1]"
         }
     ],
+    "radius-server key [encryption_type] [key]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "secret [parameter2]",
+            "parent_command": [
+                "set system radius-server [parameter1]"
+            ],
+            "root": "set system radius-server [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "secret [parameter2]",
+            "parent_command": [
+                "set system radius-server [parameter1]"
+            ],
+            "root": "set system radius-server [parameter1]"
+        }
+    ],
     "radius-server timeout [parameter1]": [
         {
             "para_map": [
@@ -8395,6 +9001,28 @@
             "trans_command": "set system authentication-order [parameter1]",
             "parent_command": [],
             "root": "set system authentication-order [parameter1]"
+        }
+    ],
+    "member [interface_name] service-instance [instance_id]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "interface [interface_name]",
+            "parent_command": [
+                "set bridge-domains [parameter1]"
+            ],
+            "root": "set bridge-domains [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "set interfaces irb unit [parameter1]",
+            "parent_command": [],
+            "root": "set interfaces irb unit [parameter1]"
         }
     ],
     "ntp authentication-key [parameter1] md5 [parameter2]": [
@@ -8620,9 +9248,9 @@
                 0,
                 0
             ],
-            "trans_command": "set system authentication-order [parameter1]",
+            "trans_command": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]",
             "parent_command": [],
-            "root": "set system authentication-order [parameter1]"
+            "root": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]"
         },
         {
             "para_map": [
@@ -8640,18 +9268,18 @@
                 0,
                 0
             ],
-            "trans_command": "set system accounting events [parameter1]",
+            "trans_command": "set system accounting events [parameter1] [parameter2]",
             "parent_command": [],
-            "root": "set system accounting events [parameter1]"
+            "root": "set system accounting events [parameter1] [parameter2]"
         },
         {
             "para_map": [
                 1,
                 0
             ],
-            "trans_command": "set system accounting events [parameter1]",
+            "trans_command": "set system accounting events [parameter1] [parameter2]",
             "parent_command": [],
-            "root": "set system accounting events [parameter1]"
+            "root": "set system accounting events [parameter1] [parameter2]"
         },
         {
             "para_map": [
@@ -8665,24 +9293,20 @@
         {
             "para_map": [
                 3,
-                1
+                0
             ],
-            "trans_command": "server [parameter2] port [parameter3]",
-            "parent_command": [
-                "set system accounting events [parameter1]"
-            ],
-            "root": "set system accounting events [parameter1]"
+            "trans_command": "set services service-set [service-instance-group]",
+            "parent_command": [],
+            "root": "set services service-set [service-instance-group]"
         },
         {
             "para_map": [
                 4,
-                1
+                0
             ],
-            "trans_command": "server [parameter2] port [parameter3]",
-            "parent_command": [
-                "set system accounting events [parameter1]"
-            ],
-            "root": "set system accounting events [parameter1]"
+            "trans_command": "set services service-set [service-instance-group]",
+            "parent_command": [],
+            "root": "set services service-set [service-instance-group]"
         }
     ],
     "aaa authentication ppp [parameter1] group [parameter2] local": [
@@ -8805,9 +9429,9 @@
     "ip scp server enable": [
         {
             "para_map": [],
-            "trans_command": "set protocols l2circuit peer [parameter1]",
+            "trans_command": "set protocols ldp targeted-session [parameter1]",
             "parent_command": [],
-            "root": "set protocols l2circuit peer [parameter1]"
+            "root": "set protocols ldp targeted-session [parameter1]"
         }
     ],
     "ip access-list extended [parameter1]": [
@@ -8941,6 +9565,37 @@
             "root": "set services nat rule [parameter1]"
         }
     ],
+    "permit [protocol] [source] [destination]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set security nat destination pool [parameter1]",
+            "parent_command": [],
+            "root": "set security nat destination pool [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "term [parameter2] from source-address [parameter3]",
+            "parent_command": [
+                "set services nat rule [parameter1]"
+            ],
+            "root": "set services nat rule [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                0
+            ],
+            "trans_command": "set security nat destination pool [parameter1]",
+            "parent_command": [],
+            "root": "set security nat destination pool [parameter1]"
+        }
+    ],
     "permit ip host [parameter1] host [parameter2]": [
         {
             "para_map": [
@@ -8963,6 +9618,98 @@
                 "set services nat rule [parameter1]"
             ],
             "root": "set services nat rule [parameter1]"
+        }
+    ],
+    "permit ip [source_ip] [source_wildcard] [destination_ip] [destination_wildcard]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "term [parameter2] from source-address [parameter3]",
+            "parent_command": [
+                "set services nat rule [parameter1]"
+            ],
+            "root": "set services nat rule [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "term [parameter2] from source-address [parameter3]",
+            "parent_command": [
+                "set services nat rule [parameter1]"
+            ],
+            "root": "set services nat rule [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                1
+            ],
+            "trans_command": "term [parameter2] from source-address [parameter3]",
+            "parent_command": [
+                "set services nat rule [parameter1]"
+            ],
+            "root": "set services nat rule [parameter1]"
+        },
+        {
+            "para_map": [
+                3,
+                1
+            ],
+            "trans_command": "address [parameter2]/[parameter3]",
+            "parent_command": [
+                "set security nat destination pool [parameter1]"
+            ],
+            "root": "set security nat destination pool [parameter1]"
+        }
+    ],
+    "deny ip [source_ip] [source_wildcard] [destination_ip] [destination_wildcard]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "term [parameter2] from source-address [parameter3]",
+            "parent_command": [
+                "set services nat rule [parameter1]"
+            ],
+            "root": "set services nat rule [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "term [parameter2] from source-address [parameter3]",
+            "parent_command": [
+                "set services nat rule [parameter1]"
+            ],
+            "root": "set services nat rule [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                1
+            ],
+            "trans_command": "address [parameter2]/[parameter3]",
+            "parent_command": [
+                "set security nat destination pool [parameter1]"
+            ],
+            "root": "set security nat destination pool [parameter1]"
+        },
+        {
+            "para_map": [
+                3,
+                1
+            ],
+            "trans_command": "address [parameter2]/[parameter3]",
+            "parent_command": [
+                "set security nat destination pool [parameter1]"
+            ],
+            "root": "set security nat destination pool [parameter1]"
         }
     ],
     "ip nat pool [parameter1] [parameter2] [parameter3] netmask [parameter4]": [
@@ -9289,28 +10036,28 @@
             "root": "set services l2tp tunnel-group [parameter1]"
         }
     ],
-    "radius-server key [parameter1] [parameter2]": [
+    "l2tp tunnel password [encryption_type] [password]": [
         {
             "para_map": [
                 0,
                 0
             ],
-            "trans_command": "secret [parameter2]",
+            "trans_command": "tunnel-password [parameter2]",
             "parent_command": [
-                "set system radius-server [parameter1]"
+                "set services l2tp tunnel-group [parameter1]"
             ],
-            "root": "set system radius-server [parameter1]"
+            "root": "set services l2tp tunnel-group [parameter1]"
         },
         {
             "para_map": [
                 1,
                 0
             ],
-            "trans_command": "secret [parameter2]",
+            "trans_command": "tunnel-password [parameter2]",
             "parent_command": [
-                "set system radius-server [parameter1]"
+                "set services l2tp tunnel-group [parameter1]"
             ],
-            "root": "set system radius-server [parameter1]"
+            "root": "set services l2tp tunnel-group [parameter1]"
         }
     ],
     "ip route vrf [parameter1] [parameter2] [parameter3] [parameter4]": [
@@ -9355,6 +10102,35 @@
             "root": "delete set routing-options static route [parameter1]"
         }
     ],
+    "ip nat inside source list [acl_name] pool [pool_name] vrf [vrf_name] overload": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set security nat source pool [parameter1]",
+            "parent_command": [],
+            "root": "set security nat source pool [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "set security nat source pool [parameter1]",
+            "parent_command": [],
+            "root": "set security nat source pool [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                0
+            ],
+            "trans_command": "set security nat source pool [parameter1]",
+            "parent_command": [],
+            "root": "set security nat source pool [parameter1]"
+        }
+    ],
     "spanning-tree extend system-id": [
         {
             "para_map": [],
@@ -9369,9 +10145,9 @@
                 0,
                 0
             ],
-            "trans_command": "set protocols ospf area [parameter1]",
+            "trans_command": "set protocols ospf3 area [parameter1]",
             "parent_command": [],
-            "root": "set protocols ospf area [parameter1]"
+            "root": "set protocols ospf3 area [parameter1]"
         },
         {
             "para_map": [
@@ -9470,61 +10246,6 @@
             "root": "set system syslog host [parameter1]"
         }
     ],
-    "radius-server host [parameter1] auth-port [parameter2] acct-port [parameter3] key [parameter4] [parameter5]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "set system radius-server [parameter1]",
-            "parent_command": [],
-            "root": "set system radius-server [parameter1]"
-        },
-        {
-            "para_map": [
-                1,
-                0
-            ],
-            "trans_command": "port authentication [parameter2]",
-            "parent_command": [
-                "set system radius-server [parameter1]"
-            ],
-            "root": "set system radius-server [parameter1]"
-        },
-        {
-            "para_map": [
-                2,
-                1
-            ],
-            "trans_command": "secret [parameter2] port [parameter3]",
-            "parent_command": [
-                "set system radius-server [parameter1]"
-            ],
-            "root": "set system radius-server [parameter1]"
-        },
-        {
-            "para_map": [
-                3,
-                0
-            ],
-            "trans_command": "authentication-port [parameter2]",
-            "parent_command": [
-                "set system radius-server [parameter1]"
-            ],
-            "root": "set system radius-server [parameter1]"
-        },
-        {
-            "para_map": [
-                4,
-                1
-            ],
-            "trans_command": "secret [parameter2] port [parameter3]",
-            "parent_command": [
-                "set system radius-server [parameter1]"
-            ],
-            "root": "set system radius-server [parameter1]"
-        }
-    ],
     "radius-server attribute [parameter1] include-in-access-req": [
         {
             "para_map": [
@@ -9550,31 +10271,29 @@
                 0,
                 0
             ],
-            "trans_command": "set ethernet-switching-options cfm mep [parameter1]",
+            "trans_command": "set protocols oam ethernet connectivity-fault-management mep [parameter1]",
             "parent_command": [],
-            "root": "set ethernet-switching-options cfm mep [parameter1]"
+            "root": "set protocols oam ethernet connectivity-fault-management mep [parameter1]"
         },
         {
             "para_map": [
                 1,
                 0
             ],
-            "trans_command": "interface [parameter2] ccm-receive [parameter3]",
-            "parent_command": [
-                "set ethernet-switching-options cfm mep [parameter1]"
-            ],
-            "root": "set ethernet-switching-options cfm mep [parameter1]"
+            "trans_command": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]",
+            "parent_command": [],
+            "root": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]"
         },
         {
             "para_map": [
                 2,
-                1
+                0
             ],
-            "trans_command": "interface [parameter2] ccm-send interval [parameter3]",
+            "trans_command": "continuity-check transmission-interval [parameter2]",
             "parent_command": [
-                "set ethernet-switching-options cfm mep [parameter1]"
+                "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]"
             ],
-            "root": "set ethernet-switching-options cfm mep [parameter1]"
+            "root": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]"
         }
     ],
     "ethernet cfm ais ma [parameter1] enable": [
@@ -9583,9 +10302,9 @@
                 0,
                 0
             ],
-            "trans_command": "set protocols oam ethernet connectivity-fault-management maintenance-association [parameter1]",
+            "trans_command": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]",
             "parent_command": [],
-            "root": "set protocols oam ethernet connectivity-fault-management maintenance-association [parameter1]"
+            "root": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]"
         }
     ],
     "ethernet cfm ais ma [parameter1] suppress-alarm": [
@@ -9594,11 +10313,9 @@
                 0,
                 0
             ],
-            "trans_command": "maintenance-association [parameter2] delay-measurement one-way test-id [parameter3]",
-            "parent_command": [
-                "set protocols oam ethernet connectivity-fault-management maintenance-domain [parameter1]"
-            ],
-            "root": "set protocols oam ethernet connectivity-fault-management maintenance-domain [parameter1]"
+            "trans_command": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]",
+            "parent_command": [],
+            "root": "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]"
         }
     ],
     "ethernet cfm md [parameter1] level [parameter2]": [
@@ -9781,9 +10498,9 @@
                 0,
                 0
             ],
-            "trans_command": "set services service-set [parameter1]",
+            "trans_command": "delete system services [parameter1]",
             "parent_command": [],
-            "root": "set services service-set [parameter1]"
+            "root": "delete system services [parameter1]"
         }
     ],
     "aaa accounting exec [parameter1] start-stop group [parameter2]": [
@@ -9832,9 +10549,11 @@
                 0,
                 0
             ],
-            "trans_command": "set access class [parameter1]",
-            "parent_command": [],
-            "root": "set access class [parameter1]"
+            "trans_command": "authentication-order [ parameter2 ]",
+            "parent_command": [
+                "set access profile [parameter1]"
+            ],
+            "root": "set access profile [parameter1]"
         },
         {
             "para_map": [
@@ -9945,17 +10664,6 @@
             "root": "set protocols isis export [parameter1]"
         }
     ],
-    "set mpls-label [parameter1]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "set protocols isis export [parameter1]",
-            "parent_command": [],
-            "root": "set protocols isis export [parameter1]"
-        }
-    ],
     "set community [parameter1]": [
         {
             "para_map": [
@@ -9996,6 +10704,62 @@
             "trans_command": "set protocols isis export [parameter1]",
             "parent_command": [],
             "root": "set protocols isis export [parameter1]"
+        }
+    ],
+    "ip prefix-list [name] seq [sequence_number] [action] [network]/[prefix_length] le [max_prefix_length]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set services 6rd ipv4-prefix-length [parameter1]",
+            "parent_command": [],
+            "root": "set services 6rd ipv4-prefix-length [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "set services 6rd ipv4-prefix-length [parameter1]",
+            "parent_command": [],
+            "root": "set services 6rd ipv4-prefix-length [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                0
+            ],
+            "trans_command": "set policy-options prefix-list [parameter1] [parameter2]/[parameter3]",
+            "parent_command": [],
+            "root": "set policy-options prefix-list [parameter1] [parameter2]/[parameter3]"
+        },
+        {
+            "para_map": [
+                3,
+                0
+            ],
+            "trans_command": "set services 6rd ipv4-prefix-length [parameter1]",
+            "parent_command": [],
+            "root": "set services 6rd ipv4-prefix-length [parameter1]"
+        },
+        {
+            "para_map": [
+                4,
+                0
+            ],
+            "trans_command": "set services 6rd ipv4-prefix-length [parameter1]",
+            "parent_command": [],
+            "root": "set services 6rd ipv4-prefix-length [parameter1]"
+        },
+        {
+            "para_map": [
+                5,
+                0
+            ],
+            "trans_command": "set services 6rd ipv4-prefix-length [parameter1]",
+            "parent_command": [],
+            "root": "set services 6rd ipv4-prefix-length [parameter1]"
         }
     ],
     "ip pim rp-address [parameter1] [parameter2]": [
@@ -10100,17 +10864,15 @@
                 1,
                 0
             ],
-            "trans_command": "unit [parameter2] family [parameter3] interface-mode [parameter4]",
-            "parent_command": [
-                "set interfaces [parameter1]"
-            ],
+            "trans_command": "set interfaces [parameter1]",
+            "parent_command": [],
             "root": "set interfaces [parameter1]"
         }
     ],
     "switchport mode trunk": [
         {
             "para_map": [],
-            "trans_command": ".[parameter2] unit [parameter3] family [parameter4] interface-mode [parameter5]",
+            "trans_command": "unit [unit_number] family [family_type] interface-mode [mode]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -10219,17 +10981,21 @@
     "bfd all-interfaces enable": [
         {
             "para_map": [],
-            "trans_command": "set protocols [parameter1] [parameter2]",
-            "parent_command": [],
-            "root": "set protocols [parameter1] [parameter2]"
+            "trans_command": "interface [parameter2] [parameter3]",
+            "parent_command": [
+                "set protocols ospf3 area [parameter1]"
+            ],
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "bfd all-interfaces frr-binding": [
         {
             "para_map": [],
-            "trans_command": "set protocols [parameter1] [parameter2]",
-            "parent_command": [],
-            "root": "set protocols [parameter1] [parameter2]"
+            "trans_command": "interface [interface_name] metric [metric_value]",
+            "parent_command": [
+                "set protocols ospf3 area [parameter1]"
+            ],
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "area [parameter1] range [parameter2]": [
@@ -10247,9 +11013,9 @@
                 1,
                 0
             ],
-            "trans_command": "set protocols [parameter1] [parameter2]",
+            "trans_command": "set protocols ospf3 area [parameter1]",
             "parent_command": [],
-            "root": "set protocols [parameter1] [parameter2]"
+            "root": "set protocols ospf3 area [parameter1]"
         }
     ],
     "copy [parameter1] [parameter2]": [
@@ -10390,41 +11156,6 @@
             "root": "set protocols oam ethernet connectivity-fault-management domain [parameter1]"
         }
     ],
-    "ethernet cfm remote-mep [parameter1] ma [parameter2] ccm-receive [parameter3]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "remote-mep [parameter2] ccm-receive [parameter3]",
-            "parent_command": [
-                "set ethernet-switching-options cfm mep [parameter1]"
-            ],
-            "root": "set ethernet-switching-options cfm mep [parameter1]"
-        },
-        {
-            "para_map": [
-                1,
-                0
-            ],
-            "trans_command": "interface [parameter2] ccm-receive [parameter3]",
-            "parent_command": [
-                "set ethernet-switching-options cfm mep [parameter1]"
-            ],
-            "root": "set ethernet-switching-options cfm mep [parameter1]"
-        },
-        {
-            "para_map": [
-                2,
-                1
-            ],
-            "trans_command": "remote-mep [parameter2] ccm-receive [parameter3]",
-            "parent_command": [
-                "set ethernet-switching-options cfm mep [parameter1]"
-            ],
-            "root": "set ethernet-switching-options cfm mep [parameter1]"
-        }
-    ],
     "clock ssm control [parameter1]": [
         {
             "para_map": [
@@ -10488,9 +11219,42 @@
     "ptp passive-measure enable": [
         {
             "para_map": [],
-            "trans_command": "set protocols oam ethernet connectivity-fault-management mep [parameter1]",
+            "trans_command": "md [md] ma [ma] target-mep [target-mep] one-way interval [interval]",
+            "parent_command": [
+                "set protocols oam ethernet connectivity-fault-management delay-measurement test-id [test-id]"
+            ],
+            "root": "set protocols oam ethernet connectivity-fault-management delay-measurement test-id [test-id]"
+        }
+    ],
+    "class-map [match-type] [class-map-name]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set class-of-service classifiers dscp [parameter1]",
             "parent_command": [],
-            "root": "set protocols oam ethernet connectivity-fault-management mep [parameter1]"
+            "root": "set class-of-service classifiers dscp [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "set class-of-service classifiers [parameter1] [parameter2]",
+            "parent_command": [],
+            "root": "set class-of-service classifiers [parameter1] [parameter2]"
+        }
+    ],
+    "match cos [parameter1]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "set class-of-service classifiers [parameter1] [parameter2]",
+            "parent_command": [],
+            "root": "set class-of-service classifiers [parameter1] [parameter2]"
         }
     ],
     "ethernet cfm remote-mep [parameter1] domain [parameter2] service [parameter3]": [
@@ -10677,11 +11441,11 @@
                 0,
                 0
             ],
-            "trans_command": "vlan-id [parameter2]",
+            "trans_command": "vlan-id [vlan_id]",
             "parent_command": [
-                "set vlans [parameter1]"
+                "set vlans [vlan_name]"
             ],
-            "root": "set vlans [parameter1]"
+            "root": "set vlans [vlan_name]"
         }
     ],
     "ipv6 prefix-list [parameter1] seq [parameter2] [parameter3] [parameter4]": [
@@ -10921,22 +11685,24 @@
         {
             "para_map": [
                 0,
-                2
+                0
             ],
-            "trans_command": "ma [parameter2] vlan-id [parameter3] mep-id [parameter4] loss-measurement single-ended receive test-id [parameter5]",
+            "trans_command": "md [md] ma [ma] target-mep [target-mep] one-way interval [interval]",
             "parent_command": [
-                "set ethernet-switching-options cfm mep-database md [parameter1]"
+                "set protocols oam ethernet connectivity-fault-management delay-measurement test-id [test-id]"
             ],
-            "root": "set ethernet-switching-options cfm mep-database md [parameter1]"
+            "root": "set protocols oam ethernet connectivity-fault-management delay-measurement test-id [test-id]"
         },
         {
             "para_map": [
                 1,
                 0
             ],
-            "trans_command": "set ethernet-switching-options cfm mep-database md [parameter1]",
-            "parent_command": [],
-            "root": "set ethernet-switching-options cfm mep-database md [parameter1]"
+            "trans_command": "md [md] ma [ma] target-mep [target-mep] one-way interval [interval]",
+            "parent_command": [
+                "set protocols oam ethernet connectivity-fault-management delay-measurement test-id [test-id]"
+            ],
+            "root": "set protocols oam ethernet connectivity-fault-management delay-measurement test-id [test-id]"
         },
         {
             "para_map": [
@@ -11064,27 +11830,27 @@
                 0,
                 0
             ],
-            "trans_command": "set protocols bfd peer [parameter1]",
+            "trans_command": "set protocols bfd peer [peer_ip]",
             "parent_command": [],
-            "root": "set protocols bfd peer [parameter1]"
+            "root": "set protocols bfd peer [peer_ip]"
         },
         {
             "para_map": [
                 1,
                 0
             ],
-            "trans_command": "set protocols bfd peer [parameter1]",
+            "trans_command": "set protocols bfd peer [peer_ip]",
             "parent_command": [],
-            "root": "set protocols bfd peer [parameter1]"
+            "root": "set protocols bfd peer [peer_ip]"
         },
         {
             "para_map": [
                 2,
                 0
             ],
-            "trans_command": "set protocols bfd peer [parameter1]",
+            "trans_command": "set services 6rd ipv6-prefix [parameter1]",
             "parent_command": [],
-            "root": "set protocols bfd peer [parameter1]"
+            "root": "set services 6rd ipv6-prefix [parameter1]"
         }
     ],
     "bfd [parameter1] discriminator local [parameter2]": [
@@ -11093,9 +11859,11 @@
                 0,
                 0
             ],
-            "trans_command": "set protocols bfd peer [parameter1]",
-            "parent_command": [],
-            "root": "set protocols bfd peer [parameter1]"
+            "trans_command": "interface [interface_name]",
+            "parent_command": [
+                "set protocols bfd peer [peer_ip]"
+            ],
+            "root": "set protocols bfd peer [peer_ip]"
         },
         {
             "para_map": [
@@ -11104,9 +11872,9 @@
             ],
             "trans_command": "interface [parameter2] local-address [parameter3]",
             "parent_command": [
-                "set protocols bfd peer [parameter1]"
+                "set protocols bfd peer [peer_ip]"
             ],
-            "root": "set protocols bfd peer [parameter1]"
+            "root": "set protocols bfd peer [peer_ip]"
         }
     ],
     "bfd [parameter1] discriminator remote [parameter2]": [
@@ -11115,18 +11883,22 @@
                 0,
                 0
             ],
-            "trans_command": "set protocols bfd peer [parameter1]",
-            "parent_command": [],
-            "root": "set protocols bfd peer [parameter1]"
+            "trans_command": "interface [interface_name]",
+            "parent_command": [
+                "set protocols bfd peer [peer_ip]"
+            ],
+            "root": "set protocols bfd peer [peer_ip]"
         },
         {
             "para_map": [
                 1,
-                0
+                1
             ],
-            "trans_command": "set services 6rd ipv6-prefix [parameter1]",
-            "parent_command": [],
-            "root": "set services 6rd ipv6-prefix [parameter1]"
+            "trans_command": "interface [parameter2] local-address [parameter3]",
+            "parent_command": [
+                "set protocols bfd peer [peer_ip]"
+            ],
+            "root": "set protocols bfd peer [peer_ip]"
         }
     ],
     "sflow destination [parameter1]": [
@@ -11146,9 +11918,9 @@
                 0,
                 0
             ],
-            "trans_command": "set protocols mld interface [parameter1]",
+            "trans_command": "set protocols mpls interface [parameter1]",
             "parent_command": [],
-            "root": "set protocols mld interface [parameter1]"
+            "root": "set protocols mpls interface [parameter1]"
         }
     ],
     "sflow polling-interval [parameter1]": [
@@ -11543,6 +12315,26 @@
             "root": "set security nat source pool [parameter1]"
         }
     ],
+    "monitor session [session_id] destination remote vlan [vlan_id]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set security flow session-limit [parameter1]",
+            "parent_command": [],
+            "root": "set security flow session-limit [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "set security flow session-limit [parameter1]",
+            "parent_command": [],
+            "root": "set security flow session-limit [parameter1]"
+        }
+    ],
     "mpls ldp neighbor [parameter1] targeted": [
         {
             "para_map": [
@@ -11597,6 +12389,26 @@
             "parent_command": [
                 "set protocols ldp interface [parameter1]"
             ],
+            "root": "set protocols ldp interface [parameter1]"
+        }
+    ],
+    "icmp-echo [destination_ip] source-ip [source_ip]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set protocols ldp interface [parameter1]",
+            "parent_command": [],
+            "root": "set protocols ldp interface [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "set protocols ldp interface [parameter1]",
+            "parent_command": [],
             "root": "set protocols ldp interface [parameter1]"
         }
     ],
@@ -12053,39 +12865,80 @@
             "root": "set protocols bfd interface [parameter1]"
         }
     ],
-    "ethernet cfm dm one-way mep [parameter1] ma [parameter2] test-id [parameter3]": [
+    "ip prefix-list [name] seq [sequence_number] [action] [network_address]/[prefix_length]": [
         {
             "para_map": [
                 0,
-                2
+                0
             ],
-            "trans_command": "ma [parameter2] vlan-id [parameter3] mep-id [parameter4] loss-measurement single-ended receive test-id [parameter5]",
-            "parent_command": [
-                "set ethernet-switching-options cfm mep-database md [parameter1]"
-            ],
-            "root": "set ethernet-switching-options cfm mep-database md [parameter1]"
+            "trans_command": "set services 6rd ipv4-prefix-length [parameter1]",
+            "parent_command": [],
+            "root": "set services 6rd ipv4-prefix-length [parameter1]"
         },
         {
             "para_map": [
                 1,
-                2
+                0
             ],
-            "trans_command": "ma [parameter2] vlan-id [parameter3] mep-id [parameter4] loss-measurement single-ended receive test-id [parameter5]",
-            "parent_command": [
-                "set ethernet-switching-options cfm mep-database md [parameter1]"
-            ],
-            "root": "set ethernet-switching-options cfm mep-database md [parameter1]"
+            "trans_command": "set services 6rd ipv4-prefix-length [parameter1]",
+            "parent_command": [],
+            "root": "set services 6rd ipv4-prefix-length [parameter1]"
         },
         {
             "para_map": [
                 2,
-                2
+                1
             ],
-            "trans_command": "ma [parameter2] vlan-id [parameter3] mep-id [parameter4] loss-measurement single-ended receive test-id [parameter5]",
-            "parent_command": [
-                "set ethernet-switching-options cfm mep-database md [parameter1]"
+            "trans_command": "set policy-options prefix-list [parameter1] [parameter2]/[parameter3]",
+            "parent_command": [],
+            "root": "set policy-options prefix-list [parameter1] [parameter2]/[parameter3]"
+        },
+        {
+            "para_map": [
+                3,
+                1
             ],
-            "root": "set ethernet-switching-options cfm mep-database md [parameter1]"
+            "trans_command": "set policy-options prefix-list [parameter1] [parameter2]/[parameter3]",
+            "parent_command": [],
+            "root": "set policy-options prefix-list [parameter1] [parameter2]/[parameter3]"
+        },
+        {
+            "para_map": [
+                4,
+                0
+            ],
+            "trans_command": "set services 6rd ipv4-prefix-length [parameter1]",
+            "parent_command": [],
+            "root": "set services 6rd ipv4-prefix-length [parameter1]"
+        }
+    ],
+    "ethernet cfm dm one-way mep [parameter1] ma [parameter2] test-id [parameter3]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set ethernet-switching-options cfm mep [parameter1]",
+            "parent_command": [],
+            "root": "set ethernet-switching-options cfm mep [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "set ethernet-switching-options cfm mep [parameter1]",
+            "parent_command": [],
+            "root": "set ethernet-switching-options cfm mep [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                0
+            ],
+            "trans_command": "set ethernet-switching-options cfm mep [parameter1]",
+            "parent_command": [],
+            "root": "set ethernet-switching-options cfm mep [parameter1]"
         }
     ],
     "ethernet cfm dm receive test-id [parameter1]": [
@@ -12094,9 +12947,9 @@
                 0,
                 0
             ],
-            "trans_command": "set protocols oam ethernet connectivity-fault-management delay-measurement test-id [parameter1]",
+            "trans_command": "set protocols oam ethernet connectivity-fault-management delay-measurement test-id [test-id]",
             "parent_command": [],
-            "root": "set protocols oam ethernet connectivity-fault-management delay-measurement test-id [parameter1]"
+            "root": "set protocols oam ethernet connectivity-fault-management delay-measurement test-id [test-id]"
         }
     ],
     "frame-relay switching": [
@@ -12170,9 +13023,11 @@
                 0,
                 0
             ],
-            "trans_command": "set protocols mld interface [parameter1]",
-            "parent_command": [],
-            "root": "set protocols mld interface [parameter1]"
+            "trans_command": "gigether-options speed [parameter2]",
+            "parent_command": [
+                "set interfaces [parameter1]"
+            ],
+            "root": "set interfaces [parameter1]"
         }
     ],
     "ptp clock gnss-model [parameter1] [parameter2]": [
@@ -12203,9 +13058,9 @@
         {
             "para_map": [
                 0,
-                3
+                0
             ],
-            "trans_command": "unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt hold-time [parameter5]",
+            "trans_command": "aggregated-ether-options link-speed [parameter2]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -12285,9 +13140,9 @@
         {
             "para_map": [
                 0,
-                1
+                0
             ],
-            "trans_command": "unit [parameter2] family [parameter3] interface-mode [parameter4]",
+            "trans_command": "unit [parameter2] family inet service input [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -12298,7 +13153,7 @@
                 1,
                 0
             ],
-            "trans_command": "unit [parameter2] family [parameter3] interface-mode [parameter4]",
+            "trans_command": "unit [parameter2] family ethernet-switching port-mode [parameter3]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -12309,9 +13164,9 @@
         {
             "para_map": [
                 0,
-                0
+                3
             ],
-            "trans_command": "unit [parameter2] family [parameter3]",
+            "trans_command": "unit [parameter2] family inet address [parameter3] vrrp-group [parameter4] preempt hold-time [parameter5]",
             "parent_command": [
                 "set interfaces [parameter1]"
             ],
@@ -12383,7 +13238,7 @@
                 0,
                 1
             ],
-            "trans_command": "authentication [parameter2] [parameter3]",
+            "trans_command": "authentication [authentication_method] \"[public_key] \"",
             "parent_command": [
                 "set system login user [parameter1]"
             ],
@@ -12407,22 +13262,22 @@
                 0,
                 0
             ],
-            "trans_command": "vlan-id [parameter2]",
+            "trans_command": "interface [parameter2]",
             "parent_command": [
-                "set vlans [parameter1]"
+                "set protocols l2vpn vsi [parameter1]"
             ],
-            "root": "set vlans [parameter1]"
+            "root": "set protocols l2vpn vsi [parameter1]"
         },
         {
             "para_map": [
                 1,
                 0
             ],
-            "trans_command": "vlan-id [parameter2]",
+            "trans_command": "interface [parameter2]",
             "parent_command": [
-                "set vlans [parameter1]"
+                "set protocols l2vpn vsi [parameter1]"
             ],
-            "root": "set vlans [parameter1]"
+            "root": "set protocols l2vpn vsi [parameter1]"
         }
     ],
     "crypto ikev2 profile [parameter1]": [
@@ -12467,6 +13322,26 @@
             "trans_command": "set system services ssh authentication-order [parameter1]",
             "parent_command": [],
             "root": "set system services ssh authentication-order [parameter1]"
+        }
+    ],
+    "authentication [method] [type]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set system services telnet authentication-order [parameter1]",
+            "parent_command": [],
+            "root": "set system services telnet authentication-order [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "set system services telnet authentication-order [parameter1]",
+            "parent_command": [],
+            "root": "set system services telnet authentication-order [parameter1]"
         }
     ],
     "keyring [parameter1]": [
@@ -12603,9 +13478,11 @@
                 0,
                 0
             ],
-            "trans_command": "delete set protocols isis level [parameter1]",
-            "parent_command": [],
-            "root": "delete set protocols isis level [parameter1]"
+            "trans_command": "perfect-forward-secrecy keys group[group_number]",
+            "parent_command": [
+                "set security ipsec policy [parameter1]"
+            ],
+            "root": "set security ipsec policy [parameter1]"
         }
     ],
     "encryption [parameter1]": [
@@ -12974,6 +13851,35 @@
             "root": "set system host-name [parameter1]"
         }
     ],
+    "enable secret [level] [encryption_type] [password]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set system root-authentication encrypted-password [parameter1]",
+            "parent_command": [],
+            "root": "set system root-authentication encrypted-password [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "set system root-authentication encrypted-password [parameter1]",
+            "parent_command": [],
+            "root": "set system root-authentication encrypted-password [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                0
+            ],
+            "trans_command": "set system root-authentication encrypted-password [parameter1]",
+            "parent_command": [],
+            "root": "set system root-authentication encrypted-password [parameter1]"
+        }
+    ],
     "line [parameter1] [parameter2]": [
         {
             "para_map": [
@@ -13040,6 +13946,41 @@
             "trans_command": "set protocols igmp static-group [parameter1]",
             "parent_command": [],
             "root": "set protocols igmp static-group [parameter1]"
+        }
+    ],
+    "deny ip [source_address] [source_wildcard] [destination]": [
+        {
+            "para_map": [
+                0,
+                1
+            ],
+            "trans_command": "rule [parameter2] match source-address [parameter3]",
+            "parent_command": [
+                "set security nat source rule-set [parameter1]"
+            ],
+            "root": "set security nat source rule-set [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                1
+            ],
+            "trans_command": "rule [parameter2] match source-address [parameter3]",
+            "parent_command": [
+                "set security nat source rule-set [parameter1]"
+            ],
+            "root": "set security nat source rule-set [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                1
+            ],
+            "trans_command": "rule [parameter2] match source-address [parameter3]",
+            "parent_command": [
+                "set security nat source rule-set [parameter1]"
+            ],
+            "root": "set security nat source rule-set [parameter1]"
         }
     ],
     "radius-server key [parameter1]": [
@@ -13442,6 +14383,35 @@
             "trans_command": "set chassis synchronization network-clock-select-mode [parameter1]",
             "parent_command": [],
             "root": "set chassis synchronization network-clock-select-mode [parameter1]"
+        }
+    ],
+    "enable secret [level] [encryption_type] [encrypted_password]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set system root-authentication encrypted-password [parameter1]",
+            "parent_command": [],
+            "root": "set system root-authentication encrypted-password [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "set system root-authentication encrypted-password [parameter1]",
+            "parent_command": [],
+            "root": "set system root-authentication encrypted-password [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                0
+            ],
+            "trans_command": "set system root-authentication encrypted-password [parameter1]",
+            "parent_command": [],
+            "root": "set system root-authentication encrypted-password [parameter1]"
         }
     ],
     "bridge domain [parameter1]": [
@@ -14073,6 +15043,55 @@
             "root": "set access radius-server [parameter1] [parameter2]"
         }
     ],
+    "radius-server host [ip_address] auth-port [auth_port] acct-port [acct_port] key [key_encryption] [key]": [
+        {
+            "para_map": [
+                0,
+                0
+            ],
+            "trans_command": "set system radius-server [parameter1]",
+            "parent_command": [],
+            "root": "set system radius-server [parameter1]"
+        },
+        {
+            "para_map": [
+                1,
+                0
+            ],
+            "trans_command": "set system radius-server [parameter1]",
+            "parent_command": [],
+            "root": "set system radius-server [parameter1]"
+        },
+        {
+            "para_map": [
+                2,
+                0
+            ],
+            "trans_command": "set system radius-server [parameter1]",
+            "parent_command": [],
+            "root": "set system radius-server [parameter1]"
+        },
+        {
+            "para_map": [
+                3,
+                0
+            ],
+            "trans_command": "secret [parameter2]",
+            "parent_command": [
+                "set system radius-server [parameter1]"
+            ],
+            "root": "set system radius-server [parameter1]"
+        },
+        {
+            "para_map": [
+                4,
+                0
+            ],
+            "trans_command": "set system radius-server [parameter1]",
+            "parent_command": [],
+            "root": "set system radius-server [parameter1]"
+        }
+    ],
     "access-list [parameter1] permit ip [parameter2] [parameter3]": [
         {
             "para_map": [
@@ -14100,44 +15119,6 @@
             "trans_command": "set policy-options prefix-list [parameter1] [parameter2]/[parameter3]",
             "parent_command": [],
             "root": "set policy-options prefix-list [parameter1] [parameter2]/[parameter3]"
-        }
-    ],
-    "ip prefix-list [parameter1] seq [parameter2] permit [parameter3] le [parameter4]": [
-        {
-            "para_map": [
-                0,
-                0
-            ],
-            "trans_command": "set policy-options prefix-list [parameter1] [parameter2]/[parameter3]",
-            "parent_command": [],
-            "root": "set policy-options prefix-list [parameter1] [parameter2]/[parameter3]"
-        },
-        {
-            "para_map": [
-                1,
-                0
-            ],
-            "trans_command": "set services 6rd ipv4-prefix-length [parameter1]",
-            "parent_command": [],
-            "root": "set services 6rd ipv4-prefix-length [parameter1]"
-        },
-        {
-            "para_map": [
-                2,
-                0
-            ],
-            "trans_command": "set services 6rd ipv4-prefix-length [parameter1]",
-            "parent_command": [],
-            "root": "set services 6rd ipv4-prefix-length [parameter1]"
-        },
-        {
-            "para_map": [
-                3,
-                0
-            ],
-            "trans_command": "set services 6rd ipv4-prefix-length [parameter1]",
-            "parent_command": [],
-            "root": "set services 6rd ipv4-prefix-length [parameter1]"
         }
     ],
     "ip msdp peer [parameter1] connect-source [parameter2]": [

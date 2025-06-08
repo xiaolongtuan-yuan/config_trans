@@ -1,0 +1,19 @@
+sysname CE2
+user-group external
+bgp 600
+ import-route direct
+ ipv4-family unicast
+  peer 2001:db8:9::1 next-hop-local
+  undo synchronization
+  peer none route-policy EXPORT-CONNECTED export
+  peer 30.30.30.30 next-hop-local
+ network 2001:db8:2::2 0.0.0.0
+ l2vpn-family evpn
+  peer 2001:db8:2::2 advertise irb
+  peer 1.1.1.1 import connected
+ peer 10.1.1.2 enable
+bgp 100
+ confederation peer-as none 100
+l2tp-group external
+traffic-policy EXPORT-CONNECTED inbound
+traffic policy 1

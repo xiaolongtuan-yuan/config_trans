@@ -1,0 +1,57 @@
+hostname LSRA
+ethernet cfm ma ma1 md md1
+ethernet cfm ma mpls md none
+interface GigabitEthernet2/0/0
+ mpls traffic-eng tunnels
+mpls ldp remote-peer 3.3.3.9 3.3.3.9
+mpls traffic-eng tunnel 10
+ mpls traffic-eng tunnels
+ interface Tunnel10
+ mpls traffic-eng bidirectional static lsp association ingress in-label 20
+tunnel destination 2.1.1.2
+l2vpn pw-class tpatoc
+ peer-address 3.3.3.3
+ neighbor 3.3.3.3
+ tunnel policy tpatoc
+ethernet cfm ma MA name md MD name
+interface GigabitEthernet1/0/0
+ ip address 2.1.1.1 255.255.255.0
+ mpls ip
+ mpls traffic-eng tunnels
+interface range GigabitEthernet1/0/1 - 2
+ no shutdown
+interface GigabitEthernet1/0/0.1
+ encapsulation dot1q 1
+ mpls ip
+ mpls l2transport route none 30000 pw-class 101
+ l2vpn pw-class TPATOC
+ statistics enable
+interface LoopBack1
+ ip address 1.1.1.1 255.255.255.255
+interface Tunnel10
+ ip unnumbered Loopback1
+ tunnel mode mpls traffic-eng
+ tunnel destination 2.2.2.2
+ tunnel mpls traffic-eng signalling static
+ tunnel mpls traffic-eng 100
+ tunnel mpls traffic-eng tunnel-id 100
+ mpls traffic-eng bidirectional
+ mpls traffic-eng tunnels
+ tunnel mpls traffic-eng reserved-for-binding
+ ip route 2.2.2.2 255.255.255.255 2.1.1.2
+ ip route 3.3.3.3 255.255.255.255 2.1.1.2
+policy-map tpatoc
+ class tpatoc
+  service-policy tpatoc
+   tunnel mpls traffic-eng binding 2.2.2.2 255.255.255.255 Tunnel10
+   mpls oam
+    mpls tp mep l2vc 30000 vlan peer 3.3.3.3 mep-id 1 remote-mep-id 2
+    mpls oam cc send enable
+    oam reception enable
+   mpls oam meg test
+   mpls oam l2vc peer 3.3.3.3 vcid 30000 mep domain 1 service 1
+   mpls oam cc interval 1s
+   mpls oam cc receive enable
+   mpls oam loss dual-end
+    mpls oam cc send enable
+mpls oam dual-end

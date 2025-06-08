@@ -1,0 +1,20 @@
+set system host-name DeviceC
+set vlans vlan10 vlan-id 20
+set interfaces vlan.10 disable
+set interfaces vlan.10 unit 0 family inet address 172.17.1.1/24
+set interfaces irb.10 unit 0 family inet address 172.16.1.2/24
+set interfaces irb.10 unit 0 family ethernet-switching vlan members 10
+set interfaces irb.10 unit 0 family inet service input none
+set interfaces vlan.20 disable
+interfaces { delete disable
+ge-1/0/0 {
+unit 0 {
+family ethernet-switching {
+vlan {
+members 10; }
+set system host-name CE1
+interfaces ge-2/0/0 delete disable
+set system host-name portswitch
+set interfaces ge-2/0/0 unit 0 family ethernet-switching vlan members 20
+set protocols ospf area 0.0.0.0 interface 0.0.0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0

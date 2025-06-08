@@ -1,0 +1,48 @@
+hostname ASBR2
+ethernet cfm ma 3.3.3.3 md none
+ethernet cfm ma mpls md none
+mpls ldp remote-peer none none
+interface GigabitEthernet1/0/0
+ mpls ldp autoconfig
+ ip address 10.20.1.2 255.255.255.252
+ mpls ip
+interface range GigabitEthernet1/0/0 - 0
+ no shutdown
+interface GigabitEthernet2/0/0
+ ip address 10.30.1.1 255.255.255.0
+ mpls ip
+ mpls ldp autoconfig
+interface range GigabitEthernet2/0/0 - 0
+ no shutdown
+interface LoopBack1
+ ip address 3.3.3.3 255.255.255.255
+ ip address 4.4.4.4 255.255.255.255
+ ip ospf 1 area 0
+ ospfv3 1 ipv6 area 0.0.0.0
+ ip address 3.3.3.3 0.0.0.0
+ ip address 10.30.1.0 255.255.255.0
+router bgp 200
+ neighbor 4.4.4.4 remote-as 200
+ neighbor 4.4.4.4 update-source LoopBack1
+ neighbor 10.20.1.1 remote-as 100
+ neighbor 10.20.1.1 remote-as 200
+ neighbor 10.20.1.1 update-source GigabitEthernet1/0/0
+ address-family ipv4 unicast
+  neighbor 4.4.4.4 capability add-path receive
+  neighbor 10.20.1.1 capability add-path receive
+ no synchronization
+ neighbor 4.4.4.4 remote-as 100
+ bgp router-id 4.4.4.4
+ address-family ipv4
+  neighbor 4.4.4.4 route-map policy1 out
+  neighbor 10.20.1.1 route-map policy2 out
+ bgp router-id 10.20.1.1
+neighbor 4.4.4.4 remote-as 200
+neighbor 10.20.1.1 remote-as 100
+route-map policy1 permit 1
+ match mpls-label
+ set mpls-label
+ip as-path access-list 1 permit .*
+route-map policy2 permit 1
+ set mpls-label
+ethernet cfm ma ma1 md md1
