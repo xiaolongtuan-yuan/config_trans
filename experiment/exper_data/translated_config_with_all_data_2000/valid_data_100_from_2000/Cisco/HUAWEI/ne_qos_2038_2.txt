@@ -5,12 +5,15 @@ interface GigabitEthernet1/0/0
 bgp 100
  peer 10.20.1.2 as-number 100
  peer 10.20.1.2 enable
- ipv4-family unicast
-  undo synchoronization
-  import-route connected 100
-  peer 10.20.1.2 advertise-community
  import-route direct
+ ipv4-family unicast
+  synchronization
+  import-route connected 100
+  import-route direct
+  peer 10.20.1.2 next-hop-local
+ undo synchronization
 ospf 1
- network 10.20.1.0 0.0.0.255
+ospf 1 router-id 10.20.1.0
  area 0
+  network 10.20.1.0 0.0.0.255
 return

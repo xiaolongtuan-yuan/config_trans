@@ -1258,12 +1258,12 @@ def mapping_library_load(file_path, vendors, manual_mapping_path=None, error_map
             path = file_path.format(vendor, target_vendor)
             library_name = '{}_{}'.format(vendor, target_vendor)
             mapping_libraries[library_name] = load_json_file(path)
-            if error_mapping_path:
+            if error_mapping_path:  # 先删除
                 error_mapping = load_json_file(error_mapping_path.format(vendor, target_vendor))
                 for key in error_mapping:
                     if key in mapping_libraries[library_name]:
                         del mapping_libraries[library_name][key]
-            if manual_mapping_path:
+            if manual_mapping_path:  # 再更新手工映射
                 manual_mapping = load_json_file(manual_mapping_path.format(vendor, target_vendor))
                 if topk != 3:
                     for key, value in list(manual_mapping.items())[:-abs(topk - 3)]:

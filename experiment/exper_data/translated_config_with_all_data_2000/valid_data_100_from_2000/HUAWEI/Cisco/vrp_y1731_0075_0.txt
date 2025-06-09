@@ -1,22 +1,20 @@
 hostname CE1
 vlan batch 2
 vlan 2
-ssh version 2
-ethernet cfm
+ethernet cfm global
 interface GigabitEthernet1/0/1
  switchport
  switchport mode access
- switchport trunk allowed vlan 2
- ethernet cfm mep domain md3 service ma3 3 inward
- ethernet cfm mep domain md3 service ma3 4 inward
-  ethernet cfm continuity-check loss-threshold test-id 1 mep-id 3 remote-mep-id 4 consecutive 1000
-interface range GigabitEthernet1/0/1 - 2
  no shutdown
+ switchport trunk allowed vlan 2
+ ethernet cfm domain md3 level 3
+  ethernet cfm mip synthetics-loss single-ended continual test-id 1 mep-id 3 remote-mep-id 4 interval 1000
 interface ma3
- ethernet cfm domain md3 service ma3 vlan 2
+ ethernet cfm domain md3 service ma3 evc vlan-2
  ethernet cfm mep domain md3 service ma3 3 outward
  ethernet cfm mep domain md3 service ma3 mpid 3 direction outward
- ethernet cfm mep domain md3 service ma3 3 inward
- ethernet cfm mep domain md3 service ma3 4 inward
- ethernet cfm mep crosscheck test-id 1 mep-id 3 remote-mep-id 4
-ethernet cfm ma ma1 md md1
+ ethernet cfm mep 3 service ma3 domain md3 continuity-check transmission
+ ethernet cfm mep crosscheck 4
+ ethernet cfm mep crosscheck mep-id 4 vlan 2
+ ethernet cfm mep crosscheck start 3 peer mep-id 4 test-id 1
+end

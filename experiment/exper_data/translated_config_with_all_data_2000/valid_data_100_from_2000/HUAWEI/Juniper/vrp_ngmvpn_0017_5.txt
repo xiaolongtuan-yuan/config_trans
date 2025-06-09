@@ -3,13 +3,16 @@ set routing-options multicast family inet
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 unit 0 family inet address 192.168.2.2/24
-set interfaces ge-1/0/0 unit 0 family inet policer input none
+set interfaces ge-1/0/0 set protocols pim interface all mode sparse
+set interfaces ge-1/0/0 set protocols pim interface ge-1/0/0.0 mode sparse
+set interfaces ge-1/0/0 set protocols pim interface ge-1/0/1.0 mode sparse
 set interfaces ge-1/0/0 unit 0 family inet address 10.1.5.1/24
-set interfaces ge-1/0/0 unit 0 family inet policer input default_policer
-set interfaces ge-1/0/0 unit 0 family inet address inet vrrp-group none preempt hold-time none
-set interfaces ge-1/0/0 unit 0 family inet address 225.0.0.1/32 vrrp-group 1
+set interfaces ge-1/0/0 set protocols pim interface ge-1/0/0 mode sparse
+set interfaces ge-1/0/0 set protocols pim interface ge-1/0/1 mode sparse
+set interfaces ge-1/0/0 set protocols igmp interface ge-1/0/1
+set interfaces ge-1/0/0 set protocols igmp static-group 225.0.0.1
 set interfaces ge-1/0/0 unit 0 family inet service input none
+set interfaces ge-1/0/0 unit 1 vlan-id 2
 set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
-set system host-name pim
-set interfaces irb unit 4 family inet address 4.4.4.4/32
-set system host-name CE1
+set protocols oam ethernet connectivity-fault-management mep 2
+set protocols pim rp static 4.4.4.4

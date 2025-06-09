@@ -6,47 +6,44 @@
         "set routing-options router-id 1.1.1.1",
         "set routing-options autonomous-system 200",
         "set policy-options policy-statement export-policy term 1 from protocol direct",
-        "set policy-options policy-statement export-policy term 1 then accept",
-        "set protocols bgp group external local-address 2001:db8:100::1",
-        "set protocols bgp group external peer-as 200",
-        "set routing-options router-id 1.1.1.1",
-        "set routing-options autonomous-system 200",
-        "set policy-options policy-statement export-policy term 1 from protocol direct",
         "set policy-options policy-statement export-policy term 1 then accept"
     ],
-    "grammatical_accuracy": 0.6,
+    "grammatical_accuracy": 0.5,
     "missed_templates": [
         "set protocols bgp group [parameter1] local-address [parameter2]",
+        "set protocols bgp group [group_name] peer-as [as_number]",
         "set routing-options router-id [parameter1]",
         "set policy-options policy-statement [policy_name] term [term_number] from protocol [protocol_type]",
         "set policy-options policy-statement [parameter1] term [parameter2] then [parameter3]"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.11764705882352941,
+    "llm_command_ratio": 0.2,
     "command_for_llm": [
+        "undo synchronization",
         "ipv6 address 2001:db8:100::1/96",
         "ipv6 address 2001:db8:1::1/64"
     ],
     "llm_trans_commands": [
         "set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:1::1/64",
-        "set interfaces ge-2/0/0 unit 0 family inet6 address 2001:db8:100::1/96"
+        "set interfaces ge-2/0/0 unit 0 family inet6 address 2001:db8:100::1/96",
+        "no synchronization"
     ],
     "source_commands": [
-        "network 2001:db8:1:: 64",
-        "bgp 100",
-        "router-id 1.1.1.1",
-        "interface GigabitEthernet1/0/0",
-        "undo synchronization",
-        "ipv6 address 2001:db8:100::1/96",
-        "return",
-        "ipv6 address 2001:db8:1::1/64",
-        "ipv6-family unicast",
-        "sysname DeviceA",
-        "peer 2001:db8:100::2 enable",
+        "interface GigabitEthernet2/0/0",
         "peer 2001:db8:100::2 as-number 200",
+        "ipv6 address 2001:db8:1::1/64",
+        "peer 2001:db8:100::2 enable",
+        "network 2001:db8:1:: 64",
+        "router-id 1.1.1.1",
+        "return",
+        "sysname DeviceA",
+        "undo synchronization",
         "ipv6 enable",
         "undo shutdown",
-        "interface GigabitEthernet2/0/0"
+        "interface GigabitEthernet1/0/0",
+        "ipv6 address 2001:db8:100::1/96",
+        "bgp 100",
+        "ipv6-family unicast"
     ],
     "llm_origin_response": [
         ""

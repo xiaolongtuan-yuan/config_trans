@@ -1,18 +1,19 @@
 set system host-name DeviceA
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6
 set interfaces ge-1/0/0 set interfaces ge-2/0/0 unit 0 family inet6
 set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:1::1/64
-interfaces ge-1/0/0
 set interfaces ge-2/0/0 unit 0 disable
 set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 ether-options no-auto-negotiation
+set interfaces ge-2/0/0 set interfaces ge-1/0/0 unit 0 family inet6
+set interfaces ge-2/0/0 set interfaces ge-2/0/0 unit 0 family inet6
 set interfaces ge-2/0/0 set interfaces ge-2/0/0 unit 0 family inet6 address 2001:db8:100::1/96
-interfaces ge-2/0/0.0
 set routing-options autonomous-system 100
 set protocols bgp group IBGP type external
 set protocols bgp group IBGP neighbor 2001:db8:100::2 peer-as 200
-set protocols bgp group IBGP export BGP-200
-set protocols bgp local-as 100 no synchronization
-set protocols bgp local-as 100 set protocols bgp group <group-name> no-synchronize
+set protocols bgp group IBGP export BGP-NETWORKS
+set protocols bgp local-as 100
 set protocols isis export REDIST-CONNECTED

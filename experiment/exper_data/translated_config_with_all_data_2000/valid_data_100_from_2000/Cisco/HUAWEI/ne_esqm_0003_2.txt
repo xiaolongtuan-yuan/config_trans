@@ -1,41 +1,41 @@
 sysname NPE
-interface GigabitEthernet2/0/0
- undo shutdown
- ip binding vpn-instance vpn1
- ip address 192.168.30.1 255.255.255.0
+ip route-static none none none
 ipv4-family vpn-instance vpn1
- ipv4-family vpn-instance vpn1
- route-target 2:2 import
+ import-route 2:2
 evpn vpn-instance vpn1 100:1
  route-distinguisher 100:1
-evpn vpn-instance vpn1 evpn
+evpn vpn-instance vpn1 vpws
  vpn-target 2:2 export-extcommunity
-mpls lsr-id 1.1.1.1
+mpls lsr-id 3.3.3.9
 mpls
 isis 1
+ is-level level-1
  network-entity 10.0000.0000.0003.00
 interface GigabitEthernet1/0/0
  undo shutdown
  ip address 10.2.1.2 255.255.255.0
+ mpls
+interface GigabitEthernet1/0/1
  mpls ldp
-interface GigabitEthernet1/0/0 mode l2
- mpls l2vc none none raw
-interface LoopBack1
+interface GigabitEthernet2/0/0
+ undo shutdown
+ ip vpn-instance vpn1
+ ip address 192.168.30.1 255.255.255.0
+interface Loopback1
  ip address 3.3.3.3 255.255.255.255
 bgp 100
  peer 2.2.2.2 as-number 100
  peer 2.2.2.2 enable
+ import-route direct
  ipv4-family unicast
-  peer 2.2.2.2 next-hop-self
-  peer 2.2.2.2 advertise-community
   peer 2.2.2.2 next-hop-local
- peer 2.2.2.2 connect-interface Loopback1
+ peer 2.2.2.2 connect-interface LoopBack1
+ undo synchronization
  ipv4-family vpnv4
-  peer 2.2.2.2 advertise-community
+ l2vpn-ad-family
+  peer 2.2.2.2 send-community extended
 route-policy SPE permit node 10
  if-match ip-prefix default
-ip as-path-filter 10 permit .*
 route-policy SPE permit node 20
-ip as-path-filter 20 permit .*
 ip ip-prefix default index 10 permit 0.0.0.0 0
 return

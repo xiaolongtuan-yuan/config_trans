@@ -1,20 +1,26 @@
 set system host-name CE3
-set protocols pim rp static address 4.4.4.4
-set routing-options multicast
+set routing-options multicast family inet
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 unit 0 family inet address 10.1.4.2/24
-set interfaces ge-1/0/0 unit 0 family inet interface-mode sparse-mode
+set interfaces ge-1/0/0 set protocols pim interface all mode sparse
+set interfaces ge-1/0/0 set protocols pim interface ge-1/0/0.0 mode sparse
+set interfaces ge-1/0/0 set protocols pim interface ge-1/0/1.0 mode sparse
+set interfaces ge-1/0/0 set protocols pim interface lo1.0 mode sparse
 set interfaces ge-1/0/0 unit 0 family inet address 192.168.3.1/24
-interfaces ge-1/0/0.0
+set interfaces ge-1/0/0 set protocols pim interface ge-1/0/0 mode sparse
+set interfaces ge-1/0/0 set protocols pim interface ge-1/0/1 mode sparse
+set interfaces ge-1/0/0 set protocols pim interface lo1 mode sparse
 set interfaces ge-1/0/1 unit 0 disable
 set interfaces ge-1/0/1 disable
-interfaces ge-1/0/1.0
 set interfaces lo0.1 unit 1 disable
 set interfaces lo0.1 disable
-set interfaces lo0.1 unit 0 family inet address 4.4.4.4/32
-set interfaces lo0.1 unit 1 family inet interface-mode loopback
-set protocols ospf area 0.0.0.2 interface 2
-set protocols ospf area 0.0.0.0 interface ge-0/0/0.0
-set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set interfaces lo0.1 set protocols pim interface all mode sparse
+set interfaces lo0.1 set protocols pim interface ge-1/0/0.0 mode sparse
+set interfaces lo0.1 set protocols pim interface ge-1/0/1.0 mode sparse
+set interfaces lo0.1 set protocols pim interface lo0.1 mode sparse
+set interfaces lo0 unit 0 family inet address 4.4.4.4/32
+set protocols ospf area 2 interface ge-0/0/1.0
+set protocols ospf area 0 interface ge-0/0/1.0
 set protocols pim static-rp 4.4.4.4

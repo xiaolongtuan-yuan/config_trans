@@ -4,33 +4,37 @@
         "set interfaces ge-0/0/0 unit 0 family inet address 10.2.1.1/24",
         "set protocols bgp group ebgp peer-as 200",
         "set policy-options policy-statement export_direct term 1 from protocol direct",
-        "set policy-options policy-statement export_direct term 1 then accept",
-        "set interfaces ge-0/0/0 unit 0 family inet address 10.2.1.1/24",
-        "set protocols bgp group ebgp peer-as 200",
-        "set policy-options policy-statement export_direct term 1 from protocol direct",
         "set policy-options policy-statement export_direct term 1 then accept"
     ],
-    "grammatical_accuracy": 0.8,
+    "grammatical_accuracy": 0.7,
     "missed_templates": [
+        "set protocols bgp group [parameter1] peer-as [parameter2]",
         "set policy-options policy-statement [parameter1] term [parameter2] from protocol [parameter3]",
         "set policy-options policy-statement [policy_statement_name] term [term_number] then [action]"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.0,
-    "command_for_llm": [],
-    "llm_trans_commands": [],
-    "source_commands": [
-        "ipv4-family unicast",
-        "bgp 65002",
-        "undo synchronization",
-        "interface GigabitEthernet1/0/0",
-        "import-route direct",
-        "return",
-        "peer 10.2.1.2 enable",
-        "ip address 10.2.1.1 255.255.255.0",
-        "undo shutdown",
-        "peer 10.2.1.2 as-number 200",
-        "sysname CE2"
+    "llm_command_ratio": 0.14285714285714285,
+    "command_for_llm": [
+        "undo synchronization"
     ],
-    "llm_origin_response": []
+    "llm_trans_commands": [
+        "no synchronization",
+        "delete protocols bgp group <group-name> synchronization"
+    ],
+    "source_commands": [
+        "import-route direct",
+        "bgp 65002",
+        "sysname CE2",
+        "peer 10.2.1.2 enable",
+        "peer 10.2.1.2 as-number 200",
+        "return",
+        "undo synchronization",
+        "undo shutdown",
+        "ipv4-family unicast",
+        "interface GigabitEthernet1/0/0",
+        "ip address 10.2.1.1 255.255.255.0"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
 }

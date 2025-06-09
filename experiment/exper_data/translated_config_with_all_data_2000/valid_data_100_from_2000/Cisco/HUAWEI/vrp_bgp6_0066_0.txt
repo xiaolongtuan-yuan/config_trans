@@ -3,17 +3,20 @@ interface GigabitEthernet1/0/0
  undo shutdown
  ipv6 enable
  ipv6 address 2001:db8:1::1/64
+ ipv6 address 2001:db8:1::1/64 none
 interface GigabitEthernet2/0/0
  undo shutdown
  ipv6 enable
  ipv6 address 2001:db8:100::1/96
+ ipv6 address 2001:db8:100::1/96 none
 bgp 100
  router-id 1.1.1.1
  peer 2001:db8:100::2 as-number 200
  peer 2001:db8:100::2 enable
+ import-route direct
  ipv4-family unicast
-  undo synchronization
-  peer 2001:db8:100::2 advertise-community
+  peer 2001:db8:100::2 next-hop-local
  ipv4-family ipv6
- network 2001:db8:1::/64 64
+ undo synchronization
+ network 2001:db8:1::/64 none
 return

@@ -8,14 +8,6 @@
         "set protocols bgp group external family inet unicast",
         "set policy-options policy-statement import-direct term 1 from protocol direct",
         "set policy-options policy-statement import-direct term 1 then accept",
-        "set protocols bgp group external neighbor 172.17.1.1 import import-direct",
-        "set interfaces ge-1/0/1 unit 1 family inet address 172.17.1.2/24",
-        "set protocols bgp group external type external",
-        "set protocols bgp group external local-address 172.17.1.2",
-        "set protocols bgp group external neighbor 172.17.1.1 peer-as 100",
-        "set protocols bgp group external family inet unicast",
-        "set policy-options policy-statement import-direct term 1 from protocol direct",
-        "set policy-options policy-statement import-direct term 1 then accept",
         "set protocols bgp group external neighbor 172.17.1.1 import import-direct"
     ],
     "grammatical_accuracy": 0.5555555555555556,
@@ -26,28 +18,22 @@
         "set protocols bgp group [group_name] neighbor [neighbor_ip] import [import_policy]"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.07692307692307693,
-    "command_for_llm": [
+    "llm_command_ratio": 0.0,
+    "command_for_llm": [],
+    "llm_trans_commands": [],
+    "source_commands": [
+        "router bgp 65421",
+        "exit-address-family",
+        "end",
+        "no shutdown",
+        "neighbor 172.17.1.1 remote-as 100",
+        "ip address 172.17.1.2 255.255.255.0",
+        "address-family ipv4",
+        "network 172.17.1.0 mask 255.255.255.0",
+        "hostname CE3",
+        "neighbor 172.17.1.1 activate",
+        "interface GigabitEthernet1/0/1.1",
         "no synchronization"
     ],
-    "llm_trans_commands": [
-        "set protocols bgp group <group_name> no-synchronize"
-    ],
-    "source_commands": [
-        "no synchronization",
-        "address-family ipv4",
-        "no shutdown",
-        "neighbor 172.17.1.1 activate",
-        "exit-address-family",
-        "neighbor 172.17.1.1 remote-as 100",
-        "end",
-        "network 172.17.1.0 mask 255.255.255.0",
-        "router bgp 65421",
-        "interface GigabitEthernet1/0/1.1",
-        "hostname CE3",
-        "ip address 172.17.1.2 255.255.255.0"
-    ],
-    "llm_origin_response": [
-        ""
-    ]
+    "llm_origin_response": []
 }

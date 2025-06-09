@@ -1,21 +1,21 @@
 sysname Tail
 ipv4-family vpn-instance VPNA
+ import-route 111:1
 evpn vpn-instance VPNA 500:1
  route-distinguisher 500:1
 bgp 600
  ipv4-family unicast
-  ipv4-family vpn-instance VPNA
-  vpn-target 111:1 import-extcommunity
  ipv4-family ipv6
 evpn vpn-instance VPNA ipv4
  vpn-target 111:1 export-extcommunity
-ipv6
-ip ipv6-prefix AS1 index 5 permit 2001:DB8:15:: 64
-ipv6 route-static 2001:DB8:15:: 64 Null0 ::
+ipv6 route-static 2001:DB8::1 128 GigabitEthernet2/0/2 2001:DB8:2::1
+ipv6 prefix-filter AS1 index 5 permit 2001:DB8:15::/64
+ipv6 route-static 2001:DB8:15:: 64 Null0 none
 ipv6 route-static 2001:DB8:15:: 64 Null0
 ipv6 route-static 2001:DB8:15:: 96 GigabitEthernet1/0/1 none
 ipv6 route-static 2001:DB8:15:: 96 GigabitEthernet1/0/1
 isis 1
+ is-level level-1
  network-entity 49.0000.0000.0005.00
  cost-style wide
  segment-routing global-block 16000 23999
@@ -23,11 +23,14 @@ interface GigabitEthernet1/0/1
  undo shutdown
  ipv6 enable
  ipv6 address 2001:DB8:4::2/96
+ ipv6 address 2001:DB8:4::2/96 none
  ipv6-prefix 2001:db8::/32
 interface GigabitEthernet1/0/2
  undo shutdown
- ip binding vpn-instance VPNA
+ ip vpn-instance VPNA
  ip address 10.5.1.2 255.255.255.252
+interface Loopback1
 interface LoopBack1
  ipv6 address 5::5/128
+ ipv6 address 5::5/128 none
 return

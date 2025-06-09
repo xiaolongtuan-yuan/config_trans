@@ -1,7 +1,7 @@
 {
     "set system host-name [parameter1]": [
         "hostname [parameter1]",
-        "ethernet cfm domain [parameter1] level [parameter2]"
+        "ethernet cfm maintenance-association [parameter1] [parameter2]"
     ],
     "set interfaces [parameter1]": [
         "interface [parameter1].[parameter2]",
@@ -9,10 +9,10 @@
     ],
     "set routing-options static route [parameter1]/[parameter2]": [
         "ip route [parameter1] [parameter2] [parameter3]",
-        "ip route [parameter1] [parameter2] [parameter3] [parameter4]"
+        "ip route vrf [vrf_name] [destination_network] [subnet_mask] [next_hop]"
     ],
     "set protocols bgp group [parameter1]": [
-        "redistribute [parameter1]",
+        "aaa authentication dot1x default group [parameter1]",
         "aaa authentication login [parameter1] group [parameter2] local"
     ],
     "set policy-options policy-statement [parameter1]": [
@@ -20,12 +20,12 @@
         "route-map [parameter1] [parameter2] [parameter3]"
     ],
     "set protocols ldp interface [parameter1]": [
-        "mpls ldp discovery transport-address [parameter1]",
-        "mpls ldp advertise-labels interface [parameter1]"
+        "mpls ldp advertise-labels interface [parameter1]",
+        "mpls ldp router-id [parameter1] force"
     ],
     "set protocols ldp router-id [parameter1]": [
-        "mpls ldp router-id [parameter1]",
-        "mpls ldp router-id [parameter1] [parameter2]"
+        "mpls ldp router-id [parameter1] force",
+        "mpls ldp router-id [parameter1]"
     ],
     "set protocols ldp neighbor [parameter1]": [
         "mpls ldp neighbor [parameter1] targeted",
@@ -47,17 +47,21 @@
         "neighbor [parameter1] activate",
         "neighbor [parameter1] remote-as [parameter2]"
     ],
+    "set interfaces [interface_name]": [
+        "interface [interface_name]",
+        "interface [interface-name]"
+    ],
     "set routing-options router-id [parameter1]": [
-        "ip route [parameter1] [parameter2] [parameter3]",
-        "ipv6 route [parameter1] [parameter2]"
+        "router-id [parameter1]",
+        "ip route [parameter1] [parameter2] [parameter3]"
     ],
     "set routing-options autonomous-system [parameter1]": [
         "router bgp [parameter1]",
-        "route-target import [parameter1]:[parameter2]"
+        "ip route [parameter1] [parameter2] [parameter3]"
     ],
     "set protocols ospf area [area_id]": [
-        "network [parameter1] [parameter2] area [parameter3]",
-        "router-id [parameter1]"
+        "router ospf [parameter1]",
+        "network [parameter1] [parameter2] area [parameter3]"
     ],
     "set protocols oam ethernet connectivity-fault-management maintenance-domain [parameter1]": [
         "ethernet cfm maintenance-association [parameter1] [parameter2]",
@@ -65,7 +69,7 @@
     ],
     "set protocols mpls interface [parameter1]": [
         "no mpls label protocol [parameter1]",
-        "mpls ldp advertise-labels interface [parameter1]"
+        "mpls [parameter1]"
     ],
     "set protocols l2circuit neighbor [neighbor_ip]": [
         "neighbor [parameter1] remote-as [parameter2]",
@@ -80,7 +84,7 @@
         "ip ssh source-interface [parameter1]"
     ],
     "set system authentication-order [parameter1]": [
-        "radius-server host [parameter1] auth-port [parameter2] acct-port [parameter3] key [parameter4]",
+        "aaa authentication dot1x [parameter1] group [parameter2]",
         "radius-server host [ip_address] auth-port [auth_port] acct-port [acct_port] key [key_type] [key]"
     ],
     "set system radius-server [parameter1]": [
@@ -91,9 +95,13 @@
         "ip multicast-routing",
         "ip multicast-routing [parameter1]"
     ],
+    "set routing-options static route [parameter1]": [
+        "ip route [parameter1] [parameter2] [parameter3]",
+        "ip route vrf [parameter1] [parameter2] [parameter3] [parameter4]"
+    ],
     "set firewall family inet filter [parameter1]": [
-        "access-list [parameter1] permit [parameter2] [parameter3]",
-        "access-list [parameter1] permit [parameter2]"
+        "access-list [parameter1] permit ip [parameter2] [parameter3] [parameter4]",
+        "access-list [parameter1] permit [parameter2] [parameter3]"
     ],
     "set routing-options multicast interface [parameter1]": [
         "ip multicast-routing",
@@ -112,12 +120,12 @@
         "ip multicast-routing"
     ],
     "set protocols igmp interface [parameter1]": [
-        "track [parameter1] interface [parameter2] line-protocol",
-        "ip igmp snooping"
+        "ethernet cfm mep [parameter1] ma [parameter2] interface [parameter3] [parameter4]",
+        "track [parameter1] interface [parameter2] line-protocol"
     ],
     "set interfaces irb unit [parameter1]": [
         "interface [parameter1].[parameter2]",
-        "rd [parameter1]:[parameter2]"
+        "interface range [parameter1] - [parameter2]"
     ],
     "set routing-options static route [parameter1] [parameter2]": [
         "ip route [parameter1] [parameter2] [parameter3] [parameter4]",
@@ -125,7 +133,11 @@
     ],
     "set protocols bgp local-as [parameter1]": [
         "router bgp [parameter1]",
-        "no [parameter1]"
+        "router bgp [asn]"
+    ],
+    "set protocols ospf area [parameter1]": [
+        "network [parameter1] [parameter2] area [parameter3]",
+        "router ospf [parameter1] vrf [parameter2]"
     ],
     "set routing-options [parameter1]": [
         "ip multicast-routing",
@@ -139,17 +151,21 @@
         "vlan batch [parameter1]",
         "vlan [parameter1]"
     ],
+    "set vlans [parameter1]": [
+        "vlan batch [parameter1]",
+        "vlan [parameter1]"
+    ],
     "set routing-instances [parameter1]": [
         "route-target import [parameter1]",
         "router [parameter1]"
     ],
     "set protocols ldp transport-address [parameter1]": [
         "mpls ldp discovery transport-address [parameter1]",
-        "mpls ldp [parameter1]"
+        "mpls ldp remote-peer [parameter1] [parameter2]"
     ],
     "set system services ssh protocol-version [parameter1]": [
         "ip ssh server [parameter1]",
-        "ssh version [parameter1]"
+        "ip ssh version [parameter1]"
     ],
     "set system services ssh hostkey-algorithm [parameter1]": [
         "ip ssh client algorithm server hostkey [parameter1]",
@@ -165,11 +181,23 @@
     ],
     "set routing-options rib [parameter1]": [
         "ipv6 route [parameter1] [parameter2]",
-        "ipv6 route [parameter1] [parameter2] [parameter3]"
+        "ipv6 route [destination] [interface]"
+    ],
+    "set policy-options policy-statement [policy-statement]": [
+        "route-map [parameter1] [parameter2] [parameter3]",
+        "policy-map [parameter1]"
+    ],
+    "set policy-options policy-statement [policy-statement-name]": [
+        "policy-map [parameter1]",
+        "route-map [parameter1] [parameter2] [parameter3]"
     ],
     "set protocols [parameter1] [parameter2]": [
         "router ospf [parameter1]",
         "router ospfv3 [parameter1]"
+    ],
+    "set system services [parameter1]": [
+        "ip ssh server [parameter1]",
+        "ip ssh client algorithm server hostkey [parameter1]"
     ],
     "set system services ssh root-login [parameter1]": [
         "ip ssh authentication-retries [parameter1]",
@@ -188,12 +216,20 @@
         "service [parameter1]"
     ],
     "set firewall policer [parameter1]": [
-        "rd [parameter1]:[parameter2]",
-        "access-list [parameter1] permit ip [parameter2] [parameter3]"
+        "access-list [parameter1] permit ip [parameter2] [parameter3]",
+        "crypto ikev2 profile [parameter1]"
     ],
     "set system domain-name [parameter1]": [
         "ip domain-name [parameter1]",
         "network-clock synchronization recover domain [parameter1]"
+    ],
+    "set system services ssh": [
+        "ssh client first-time enable",
+        "ip ssh server [parameter1]"
+    ],
+    "set system login user [username]": [
+        "ip ssh rsa keypair-name [parameter1]",
+        "ssh key rsa [parameter1]"
     ],
     "set protocols isis level [parameter1]": [
         "router [parameter1]",
@@ -237,11 +273,11 @@
     ],
     "set protocols rstp vlan [parameter1]": [
         "spanning-tree vlan [parameter1] priority [parameter2]",
-        "switchport trunk allowed vlan [parameter1]"
+        "vlan [parameter1]"
     ],
     "set protocols rstp interface [parameter1]": [
-        "redistribute [parameter1]",
-        "ip ssh source-interface [parameter1]"
+        "ip ssh source-interface [parameter1]",
+        "interface [parameter1] [parameter2]"
     ],
     "set protocols [parameter1]": [
         "router [parameter1]",
@@ -261,7 +297,7 @@
     ],
     "delete set protocols bgp group [group_name]": [
         "vpdn-group [parameter1]",
-        "aaa authorization network [parameter1] group [parameter2]"
+        "aaa authentication dot1x [parameter1] group [parameter2]"
     ],
     "set chassis fpc [parameter1]": [
         "controller SONET [parameter1]",
@@ -277,7 +313,7 @@
     ],
     "set protocols ldp discovery interface [parameter1]": [
         "mpls ldp discovery transport-address [parameter1]",
-        "mpls ldp discovery targeted-hello [parameter1]"
+        "mpls label protocol [parameter1]"
     ],
     "set services pppoe-client interface [parameter1]": [
         "interface [parameter1].[parameter2]",
@@ -301,19 +337,19 @@
     ],
     "set protocols igmp static-group [parameter1]": [
         "ip igmp snooping",
-        "aaa authorization network [parameter1] group [parameter2] [parameter3]"
+        "ethernet cfm remote-mep [parameter1] ma [parameter2] ccm-receive [parameter3]"
     ],
     "set interfaces vlan unit [parameter1]": [
         "switchport access vlan [parameter1]",
         "vlan [parameter1]"
     ],
     "set access radius-server [parameter1]": [
-        "radius-server host [ip_address] auth-port [auth_port] acct-port [acct_port] key [key_encryption] [key]",
-        "radius-server host [parameter1] auth-port [parameter2] acct-port [parameter3]"
+        "radius-server host [parameter1] auth-port [parameter2] acct-port [parameter3] key [parameter4]",
+        "radius-server host [ip_address] auth-port [auth_port] acct-port [acct_port] key [key_encryption] [key]"
     ],
     "set firewall family [parameter1]": [
-        "address-family [address_family] vrf [vrf_name]",
-        "address-family [parameter1]"
+        "address-family ipv4 vrf [parameter1]",
+        "address-family [parameter1] [parameter2]"
     ],
     "set forwarding-options dhcp-relay server-group [parameter1] [parameter2]": [
         "ip dhcp relay information option",
@@ -333,7 +369,7 @@
     ],
     "set class-of-service rewrite-rules exp [parameter1]": [
         "mpls traffic-eng load-share [parameter1]",
-        "mpls traffic-eng [parameter1]"
+        "mpls traffic-eng tunnel [parameter1]"
     ],
     "set class-of-service interfaces [parameter1]": [
         "mls qos map cos-dscp [parameter1] [parameter2]",
@@ -349,7 +385,15 @@
     ],
     "set system services ssh authentication-order [parameter1]": [
         "authentication remote [parameter1]",
-        "ip ssh rsa keypair-name [parameter1]"
+        "radius-server host [parameter1] auth-port [parameter2] acct-port [parameter3] key [parameter4]"
+    ],
+    "set policy-options policy-statement [policy_name]": [
+        "route-map [parameter1] [parameter2] [parameter3]",
+        "policy-map [parameter1]"
+    ],
+    "set interfaces [interface]": [
+        "interface [interface_name]",
+        "interface [parameter1].[parameter2]"
     ],
     "set system ntp server [parameter1]": [
         "ntp server [parameter1]",
@@ -357,7 +401,11 @@
     ],
     "set protocols bfd interface [parameter1]": [
         "bfd [parameter1]",
-        "interface [parameter1].[parameter2]"
+        "bfd all-interfaces"
+    ],
+    "set protocols bfd interface [interface_name]": [
+        "bfd all-interfaces",
+        "bfd [parameter1]"
     ],
     "set protocols bfd peer [peer_ip]": [
         "ipv6 bfd [parameter1] bind peer-ipv6 [parameter2] source-ipv6 [parameter3]",
@@ -368,12 +416,16 @@
         "mpls traffic-eng load-share [parameter1]"
     ],
     "set routing-options forwarding-table export [parameter1]": [
-        "route-target export [parameter1]:[parameter2]",
+        "ip load-sharing [parameter1]",
         "route-target export [parameter1]"
     ],
     "set protocols ldp targeted-hello accept from [parameter1]": [
-        "mpls ldp neighbor [parameter1] targeted-hello accept",
-        "mpls ldp discovery targeted-hello [parameter1]"
+        "mpls ldp discovery targeted-hello accept",
+        "mpls ldp neighbor [parameter1] targeted-hello accept"
+    ],
+    "set access address-assignment pool [pool_name]": [
+        "ip dhcp pool [parameter1]",
+        "ipv6 dhcp pool [parameter1]"
     ],
     "set security nat source pool [parameter1]": [
         "ip nat inside source list [parameter1] pool [parameter2]",
@@ -381,7 +433,7 @@
     ],
     "set security nat source rule-set [parameter1]": [
         "ip nat inside source list [parameter1] pool [parameter2] [parameter3]",
-        "permit [parameter1] [parameter2] [parameter3] [parameter4]"
+        "ip nat inside source list [parameter1] pool [parameter2] overload"
     ],
     "set protocols ospf reference-bandwidth [parameter1]": [
         "ip rsvp bandwidth [parameter1]",
@@ -397,7 +449,11 @@
     ],
     "set system ports [parameter1] [parameter2]": [
         "ip tcp connect [parameter1] [parameter2]",
-        "transport input [parameter1]"
+        "switchport mode [parameter1]"
+    ],
+    "set protocols l2vpn": [
+        "l2vpn evpn",
+        "l2vpn"
     ],
     "set protocols l2vpn pseudowire [parameter1]": [
         "pseudowire-class [parameter1]",
@@ -408,16 +464,24 @@
         "ethernet [parameter1]"
     ],
     "set ethernet-switching-options cfm maintenance-domain [parameter1]": [
-        "ethernet cfm maintenance-association [parameter1] md [parameter2]",
-        "ethernet cfm maintenance-association [parameter1] [parameter2]"
+        "ethernet cfm maintenance-association [parameter1] [parameter2]",
+        "ethernet cfm maintenance-association [parameter1] md [parameter2]"
     ],
     "set protocols isis level [parameter1] [parameter2]": [
-        "is-type [parameter1]",
-        "router [parameter1]"
+        "router [parameter1]",
+        "router isis"
+    ],
+    "set protocols bfd [parameter1]": [
+        "mpls ldp bfd",
+        "bfd"
+    ],
+    "delete set protocols bgp group [parameter1]": [
+        "vpdn-group [parameter1]",
+        "router bgp [parameter1]"
     ],
     "set protocols ldp export [parameter1]": [
-        "route-target export [parameter1]:[parameter2]",
-        "mpls label protocol [parameter1]"
+        "mpls label protocol [parameter1]",
+        "route-target export [parameter1]"
     ],
     "delete set protocols spanning-tree bridge-priority [parameter1]": [
         "spanning-tree vlan [parameter1] priority [parameter2]",
@@ -427,25 +491,37 @@
         "bridge [parameter1] protocol [parameter2]",
         "clock protocol [parameter1]"
     ],
+    "delete set protocols spanning-tree path-cost [parameter1]": [
+        "spanning-tree pathcost method [parameter1]",
+        "spanning-tree mst configuration"
+    ],
+    "set protocols rstp [parameter1]": [
+        "clock protocol [parameter1]",
+        "ptp unicast-negotiate [parameter1]"
+    ],
     "set protocols vstp bridge-priority [parameter1]": [
         "ptp priority1 [parameter1]",
         "ptp priority2 [parameter1]"
     ],
     "set protocols vstp interface [parameter1]": [
-        "switchport trunk allowed vlan [parameter1]",
+        "switchport access vlan [parameter1]",
         "encapsulation dot1q [parameter1]"
     ],
     "delete set interfaces [interface_name]": [
-        "interface [parameter1]",
-        "interface [parameter1].[parameter2]"
+        "interface [interface_name]",
+        "interface [interface-name]"
+    ],
+    "delete set interfaces [interface]": [
+        "interface [interface_name]",
+        "interface [interface-name]"
     ],
     "set services l2tp tunnel-group [parameter1]": [
         "vpdn-group [parameter1]",
         "l2vpn bridge-group [parameter1]"
     ],
     "set system accounting events [parameter1] [parameter2]": [
-        "aaa accounting [parameter1] [parameter2] [parameter3] [parameter4] [parameter5]",
-        "aaa accounting exec default start-stop group [parameter1]"
+        "aaa accounting [parameter1] [parameter2] [parameter3] [parameter4]",
+        "aaa accounting [parameter1] [parameter2] [parameter3] [parameter4] group [parameter5]"
     ],
     "set services l2tp [parameter1]": [
         "l2tp-class [parameter1]",
@@ -453,7 +529,7 @@
     ],
     "set access accounting-server [parameter1]": [
         "aaa accounting [parameter1] [parameter2] [parameter3] [parameter4] [parameter5]",
-        "ip [parameter1]"
+        "aaa accounting [parameter1] [parameter2] [parameter3] [parameter4] group [parameter5]"
     ],
     "set services l2tp tunnel [parameter1]": [
         "mpls traffic-eng tunnel [parameter1]",
@@ -467,6 +543,10 @@
         "ip nat inside source list [parameter1] pool [parameter2]",
         "ip nat translation timeout [parameter1]"
     ],
+    "set firewall family [family]": [
+        "ipv6 enable",
+        "ipv6 cef"
+    ],
     "set system services ssh client-alive-interval [parameter1]": [
         "ip ssh time-out [parameter1]",
         "ssh client first-time enable"
@@ -477,11 +557,15 @@
     ],
     "set protocols ldp session [parameter1]": [
         "mpls ldp remote-peer [parameter1] [parameter2]",
-        "mpls ldp neighbor [parameter1] targeted-hello accept"
+        "mpls ldp router-id [parameter1] force"
+    ],
+    "set protocols l2circuit neighbor [parameter1]": [
+        "neighbor [parameter1] route-reflector-client",
+        "neighbor [parameter1] remote-as [parameter2]"
     ],
     "set system scripts language [parameter1]": [
         "line [parameter1] [parameter2]",
-        "copy [parameter1] [parameter2]"
+        "username [parameter1] password [parameter2]"
     ],
     "set system scripts file [parameter1]": [
         "copy [parameter1] [parameter2]",
@@ -490,6 +574,10 @@
     "set ethernet-switching-options cfm mep [parameter1]": [
         "ethernet cfm mep [parameter1] ma [parameter2] ccm-enable",
         "ethernet cfm remote-mep [parameter1] ma [parameter2]"
+    ],
+    "set protocols bfd": [
+        "bfd",
+        "bfd [parameter1]"
     ],
     "set access l2tp client-dialout [parameter1]": [
         "l2tp-class [parameter1]",
@@ -521,23 +609,27 @@
     ],
     "set system login class [parameter1]": [
         "login [parameter1]",
-        "username [parameter1] secret [parameter2] [parameter3]"
+        "aaa authentication login default group [parameter1] [parameter2]"
+    ],
+    "set forwarding-options dhcp-relay group [group_name]": [
+        "ip dhcp relay information option",
+        "vpdn-group [parameter1]"
     ],
     "set system services telnet authentication-order [parameter1]": [
         "login [parameter1]",
         "username [parameter1] secret [parameter2] [parameter3]"
     ],
     "set system services web-management http authentication-order [parameter1]": [
-        "aaa authentication login [parameter1] [parameter2]",
-        "authentication [method] [type]"
+        "login [parameter1]",
+        "aaa authentication login [parameter1] [parameter2]"
     ],
     "set protocols igmp static group [parameter1]": [
         "ip igmp snooping",
-        "bridge [parameter1] protocol [parameter2]"
+        "aaa authorization network default group [parameter1]"
     ],
     "set class-of-service traffic-control-profiles [parameter1]": [
         "track [parameter1] interface [parameter2] line-protocol",
-        "mpls traffic-eng load-share [parameter1]"
+        "mpls traffic-eng level-1"
     ],
     "set protocols igmp-snooping vlan [parameter1]": [
         "ip igmp snooping",
@@ -557,15 +649,43 @@
     ],
     "set system internet-options [parameter1]": [
         "line [parameter1] [parameter2]",
-        "network [parameter1] [parameter2] area [parameter3]"
+        "crypto isakmp policy [parameter1]"
+    ],
+    "set protocols ospf [parameter1]": [
+        "router ospf [parameter1]",
+        "router ospfv3 [parameter1]"
+    ],
+    "set system radius-server [ip_address]": [
+        "radius-server host [ip_address] auth-port [auth_port] acct-port [acct_port] key [key_encryption] [key]",
+        "radius-server host [parameter1] auth-port [parameter2] acct-port [parameter3]"
+    ],
+    "set system services dhcp-local-server group [group_name]": [
+        "ip dhcp pool [parameter1]",
+        "ipv6 dhcp pool [parameter1]"
     ],
     "set system accounting events [parameter1]": [
-        "aaa accounting [parameter1] [parameter2] [parameter3] [parameter4] [parameter5]",
-        "logging trap [parameter1]"
+        "aaa accounting [parameter1] [parameter2] [parameter3] [parameter4]",
+        "aaa accounting [parameter1] [parameter2] [parameter3] [parameter4] [parameter5]"
+    ],
+    "set protocols ldp neighbor [neighbor_ip]": [
+        "mpls ldp neighbor [parameter1] targeted",
+        "mpls ldp neighbor [parameter1] targeted-hello accept"
+    ],
+    "set policy-options policy-statement [policy_statement]": [
+        "policy-map [parameter1]",
+        "route-map [parameter1] [parameter2] [parameter3]"
     ],
     "set protocols pim ssm-address-list [parameter1]": [
         "ip pim ssm default",
         "ip pim rp-address [parameter1]"
+    ],
+    "set protocols ldp deaggregate": [
+        "mpls ldp graceful-restart",
+        "mpls ldp discovery targeted-hello accept"
+    ],
+    "set protocols ldp igp-synchronization": [
+        "mpls ldp igp sync",
+        "mpls ldp sync"
     ],
     "set protocols isis reference-bandwidth [parameter1]": [
         "router isis",
@@ -579,17 +699,21 @@
         "mls qos map cos-dscp [parameter1] [parameter2]",
         "service [parameter1]"
     ],
+    "set class-of-service classifiers dscp [classifier-name]": [
+        "mls qos map cos-dscp [parameter1] [parameter2]",
+        "class-map [match-type] [class-map-name]"
+    ],
     "delete interfaces [interface_name]": [
-        "logging source-interface [parameter1]",
-        "interface [parameter1].[parameter2]"
+        "interface [interface_name]",
+        "logging source-interface [parameter1]"
     ],
     "set protocols router-advertisement interface [parameter1]": [
         "router [parameter1]",
         "ip route [parameter1] [parameter2] [parameter3] [parameter4]"
     ],
     "set protocols bfd multiplier [parameter1]": [
-        "bfd interval [parameter1] min-tx [parameter2] min-rx [parameter3] multiplier [parameter4]",
-        "bfd interval [parameter1] min_rx [parameter2] multiplier [parameter3]"
+        "bfd interval [parameter1] min_rx [parameter2] multiplier [parameter3]",
+        "bfd interval [parameter1] min-tx [parameter2] min-rx [parameter3] multiplier [parameter4]"
     ],
     "set protocols pim family [parameter1]": [
         "ipv6 pim rp-address [parameter1]",
@@ -601,7 +725,7 @@
     ],
     "set routing-options rib-groups [parameter1]": [
         "ipv6 route [parameter1] [parameter2] [parameter3]",
-        "ip route [parameter1] [parameter2] [parameter3] [parameter4]"
+        "ipv6 route [destination] [interface]"
     ],
     "set protocols oam ethernet connectivity-fault-management maintenance-association [ma_name]": [
         "ethernet cfm maintenance-association [parameter1] [parameter2]",
@@ -633,7 +757,7 @@
     ],
     "set policy-options prefix-list [parameter1] [parameter2]/[parameter3]": [
         "ip prefix-list [parameter1] seq [parameter2] [parameter3] [parameter4]",
-        "ip prefix-list [name] seq [sequence_number] [action] [network]/[prefix_length] le [max_prefix_length]"
+        "ip prefix-list [parameter1] seq [parameter2] permit [parameter3] le [parameter4]"
     ],
     "set protocols pim join-filter [parameter1]": [
         "ethernet cfm domain [parameter1] level [parameter2]",
@@ -647,6 +771,10 @@
         "network-clock synchronization recover priority [parameter1]",
         "network-clock synchronization enable"
     ],
+    "set interfaces [interface-name]": [
+        "interface [interface_name]",
+        "interface [interface-name]"
+    ],
     "set system license [parameter1]": [
         "license boot module [parameter1] technology-package [parameter2]",
         "license boot level [parameter1]"
@@ -654,6 +782,10 @@
     "set firewall family inet6 filter [parameter1]": [
         "ipv6 cef",
         "ipv6 enable"
+    ],
+    "set chassis redundancy [parameter1]": [
+        "redundancy",
+        "controller [parameter1] [parameter2]"
     ],
     "set chassis redundancy failover hold-time [parameter1]": [
         "ptp clock priority [parameter1]",
@@ -664,16 +796,16 @@
         "ip nat inside source list [parameter1] pool [parameter2]"
     ],
     "set services nat64 rule [parameter1]": [
-        "ipv6 cef",
-        "ipv6 route [parameter1] [parameter2]"
+        "ipv6 route [destination] [interface]",
+        "ipv6 route vrf [vrf_name] [destination_network] [next_hop_interface]"
     ],
     "set protocols oam ethernet connectivity-fault-management interface [parameter1]": [
-        "ethernet cfm ais ma [parameter1] enable",
-        "interface [parameter1]"
+        "interface [interface_name]",
+        "ethernet cfm ais ma [parameter1] enable"
     ],
     "set chassis clock source [parameter1] [parameter2]": [
-        "clock source [parameter1]",
-        "network-clock priority [parameter1] [parameter2] [parameter3]"
+        "network-clock priority [parameter1] [parameter2] [parameter3]",
+        "network-clock select [parameter1] output [parameter2]"
     ],
     "set chassis synchronization network-option [parameter1]": [
         "network-clock synchronization recover priority [parameter1]",
@@ -695,9 +827,17 @@
         "mls qos map cos-dscp [parameter1] [parameter2]",
         "service [parameter1]"
     ],
+    "set class-of-service interfaces [interface]": [
+        "interface [interface_name]",
+        "interface [interface-name]"
+    ],
     "set class-of-service classifiers [parameter1] [parameter2]": [
         "mls qos map cos-dscp [parameter1] [parameter2]",
         "track [parameter1] interface [parameter2] line-protocol"
+    ],
+    "set policy-options prefix-list [parameter1] [parameter2]": [
+        "ip prefix-list [parameter1] seq [parameter2] permit [parameter3] le [parameter4]",
+        "ip prefix-list [parameter1] seq [parameter2] [parameter3] [parameter4]"
     ],
     "set protocols pim ssm-translate-policy [parameter1]": [
         "ip pim ssm default",
@@ -707,9 +847,13 @@
         "ip pim rp-address [parameter1] [parameter2]",
         "ip pim rp-address [parameter1]"
     ],
+    "set firewall policer [policer_name]": [
+        "ip domain name [parameter1]",
+        "access-list [parameter1] permit ip [parameter2] [parameter3]"
+    ],
     "set system accounting destination radius server [parameter1]": [
         "radius-server vsa send [parameter1]",
-        "radius-server host [ip_address] auth-port [auth_port] acct-port [acct_port] key [key_encryption] [key]"
+        "radius-server vsa send accounting"
     ],
     "set protocols stp bridge-priority [parameter1]": [
         "spanning-tree vlan [parameter1] priority [parameter2]",
@@ -725,7 +869,7 @@
     ],
     "set protocols sflow agent-address [parameter1]": [
         "sflow destination [parameter1]",
-        "mpls label protocol [parameter1]"
+        "ip prefix-list [parameter1] seq [parameter2] [parameter3] [parameter4]"
     ],
     "set protocols sflow collector [parameter1]": [
         "sflow destination [parameter1]",
@@ -743,9 +887,13 @@
         "ip ssh client algorithm mac [parameter1] [parameter2]",
         "ip ssh server algorithm version [parameter1]"
     ],
+    "set system services ftp": [
+        "ftp server enable",
+        "ethernet cfm mep [parameter1] domain [parameter2] service [parameter3] continuity-check"
+    ],
     "set access class [parameter1]": [
-        "access-class [parameter1] [parameter2]",
-        "access-list [parameter1] permit [parameter2]"
+        "access-list [parameter1] permit [parameter2]",
+        "access-list [parameter1] deny any"
     ],
     "set bridge-domains [parameter1]": [
         "bridge domain [parameter1]",
@@ -753,7 +901,7 @@
     ],
     "set system services ftp connection-limit source-address [parameter1]": [
         "ip ftp source-interface [parameter1]",
-        "permit [parameter1] [parameter2] [parameter3] [parameter4]"
+        "ip ftp username [parameter1]"
     ],
     "set system services ftp rate-limit [parameter1]": [
         "ftp server enable",
@@ -761,7 +909,7 @@
     ],
     "set system processes [parameter1]": [
         "router isis [parameter1]",
-        "router ospfv3 [parameter1]"
+        "no [parameter1]"
     ],
     "set protocols l2vpn vpls [parameter1]": [
         "l2vpn",
@@ -777,31 +925,43 @@
     ],
     "set protocols ldp transport-address interface [parameter1]": [
         "mpls ldp discovery transport-address [parameter1]",
-        "mpls ldp [parameter1]"
+        "mpls ldp advertise-labels interface [parameter1]"
     ],
     "set protocols ldp targeted-hello accept": [
-        "mpls ldp discovery targeted-hello [parameter1]",
-        "mpls ldp neighbor [parameter1] targeted-hello accept"
+        "mpls ldp discovery targeted-hello accept",
+        "mpls ldp discovery targeted-hello [parameter1]"
     ],
     "set protocols ldp targeted-hello send": [
-        "mpls ldp discovery targeted-hello [parameter1]",
-        "mpls ldp neighbor [parameter1] targeted-hello accept"
+        "mpls ldp discovery targeted-hello accept",
+        "mpls ldp discovery targeted-hello [parameter1]"
     ],
     "set protocols oam ethernet cfm domain [parameter1]": [
         "ethernet cfm domain [parameter1]",
         "ethernet cfm domain [parameter1] level [parameter2]"
     ],
     "set firewall filter [parameter1]": [
-        "permit [parameter1] [parameter2] [parameter3] [parameter4]",
-        "access-list [parameter1] [parameter2] [parameter3] [parameter4] [parameter5]"
+        "access-list [parameter1] [parameter2] [parameter3] [parameter4] [parameter5]",
+        "access-list [parameter1] permit ip [parameter2] [parameter3] [parameter4]"
+    ],
+    "set protocols oam ethernet connectivity-fault-management maintenance-association [parameter1]": [
+        "ethernet cfm maintenance-association [parameter1] [parameter2]",
+        "ethernet cfm cc mep [parameter1] ma [parameter2] enable"
+    ],
+    "set protocols oam ethernet connectivity-fault-management mep [mep_id]": [
+        "ethernet cfm mep [parameter1] domain [parameter2] service [parameter3]",
+        "ethernet cfm dm one-way mep [parameter1] ma [parameter2] test-id [parameter3]"
     ],
     "set protocols oam ethernet connectivity-fault-management linktrace test-id [test-id]": [
         "ethernet cfm dm one-way mep [parameter1] ma [parameter2] test-id [parameter3]",
         "ethernet cfm dm receive test-id [parameter1]"
     ],
+    "set protocols oam ethernet connectivity-fault-management delay-measurement test-id [parameter1]": [
+        "ethernet cfm dm receive test-id [parameter1]",
+        "ethernet cfm delay-measure domain [parameter1] md [parameter2] ma [parameter3] mep mep-id [parameter4] test-id [parameter5]"
+    ],
     "set services service-set [service-instance-group]": [
         "aaa accounting [parameter1] [parameter2] [parameter3] [parameter4] [parameter5]",
-        "service [parameter1]"
+        "aaa accounting [parameter1] [parameter2] [parameter3] [parameter4] group [parameter5]"
     ],
     "set services ds-lite instance [parameter1]": [
         "ip sla [parameter1]",
@@ -815,6 +975,10 @@
         "ip nat translation max-entries [parameter1]",
         "ip nat inside source static network [parameter1] [parameter2] [parameter3]"
     ],
+    "delete interfaces [parameter1]": [
+        "interface [parameter1].[parameter2]",
+        "interface [parameter1]"
+    ],
     "set forwarding-options port-mirroring instance [parameter1]": [
         "monitor session [parameter1] destination interface [parameter2]",
         "monitor session [parameter1] source interface [parameter2]"
@@ -826,6 +990,14 @@
     "set policy-options as-path [parameter1] [parameter2]": [
         "ip as-path access-list [parameter1] deny [parameter2]",
         "ip as-path access-list [parameter1] permit [parameter2]"
+    ],
+    "delete set protocols ospf area [parameter1]": [
+        "network [parameter1] [parameter2] area [parameter3]",
+        "router ospf [parameter1]"
+    ],
+    "set protocols oam ethernet connectivity-fault-management linktrace test-id [parameter1]": [
+        "ethernet cfm maintenance-association [parameter1] [parameter2]",
+        "track [parameter1] interface [parameter2] line-protocol"
     ],
     "set system accounting order [parameter1]": [
         "aaa accounting connection [parameter1] start-stop group [parameter2]",
@@ -849,7 +1021,7 @@
     ],
     "set protocols ospf import [parameter1]": [
         "route-map [parameter1] [parameter2] [parameter3] [parameter4]",
-        "route-map [parameter1] [parameter2] [parameter3]"
+        "router-id [parameter1]"
     ],
     "set routing-options static route [parameter1]/[parameter2] [parameter3]": [
         "ip route [parameter1] [parameter2] [parameter3] [parameter4]",
@@ -857,7 +1029,11 @@
     ],
     "delete set protocols [parameter1]": [
         "no mpls label protocol [parameter1]",
-        "mpls label protocol [parameter1]"
+        "mpls [parameter1]"
+    ],
+    "set protocols ldp": [
+        "mpls ldp discovery transport-address [parameter1]",
+        "mpls ldp discovery targeted-hello [parameter1]"
     ],
     "set protocols ldp targeted-peer [parameter1]": [
         "mpls ldp remote-peer [parameter1] [parameter2]",
@@ -866,6 +1042,10 @@
     "set protocols bfd template [parameter1]": [
         "bfd-template single-hop [parameter1]",
         "bfd [parameter1]"
+    ],
+    "delete set interfaces [parameter1]": [
+        "interface [parameter1].[parameter2]",
+        "interface [parameter1]"
     ],
     "delete set routing-options static route [parameter1]": [
         "ip route [parameter1] [parameter2] [parameter3]",
@@ -880,8 +1060,8 @@
         "ip route [parameter1] [parameter2] [parameter3] [parameter4]"
     ],
     "set protocols evpn encapsulation [parameter1]": [
-        "l2vpn evpn instance [parameter1] vlan-based",
-        "encapsulation dot1Q [parameter1]"
+        "encapsulation dot1Q [parameter1]",
+        "l2vpn evpn instance [parameter1] vlan-based"
     ],
     "set protocols oam cfm maintenance-domain [parameter1]": [
         "ethernet cfm maintenance-association [parameter1] [parameter2]",
@@ -889,31 +1069,35 @@
     ],
     "deactivate chassis fpc [parameter1]": [
         "controller [parameter1] [parameter2]",
-        "controller E1 [parameter1]"
+        "no [parameter1]"
     ],
     "system {": [
         "logging trap [parameter1]",
         "logging host [parameter1]"
     ],
-    "interfaces [parameter2]": [
-        "interface [parameter1]",
-        "interface range [parameter1] - [parameter2]"
+    "interfaces { [parameter1]": [
+        "interface range [parameter1] - [parameter2]",
+        "controller [parameter1] [parameter2]"
     ],
     "set system services dhcp excluded-address [parameter1]": [
         "ip dhcp excluded-address [parameter1] [parameter2]",
         "ip dhcp excluded-address [parameter1]"
     ],
+    "set system login class [class_name]": [
+        "aaa authentication login [list_name] group [group_name] local",
+        "l2tp-class [parameter1]"
+    ],
     "set protocols isis spf-options tiebreaker [parameter1]": [
-        "isis network [parameter1]",
-        "router isis"
+        "router isis",
+        "isis network [parameter1]"
     ],
     "set protocols oam ethernet connectivity-fault-management version [parameter1]": [
         "ethernet [parameter1]",
-        "ethernet cfm ais ma [parameter1] enable"
+        "ethernet cfm maintenance-association [parameter1] [parameter2]"
     ],
     "set protocols oam ethernet connectivity-fault-management domain [parameter1]": [
         "ethernet cfm domain [parameter1] level [parameter2]",
-        "ethernet cfm md [parameter1] level [parameter2]"
+        "ethernet cfm maintenance-association [parameter1] [parameter2]"
     ],
     "set services l2tp access-profile [parameter1]": [
         "l2tp-class [parameter1]",
@@ -925,7 +1109,15 @@
     ],
     "set forwarding-options hash-key family [parameter1]": [
         "crypto ipsec transform-set [parameter1] [parameter2] [parameter3]",
-        "crypto isakmp key [parameter1] address [parameter2] [parameter3]"
+        "tunnel mode [parameter1] [parameter2]"
+    ],
+    "set protocols bfd peer [parameter1]": [
+        "ipv6 bfd [parameter1] bind peer-ipv6 [parameter2] source-ipv6 [parameter3]",
+        "mpls ldp remote-peer [parameter1] [parameter2]"
+    ],
+    "set services service-set [parameter1]": [
+        "service [parameter1]",
+        "virtual-service [parameter1]"
     ],
     "set services 6rd service-set [parameter1]": [
         "service [parameter1]",
@@ -936,12 +1128,12 @@
         "tunnel destination [parameter1]"
     ],
     "set services 6rd ipv6-prefix [parameter1]": [
-        "ipv6 address [parameter1]/[parameter2]",
+        "ipv6 address [parameter1]",
         "ipv6 pim rp-address [parameter1]"
     ],
     "set services 6rd ipv4-prefix-length [parameter1]": [
-        "ip prefix-list [parameter1] seq [parameter2] [parameter3] [parameter4]",
-        "ipv6 address [parameter1]/[parameter2]"
+        "ip prefix-list [parameter1] seq [parameter2] permit [parameter3] le [parameter4]",
+        "ip prefix-list [parameter1] seq [parameter2] [parameter3] [parameter4]"
     ],
     "set protocols ldp targeted-neighbor [parameter1]": [
         "mpls ldp neighbor [parameter1] targeted",
@@ -955,33 +1147,61 @@
         "switchport",
         "channel-group [parameter1] mode [parameter2]"
     ],
+    "set chassis network-services [parameter1]": [
+        "no telnet server enable",
+        "ip prefix-list [parameter1] seq [parameter2] [parameter3] [parameter4]"
+    ],
     "set protocols ldp discovery link-hello [parameter1]": [
-        "mpls ldp discovery transport-address [parameter1]",
-        "mpls ldp discovery targeted-hello [parameter1]"
+        "mpls ldp discovery targeted-hello accept",
+        "mpls ldp discovery transport-address [parameter1]"
     ],
     "set ethernet-switching-options storm-control interface [parameter1]": [
         "logging source-interface [parameter1]",
         "track [parameter1] interface [parameter2] line-protocol"
     ],
+    "delete set protocols mpls label-protocol [parameter1]": [
+        "no mpls label protocol [parameter1]",
+        "mpls label protocol [parameter1]"
+    ],
+    "delete set protocols [parameter1] [parameter2]": [
+        "mpls traffic-eng tunnel [parameter1]",
+        "mpls traffic-eng path-selection segment-routing"
+    ],
+    "delete set protocols mpls lsr-id [parameter1]": [
+        "no mpls label protocol [parameter1]",
+        "mpls [parameter1]"
+    ],
+    "set protocols igmp-snooping": [
+        "ip igmp snooping",
+        "clock protocol [parameter1]"
+    ],
     "set protocols l2circuit local-switching interface [parameter1]": [
         "switchport",
         "monitor session [parameter1] destination interface [parameter2]"
+    ],
+    "set protocols rstp": [
+        "clock protocol [parameter1]",
+        "ip ssh client algorithm server hostkey [parameter1]"
     ],
     "set services l2tp tunnel local-gateway-address [parameter1]": [
         "tunnel destination [parameter1]",
         "ip tcp connect [parameter1] [parameter2]"
     ],
     "set services l2tp tunnel remote-gateway-address [parameter1]": [
-        "ip tcp connect [parameter1] [parameter2]",
-        "tunnel destination [parameter1]"
+        "tunnel destination [parameter1]",
+        "ip tcp connect [parameter1] [parameter2]"
     ],
     "set services l2tp tunnel authentication shared-secret [parameter1]": [
         "l2tp-class [parameter1]",
-        "ip ftp password [parameter1]"
+        "username [parameter1] privilege [parameter2] secret [parameter3]"
     ],
     "set services l2tp session authentication client username [username]": [
         "l2tp-class [parameter1]",
-        "l2vpn evpn"
+        "aaa authentication ppp default group [parameter1]"
+    ],
+    "set access profile [profile-name]": [
+        "ptp profile [parameter1]",
+        "aaa authentication ppp default group [parameter1]"
     ],
     "set security ike proposal [parameter1]": [
         "crypto ikev2 profile [parameter1]",
@@ -992,6 +1212,14 @@
         "crypto ikev2 profile [parameter1]"
     ],
     "set security ipsec proposal [parameter1]": [
+        "tunnel protection ipsec profile [parameter1]",
+        "tunnel mode [parameter1] [parameter2]"
+    ],
+    "set security ipsec vpn [vpn-name]": [
+        "tunnel protection ipsec profile [parameter1]",
+        "crypto ipsec profile [parameter1]"
+    ],
+    "set security ipsec policy [policy_name]": [
         "tunnel protection ipsec profile [parameter1]",
         "crypto ipsec profile [parameter1]"
     ],
@@ -1008,12 +1236,12 @@
         "ethernet cfm enable"
     ],
     "set ethernet-switching-options secure-access-port interface [parameter1]": [
-        "interface [parameter1].[parameter2]",
-        "ethernet cfm enable"
+        "interface [interface_name]",
+        "interface [parameter1].[parameter2]"
     ],
     "set access radius-server [parameter1] [parameter2]": [
         "radius-server host [parameter1] auth-port [parameter2] acct-port [parameter3]",
-        "radius-server host [ip_address] auth-port [auth_port] acct-port [acct_port] key [key_encryption] [key]"
+        "radius-server host [parameter1] auth-port [parameter2] acct-port [parameter3] key [parameter4]"
     ],
     "set forwarding-options sampling { [parameter1]": [
         "crypto isakmp policy [parameter1]",
@@ -1031,17 +1259,29 @@
         "ethernet cfm mep [parameter1] domain [parameter2] service [parameter3] continuity-check",
         "ethernet cfm mep [parameter1] domain [parameter2] service [parameter3]"
     ],
+    "set security nat source pool [address-group]": [
+        "ip nat inside source list [parameter1] pool [parameter2] [parameter3]",
+        "ip nat pool [pool_name] [start_ip] [end_ip] netmask [netmask]"
+    ],
     "set protocols vrrp track interface [parameter1]": [
         "track [parameter1] interface [parameter2] line-protocol",
-        "vrf forwarding [vrf_name]"
+        "vrf forwarding [parameter1]"
     ],
     "set protocols isis export [parameter1]": [
         "router [parameter1]",
         "router isis"
     ],
+    "set services l2tp enable": [
+        "l2tp-class [parameter1]",
+        "vpdn enable"
+    ],
+    "set services l2tp tunnel authentication": [
+        "l2tp-class [parameter1]",
+        "authentication remote [parameter1]"
+    ],
     "set services l2tp tunnel password [parameter1]": [
         "ip ftp password [parameter1]",
-        "password [parameter1] [parameter2]"
+        "username [parameter1] password [parameter2]"
     ],
     "set services l2tp lns local-address [parameter1]": [
         "l2tp-class [parameter1]",
@@ -1052,8 +1292,8 @@
         "l2tp-class [parameter1]"
     ],
     "set system accounting radius source-address [parameter1]": [
-        "radius-server vsa send [parameter1]",
-        "radius-server host [ip_address] auth-port [auth_port] acct-port [acct_port] key [key_encryption] [key]"
+        "radius-server vsa send accounting",
+        "radius-server vsa send [parameter1]"
     ],
     "set security flow session-limit [parameter1]": [
         "monitor session [parameter1] source interface [parameter2]",
@@ -1070,6 +1310,10 @@
     "set chassis synchronization network-clock output-frequency [parameter1]": [
         "network-clock synchronization recover priority [parameter1]",
         "network-clock select [parameter1] output [parameter2]"
+    ],
+    "set policy-options policy-statement [policy-name]": [
+        "policy-map [parameter1]",
+        "route-map [parameter1] [parameter2] [parameter3]"
     ],
     "set system services ssh connection-limit source-address [parameter1]": [
         "ip ssh server source-interface [parameter1]",
@@ -1097,7 +1341,7 @@
     ],
     "set protocols lldp interface [parameter1]": [
         "lldp management-address [parameter1]",
-        "mpls ldp discovery transport-address [parameter1]"
+        "ip msdp peer [parameter1] connect-source [parameter2]"
     ],
     "set protocols lldp transmit-interval [parameter1]": [
         "lldp timer [parameter1]",
@@ -1115,6 +1359,10 @@
         "lldp timer [parameter1]",
         "lldp tlv-select management restart [parameter1]"
     ],
+    "set protocols ospf3 area [area_id]": [
+        "router ospfv3 [parameter1]",
+        "network [parameter1] [parameter2] area [parameter3]"
+    ],
     "set routing-options multicast family [parameter1]": [
         "ip multicast-routing [parameter1]",
         "ip multicast-routing"
@@ -1122,6 +1370,10 @@
     "set protocols oam cfm version [parameter1]": [
         "ethernet [parameter1]",
         "ethernet cfm md [parameter1] level [parameter2]"
+    ],
+    "set security ike gateway [GATEWAY_NAME]": [
+        "set ikev2-profile [parameter1]",
+        "tunnel protection ipsec profile [parameter1]"
     ],
     "set protocols rstp path-cost [parameter1]": [
         "spanning-tree pathcost method [parameter1]",
@@ -1131,9 +1383,17 @@
         "no [parameter1]",
         "controller E1 [parameter1]"
     ],
+    "set policy-options policy-statement [policy_statement_name]": [
+        "policy-map [parameter1]",
+        "route-map [parameter1] [parameter2] [parameter3]"
+    ],
+    "set system ports auxiliary [parameter1]": [
+        "clock ssm control [parameter1]",
+        "no [parameter1]"
+    ],
     "set services nat64 rule-set [parameter1]": [
         "ipv6 cef",
-        "ipv6 bfd [parameter1] bind peer-ipv6 [parameter2] source-ipv6 [parameter3]"
+        "ipv6 route [destination] [interface]"
     ],
     "set chassis cluster reth-count [parameter1]": [
         "interface [parameter1].[parameter2]",
@@ -1145,7 +1405,7 @@
     ],
     "set services nat64 prefix [parameter1]": [
         "ip nat translation timeout [parameter1]",
-        "ipv6 pim rp-address [parameter1]"
+        "ipv6 address [parameter1]"
     ],
     "set class-of-service forwarding-classes class [parameter1]": [
         "l2tp-class [parameter1]",
@@ -1153,7 +1413,15 @@
     ],
     "set system root-authentication encrypted-password [parameter1]": [
         "enable secret [level] [encryption_type] [password]",
-        "enable secret [level] [encryption_type] [encrypted_password]"
+        "password [encryption_type] [encrypted_password]"
+    ],
+    "set protocols ldp track-igp-metric": [
+        "mpls ldp igp sync",
+        "mpls ldp"
+    ],
+    "set protocols bgp group [group_name]": [
+        "vpdn-group [parameter1]",
+        "aaa authorization network [parameter1] group [parameter2]"
     ],
     "set system syslog host [parameter1]": [
         "logging host [parameter1]",
@@ -1200,12 +1468,16 @@
         "snmp-server enable traps [parameter1] [parameter2] [parameter3]"
     ],
     "set snmp trap-group [parameter1]": [
-        "snmp-server enable traps [parameter1] [parameter2] [parameter3]",
-        "snmp-server enable traps snmp [parameter1] [parameter2]"
+        "snmp-server enable traps snmp [parameter1]",
+        "snmp-server enable traps [parameter1] [parameter2] [parameter3]"
     ],
     "set snmp contact [parameter1]": [
         "snmp-server contact [parameter1] at [parameter2]",
         "snmp-server enable traps [parameter1] [parameter2] [parameter3]"
+    ],
+    "set class-of-service classifiers exp [parameter1]": [
+        "mpls ldp advertise-labels interface [parameter1]",
+        "mpls traffic-eng level-1"
     ],
     "set system name-server [parameter1]": [
         "ip name-server [parameter1]",
@@ -1233,15 +1505,19 @@
     ],
     "set services gnss interface [parameter1]": [
         "interface [parameter1].[parameter2]",
-        "interface [parameter1]"
+        "interface [interface-name]"
     ],
     "set services gnss antenna-delay [parameter1]": [
         "ptp delay-response-interval [parameter1]",
         "ptp delay interval [parameter1]"
     ],
+    "delete set protocols mpls label-switched-path [parameter1]": [
+        "no mpls label protocol [parameter1]",
+        "mpls label range [parameter1] [parameter2]"
+    ],
     "set chassis synchronization interfaces [parameter1]": [
         "no [parameter1]",
-        "network-clock synchronization recover priority [parameter1]"
+        "interface [interface_name]"
     ],
     "delete set system services dhcp-relay information option": [
         "ip dhcp relay information option",
@@ -1260,8 +1536,8 @@
         "ip dhcp relay information option"
     ],
     "set forwarding-options helpers bootp interface [parameter1]": [
-        "interface [parameter1].[parameter2]",
-        "ip msdp originator-id [parameter1]"
+        "vrf forwarding [parameter1]",
+        "interface [parameter1].[parameter2]"
     ],
     "set chassis [parameter1] [parameter2] [parameter3]": [
         "controller E1 [parameter1]",
@@ -1272,26 +1548,42 @@
         "l2vpn vfi context [parameter1]"
     ],
     "set class-of-service forwarding-classes [parameter1]": [
-        "ethernet cfm remote-mep [parameter1] domain [parameter2] service [parameter3]",
-        "l2tp-class [parameter1]"
+        "vrf forwarding [parameter1]",
+        "ethernet cfm remote-mep [parameter1] domain [parameter2] service [parameter3]"
+    ],
+    "set system services telnet": [
+        "no telnet server enable",
+        "network-clock synchronization enable"
     ],
     "set protocols bgp export [parameter1]": [
-        "route-target export [parameter1]:[parameter2]",
-        "redistribute [parameter1]"
+        "route-target export [parameter1]",
+        "route-map [parameter1] [parameter2] [parameter3] [parameter4]"
     ],
     "set protocols ldp [parameter1] [parameter2]": [
         "mpls label protocol [parameter1]",
         "mpls ldp advertise-labels interface [parameter1]"
     ],
+    "set protocols l2circuit peer [parameter1]": [
+        "mpls ldp remote-peer [parameter1] [parameter2]",
+        "ip msdp peer [parameter1] connect-source [parameter2]"
+    ],
     "set protocols l2circuit interface [parameter1]": [
         "l2vpn",
-        "l2vpn evpn instance [parameter1] vlan-based"
+        "tunnel mode [parameter1] [parameter2]"
     ],
     "set protocols l2circuit encapsulation-type [parameter1]": [
         "switchport trunk encapsulation [parameter1]",
         "bridge [parameter1] protocol [parameter2]"
     ],
+    "set protocols l2circuit [parameter1]": [
+        "no mpls label protocol [parameter1]",
+        "route-map [parameter1] [parameter2] [parameter3]"
+    ],
     "set ethernet-switching-options static-arp [parameter1] [parameter2]": [
+        "mac address-table static [parameter1] vlan [parameter2] interface [parameter3]",
+        "ip route [parameter1] [parameter2] [parameter3]"
+    ],
+    "set ethernet-switching-options static-arp [ip_address] [mac_address]": [
         "mac address-table static [parameter1] vlan [parameter2] interface [parameter3]",
         "ip route [parameter1] [parameter2] [parameter3]"
     ],
@@ -1303,6 +1595,10 @@
         "ip pim rp-address [parameter1]",
         "ip pim rp-address [parameter1] [parameter2]"
     ],
+    "delete set protocols pim rp-candidate [parameter1]": [
+        "ip pim rp-address [parameter1] [parameter2]",
+        "ip pim rp-address [parameter1]"
+    ],
     "set protocols pim rp-candidate interface [parameter1]": [
         "ip pim rp-address [parameter1] [parameter2]",
         "ip pim rp-address [parameter1]"
@@ -1313,14 +1609,18 @@
     ],
     "set protocols ldp targeted-hello [parameter1]": [
         "mpls ldp discovery targeted-hello [parameter1]",
-        "mpls label protocol [parameter1]"
+        "mpls ldp discovery targeted-hello accept"
     ],
     "set system services telnet connection-limit [parameter1]": [
         "ip tcp connect [parameter1] [parameter2]",
-        "access-list [parameter1] permit [parameter2]"
+        "ip prefix-list [parameter1] seq [parameter2] permit [parameter3] le [parameter4]"
+    ],
+    "set security nat source pool [pool_name]": [
+        "ip nat inside source list [parameter1] pool [parameter2]",
+        "ip nat inside source list [acl_name] pool [pool_name] vrf [vrf_name] overload"
     ],
     "set services aps group [parameter1]": [
         "aaa accounting exec default start-stop group [parameter1]",
-        "aaa accounting network default start-stop group [parameter1]"
+        "aaa accounting exec [parameter1] [parameter2] group [parameter3]"
     ]
 }

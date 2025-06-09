@@ -1,24 +1,24 @@
 set system host-name LSRA
-set protocols ldp router-id Loopback1
-set protocols mpls traffic-engineering
+set protocols ldp router-id 1.1.1.9
+set protocols mpls traffic-engineering mpls-forwarding
 set interfaces ge-0/0/1 unit 0 disable
 set interfaces ge-0/0/1 disable
+set interfaces ge-0/0/1 ether-options no-auto-negotiation
 set interfaces ge-0/0/1 unit 0 family inet address 2.1.1.1/24
-set interfaces ge-0/0/1 unit 0 family inet mpls
-set interfaces ge-0/0/1 set protocols mpls traffic-engineering tunnels
-set interfaces ge-0/0/1 encapsulation dot1q 1
-set interfaces ge-0/0/1 set protocols l2circuit neighbor 3.3.3.3 interface ge-0/0/1.1 virtual-circuit-id 30000
-set interfaces ge-0/0/1 set interfaces gr-1/0/10 unit 0 tunnel destination 2.2.2.2
-interfaces ge-0/0/1.0
+set interfaces ge-0/0/1 unit 0 family mpls
+set interfaces ge-0/0/1 set protocols mpls traffic-engineering
+set interfaces ge-0/0/1 set protocols l2circuit neighbor 3.3.3.3 interface GigabitEthernet0/0/1.1 virtual-circuit-id 30000
+set interfaces ge-0/0/1 unit 10 disable
+set interfaces ge-0/0/1 set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+set interfaces ge-0/0/1 set interfaces gr-0/0/0 unit 0 family inet unnumbered-address lo0.0
+set interfaces ge-0/0/1 tunnel destination 2.2.2.2
 set interfaces ge-0/0/1.1 unit 1 disable
 set interfaces ge-0/0/1.1 disable
-set interfaces ge-0/0/1.1 unit 1 family inet mpls None
+set interfaces ge-0/0/1.1 set interfaces ge-0/0/1 unit 1 vlan-id 1
+set interfaces ge-0/0/1.1 unit 1 family mpls
 set interfaces lo0.1 unit 1 disable
 set interfaces lo0.1 disable
-set interfaces lo0.1 set interfaces ge-x/x/x unit 0 family inet unnumbered-address lo0.0
-set interfaces lo0 unit 0 family inet address 1.1.1.1/32
-set interfaces tun10 unit 10 disable
-set interfaces tun10 disable
-set routing-options static route 2.2.2.2/32 next-hop Tunnel10.0
+set interfaces lo0.1 unit 0 family inet address 1.1.1.1/32
+set routing-options static route 2.2.2.2/32 next-hop Tunnel10
 set routing-options static route 3.3.3.3/32 next-hop Tunnel10
 set protocols isis export REDIST-CONNECTED

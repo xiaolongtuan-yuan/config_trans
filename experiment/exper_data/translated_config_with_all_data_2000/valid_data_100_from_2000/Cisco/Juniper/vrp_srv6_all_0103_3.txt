@@ -1,8 +1,6 @@
 set system host-name CE1
 set routing-options rib inet6.0 static
-set routing-options router-id 1.1.1.1
-set protocols router-advertisement interface ge-0/0/0
-set services nat64 rule rule1
+set forwarding-options family inet6
 set services l2tp tunnel password $9$hq4S.3Z9Kv1Xe$dQ1VUJ4wCgWbR7yT2MnHx0O5PfL8A6EIkNlBsDaGc
 set system services ssh connection-limit 4
 set system login user admin authentication plain-text-password
@@ -10,12 +8,12 @@ set system services ssh
 set system services ssh root-login deny
 set interfaces ge-0/0/0 unit 0 disable
 set interfaces ge-0/0/0 disable
-set interfaces ge-0/0/0 set interfaces ge-0/0/0 unit 0 family inet6 address 2001:DB8:1::1/64
-interfaces ge-0/0/0.0
+set interfaces ge-0/0/0 ether-options no-auto-negotiation
+set interfaces ge-0/0/0 set interfaces ge-0/0/0 unit 0 family inet6 address 2001:db8:1::1/64
 set interfaces lo0 unit 0 disable
 set interfaces lo0 disable
 set interfaces lo0 set interfaces lo0 unit 0 family inet6 address 2001:DB8:CE1::1/128
-set protocols ospf3 area 0.0.0.1 family inet6
-set protocols ospf area 1.1.1.1 interface ge-0/0/0.0 authentication md5 1 key $9$H3LloW0rld
-set protocols ospf3 area 0
+set protocols ospf3 area 1
+set protocols ospf3 area 1.1.1.1 family inet6
+set protocols ospf3 area 0.0.0.1 family inet6 set protocols ospf3 area 0.0.0.0
 set protocols isis export REDIST-CONNECTED

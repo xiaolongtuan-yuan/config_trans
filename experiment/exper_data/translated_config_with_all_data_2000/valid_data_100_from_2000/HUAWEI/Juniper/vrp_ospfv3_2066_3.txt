@@ -1,14 +1,16 @@
 set system host-name DeviceE
+set system name-server 192.168.7.252
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 unit 0 disable
-set interfaces ge-1/0/0 unit 0 family inet6
-set interfaces ge-1/0/0 unit 0 family inet address 2001:db8:2000::1/24
-set interfaces ge-1/0/0 unit 0 family inet address 2001:db8:2001::1/24
-set interfaces ge-1/0/0 unit 0 family inet address 2001:db8:2002::1/24
-set interfaces ge-1/0/0 unit 0 family inet address 2001:db8:3000::1/24
-set interfaces ge-1/0/0 unit 5 family ethernet-switching storm-control default
-set protocols ospf3 area 0.0.0.1
-set protocols bgp group 4.4.4.4 neighbor 4.4.4.4 family inet unicast
-set protocols ospf area 0.0.0.0 interface all-interfaces bfd-liveness-detection
-set protocols ospf area 0.0.0.1 interface 0.0.0.1
-set system host-name CE1
+set interfaces ge-1/0/0 unit 0 tunnel ipv6-prefix 2001:db8::/32
+set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:2000::1/64
+set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:2001::1/64
+set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:2002::1/64
+set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:3000::1/24
+set interfaces ge-1/0/0 set protocols ospf3 interface ge-1/0/1 metric 5
+set interfaces ge-1/0/0 unit 1 vlan-id 2
+set interfaces ge-3/0/0 disable
+set protocols ospf3 area 0.0.0.1 set protocols ospf3 bfd interface all
+set protocols ospf3 area 0.0.0.1 set protocols ospf3 bfd-liveness-detection interface all frr-protection
+set protocols bgp group IBGP cluster 4.4.4.4
+set protocols ospf area 0.0.0.1 interface ge-0/0/1.0

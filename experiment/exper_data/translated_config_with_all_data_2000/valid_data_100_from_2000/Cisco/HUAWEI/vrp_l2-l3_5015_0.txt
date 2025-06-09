@@ -1,25 +1,22 @@
 sysname UPE
-interface GigabitEthernet1/0/0 mode l2
- mpls l2vc 3.3.3.9 101 raw
-mpls lsr-id 1.1.1.1
+mpls lsr-id 3.3.3.9
+interface GigabitEthernet2/0/0
+ mpls
+ undo shutdown
+ ip address 10.2.1.1 255.255.255.0
 mpls
 interface GigabitEthernet1/0/0
  undo shutdown
 interface GigabitEthernet1/0/0.1
- dot1q termination vid 10
- mpls l2vc 3.3.3.9 101 raw
- mpls l2vc 3.3.3.9 101 control-word tdm-encapsulation-number 8
-interface GigabitEthernet1/0/0.1 mode l2
-interface GigabitEthernet2/0/0
- undo shutdown
- ip address 10.2.1.1 255.255.255.0
-interface GigabitEthernet2/0/0 mode l2
- mpls l2vc none none raw
+ vlan-type dot1q 10
+ mpls l2vc 3.3.3.9 101 tunnel-policy none
+ mpls l2vc 3.3.3.9 101 control-word tdm-encapsulation-number mpls
 interface Loopback1
-interface LoopBack1
  ip address 1.1.1.9 255.255.255.255
 ospf 1
- network 1.1.1.9 0.0.0.0
+ospf 1 router-id 1.1.1.9
  area 0
- network 10.2.1.0 0.0.0.255
+  network 1.1.1.9 0.0.0.0
+ area 0.0.0.0
+  network 10.2.1.0 0.0.0.255
 return

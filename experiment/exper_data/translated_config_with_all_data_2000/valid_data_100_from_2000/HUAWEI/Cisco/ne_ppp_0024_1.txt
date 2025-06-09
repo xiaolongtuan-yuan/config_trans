@@ -1,16 +1,14 @@
 hostname DeviceB
 interface Lmpif1/0/0
- ip address 10.110.0.2 255.255.255.0
- ppp authentication chap none
- ppp pap sent-username rtb password 0 @%@%j]v~7%f[#S'W>j9zzM)3,*!u@%@%
- ppp chap password 0 @%@%j]v~7%f[#S'W>j9zzM)3,*!u@%@%
- ppp authorization default1
-interface range Lmpif1/0/0 - 0
  no shutdown
-interface Loopback1/0/0
- encapsulation ppp
-ethernet cfm ma ma1 md md1
-ethernet cfm ma none md none
- username rta password 7 094F471A1B0A545C4B
-net 0000.0000.0001.00
-aaa authentication ppp default local
+ ppp authentication chap pap
+ ip address 10.110.0.2 255.255.255.0
+ ppp chap hostname rtb
+ ppp chap password 0 @%@%j]v~7%f[#S'W>j9zzM)3,*!u@%@%
+aaa authentication enable default none
+ username rta service-type ppp
+aaa authentication enable default @%@%EDF~DAdfFD934J3<DAF#*<!@%@%
+aaa authentication enable default default1
+ aaa authentication ppp default1 local
+aaa authentication enable default local
+end

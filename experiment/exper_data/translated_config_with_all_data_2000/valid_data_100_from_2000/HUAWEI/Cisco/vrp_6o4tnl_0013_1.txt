@@ -1,22 +1,17 @@
 hostname DeviceA
 interface GigabitEthernet1/0/1
+ no shutdown
  ip address 10.1.1.1 255.255.255.0
-interface range GigabitEthernet1/0/1 - 2
- no shutdown
 interface GigabitEthernet1/0/2
- ipv6 enable
- ipv6 address 2001:db8:101:101::1/64
-interface range GigabitEthernet1/0/2 - None
  no shutdown
+ ip address 2001:db8:101:101::1 64
+ ipv6 dhcp client pd hint ::/64
+ipv6 unicast-routing
+interface Tunnel.1
 interface Tunnel 1
- ipv6 enable
- tunnel source GigabitEthernet1/0/1
- ipv6 address 2001:db8::/32
-interface Tunnel 1 point-to-point
-interface Tunnel1
- ipv6 address 2001:db8:101:100::/56 eui-64
- tunnel mode ipv6ip 6rd
- ipv6 address 2001:db8:102::2/96
-ipv6 route 2001:db8::/32 Tunnel1 none
+ ip address 2001:db8:101:100::1 56
+ ip address 2001:db8::1 255.255.255.255
+ ip address 8 255.0.0.0
+ipv6 route 2001:db8:: Tunnel1 none
 ipv6 route 2001:db8:: Tunnel1
-ethernet cfm ma MA name md MD name
+end

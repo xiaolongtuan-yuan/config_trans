@@ -11,23 +11,13 @@
         "delete set protocols bgp group external family inet6 unicast no synchronization",
         "delete set protocols bgp group external family inet6 unicast redistribute connected",
         "set policy-options policy-statement export-connected term 1 from protocol direct",
-        "set policy-options policy-statement export-connected term 1 then accept",
-        "set protocols bgp group external type external",
-        "delete set protocols bgp group external local-address 30.30.30.30",
-        "set protocols bgp group external local-address 2001:db8:9::1",
-        "set protocols bgp group external peer-as 100",
-        "set protocols bgp group external neighbor 2001:db8:2::2",
-        "set protocols bgp group external family inet6 unicast",
-        "delete set protocols bgp group external neighbor 2001:db8:2::2 activate",
-        "delete set protocols bgp group external family inet6 unicast no synchronization",
-        "delete set protocols bgp group external family inet6 unicast redistribute connected",
-        "set policy-options policy-statement export-connected term 1 from protocol direct",
         "set policy-options policy-statement export-connected term 1 then accept"
     ],
-    "grammatical_accuracy": 0.46153846153846156,
+    "grammatical_accuracy": 0.38461538461538464,
     "missed_templates": [
         "delete set protocols bgp group [parameter1] local-address [parameter2]",
         "set protocols bgp group [parameter1] local-address [parameter2]",
+        "set protocols bgp group [parameter1] peer-as [parameter2]",
         "delete set protocols bgp group [group_name] neighbor [neighbor_address] activate",
         "delete set protocols bgp group [group_name] family [family_type] [address_family] no synchronization",
         "delete set protocols bgp group [parameter1] family [parameter2] [parameter3] redistribute [parameter4]",
@@ -35,29 +25,31 @@
         "set policy-options policy-statement [parameter1] term [parameter2] then [parameter3]"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.05555555555555555,
+    "llm_command_ratio": 0.11764705882352941,
     "command_for_llm": [
-        "ipv6 address 2001:db8:9::1/64"
+        "ipv6 address 2001:db8:9::1/64",
+        "undo synchronization"
     ],
     "llm_trans_commands": [
-        "set interfaces lo0 unit 1 family inet6 address 2001:db8:9::1/64"
+        "set interfaces lo0 unit 1 family inet6 address 2001:db8:9::1/64",
+        "no synchronization"
     ],
     "source_commands": [
+        "ipv6 address 2001:db8:9::1/64",
         "bgp 65410",
+        "import-route direct",
+        "interface LoopBack1",
+        "sysname CE2",
+        "peer 2001:db8:2::2 as-number 100",
+        "peer 2001:db8:2::2 enable",
         "return",
         "undo synchronization",
-        "interface GigabitEthernet1/0/0",
-        "import-route direct",
-        "router-id 30.30.30.30",
-        "peer 2001:db8:2::2 as-number 100",
-        "ipv6-family unicast",
-        "interface LoopBack1",
-        "ipv6 address 2001:db8:3::1 64",
-        "ipv6 address 2001:db8:9::1/64",
         "ipv6 enable",
         "undo shutdown",
-        "peer 2001:db8:2::2 enable",
-        "sysname CE2"
+        "ipv6 address 2001:db8:3::1 64",
+        "interface GigabitEthernet1/0/0",
+        "router-id 30.30.30.30",
+        "ipv6-family unicast"
     ],
     "llm_origin_response": [
         ""

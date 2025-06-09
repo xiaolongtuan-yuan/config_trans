@@ -1,14 +1,11 @@
 {
-    "command_accuracy": 0.6666666666666666,
+    "command_accuracy": 0.3333333333333333,
     "missed_commands": [
         "set interfaces ge-0/0/1 unit 0 family inet address 172.16.1.2/24",
         "set interfaces gr-0/0/0 unit 0 family inet address 192.168.1.2/24",
         "set interfaces gr-0/0/0 unit 0 tunnel source 2001:db8:300::2",
         "set interfaces gr-0/0/0 unit 0 tunnel destination 2001:db8:200::1",
         "set protocols ospf area 0.0.0.0 interface lo0.0 passive",
-        "set routing-options rib inet6.0 static route 2001:db8:200::/64 next-hop 2001:db8:100::1",
-        "set interfaces gr-0/0/0 unit 0 tunnel source 2001:db8:300::2",
-        "set interfaces gr-0/0/0 unit 0 tunnel destination 2001:db8:200::1",
         "set routing-options rib inet6.0 static route 2001:db8:200::/64 next-hop 2001:db8:100::1"
     ],
     "grammatical_accuracy": 0.6666666666666666,
@@ -18,40 +15,37 @@
         "set routing-options rib [parameter1] static route [parameter2] next-hop [parameter3]"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.25,
+    "llm_command_ratio": 0.21052631578947367,
     "command_for_llm": [
-        "ipv6 unicast-routing",
-        "ipv6 address 2001:DB8:300::2/128",
         "ipv6 address 2001:DB8:100::2/64",
-        "tunnel destination 172.16.1.1"
+        "ipv6 unicast-routing",
+        "ipv6 address 2001:DB8:300::2/128"
     ],
     "llm_trans_commands": [
-        "set routing-options rib inet6.0 static",
-        "set protocols router-advertisement interface all",
-        "set system services router-advertisement",
+        "set routing-options rib inet6.0 static route ::/0 discard",
+        "set system internet-options no-ipv6-routing disable",
         "set interfaces ge-1/0/0 unit 0 family inet6 address 2001:DB8:100::2/64",
-        "set interfaces lo0 unit 1 family inet6 address 2001:DB8:300::2/128",
-        "set interfaces gr-1/1/0 tunnel destination 172.16.1.1"
+        "set interfaces lo0 unit 1 family inet6 address 2001:DB8:300::2/128"
     ],
     "source_commands": [
-        "hostname DeviceB",
-        "ipv6 unicast-routing",
         "ipv6 address 2001:DB8:100::2/64",
-        "no shutdown",
-        "ipv6 address 2001:DB8:300::2/128",
-        "interface Tunnel1",
-        "interface GigabitEthernet1/0/0",
+        "ipv6 unicast-routing",
         "tunnel destination 172.16.1.1",
-        "network 192.168.1.0 0.0.0.255 area 0",
-        "end",
         "interface GigabitEthernet1/0/1",
-        "ip address 172.16.1.2 255.255.255.0",
-        "ip route 172.16.1.1 255.255.255.255 GigabitEthernet1/0/1",
-        "router ospf 1",
-        "interface Loopback1",
-        "network 172.16.1.0 0.0.0.255 area 0",
+        "end",
+        "no shutdown",
         "ip address 192.168.1.2 255.255.255.0",
-        "tunnel source GigabitEthernet1/0/1"
+        "tunnel source GigabitEthernet1/0/1",
+        "ipv6 address 2001:DB8:300::2/128",
+        "network 172.16.1.0 0.0.0.255 area 0",
+        "interface Loopback1",
+        "router ospf 1",
+        "interface Tunnel1",
+        "ip route 172.16.1.1 255.255.255.255 GigabitEthernet1/0/1",
+        "interface GigabitEthernet1/0/0",
+        "network 192.168.1.0 0.0.0.255 area 0",
+        "ip address 172.16.1.2 255.255.255.0",
+        "hostname DeviceB"
     ],
     "llm_origin_response": [
         ""

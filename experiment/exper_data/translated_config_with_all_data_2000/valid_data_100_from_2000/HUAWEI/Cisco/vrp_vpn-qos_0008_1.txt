@@ -1,49 +1,42 @@
 hostname PE1
-ethernet cfm ma 1.1.1.9 md none
-ethernet cfm ma mpls md none
+mpls ldp router-id 1.1.1.9
+ip cef
 interface GigabitEthernet2/0/0
- mpls traffic-eng tunnels
  mpls ip
- mpls ldp ipv4
-  neighbor 3.3.3.9 remote-as
+ mpls rsvp-te
+ mpls l2vpn
+ mpls ip ldp autoconfig
  ip address 10.1.1.1 255.255.255.0
- mpls traffic-eng bandwidth 5000
+ mpls traffic-eng max-reservable-bw 5000
  mpls traffic-eng bandwidth sub-pool 4000
-mpls ip
-mpls ldp remote-peer none none
+mpls traffic-eng
+mpls ldp neighbor 3.3.3.9
+interface GigabitEthernet3.3.3.9
+ ptp adaptive remote-server1-ip 3.3.3.9
 interface GigabitEthernet1/0/0
- mpls ldp autoconfig
-interface 3.3.3.9
- mpls ldp ipv4
-interface range GigabitEthernet1/0/0 - 0
+interface GigabitEthernet1/0/1
  no shutdown
 interface GigabitEthernet1/0/0.1
  encapsulation dot1q 10
- mpls l2transport route 3.3.3.9 101 pw-class policy1
- service instance 10 ethernet
- rewrite ingress tag pop 1 symmetric
- l2vpn xconnect context
- qos output rate cir 2000000 pir 3000000
-interface range GigabitEthernet2/0/0 - 0
+ xconnect 3.3.3.9 101 encapsulation mpls
+ service-policy output POLICY_L2VPN
+interface GigabitEthernet3/3/3.9
  no shutdown
 interface LoopBack1
  ip address 1.1.1.9 255.255.255.255
 interface Tunnel10
- ip unnumbered Loopback1
+ ip unnumbered LoopBack1
  tunnel mode mpls traffic-eng
  mpls traffic-eng signalling rsvp
  tunnel destination 3.3.3.9
  mpls traffic-eng bandwidth 0 2000
  tunnel mpls traffic-eng 101
- ip ospf 1 area 0
- capability opaque
- ospfv3 1 ipv6 area 0.0.0.0
- ip address 1.1.1.9 0.0.0.0
- ip address 10.1.1.0 255.255.255.0
 router ospf 1
- mpls traffic-eng level-1
-policy-map policy1
- class policy1
-  service-policy policy1
-   tunnel select sequence mpls traffic-eng 1
-ethernet cfm ma ma1 md md1
+ capability opaque
+ network 1.1.1.9 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+  mpls traffic-eng area 0
+tunnel-selector policy1
+ tunnel selection order mpls traffic-eng 1
+ tunnel select order mpls traffic-eng 1
+end

@@ -8,14 +8,6 @@
         "set protocols bgp group external family inet unicast",
         "set policy-options policy-statement import-direct term 1 from protocol direct",
         "set policy-options policy-statement import-direct term 1 then accept",
-        "set protocols bgp group external neighbor 172.17.1.1 import import-direct",
-        "set interfaces ge-1/0/1 unit 1 family inet address 172.17.1.2/24",
-        "set protocols bgp group external type external",
-        "set protocols bgp group external local-address 172.17.1.2",
-        "set protocols bgp group external neighbor 172.17.1.1 peer-as 100",
-        "set protocols bgp group external family inet unicast",
-        "set policy-options policy-statement import-direct term 1 from protocol direct",
-        "set policy-options policy-statement import-direct term 1 then accept",
         "set protocols bgp group external neighbor 172.17.1.1 import import-direct"
     ],
     "grammatical_accuracy": 0.5555555555555556,
@@ -26,21 +18,28 @@
         "set protocols bgp group [group_name] neighbor [neighbor_ip] import [import_policy]"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.0,
-    "command_for_llm": [],
-    "llm_trans_commands": [],
+    "llm_command_ratio": 0.15384615384615385,
+    "command_for_llm": [
+        "undo synchronization"
+    ],
+    "llm_trans_commands": [
+        "no synchronization",
+        "set protocols bgp group <group-name> no-synchronize"
+    ],
     "source_commands": [
-        "peer 172.17.1.1 enable",
-        "ipv4-family unicast",
+        "bgp 65421",
+        "import-route direct",
+        "sysname CE3",
+        "ip address 172.17.1.2 255.255.255.0",
+        "peer 172.17.1.1 as-number 100",
         "return",
         "undo synchronization",
-        "import-route direct",
-        "peer 172.17.1.1 as-number 100",
-        "bgp 65421",
-        "sysname CE3",
-        "interface GigabitEthernet1/0/1.1",
         "undo shutdown",
-        "ip address 172.17.1.2 255.255.255.0"
+        "ipv4-family unicast",
+        "interface GigabitEthernet1/0/1.1",
+        "peer 172.17.1.1 enable"
     ],
-    "llm_origin_response": []
+    "llm_origin_response": [
+        ""
+    ]
 }

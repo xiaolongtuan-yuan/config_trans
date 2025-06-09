@@ -1,48 +1,51 @@
 {
-    "command_accuracy": 0.5882352941176471,
+    "command_accuracy": 0.7058823529411765,
     "missed_commands": [
         "bfd interval 100 min_rx 100 multiplier 3",
         "bfd interval 100 min_rx 100 multiplier 3",
         "bfd neighbor 10.1.1.2",
         "bfd neighbor 10.2.1.2",
-        "ip route 0.0.0.0 0.0.0.0 10.1.1.2",
-        "ip route 0.0.0.0 0.0.0.0 10.2.1.2",
-        "end",
-        "bfd interval 100 min_rx 100 multiplier 3",
-        "bfd neighbor 10.1.1.2",
-        "bfd interval 100 min_rx 100 multiplier 3",
-        "bfd neighbor 10.2.1.2",
-        "ip route 0.0.0.0 0.0.0.0 10.1.1.2",
-        "ip route 0.0.0.0 0.0.0.0 10.2.1.2",
-        "end"
+        "ip route 0.0.0.0 0.0.0.0 10.1.1.2"
     ],
-    "grammatical_accuracy": 0.5882352941176471,
+    "grammatical_accuracy": 0.8823529411764706,
     "missed_templates": [
-        "bfd interval [parameter1] min_rx [parameter2] multiplier [parameter3]",
-        "bfd neighbor [parameter1]",
-        "ip route [parameter1] [parameter2] [parameter3]",
-        "end"
+        "bfd neighbor [parameter1]"
     ],
-    "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.0,
-    "command_for_llm": [],
-    "llm_trans_commands": [],
-    "source_commands": [
-        "bfd",
-        "load-balance packet all",
-        "return",
+    "llm_command_accuracy": 0.058823529411764705,
+    "llm_command_ratio": 0.375,
+    "command_for_llm": [
+        "bfd ce1_to_pe2 bind peer-ip 10.2.1.2 interface GigabitEthernet2/0/0 source-ip 10.2.1.1 auto",
+        "bfd ce1_to_pe1 bind peer-ip 10.1.1.2 interface GigabitEthernet1/0/0 source-ip 10.1.1.1 auto"
+    ],
+    "llm_trans_commands": [
+        "bfd-template single-hop ce1_to_pe1",
         "interface GigabitEthernet1/0/0",
-        "bfd ce1_to_pe1 bind peer-ip 10.1.1.2 interface GigabitEthernet1/0/0 source-ip 10.1.1.1 auto",
-        "sysname CE1",
-        "ip address 1.1.1.1 255.255.255.255",
-        "ip address 10.1.1.1 255.255.255.0",
-        "interface LoopBack1",
-        "ip route-static 0.0.0.0 0.0.0.0 10.2.1.2",
-        "ip route-static 0.0.0.0 0.0.0.0 10.1.1.2",
-        "ip address 10.2.1.1 255.255.255.0",
-        "undo shutdown",
+        "destination-address ipv4 10.1.1.2",
+        "source-address ipv4 10.1.1.1",
+        "bfd interval 50 min_rx 50 multiplier 3",
+        "bfd echo",
         "interface GigabitEthernet2/0/0",
-        "bfd ce1_to_pe2 bind peer-ip 10.2.1.2 interface GigabitEthernet2/0/0 source-ip 10.2.1.1 auto"
+        "ip route 0.0.0.0 0.0.0.0 10.2.1.2 track 10",
+        "track 10 bfd interface GigabitEthernet2/0/0 ipv4 10.2.1.2"
     ],
-    "llm_origin_response": []
+    "source_commands": [
+        "ip address 10.1.1.1 255.255.255.0",
+        "sysname CE1",
+        "interface LoopBack1",
+        "ip address 1.1.1.1 255.255.255.255",
+        "load-balance packet all",
+        "ip route-static 0.0.0.0 0.0.0.0 10.2.1.2",
+        "interface GigabitEthernet1/0/0",
+        "bfd",
+        "return",
+        "undo shutdown",
+        "ip route-static 0.0.0.0 0.0.0.0 10.1.1.2",
+        "bfd ce1_to_pe1 bind peer-ip 10.1.1.2 interface GigabitEthernet1/0/0 source-ip 10.1.1.1 auto",
+        "interface GigabitEthernet2/0/0",
+        "bfd ce1_to_pe2 bind peer-ip 10.2.1.2 interface GigabitEthernet2/0/0 source-ip 10.2.1.1 auto",
+        "ip address 10.2.1.1 255.255.255.0"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
 }

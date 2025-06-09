@@ -1,15 +1,15 @@
 hostname Server1
-interface GigabitEthernet1/0/1
- ptp adaptive enable
- ptp adaptive time-profile
-interface GigabitEthernet2/0/0
- ptp device-type server
- ptp adaptive local-ip 1.1.1.1
- ptp adaptive dscp 60
+ ptp enable
+interface server
+ ptp adaptive device-type server
+ptp profile 1588v2
 ptp domain 45
+interface GigabitEthernet1/0/1
+ ptp adaptive local-ip 1.1.1.1
+ ptp adaptive atr enable
+ptp dscp 60
 interface Loopback0
  ip address 1.1.1.1 255.255.255.255
-interface GigabitEthernet1/0/0
- ptp adaptive atr enable
-interface GigabitEthernet1/0/0 point-to-point
-ethernet cfm ma MA_name md MD_name
+interface GigabitEthernet.1/0/0
+ ptp enable
+end

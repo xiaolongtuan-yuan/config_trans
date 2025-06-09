@@ -1,25 +1,25 @@
 hostname P2
-ethernet cfm ma 4.4.4.9 md none
-ethernet cfm ma mpls md none
-ethernet cfm ma segment-routing md none
- segment-routing adjacency 10.13.1.1 10.13.1.2 sid index 330002
- segment-routing adjacency 10.14.1.2 10.14.1.1 sid-value 330003
+mpls ldp router-id 4.4.4.9
+ip cef
+interface GigabitEthernet2/0/0
+ mpls ip
+ no shutdown
+ ip address 10.14.1.1 255.255.255.0
+ isis network point-to-point
+segment-routing mpls
+ segment-routing adjacency 10.13.1.1 10.13.1.2 sid-value 330002
+ segment-routing mpls adjacency 10.14.1.1 10.14.1.2 sid-value 330003
 router isis 1
- mpls traffic-eng level-1
+ is-type level-1
  metric-style wide
  net 10.0000.0000.0004.00
  segment-routing mpls
 interface GigabitEthernet1/0/0
  ip address 10.13.1.2 255.255.255.0
- isis enable 1
-interface range GigabitEthernet1/0/0 - 1
- no shutdown
-interface GigabitEthernet2/0/0
- ip address 10.14.1.1 255.255.255.0
- isis enable 1
-interface range GigabitEthernet2/0/0 - 0
+ isis network point-to-point
+interface GigabitEthernet1/0/1
  no shutdown
 interface LoopBack1
  ip address 4.4.4.9 255.255.255.255
- isis enable 1
-ethernet cfm ma ma1 md md1
+ isis network point-to-point
+end

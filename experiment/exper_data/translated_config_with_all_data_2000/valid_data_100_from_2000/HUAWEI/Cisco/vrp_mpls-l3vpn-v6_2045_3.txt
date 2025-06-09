@@ -1,18 +1,14 @@
 hostname CE
 interface GigabitEthernet1/0/0
- ipv6 enable
  ipv6 address 2001:db8:1::1/64
-interface range GigabitEthernet1/0/0 - 0
+interface GigabitEthernet1/0/1
  no shutdown
+ipv6 unicast-routing
 interface GigabitEthernet2/0/0
- ipv6 enable
- ipv6 address 2001:db8:3::1/64
-interface range GigabitEthernet2/0/0 - 0
  no shutdown
+ ipv6 address 2001:db8:3::1/64
 interface LoopBack1
- ipv6 enable
  ipv6 address 2001:db8:0:1:2::1/128
- ip address 2001:db8:0:1:2::1 128
 router bgp 65410
  bgp router-id 10.10.10.10
  neighbor 2001:db8:1::2 remote-as 100
@@ -20,8 +16,9 @@ router bgp 65410
  address-family ipv4 unicast
  no synchronization
  address-family ipv6 unicast
- neighbor 2001:db8:1::2 remote-as 65410
- neighbor 2001:db8:3::2 remote-as 65410
-neighbor 2001:db8:1::2 remote-as 100
-neighbor 2001:db8:3::2 remote-as 100
-ethernet cfm ma MA_name md MD_name
+ neighbor 2001:db8:1::2 activate
+ exit-address-family
+ neighbor 2001:db8:3::2 activate
+router ospf 1
+ network 2001:db8:0:1:2::1 128 area 0
+end

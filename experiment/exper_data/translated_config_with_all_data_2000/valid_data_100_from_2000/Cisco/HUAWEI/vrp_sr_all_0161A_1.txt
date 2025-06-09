@@ -1,33 +1,34 @@
 sysname P
-interface GigabitEthernet1/0/0 mode l2
- mpls l2vc none none raw
-mpls ldp router-id LoopBack1 force
+mpls lsr-id 3.3.3.9
 interface GigabitEthernet2/0/0
- mpls ldp remote-peer PE2
- mpls traffic-eng passive-interface GigabitEthernet0/0/1
+ mpls
  undo shutdown
  ip address 10.2.1.1 255.255.255.0
  isis network-type p2p
  isis metric 10
+mpls ldp router-id LoopBack1
+mpls
+mpls ldp
+mpls l2vpn
 interface Loopback1
  mpls ldp remote-peer Loopback1
+ ip address 2.2.2.2 255.255.255.255
  mpls te binding-sid label 153800
 mpls ldp enable
 isis 1
  network-entity 49.0001.0000.0000.0000.00
- is-level level-2
+ isis-level level-2
  cost-style wide
+ mpls-te enable level-2
 ospf 1
- ma ma1
+ ma Loopback1
   mep mep-id 1 interface Loopback1 outward
 interface GigabitEthernet1/0/0
  undo shutdown
  ip address 10.1.1.2 255.255.255.0
  isis network-type p2p
  isis metric 10
-interface GigabitEthernet2/0/0 mode l2
- mpls l2vc none none raw
+ mpls
 interface LoopBack1
- ip address 2.2.2.2 255.255.255.255
  isis metric 10
 return

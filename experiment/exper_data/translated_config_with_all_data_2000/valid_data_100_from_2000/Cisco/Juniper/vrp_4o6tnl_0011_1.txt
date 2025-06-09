@@ -1,24 +1,19 @@
 set system host-name DeviceB
-set routing-options rib inet6.0 static
-set protocols router-advertisement interface all
-set system services router-advertisement
-set interfaces ge-1/0/0 unit 1/0/0 disable
+set routing-options rib inet6.0 static route ::/0 discard
+set system internet-options no-ipv6-routing disable
+set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6 address 2001:DB8:100::2/64
+set interfaces ge-1/0/0 unit 0 family inet address 172.16.1.2/24
 set interfaces ge-1/0/0 unit 1 disable
 set interfaces ge-1/0/0 unit 0 family inet address 192.168.1.2/24
 set interfaces ge-1/0/0 unit 1 tunnel source GigabitEthernet1/0/1
-set interfaces ge-1/0/0 set interfaces gr-1/1/0 tunnel destination 172.16.1.1
-interfaces ge-1/0/0.0
-set interfaces ge-1/0/1 unit 0 disable
-set interfaces ge-1/0/1 disable
-set interfaces ge-1/0/1 unit 0 family inet address 172.16.1.2/24
-interfaces ge-1/0/1.0
-set interfaces lo0.1 unit 1 disable
-set interfaces lo0.1 disable
+set interfaces ge-1/0/0 tunnel destination 172.16.1.1
+set interfaces lo0 unit 1 disable
+set interfaces lo0 disable
 set interfaces lo0.1 set interfaces lo0 unit 1 family inet6 address 2001:DB8:300::2/128
-set protocols ospf area 0.0.0.1 interface ge-0/0/1.0
-set protocols ospf area 0.0.0.0 interface ge-0/0/0.0
+set protocols ospf area 1 interface 1
 set protocols ospf area 0 interface ge-0/0/1.0
 set routing-options static route 172.16.1.1/32 next-hop GigabitEthernet1/0/1
-set protocols isis export none
+set protocols isis export REDIST-CONNECTED

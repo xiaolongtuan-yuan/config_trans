@@ -1,22 +1,22 @@
 set system host-name UPE
-set interfaces ge-0/0/0 unit 0 family inet mpls
+set interfaces ge-0/0/0 unit 0 family mpls
 set protocols ldp router-id 1.1.1.1
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
-interfaces ge-1/0/0.0
+set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0.1 unit 1 disable
 set interfaces ge-1/0/0.1 disable
-set interfaces ge-1/0/0.1 encapsulation dot1q 10
+set interfaces ge-1/0/0.1 set interfaces ge-1/0/0 unit 1 vlan-id 10
 set interfaces ge-1/0/0.1 unit 1 encapsulation mpls
 set interfaces ge-1/0/0.1 unit 1 encapsulation mpls vlan-id 101
 set interfaces ge-2/0/0 unit 0 disable
 set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 ether-options no-auto-negotiation
 set interfaces ge-2/0/0 unit 0 family inet address 10.2.1.1/24
-set interfaces ge-2/0/0 unit 0 family inet mpls
-interfaces ge-2/0/0.0
+set interfaces ge-2/0/0 unit 0 family mpls
 set interfaces lo0 unit 1 disable
 set interfaces lo0 disable
-set interfaces lo0.1 unit 0 family inet address 1.1.1.9/32
-set protocols ospf area 0.0.0.1 interface ge-0/0/0.0
+set interfaces lo0 unit 0 family inet address 1.1.1.9/32
+set protocols ospf area 1 interface 1
 set protocols ospf area 0 interface ge-0/0/1.0
 set protocols isis export REDIST-CONNECTED

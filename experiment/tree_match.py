@@ -232,14 +232,16 @@ def command_template_process(expect_templates: [], trans_commands: [], llm_trans
     denominator = len(expected_commands)
 
     expected_template_counter = Counter(expect_templates)
-    used_simplifoed_data_id = []
-    cheched_expected_command_data_id = []
+    used_simplified_data_id = []
+    checked_expected_command_data_id = []
+    commands_to_remove = []
     for template in expected_template_counter.keys():
         is_omnipotent = False
         if any([key in template for key in ['enable', 'disable']]):
             is_omnipotent = True
-        res_simplifoed_data = []
-        label_simplifoed_data = []
+
+        res_simplified_data = []
+        label_simplified_data = []
         template_info = get_template_info(template, config_model)
         ignore_param_index = []  # 如果是与名字相关的参数，我们不计入准确率
         if template_info:
@@ -248,8 +250,17 @@ def command_template_process(expect_templates: [], trans_commands: [], llm_trans
                     ignore_param_index.append(index)
 
         template_re = re.sub(r"\[[^\]]+\]", r'(\\S+)', template.lower())
-        commands_to_remove = []
+
         is_match = False
+        for command_data in [data for data in trans_command_datas]:
+            if re.match(template_re, command_data.command):
+                is_match = True
+                break
+        if is_match or is_omnipotent:
+            template_match_score += expected_template_counter[template]
+        else:
+            missed_templates.append(template)
+
         for command_data in [data for data in trans_command_datas if data.id not in commands_to_remove]:
             # 判断命令是否匹配模板
             if re.match(template_re, command_data.command):
@@ -261,24 +272,16 @@ def command_template_process(expect_templates: [], trans_commands: [], llm_trans
 
                 trans_params.extend(res_parameters)  # 总参数
                 command_data.set_simplify_command(str(res_parameters))
-                res_simplifoed_data.append(command_data)  # 被参数代替了的命令
+                res_simplified_data.append(command_data)  # 被参数代替了的命令
 
                 commands_to_remove.append(command_data.id)
             else:
                 if is_omnipotent and any([key in template for key in ['enable', 'disable']]):
                     is_match = True
                     command_data.set_simplify_command(str([]))
-                    res_simplifoed_data.append(command_data)
+                    res_simplified_data.append(command_data)
 
-        # for command in commands_to_remove:
-        #     trans_commands.remove(command)
 
-        if is_match:
-            template_match_score += expected_template_counter[template]
-        else:
-            missed_templates.append(template)
-
-        commands_to_remove = []
         for command_data in [data for data in expected_command_datas if data.id not in commands_to_remove]:
             if re.match(template_re, command_data.command):
                 if is_omnipotent:
@@ -291,40 +294,40 @@ def command_template_process(expect_templates: [], trans_commands: [], llm_trans
                     expected_params.extend(lebel_parameters)
                 command_data.set_simplify_command(str(lebel_parameters))
 
-                label_simplifoed_data.append(command_data)
+                label_simplified_data.append(command_data)
                 commands_to_remove.append(command_data.id)
         # for command in commands_to_remove:
         #     expected_commands.remove(command)
 
-        for label_simplifoed_data_item in label_simplifoed_data:
+        for label_simplified_data_item in label_simplified_data:
             has_mapping = False
-            for res_simplifoed_data_item in [data for data in res_simplifoed_data if
-                                             data.id not in used_simplifoed_data_id]:
-                if label_simplifoed_data_item.simplified_command == res_simplifoed_data_item.simplified_command:
+            for res_simplified_data_item in [data for data in res_simplified_data if
+                                             data.id not in used_simplified_data_id]:
+                if label_simplified_data_item.command == res_simplified_data_item.command or (label_simplified_data_item.simplified_command == res_simplified_data_item.simplified_command):
                     has_mapping = True
                     command_match_score += 1
-                    if res_simplifoed_data_item.source == 'llm':
+                    if res_simplified_data_item.source == 'llm':
                         llm_command_match_score += 1
-                    used_simplifoed_data_id.append(res_simplifoed_data_item.id)
+                    if not is_omnipotent:
+                        used_simplified_data_id.append(res_simplified_data_item.id)
                     break
             if not has_mapping:
-                missed_commands.append(label_simplifoed_data_item.command)
-            else:
-                cheched_expected_command_data_id.append(label_simplifoed_data_item.id)
+                missed_commands.append(label_simplified_data_item.command)
+            checked_expected_command_data_id.append(label_simplified_data_item.id)
 
-    for label_simplifoed_data_item in [data for data in expected_command_datas if
-                                       data.id not in cheched_expected_command_data_id]:
+    for label_simplified_data_item in [data for data in expected_command_datas if
+                                       data.id not in checked_expected_command_data_id]:
         has_mapping = False
-        for res_simplifoed_data_item in [data for data in trans_command_datas if
-                                         data.id not in used_simplifoed_data_id]:
-            if label_simplifoed_data_item.command == res_simplifoed_data_item.command:
+        for res_simplified_data_item in [data for data in trans_command_datas if
+                                         data.id not in used_simplified_data_id]:
+            if label_simplified_data_item.command == res_simplified_data_item.command:
                 has_mapping = True
                 command_match_score += 1
-                if res_simplifoed_data_item.source == 'llm':
+                if res_simplified_data_item.source == 'llm':
                     llm_command_match_score += 1
                 break
         if not has_mapping:
-            missed_commands.append(label_simplifoed_data_item.command)
+            missed_commands.append(label_simplified_data_item.command)
 
     param_match_score = [param for param in expected_params if param in trans_params]
     param_match_ratio = len(param_match_score) / len(expected_params) if len(expected_params) > 0 else 0

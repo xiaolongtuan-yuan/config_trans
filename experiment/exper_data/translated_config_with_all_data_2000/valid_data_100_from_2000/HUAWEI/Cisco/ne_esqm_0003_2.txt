@@ -1,48 +1,53 @@
 hostname NPE
-l2vpn evpn instance vpn1
+vrf definition vpn1
+interface GigabitEthernet2/0/0
+ vrrp 1 ip 10.1.1.3
+  rd 100:1
+  vrf definition vpn1
+  export map SPE evpn
+  import map SPE evpn
+  route-target export 2:2 evpn
+  route-target import 2:2 evpn
+  mpls label mode per-vrf
+  route-map SPE-EVPN permit 20
+  route-target export 2:2
+  route-target import 2:2
+  l2vpn evpn mpls
  address-family ipv4
-controller T1 1/0/1
-ip vrf SPE
-l2vpn evpn instance evpna
-l2vpn evpn instance routing-enable
-ethernet cfm ma ma1 md md1
-ethernet cfm ma mpls md none
-interface interface
- mpls ldp autoconfig
+ mpls ip
+ mpls ip ldp autoconfig
+ no shutdown
+ ip vrf forwarding vpn1
+ ip address 192.168.30.1 255.255.255.0
+mpls ldp router-id 3.3.3.3
+ip cef
 router isis 1
  net 10.0000.0000.0003.00
 interface GigabitEthernet1/0/0
+ no shutdown
  ip address 10.2.1.2 255.255.255.0
- isis enable 1
+ isis network point-to-point
  mpls ip
- mpls ldp autoconfig
- ethernet cfm mep domain none service none mpid none direction inbound
-interface range GigabitEthernet1/0/0 - 1
- no shutdown
-interface GigabitEthernet2/0/0
- ip vrf forwarding vpn1
- ip address 192.168.30.1 255.255.255.0
-interface range GigabitEthernet2/0/0 - 0
- no shutdown
+ mpls ip ldp autoconfig
+ ip flow monitor YOUR-FLOW-MONITOR-NAME input
+ service-policy input YOUR-POLICY-NAME
 interface LoopBack1
  ip address 3.3.3.3 255.255.255.255
- isis enable 1
+ isis network point-to-point
 router bgp 100
  neighbor 2.2.2.2 remote-as 100
  neighbor 2.2.2.2 update-source LoopBack1
  address-family ipv4 unicast
-  redistribute connected
  no synchronization
+ neighbor 2.2.2.2 activate
+ exit-address-family
  address-family ipv4 vrf vpn1
- address-family l2vpn evpn
-  neighbor none activate
-   no bgp default route-target filter
-neighbor 2.2.2.2 remote-as 100
-route-map SPE permit 10
+  redistribute connected
+ address-family vpnv4
+route-map SPE deny 10
  match ip address prefix-list default
-ip prefix-list SPE seq 10 deny 0.0.0.0/0
 route-map SPE permit 20
-ip as-path access-list 20 permit .*
-net 10.0000.0000.0001.00
-ethernet cfm ma esqm md none
-ethernet cfm ma MA_name md MD_name
+track 0 ip sla 1 reachability
+ip flow-export version 9
+ip flow-export destination <collector-ip> <port>
+end

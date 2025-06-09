@@ -1,18 +1,22 @@
 sysname PE1
-interface GigabitEthernet0/0/1
-ip domain-name none
+ip route-static none none none
+undo dns resolve
 mpls ldp router-id LoopBack0
+mpls lsr-id 3.3.3.9
+mpls
+mpls ldp
+mpls l2vpn
 interface GigabitEthernet1/0/0
  ip address 10.1.2.1 255.255.255.0
+ mpls
  undo shutdown
-interface GigabitEthernet1/0/0 mode l2
- mpls l2vc none 100 raw
 interface LoopBack0
  ip address 1.1.1.1 255.255.255.255
 ospf 1
- network 1.1.1.1 0.0.0.0
- area 0
- network 10.1.2.0 0.0.0.255
 ospf 1 router-id 1.1.1.1
- silent-interface LoopBack0
+ area 0
+  network 1.1.1.1 0.0.0.0
+ area 0.0.0.0
+  network 10.1.2.0 0.0.0.255
+ silent-interface Loopback0
 return

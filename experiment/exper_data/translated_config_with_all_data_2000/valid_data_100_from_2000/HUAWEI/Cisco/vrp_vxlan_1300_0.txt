@@ -3,26 +3,26 @@ router isis 1
  net 10.0000.0000.0001.00
 interface GigabitEthernet1/0/0
  ip address 192.168.3.2 255.255.255.0
- isis enable 1
-interface range GigabitEthernet1/0/1 - 2
- no shutdown
+ isis network point-to-point
 interface GigabitEthernet1/0/1
+ no shutdown
  ip address 192.168.2.2 255.255.255.0
- isis enable 1
+ isis network point-to-point
 interface LoopBack0
  ip address 1.1.1.1 255.255.255.255
- isis enable 1
+ isis network point-to-point
 router bgp 100
  neighbor 2.2.2.2 remote-as 100
  neighbor 2.2.2.2 update-source LoopBack0
  neighbor 3.3.3.3 remote-as 100
  neighbor 3.3.3.3 update-source LoopBack0
- address-family l2vpn evpn
-  neighbor 3.3.3.9 activate
-  neighbor 2.2.2.2 route-reflector-client
- address-family l2vpn vrf evpn
+ address-family vpnv4
+ neighbor 2.2.2.2 activate
+ exit-address-family
  address-family l2vpn-family evpn
+ address-family l2vpn evpn
+  neighbor 2.2.2.2 route-reflector-client
+ neighbor 3.3.3.3 activate
+ address-family ipv4
   neighbor 3.3.3.3 route-reflector-client
-neighbor 2.2.2.2 remote-as 100
-neighbor 3.3.3.3 remote-as 100
-ethernet cfm ma MA_name md MD_name
+end

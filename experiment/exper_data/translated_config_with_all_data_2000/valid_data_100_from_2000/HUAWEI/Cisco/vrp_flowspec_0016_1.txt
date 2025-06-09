@@ -1,19 +1,20 @@
 hostname DeviceB
 interface GigabitEthernet1/0/0
  ip address 10.1.1.2 255.255.255.0
-interface range GigabitEthernet1/0/0 - 1
+interface GigabitEthernet1/0/1
  no shutdown
 interface LoopBack1
  ip address 2.2.2.2 255.255.255.255
- ip ospf 1 area 0
- ospfv3 1 ipv6 area 0.0.0.0
- ip address 10.1.1.0 255.255.255.0
 router bgp 100
  bgp router-id 2.2.2.2
  neighbor 3.3.3.3 remote-as 100
  neighbor 3.3.3.3 update-source LoopBack1
  address-family ipv4 unicast
  no synchronization
+ neighbor 3.3.3.3 activate
+ exit-address-family
  address-family ipv6 flow
-neighbor 3.3.3.3 remote-as 100
-ethernet cfm ma MA_name md MD_name
+router ospf 1
+ network 2.2.2.2 0.0.0.0 area 0
+ network 10.1.1.0 0.0.0.255 area 0
+end

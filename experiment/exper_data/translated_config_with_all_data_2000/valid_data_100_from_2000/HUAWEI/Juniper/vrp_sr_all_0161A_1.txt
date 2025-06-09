@@ -1,20 +1,28 @@
 set system host-name P
 set system host-name CE1
-set system host-name mpls
-set system host-name segment-routing
-set protocols isis level 1 set protocols isis segment-routing mpls
-set protocols isis interface ge-1/0/0.0 level 2 metric none
-set protocols isis interface ge-1/0/0.0 level wide metric 10
-set protocols isis interface ge-1/0/0.0 level 2 metric 153800
+set interfaces ge-1/0/0 unit 0 family mpls
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.2/24
 set interfaces ge-1/0/0 set protocols isis interface ge-1/0/0.0
 set interfaces ge-1/0/0 set protocols isis interface ge-2/0/0.0
 set interfaces ge-1/0/0 set protocols isis interface lo0.0
-set interfaces ge-1/0/0 unit 0 family inet address 10.2.1.1/24
-set interfaces ge-1/0/0 set protocols isis interface <interface-name>
-set interfaces ge-1/0/0 unit 0 family inet address 2.2.2.2/32
-set interfaces ge-1/0/0 set protocols isis interface lo0.1
-set interfaces ge-1/0/0 set protocols isis interface lo0.0 level 2 prefix-segment index 153710
+set interfaces ge-1/0/0 unit 1 vlan-id 2
+set protocols oam ethernet connectivity-fault-management mep 2
+set protocols isis level 1
+set protocols isis interface ge-1/0/0.0 level 2 metric none
+set protocols isis interface ge-1/0/0.0 level 1 metric 10
+set protocols isis interface ge-1/0/0.0 level 1 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 unit 0 family inet address 10.2.1.1/24
+set interfaces ge-2/0/0 set protocols isis interface ge-1/0/0.0
+set interfaces ge-2/0/0 set protocols isis interface ge-2/0/0.0
+set interfaces ge-2/0/0 set protocols isis interface lo0.1
 set interfaces lo0.1 disable
+set interfaces lo0.1 set protocols isis interface ge-1/0/0.0
+set interfaces lo0.1 set protocols isis interface ge-2/0/0.0
+set interfaces lo0.1 set protocols isis interface lo0.1
+set interfaces lo0.1 set protocols isis source-packet-routing prefix-sid absolute 153710 node
+set interfaces lo0.1 set protocols isis source-packet-routing node-sid index 153710
+set interfaces lo0 unit 0 family inet address 2.2.2.2/32

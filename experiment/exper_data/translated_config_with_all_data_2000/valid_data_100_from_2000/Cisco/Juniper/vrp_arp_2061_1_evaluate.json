@@ -3,12 +3,6 @@
     "missed_commands": [
         "set ethernet-switching-options static-arp 10.1.2.1 00:00:fc:41:03:00",
         "set ethernet-switching-options static-arp 10.1.2.2 00:00:fc:41:03:02",
-        "set ethernet-switching-options static-arp 10.1.2.3 00:00:fc:41:03:04",
-        "set ethernet-switching-options static-arp 10.1.2.1 00:00:fc:41:03:00",
-        "set ethernet-switching-options static-arp 10.1.2.2 00:00:fc:41:03:02",
-        "set ethernet-switching-options static-arp 10.1.2.3 00:00:fc:41:03:04",
-        "set ethernet-switching-options static-arp 10.1.2.1 00:00:fc:41:03:00",
-        "set ethernet-switching-options static-arp 10.1.2.2 00:00:fc:41:03:02",
         "set ethernet-switching-options static-arp 10.1.2.3 00:00:fc:41:03:04"
     ],
     "grammatical_accuracy": 0.25,
@@ -17,18 +11,28 @@
         "set ethernet-switching-options static-arp [ip_address] [mac_address]"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.0,
-    "command_for_llm": [],
-    "llm_trans_commands": [],
-    "source_commands": [
-        "hostname DeviceB",
-        "interface GigabitEthernet1/0/2",
-        "arp 10.1.2.2 00e0.fc41.0302 ARPA",
-        "interface GigabitEthernet1/0/0",
+    "llm_command_ratio": 0.375,
+    "command_for_llm": [
+        "arp 10.1.2.1 00e0.fc41.0300 ARPA",
         "arp 10.1.2.3 00e0.fc41.0304 ARPA",
-        "end",
-        "interface GigabitEthernet1/0/1",
-        "arp 10.1.2.1 00e0.fc41.0300 ARPA"
+        "arp 10.1.2.2 00e0.fc41.0302 ARPA"
     ],
-    "llm_origin_response": []
+    "llm_trans_commands": [
+        "set interfaces ge-1/0/0 unit 0 family inet arp 10.1.2.1 mac 00:e0:fc:41:03:00",
+        "set system arp static 10.1.2.2 l2-interface ge-1/0/1 mac 00:e0:fc:41:03:02",
+        "set interfaces ge-1/0/2 unit 0 family inet address 10.1.2.3 arp 00:e0:fc:41:03:04"
+    ],
+    "source_commands": [
+        "arp 10.1.2.1 00e0.fc41.0300 ARPA",
+        "interface GigabitEthernet1/0/1",
+        "end",
+        "arp 10.1.2.2 00e0.fc41.0302 ARPA",
+        "interface GigabitEthernet1/0/2",
+        "arp 10.1.2.3 00e0.fc41.0304 ARPA",
+        "interface GigabitEthernet1/0/0",
+        "hostname DeviceB"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
 }

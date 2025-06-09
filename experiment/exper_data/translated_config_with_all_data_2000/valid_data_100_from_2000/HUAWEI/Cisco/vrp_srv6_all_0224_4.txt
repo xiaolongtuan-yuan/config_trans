@@ -1,37 +1,33 @@
 hostname Tail
-l2vpn evpn instance vpna
- address-family ipv4 vrf vpna
-controller vpn-instance 500:1
-l2vpn vfi context 111:1
- vpn id 111:1
+ip vrf vpna
+interface GigabitEthernet2/0/0
+ vrrp 1 ip 10.1.1.3
+  rd 500:1
+  route-target export 111:1
+  vrf definition vpna
+  route-target import 111:1
+ address-family ipv4
 router isis 1
- mpls traffic-eng router-id Loopback0
-  segment-routing srv6
-  encapsulation source-address 5::5
-  segment-routing prefix-sid-map address-family ipv6 2001:db8:15::/64 range 32 static
-   segment-routing prefix-sid index 1
  mpls traffic-eng router-id Loopback1
-  segment-routing prefix-sid-map address-family ipv6 2001:db8:15::/64 range 32 static
-   segment-routing local-block 2001:db8:15::/64
-   sid 100 vpn-instance vpna end-dt4
- mpls traffic-eng level-1
+  segment-routing srv6 locator as1 encapsulation source-address 5::5
+  segment-routing prefix-sid-map ipv6 2001:db8:15::/64 range 32 static
+   segment-routing ipv6 locator as1 prefix-sid index 1
+   segment-routing ipv6 locator as1 prefix-sid index 100 vpn-private-ipv4
+ is-type level-1
  metric-style wide
  net 10.0000.0000.0005.00
+ ipv6 router isis 1
  address-family ipv6
-isis network ipv6 enable
 interface GigabitEthernet1/0/1
- ipv6 enable
+ no shutdown
  ipv6 address 2001:db8:4::2/96
  ipv6 router isis 1
-interface range GigabitEthernet1/0/1 - 2
- no shutdown
+ipv6 unicast-routing
 interface GigabitEthernet1/0/2
- ip vrf forwarding vpna
- ip address 10.5.1.2 255.255.255.252
-interface range GigabitEthernet1/0/2 - 2
  no shutdown
+ vrf forwarding vpna
+ ip address 10.5.1.2 255.255.255.252
 interface LoopBack1
- ipv6 enable
  ipv6 address 5::5/64
  ipv6 router isis 1
-ethernet cfm ma ma1 md md1
+end

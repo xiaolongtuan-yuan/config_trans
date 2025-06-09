@@ -2,18 +2,15 @@ hostname DeviceD
 router-id 4.4.4.4
 interface GigabitEthernet1/0/0
  ip address 192.168.2.2 255.255.255.0
-interface range GigabitEthernet1/0/0 - 1
+interface GigabitEthernet1/0/1
  no shutdown
 interface GigabitEthernet2/0/0
+ no shutdown
  ip address 172.17.1.1 255.255.255.0
- ip ospf 1 area 0
- ospfv3 1 ipv6 area 0.0.0.2
- ip address 192.168.2.0 255.255.255.0
- ip address 172.17.1.0 0.0.0.255
  tunnel destination 10.0.0.0
  ip address 10.0.0.0 255.0.0.0
-interface range GigabitEthernet2/0/0 - 0
- no shutdown
 router ospf 1
- redistribute ospf 1 subnets route-map 1
-ethernet cfm ma MA_name md MD_name
+ redistribute static metric-type 1 subnets
+ network 192.168.2.0 0.0.0.255 area 0.0.0.2
+ network 172.17.1.0 0.0.0.255 area 0.0.0.2
+end

@@ -2,24 +2,27 @@ sysname DeviceA
 interface GigabitEthernet1/0/1
  undo shutdown
  ip address 10.1.1.1 255.255.255.0
-interface GigabitEthernet1/0/2
  ipv6 enable
+interface GigabitEthernet1/0/2
  ipv6 address 2001:DB8:101:101::1/64
+ ipv6 address 2001:DB8:101:101::1/64 none
 interface Tunnel1
  ipv6 address 2001:DB8:101:100::1/56
+ ipv6 address 2001:DB8:101:100::1/56 none
  source GigabitEthernet1/0/1
- tunnel destination 203.0.113.5
+ destination 203.0.113.5
  tunnel-protocol ipsec ipv4
  binding tunnel ipsec ipv4
- tunnel-protection ipsec profile VPN_PROFILE
-ipv6 route-static 2001:DB8:: 32 Tunnel1 ::
+tunnel-protection ipsec profile VPN_PROFILE
+ipv6 route-static 2001:DB8:: 32 Tunnel1 none
 ipv6 route-static 2001:DB8:: 32 Tunnel1
-ike peer VPN_IKE_PROFILE
+ike proposal VPN_IKE_PROFILE
 ip address 203.0.113.5 255.255.255.255
-ip pool pool2 bas remote
+ip pool 203.0.113.5 bas remote
  gateway 203.0.113.5 255.255.255.255
-ssh server authentication-type default pre-share
-authentication-type pre-share
-ip vpn-instance VPN_KEYRING
-ipsec policy VPN_PROFILE 10
+ike peer VPN_IKE_PROFILE pre-shared-key
+ike keychain VPN_KEYRING
+ipsec profile VPN_PROFILE
+ike-profile VPN_IKE_PROFILE
+ikev2-profile VPN_IKE_PROFILE
 return

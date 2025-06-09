@@ -1,38 +1,41 @@
 hostname MasterA
-ethernet cfm ma MA name md MD name
-ethernet cfm ma virtual-cluster-access md none
-net master
-net 3.3.3.3
+hostname PE1
+redundancy
+mode high-availability
+address-family ipv4 vrf master
+address-family ipv4 vrf vpn1
 router isis 65534
  description auto-generated for virtual-cluster-access
- mpls traffic-eng level-1
+ is-type level-1
  metric-style wide
+ interface GigabitEthernet1/0/1
+ vrf forwarding <VRF_NAME>
+ #
+ interface GigabitEthernet1/0/2
  net 00.38ba.34f3.5802.00
-interface 65534
- vrrp 10 ip 10.0.0.1
 interface GigabitEthernet1/0/1
- ip address 10.1.3.2 255.255.255.252
- isis enable 65534
- mpls ip
- no virtual-cluster-access
-interface range GigabitEthernet1/0/1 - 2
  no shutdown
-interface GigabitEthernet1/0/2
- ip address 10.3.4.1 255.255.255.252
- isis enable 65534
+ ip address 10.1.3.2 255.255.255.252
+ isis network point-to-point
  mpls ip
- no virtual-cluster-access
+ interface virtual-cluster-access 1
+ isis virtual-cluster-access enable
+ip cef
+interface GigabitEthernet1/0/2
+ no shutdown
+ ip address 10.3.4.1 255.255.255.252
+ isis network point-to-point
+ mpls ip
+ mpls ldp autoconfig
 interface LoopBack0
  ip address 3.3.3.3 255.255.255.255
- isis enable 65534
+ isis network point-to-point
 interface Remote-Ap11
- ip address 192.168.0.2 255.255.255.0
- ip address 1.1.1.1 255.255.255.255 none
-interface range Remote-Ap11 - None
  no shutdown
+ ip address 192.168.0.2 255.255.255.0
+ ip address 1.1.1.1 255.255.255.0 none
 interface Remote-Ap21
+ no shutdown
  ip address 192.168.1.2 255.255.255.0
  ip address 2.2.2.2 255.255.255.0 none
-interface range Remote-Ap21 - None
- no shutdown
-ethernet cfm ma ma1 md md1
+end

@@ -1,18 +1,18 @@
 hostname CE1
 interface GigabitEthernet1/0/0
- ipv6 enable
  ipv6 address 2001:DB8:11::2/64
-interface range GigabitEthernet1/0/0 - 1
+interface GigabitEthernet1/0/1
  no shutdown
+ipv6 unicast-routing
 interface LoopBack1
- ipv6 enable
  ipv6 address 2001:DB8:111::111/128
 router bgp 65410
  bgp router-id 10.11.1.1
  neighbor 2001:DB8:11::1 remote-as 100
  address-family ipv4 unicast
-  redistribute connected
  no synchronization
+  redistribute connected
  address-family ipv6 unicast
-neighbor 2001:DB8:11::1 remote-as 100
-ethernet cfm ma ma_name md md_name
+ neighbor 2001:DB8:11::1 activate
+ exit-address-family
+end

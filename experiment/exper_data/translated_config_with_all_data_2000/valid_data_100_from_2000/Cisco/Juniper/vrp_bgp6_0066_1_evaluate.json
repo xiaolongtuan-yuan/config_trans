@@ -2,8 +2,6 @@
     "command_accuracy": 0.7142857142857143,
     "missed_commands": [
         "set protocols bgp group external local-address 2001:db8:100::2",
-        "set protocols bgp group external family inet6 unicast",
-        "set protocols bgp group external local-address 2001:db8:100::2",
         "set protocols bgp group external family inet6 unicast"
     ],
     "grammatical_accuracy": 0.7142857142857143,
@@ -12,13 +10,12 @@
         "set protocols bgp group [parameter1] family [parameter2] [parameter3]"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.4,
+    "llm_command_ratio": 0.3333333333333333,
     "command_for_llm": [
-        "no synchronization",
-        "neighbor 2001:db8:101::1 next-hop-self",
-        "ipv6 address 2001:db8:101::2/96",
         "ipv6 address 2001:db8:100::2/96",
-        "ipv6 enable"
+        "ipv6 enable",
+        "ipv6 address 2001:db8:101::2/96",
+        "neighbor 2001:db8:101::1 next-hop-self"
     ],
     "llm_trans_commands": [
         "set interfaces ge-1/0/0 unit 0 family inet6",
@@ -27,27 +24,26 @@
         "set interfaces ge-1/0/0 unit 0 family inet6",
         "set interfaces ge-2/0/0 unit 0 family inet6",
         "set interfaces ge-2/0/0 unit 0 family inet6 address 2001:db8:100::2/96",
-        "set protocols bgp group <group-name> no-synchronize",
-        "set protocols bgp group <group-name> neighbor 2001:db8:101::1 next-hop self"
+        "set protocols bgp group internal neighbor 2001:db8:101::1 next-hop-self"
     ],
     "source_commands": [
-        "hostname DeviceB",
-        "no synchronization",
-        "neighbor 2001:db8:101::1 next-hop-self",
+        "interface GigabitEthernet2/0/0",
+        "router bgp 200",
+        "end",
+        "neighbor 2001:db8:100::1 remote-as 100",
+        "neighbor 2001:db8:101::1 remote-as 200",
         "no shutdown",
+        "neighbor 2001:db8:100::1 activate",
+        "address-family ipv6",
+        "ipv6 address 2001:db8:100::2/96",
+        "bgp router-id 2.2.2.2",
+        "ipv6 enable",
         "neighbor 2001:db8:101::1 activate",
         "interface GigabitEthernet1/0/0",
         "ipv6 address 2001:db8:101::2/96",
-        "ipv6 address 2001:db8:100::2/96",
-        "end",
-        "address-family ipv6",
-        "router bgp 200",
-        "bgp router-id 2.2.2.2",
-        "neighbor 2001:db8:101::1 remote-as 200",
-        "neighbor 2001:db8:100::1 remote-as 100",
-        "ipv6 enable",
-        "interface GigabitEthernet2/0/0",
-        "neighbor 2001:db8:100::1 activate"
+        "no synchronization",
+        "hostname DeviceB",
+        "neighbor 2001:db8:101::1 next-hop-self"
     ],
     "llm_origin_response": [
         ""

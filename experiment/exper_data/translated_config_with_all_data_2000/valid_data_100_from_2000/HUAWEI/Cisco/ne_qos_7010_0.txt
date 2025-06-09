@@ -1,25 +1,27 @@
 hostname DeviceA
-ip access-list extended 3001
-route-map 3001 permit 5
- match ip address prefix-list ALL
-ip access-list extended 3002
+line vty 0 4
+ access-class 3001 in
+ access-class 3002 in
+route-map 5 permit 10.100.0.11 0.0.0.255
+ match ip address 3001
+ match ip address prefix-list 10.100.0.11 0.0.0.255
 route-map 5 permit 10.110.0.11
- match ip address prefix-list ALL
+ match ip address 3002
+ match ip address prefix-list 10.110.0.11 0.0.0.255
 interface Tunnel30
+ ip policy route-map aaa
+ ip policy route-map PBR_AAA
+  match ip address 3002
 interface Tunnel40
  ip policy route-map aaa
- mpls l2transport route none none 5
- ipv6 traffic-filter a3001 in
- mpls l2transport route none none 10
- ipv6 traffic-filter a3002 in
+ ip policy route-map PBR_AAA
+  match ip address 3001
 interface GigabitEthernet1/0/0
+ no shutdown
  ip address 10.100.0.10 255.255.255.0
  ip policy route-map aaa
-interface range GigabitEthernet1/0/0 - 0
- no shutdown
 interface GigabitEthernet2/0/0
+ no shutdown
  ip address 10.110.0.10 255.255.255.0
  ip policy route-map aaa
-interface range GigabitEthernet2/0/0 - 0
- no shutdown
-ethernet cfm ma MA name md MD name
+end

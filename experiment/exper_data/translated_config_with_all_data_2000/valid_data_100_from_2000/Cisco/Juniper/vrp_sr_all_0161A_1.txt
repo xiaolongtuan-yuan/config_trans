@@ -1,29 +1,29 @@
 set system host-name P
-set interfaces ge-0/0/0 unit 0 family inet mpls None
-set interfaces ge-0/0/0 unit 0 family inet mpls advertise-labels
+set interfaces ge-0/0/0 unit 0 family mpls
 set protocols ldp router-id 1.1.1.9
-set interfaces lo0.1 gigether-options 802.3ad ae10
-set interfaces lo0.1 unit 1 family inet filter input none
-set interfaces lo0.1 unit 153800 family inet filter input none
-set protocols ldp transport-preference ipv4
-set protocols isis interface ge-1/0/0.0
-set protocols isis interface level-1 disable level 1 metric wide
-set protocols ospf area 0.0.0.0 interface lo0.1 interface-type none
+set interfaces ge-1/0/0 unit 0 family mpls
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 ether-options no-auto-negotiation
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.2/24
+set interfaces ge-1/0/0 unit 0 family inet interface-mode point-to-point
+set interfaces ge-1/0/0 set protocols isis interface <interface-name> level 2 metric 10
+set protocols ldp transport-address 2.2.2.2
+set protocols ldp track-igp-metric
+set protocols isis interface ge-1/0/0.0 level 2 metric 10
+set protocols isis interface ge-1/0/0.0 level 2 metric wide
+set protocols isis interface ge-1/0/0.0 level 2 metric none
+set protocols ospf3 area 0.0.0.0 interface lo0.1 passive
+set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 ether-options no-auto-negotiation
+set interfaces ge-2/0/0 unit 0 family inet address 10.2.1.1/24
+set interfaces ge-2/0/0 unit 0 family inet interface-mode point-to-point
+set interfaces ge-2/0/0 set protocols isis interface <interface-name> level 2 metric 10
+set interfaces ge-2/0/0 unit 0 family mpls
 set interfaces lo0 unit 1 disable
 set interfaces lo0 disable
 set interfaces lo0 unit 0 family inet address 2.2.2.2/32
-set interfaces ge-1/0/0 unit 0 disable
-set interfaces ge-1/0/0 disable
-set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.2/24
-set interfaces ge-1/0/0 set protocols isis interface <interface-name> point-to-point
-set interfaces ge-1/0/0 .10 unit 2 family inet interface-mode access
-set interfaces ge-1/0/0 unit 0 family inet mpls maximum-labels 5
-interfaces ge-1/0/0.0
-set interfaces ge-2/0/0 unit 0 disable
-set interfaces ge-2/0/0 disable
-set interfaces ge-2/0/0 unit 0 family inet address 10.2.1.1/24
-set interfaces ge-2/0/0 set protocols isis interface <interface_name> point-to-point
-set interfaces ge-2/0/0 .inet unit 0 family none interface-mode none
-set interfaces ge-2/0/0 unit 0 family inet mpls maximum-labels 5
-interfaces ge-2/0/0.0
+set interfaces lo0.1 set protocols isis passive interface lo0.0
+set interfaces lo0.1 set protocols mpls label-range static-label-range start 153616 end 153800
 set protocols isis export REDIST-CONNECTED

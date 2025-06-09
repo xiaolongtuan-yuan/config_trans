@@ -1,22 +1,27 @@
 sysname P
-mpls ldp router-id LoopBack1 force
+mpls ldp router-id LoopBack1
+mpls lsr-id 3.3.3.9
+mpls
+mpls ldp
+mpls l2vpn
 interface GigabitEthernet1/0/0
  undo shutdown
  ip address 192.168.1.2 255.255.255.0
+ mpls
  mpls ldp
-interface GigabitEthernet1/0/0 mode l2
- mpls l2vc none none raw
 interface GigabitEthernet2/0/0
  undo shutdown
  ip address 192.168.2.1 255.255.255.0
+ mpls
  mpls ldp
-interface GigabitEthernet2/0/0 mode l2
- mpls l2vc none none raw
+interface Loopback1
 interface LoopBack1
  ip address 10.35.5.9 255.255.255.255
 ospf 1
- network 10.35.5.9 0.0.0.0
+ospf 1 router-id 10.35.5.9
  area 0
- network 192.168.1.0 0.0.0.255
- network 192.168.2.0 0.0.0.255
+  network 10.35.5.9 0.0.0.0
+  network 192.168.1.0 0.0.0.255
+ area 0.0.0.0
+  network 192.168.2.0 0.0.0.255
 return

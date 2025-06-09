@@ -1,38 +1,38 @@
 hostname ASBR1
-l2vpn evpn instance vpn1
- address-family ipv4
-controller T1 100:2
-ip vrf vpn1
-l2vpn vfi context vpn1
- vpn id 1:1
-ethernet cfm ma 2.2.2.9 md none
-ethernet cfm ma mpls md none
-interface GigabitEthernet1/0/0
- mpls ldp autoconfig
- ip address 10.10.1.1 255.255.255.0
- mpls ip
-interface range GigabitEthernet1/0/0 - 1
- no shutdown
+vrf definition vpn1
 interface GigabitEthernet2/0/0
+ vrrp 1 ip 10.1.1.3
+  rd 100:2
+  mpls label mode all-vrfs protocol bgp vrf vpn1 per-vrf
+  route-target export 1:1
+  route-target import 1:1
+ mpls ip
+ mpls ip ldp autoconfig
+ no shutdown
  ip vrf forwarding vpn1
  ip address 12.12.12.1 255.255.255.0
-interface range GigabitEthernet2/0/0 - 0
+mpls ldp router-id 2.2.2.9
+ip cef
+interface GigabitEthernet1/0/0
+ ip address 10.10.1.1 255.255.255.0
+ mpls ip
+ mpls ip ldp autoconfig
+interface GigabitEthernet1/0/1
  no shutdown
 interface LoopBack1
  ip address 2.2.2.9 255.255.255.255
- ip ospf 1 area 0
- ospfv3 1 ipv6 area 0.0.0.0
- ip address 2.2.2.9 0.0.0.0
- ip address 10.10.1.0 255.255.255.0
 router bgp 100
  neighbor 1.1.1.9 remote-as 100
+ neighbor 1.1.1.9 remote-as 200
  neighbor 1.1.1.9 update-source LoopBack1
  address-family ipv4 unicast
  no synchronization
- neighbor 1.1.1.9 remote-as 200
+ neighbor 1.1.1.9 activate
+ exit-address-family
  address-family vpnv4
  address-family ipv4 vrf vpn1
  neighbor 12.12.12.2 remote-as 200
-neighbor 1.1.1.9 remote-as 100
-neighbor 12.12.12.2 remote-as 200
-ethernet cfm ma ma1 md md1
+router ospf 1
+ network 2.2.2.9 0.0.0.0 area 0
+ network 10.10.1.0 0.0.0.255 area 0
+end

@@ -1,29 +1,31 @@
 set system host-name ASBR1
-set protocols vrrp track interface vpn1 set routing-instances vpn1 route-distinguisher 100:2
-set protocols bgp local-as 65410 set routing-instances vpn1 route-target import target:1:1
-set protocols bgp local-as 1 set routing-instances vpn1 route-target export 1:1
+set protocols vrrp track interface vpn1
+set protocols bgp local-as 65410
+set protocols vrrp track interface ge-0/0/1
 set protocols ldp router-id 1.1.1.9
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 unit 0 family inet address 10.10.1.1/24
-set interfaces ge-1/0/0 unit 0 family inet mpls
-interfaces ge-1/0/0.0
+set interfaces ge-1/0/0 unit 0 family mpls
 set interfaces ge-2/0/0 unit 0 disable
 set interfaces ge-2/0/0 disable
-set interfaces ge-2/0/0 unit none family inet address none/none vrrp-group none virtual-address vpn1
+set interfaces ge-2/0/0 unit 0 family inet address none/none vrrp-group none virtual-address vpn1
 set interfaces ge-2/0/0 unit 0 family inet address 12.12.12.1/24
-interfaces ge-2/0/0.0
 set interfaces lo0.1 unit 1 disable
 set interfaces lo0.1 disable
 set interfaces lo0.1 unit 0 family inet address 2.2.2.9/32
 set routing-options autonomous-system 100
-set protocols bgp group IBGP type internal
+set protocols bgp group IBGP type external
 set protocols bgp group IBGP neighbor 1.1.1.9 peer-as 100
-set protocols bgp group IBGP export BGP-100
-set protocols bgp local-as 100
-set routing-options autonomous-system 200
-set protocols ospf area 0.0.0.1 interface ge-0/0/1.0
-set protocols ospf area 0.0.0.1 interface ge-0/0/0.0 passive
+set protocols bgp group IBGP export BGP-NETWORKS
+set protocols bgp group IBGP neighbor 12.12.12.2 peer-as 200
+set protocols bgp group IBGP export 200
+set protocols bgp local-as 100 set protocols bgp group <group-name> neighbor 1.1.1.9 send-community standard
+set protocols bgp local-as 100 set protocols bgp group internal neighbor 1.1.1.9 family inet-vpn unicast
+set protocols ospf area 1 interface 1
 set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
-set protocols ospf area 1 interface ge-0/0/0.0 passive
+set protocols ospf area 0 interface ge-0/0/1.0
+set protocols ospf3 area 0.0.0.0 interface ge-1/0/0.0 passive
+set protocols ospf3 area 0.0.0.0 interface GigabitEthernet1/0/0 passive
 set protocols isis export REDIST-CONNECTED

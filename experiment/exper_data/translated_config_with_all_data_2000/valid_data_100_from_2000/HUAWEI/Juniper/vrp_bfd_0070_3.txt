@@ -1,14 +1,17 @@
 set system host-name CE1
+set system name-server 192.168.7.252
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.1/24
 set interfaces ge-1/0/0 unit 0 family inet address 10.2.1.1/24
 set interfaces ge-1/0/0 unit 0 family inet address 1.1.1.1/32
-set interfaces ge-1/0/0 unit 0 family ethernet-switching storm-control default
-set interfaces lo0.1 disable
+set interfaces ge-1/0/0 set forwarding-options hash-key family inet layer-3
+set interfaces ge-1/0/0 set forwarding-options hash-key family inet layer-4
+set interfaces ge-1/0/0 set forwarding-options enhanced-hash-key family inet layer-3
+set interfaces ge-1/0/0 set forwarding-options enhanced-hash-key family inet layer-4
+set interfaces ge-1/0/0 unit 1 vlan-id 2
+set interfaces ge-2/0/0 disable
 set routing-options static route 0.0.0.0/0 next-hop 10.1.1.2
 set routing-options static route 0.0.0.0/0 next-hop 10.2.1.2
-set protocols bfd interface GigabitEthernet1/0/0 bind peer-ip 10.1.1.2
-set protocols bfd interface GigabitEthernet1/0/0 family inet peer 10.1.1.2 source 10.1.1.1
-set protocols bfd interface GigabitEthernet1/0/0 bind peer-ip 10.2.1.2
-set protocols bfd interface GigabitEthernet1/0/0 family inet peer 10.2.1.2 source 10.2.1.1
+set protocols bfd session ce1_to_pe1 neighbor 10.1.1.2 local-address 10.1.1.1 interface ge-1/0/0 minimum-interval 300 multiplier 3
+set protocols bfd session ce1_to_pe2 neighbor 10.2.1.2 local-address 10.2.1.1 interface ge-2/0/0 minimum-interval 300 multiplier 3

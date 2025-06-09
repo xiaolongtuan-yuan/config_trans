@@ -1,60 +1,50 @@
 {
-    "command_accuracy": 0.2727272727272727,
+    "command_accuracy": 0.45454545454545453,
     "missed_commands": [
         "set interfaces ge-2/0/0 unit 0 family inet address 192.168.3.1/24",
-        "set protocols pim interface ge-1/0/0.0 mode sparse",
-        "set protocols pim interface ge-2/0/0.0 mode sparse",
-        "set protocols igmp interface ge-1/0/0.0 version 3",
         "set policy-options policy-statement ssm-policy term allow-ssm from prefix-list ssm-allowed",
         "set policy-options policy-statement ssm-policy then accept",
         "set policy-options prefix-list ssm-allowed 232.1.1.0/24",
-        "set protocols pim static-rp 192.168.4.1 family inet",
-        "set protocols pim interface ge-1/0/0.0 mode sparse",
-        "set protocols igmp interface ge-1/0/0.0 version 3",
-        "set interfaces ge-2/0/0 unit 0 family inet address 192.168.3.1/24",
-        "set protocols pim interface ge-2/0/0.0 mode sparse",
-        "set policy-options policy-statement ssm-policy term allow-ssm from prefix-list ssm-allowed",
-        "set policy-options policy-statement ssm-policy then accept",
-        "set policy-options prefix-list ssm-allowed 232.1.1.0/24",
+        "set protocols pim ssm-translate-policy ssm-policy",
         "set protocols pim static-rp 192.168.4.1 family inet"
     ],
-    "grammatical_accuracy": 0.45454545454545453,
+    "grammatical_accuracy": 0.6363636363636364,
     "missed_templates": [
-        "set protocols pim interface [parameter1] mode [parameter2]",
-        "set protocols igmp interface [parameter1] version [parameter2]",
         "set policy-options policy-statement [policy-statement-name] term [term-name] from prefix-list [prefix-list-name]",
         "set policy-options policy-statement [parameter1] then [parameter2]",
+        "set protocols pim ssm-translate-policy [parameter1]",
         "set protocols pim static-rp [parameter1] family [parameter2]"
     ],
-    "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.23809523809523808,
+    "llm_command_accuracy": 0.2727272727272727,
+    "llm_command_ratio": 0.2608695652173913,
     "command_for_llm": [
-        "isis network point-to-point",
-        "ip multicast-routing"
+        "ip pim sparse-mode",
+        "ip igmp version 3"
     ],
     "llm_trans_commands": [
-        "set routing-options multicast",
-        "set protocols isis interface all point-to-point",
-        "set protocols isis interface ge-1/0/0.0 point-to-point",
-        "set protocols isis interface ge-2/0/0.0 point-to-point",
-        "set protocols isis interface all point-to-point"
+        "set protocols pim interface all mode sparse",
+        "set protocols pim interface <interface-name> mode sparse",
+        "set protocols igmp interface GigabitEthernet1/0/0 version 3",
+        "set protocols pim interface all mode sparse",
+        "set protocols pim interface ge-1/0/0 mode sparse",
+        "set protocols pim interface ge-2/0/0 mode sparse"
     ],
     "source_commands": [
-        "ip pim ssm default",
-        "no shutdown",
+        "interface GigabitEthernet2/0/0",
         "access-list 2001 permit ip any 232.1.1.0 0.0.0.255",
-        "interface GigabitEthernet1/0/0",
-        "ip address 192.168.3.1 255.255.255.0",
-        "ip pim sparse-mode",
+        "ip multicast-routing",
         "ip igmp version 3",
-        "isis network point-to-point",
-        "net 10.0000.0000.0003.00",
+        "no shutdown",
         "ip address 10.110.2.2 255.255.255.0",
+        "ip pim rp-address 192.168.4.1",
+        "ip pim ssm default",
+        "ip address 192.168.3.1 255.255.255.0",
+        "net 10.0000.0000.0003.00",
         "router isis",
         "hostname DeviceC",
-        "ip pim rp-address 192.168.4.1",
-        "interface GigabitEthernet2/0/0",
-        "ip multicast-routing"
+        "ip pim sparse-mode",
+        "isis network point-to-point",
+        "interface GigabitEthernet1/0/0"
     ],
     "llm_origin_response": [
         ""

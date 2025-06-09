@@ -1,5 +1,5 @@
 sysname DeviceA
-interface GigabitEthernet0/0/0
+ip route-static none 255.255.255.0 none
 interface GigabitEthernet1/0/0
  undo shutdown
  ip address 172.20.1.1 255.255.255.0
@@ -9,12 +9,15 @@ interface GigabitEthernet2/0/0
 interface Tunnel1
  ip address 172.22.1.1 255.255.255.0
  source 172.20.1.1
- tunnel destination 172.21.1.2
+ destination 172.21.1.2
  tunnel-protocol gre p2mp
 ospf 1
- network 172.20.1.0 0.0.0.255
+ospf 1 router-id 172.20.1.0
  area 0
- network 172.22.1.0 0.0.0.255
-ip route-static 10.2.1.0 255.255.255.0 none preference none
+  network 172.20.1.0 0.0.0.255
+ospf 1 router-id 172.22.1.0
+ area 0
+  network 172.22.1.0 0.0.0.255
+ip route-static 10.2.1.0 255.255.255.0 Tunnel1 preference 60
 ip route-static 10.2.1.0 255.255.255.0 Tunnel1
 return

@@ -1,19 +1,17 @@
 set system host-name PE1
-set forwarding-options family inet mode packet-based
-set protocols oam ethernet connectivity-fault-management maintenance-domain none
+set security nat destination rule-set NAT64_DEST
+set system no-redirects
 set protocols ldp router-id 1.1.1.9
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 set interfaces ge-1/0/0 description "MPLS CORE LINK"
 set interfaces ge-1/0/0 unit 0 family inet address 10.1.2.1/24
-set interfaces ge-1/0/0 unit 0 family inet mpls
-interfaces ge-1/0/0.0
+set interfaces ge-1/0/0 unit 0 family mpls
+set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces lo0 unit 0 disable
 set interfaces lo0 disable
 set interfaces lo0 unit 0 family inet address 1.1.1.1/32
 set protocols ospf area 0.0.0.1 interface 1
-set protocols ospf area 0.0.0.1 interface 1.1.1.1 authentication none none key none
-set protocols ospf area 0.0.0.1 interface lo0.0 interface-type lo
-set protocols ospf area 0 interface ge-0/0/0.0
+set protocols ospf3 area 1.1.1.1 interface lo0.0 passive
 set protocols ospf area 0 interface ge-0/0/1.0
 set protocols isis export REDIST-CONNECTED

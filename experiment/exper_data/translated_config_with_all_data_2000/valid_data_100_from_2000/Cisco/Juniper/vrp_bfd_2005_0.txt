@@ -1,8 +1,9 @@
 set system host-name DeviceA
-set protocols bfd multiplier 3
-set interfaces ge-1/0/0 unit 1/0/0 disable
+set protocols bfd
+set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
-interfaces ge-1/0/0.0
-set protocols ospf area 0.0.0.0 interface all-interfaces bfd-liveness-detection set protocols ospf bfd-liveness-detection minimum-interval 300
-set protocols ospf area 0.0.0.0 interface all-interfaces bfd-liveness-detection set protocols ospf bfd-liveness-detection multiplier 3
-set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set interfaces ge-1/0/0 set protocols ospf area 0 interface ge-1/0/0 bfd-liveness-detection minimum-interval 300
+set protocols ospf3 area 0.0.0.0 interface all-interfaces passive
+set protocols ospf3 area 0.0.0.0 interface lo0.0 passive
+set protocols bfd interface all-interfaces discriminator remote 1
+set protocols ospf area 0.0.0.1 interface 1

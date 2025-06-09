@@ -1,22 +1,22 @@
 hostname U-PE1
-ethernet cfm ma ma1 md md1
-ethernet cfm ma mpls md none
-mpls ldp remote-peer none none
-l2vpn pw-class pwt
- neighbor 3.3.3.9 remote-as
-interface GigabitEthernet1/0/0
- mpls ldp autoconfig
- xconnect 3.3.3.9 100 encapsulation mpls
-interface range GigabitEthernet1/0/0 - 1
- no shutdown
+mpls ldp router-id 1.1.1.9
+ip cef
 interface GigabitEthernet2/0/0
- ip address 10.1.1.1 255.255.255.0
  mpls ip
-interface range GigabitEthernet2/0/0 - 0
+ mpls l2vpn
+ mpls ip ldp autoconfig
  no shutdown
+ ip address 10.1.1.1 255.255.255.0
+l2vpn xconnect context pwt
+ l2vpn xconnect context
+ member pseudowire 3.3.3.9 100
+controller ControlName
+interface GigabitEthernet1/0/0
+ no shutdown
+ xconnect 3.3.3.9 100 encapsulation mpls
 interface LoopBack0
  ip address 1.1.1.9 255.255.255.255
- ip ospf 1 area 0
- ospfv3 1 ipv6 area 0.0.0.0
- ip address 10.1.1.0 255.255.255.0
-ethernet cfm ma MA_name md MD_name
+router ospf 1
+ network 10.1.1.0 0.0.0.255 area 0.0.0.0
+ network 1.1.1.9 0.0.0.0 area 0
+end

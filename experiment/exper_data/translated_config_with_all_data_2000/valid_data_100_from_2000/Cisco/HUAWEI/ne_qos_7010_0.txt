@@ -1,20 +1,24 @@
 sysname DeviceA
-nat instance ACL_TUN30 id 1
- nat outbound any address-group ACL_TUN30
-  rule permit ip source 10.100.0.11 0
- nat outbound any address-group ACL_TUN40
-nat instance ACL_TUN40 id 1
- nat outbound any address-group ACL_TUN40
-  rule permit ip source 10.110.0.11 0
+acl number 3000 name ACL_TUN30
+rule 5 permit ip source 10.100.0.11 0 destination any
+nat instance host 10.100.0.11 id any
+ nat address-group group1 group-id 1 10.100.0.11 any
+ service-instance-group groupa
+  section 1 10.100.0.11 any
+acl number 3000
+rule 5 permit ip source 10.110.0.11 0 destination any
+nat instance ACL_TUN40 id 40
+ nat address-group group1 group-id 1 10.110.0.11 any
+ service-instance-group groupa
+  section 1 10.110.0.11 any
 route-policy PBR_AAA permit node 5
- if-match acl 2001
-ip as-path-filter 5 permit .*
-tunnel-policy PBR_AAA
- tunnel binding destination 10.1.1.1 te Tunnel1
- tunnel binding destination 10.2.2.2 te Tunnel10
+ ip ip-prefix ACL_TUN30 index 1 permit none none
+ set ip next-hop 10.1.1.1
+ apply ip-address next-hop 10.1.1.1
 route-policy PBR_AAA permit node 10
- if-match acl 2001
-ip as-path-filter 10 permit .*
+ ip ip-prefix ACL_TUN40 index 10 permit none none
+ set ip next-hop 10.2.2.2
+ apply ip-address next-hop 10.2.2.2
 interface GigabitEthernet1/0/0
  undo shutdown
  ip address 10.100.0.10 255.255.255.0
@@ -23,7 +27,8 @@ interface GigabitEthernet2/0/0
  undo shutdown
  ip address 10.110.0.10 255.255.255.0
 ospf 1
- network 10.100.0.0 0.0.0.255
+ospf 1 router-id 10.100.0.0
  area 0
- network 10.110.0.0 0.0.0.255
+  network 10.100.0.0 0.0.0.255
+  network 10.110.0.0 0.0.0.255
 return

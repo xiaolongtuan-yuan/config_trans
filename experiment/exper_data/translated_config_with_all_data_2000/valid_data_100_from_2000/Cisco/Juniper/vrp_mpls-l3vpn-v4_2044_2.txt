@@ -1,34 +1,31 @@
 set system host-name CE1
-set protocols ldp router-id 1.1.1.1
+set protocols ldp router-id 1.1.1.9
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 unit 0 family inet address 40.1.1.2/24
-set interfaces ge-1/0/0 unit 0 family inet mpls maximum-labels 5
-set interfaces ge-1/0/0 unit 0 family inet mpls ldp autoconfig
-set interfaces ge-1/0/0 unit 0 family inet mpls
-interfaces ge-0/0/0
+set interfaces ge-1/0/0 unit 0 family mpls
 set interfaces ge-2/0/0 unit 0 disable
 set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 ether-options no-auto-negotiation
 set interfaces ge-2/0/0 unit 0 family inet address 11.1.1.1/24
-interfaces ge-2/0/0.0
+set interfaces ge-2/0/0 unit 0 family mpls
 set interfaces lo0.1 unit 1 disable
 set interfaces lo0.1 disable
 set interfaces lo0.1 unit 0 family inet address 2.2.2.9/32
 set routing-options autonomous-system 200
 set protocols bgp group IBGP type external
 set protocols bgp group IBGP neighbor 11.1.1.2 peer-as 100
-set protocols bgp group IBGP export BGP-100
-set protocols bgp group IBGP family inet unicast
-family inet unicast set routing-options autonomous-system 200 no-bgp-synchronization
-family inet unicast set protocols bgp group EBGP neighbor 11.1.1.2 export policy1
-family inet unicast set protocols bgp group <group-name> neighbor 11.1.1.2 next-hop-self
-set policy-options policy-statement BGP-NETWORKS term 1 from route-filter 2.2.2.9/255.255.255.255 exact
-set policy-options policy-statement BGP-NETWORKS term 2.2.2.9 then 255.255.255.255
+set protocols bgp group IBGP export BGP-NETWORKS
+set protocols bgp group IBGP family inet unicast set protocols bgp group <group-name> neighbor 11.1.1.2 export policy1
+set protocols bgp group IBGP family inet unicast set protocols bgp group <group-name> neighbor 11.1.1.2 next-hop-self
 set protocols bgp local-as 200
-set protocols ospf area 0.0.0.1 interface 1
-set protocols ospf bgp
-set protocols ospf area 0.0.0.0 interface ge-0/0/0.0
+set policy-options policy-statement 2.2.2.9/32 term 1 from route-filter 2.2.2.9/255.255.255.255 exact
+set policy-options policy-statement 2.2.2.9/32 term 2.2.2.9 then 255.255.255.255
+set protocols ospf area 1 interface 1
+set protocols ospf3 area 0.0.0.200 interface ge-1/0/0.0 priority 200
 set protocols ospf area 0 interface ge-0/0/1.0
-set protocols ospf import policy1 set forwarding-table export policy1 next-hop mpls
-set policy-options as-path policy1 10
+set protocols ospf import policy1
+set policy-options as-path policy1 ^.*_10_.*$
+set policy-options as-path as-path-1 ^.*_30_.*$
 set protocols isis export REDIST-CONNECTED

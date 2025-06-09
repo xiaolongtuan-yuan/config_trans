@@ -2,19 +2,18 @@ set system host-name CE2
 set routing-options multicast
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6
 set interfaces ge-1/0/0 set interfaces ge-1/0/4 unit 0 family inet6
 set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:3::1/64
-set interfaces ge-1/0/0 unit 0 tunnel source none
+set interfaces ge-1/0/0 set protocols ospf3 area 0 interface GigabitEthernet1/0/0
 set interfaces ge-1/0/0 set protocols pim interface <interface-name> mode sparse
-set interfaces ge-1/0/0 unit 0 family inet6 address 2001:DB8:5::2/64 vrrp-group none priority none
+set interfaces ge-1/0/0 set protocols mld interface ge-1/0/0.0 group FF3E::1 source 2001:DB8:5::2
 set interfaces ge-1/0/0 set interfaces ge-1/0/4 unit 0 family inet6 address 2001:db8:14::1/64
-set interfaces ge-1/0/0 set protocols pim interfaces <interface-name> version 6 mode sparse
-interfaces ge-1/0/0
-set interfaces ge-1/0/4 unit 0 disable
+set interfaces ge-1/0/0 set protocols ospf3 area 0 interface ge-1/0/0
+set interfaces ge-1/0/0 set protocols pim ipv6 interface all mode sparse
+set interfaces ge-1/0/4 unit 4 disable
 set interfaces ge-1/0/4 disable
-set interfaces ge-1/0/4 unit 0 tunnel source none
-interfaces ge-0/0/4.0
+set protocols ospf3 area 1
 set protocols ospf3 area 0.0.0.1
-set protocols ospf area 0.0.0.1 interface 10.0.0.4 authentication md5 1 key $9$H3LloW0rld
 set protocols pim rp static address 2001:db8:6::3

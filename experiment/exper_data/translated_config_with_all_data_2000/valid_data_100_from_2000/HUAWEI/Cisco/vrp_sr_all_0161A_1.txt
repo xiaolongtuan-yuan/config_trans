@@ -1,25 +1,25 @@
 hostname P
-ethernet cfm ma ma1 md md1
-ethernet cfm ma mpls md none
-ethernet cfm ma segment-routing md none
+mpls ldp router-id 2.2.2.2
+ip cef
+interface GigabitEthernet2/0/0
+ mpls ip
+ no shutdown
+ ip address 10.2.1.1 255.255.255.0
+ isis network point-to-point
+segment-routing mpls
 router isis 1
- mpls traffic-eng level-2
+ is-type level-2
  metric-style wide
  net 00.1111.1111.2222.00
  segment-routing mpls
- mpls traffic-eng router-id Loopback153800
+ mpls traffic-eng router-id Loopback1
 interface GigabitEthernet1/0/0
  ip address 10.1.1.2 255.255.255.0
- isis enable 1
-interface range GigabitEthernet1/0/1 - 2
- no shutdown
-interface GigabitEthernet2/0/0
- ip address 10.2.1.1 255.255.255.0
- isis enable 1
-interface range GigabitEthernet2/0/0 - 0
+ isis network point-to-point
+interface GigabitEthernet1/0/1
  no shutdown
 interface LoopBack1
  ip address 2.2.2.2 255.255.255.255
- isis enable 1
+ isis network point-to-point
  ip router isis 1 prefix-sid index 153710
-ethernet cfm ma ma_name md md_name
+end

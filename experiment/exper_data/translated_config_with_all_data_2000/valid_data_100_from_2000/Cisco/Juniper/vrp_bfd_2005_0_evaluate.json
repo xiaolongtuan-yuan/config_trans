@@ -1,12 +1,7 @@
 {
-    "command_accuracy": 0.2,
+    "command_accuracy": 0.4,
     "missed_commands": [
         "set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.1/24",
-        "set protocols ospf area 0 interface ge-1/0/0 bfd-liveness-detection",
-        "set protocols bfd interface ge-1/0/0 minimum-interval 300",
-        "set protocols bfd interface ge-1/0/0 multiplier 3",
-        "set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.1/24",
-        "set protocols ospf area 0 interface ge-1/0/0 bfd-liveness-detection",
         "set protocols bfd interface ge-1/0/0 minimum-interval 300",
         "set protocols bfd interface ge-1/0/0 multiplier 3"
     ],
@@ -16,23 +11,24 @@
         "set protocols bfd interface [parameter1] minimum-interval [parameter2]",
         "set protocols bfd interface [parameter1] multiplier [parameter2]"
     ],
-    "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.25,
+    "llm_command_accuracy": 0.2,
+    "llm_command_ratio": 0.2222222222222222,
     "command_for_llm": [
-        "bfd fast-detect"
+        "bfd",
+        "ip ospf bfd"
     ],
     "llm_trans_commands": [
-        "set protocols ospf bfd-liveness-detection minimum-interval 300",
-        "set protocols ospf bfd-liveness-detection multiplier 3"
+        "set protocols bfd",
+        "set protocols ospf area 0 interface ge-1/0/0 bfd-liveness-detection minimum-interval 300"
     ],
     "source_commands": [
-        "bfd fast-detect",
+        "bfd all-interfaces",
         "bfd",
-        "interface GigabitEthernet1/0/0",
-        "ip ospf bfd",
+        "bfd fast-detect",
         "hostname DeviceA",
         "router ospf 1",
-        "bfd all-interfaces"
+        "ip ospf bfd",
+        "interface GigabitEthernet1/0/0"
     ],
     "llm_origin_response": [
         ""

@@ -1,18 +1,17 @@
 set system host-name CE2
-set protocols pim
+set routing-options multicast family inet
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 unit 0 family inet address 192.168.2.2/24
-set interfaces ge-1/0/0 unit 0 family inet interface-mode sparse-mode
+set interfaces ge-1/0/0 set protocols pim interface all mode sparse
+set interfaces ge-1/0/0 set protocols pim interface ge-1/0/0 mode sparse
+set interfaces ge-1/0/0 set protocols pim interface ge-1/0/1 mode sparse
 set interfaces ge-1/0/0 unit 0 family inet address 10.1.5.1/24
-set interfaces ge-1/0/0 unit 0 family inet address none vrrp-group 225.0.0.1 priority none
-interfaces ge-1/0/0.0
-set interfaces ge-1/0/1 unit 1 disable
+set interfaces ge-1/0/0 set protocols igmp interface ge-1/0/1 static group 225.0.0.1
+set interfaces ge-1/0/1 unit 0 disable
 set interfaces ge-1/0/1 disable
-set interfaces ge-1/0/1 unit 0 family inet interface-mode sparse-mode
-interfaces ge-1/0/1.0
-set protocols ospf area 2 interface 2
-set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
-set protocols ospf area 0.0.0.0 interface ge-0/0/2.0
+set protocols ospf area 2 interface ge-0/0/1.0
+set protocols ospf area 0 interface ge-0/0/1.0
 set protocols pim static-rp 4.4.4.4
 set protocols isis export REDIST-CONNECTED

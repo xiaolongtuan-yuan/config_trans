@@ -1,24 +1,31 @@
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6
+set interfaces ge-1/0/0 set interfaces ge-2/0/0 unit 0 family inet6
+set interfaces ge-1/0/0 set interfaces ge-3/0/0 unit 0 family inet6
+set interfaces ge-1/0/0 set interfaces ge-1/0/1 unit 0 family inet6
 set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:2000::1/24
-set interfaces ge-1/0/0 unit 5 family inet storm-control default
-interfaces ge-1/0/0.0
+set interfaces ge-1/0/0 set interfaces ge-1/0/1 unit 0 family inet6 address 2001:db8:3000::1/24
+set interfaces ge-1/0/0 set protocols ospf3 area 0.0.0.1 interface ge-1/0/1 metric 5
 set interfaces ge-2/0/0 unit 0 disable
 set interfaces ge-2/0/0 disable
-set interfaces ge-2/0/0 set interfaces ge-1/0/0 unit 0 family inet6
+set interfaces ge-2/0/0 set interfaces <interface-name> family inet6
 set interfaces ge-2/0/0 set interfaces ge-2/0/0 unit 0 family inet6 address 2001:db8:2001::1/24
-interfaces ge-2/0/0.0
 set interfaces ge-3/0/0 unit 0 disable
 set interfaces ge-3/0/0 disable
+set interfaces ge-3/0/0 ether-options no-auto-negotiation
 set interfaces ge-3/0/0 set interfaces ge-1/0/0 unit 0 family inet6
+set interfaces ge-3/0/0 set interfaces ge-2/0/0 unit 0 family inet6
+set interfaces ge-3/0/0 set interfaces ge-3/0/0 unit 0 family inet6
+set interfaces ge-3/0/0 set interfaces ge-1/0/1 unit 0 family inet6
 set interfaces ge-3/0/0 set interfaces ge-3/0/0 unit 0 family inet6 address 2001:db8:2002::1/24
-interfaces ge-3/0/0.0
-set interfaces ge-1/0/1 unit 0 disable
-set interfaces ge-1/0/1 disable
-set interfaces ge-1/0/1 set interfaces ge-1/0/1 unit 0 family inet6 address 2001:db8:3000::1/24
-interfaces ge-1/0/1.0
 set routing-options rib inet6.0 static
-set protocols ospf3 area 0.0.0.1 interface all-interfaces passive
-set protocols ospf3 area 0.0.0.1 interface all-interfaces metric 1
-set protocols ospf area 0.0.0.4 interface ge-0/0/0 authentication md5 1 key $9$H3LloW0rld
+set protocols router-advertisement interface all
+set routing-options autonomous-system 1
+set routing-options forwarding-table export EXPORT_NAME
+set protocols ospf3 area 1
+set protocols ospf3 area 4.4.4.4
+set protocols ospf3 area 0.0.0.1 interface lo0.0
+set protocols ospf3 area 0.0.0.1 interface ge-1/0/1 metric 5
+set protocols ospf3 area 0.0.0.1 set protocols ospf3 area 0.0.0.1

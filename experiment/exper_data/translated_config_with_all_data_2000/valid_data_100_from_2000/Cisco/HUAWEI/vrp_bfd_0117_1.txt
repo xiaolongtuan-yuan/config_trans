@@ -1,16 +1,13 @@
 sysname DeviceB
-interface Eth-Trunk1
 interface Port-channel1
  ip address 10.1.1.2 255.255.255.0
 interface GigabitEthernet3/0/0
  undo shutdown
- e1 none channel-set 1 timeslot-list none
- mode manual
+ eth-trunk 1
 interface GigabitEthernet3/0/1
  undo shutdown
- e1 1 channel-set 1 timeslot-list 1
- mode manual
+ eth-trunk 1
 lldp message-transmission interval 3
 bfd none bind link-bundle peer-ip 10.1.1.1 interface Port-channel1 source-ip none
-bfd bfd_session bind peer-ip 10.1.1.1 interface Port-channel1 source-ip none auto
+bfd session_po1 bind peer-ip 10.1.1.1 interface Port-channel1 source-ip 10.1.1.2 auto
 return

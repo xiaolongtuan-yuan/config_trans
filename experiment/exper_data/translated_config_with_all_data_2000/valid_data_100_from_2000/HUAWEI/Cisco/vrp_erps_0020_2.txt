@@ -1,30 +1,30 @@
 hostname DeviceC
 vlan batch 400
+spanning-tree mst configuration
+ spanning-tree vlan 20,300-400 instance 2
+erps enable 2
+ erps control-vlan 20
+ erps instance 2 protected vlan 300-400
+ erps wtr-timer 6
+ erps timer guard-time 100
+ erps version 2
+ erps sub-ring
 interface GigabitEthernet1/0/1
- ptp enable
  switchport
  switchport mode access
+ no shutdown
  spanning-tree portfast trunk
  switchport trunk allowed vlan 400
- ptp notslave disable
- ptp clock-domain 2
-ptp mode boundary
-interface GigabitEthernet2/0/0
- bridge-domain 2
-router isis 20
-router isis 2
- spf-interval 1 6 50
- spf-interval none 100 none
- address-family ipv4
-  redistribute v2
-keyring VPN_KEYRING
-interface range GigabitEthernet1/0/1 - 2
- no shutdown
+ no spanning-tree portfast
+ erps ring 2 rpl owner
+ interface GigabitEthernet1/0/1
+ rep segment 2 edge primary
 interface GigabitEthernet1/0/2
  switchport
  switchport mode access
+ no shutdown
  spanning-tree portfast trunk
  switchport trunk allowed vlan 400
- ptp notslave disable
- bridge-domain 2
-ethernet cfm ma ma1 md md1
+ spanning-tree disable
+ erps ring 2
+end
