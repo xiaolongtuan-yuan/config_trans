@@ -2,11 +2,20 @@ hostname CE3
 interface GigabitEthernet1/0/0
  no shutdown
  ip address 10.3.1.1 255.255.255.252
-interface Loopback0
- no shutdown
  ip address 5.5.5.5 255.255.255.255
+end
 router bgp 65420
-aaa authentication login none group EBGP local
-redistribute bgp
-redistribute inet
-neighbor 10.3.1.2 remote-as 100
+ neighbor 10.1.1.2 remote-as 100
+ neighbor 10.1.1.2 activate
+ no synchronization
+ address-family ipv4 unicast
+ address-family ipv4
+ neighbor none remote-as none
+  router bgp 65420
+  neighbor 10.3.1.2 remote-as 100
+ neighbor none remote-as 100
+  neighbor 10.3.1.2 remote-as 100
+ neighbor 10.3.1.2 remote-as none
+  neighbor 10.3.1.2 remote-as 100
+ address-family inet unicast
+ exit-address-family

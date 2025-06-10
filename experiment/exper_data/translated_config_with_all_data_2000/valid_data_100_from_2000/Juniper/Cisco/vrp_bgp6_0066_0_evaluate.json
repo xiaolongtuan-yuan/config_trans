@@ -1,5 +1,5 @@
 {
-    "command_accuracy": 0.16666666666666666,
+    "command_accuracy": 0.3333333333333333,
     "missed_commands": [
         "interface gigabitethernet1/0/0",
         "interface gigabitethernet2/0/0",
@@ -9,65 +9,49 @@
         "ipv6 address 2001:db8:100::1/96",
         "router bgp 100",
         "bgp router-id 1.1.1.1",
-        "neighbor 2001:db8:100::2 remote-as 200",
         "address-family ipv6",
-        "no synchronization",
         "network 2001:db8:1::/64",
         "neighbor 2001:db8:100::2 activate",
-        "exit-address-family",
-        "end",
-        "interface gigabitethernet1/0/0",
-        "no shutdown",
-        "ipv6 address 2001:db8:1::1/64",
-        "interface gigabitethernet2/0/0",
-        "no shutdown",
-        "ipv6 address 2001:db8:100::1/96",
-        "router bgp 100",
-        "bgp router-id 1.1.1.1",
-        "neighbor 2001:db8:100::2 remote-as 200",
-        "address-family ipv6",
-        "no synchronization",
-        "network 2001:db8:1::/64",
-        "neighbor 2001:db8:100::2 activate",
-        "exit-address-family",
-        "end"
+        "exit-address-family"
     ],
-    "grammatical_accuracy": 0.2222222222222222,
+    "grammatical_accuracy": 0.5,
     "missed_templates": [
         "interface [parameter1]",
         "no shutdown",
         "ipv6 address [parameter1]",
         "bgp router-id [parameter1]",
-        "neighbor [parameter1] remote-as [parameter2]",
-        "address-family [parameter1]",
-        "no synchronization",
         "network [parameter1]",
-        "neighbor [parameter1] activate",
-        "exit-address-family",
-        "end"
+        "exit-address-family"
     ],
-    "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.18181818181818182,
+    "llm_command_accuracy": 0.05555555555555555,
+    "llm_command_ratio": 0.3181818181818182,
     "command_for_llm": [
-        "term 1 then accept"
+        "local-address 2001:db8:100::1",
+        "set policy-options policy-statement EXPORT-POLICY",
+        "term 1 from protocol direct"
     ],
     "llm_trans_commands": [
+        "neighbor 2001:db8:100::2 update-source 2001:db8:100::1",
+        "router bgp 200",
+        "neighbor 2001:db8:100::2 remote-as 200",
+        "neighbor 2001:db8:100::2 update-source 2001:db8:100::1",
+        "router bgp 200",
         "route-map EXPORT-POLICY permit 10",
-        "match interface"
+        "match protocol connected"
     ],
     "source_commands": [
-        "term 1 then accept",
-        "local-address 2001:db8:100::1",
         "set routing-options autonomous-system 200",
-        "export EXPORT-POLICY",
-        "term 1 from protocol direct",
-        "type external",
         "peer-as 200",
-        "neighbor 2001:db8:100::2",
-        "set system host-name DeviceA",
         "set routing-options router-id 1.1.1.1",
         "set protocols bgp group external",
-        "set policy-options policy-statement EXPORT-POLICY"
+        "set policy-options policy-statement EXPORT-POLICY",
+        "set system host-name DeviceA",
+        "term 1 from protocol direct",
+        "export EXPORT-POLICY",
+        "type external",
+        "term 1 then accept",
+        "local-address 2001:db8:100::1",
+        "neighbor 2001:db8:100::2"
     ],
     "llm_origin_response": [
         ""

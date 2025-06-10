@@ -1,17 +1,39 @@
-sysname name CE1
-interface 5.0
- vlan-type dot1q 5
-interface 5.9
- vlan-type dot1q 9
-interface GigabitEthernet1/0/5
+sysname CE1
+vlan batch 5
+vlan batch 9
+interface GigabitEthernet1/0/1
  undo shutdown
  portswitch
  port default vlan 5
  port trunk allow-pass vlan 5
  stp disable
- port link-type access
+return
+interface ge-1/0/2
+ undo shutdown
+ stp disable
+interface GigabitEthernet1/0/2
+ portswitch
+ port default vlan 5
+ port trunk allow-pass vlan 5
+interface ge-1/0/3
+ undo shutdown
+ stp disable
+interface GigabitEthernet1/0/3
+ portswitch
  port default vlan 9
  port trunk allow-pass vlan 9
- port link-type trunk
-vlan 5
-vlan 9
+interface ge-1/0/4
+ undo shutdown
+ stp disable
+interface GigabitEthernet1/0/4
+ portswitch
+ port default vlan 9
+ port trunk allow-pass vlan 9
+interface ge-1/0/5
+ undo shutdown
+interface GigabitEthernet1/0/5
+ portswitch
+ port default vlan 5
+ port trunk allow-pass vlan 5
+ port default vlan 9
+ port trunk allow-pass vlan 9

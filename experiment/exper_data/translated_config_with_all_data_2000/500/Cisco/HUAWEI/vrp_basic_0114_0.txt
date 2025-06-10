@@ -1,18 +1,18 @@
-sysname name SSH_Server
-ip domain-name example.com
-ssh server version 2
-interface LoopBack0
+sysname SSH_Server
+dns domain example.com
+set rsa key pair bits 1024
+ssh server compatible-ssh1x disable
 interface Loopback0
+return
+interface LoopBack0
  ip address 10.1.1.1 255.255.255.255
 ssh client cipher aes128-ctr aes192-ctr aes256-ctr
+aaa authorization-scheme default
 ssh user @%@%UyQs4,KTtSwJo(4QmW#K,LC:@%@% level 15
 interface GigabitEthernet0/0/0
- ip address 10.1.1.2 255.255.0.0
-interface {'name': 'interface name', 'type': 'string', 'explanation': 'Interface name', 'example': 'GigabitEthernet1/0/0'}.{'name': 'subinterface number', 'type': 'integer', 'explanation': 'subinterface number', 'example': 100}
  undo shutdown
-ssh user-interface vty 0 4
-rsa local-key-pair create 1024
-aaa
+ ip address 10.1.1.2 255.255.0.0
+user-interface vty 0 4
+ ssh server service enable
+ authentication-mode radius
 stelnet server enable
-ssh server service enable
-authentication-mode aaa

@@ -26,7 +26,9 @@ def main():
     name = 'all_data_2000'
     num = "valid_data_100_from_2000"
     # num = "500"
+    # scale = '500'
     scale = '680'
+
     vendors = ['HUAWEI', 'Juniper', 'Cisco']
     grammatical_accuracy = {}
     command_accuracy = {}

@@ -1,10 +1,21 @@
 hostname CE3
+end
 interface GigabitEthernet0/0/0
  no shutdown
  ip address 172.16.1.1 255.255.255.0
-aaa authentication login default group 65410 local
-redistribute bgp
-redistribute static
-policy-map EXPORT_DIRECT
+router bgp 65410
+ neighbor none remote-as 65410
+ neighbor 10.1.1.2 activate
+ no synchronization
+ address-family ipv4 unicast
+ address-family ipv4
+ address-family inet unicast
+ exit-address-family
  route-map EXPORT_DIRECT permit 10
- match interface *
+ match interface connected
+aaa authentication login 65410 group external local
+aaa authentication login 65410 group 200 local
+aaa authentication login 65410 group 172.16.1.2 local
+aaa authentication login EXPORT_DIRECT group none local
+neighbor 172.16.1.2 remote-as 200
+route-map EXPORT_DIRECT permit 10

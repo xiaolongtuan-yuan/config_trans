@@ -1,7 +1,12 @@
 sysname DeviceC
+return
+ vlan 10
 vlan 10
+ vlan 10
+ vlan 20
 vlan 20
-interface Vlanif1
+ vlan 20
+interface vlan
  undo shutdown
 interface Vlanif10
  ip address 172.16.1.2 255.255.255.0
@@ -9,22 +14,27 @@ interface Vlanif20
  ip address 172.17.1.1 255.255.255.0
 interface ge-0/0/0
  undo shutdown
-interface GigabitEthernet0/0/0
+interface vlan10
  portswitch
  port default vlan 10
  port trunk allow-pass vlan 10
 interface ge-0/0/1
  undo shutdown
-interface GigabitEthernet0/0/1
+interface vlan20
  portswitch
  port default vlan 20
  port trunk allow-pass vlan 20
-link-protocol ospf
-link-protocol ppp
+undo network 172.17.1.0 0.0.0.255
+ undo network 172.16.1.0 0.0.0.255
+undo network 172.16.1.0 0.0.0.255
+ undo network 172.16.1.0 0.0.0.255
+ undo network 172.17.1.0 0.0.0.255
 area 0.0.0.0
-ospf 1 router-id 0.0.0.0
+ospf 0.0.0.0 router-id vlan.10
+ undo shutdown
  area 0.0.0.0
   network 0.0.0.0 vlan.10
 ospf 0.0.0.0 router-id vlan.20
+ undo shutdown
  area 0.0.0.0
   network 0.0.0.0 vlan.20

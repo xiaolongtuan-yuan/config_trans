@@ -1,16 +1,35 @@
 hostname CE2
-aaa authentication login default group external local
-redistribute bgp
-aaa authentication login external group 2001:db8:9::1 local
-redistribute inet6 unicast
-redistribute connected
-vpdn-group external
-aaa authentication login default0 group external local
-redistribute unicast
-vpdn-group LAC1
- accept-dialin
-  protocol inet6 unicast no synchronization
-policy-map EXPORT-CONNECTED
+router bgp 600
+ neighbor 10.1.1.2 remote-as 100
+ neighbor 10.1.1.2 activate
+ no synchronization
+ address-family ipv4 unicast
+ address-family ipv4
+  no neighbor 2001:db8:2::2 activate
+ neighbor 2001:db8:9::1 remote-as none
+  neighbor 2001:db8:2::2 update-source Loopback0
+ address-family ipv6 unicast
+ address-family inet6 unicast
+ address-family ipv4 labeled-unicast
+  redistribute connected route-map none
+ bgp confederation identifier 1
+aaa authentication login external group external local
+aaa authentication login external group 100 local
+aaa authentication login external group 2001:db8:2::2 local
+aaa authentication login inet6 group unicast local
+aaa authentication login EXPORT-CONNECTED group none local
+no neighbor 2001:db8:2::2 activate
+ no neighbor 2001:db8:2::2 update-source 30.30.30.30
+no bgp redistribute-internal
+ no synchronization
+router bgp 100
  route-map EXPORT-CONNECTED permit 10
- match interface
- match ip address connected
+ match interface *
+neighbor 2001:db8:2::2 remote-as 100
+neighbor 2001:db8:2::2 update-source Loopback0
+neighbor 2001:db8:2::2 activate
+network 2001:db8:9::1/128
+ address-family ipv6
+ exit-address-family
+route-map EXPORT-CONNECTED permit 1
+end

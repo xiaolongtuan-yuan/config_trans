@@ -1,18 +1,37 @@
 hostname DeviceC
 vlan 20
-name vlan20
+ name vlan20
+ name vlan300
 vlan 300
-name vlan300
 vlan 301
-name vlan301
+ name VLAN301
+ name vlan400
 vlan 400
-name vlan400
-ip ssh source-interface GigabitEthernet0/0/1
-ip ssh source-interface GigabitEthernet0/0/2
-ip ssh source-interface ge-0/0/2
-ptp priority1 4096
+ spanning-tree portfast trunk
+spanning-tree portfast trunk
+ interface GigabitEthernet0/0/1
+  spanning-tree portfast trunk
+  interface GigabitEthernet0/0/2
+ interface GigabitEthernet0/0/2
+ spanning-tree portfast
+interface GigabitEthernet0/0/2
+ interface GigabitEthernet0/0/1
+ interface GigabitEthernet0/0/2
+  spanning-tree portfast trunk
+ tag-switching ip
+ switchport
+ switchport access vlan 20
+ switchport trunk allowed vlan 20
+ switchport access vlan 300
+ switchport trunk allowed vlan 300
+ switchport access vlan 301
+ switchport trunk allowed vlan 301
+ switchport access vlan 400
+ switchport trunk allowed vlan 400
+spanning-tree vlan 1 priority 4096
 interface GigabitEthernet0/0/1
  no shutdown
+ tag-switching ip
  encapsulation flexible-ethernet-services
  switchport
  switchport access vlan 20
@@ -23,22 +42,7 @@ interface GigabitEthernet0/0/1
  switchport trunk allowed vlan 301
  switchport access vlan 400
  switchport trunk allowed vlan 400
-interface range ge-0/0/1 - 1
- switchport trunk allowed vlan 20
-interface range ge-0/0/1 - 0
+end
 interface ge-0/0/2
  no shutdown
-interface range ge-0/0/2 - None
- switchport trunk allowed vlan 20
-interface GigabitEthernet0/0/2
  encapsulation flexible-ethernet-services
- switchport
- switchport access vlan 20
- switchport trunk allowed vlan 20
- switchport access vlan 300
- switchport trunk allowed vlan 300
- switchport access vlan 301
- switchport trunk allowed vlan 301
- switchport access vlan 400
- switchport trunk allowed vlan 400
-interface range ge-0/0/2 - 0

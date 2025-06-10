@@ -1,12 +1,6 @@
 {
-    "command_accuracy": 0.3181818181818182,
+    "command_accuracy": 0.5454545454545454,
     "missed_commands": [
-        "permit ip host 10.100.0.11 any",
-        "permit ip host 10.110.0.11 any",
-        "ip access-list extended acl_tun30",
-        "ip access-list extended acl_tun40",
-        "permit ip host 10.100.0.11 any",
-        "permit ip host 10.110.0.11 any",
         "match ip address acl_tun30",
         "match ip address acl_tun40",
         "set ip next-hop 10.1.1.1",
@@ -16,56 +10,54 @@
         "ip policy route-map pbr_aaa",
         "network 10.100.0.0 0.0.0.255 area 0",
         "network 10.110.0.0 0.0.0.255 area 0",
-        "router ospf 1",
-        "end",
-        "ip access-list extended acl_tun30",
-        "permit ip host 10.100.0.11 any",
-        "ip access-list extended acl_tun40",
-        "permit ip host 10.110.0.11 any",
-        "route-map pbr_aaa permit 5",
-        "match ip address acl_tun30",
-        "set ip next-hop 10.1.1.1",
-        "route-map pbr_aaa permit 10",
-        "match ip address acl_tun40",
-        "set ip next-hop 10.2.2.2",
-        "ip policy route-map pbr_aaa",
-        "router ospf 1",
-        "network 10.100.0.0 0.0.0.255 area 0",
-        "network 10.110.0.0 0.0.0.255 area 0",
-        "end"
+        "router ospf 1"
     ],
-    "grammatical_accuracy": 0.3181818181818182,
+    "grammatical_accuracy": 0.5454545454545454,
     "missed_templates": [
-        "permit ip host [source_ip] any",
-        "ip access-list extended [parameter1]",
-        "permit ip host [parameter1] any",
         "match ip address [parameter1]",
         "set ip next-hop [parameter1]",
         "route-map [parameter1] [parameter2] [parameter3]",
         "route-map [parameter1] [parameter2] [parameter3] [parameter4]",
         "ip policy route-map [parameter1]",
         "network [network_address] [wildcard_mask] area [area_id]",
-        "router ospf [parameter1]",
-        "end"
+        "router ospf [parameter1]"
     ],
-    "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.0,
-    "command_for_llm": [],
-    "llm_trans_commands": [],
-    "source_commands": [
+    "llm_command_accuracy": 0.18181818181818182,
+    "llm_command_ratio": 0.5,
+    "command_for_llm": [
         "instance-type virtual-router",
-        "filter aaa term 5 then routing-instance tunnel-instance",
-        "set interfaces ge-2/0/0",
-        "unit 0 family inet filter input aaa",
-        "set routing-instances tunnel-instance",
-        "filter aaa term 10 then routing-instance tunnel-instance",
-        "set firewall family inet",
-        "set interfaces ge-1/0/0",
         "filter aaa term 5 from source-address 10.100.0.11/32",
-        "unit 0 family inet address 10.110.0.10/24",
-        "set system host-name DeviceA",
-        "unit 0 family inet address 10.100.0.10/24",
+        "set firewall family inet",
         "filter aaa term 10 from source-address 10.110.0.11/32"
     ],
-    "llm_origin_response": []
+    "llm_trans_commands": [
+        "permit ip host 10.100.0.11 any vrf tunnel-instance",
+        "permit ip host 10.110.0.11 any vrf tunnel-instance",
+        "ip access-list extended aaa",
+        "ip access-list extended aaa",
+        "ip access-list extended aaa",
+        "permit ip host 10.100.0.11 any vrf tunnel-instance",
+        "ip access-list extended aaa",
+        "ip access-list extended aaa",
+        "permit ip host 10.110.0.11 any vrf tunnel-instance",
+        "router virtual-instance tunnel-instance"
+    ],
+    "source_commands": [
+        "filter aaa term 5 then routing-instance tunnel-instance",
+        "unit 0 family inet address 10.100.0.10/24",
+        "filter aaa term 10 then routing-instance tunnel-instance",
+        "set interfaces ge-1/0/0",
+        "set routing-instances tunnel-instance",
+        "unit 0 family inet filter input aaa",
+        "set system host-name DeviceA",
+        "instance-type virtual-router",
+        "set interfaces ge-2/0/0",
+        "filter aaa term 5 from source-address 10.100.0.11/32",
+        "set firewall family inet",
+        "filter aaa term 10 from source-address 10.110.0.11/32",
+        "unit 0 family inet address 10.110.0.10/24"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
 }

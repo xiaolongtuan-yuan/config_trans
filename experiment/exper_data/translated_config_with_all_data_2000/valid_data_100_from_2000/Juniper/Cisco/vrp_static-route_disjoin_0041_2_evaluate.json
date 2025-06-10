@@ -1,45 +1,49 @@
 {
-    "command_accuracy": 0.7857142857142857,
+    "command_accuracy": 0.5714285714285714,
     "missed_commands": [
-        "router-id 3.3.3.3",
         "network 172.16.4.0 0.0.0.255 area 0",
-        "ip route 172.16.7.0 255.255.255.0 gigabitethernet1/0/0 172.16.6.2",
-        "router-id 3.3.3.3",
-        "network 172.16.4.0 0.0.0.255 area 0",
+        "interface gigabitethernet1/0/2",
+        "interface gigabitethernet2/0/3",
+        "no shutdown",
+        "no shutdown",
         "ip route 172.16.7.0 255.255.255.0 gigabitethernet1/0/0 172.16.6.2"
     ],
     "grammatical_accuracy": 0.9285714285714286,
     "missed_templates": [
-        "router-id [parameter1]"
+        "network [parameter1] [parameter2] area [parameter3]"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.1111111111111111,
+    "llm_command_ratio": 0.22727272727272727,
     "command_for_llm": [
-        "term 1 then accept"
+        "term 1 from protocol static",
+        "set policy-options policy-statement OSPF-IMPORT"
     ],
     "llm_trans_commands": [
+        "router ospf 1",
+        "redistribute static subnets",
+        "router ospf 1",
         "route-map OSPF-IMPORT permit 10",
-        "match ip address static"
+        "match protocol static"
     ],
     "source_commands": [
+        "set routing-options router-id 3.3.3.3",
+        "unit 0 family inet address 172.16.6.1/24",
+        "set interfaces ge-0/0/0",
+        "set interfaces ge-0/0/3",
+        "set protocols ospf export OSPF-IMPORT",
+        "interface ge-0/0/2.0",
+        "unit 0 family inet address 172.16.4.2/24",
+        "set policy-options policy-statement OSPF-IMPORT",
+        "unit 0 family inet address 172.16.2.1/24",
         "set routing-options static route 172.16.7.0/24",
         "next-hop 172.16.6.2",
         "term 1 from protocol static",
-        "interface ge-0/0/0.0",
-        "term 1 then accept",
-        "set protocols ospf export OSPF-IMPORT",
         "set interfaces ge-0/0/2",
-        "set policy-options policy-statement OSPF-IMPORT",
-        "set interfaces ge-0/0/0",
-        "unit 0 family inet address 172.16.4.2/24",
-        "set routing-options router-id 3.3.3.3",
-        "unit 0 family inet address 172.16.2.1/24",
+        "term 1 then accept",
+        "interface ge-0/0/0.0",
         "set system host-name DeviceC",
-        "interface ge-0/0/3.0",
         "set protocols ospf area 0.0.0.0",
-        "set interfaces ge-0/0/3",
-        "interface ge-0/0/2.0",
-        "unit 0 family inet address 172.16.6.1/24"
+        "interface ge-0/0/3.0"
     ],
     "llm_origin_response": [
         ""

@@ -20,38 +20,25 @@
         "set routing-options forwarding-table export [parameter1]"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.35294117647058826,
-    "command_for_llm": [
-        "bfd ce1_to_pe2 bind peer-ip 10.2.1.2 interface GigabitEthernet2/0/0 source-ip 10.2.1.1 auto",
-        "load-balance packet all",
-        "bfd ce1_to_pe1 bind peer-ip 10.1.1.2 interface GigabitEthernet1/0/0 source-ip 10.1.1.1 auto"
-    ],
-    "llm_trans_commands": [
-        "set forwarding-options hash-key family inet layer-3",
-        "set forwarding-options hash-key family inet layer-4",
-        "set forwarding-options enhanced-hash-key family inet layer-3",
-        "set forwarding-options enhanced-hash-key family inet layer-4",
-        "set protocols bfd session ce1_to_pe1 neighbor 10.1.1.2 local-address 10.1.1.1 interface ge-1/0/0 minimum-interval 300 multiplier 3",
-        "set protocols bfd session ce1_to_pe2 neighbor 10.2.1.2 local-address 10.2.1.1 interface ge-2/0/0 minimum-interval 300 multiplier 3"
-    ],
+    "llm_command_ratio": 0.0,
+    "command_for_llm": [],
+    "llm_trans_commands": [],
     "source_commands": [
-        "interface GigabitEthernet2/0/0",
+        "sysname CE1",
+        "interface GigabitEthernet1/0/0",
+        "interface LoopBack1",
+        "bfd ce1_to_pe2 bind peer-ip 10.2.1.2 interface GigabitEthernet2/0/0 source-ip 10.2.1.1 auto",
+        "undo shutdown",
+        "ip address 1.1.1.1 255.255.255.255",
         "ip route-static 0.0.0.0 0.0.0.0 10.2.1.2",
         "bfd ce1_to_pe1 bind peer-ip 10.1.1.2 interface GigabitEthernet1/0/0 source-ip 10.1.1.1 auto",
-        "ip address 10.1.1.1 255.255.255.0",
-        "interface LoopBack1",
-        "ip address 1.1.1.1 255.255.255.255",
-        "bfd",
-        "return",
-        "ip route-static 0.0.0.0 0.0.0.0 10.1.1.2",
-        "undo shutdown",
         "load-balance packet all",
-        "interface GigabitEthernet1/0/0",
-        "bfd ce1_to_pe2 bind peer-ip 10.2.1.2 interface GigabitEthernet2/0/0 source-ip 10.2.1.1 auto",
-        "sysname CE1",
-        "ip address 10.2.1.1 255.255.255.0"
+        "ip address 10.2.1.1 255.255.255.0",
+        "ip route-static 0.0.0.0 0.0.0.0 10.1.1.2",
+        "return",
+        "bfd",
+        "interface GigabitEthernet2/0/0",
+        "ip address 10.1.1.1 255.255.255.0"
     ],
-    "llm_origin_response": [
-        ""
-    ]
+    "llm_origin_response": []
 }

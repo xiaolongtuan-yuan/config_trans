@@ -3,6 +3,7 @@ interface GigabitEthernet1/0/0
  ipv6 enable
  ipv6 address 2001:db8:2000::1/24
  ipv6 address 2001:db8:2000::1/24 none
+return
 interface GigabitEthernet2/0/0
  undo shutdown
  ipv6 enable
@@ -19,8 +20,9 @@ interface GigabitEthernet1/0/1
  ipv6 address 2001:db8:3000::1/24
  ipv6 address 2001:db8:3000::1/24 none
  ospfv3 cost 5
-ipv6 route-static none none none none
+ipv6 route-static 2001:DB8::1 128 GigabitEthernet2/0/2 2001:DB8:2::1
 ospfv3 1
+ bfd all-interfaces binding frr
 ospf 1 router-id 4.4.4.4
  silent-interface all
  area 0.0.0.1

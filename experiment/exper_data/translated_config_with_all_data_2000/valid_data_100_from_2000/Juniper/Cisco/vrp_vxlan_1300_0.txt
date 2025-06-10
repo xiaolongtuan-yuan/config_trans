@@ -1,20 +1,36 @@
 hostname Device1
+end
 router isis
- interface GigabitEthernet0/0/0
+ net 10.0000.0000.0001.00
+ interface ge-0/0/0.0
   isis network point-to-point
- interface GigabitEthernet0/0/1
+ net ge-0/0/1.0
+ interface ge-0/0/1.0
   isis network point-to-point
- interface Loopback0
-interface Loopback0
- no shutdown
- ip address 1.1.1.1 255.255.255.255
-interface GigabitEthernet0/0/0
  ip address 192.168.3.2 255.255.255.0
-interface GigabitEthernet0/0/1
- no shutdown
  ip address 192.168.2.2 255.255.255.0
-aaa authentication login default group ibgp local
-redistribute bgp
-aaa authentication login ibgp group 1.1.1.1 local
-policy-map evpn-export
- route-map evpn-export permit 10
+ ip address 1.1.1.1 255.255.255.255
+interface ge-0/0/0
+ no shutdown
+interface ge-0/0/1
+ no shutdown
+interface lo0
+ no shutdown
+router bgp 600
+ neighbor none remote-as none
+ neighbor 10.1.1.2 activate
+ no synchronization
+ address-family ipv4 unicast
+ address-family ipv4
+ neighbor 1.1.1.1 remote-as none
+  router bgp <AS_NUMBER>
+  neighbor ibgp update-source Loopback0
+ neighbor 1.1.1.1 remote-as 1
+  router bgp <AS_NUMBER>
+  bgp cluster-id 1.1.1.1
+aaa authentication login ibgp group internal local
+aaa authentication login ibgp group 2.2.2.2 local
+aaa authentication login 3.3.3.3 group ibgp local
+aaa authentication login evpn group signaling local
+aaa authentication login evpn-export group none local
+route-map evpn-export permit 10

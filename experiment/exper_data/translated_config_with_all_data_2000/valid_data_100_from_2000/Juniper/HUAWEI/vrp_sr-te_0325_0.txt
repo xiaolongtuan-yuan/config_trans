@@ -1,14 +1,20 @@
 sysname PE1
-router id 1.1.1.1
+mpls ldp lsr-id 1.1.1.1
 mpls label protocol ldp
+mpls
+ mpls ldp
+ mpls rsvp-te
+ mpls te
 interface GigabitEthernet0/0/0
  undo shutdown
  ip address 10.1.2.1 255.255.255.0
  ip address 1.1.1.1 255.255.255.255
-interface LoopBack0
- mpls traffic-eng passive-interface LoopBack0
+return
+isis 1
+ network-entity 10.0000.0000.0001.00
+ auto-cost enable
+ is-level level-2
+  isis 1
+  cost-style wide
 isis 2
  is-level level-2
-link-protocol ppp
-mpls rsvp-te
-interface ge-0/0/0.0 p2p

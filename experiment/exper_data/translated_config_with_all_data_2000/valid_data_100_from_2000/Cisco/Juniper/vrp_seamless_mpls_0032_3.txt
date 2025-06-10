@@ -1,31 +1,40 @@
 set system host-name Core_ASBR
 set security nat destination rule-set NAT64_DEST
+set protocols mpls interface ge-0/0/0.0
 set interfaces ge-0/0/0 unit 0 family mpls
-set protocols ldp router-id 1.1.1.9
-set interfaces ge-1/0/0 unit 0 disable
+set protocols ldp router-id 1.1.1.1
+set interfaces ge-1/0/0 unit 1/0/0 disable
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 unit 0 family inet address 10.3.1.2/24
 set interfaces ge-1/0/0 unit 0 family mpls
+set protocols mpls interface ge-1/0/0.0
 set interfaces ge-2/0/0 unit 0 disable
 set interfaces ge-2/0/0 disable
 set interfaces ge-2/0/0 ether-options no-auto-negotiation
 set interfaces ge-2/0/0 unit 0 family inet address 10.4.1.1/24
 set interfaces ge-2/0/0 unit 0 family mpls
-set interfaces lo0.1 unit 1 disable
-set interfaces lo0.1 disable
+set protocols mpls interface ge-2/0/0.0
+set interfaces lo0 unit 1 disable
+set interfaces lo0 disable
 set interfaces lo0 unit 0 family inet address 4.4.4.4/32
-set routing-options autonomous-system 200 family inet labeled-unicast set protocols bgp group internal neighbor 5.5.5.5 family inet labeled-unicast
-set routing-options autonomous-system 200 family inet labeled-unicast set protocols bgp group external-peers neighbor 10.3.1.1 family inet labeled-unicast
-set protocols bgp group IBGP type external
+set routing-options autonomous-system 200
+set protocols bgp group IBGP type internal
 set protocols bgp group IBGP neighbor 5.5.5.5 peer-as 200
-set protocols bgp group IBGP export BGP-NETWORKS
+set protocols bgp group IBGP peer-as 200
+set protocols bgp group IBGP export 200
+set protocols bgp group IBGP type external
 set protocols bgp group IBGP neighbor 10.3.1.1 peer-as 100
+set protocols bgp group IBGP peer-as 100
+set protocols bgp group IBGP export BGP-EXPORT
 set protocols bgp local-as 200
-set protocols ospf area 2 interface ge-0/0/1.0
-set protocols ospf area 0 interface ge-0/0/0.0
-set protocols ospf area 0 interface ge-0/0/1.0
-set protocols ospf import policy1 from policy-options policy-statement policy1 term 10 match route-filter 0.0.0.0/0 upto /32
+set protocols ospf area 0.0.0.2 interface 2
+set protocols ospf area 0.0.0.0 interface 4.4.4.4
+set protocols ospf area 0.0.0.0 interface lo0.0 passive
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf import policy1
 set policy-options as-path policy1 10
 set policy-options as-path as-path-1 ^.*_30_.*$
-set policy-options prefix-list ALL 0.0.0.0/0 upto 32
+set policy-options as-path policy1 ^.*$
+set policy-options prefix-list 0.0.0.0 0/32
+set policy-options prefix-list ALL 0.0.0.0/0

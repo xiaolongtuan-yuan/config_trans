@@ -1,14 +1,24 @@
 sysname CE2
-interface Eth-Trunk20
+interface GigabitEthernet2/0/0
  undo shutdown
- mpls traffic-eng auto-bw 60
+ interface GigabitEthernet 0/0/0
+ shutdown
+ interface GigabitEthernet 0/0/1
+interface Eth-Trunk20
+ interface Eth-Trunk20
+ eth-trunk 20
+ speed 1000
  portswitch
  port default vlan 100
  port trunk allow-pass vlan 100
+return
+interface GigabitEthernet0/0/20
  ip address 10.1.1.2 255.255.255.0
 interface GigabitEthernet0/0/0
  undo shutdown
- stp disable
+ eth-trunk 20
+ interface GigabitEthernet 0/0/0
+ shutdown
+ interface GigabitEthernet 0/0/1
 interface GigabitEthernet0/0/1
- undo shutdown
- stp disable
+ eth-trunk 20

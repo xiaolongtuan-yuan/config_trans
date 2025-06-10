@@ -1,25 +1,25 @@
-sysname name CE1
-interface GigabitEthernet1/0/2
+sysname CE1
+interface GigabitEthernet1/0/1
  undo shutdown
+ multicast user-aggregation vlan 81
  vlan-type dot1q 1
  ip address 192.168.1.2 255.255.255.0
  ip address 172.16.1.2 255.255.255.0
+return
 bgp 65410
- import-route direct
  ipv4-family unicast
-  peer none route-policy IMPORT-DIRECT export
- peer accept enable
- import-route external
- confederation peer-as none 100
- network 192.168.1.1 0.0.0.0
- network 172.16.1.1 0.0.0.0
+  import-route direct
+ peer 10.1.1.2 enable
 router id 192.168.1.2
 ospf 1 router-id 192.168.1.2
+mpls lsr-id 192.168.1.2
+traffic-policy 1 inbound
 traffic policy 1
 user-group EBGP
-interface GigabitEthernet1/0/1
-port link-type trunk
-#
-port trunk allow-pass vlan 1
-interface GigabitEthernet1/0/1.1
-ip address 192.168.1.2 255.255.255.0
+ peer 192.168.1.1 as-number 100
+ peer 172.16.1.1 as-number 100
+bgp 600
+ ipv4-family unicast
+  peer 5.5.5.5 route-policy IMPORT-DIRECT export
+bgp 100
+ peer 100 ebgp-max-hop 255

@@ -1,20 +1,28 @@
 hostname U-PE2
-mpls ldp discovery transport-address GigabitEthernet1/0/0
-mpls ldp remote-peer 3.3.3.9 3.3.3.9
-l2vpn evpn instance 1 vlan-based
+end
+mpls ldp advertise-labels interface GigabitEthernet1/0/0
+mpls ldp neighbor 3.3.3.9 targeted
+l2 vfi U-PE2-L2VPN manual
+vpn id 200
+neighbor 3.3.3.9 encapsulation mpls
+l2 vfi U-PE2-200 manual
+!
+interface GigabitEthernet2/0/0
+ no shutdown
+ encapsulation ethernet-ccc
+ mpls ldp ccc
+xconnect 3.3.3.9 200 encapsulation mpls
 neighbor none remote-as 200
-switchport trunk encapsulation dot1q
-l2vpn xconnect context context_name
- control-word
+l2vpn xconnect context U-PE2
+encapsulation ethernet
+router ospfv3 1
 interface GigabitEthernet1/0/0
  no shutdown
  ip address 10.4.1.2 255.255.255.0
- ipv6 address 2001:DB8::/64 eui-64
- encapsulation ethernet-ccc
-interface GigabitEthernet2/0/0
- no shutdown
- ipv6 address 2001:DB8::/64 eui-64
-interface Loopback0
+ mpls ldp ipv4
  ip address 5.5.5.9 255.255.255.255
-network 0.0.0.0 0.0.0.0 area 0
-network 0.0.0.0 0 area 0
+interface ge-2/0/0.0
+router ospf 1
+ router-id 4.4.4.4
+ no passive-interface Loopback0
+ no passive-interface GigabitEthernet1/0/0

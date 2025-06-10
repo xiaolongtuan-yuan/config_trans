@@ -1,14 +1,26 @@
 hostname CE1
+end
 interface GigabitEthernet1/0/0
  no shutdown
  ip address 10.1.1.1 255.255.255.0
-interface Loopback1
  ip address 11.11.11.11 255.255.255.255
-aaa authentication login default group external local
-redistribute bgp
-redistribute connected
-policy-map EXPORT_DIRECT
+router bgp 600
+ neighbor 10.1.1.2 remote-as 100
+ neighbor 10.1.1.2 activate
+ no synchronization
+ address-family ipv4 unicast
+ address-family ipv4
+ address-family inet unicast
+ exit-address-family
+aaa authentication login external group external local
+aaa authentication login external group 10.1.1.2 local
+router bgp 100
+ neighbor 10.1.1.2 remote-as 100
+  neighbor 10.1.1.2 remote-as 100
+aaa authentication login EXPORT_DIRECT group none local
+router bgp [local-as-number]
  route-map EXPORT_DIRECT permit 10
- match ip address prefix-list DIRECT_ROUTES
- match source-protocol connected
-ip route 11.11.11.11 255.255.255.255 Null0
+ match interface Loopback0
+neighbor 10.1.1.2 route-map EXPORT_DIRECT out
+route-map EXPORT_DIRECT permit 10
+ip route 11.11.11.11 255.255.255.255 Null0 none

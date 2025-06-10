@@ -1,29 +1,33 @@
 set system host-name P
+set protocols mpls interface ge-0/0/0.0
 set interfaces ge-0/0/0 unit 0 family mpls
 set protocols ldp router-id 1.1.1.9
-set interfaces ge-1/0/0 unit 0 family mpls
+set interfaces ge-1/0/0 unit 0 family advertise-labels
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.2/24
 set interfaces ge-1/0/0 unit 0 family inet interface-mode point-to-point
-set interfaces ge-1/0/0 set protocols isis interface <interface-name> level 2 metric 10
-set protocols ldp transport-address 2.2.2.2
+set interfaces ge-1/0/0 unit 0 family inet maximum-labels 153800
+set interfaces ge-1/0/0 unit 0 family mpls
+set interfaces lo0.1 unit 0 family inet none
+set interfaces lo0.1 unit 0 family inet filter input isis_passive
+set interfaces lo0.1 unit 0 family mpls maximum-labels 153800
 set protocols ldp track-igp-metric
 set protocols isis interface ge-1/0/0.0 level 2 metric 10
 set protocols isis interface ge-1/0/0.0 level 2 metric wide
 set protocols isis interface ge-1/0/0.0 level 2 metric none
 set protocols ospf3 area 0.0.0.0 interface lo0.1 passive
+set protocols mpls interface ge-1/0/0.0
 set interfaces ge-2/0/0 unit 0 disable
 set interfaces ge-2/0/0 disable
 set interfaces ge-2/0/0 ether-options no-auto-negotiation
 set interfaces ge-2/0/0 unit 0 family inet address 10.2.1.1/24
-set interfaces ge-2/0/0 unit 0 family inet interface-mode point-to-point
-set interfaces ge-2/0/0 set protocols isis interface <interface-name> level 2 metric 10
+set interfaces ge-2/0/0 unit 0 family iso interface-mode point-to-point
+set interfaces ge-2/0/0 unit 2 family inet maximum-labels 153800
 set interfaces ge-2/0/0 unit 0 family mpls
+set protocols mpls interface ge-2/0/0.0
 set interfaces lo0 unit 1 disable
 set interfaces lo0 disable
 set interfaces lo0 unit 0 family inet address 2.2.2.2/32
-set interfaces lo0.1 set protocols isis passive interface lo0.0
-set interfaces lo0.1 set protocols mpls label-range static-label-range start 153616 end 153800
 set protocols isis export REDIST-CONNECTED

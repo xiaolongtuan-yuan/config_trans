@@ -1,38 +1,42 @@
 set system host-name MasterA
-set system host-name CE1
-set system host-name virtual-cluster-access
-set interfaces irb unit 100 family inet address 3.3.3.3
-set protocols isis level 65534 set protocols isis description "auto-generated for virtual-cluster-access"
-set protocols isis level 65534 disable
+set system name-server none
+set chassis cluster reth-count 2
+set chassis cluster redundancy-group 1 node 0 priority 100
+set chassis cluster redundancy-group 1 node 1 priority 1
+set chassis cluster redundancy-group 2 node 0 priority 100
+set chassis cluster redundancy-group 2 node 1 priority 1
+set interfaces fab0 fabric options node 0
+set interfaces fab0 fabric options node 1
+set access radius-server 172.30.0.8 address 10.6.55.55
+set access radius-server 3.3.3.3 address 3.3.3.3
+set protocols isis level 1
 set protocols isis interface ge-1/0/0.0 level 1 metric none
-set protocols isis interface ge-1/0/0.0 level wide metric 20
-set interfaces ge-1/0/0 unit 0 family inet address none vrrp-group 65534 preempt hold-time 300
-set protocols isis interface ge-0/0/0.0
+set protocols isis interface ge-1/0/0.0 level wide metric 10
+set protocols isis level 65534 disable
+set interfaces ge-1/0/0 unit none family none address none vrrp-group none virtual-address none
 set interfaces ge-1/0/1 disable
 set interfaces ge-1/0/1 unit 0 disable
 set interfaces ge-1/0/1 unit 0 family inet address 10.1.3.2/30
-set interfaces ge-1/0/1 set protocols isis interface ge-1/0/1.0 level 1
-set interfaces ge-1/0/1 set protocols isis interface ge-1/0/2.0 level 1
-set interfaces ge-1/0/1 set protocols isis interface lo0.0 level 1
-set interfaces ge-1/0/1 unit 0 family inet mpls
-set interfaces ge-1/0/1 unit 0 family inet address none/none vrrp-group none virtual-address none
+set interfaces ge-1/0/1 unit 65534 family inet service input policy-p1
+set interfaces ge-1/0/1 unit 0 family mpls
+set interfaces ge-1/0/1 unit 0 family inet address none/24 vrrp-group 1 virtual-address none
 set interfaces ge-1/0/2 disable
 set interfaces ge-1/0/2 unit 0 disable
 set interfaces ge-1/0/2 unit 0 family inet address 10.3.4.1/30
-set interfaces ge-1/0/2 set protocols isis interface all level 1
-set interfaces ge-1/0/2 unit 0 family inet mpls
-set interfaces ge-1/0/2 unit 0 family inet address enable/24 vrrp-group 1 virtual-address none
+set interfaces ge-1/0/2 unit 0 family inet service input none
+set interfaces ge-1/0/2 unit 0 family mpls
+set interfaces ge-1/0/2 unit 0 family inet address enable/none vrrp-group none virtual-address none
 set interfaces lo0 disable
 set interfaces lo0 unit 0 family inet address 3.3.3.3/32
-set interfaces lo0 set protocols isis interface all level 1
-set interfaces lo0 set protocols isis instance 65534 interface all level 1
+set interfaces lo0 unit 0 family inet service input none
 set interfaces Remote-Ap11 disable
 set interfaces Remote-Ap11 unit 0 disable
 set interfaces Remote-Ap11 unit 0 family inet address 192.168.0.2/24
-set interfaces Remote-Ap11 unit 1 tunnel key 0
+set interfaces Remote-Ap11 unit 1 family inet address none
 set interfaces ge-1/0/3 unit 0 family inet address 1.1.1.1/24
 set interfaces ge-1/0/3 unit 0 family inet address 2.2.2.2/24
 set interfaces Remote-Ap21 disable
 set interfaces Remote-Ap21 unit 0 disable
 set interfaces Remote-Ap21 unit 0 family inet address 192.168.1.2/24
-set interfaces Remote-Ap21 unit 1 tunnel key none
+set interfaces Remote-Ap21 unit 1 family inet address none
+set interfaces ge-0/0/0 unit 1 vlan-id 2

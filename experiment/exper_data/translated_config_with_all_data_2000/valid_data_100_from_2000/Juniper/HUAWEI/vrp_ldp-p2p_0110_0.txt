@@ -1,15 +1,17 @@
 sysname LSRA
+return
+ mpls ccc out-interface GigabitEthernet1/0/1.100
 router id 10.10.1.1
 ospf 1 router-id 10.10.1.1
-mpls rsvp-te
+mpls lsr-id 10.10.1.1
+mpls
+ mpls ldp
 mpls label protocol ldp
 interface GigabitEthernet0/0/0
  undo shutdown
  ip address 10.1.1.1 255.255.255.0
- ipv6 address none mpls
  ip address 10.10.1.1 255.255.255.255
-interface GigabitEthernet0/0/0.0
 isis 1
- mpls traffic-eng level-1
-interface LoopBack0
- mpls traffic-eng passive-interface LoopBack0
+ network-entity 10.0000.0000.0001.00
+ is-level level-1
+ auto-cost enable

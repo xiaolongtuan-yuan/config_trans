@@ -1,16 +1,15 @@
 set system host-name DeviceA
-set interfaces Lmpif1/0/0 disable
-set interfaces Lmpif1/0/0 unit 0 disable
-set interfaces Lmpif1/0/0 set interfaces Lmpif1/0/0 encapsulation ppp
-set interfaces Lmpif1/0/0 unit 0 family inet address 10.110.0.1/24
-set interfaces Lmpif1/0/0 set interfaces lmpif-1/0/0 encapsulation ppp
-set interfaces Lmpif1/0/0 set interfaces lmpif-1/0/0 ppp chap local-name "rta"
-set interfaces Lmpif1/0/0 set interfaces lmpif-1/0/0 ppp chap local-password "$ABC123$EDF~DAdfFD934J3<DAF#*<!@XYZ"
-set interfaces lm-1/0/0 set interfaces lmpif1/0/0 encapsulation ppp
-set interfaces lm-1/0/0 set interfaces lmpif1/0/0 ppp-authentication chap
-set interfaces lm-1/0/0 set interfaces lmpif1/0/0 ppp-options chap local-name "rta"
-set protocols oam ethernet connectivity-fault-management maintenance-association ma1 set system login user rtb class ppp
-set protocols oam ethernet connectivity-fault-management maintenance-association ma1 set system authentication-order authentication-scheme default1 set access profile default1 authentication-order local
-set protocols oam ethernet connectivity-fault-management maintenance-association ma1 set protocols ppp authentication-order default1
-set protocols oam ethernet connectivity-fault-management maintenance-association rtb md rtb
+set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 0 tunnel protocol ppp
 set interfaces ge-1/0/0 unit 1 vlan-id 2
+set interfaces lm-1/0/0 unit 0 family inet address 10.110.0.1/24
+set interfaces lm-1/0/0 unit 0 encapsulation ppp
+set interfaces lm-1/0/0 unit 0 family inet service input rta
+set interfaces Lmpif1/0/0 unit 0 tunnel protocol gre
+set interfaces Lmpif1/0/0 unit 0 family inet service input default1
+set system authentication-order password set system login user rtb class ppp
+set system authentication-order radius
+set system authentication-order tacplus
+set protocols oam ethernet connectivity-fault-management maintenance-association rtb md rtb
+set protocols oam ethernet connectivity-fault-management maintenance-association ma1

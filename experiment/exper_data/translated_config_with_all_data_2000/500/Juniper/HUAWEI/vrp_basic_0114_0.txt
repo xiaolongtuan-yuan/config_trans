@@ -1,21 +1,19 @@
-sysname name SSH_Server
+sysname SSH_Server
 ip domain-name example.com
+stelnet server enable
+ssh server cipher aes128_ctr aes192_ctr aes256_ctr
+ssh server protocol v2
 ssh server version 2
-ssh client cipher aes128-ctr none none
 ssh client cipher aes128-ctr aes192-ctr aes256-ctr
+ssh client cipher aes192-ctr none none
 ssh client cipher aes256-ctr aes192-ctr aes128-ctr
-interface GigabitEthernet0/0/0
+interface LoopBack0
  undo shutdown
  ip address 10.1.1.1 255.255.255.255
  ip address 10.1.1.2 255.255.0.0
+return
+interface ge-0/0/0.0
 user-group client001
-user-group super-user
-Sysname device name
-stelnet server enable
-ssh server cipher aes128_ctr aes192_ctr aes256_ctr
-ssh server hmac sha1 sha1_96 sha2_256 sha2_512
-ssh server key-exchange dh_group14_sha1 dh_group1_sha1
-ssh server protocol v2
-ssh server authentication-type password
-interface GigabitEthernet 0/0/0
-shutdown
+ local-user client001 class manage
+ local-user client001 privilege level 15
+Sysname client001

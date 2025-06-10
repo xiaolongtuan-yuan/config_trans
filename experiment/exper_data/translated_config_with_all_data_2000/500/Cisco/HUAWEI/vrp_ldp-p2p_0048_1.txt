@@ -1,17 +1,22 @@
-sysname name LSRB
-interface LoopBack0
+sysname LSRB
+mpls lsr-id 3.3.3.9
+mpls
+interface GigabitEthernet2/0/0
  mpls
- ip address 10.1.2.1 255.255.255.0
- ip address 10.1.1.2 255.255.255.0
- ip address 2.2.2.9 255.255.255.255
 interface GigabitEthernet1/0/1
-interface {'name': 'interface name', 'type': 'string', 'explanation': 'Interface name'}.{'name': 'subinterface number', 'type': 'integer', 'explanation': 'subinterface number'}
  undo shutdown
+ ip address 10.1.2.1 255.255.255.0
+ mpls
+return
 interface GigabitEthernet1/0/3
-interface Loopback0
+ undo shutdown
+ ip address 10.1.1.2 255.255.255.0
+ mpls
+interface LoopBack0
+ ip address 2.2.2.9 255.255.255.255
 ospf 1
- network 2.2.2.9 0.0.0.0
+ospf 1 router-id 2.2.2.9
  area 0
- network 10.1.1.0 0.0.0.255
- network 10.1.2.0 0.0.0.255
-mpls ldp router-id LoopBack0
+  network 2.2.2.9 0.0.0.0
+  network 10.1.1.0 0.0.0.255
+  network 10.1.2.0 0.0.0.255

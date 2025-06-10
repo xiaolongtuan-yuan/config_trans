@@ -1,27 +1,25 @@
 set system host-name DeviceA
-set interfaces ge-1/0/1 unit 0 disable
+set interfaces ge-1/0/1 unit 1/0/1 disable
 set interfaces ge-1/0/1 disable
 set interfaces ge-1/0/1 ether-options no-auto-negotiation
 set interfaces ge-1/0/1 unit 0 family inet address 10.1.1.1/24
 set interfaces ge-1/0/1 unit 2 disable
-set interfaces ge-1/0/1 unit 1 disable
+set interfaces ge-1/0/1 unit 0 tunnel ipv6-prefix 2001::/64
+set interfaces ge-1/0/1 unit 0 tunnel ipv6-prefix-length 64
+set interfaces ge-1/0/1 unit 0 tunnel ipv6-prefix-length 56
 set interfaces ge-1/0/1 unit 0 tunnel source GigabitEthernet1/0/1
 set interfaces ge-1/0/1 tunnel destination 203.0.113.5
-set interfaces ge-1/0/2 unit 0 family inet6
-set interfaces ge-1/0/2 unit 0 family inet6 address 2001:DB8:101:101::1/64
-set interfaces tunnel1 family inet6 address 2001:DB8:101:100::1/56
-set interfaces tunnel unit 1 tunnel mode ipsec-v4
-set interfaces gr-1/0/1 unit 0 family inet6 ipsec-sa vpn-profile
+set interfaces ge-1/0/1 unit 0 tunnel protocol gre
+set interfaces ge-1/0/1 unit 0 tunnel protection ipsec-profile VPN_PROFILE
+set interfaces gr-1/0/1 unit 1 disable
+set interfaces gr-1/0/1 disable
 set services 6rd ipv6-prefix 2001:DB8::/32
-set security ike proposal VPN_IKE_PROFILE authentication-method pre-shared-keys
-set security ike proposal VPN_IKE_PROFILE dh-group group14
-set security ike proposal VPN_IKE_PROFILE authentication-algorithm sha-256
-set security ike proposal VPN_IKE_PROFILE encryption-algorithm aes-256-cbc
-set security ike policy VPN_IKE_PROFILE mode main
-set security ike policy VPN_IKE_PROFILE proposals VPN_IKE_PROFILE
-set security ike policy VPN_IKE_PROFILE pre-shared-key ascii-text "keyring-key"
-set security ike policy VPN_IKE_PROFILE peer 203.0.113.5
-set security ike policy VPN_KEYRING
-set security ipsec profile VPN_PROFILE ike-proposal VPN_IKE_PROFILE
-set security ipsec vpn VPN_PROFILE ike gateway VPN_IKE_PROFILE
+set security ike proposal VPN_IKE_PROFILE
+set services l2tp tunnel remote-gateway-address 203.0.113.5
+set security nat destination pool NAT64_DEST_POOL address 203.0.113.5/255.255.255.255
+set system services ssh authentication-order password
+set system services telnet authentication-order pre-share
+set security ipsec policy VPN_KEYRING
+set security ipsec proposal VPN_PROFILE
+set security ike policy VPN_IKE_PROFILE
 set protocols isis export REDIST-CONNECTED

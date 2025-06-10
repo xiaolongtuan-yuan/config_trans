@@ -8,6 +8,7 @@ interface GigabitEthernet1/0/1
  no shutdown
  ip address 192.168.2.2 255.255.255.0
  isis network point-to-point
+end
 interface LoopBack0
  ip address 1.1.1.1 255.255.255.255
  isis network point-to-point
@@ -19,10 +20,9 @@ router bgp 100
  address-family vpnv4
  neighbor 2.2.2.2 activate
  exit-address-family
- address-family l2vpn-family evpn
  address-family l2vpn evpn
-  neighbor 2.2.2.2 route-reflector-client
+ network 2.2.2.2 mask 255.255.255.255
+ address-family l2vpn-family evpn
  neighbor 3.3.3.3 activate
+ network 3.3.3.0 mask 255.255.255.0
  address-family ipv4
-  neighbor 3.3.3.3 route-reflector-client
-end

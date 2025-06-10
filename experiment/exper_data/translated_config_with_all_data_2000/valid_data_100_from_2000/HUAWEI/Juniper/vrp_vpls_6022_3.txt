@@ -1,36 +1,41 @@
 set system host-name ASBR2
 set system host-name 3.3.3.3
-set system host-name mpls
-set protocols l2vpn
-set interfaces ge-0/0/0 unit 0 family inet mpls ldp
-set interfaces ge-0/0/0 unit 0 family inet service input none
+set interfaces ge-0/0/0 unit 0 family mpls
+set interfaces ge-0/0/0 unit 1 vlan-id 1
+set protocols ldp interface all
+set protocols ldp interface ge-2/0/0.0
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 unit 0 family inet address 10.20.1.2/30
-set interfaces ge-1/0/0 unit 0 family inet mpls
+set interfaces ge-1/0/0 unit 0 family mpls
 set interfaces ge-2/0/0 disable
 set interfaces ge-2/0/0 unit 0 disable
 set interfaces ge-2/0/0 unit 0 family inet address 10.30.1.1/24
-set interfaces ge-2/0/0 unit 0 family inet mpls maximum-labels 5
-set interfaces ge-2/0/0 unit 0 family inet mpls ldp
-set interfaces lo0.1 disable
+set interfaces ge-2/0/0 unit 0 family mpls
+set protocols ldp
+set interfaces lo0 disable
 set interfaces lo0.1 unit 0 family inet address 3.3.3.3/32
 set routing-options autonomous-system 200
-set protocols bgp group 200 type external
+set protocols bgp group 200 type 200
+set protocols bgp group 200 type internal
 set protocols bgp group 200 neighbor 4.4.4.4 peer-as 200
-set protocols bgp group 200 export 200
 set protocols bgp group 200 peer-as 200
+set protocols bgp group 200 export BGP-200
+set protocols bgp group 200 type external
 set protocols bgp group 200 neighbor 10.20.1.1 peer-as 100
-set protocols bgp group 200 export BGP-NETWORKS
-set protocols bgp group 200 family inet unicast set protocols bgp group <group-name> neighbor 10.20.1.1 labeled-unicast explicit-null
 set protocols bgp group 200 peer-as 100
+set protocols bgp group 200 export BGP-PEER-100
+set protocols bgp group 200 family inet unicast
+set protocols bgp group 200 family inet-vpn unicast
 set protocols bgp group 200 export policy1
-set protocols bgp group 200 neighbor 4.4.4.4 peer-as none
+set protocols bgp group 200 neighbor-4.4.4.4 peer-as 100
 set protocols bgp group 200 export policy2
-set protocols bgp group IBGP local-as 64512
-set protocols ospf area 4.4.4.4 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.4.4.4.4 interface ge-0/0/1.0
+set policy-options policy-statement BGP-PEER-4.4.4.4 term 4.4.4.4 then enable
+set policy-options policy-statement BGP-NETWORKS term 10.20.1.1 then enable
+set protocols bgp group IBGP neighbor-10.20.1.1 peer-as 100
 set protocols isis export policy1
 set routing-options static route none discard
 set protocols isis export policy2
+set routing-options static route 0.0.0.0/0 discard
 set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
-set system host-name CE1

@@ -1,37 +1,40 @@
 {
-    "command_accuracy": 0.6,
+    "command_accuracy": 0.7,
     "missed_commands": [
-        "bfd pst bind peer-ip 10.1.1.2 interface gigabitethernet1/0/0",
         "discriminator local 1",
         "discriminator remote 2",
-        "process-pst",
-        "return",
-        "discriminator local 1",
-        "discriminator remote 2",
-        "process-pst",
-        "return"
+        "process-pst"
     ],
-    "grammatical_accuracy": 0.5,
+    "grammatical_accuracy": 0.6,
     "missed_templates": [
         "bfd pst bind peer-ip [parameter1] interface [parameter2]",
         "discriminator local [parameter1]",
         "discriminator remote [parameter1]",
-        "process-pst",
-        "return"
+        "process-pst"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.0,
-    "command_for_llm": [],
-    "llm_trans_commands": [],
+    "llm_command_ratio": 0.2857142857142857,
+    "command_for_llm": [
+        "minimum-interval 300",
+        "multiplier 3"
+    ],
+    "llm_trans_commands": [
+        "bfd ge-1/0/0 bind peer-ip 10.1.1.1 interface GigabitEthernet1/0/0",
+        "bfd ge-1/0/0 min-tx-interval 300",
+        "bfd ge-1/0/0 bind peer-ip 10.1.1.1 interface ge-1/0/0",
+        "detect-multiplier 3"
+    ],
     "source_commands": [
         "interface ge-1/0/0 bfd-liveness-detection",
         "set protocols bfd interface ge-1/0/0",
-        "multiplier 3",
-        "minimum-interval 300",
         "set interfaces ge-1/0/0",
-        "set protocols ospf area 0",
+        "minimum-interval 300",
         "set system host-name DeviceA",
-        "unit 0 family inet address 10.1.1.1/24"
+        "unit 0 family inet address 10.1.1.1/24",
+        "multiplier 3",
+        "set protocols ospf area 0"
     ],
-    "llm_origin_response": []
+    "llm_origin_response": [
+        ""
+    ]
 }

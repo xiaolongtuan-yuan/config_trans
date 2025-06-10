@@ -1,25 +1,23 @@
 hostname DeviceA
 aaa authentication enable default none
+ snmp-server user nms2-admin group grp1 v3 auth sha priv aes 128
+aaa authentication enable default grp1
+aaa authentication enable default tg1
+aaa authentication enable default enable
 interface GigabitEthernet1/0/0
-interface {'name': 'interface name', 'type': 'string', 'explanation': 'Interface name'}.{'name': 'subinterface number', 'type': 'integer', 'explanation': 'subinterface number'}
- no shutdown
- ip ospf 1 area 0
- ospfv3 1 ipv6 area 0.0.0.0
-interface loopback0
  ip address 1.1.2.1 255.255.255.0
+interface GigabitEthernet1/0/1
+ no shutdown
+end
+interface loopback0
  ip address 1.1.3.1 255.255.255.255
- ip address 1.1.2.0 255.255.255.0
-snmp-server user nms2-admin grp1 v3 auth sha %#%#n}=%C*UimYlx9-:$>T=*_y4PX*e~u6I_Aa9s=I1$%#%# priv aes 128 %#%#at{pQGh!uMyq..8WSJ(<bU`~K_)[f-}s&*Gmw!iE%#%#
+router ospf 1
+ network 1.1.2.0 0.0.0.255 area 0.0.0.0
+ network 1.1.3.1 0.0.0.0 area 0
+snmp-server
+snmp-server user nms2-admin grp1 v3 auth sha %#%#n}=%C*UimYlx9-:$>T=*_y4PX*e~u6I_Aa9s=I1$%#%# priv aes 128 10
 snmp-server engineID local 800007DB03001974593301
-snmp-server enable traps none Loopback0 none
+snmp-server enable traps snmp pim neighbor-change
 snmp-server contact Operator at 010-12345678
 snmp-server host none version 3 none
-username nms2-admin secret 9 %#%#n}=%C*UimYlx9-:$>T=*_y4PX*e~u6I_Aa9s=I1$%#%#
-snmp-server user nms2-admin group grp1 v3 auth sha priv aes
-username nms2-admin group grp1
-privilege exec level 10 snmp-server
-privilege snmp level 7 mode exec command write
-privilege group grp1
-privilege exec level 1 write snmp
-privilege snmp level 15 mode write
-snmp-server enable
+snmp-server user nms2-admin grp1 v3 auth sha %#%#n}=%C*UimYlx9-:$>T=*_y4PX*e~u6I_Aa9s=I1$%#%# priv aes 128 %#%#at{pQGh!uMyq..8WSJ(<bU`~K_)[f-}s&*Gmw!iE%#%#

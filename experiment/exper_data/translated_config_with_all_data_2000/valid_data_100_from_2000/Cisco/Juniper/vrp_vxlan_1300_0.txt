@@ -1,21 +1,23 @@
 set system host-name Device1
 set protocols isis interface ge-1/0/0.0
-set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 1/0/0 disable
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 unit 0 family inet address 192.168.3.2/24
 set interfaces ge-1/0/0 unit 0 family inet interface-mode point-to-point
 set interfaces ge-1/0/0 unit 0 family inet address 192.168.2.2/24
 set interfaces ge-1/0/0 unit 0 family inet address 1.1.1.1/32
+set interfaces ge-1/0/1 unit 0 disable
+set interfaces ge-1/0/1 disable
 set interfaces lo0 unit 0 disable
 set interfaces lo0 disable
 set routing-options autonomous-system 100
 set protocols bgp group IBGP type external
 set protocols bgp group IBGP neighbor 2.2.2.2 peer-as 100
+set protocols bgp group IBGP peer-as 100
 set protocols bgp group IBGP export BGP-NETWORKS
 set protocols bgp group IBGP neighbor 3.3.3.3 peer-as 100
-set protocols bgp group IBGP export 100
+set protocols bgp group IBGP export BGP-AS100
 set protocols bgp group IBGP family inet unicast
 set protocols bgp local-as 65410
-set protocols bgp group ibgp neighbor 2.2.2.2 route-reflector-client
-set protocols bgp group IBGP neighbor 3.3.3.3 cluster 1.1.1.1
+set routing-options autonomous-system 65000

@@ -1,18 +1,22 @@
 hostname P
 mpls ldp router-id 2.2.2.2
+mpls ldp router-id Loopback0 force
 ip cef
+ mpls traffic-eng signalling rsvp
+ mpls traffic-eng path-selection cspf
 interface GigabitEthernet2/0/0
  mpls ip
- mpls rsvp-te
+ mpls traffic-eng
  no shutdown
  ip address 192.168.10.1 255.255.255.0
-mpls traffic-eng
+ ip rsvp signalling
 interface GigabitEthernet1/0/0
+ no shutdown
  ip address 192.168.1.2 255.255.255.0
  mpls ip
- mpls rsvp-te
-interface GigabitEthernet1/0/1
- no shutdown
+ mpls traffic-eng tunnels
+ mpls traffic-eng signalling rsvp
+end
 interface LoopBack1
  ip address 2.2.2.2 255.255.255.255
 router ospf 1
@@ -20,5 +24,4 @@ router ospf 1
  network 2.2.2.2 0.0.0.0 area 0
  network 192.168.1.0 0.0.0.255 area 0
  network 192.168.10.0 0.0.0.255 area 0
-  mpls traffic-eng area 0
-end
+ mpls traffic-eng area

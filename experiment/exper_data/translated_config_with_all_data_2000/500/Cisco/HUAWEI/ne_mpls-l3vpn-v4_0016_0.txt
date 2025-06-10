@@ -1,19 +1,18 @@
-sysname name CE1
+sysname CE1
 interface GigabitEthernet2/0/0
-interface {'name': 'interface name', 'type': 'string', 'explanation': 'Interface name', 'example': 'GigabitEthernet1/0/0'}.{'name': 'subinterface number', 'type': 'integer', 'explanation': 'subinterface number', 'example': 100}
  undo shutdown
-interface GigabitEthernet1/0/0
  ip address 10.4.1.1 255.255.255.0
- ip address 10.1.1.1 255.255.255.0
-interface {'name': 'interface name', 'type': 'string', 'explanation': 'Interface name'}.{'name': 'subinterface number', 'type': 'integer', 'explanation': 'subinterface number'}
+return
+interface GigabitEthernet1/0/0
  undo shutdown
+ ip address 10.1.1.1 255.255.255.0
 bgp 600
  peer 10.1.1.2 as-number 100
  peer 10.1.1.2 enable
+ import-route direct
  ipv4-family unicast
-  undo synchronization
-  peer 10.1.1.2 advertise-community
+  peer 10.1.1.2 next-hop-local
+ undo synchronization
  network 10.1.1.0 0.0.0.255
 ip route-static 0.0.0.0 0.0.0.0 10.1.1.2 preference 60
 ip route-static 0.0.0.0 0.0.0.0 10.1.1.2
-ipv4-family unicast

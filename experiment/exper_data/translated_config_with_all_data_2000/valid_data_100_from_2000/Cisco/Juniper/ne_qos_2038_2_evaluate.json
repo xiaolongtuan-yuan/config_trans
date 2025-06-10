@@ -1,45 +1,41 @@
 {
-    "command_accuracy": 0.6,
+    "command_accuracy": 0.7,
     "missed_commands": [
         "set protocols bgp group internal type internal",
-        "set protocols bgp group internal peer-as 100",
         "set protocols bgp group internal family inet unicast",
         "set protocols bgp group internal import import-connected"
     ],
-    "grammatical_accuracy": 0.8,
+    "grammatical_accuracy": 0.9,
     "missed_templates": [
-        "set protocols bgp group [group_name] peer-as [as_number]",
         "set protocols bgp group [parameter1] import [parameter2]"
     ],
     "llm_command_accuracy": 0.2,
-    "llm_command_ratio": 0.3157894736842105,
+    "llm_command_ratio": 0.2,
     "command_for_llm": [
         "redistribute connected",
         "synchronization"
     ],
     "llm_trans_commands": [
-        "set protocols bgp group internal synchronization",
-        "set policy-options policy-statement REDIST-CONNECTED term 1 from protocol direct",
-        "set policy-options policy-statement REDIST-CONNECTED term 1 then accept",
-        "set protocols bgp group IBGP export REDIST-CONNECTED",
-        "set routing-options rib inet.0 aggregate route 0.0.0.0/0",
-        "set routing-options autonomous-system 100"
+        "set protocols bgp synchronization",
+        "set policy-options policy-statement CONNECTED term 1 from protocol direct",
+        "set policy-options policy-statement CONNECTED term 1 then accept",
+        "set protocols bgp group INTERNAL export CONNECTED"
     ],
     "source_commands": [
+        "hostname DeviceC",
+        "exit-address-family",
+        "interface GigabitEthernet1/0/0",
+        "network 10.20.1.0 0.0.0.255 area 0",
+        "neighbor 10.20.1.2 remote-as 100",
+        "end",
+        "ip address 10.20.1.1 255.255.255.0",
+        "address-family ipv4 unicast",
+        "redistribute connected",
         "router bgp 100",
         "neighbor 10.20.1.2 activate",
-        "address-family ipv4 unicast",
-        "exit-address-family",
-        "end",
-        "no shutdown",
-        "network 10.20.1.0 0.0.0.255 area 0",
-        "ip address 10.20.1.1 255.255.255.0",
-        "neighbor 10.20.1.2 remote-as 100",
-        "hostname DeviceC",
+        "synchronization",
         "router ospf 1",
-        "redistribute connected",
-        "interface GigabitEthernet1/0/0",
-        "synchronization"
+        "no shutdown"
     ],
     "llm_origin_response": [
         ""

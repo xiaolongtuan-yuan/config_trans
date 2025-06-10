@@ -1,19 +1,20 @@
 hostname LSRA
 mpls ldp router-id 10.10.1.1
+mpls ldp router-id Loopback0 force
 ip cef
 interface GigabitEthernet2/0/0
  mpls ip
- mpls ip ldp autoconfig
+ mpls ldp autoconfig
+  mpls ldp router-id longest-match
  ip address 10.1.1.1 255.255.255.0
  isis network point-to-point
-mpls ldp sync
 router isis 1
  is-type level-2
  net 20.0010.0100.0001.00
 interface GigabitEthernet1/0/0
 interface GigabitEthernet1/0/1
  no shutdown
+end
 interface LoopBack0
  ip address 10.10.1.1 255.255.255.255
  isis network point-to-point
-end

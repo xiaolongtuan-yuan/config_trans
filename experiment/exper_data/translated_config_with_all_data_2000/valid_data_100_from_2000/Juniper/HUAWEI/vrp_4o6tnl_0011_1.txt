@@ -5,15 +5,17 @@ interface GigabitEthernet0/0/1
  ip address 192.168.1.2 255.255.255.0
  source 2001:db8:300::2
  destination 2001:db8:200::1
+return
 area 0.0.0.0
- ospf 1
- area 0.0.0.0
- network 0.0.0.0 255.255.255.255
-ospf 1 router-id 0.0.0.0
+ospf 0.0.0.0 router-id ge-0/0/1.0
+ undo shutdown
  area 0.0.0.0
   network 0.0.0.0 ge-0/0/1.0
 ospf 0.0.0.0 router-id gr-0/0/0.0
+ undo shutdown
  area 0.0.0.0
-  network 0.0.0.0 0.0.0.255
-ipv6 route-static :: 0 inet6.0 2001:db8:100::1
+  network 0.0.0.0 gr-0/0/0.0
+ospf 1 router-id 0.0.0.0
+ silent-interface lo0.0
+ipv6 route-static none none none none
 ipv6 route-static 2001:db8:200:: 64 none 2001:db8:100::1

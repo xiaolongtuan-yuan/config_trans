@@ -1,19 +1,25 @@
 sysname CE1
+return
 interface GigabitEthernet1/0/0
  undo shutdown
  ip address 10.1.1.1 255.255.255.0
  ip address 11.11.11.11 255.255.255.255
-user-group external
-bgp 600
- import-route direct
- network 10.1.1.2 0.0.0.0
+bgp 100
  peer 10.1.1.2 as-number 100
  ipv4-family unicast
+ ip ip-prefix export_direct permit 0.0.0.0 0 less-equal 32
+ route-policy export_direct permit node 10
+ if-match ip-prefix export_direct
+ #
+peer 10.1.1.2 as-number 100
+peer 10.1.1.2 ebgp-max-hop 255
+peer 10.1.1.2 enable
+peer 10.1.1.2 route-policy EXPORT_DIRECT export
+ ipv4-family unicast
+bgp 600
+ ipv4-family unicast
   peer 10.1.1.2 next-hop-local
-  peer none route-policy EXPORT_DIRECT export
- ipv6-family unicast
+  peer 5.5.5.5 route-policy EXPORT_DIRECT export
  peer 10.1.1.2 enable
-traffic-policy EXPORT_DIRECT inbound
-traffic-policy EXPORT_DIRECT outbound
- ip ip-policy EXPORT_DIRECT permit node 10 match protocol direct
-ip route-static 11.11.11.11 32 NULL0
+ip route-static 11.11.11.11 255.255.255.255 none none
+ip route-static 11.11.11.11 255.255.255.255 reject

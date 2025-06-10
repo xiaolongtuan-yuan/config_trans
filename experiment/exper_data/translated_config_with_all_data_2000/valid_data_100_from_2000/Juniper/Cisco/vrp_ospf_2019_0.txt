@@ -1,12 +1,13 @@
 hostname DeviceA
-network 0.0.0.0 0.0.0.0 area 0
-network 0.0.0.0 255.255.255.255 area 0
-network 0.0.0.0 0.0.0.0 area 0.0.0.1
-network none 0.0.0.0 area 0.0.0.1
-router ospf 1 vrf none
- network 0.0.0.0 0.0.0.1 area 0
-router ospf 1 vrf 0.0.0.1
- network 0.0.0.0 255.255.255.255 area 1
+end
+router ospf 1
+ router-id 1.1.1.1
+ no passive-interface GigabitEthernet1/0/0
+ no passive-interface GigabitEthernet3/0/0
+ no passive-interface GigabitEthernet2/0/0
+ area 0.0.0.1 nssa no-summary
+router ospf 1 vrf vpn1
+network 0.0.0.0 0.0.0.0 area 1
 interface GigabitEthernet1/0/0
  no shutdown
  ip address 192.168.0.1 255.255.255.0
@@ -16,4 +17,4 @@ interface GigabitEthernet2/0/0
 interface GigabitEthernet3/0/0
  no shutdown
  ip address 192.168.1.1 255.255.255.0
-ip route 1.1.1.1 255.255.255.255 none
+router-id 1.1.1.1

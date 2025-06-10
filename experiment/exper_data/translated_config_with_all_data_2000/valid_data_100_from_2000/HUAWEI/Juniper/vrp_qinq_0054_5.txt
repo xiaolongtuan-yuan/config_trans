@@ -1,13 +1,14 @@
 set system host-name CE3
 set interfaces ge-1/0/1.1 disable
-set interfaces ge-1/0/1.1 unit 0 disable
+set interfaces ge-1/0/1.1 unit 1 disable
 set interfaces ge-1/0/1.1 unit 0 family inet address 172.17.1.2/24
-set interfaces ge-1/0/1.1 unit 1 vlan-id 2
+set interfaces ge-1/0/1.1 unit 1 vlan-id 1
 set routing-options autonomous-system 65421
 set protocols bgp group 65421 type external
 set protocols bgp group 65421 neighbor 172.17.1.1 peer-as 100
-set protocols bgp group 65421 export BGP-NETWORKS
-set protocols bgp group 65421 family inet unicast no synchronization
-set protocols bgp group 65421 family inet unicast set protocols bgp group <group-name> no-synchronize
-set protocols bgp group 65421 neighbor-172.17.1.1 peer-as 65421
-set protocols bgp group IBGP import direct
+set protocols bgp group 65421 peer-as 100
+set protocols bgp group 65421 export 100
+set protocols bgp group 65421 family inet unicast
+set protocols bgp group 65421 family inet-vpn unicast
+set policy-options policy-statement DIRECT-IMPORT term 1 from protocol direct
+set policy-options policy-statement BGP-172.17.1.1 term 65421 then 172.17.1.1

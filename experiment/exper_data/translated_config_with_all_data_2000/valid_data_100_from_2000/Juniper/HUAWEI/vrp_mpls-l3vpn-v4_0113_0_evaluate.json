@@ -1,50 +1,61 @@
 {
-    "command_accuracy": 0.5714285714285714,
+    "command_accuracy": 0.6428571428571429,
     "missed_commands": [
         "interface loopback 1",
         "undo shutdown",
         "bgp 65001",
         "undo synchronization",
-        "network 11.11.11.11 255.255.255.255",
-        "return",
-        "interface loopback 1",
-        "undo shutdown",
-        "bgp 65001",
-        "undo synchronization",
-        "network 11.11.11.11 255.255.255.255",
-        "return"
+        "network 11.11.11.11 255.255.255.255"
     ],
     "grammatical_accuracy": 0.8571428571428571,
     "missed_templates": [
         "undo synchronization",
-        "return"
+        "network [parameter1] [parameter2]"
     ],
-    "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.10526315789473684,
+    "llm_command_accuracy": 0.14285714285714285,
+    "llm_command_ratio": 0.6666666666666666,
     "command_for_llm": [
-        "set routing-options static route 11.11.11.11/32 reject",
-        "from protocol direct"
-    ],
-    "llm_trans_commands": [
-        "ip ip-policy EXPORT_DIRECT permit node 10 match protocol direct",
-        "ip route-static 11.11.11.11 32 NULL0"
-    ],
-    "source_commands": [
-        "neighbor 10.1.1.2 peer-as 100",
-        "set interfaces lo0",
-        "set routing-options static route 11.11.11.11/32 reject",
-        "set system host-name CE1",
-        "neighbor 10.1.1.2",
-        "type external",
+        "from protocol direct",
+        "set protocols bgp group external",
+        "set policy-options policy-statement EXPORT_DIRECT",
         "family inet unicast",
         "export EXPORT_DIRECT",
-        "then accept",
-        "from protocol direct",
+        "neighbor 10.1.1.2"
+    ],
+    "llm_trans_commands": [
+        "bgp 100",
+        "peer 10.1.1.2 as-number 100",
+        "peer 10.1.1.2 ebgp-max-hop 255",
+        "peer 10.1.1.2 enable",
+        "peer 10.1.1.2 route-policy EXPORT_DIRECT export",
+        "ipv4-family unicast",
+        "ipv4-family unicast",
+        "ipv4-family unicast",
+        "ipv4-family unicast",
+        "bgp 100",
+        "peer 10.1.1.2 as-number 100",
+        "bgp 100",
+        "ip ip-prefix export_direct permit 0.0.0.0 0 less-equal 32",
+        "route-policy export_direct permit node 10",
+        "if-match ip-prefix export_direct",
+        "#"
+    ],
+    "source_commands": [
+        "set routing-options static route 11.11.11.11/32 reject",
         "set interfaces ge-1/0/0",
-        "set policy-options policy-statement EXPORT_DIRECT",
-        "unit 0 family inet address 10.1.1.1/24",
+        "from protocol direct",
         "set protocols bgp group external",
-        "unit 1 family inet address 11.11.11.11/32"
+        "set policy-options policy-statement EXPORT_DIRECT",
+        "unit 1 family inet address 11.11.11.11/32",
+        "family inet unicast",
+        "then accept",
+        "neighbor 10.1.1.2 peer-as 100",
+        "export EXPORT_DIRECT",
+        "neighbor 10.1.1.2",
+        "unit 0 family inet address 10.1.1.1/24",
+        "type external",
+        "set system host-name CE1",
+        "set interfaces lo0"
     ],
     "llm_origin_response": [
         ""

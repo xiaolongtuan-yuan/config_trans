@@ -1,35 +1,39 @@
 sysname NPE
-mpls rsvp-te
-router id 3.3.3.3
+return
+ mpls ccc out-interface GigabitEthernet1/0/1.100
+mpls
+ mpls ldp
+mpls ldp lsr-id 3.3.3.3
 mpls label protocol ldp
-interface GigabitEthernet1/0/0.0
- undo shutdown
+isis 1
+ network-entity 10.0000.0000.0001.00
 isis 2
  is-level level-2
 interface GigabitEthernet1/0/0
  undo shutdown
  ip address 10.2.1.2 255.255.255.0
- ipv6 address 2001::DB8/64 eui-64
- ip address 3.3.3.3 255.255.255.255
-interface GigabitEthernet2/0/0
  ip address 192.168.30.1 255.255.255.0
-ip vpn-instance vpn1
-interface GigabitEthernet2/0/0.0
-ip binding vpn-instance vpn1
-segment-routing mpls
-ospf 1 router-id 192.168.1.1
+ ip address 3.3.3.3 255.255.255.255
+ mpls ldp
+ip route-static none none vpn1
+ ip vpn-instance vpn1
+ospf 1 router-id 172.16.1.3
+ undo shutdown
  area 0.0.0.0
   network none ge-2/0/0.0
-user-group 100
 bgp 100
- import-route internal
+ peer 3.3.3.3 as-number 100
  ipv4-family unicast
-  peer 3.3.3.3 next-hop-local
-  undo synchronization
-  peer 2.2.2.2 next-hop-local
-  peer 2.2.2.2 label-route-capability check-tunnel-reachable
+ undo synchronization
  peer 2.2.2.2 as-number 100
-traffic-policy SPE inbound
+ peer 2.2.2.2 bfd min-tx-interval 300
+router-id 3.3.3.3
+peer 2.2.2.2 as-number 100
+peer 2.2.2.2 connect-interface LoopBack0
+peer 2.2.2.2 bfd min-tx-interval 300 min-rx-interval 300
+peer 2.2.2.2 enable
+ ipv4-family vpnv4
+ l2vpn-family evpn
 bgp 600
- peer accept enable
+ peer 10.1.1.2 enable
  ipv4-family unicast

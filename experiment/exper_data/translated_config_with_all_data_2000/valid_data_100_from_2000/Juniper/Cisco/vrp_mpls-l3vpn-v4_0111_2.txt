@@ -1,26 +1,35 @@
 hostname ASBR1
+end
+route-target import vpn1
 route-target import 100:1
-router isis
- interface vpn1
-  isis network point-to-point
-router 100:2
+ vrf definition vpn1
+route-target import 100:2
+ ip vrf vpn1
+ rd 100:2
 route-target import target:1:1
-network 0.0.0.0 0.0.0.0 area 0
-mpls ldp discovery transport-address GigabitEthernet0/0/0
+router ospf 1
+ no passive-interface GigabitEthernet0/0/1.0
+ router-id 4.4.4.4
+ no passive-interface Loopback0
+ no passive-interface GigabitEthernet0/0
+mpls ldp advertise-labels interface GigabitEthernet0/0/0
 mpls ldp router-id 2.2.2.9
-interface ge-0/0/0
- no shutdown
+mpls ldp router-id Loopback0 force
 interface GigabitEthernet0/0/0
+ no shutdown
  ip address 10.10.1.1 255.255.255.0
- ipv6 address mpls eui-64
-interface ge-0/0/1
- no shutdown
-interface GigabitEthernet0/0/1
+ mpls ldp ipv4
  ip address 12.12.12.1 255.255.255.0
-interface lo0
- no shutdown
  ip address 2.2.2.9 255.255.255.255
-aaa authentication login default group external-neighbor local
-redistribute bgp
-aaa authentication login external-neighbor group 2.2.2.9 local
-network 0.0.0.0 255.255.255.255 area 0
+router bgp external-neighbor
+ neighbor none remote-as none
+ neighbor 10.1.1.2 activate
+ no synchronization
+ address-family ipv4 unicast
+ address-family ipv4
+aaa authentication login inet-vpn group external-neighbor local
+router bgp 600
+ neighbor 2.2.2.9 remote-as none
+  router bgp <AS_NUMBER>
+  neighbor <NEIGHBOR_IP> update-source Loopback0
+aaa authentication login inet-vpn group unicast local

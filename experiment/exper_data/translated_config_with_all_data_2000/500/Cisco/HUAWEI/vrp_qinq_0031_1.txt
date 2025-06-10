@@ -1,15 +1,16 @@
-sysname name CE2
+sysname CE2
 interface GigabitEthernet1/0/1
-interface {'name': 'interface name', 'type': 'string', 'explanation': 'Interface name'}.{'name': 'subinterface number', 'type': 'integer', 'explanation': 'subinterface number'}
  undo shutdown
+return
 interface GigabitEthernet1/0/1.20
+ vlan-type dot1q 20
  ip address 10.3.1.2 255.255.255.0
 bgp 65420
  peer 10.2.1.1 as-number 100
  peer 10.2.1.1 enable
+ import-route direct
  ipv4-family unicast
   undo synchronization
-  peer 10.2.1.1 advertise-community
+  peer 10.2.1.1 next-hop-local
+ undo synchronization
  network 10.3.1.0 0.0.0.255
-dot1q termination vid 20
-ipv4-family unicast

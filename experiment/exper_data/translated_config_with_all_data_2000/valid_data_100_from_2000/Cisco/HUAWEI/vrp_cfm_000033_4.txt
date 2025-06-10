@@ -8,30 +8,28 @@ interface GigabitEthernet1/0/0
  undo shutdown
  mpls ldp remote-peer VPWS
  mpls l2vc 1.1.1.9 100
+return
 interface GigabitEthernet2/0/0
  undo shutdown
  ip address 192.168.10.2 255.255.255.0
  mpls
+interface GigabitEthernet1/0/1
  mpls ldp
-interface Loopback1
+interface LoopBack1
  ip address 3.3.3.9 255.255.255.255
+ test connectivity interface VPWS uni-direction pattern prbs15 interval second 20 interval-repeat 5
+ ip address unnumbered interface LoopBack1
 bgp 100
  peer 1.1.1.9 as-number 100
  peer 1.1.1.9 enable
  import-route direct
  ipv4-family unicast
   peer 1.1.1.9 next-hop-local
- peer 1.1.1.9 connect-interface Loopback1
+ peer 1.1.1.9 connect-interface LoopBack1
  ipv4-family vpnv4
- l2vpn-ad-family
-  peer 1.1.1.9 send-community extended
-pw-class VPWS
-interface LoopBack1
- ip address unnumbered interface LoopBack1
+  peer 1.1.1.9 advertise-community extended
 ospf 1
 ospf 1 router-id 3.3.3.9
  area 0
   network 3.3.3.9 0.0.0.0
- area 0.0.0.0
   network 192.168.10.0 0.0.0.255
-return

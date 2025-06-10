@@ -1,30 +1,33 @@
 hostname CE1
 mpls ldp router-id 2.2.2.9
+mpls ldp router-id Loopback0 force
 ip cef
 interface GigabitEthernet2/0/0
  mpls ip
- mpls ip ldp autoconfig
+ mpls ldp autoconfig
+ no shutdown
  ip address 11.1.1.1 255.255.255.0
 mpls ldp router-id Loopback1
 interface GigabitEthernet1/0/0
- no shutdown
  ip address 40.1.1.2 255.255.255.0
  mpls ip
- mpls ip ldp autoconfig
-interface Gigabitethernet2/0/0
+ mpls ldp autoconfig
+interface GigabitEthernet1/0/1
  no shutdown
+end
 interface LoopBack1
  ip address 2.2.2.9 255.255.255.255
 router bgp 200
  neighbor 11.1.1.2 remote-as 100
  address-family ipv4 unicast
   redistribute ospf 1
-  neighbor 11.1.1.2 route-map policy1 in
-  neighbor 11.1.1.2 route-map policy1 out
-  neighbor 11.1.1.2 send-label
  no synchronization
  neighbor 11.1.1.2 activate
  exit-address-family
+ address-family ipv4
+  neighbor 11.1.1.2 route-map policy1 in
+  neighbor 11.1.1.2 route-map policy1 out
+  neighbor 11.1.1.2 capability add-path receive
 router ospf 1
  network 2.2.2.9 0.0.0.0 area 0
  network 40.1.1.0 0.0.0.255 area 0
@@ -34,4 +37,3 @@ router bgp 100
   redistribute bgp
 route-map policy1 permit 1
  set mpls-label
-end

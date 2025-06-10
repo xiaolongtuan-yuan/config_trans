@@ -4,6 +4,7 @@ interface GigabitEthernet1/0/0
  ipv6 enable
  ipv6 address 2001:db8:101::2/96
  ipv6 address 2001:db8:101::2/96 none
+return
 interface GigabitEthernet2/0/0
  undo shutdown
  ipv6 enable
@@ -17,9 +18,8 @@ bgp 200
  ipv4-family unicast
   peer 2001:db8:100::1 next-hop-local
   peer 2001:db8:101::1 next-hop-local
+  peer 2001:db8:101::1 next-hop-self
  peer 2001:db8:101::1 as-number 200
  peer 2001:db8:101::1 enable
  ipv4-family ipv6
-  peer 2001:db8:101::1 next-hop-local
  undo synchronization
-return

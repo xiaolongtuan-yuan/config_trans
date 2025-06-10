@@ -1,9 +1,7 @@
 {
-    "command_accuracy": 0.4583333333333333,
+    "command_accuracy": 0.625,
     "missed_commands": [
         "set routing-options router-id 2.2.2.9",
-        "set protocols mpls interface ge-0/0/0.0",
-        "set protocols mpls interface ge-0/0/1.0",
         "set protocols ldp interface ge-0/0/0.0",
         "set protocols ldp interface ge-0/0/1.0",
         "set routing-options static route 0.0.0.0/0 next-hop 40.1.1.1",
@@ -11,14 +9,11 @@
         "set policy-options policy-statement policy1 term 1 from protocol bgp",
         "set policy-options policy-statement policy1 term 1 then next-hop self",
         "set policy-options policy-statement policy1 term 1 then accept",
-        "set protocols ospf area 0 interface ge-0/0/1.0",
-        "set protocols ospf area 0 interface lo0.0",
         "set protocols ospf export policy1"
     ],
-    "grammatical_accuracy": 0.5833333333333334,
+    "grammatical_accuracy": 0.6666666666666666,
     "missed_templates": [
         "set routing-options router-id [parameter1]",
-        "set protocols mpls interface [parameter1]",
         "set protocols ldp interface [parameter1]",
         "set routing-options static route [parameter1] next-hop [parameter2]",
         "set protocols bgp group [peerGroup] local-address [localIP]",
@@ -27,46 +22,38 @@
         "set protocols ospf export [parameter1]"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.06451612903225806,
-    "command_for_llm": [
-        "neighbor 11.1.1.2 route-map policy1 out",
-        "neighbor 11.1.1.2 next-hop-self"
-    ],
-    "llm_trans_commands": [
-        "set protocols bgp group <group-name> neighbor 11.1.1.2 export policy1",
-        "set protocols bgp group <group-name> neighbor 11.1.1.2 next-hop-self"
-    ],
+    "llm_command_ratio": 0.0,
+    "command_for_llm": [],
+    "llm_trans_commands": [],
     "source_commands": [
-        "interface GigabitEthernet2/0/0",
-        "exit-address-family",
-        "router bgp 200",
-        "neighbor 11.1.1.2 activate",
-        "end",
-        "no shutdown",
-        "neighbor 11.1.1.2 next-hop-self",
-        "interface GigabitEthernet1/0/0",
-        "no synchronization",
-        "ip address 2.2.2.9 255.255.255.255",
-        "neighbor 11.1.1.2 route-map policy1 out",
-        "mpls ldp autoconfig",
-        "interface Loopback1",
-        "ip address 40.1.1.2 255.255.255.0",
         "network 11.1.1.0 0.0.0.255 area 0",
-        "ip address 11.1.1.1 255.255.255.0",
-        "hostname CE1",
-        "neighbor 11.1.1.2 remote-as 100",
-        "route-map policy1 permit 10",
-        "router ospf 1",
-        "network 2.2.2.9 mask 255.255.255.255",
-        "mpls ldp router-id Loopback1",
-        "redistribute bgp 200 subnets",
-        "address-family ipv4 unicast",
-        "network 40.1.1.0 0.0.0.255 area 0",
         "network 2.2.2.9 0.0.0.0 area 0",
+        "ip address 11.1.1.1 255.255.255.0",
+        "address-family ipv4 unicast",
+        "neighbor 11.1.1.2 remote-as 100",
+        "exit-address-family",
+        "ip address 2.2.2.9 255.255.255.255",
+        "neighbor 11.1.1.2 next-hop-self",
+        "end",
+        "route-map policy1 permit 10",
+        "network 2.2.2.9 mask 255.255.255.255",
+        "set mpls-label",
         "mpls ip",
-        "set mpls-label"
+        "interface Loopback1",
+        "mpls ldp router-id Loopback1",
+        "interface GigabitEthernet1/0/0",
+        "neighbor 11.1.1.2 route-map policy1 out",
+        "router bgp 200",
+        "ip address 40.1.1.2 255.255.255.0",
+        "hostname CE1",
+        "network 40.1.1.0 0.0.0.255 area 0",
+        "no synchronization",
+        "redistribute bgp 200 subnets",
+        "neighbor 11.1.1.2 activate",
+        "mpls ldp autoconfig",
+        "interface GigabitEthernet2/0/0",
+        "router ospf 1",
+        "no shutdown"
     ],
-    "llm_origin_response": [
-        ""
-    ]
+    "llm_origin_response": []
 }

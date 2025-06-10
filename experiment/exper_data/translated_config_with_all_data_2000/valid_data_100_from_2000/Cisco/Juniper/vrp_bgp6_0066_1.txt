@@ -2,20 +2,22 @@ set system host-name DeviceB
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 ether-options no-auto-negotiation
-set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6
-set interfaces ge-1/0/0 set interfaces ge-2/0/0 unit 0 family inet6
-set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:101::2/96
+set interfaces ge-1/0/0 unit 0 tunnel ipv6-prefix 2001:db8::/32
+set interfaces ge-1/0/0 unit 0 tunnel ipv6-prefix-length 96
 set interfaces ge-2/0/0 unit 0 disable
 set interfaces ge-2/0/0 disable
 set interfaces ge-2/0/0 ether-options no-auto-negotiation
-set interfaces ge-2/0/0 set interfaces ge-1/0/0 unit 0 family inet6
-set interfaces ge-2/0/0 set interfaces ge-2/0/0 unit 0 family inet6
-set interfaces ge-2/0/0 set interfaces ge-2/0/0 unit 0 family inet6 address 2001:db8:100::2/96
+set interfaces ge-2/0/0 unit 0 tunnel ipv6-prefix 2001:db8::/32
+set interfaces ge-2/0/0 unit 0 tunnel ipv6-prefix-length 96
 set routing-options autonomous-system 200
+set routing-options router-id 2.2.2.2
 set protocols bgp group IBGP type external
 set protocols bgp group IBGP neighbor 2001:db8:100::1 peer-as 100
-set protocols bgp group IBGP export BGP-NETWORKS
+set protocols bgp group IBGP peer-as 100
+set protocols bgp group IBGP export BGP-AS100
+set protocols bgp group IBGP type internal
 set protocols bgp group IBGP neighbor 2001:db8:101::1 peer-as 200
+set protocols bgp group IBGP peer-as 200
 set protocols bgp group IBGP export 200
-set protocols bgp local-as 200 set protocols bgp group internal neighbor 2001:db8:101::1 next-hop-self
+set protocols bgp local-as 200
 set protocols isis export REDIST-CONNECTED

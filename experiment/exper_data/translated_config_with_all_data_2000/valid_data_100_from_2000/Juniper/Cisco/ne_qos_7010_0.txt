@@ -1,21 +1,20 @@
 hostname DeviceA
+end
+permit ip host 10.100.0.11 any vrf tunnel-instance
+permit ip host 10.110.0.11 any vrf tunnel-instance
+ ip access-list extended aaa
+ip access-list extended aaa
+ ip access-list extended aaa
+  permit ip host 10.110.0.11 any vrf tunnel-instance
+ permit ip host 10.100.0.11 any vrf tunnel-instance
 address-family ipv4 vrf tunnel-instance
-address-family inet vrf aaa
-address-family ipv4
- network 10.100.0.11 mask 255.255.255.255
- network 10.110.0.0 mask 255.255.255.255
-address-family inet vrf tunnel-instance
 interface GigabitEthernet1/0/0
  no shutdown
  ip address 10.100.0.10 255.255.255.0
  ipv6 traffic-filter aaa in
  ip access-group aaa in
- ip address 10.110.0.10 255.255.255.0
 interface GigabitEthernet2/0/0
  no shutdown
- ipv6 traffic-filter aaa in
- ip access-group aaa in
+ ip address 10.110.0.10 255.255.255.0
 route-target import 100:2
-router isis
- interface GigabitEthernet1/0/0
-  isis network virtual-router
+ router virtual-instance tunnel-instance

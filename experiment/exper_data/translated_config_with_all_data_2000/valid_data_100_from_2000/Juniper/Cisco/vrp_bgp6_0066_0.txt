@@ -1,11 +1,22 @@
 hostname DeviceA
-aaa authentication login default group external local
-redistribute bgp
-aaa authentication login external group 2001:db8:100::1 local
-redistribute bgp 200
-redistribute EXPORT-POLICY
-ip route 1.1.1.1 255.255.255.255 none
+router bgp 600
+ neighbor 10.1.1.2 remote-as 100
+ neighbor 10.1.1.2 activate
+ no synchronization
+ address-family ipv4 unicast
+ address-family ipv4
+ neighbor 2001:db8:100::1 remote-as none
+  neighbor 2001:db8:100::2 update-source 2001:db8:100::1
+aaa authentication login external group external local
+aaa authentication login external group 200 local
+aaa authentication login external group 2001:db8:100::2 local
+aaa authentication login EXPORT-POLICY group none local
+router-id 1.1.1.1
 router bgp 200
-policy-map EXPORT-POLICY
  route-map EXPORT-POLICY permit 10
- match interface
+ match protocol connected
+ bgp confederation identifier 1
+neighbor 2001:db8:100::2 remote-as 200
+neighbor 2001:db8:100::2 update-source 2001:db8:100::1
+route-map EXPORT-POLICY permit 1
+end

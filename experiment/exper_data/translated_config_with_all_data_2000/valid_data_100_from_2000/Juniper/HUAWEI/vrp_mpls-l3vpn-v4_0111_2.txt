@@ -1,47 +1,39 @@
 sysname ASBR1
-route-distinguisher 100:2
-vpn-target 1:1 export-extcommunity
-vpn-target 1:1 import-extcommunity
-#
+return
+ mpls ccc out-interface GigabitEthernet1/0/1
+ip route-static none 255.255.255.0 vpn1
+ ip vpn-instance vpn1
+ route-distinguisher 100:2
+ vpn-target 1:1 export-extcommunity
+ vpn-target 1:1 import-extcommunity
+ip route-static none 100:2 vpn1
 interface GigabitEthernet0/0/1.0
-ip binding vpn-instance vpn1
- ip vpn-instance vpn1
- ipv4-family
-segment-routing mpls
- locator vpn1 ipv6-prefix target:1:1 64 static 32
-  opcode target:1:1 end-as
-   cache source-address 1::1
-ip vpn-instance vpn1
- ip vpn-instance vpn1
-  route-distinguisher 100:2
-segment-routing vpn1
- locator vpn1 ipv6-prefix 2001:db8:15:: 64 static 32
-  opcode target:1:1 end-as
-   cache source-address 1::1
-ospf 1 router-id 172.16.1.3
+ospf 1 router-id 192.168.1.1
+ undo shutdown
  area 0.0.0.0
-  network none 0.0.0.0
+  network none ge-0/0/1.0
 mpls label protocol ldp
-router id 2.2.2.9
-interface GigabitEthernet0/0/0
+mpls
+ mpls ldp
+mpls lsr-id 2.2.2.9
+interface GigabitEthernet0/0/1
  undo shutdown
  ip address 10.10.1.1 255.255.255.0
- ipv6 address none mpls
- ip address 2.2.2.9 255.255.255.255
-interface GigabitEthernet0/0/1
  ip address 12.12.12.1 255.255.255.0
-interface LoopBack0
- undo shutdown
-user-group external-neighbor
+ ip address 2.2.2.9 255.255.255.255
+bgp 100
+peer 2.2.2.9 as-number 100
+peer 2.2.2.9 connect-interface LoopBack0
+peer 2.2.2.9 enable
+ ipv4-family vpnv4
 bgp 600
- import-route direct
+ peer 2.2.2.9 as-number none
  ipv4-family unicast
-  peer 2.2.2.9 next-hop-local
-  undo synchronization
+ undo synchronization
 area 0.0.0.0
- ospf 1
- area 0.0.0.0
- network 2.2.2.9 0.0.0.0
-ospf 0.0.0.0 router-id 1
+ospf 1 router-id 0.0.0.0
+ silent-interface LoopBack0
+ospf 0.0.0.0 router-id ge-0/0/0.0
+ undo shutdown
  area 0.0.0.0
   network 0.0.0.0 ge-0/0/0.0

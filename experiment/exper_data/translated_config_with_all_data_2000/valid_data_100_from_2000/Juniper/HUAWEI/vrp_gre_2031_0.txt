@@ -1,20 +1,20 @@
 sysname DeviceA
+return
 interface GigabitEthernet0/0/0
  undo shutdown
  ip address 172.20.1.1 255.255.255.0
  source GigabitEthernet0/0/0
+ ip address 10.1.1.2 255.255.255.0
  ip address 172.22.1.1 255.255.255.0
  source 172.20.1.1
  binding tunnel gre 172.20.1.1
- destination 172.21.1.2
-interface GigabitEthernet0/0/0 mode l2
-interface GigabitEthernet0/0/1
- undo shutdown
- ip address 10.1.1.2 255.255.255.0
+interface ge-0/0/0.0
+interface gr-0/0/0
+ source 172.21.1.2
 area 0.0.0.0
 ospf 1 router-id 0.0.0.0
- area 0
-  network 0.0.0.0 ge-0/0/0.0
-  network 0.0.0.0 0.0.0.0
+ undo shutdown
+ area 0.0.0.0
+  network 0.0.0.0 0.0.0.255
 ip route-static 10.2.1.0 255.255.255.0 none none
 ip route-static 10.2.1.0 255.255.255.0 gr-0/0/0.0

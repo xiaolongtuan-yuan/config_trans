@@ -1,10 +1,11 @@
 hostname PE2
 mpls ldp router-id 3.3.3.9
+mpls ldp router-id Loopback0 force
 ip cef
 interface GigabitEthernet2/0/0
  mpls ip
- mpls l2vpn
- mpls ip ldp autoconfig
+ mpls l2transport
+ mpls ldp autoconfig
  no shutdown
  ip address 192.168.10.2 255.255.255.0
 interface GigabitEthernet1/0/0
@@ -12,17 +13,17 @@ interface GigabitEthernet1/0/0
  ethernet cfm mep domain md1 service ma1 mpid 2 direction inward
 interface GigabitEthernet1/0/1
  no shutdown
+end
 interface LoopBack1
  ip address 3.3.3.9 255.255.255.255
-l2vpn xconnect context vpn1
- encapsulation mpls
- rd 100:1
- route-target import 200:1
- route-target export 200:1
 l2vpn bridge-group VPN1
+ rd 100:1
  bridge-domain ce2
   interface GigabitEthernet2/0/0
   interface GigabitEthernet1/0/0
+l2vpn evpn instance 1 vlan-based
+line vty 200 1
+ transport input ssh netconf-ssh
 router bgp 100
  neighbor 1.1.1.9 remote-as 100
  neighbor 1.1.1.9 update-source LoopBack1
@@ -36,9 +37,9 @@ router ospf 1
  network 3.3.3.9 0.0.0.0 area 0
  network 192.168.10.0 0.0.0.255 area 0
 interface ma1
- xconnect 3.3.3.9 100 encapsulation mpls
+ pseudowire-class VPN1-PW
+ encapsulation mpls
  ethernet cfm interval 100ms
- ethernet cfm mep crosscheck start 2
+ ethernet cfm mep 2 service ma1 continuity-check transmission enable
  mep crossconnect cc 1 remote-mep 1
- mpls oam remote-mep 1 ccm-enable
-end
+ ethernet cfm mep crosscheck start 1

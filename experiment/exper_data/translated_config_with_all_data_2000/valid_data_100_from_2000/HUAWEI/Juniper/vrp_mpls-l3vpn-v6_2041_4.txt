@@ -3,15 +3,18 @@ set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 unit 0 tunnel ipv6-prefix 2001:db8::/32
 set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:3::1/64
-set interfaces ge-1/0/0 set interfaces lo0 unit 1 family inet6 address 2001:db8:9::1/64
+set interfaces ge-1/0/0 unit 0 tunnel destination 2001:db8:9::1
+set interfaces ge-1/0/0 unit 0 tunnel ipv6-prefix-length 64
 set interfaces ge-1/0/0 unit 1 vlan-id 2
 set interfaces lo0.1 disable
 set routing-options autonomous-system 65410
-set protocols bgp group 65410 type external
+set protocols bgp group 65410 type internal
 set protocols bgp group 65410 cluster 30.30.30.30
+set protocols bgp group 65410 type external
 set protocols bgp group 65410 neighbor 2001:db8:2::2 peer-as 100
+set protocols bgp group 65410 peer-as 100
 set protocols bgp group 65410 export BGP-NETWORKS
 set protocols bgp group 65410 family inet6 unicast
+set protocols bgp group 65410 family inet-vpn unicast
 set protocols bgp group 65410 import direct
-set protocols bgp group 65410 neighbor-2001:db8:2::2 peer-as 65410
-set protocols bgp group IBGP family inet6 unicast no synchronization
+set policy-options policy-statement BGP-NETWORKS term 65410 then enable

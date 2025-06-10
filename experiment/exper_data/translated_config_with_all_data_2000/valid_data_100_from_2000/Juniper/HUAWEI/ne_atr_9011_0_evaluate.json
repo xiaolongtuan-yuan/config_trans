@@ -1,43 +1,46 @@
 {
-    "command_accuracy": 0.46153846153846156,
+    "command_accuracy": 0.5384615384615384,
     "missed_commands": [
         "ptp-adaptive device-type server",
         "ptp-adaptive time profile",
         "ptp-adaptive domain 45",
         "ptp-adaptive local-ip 1.1.1.1",
         "ptp-adaptive dscp 60",
-        "interface gigabitethernet 1/0/0",
-        "return",
-        "ptp-adaptive device-type server",
-        "ptp-adaptive time profile",
-        "ptp-adaptive domain 45",
-        "ptp-adaptive local-ip 1.1.1.1",
-        "ptp-adaptive dscp 60",
-        "interface gigabitethernet 1/0/0",
-        "return"
+        "interface gigabitethernet 1/0/0"
     ],
-    "grammatical_accuracy": 0.5384615384615384,
+    "grammatical_accuracy": 0.6153846153846154,
     "missed_templates": [
         "ptp-adaptive device-type [parameter1]",
         "ptp-adaptive time profile",
         "ptp-adaptive domain [parameter1]",
         "ptp-adaptive local-ip [parameter1]",
-        "ptp-adaptive dscp [parameter1]",
-        "return"
+        "ptp-adaptive dscp [parameter1]"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.0,
-    "command_for_llm": [],
-    "llm_trans_commands": [],
-    "source_commands": [
-        "set interfaces lo0",
-        "unit 0 family inet address 1.1.1.1/32",
-        "set system host-name Server1",
-        "set class-of-service classifiers exp exp-classifier",
-        "unit 0 family inet address 192.168.1.1/24",
-        "set interfaces ge-1/0/0",
-        "unit 0 family ethernet-switching",
-        "forwarding-class best-effort loss-priority low code-points 60"
+    "llm_command_ratio": 0.46153846153846156,
+    "command_for_llm": [
+        "forwarding-class best-effort loss-priority low code-points 60",
+        "set class-of-service classifiers exp exp-classifier"
     ],
-    "llm_origin_response": []
+    "llm_trans_commands": [
+        "if precedence 60 then",
+        "behavior best-effort",
+        "traffic classifier exp-classifier operator or",
+        "traffic classifier exp-classifier operator or",
+        "traffic classifier exp-classifier operator or",
+        "if-match mpls-exp 60"
+    ],
+    "source_commands": [
+        "forwarding-class best-effort loss-priority low code-points 60",
+        "unit 0 family ethernet-switching",
+        "set interfaces ge-1/0/0",
+        "set system host-name Server1",
+        "set interfaces lo0",
+        "unit 0 family inet address 192.168.1.1/24",
+        "set class-of-service classifiers exp exp-classifier",
+        "unit 0 family inet address 1.1.1.1/32"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
 }

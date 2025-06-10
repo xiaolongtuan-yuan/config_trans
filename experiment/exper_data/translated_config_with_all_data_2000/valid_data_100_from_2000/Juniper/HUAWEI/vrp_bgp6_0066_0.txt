@@ -1,17 +1,23 @@
 sysname DeviceA
-user-group external
-bgp 600
- import-route external
- ipv4-family unicast
-  peer 2001:db8:100::1 next-hop-local
-  peer none route-policy EXPORT-POLICY export
- network 2001:db8:100::2 0.0.0.0
 bgp 200
- confederation peer-as none 200
- import-route direct
+ peer 2001:db8:100::2 as-number 200
  ipv4-family unicast
- peer accept enable
+  import-route direct
+ peer 10.1.1.2 enable
+router-id 1.1.1.1
+peer 2001:db8:100::2 as-number 200
+peer 2001:db8:100::2 connect-interface LoopBack0
+peer 2001:db8:100::2 enable
+ ipv6-family unicast
+peer 2001:db8:100::2 route-policy EXPORT-POLICY export
+ ipv6-family unicast
+bgp 600
+ peer 2001:db8:100::1 as-number 0
+ ipv4-family unicast
+  peer 2001:db8:100::2 next-hop-local
+  peer 5.5.5.5 route-policy EXPORT-POLICY export
 router id 1.1.1.1
 ospf 1 router-id 1.1.1.1
-traffic-policy 1 inbound
+mpls lsr-id 1.1.1.1
 traffic policy 1
+return

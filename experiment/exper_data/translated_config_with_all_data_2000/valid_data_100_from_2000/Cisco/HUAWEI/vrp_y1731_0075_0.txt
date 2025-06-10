@@ -5,14 +5,12 @@ interface GigabitEthernet1/0/1
  undo shutdown
  port trunk allow-pass vlan 2
  port link-type trunk
+return
 interface Loopback1
-interface LoopBack1
  ip address 1.1.1.1 255.255.255.255
 nqa test-instance 1
- nqa test-instance 1 ethernet
-  frequency 10
- test-type jitter dest-mac 0000-0000-0002 vlan 2
+ ethernet-monitor test-id 1 destination-mac 0000-0000-0002 vlan 2 jitter interval 10
+  jitter frequency 10
 track 1 ip sla 1 reachability
-track 1 protocol hw-ethmonitor entry 1
-sla schedule 1 start-time now lifetime forever
-return
+track 1 nqa entry 1 reachability
+sla schedule 1 start-time now

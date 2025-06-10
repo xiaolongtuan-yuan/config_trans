@@ -1,5 +1,5 @@
 sysname PE1
-ip route-static none none none
+ip route-static 0.0.0.0 0.0.0.0 10.1.1.2
 undo dns resolve
 mpls ldp router-id LoopBack0
 mpls lsr-id 3.3.3.9
@@ -10,13 +10,13 @@ interface GigabitEthernet1/0/0
  ip address 10.1.2.1 255.255.255.0
  mpls
  undo shutdown
+return
 interface LoopBack0
  ip address 1.1.1.1 255.255.255.255
 ospf 1
+ ospf 1 silent-interface Loopback0
 ospf 1 router-id 1.1.1.1
  area 0
   network 1.1.1.1 0.0.0.0
  area 0.0.0.0
   network 10.1.2.0 0.0.0.255
- silent-interface Loopback0
-return

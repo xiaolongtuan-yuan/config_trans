@@ -1,11 +1,14 @@
 hostname CE3
 interface GigabitEthernet1/0/0
  ip address 10.3.1.1 255.255.255.0
-interface {'name': 'interface name', 'type': 'string', 'explanation': 'Interface name'}.{'name': 'subinterface number', 'type': 'integer', 'explanation': 'subinterface number'}
+interface GigabitEthernet1/0/1
  no shutdown
+end
 router bgp 800
  neighbor 10.3.1.2 remote-as 100
  address-family ipv4 unicast
  no synchronization
- bgp router-id 4.4.4.4
-neighbor 10.3.1.2 remote-as 100
+ address-family ipv4 vrf vpn1
+  redistribute connected
+ neighbor 10.3.1.2 activate
+ exit-address-family

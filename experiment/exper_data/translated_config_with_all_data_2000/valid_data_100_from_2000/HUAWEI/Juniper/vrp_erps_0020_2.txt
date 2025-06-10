@@ -1,22 +1,23 @@
 set system host-name DeviceC
-set vlans 20 vlan-id 400
-interfaces ge-0/0/0.0 }
-set protocols ospf area 0.0.0.2 interface 400 interface-type none
-set interfaces 2 unit 2 vlan-id 2
+set vlans vlan20 vlan-id 400
+interfaces { interface configuration }
+set policy-options prefix-list 232.1.1.0 24
+set security policies from-zone 20 to-zone 400 policy none match application none
+set interfaces ge-2/0/0 unit 2 vlan-id 2
+set interfaces ge-2/0/0 unit 1 vlan-id 1
 set protocols oam ethernet connectivity-fault-management maintenance-domain 20 maintenance-association ma2 vlan 20
-set protocols oam ethernet connectivity-fault-management maintenance-domain 2 maintenance-association 2 remote-mep-id 2
-set protocols oam ethernet connectivity-fault-management maintenance-domain md2 continuity-check interval 6s
-set protocols oam ethernet connectivity-fault-management maintenance-domain md2 maintenance-association ma2 continuity-check interval 100ms
+set protocols oam ethernet connectivity-fault-management maintenance-domain md20 maintenance-association none remote-mep-id 2
+set protocols oam ethernet connectivity-fault-management maintenance-domain md20 continuity-check interval 6s
+set protocols oam ethernet connectivity-fault-management maintenance-domain md2 maintenance-association ma1 continuity-check interval 100
+set protocols oam ethernet connectivity-fault-management maintenance-domain md2 maintenance-association v2 delay-measurement one-way
 set protocols oam ethernet connectivity-fault-management maintenance-domain md2 maintenance-association ma1 continuity-check
-set protocols ldp lo0 2
 set interfaces ge-1/0/1 disable
 set interfaces ge-1/0/1 unit 0 family ethernet-switching port-mode trunk
 set interfaces ge-1/0/1 unit 0 disable
-set interfaces ge-1/0/1 .400 unit 1 vlan-id 20
+set interfaces ge-1/0/1 .400 unit 400 vlan-id 20
 set interfaces ge-1/0/1 encapsulation dot1q 2
 set interfaces ge-1/0/2 disable
 set interfaces ge-1/0/2 unit 0 family ethernet-switching port-mode trunk
 set interfaces ge-1/0/2 unit 0 disable
-set interfaces ge-1/0/2 .400 unit 400 vlan-id 20
-set interfaces ge-1/0/2 unit 0 vlan-id 2
-set system host-name CE1
+set interfaces ge-1/0/2 .400 unit 0 vlan-id 20
+set interfaces ge-1/0/2 unit 1 vlan-id 2

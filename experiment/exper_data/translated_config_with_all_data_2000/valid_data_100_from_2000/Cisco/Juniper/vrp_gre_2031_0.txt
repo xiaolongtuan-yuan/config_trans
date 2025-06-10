@@ -1,18 +1,21 @@
 set system host-name DeviceA
 set security nat destination rule-set NAT64_DEST
-set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 1/0/0 disable
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 unit 0 family inet address 172.20.1.1/24
-set interfaces ge-1/0/0 unit 1 disable
 set interfaces ge-1/0/0 unit 0 family inet address 172.22.1.1/24
 set interfaces ge-1/0/0 unit 1 tunnel source 172.20.1.1
-set interfaces ge-1/0/0 tunnel destination 172.21.1.2
-set interfaces ge-1/0/0 set interfaces gr-1/0/0 multipoint
-set interfaces ge-2/0/0 unit 0 disable
+set interfaces ge-2/0/0 unit 2/0/0 disable
 set interfaces ge-2/0/0 disable
+set interfaces ge-2/0/0 ether-options no-auto-negotiation
 set interfaces ge-2/0/0 unit 0 family inet address 10.1.1.2/24
-set protocols ospf area 1 interface 1
+set interfaces tun1 unit 1 disable
+set interfaces tun1 disable
+set interfaces gr-1/0/0 tunnel destination 172.21.1.2
+set interfaces gr-1/0/0 unit 1 tunnel multipoint
+set protocols ospf area 0.0.0.1 interface ge-0/0/1.0
 set protocols ospf area 0 interface ge-0/0/1.0
+set protocols ospf area 0 interface lo0.0 passive
 set routing-options static route 10.2.1.0/24 next-hop Tunnel1
 set protocols isis export REDIST-CONNECTED

@@ -1,13 +1,11 @@
 set system host-name Server1
-set protocols ptp adaptive enable
-set protocols ptp server-mode enable
 set interfaces ge-1/0/0 per-unit-scheduler
-set interfaces ge-1/0/0 unit none family none address none vrrp-group none priority 60
-set protocols oam ethernet connectivity-fault-management maintenance-domain 45 maintenance-association ma45 bridge-domain bd45
-set protocols ptp local-ip 1.1.1.1
-set protocols ptp adaptive-server unicast-negotiation
-set protocols ptp unicast-negotiation
+set interfaces ge-1/0/0 unit 0 family inet
+set interfaces ge-1/0/0 unit 0 family inet address 1.1.1.1 vrrp-group 1 preempt hold-time 400
+set interfaces ge-1/0/0 aggregated-ether-options link-speed 1g
+set interfaces ge-1/0/0 unit 0 family inet address none vrrp-group none priority 60
+set interfaces ge-1/0/0 unit 1 vlan-id 2
+set protocols oam ethernet connectivity-fault-management maintenance-domain 45 maintenance-association none bridge-domain 45
 set interfaces lo0 disable
 set interfaces lo0 unit 0 family inet address 1.1.1.1/32
 interfaces ge-1/0/0
-set system host-name CE1

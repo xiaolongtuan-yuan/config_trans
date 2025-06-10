@@ -1,12 +1,10 @@
 hostname DeviceA
+end
 interface GigabitEthernet1/0/0
  no shutdown
  ip address 10.1.1.1 255.255.255.0
-network 0.0.0.0 0.0.0.0 area 0
-router ospf 1 vrf vpn1
-bfd map ipv4 10.1.1.1/24 GigabitEthernet1/0/0
-bfd map ipv4 none ge-1/0/0
- bfd interval 300 min_rx 300 multiplier 3
-bfd map ipv4 10.1.1.1/24 ge-1/0/0
- bfd interval 300 min_rx 300 multiplier 3
- interface GigabitEthernet1/0/0
+router ospf 1
+ router-id 4.4.4.4
+ no passive-interface ge-1/0/0
+bfd ge-1/0/0
+bfd all-interfaces

@@ -1,18 +1,19 @@
 hostname UPE
-l2 vfi UPE-PE manual
-vpn id 101
-neighbor 3.3.3.9 encapsulation mpls
-!
-interface GigabitEthernet1/0/0.1
-encapsulation dot1Q 10
-xconnect vfi UPE-PE
-network 0.0.0.0 0.0.0.0 area 0
+neighbor 3.3.3.9 activate
+end
+router ospf 1
+ no passive-interface GigabitEthernet1/0/0.1
+ router-id 0.0.0.0
+ no passive-interface Loopback0
+ no passive-interface GigabitEthernet2/0/0
 neighbor 3.3.3.9 remote-as 101
 neighbor 3.3.3.9 remote-as ethernet
 interface GigabitEthernet1/0/0
  no shutdown
  switchport access vlan 10
- ipv6 address 2001:DB8::/64 eui-64
+ mpls ldp ccc
+mpls ip
+interface GigabitEthernet2/0/0
+ mpls label protocol ldp
 mpls ldp advertise-labels interface GigabitEthernet2/0/0
-mpls ldp discovery transport-address GigabitEthernet2/0/0
-ip route 1.1.1.9 255.255.255.255 none
+router-id 1.1.1.9

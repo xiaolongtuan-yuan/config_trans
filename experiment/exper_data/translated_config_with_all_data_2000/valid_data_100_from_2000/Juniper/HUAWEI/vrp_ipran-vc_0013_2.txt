@@ -1,42 +1,30 @@
 sysname MasterA
-ipsec policy IPSEC_PROFILE 10
+return
+ bfd
+ mpls ccc out-interface GigabitEthernet1/0/1
+ mpls ccc out-interface GigabitEthernet0/0/2
 interface GigabitEthernet0/0/1
  undo shutdown
  ip address 10.1.3.2 255.255.255.252
- ipv6 address none mpls
- ipv6 address 2001::DB8/64 eui-64
  ip address 10.3.4.1 255.255.255.252
- ipv6 address :: iso
  ip address 3.3.3.3 255.255.255.255
- ipv6 address ::1/128 iso
  ip address 192.168.0.2 255.255.255.0
  ip address 192.168.1.2 255.255.255.0
- vrrp vrid 10 track interface ge-0/0/1 reduced 50
- vrrp vrid 10 track interface GigabitEthernet0/0/2 reduced 50
-interface LoopBack0
- undo shutdown
- mpls traffic-eng passive-interface LoopBack0
-interface GigabitEthernet0/0/1.0
- isis network-type p2p
-interface GigabitEthernet0/0/2
-interface GigabitEthernet0/0/2.0
- isis network-type p2p
-interface LoopBack0.0
+vrrp track interface GigabitEthernet0/0/1
+vrrp track interface GigabitEthernet0/0/2
 isis 1
+ network-entity 10.0000.0000.0001.00
+ auto-cost enable
  is-level level-1
-link-protocol isis
-link-protocol ppp
-traffic-policy REDIST-CONNECTED inbound
+  isis 1
+  cost-style wide
+interface ge-0/0/1:0
+interface ge-0/0/2:0
+reference-bandwidth 1000000
+silent-interface LoopBack0
 traffic policy 1
-bgp 600
- import-route direct
- ipv4-family unicast
- peer 10.1.1.2 enable
-traffic policy REDIST-CONNECTED
-traffic-policy REDIST-STATIC inbound
 bgp 1
- import-route static
  ipv4-family unicast
+  import-route direct
+  import-route static
  peer 10.1.1.2 enable
-route-policy REDIST-CONNECTED permit node 10
-route-policy REDIST-STATIC permit node 10

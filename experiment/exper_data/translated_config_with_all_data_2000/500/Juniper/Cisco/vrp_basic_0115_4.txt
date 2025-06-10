@@ -2,7 +2,22 @@ hostname CE2
 interface GigabitEthernet0/0/1
  no shutdown
  ip address 10.1.2.1 255.255.255.0
-aaa authentication login none group CE2_to_Peer local
-redistribute bgp
-neighbor 10.1.2.2 remote-as 100
-neighbor 10.1.2.2 maximum-prefix 10 10.1.2.0 255.255.255.0
+end
+router bgp 600
+ neighbor none remote-as none
+  router bgp 65000
+  neighbor 10.1.2.2 remote-as 100
+ neighbor 10.1.1.2 activate
+ no synchronization
+ address-family ipv4 unicast
+ address-family ipv4
+ neighbor 10.1.2.2 remote-as none
+  neighbor 10.1.2.2 remote-as 100
+ address-family inet unicast
+ exit-address-family
+ neighbor 10.1.2.0 remote-as 24
+  neighbor 10.1.2.2 maximum-prefix 10 10.1.2.0 255.255.255.0
+router bgp 100
+ neighbor none remote-as 100
+  router bgp 100
+  neighbor 10.1.2.2 remote-as 100

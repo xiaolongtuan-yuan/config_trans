@@ -1,19 +1,26 @@
 sysname CR
+return
+ mpls ccc out-interface GigabitEthernet1/0/1.100
+ mpls ccc out-interface GigabitEthernet1/0/4
 undo mpls lsr-id
-ipsec policy IPSEC_PROFILE 10
-mpls label protocol ldp
-router id 3.3.3.3
 interface GigabitEthernet1/0/3
  undo shutdown
  ip address 10.2.1.2 255.255.255.0
- ipv6 address none none
  ip address 10.3.1.1 255.255.255.0
- ipv6 address 2001::DB8/64 eui-64
+interface GigabitEthernet1/0/4
+mpls ldp router-id LoopBack0
+ mpls ldp
+mpls label protocol ldp
+mpls
+ mpls ldp
+mpls ldp lsr-id LoopBack0
 area 0.0.0.0
-ospf 1 router-id 0.0.0.0
+ospf 0.0.0.0 router-id ge-1/0/3.0
+ undo shutdown
  area 0.0.0.0
   network 0.0.0.0 ge-1/0/3.0
 area 0.0.0.1
-ospf 1 router-id 0.0.0.1
+ospf 0.0.0.1 router-id ge-1/0/4.0
+ undo shutdown
  area 0.0.0.1
   network 0.0.0.1 ge-1/0/4.0

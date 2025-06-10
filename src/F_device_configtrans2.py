@@ -288,6 +288,20 @@ class Config_Translater:
                 else:
                     feature.set_match(specific_mapping_library[template])
                 config_match.append(feature)
+        if target_vendor == 'Cisco':
+            config_match[-1].match.append({
+                "para_map": [],
+                "trans_command": "end",
+                "parent_command": [],
+                "root": "end"
+            })
+        elif target_vendor == 'HUAWEI':
+            config_match[-1].match.append({
+                "para_map": [],
+                "trans_command": "return",
+                "parent_command": [],
+                "root": "return"
+            })
 
         return rest_commands_feature, config_match
 
@@ -377,9 +391,11 @@ class Config_Translater:
                                     },
                                 }
                                 if match['trans_command'] in self.config_matchers[target_vendor].templates:
-                                    self.config_matchers[target_vendor].templates[match['trans_command']][match['trans_command']] = result_node.copy()
+                                    self.config_matchers[target_vendor].templates[match['trans_command']][
+                                        match['trans_command']] = result_node.copy()
                                 else:
-                                    self.config_matchers[target_vendor].templates[match['trans_command']] = {match['trans_command']: result_node.copy()}
+                                    self.config_matchers[target_vendor].templates[match['trans_command']] = {
+                                        match['trans_command']: result_node.copy()}
                                 match.update({
                                     "root": match['trans_command'],
                                     "source": "llm",

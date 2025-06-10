@@ -1,24 +1,37 @@
 sysname P2
-ipsec policy IPSEC_PROFILE 10
-router id 4.4.4.9
+mpls ldp router-id 4.4.4.9
+interface GigabitEthernet1/0/0.0
+hello interval 1
+hello hold time 5
+interface GigabitEthernet2/0/0.0
+mpls ldp remote-peer P2
+auto-accept enable
+ mpls ldp
+ldp lsr-id 4.4.4.9
 mpls label protocol ldp
+mpls
+ mpls ldp
 mpls ldp
  mpls ldp remote-peer PE2
-bfd accept bind peer-ip none interface none source-ip none auto
 interface GigabitEthernet1/0/0
  undo shutdown
  ip address 10.13.1.2 255.255.255.0
- ipv6 address :: iso
- ipv6 address 2001::DB8/64 eui-64
-interface GigabitEthernet1/0/0.0
-interface GigabitEthernet2/0/0
  ip address 10.14.1.1 255.255.255.0
- undo shutdown
  ip address 4.4.4.9 255.255.255.255
- ipv6 address ::1/128 iso
-interface LoopBack0
- stp disable
+return
+ mpls ccc out-interface GigabitEthernet1/0/0
+ mpls ccc out-interface GigabitEthernet2/0/0
+ mpls ccc out-interface GigabitEthernet1/0/1.100
 isis 1
+ network-entity 10.0000.0000.0001.00
  is-level level-1
+  isis 1
+  cost-style wide
+  disable level-1
+  disable level-2
  is-level level-2
-link-protocol ppp
+  isis 1
+  disable level-1
+  disable level-2
+isis 2
+ is-level level-2

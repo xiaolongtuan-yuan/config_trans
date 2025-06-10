@@ -1,31 +1,30 @@
 hostname P
 mpls ldp router-id 2.2.2.2
+mpls ldp router-id Loopback0 force
 ip cef
 interface GigabitEthernet2/0/0
  mpls ip
- mpls rsvp-te
- segment-routing mpls
+ mpls traffic-eng
  no shutdown
  ip address 10.2.1.1 255.255.255.0
  isis network point-to-point
-segment-routing mpls
- segment-routing adjacency 10.1.1.1 10.1.1.2 sid value 330221
- segment-routing mpls
-  adjacency 10.2.1.1 10.2.1.2 sid value 330120
+track 1 ip sla 1 reachability
+ segment-routing adjacency 10.1.1.1 10.1.1.2 sid 330221
+ segment-routing adjacency 10.2.1.1 10.2.1.2 sid value 330120
 router isis 1
  is-type level-2
  metric-style wide
  net 00.1111.1111.2222.00
  mpls traffic-eng level-2
  segment-routing mpls
- mpls traffic-eng router-id Loopback0
+ mpls traffic-eng router-id Loopback153800
 interface GigabitEthernet1/0/0
  ip address 10.1.1.2 255.255.255.0
  isis network point-to-point
 interface GigabitEthernet1/0/1
  no shutdown
+end
 interface LoopBack1
  ip address 2.2.2.2 255.255.255.255
  isis network point-to-point
  ip router isis 1 prefix-sid index 153710
-end

@@ -1,22 +1,18 @@
 hostname CE1
 vlan 100
- interface GigabitEthernet1/0/0
- switchport mode trunk
- switchport trunk allowed vlan 100
-name v100
-exit
-interface GigabitEthernet1/0/0
+ name v100
+interface GigabitEthernet1/0/0.0
  no shutdown
-switchport trunk allowed vlan 100
-interface Port-channel0
- switchport mode trunk
- service instance 1 ethernet ethernet
+end
+router ospf 1
+ no passive-interface ae0.0
+interface GigabitEthernet1/0/0
+ interface Port-channel1
+ port-channel min-links 1
+ mpls ldp ipv4
  switchport
  switchport access vlan 100
  switchport trunk allowed vlan 100
-network 0.0.0.0 0.0.0.0 area 0
-interface Bundle-Ether0
  no shutdown
- ipv6 address 2001:DB8::/64 eui-64
-interface range ge-1/0/0 - 0
- no shutdown
+ ptp notslave disable
+interface ge-1/0/0.0

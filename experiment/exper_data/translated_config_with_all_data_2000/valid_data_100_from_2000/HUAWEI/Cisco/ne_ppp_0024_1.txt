@@ -3,12 +3,13 @@ interface Lmpif1/0/0
  no shutdown
  ppp authentication chap pap
  ip address 10.110.0.2 255.255.255.0
- ppp chap hostname rtb
+ ppp chap password 0 rtb
  ppp chap password 0 @%@%j]v~7%f[#S'W>j9zzM)3,*!u@%@%
-aaa authentication enable default none
- username rta service-type ppp
-aaa authentication enable default @%@%EDF~DAdfFD934J3<DAF#*<!@%@%
-aaa authentication enable default default1
- aaa authentication ppp default1 local
-aaa authentication enable default local
 end
+aaa new-model
+ username rta password 7 @%@%EDF~DAdfFD934J3<DAF#*<!@%@%
+ username rta service-type ppp
+ username rta password [encrypted_password]
+interface GigabitEthernet1/0/0
+ ppp authorization default1
+aaa authentication ppp default local

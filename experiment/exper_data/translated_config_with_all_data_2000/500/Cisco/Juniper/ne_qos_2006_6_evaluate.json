@@ -1,32 +1,33 @@
 {
-    "command_accuracy": 1.0,
-    "missed_commands": [],
-    "grammatical_accuracy": 1.0,
-    "missed_templates": [],
+    "command_accuracy": 0.8,
+    "missed_commands": [
+        "set policy-options policy-statement redistribute-connected term 1 from protocol direct",
+        "set policy-options policy-statement redistribute-connected then accept"
+    ],
+    "grammatical_accuracy": 0.9,
+    "missed_templates": [
+        "set policy-options policy-statement [parameter1] then [parameter2]"
+    ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.3125,
+    "llm_command_ratio": 0.14285714285714285,
     "command_for_llm": [
-        "redistribute connected",
         "exit-address-family"
     ],
     "llm_trans_commands": [
-        "set policy-options policy-statement REDIST-CONNECTED term 1 from protocol direct",
-        "set policy-options policy-statement REDIST-CONNECTED then accept",
-        "set protocols bgp group EXTERNAL import REDIST-CONNECTED",
-        "set routing-options instance-import REDIST-CONNECTED",
-        "deactivate protocols bgp group <group-name> family inet"
+        "deactivate protocols bgp group <group-name> family inet",
+        "exit"
     ],
     "source_commands": [
-        "neighbor 10.4.1.2 remote-as 100",
+        "no synchronization",
+        "no shutdown",
+        "address-family ipv4 unicast",
+        "hostname CE4",
+        "neighbor 10.4.1.2 activate",
         "redistribute connected",
         "ip address 10.4.1.1 255.255.255.0",
-        "no shutdown",
-        "hostname CE4",
-        "address-family ipv4 unicast",
-        "neighbor 10.4.1.2 activate",
         "exit-address-family",
+        "neighbor 10.4.1.2 remote-as 100",
         "router bgp 65440",
-        "no synchronization",
         "interface GigabitEthernet1/0/0"
     ],
     "llm_origin_response": [

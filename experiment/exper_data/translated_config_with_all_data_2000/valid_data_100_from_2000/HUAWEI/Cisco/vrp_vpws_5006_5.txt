@@ -1,27 +1,29 @@
 hostname U-PE2
 mpls ldp router-id 5.5.5.9
+mpls ldp router-id Loopback0 force
 ip cef
 interface GigabitEthernet2/0/0
  mpls ip
- mpls l2vpn
- mpls ip ldp autoconfig
+ mpls ldp autoconfig
   mpls ldp neighbor 3.3.3.9 remote
+  mpls ldp remote-peer 3.3.3.9
  no shutdown
+ interface GigabitEthernet2/0/0
  xconnect 3.3.3.9 200 encapsulation mpls
+l2vpn
 l2vpn xconnect context pwt
- pseudowire-class pwt
- neighbor 3.3.3.9
-controller ControlName
-interface GigabitEthernet1/0/1
- ptp adaptive remote-server1-ip 3.3.3.9
+ l2vpn control-word include
+controller 3.3.3.9
+ clock source 3.3.3.9
 interface GigabitEthernet1/0/0
- no shutdown
  ip address 10.4.1.2 255.255.255.0
  mpls ip
- mpls ip ldp autoconfig
+ mpls ldp autoconfig
+interface GigabitEthernet1/0/1
+ no shutdown
+end
 interface LoopBack0
  ip address 5.5.5.9 255.255.255.255
 router ospf 1
  network 5.5.5.9 0.0.0.0 area 0
  network 10.4.1.0 0.0.0.255 area 0
-end

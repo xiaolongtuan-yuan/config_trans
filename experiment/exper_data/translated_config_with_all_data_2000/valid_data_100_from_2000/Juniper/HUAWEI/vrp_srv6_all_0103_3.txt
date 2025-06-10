@@ -1,16 +1,19 @@
 sysname CE1
 router id 10.11.1.1
 ospf 1 router-id 10.11.1.1
-user-group EXTERNAL
-bgp 600
- import-route direct
- network 2001:db8:11::1 0.0.0.0
- ipv4-family unicast
-  undo synchronization
-  peer none route-policy IMPORT_DIRECT import
- peer 10.1.1.2 enable
+mpls lsr-id 10.11.1.1
+ipv6
+ peer 2001:db8:11::1 as-number 100
+ bgp 100
+ peer 2001:db8:11::1 enable
 bgp 100
- confederation peer-as none 100
-traffic-policy IMPORT_DIRECT inbound
-traffic policy IMPORT_DIRECT
+peer 2001:db8:11::1 as-number 100
+peer 2001:db8:11::1 enable
+bgp 600
+ ipv4-family unicast
+  peer 2001:db8:11::1 next-hop-local
+  import-route direct
+ undo synchronization
+ peer 10.1.1.2 enable
 traffic policy 1
+return

@@ -1,7 +1,7 @@
 set system host-name LSRA
 set interfaces ge-1/0/0 unit 0 family mpls maximum-labels 3
 set interfaces ge-1/0/0 aggregated-ether-options minimum-links 50
-set interfaces ge-1/0/0 unit 0 family bfd
+set interfaces ge-1/0/0 unit 0 family inet
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 ether-options no-auto-negotiation
@@ -9,18 +9,20 @@ set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.1/24
 set interfaces ge-1/0/0 unit 0 family inet address isis/24
 set interfaces ge-1/0/0 unit 0 family mpls
 set interfaces ge-1/0/0 unit 0 family inet interface-mode point-to-point
-set protocols ldp router-id 1.1.1.9
-set protocols isis interface ge-1/0/0.0 level 1 metric 10
+set protocols ldp router-id Loopback0
+set protocols isis interface ge-1/0/0.0 level 1 metric wide
 set protocols isis interface ge-1/0/0.0 level 1 disable
+set protocols mpls interface ge-1/0/0.0
 set interfaces ge-1/0/1 unit 0 disable
 set interfaces ge-1/0/1 disable
 set interfaces ge-1/0/1 ether-options no-auto-negotiation
 set interfaces ge-1/0/1 unit 0 family inet address 10.1.2.1/24
-set interfaces ge-1/0/1 unit 0 family inet address isis/24
+set interfaces ge-1/0/1 unit 0 family inet address isis/255.255.255.255
 set interfaces ge-1/0/1 unit 0 family mpls
 set interfaces ge-1/0/1 unit 0 family inet interface-mode point-to-point
+set protocols mpls interface ge-1/0/1.0
 set interfaces lo0 unit 0 disable
 set interfaces lo0 disable
 set interfaces lo0 unit 0 family inet address 1.1.1.9/32
-set interfaces lo0 unit 0 family inet address isis/10.4.1.1/24
+set interfaces lo0 unit 0 family inet address isis/none
 set protocols isis export REDIST-CONNECTED

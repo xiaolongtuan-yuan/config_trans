@@ -8,21 +8,19 @@ interface GigabitEthernet1/0/0
  undo shutdown
  ip address 192.168.1.2 255.255.255.0
  mpls
+return
 interface GigabitEthernet2/0/0
  undo shutdown
  ip address 192.168.10.1 255.255.255.0
  mpls
 interface Loopback1
-interface LoopBack1
  ip address 2.2.2.2 255.255.255.255
- mpls traffic-eng passive-interface GigabitEthernet0/0/1
 ospf 1
- ma Loopback1
-  mep mep-id 1 interface Loopback1 outward
+ mpls te router-id Loopback1
 ospf 1 router-id 0.0.0.0
  area 0.0.0.0
 ospf 1 router-id 2.2.2.2
- area 0
+ area 0.0.0.0
   network 2.2.2.2 0.0.0.0
 ospf 1 router-id 192.168.1.0
  area 0
@@ -30,4 +28,5 @@ ospf 1 router-id 192.168.1.0
 ospf 1 router-id 192.168.10.0
  area 0
   network 192.168.10.0 0.0.0.255
-return
+interface LoopBack1
+ mpls traffic-eng passive-interface interface name

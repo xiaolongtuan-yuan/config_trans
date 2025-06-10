@@ -1,11 +1,15 @@
-sysname name DeviceA
-interface GigabitEthernet1/0/1
+sysname DeviceA
+interface GigabitEthernet1/0/0
  undo shutdown
  ip address 10.1.1.2 255.255.255.0
  ip address 10.1.2.1 255.255.255.0
-ospfv3 1
- area 0.0.0.0
-ospf 1 router-id 0.0.0.0
+return
+area 0.0.0.0
+ospf 0.0.0.0 router-id ge-1/0/0.0
+ undo shutdown
  area 0.0.0.0
   network 0.0.0.0 ge-1/0/0.0
-  network 0.0.0.0 ge-1/0/1.0
+ospf 0.0.0.0 router-id ge-1/0/1.0
+ undo shutdown
+ area 0.0.0.0
+  network 0.0.0.0 255.255.255.255

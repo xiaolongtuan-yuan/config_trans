@@ -1,34 +1,37 @@
 hostname MasterA
-router isis 1
- address-family ipv4
-  redistribute bfd
+end
+router isis
+ net ge-0/0/1.0
+ interface GigabitEthernet0/0/1
+  isis network point-to-point
+  isis metric 10
+ net ge-0/0/2.0
+ net 10.0000.0000.0001.00
+ passive-interface default
+ is-type level-1
+ route-map redist-static permit 10
+ match ip address static
 interface GigabitEthernet0/0/1
  no shutdown
  ip address 10.1.3.2 255.255.255.252
- ipv6 address 2001:DB8::/64 eui-64
+ mpls ldp ipv4
+ mpls ldp iso
  ip address 10.3.4.1 255.255.255.252
- ip address 192.168.0.2 255.255.255.0
-interface Loopback0
- no shutdown
  ip address 3.3.3.3 255.255.255.255
-interface GigabitEthernet0/0/3
- no shutdown
-interface GigabitEthernet0/0/4
+ ip address 192.168.0.2 255.255.255.0
  ip address 192.168.1.2 255.255.255.0
-track 1 interface GigabitEthernet0/0/1 line-protocol
+track 1 interface GigabitEthernet1/0/1 line-protocol
 track 1 interface GigabitEthernet0/0/2 line-protocol
-router isis
- interface GigabitEthernet0/0/1
-  isis network point-to-point
- interface GigabitEthernet0/0/2
-  isis network point-to-point
- interface Loopback0
- passive-interface default
- is-type level-1
+reference-bandwidth 1000
  metric-style wide
-policy-map REDIST-CONNECTED
+ is-type level-1
+interface Loopback0
+ ip router isis
+ isis passive
  route-map REDIST-CONNECTED permit 10
- route-map REDIST-STATIC permit 10
-policy-map REDIST-STATIC
- route-map REDIST-CONNECTED permit 10
- route-map REDIST-STATIC permit 10
+ match interface *
+route-map REDIST-CONNECTED permit 1
+router bgp 1
+ bgp confederation identifier 1
+passive-interface Loopback0
+route-map REDIST-STATIC permit 1

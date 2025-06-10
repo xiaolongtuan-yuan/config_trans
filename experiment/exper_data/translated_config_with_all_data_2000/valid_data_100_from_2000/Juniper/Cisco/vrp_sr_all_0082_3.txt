@@ -1,29 +1,30 @@
 hostname P2
-router isis 1
- address-family ipv4
-  redistribute ldp
+router ldp
 mpls ldp router-id 4.4.4.9
-mpls ldp discovery transport-address GigabitEthernet1/0/0
-mpls ldp advertise-labels interface ge-1/0/0
-mpls ldp discovery transport-address ge-1/0/0
-mpls ldp discovery transport-address GigabitEthernet2/0/0
+mpls ldp router-id Loopback0 force
+mpls ldp advertise-labels interface GigabitEthernet1/0/0
+ mpls ldp discovery hello interval 1
+ mpls ldp discovery hello holdtime 5
 mpls ldp advertise-labels interface GigabitEthernet2/0/0
-mpls ldp remote-peer accept none
+ mpls ldp discovery hello interval 1
+ mpls ldp discovery hello holdtime 5
+ mpls ldp discovery targeted-hello accept
 interface GigabitEthernet1/0/0
  no shutdown
  ip address 10.13.1.2 255.255.255.0
- ipv6 address 2001:DB8::/64 eui-64
+ mpls ldp iso
+ ip address 4.4.4.9 255.255.255.255
+ ptp notslave disable
+end
 router isis
- interface GigabitEthernet1/0/0
- interface GigabitEthernet2/0/0
- interface Loopback0
+ net ge-1/0/0.0
+ net ge-2/0/0.0
+ net 10.0000.0000.0001.00
  is-type level-1
- metric-style wide
+ interface GigabitEthernet1/0/0
+  isis metric 10
  is-type level-2
 interface GigabitEthernet2/0/0
  no shutdown
  ip address 10.14.1.1 255.255.255.0
- ipv6 address 2001:DB8::/64 eui-64
- ip address 4.4.4.9 255.255.255.255
-interface range GigabitEthernet1/0/1 - 2
- no shutdown
+ mpls ldp iso

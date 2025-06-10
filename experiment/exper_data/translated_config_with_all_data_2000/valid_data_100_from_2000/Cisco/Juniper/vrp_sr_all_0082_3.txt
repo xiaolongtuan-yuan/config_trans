@@ -1,12 +1,13 @@
 set system host-name P2
 set security nat destination rule-set NAT64_DEST
+set protocols mpls interface ge-0/0/0.0
 set interfaces ge-0/0/0 unit 0 family mpls
-set protocols ldp router-id 1.1.1.9
-set interfaces lo0.1 unit 1 disable
-set interfaces lo0.1 disable
+set protocols ldp router-id Loopback1
+set interfaces lo0 unit 1 disable
+set interfaces lo0 disable
 set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+set interfaces lo0 unit 0 family mpls
 set protocols lldp holdtime 5
 set protocols lldp transmit-interval 1
-set interfaces ge-1/0/0 unit 0 family mpls
 set protocols isis export REDIST-CONNECTED
-commit
+delete set protocols running-config startup-config

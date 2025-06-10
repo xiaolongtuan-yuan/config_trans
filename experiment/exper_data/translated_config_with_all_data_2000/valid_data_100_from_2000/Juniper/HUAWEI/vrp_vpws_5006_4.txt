@@ -1,25 +1,23 @@
 sysname P2
-mpls rsvp-te
+return
+ mpls ccc out-interface GigabitEthernet1/0/0
+ mpls ccc out-interface GigabitEthernet2/0/0
+mpls
+ mpls ldp
 router id 4.4.4.9
 ospf 1 router-id 4.4.4.9
+ silent-interface LoopBack0
+ undo shutdown
  area 0.0.0.0
   network 0.0.0.0 ge-1/0/0.0
   network 0.0.0.0 ge-2/0/0.0
+mpls lsr-id 4.4.4.9
 interface GigabitEthernet1/0/0
  undo shutdown
  ip address 10.3.1.2 255.255.255.0
- ipv6 address none mpls
-interface MPLS-enabled interface
-interface ge-2/0/0
- undo shutdown
  ip address 10.4.1.1 255.255.255.0
-interface GigabitEthernet2/0/0
- ipv6 address none mpls
-interface lo0
- undo shutdown
  ip address 4.4.4.9 255.255.255.255
-network 0.0.0.0 0.0.0.0
+interface ge-1/0/0.100
+interface ge-2/0/0.0
+network none 0.0.0.255
 area 0.0.0.0
- ospf 1
- area 0.0.0.0
- network 4.4.4.9 0.0.0.0

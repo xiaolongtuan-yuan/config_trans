@@ -1,47 +1,43 @@
 sysname PE2
-mpls rsvp-te
+return
+ mpls ccc out-interface GigabitEthernet1/0/0
+ mpls ccc out-interface GigabitEthernet2/0/0
+mpls
+ mpls ldp
 mpls label protocol ldp
-router id 3.3.3.9
+mpls ldp lsr-id 3.3.3.9
+ip route-static none 255.255.255.255 100:1
 interface GigabitEthernet1/0/0.0
-l2 binding vpls-instance vpls
+ ip address 192.168.10.2 255.255.255.0
+ undo shutdown
 ospf 1 router-id 172.16.1.1
+ undo shutdown
  area 0.0.0.0
   network none ge-1/0/0.0
-route-distinguisher 100:1
- ip vpn-instance vpn1
-ip vpn-instance vpn1
- ip vpn-instance vpn1
-  route-distinguisher 100:1
+ip route-static none 255.255.255.255 vpn1
+ip route-static none 100:1 vpls
 interface GigabitEthernet1/0/0
  undo shutdown
- ipv6 address none ethernet-switching
-interface GigabitEthernet1/0/0.0 mode l2
- encapsulation dot1q vid 0
-interface GigabitEthernet2/0/0
- undo shutdown
- ip address 192.168.10.2 255.255.255.0
- ipv6 address none mpls
-interface lo0
- undo shutdown
-interface LoopBack0
  ip address 3.3.3.9 255.255.255.255
-user-group vpnv4
-bgp 600
- import-route internal
- ipv4-family unicast
-  peer 3.3.3.9 next-hop-local
+interface ge-1/0/0.0
+router-id 3.3.3.9
+peer 1.1.1.9 as-number 100
+peer 1.1.1.9 connect-interface LoopBack0
+peer 1.1.1.9 enable
+l2vpn-family
+ bgp 100
  ipv4-family vpnv4
- l2vpn-family evpn
-  peer 1.1.1.9 advertise route-reoriginated unicast inet-vpn
+bgp 600
+ peer 3.3.3.9 as-number 100
+ ipv4-family unicast
  ipv4-family l2vpn
- l2vpn-family signaling
-  peer 1.1.1.9 advertise route-reoriginated signaling l2vpn
 bgp 100
- confederation peer-as 100 none
+ bgp 100
 area 0.0.0.0
- ospf 1
+interface GigabitEthernet2/0/0
+ospf 0.0.0.0 router-id ge-2/0/0.0
+ undo shutdown
  area 0.0.0.0
- network 3.3.3.9 0.0.0.0
+  network 0.0.0.0 ge-2/0/0.0
 ospf 1 router-id 0.0.0.0
- area 0.0.0.0
-  network 0.0.0.0 255.255.255.255
+ silent-interface LoopBack0

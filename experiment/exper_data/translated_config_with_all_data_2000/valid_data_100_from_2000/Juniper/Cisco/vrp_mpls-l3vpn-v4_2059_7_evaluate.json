@@ -1,60 +1,39 @@
 {
-    "command_accuracy": 0.3333333333333333,
+    "command_accuracy": 0.9166666666666666,
     "missed_commands": [
-        "router bgp 65420",
-        "neighbor 172.16.2.2 remote-as 300",
-        "address-family ipv4 unicast",
-        "no synchronization",
-        "network 172.16.2.0 mask 255.255.255.0",
-        "neighbor 172.16.2.2 activate",
-        "exit-address-family",
-        "end",
-        "router bgp 65420",
-        "neighbor 172.16.2.2 remote-as 300",
-        "address-family ipv4 unicast",
-        "no synchronization",
-        "network 172.16.2.0 mask 255.255.255.0",
-        "neighbor 172.16.2.2 activate",
-        "exit-address-family",
-        "end"
+        "router bgp 65420"
     ],
-    "grammatical_accuracy": 0.3333333333333333,
-    "missed_templates": [
-        "router bgp [parameter1]",
-        "neighbor [parameter1] remote-as [parameter2]",
-        "address-family [parameter1]",
-        "no synchronization",
-        "network [parameter1] mask [parameter2]",
-        "neighbor [parameter1] activate",
-        "exit-address-family",
-        "end"
-    ],
-    "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.2857142857142857,
+    "grammatical_accuracy": 1.0,
+    "missed_templates": [],
+    "llm_command_accuracy": 0.25,
+    "llm_command_ratio": 0.2692307692307692,
     "command_for_llm": [
-        "set routing-options static route 172.16.2.0/24 discard",
-        "term 1 then accept"
+        "set policy-options policy-statement EXPORT-DIRECT",
+        "term 1 from protocol direct"
     ],
     "llm_trans_commands": [
+        "router bgp 300",
+        "neighbor 172.16.2.2 remote-as 300",
+        "neighbor 172.16.2.2 activate",
+        "network 172.16.2.0 mask 255.255.255.0",
+        "router bgp 300",
         "route-map EXPORT-DIRECT permit 10",
-        "match interface",
-        "match ip address connected",
-        "ip route 172.16.2.0 255.255.255.0 Null0"
+        "match protocol connected"
     ],
     "source_commands": [
-        "term 1 then accept",
-        "neighbor 172.16.2.2",
-        "set routing-options static route 172.16.2.0/24 discard",
-        "term 1 from protocol direct",
         "set interfaces ge-0/0/0",
         "set protocols bgp group neighbor-172.16.2.2",
-        "type external",
+        "set system host-name CE4",
         "family inet unicast",
         "unit 0 family inet address 172.16.2.1/24",
+        "term 1 from protocol direct",
+        "set routing-options static route 172.16.2.0/24 discard",
         "set policy-options policy-statement EXPORT-DIRECT",
         "peer-as 300",
-        "set system host-name CE4",
-        "export EXPORT-DIRECT"
+        "type external",
+        "term 1 then accept",
+        "export EXPORT-DIRECT",
+        "neighbor 172.16.2.2"
     ],
     "llm_origin_response": [
         ""

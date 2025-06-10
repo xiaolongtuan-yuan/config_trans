@@ -1,12 +1,18 @@
 hostname DeviceB
-interface Bundle-Ether1
+end
+interface ae1
  no shutdown
-interface Bundle-Ethernet1
+interface GigabitEthernet1
  ip address 10.1.1.2 255.255.255.0
 interface GigabitEthernet0/0/0
  no shutdown
+interface ae1.1
 interface GigabitEthernet0/0/1
  no shutdown
+interval min-tx 10 min-rx 10
+ bfd-template single-hop btoa
 bfd-template single-hop btoa
- interval min-tx 10 min-rx 10 multiplier none
-bfd map ipv4 10.1.1.2/32 ae1
+ bfd-template single-hop btoa
+  interval min-tx 10 min-rx 10
+bfd ae1
+bfd all-interfaces

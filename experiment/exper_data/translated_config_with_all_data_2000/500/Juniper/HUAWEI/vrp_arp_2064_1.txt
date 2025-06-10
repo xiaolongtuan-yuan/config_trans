@@ -1,13 +1,22 @@
-sysname name CE2
-interface 3.0
- vlan-type dot1q 3
-interface GigabitEthernet0/0/3
+sysname CE2
+vlan batch 3
+interface GigabitEthernet0/0/1
  undo shutdown
  portswitch
- port link-type access
  port default vlan 3
  port trunk allow-pass vlan 3
- port link-type trunk
- port default vlan default
+return
+interface ge-0/0/2
+ undo shutdown
+interface GigabitEthernet0/0/2
+ portswitch
+ port default vlan 3
+ port trunk allow-pass vlan 3
+interface ge-0/0/3
+ undo shutdown
+interface GigabitEthernet0/0/3
+ portswitch
+ port default vlan 3
+ port trunk allow-pass vlan 3
+ port default vlan 10
  port trunk allow-pass vlan 1
-vlan 3

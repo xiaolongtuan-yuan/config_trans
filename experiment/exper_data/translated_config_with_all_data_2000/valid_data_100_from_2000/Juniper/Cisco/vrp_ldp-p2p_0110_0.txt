@@ -1,16 +1,16 @@
 hostname LSRA
-ip route 10.10.1.1 255.255.255.255 none
-mpls ldp advertise-labels interface GigabitEthernet0/0/0
-mpls ldp discovery transport-address GigabitEthernet0/0/0
+end
+router-id 10.10.1.1
+mpls ip
 interface GigabitEthernet0/0/0
+ mpls label protocol ldp
  no shutdown
  ip address 10.1.1.1 255.255.255.0
- ipv6 address mpls eui-64
+ mpls ldp ipv4
  ip address 10.10.1.1 255.255.255.255
+mpls ldp advertise-labels interface GigabitEthernet0/0/0
 router isis
- interface GigabitEthernet0/0/0.0
+ net 10.0000.0000.0001.00
  is-type level-1
- interface Loopback0
- passive-interface lo0
-interface Loopback0
- no shutdown
+ net lo0.0
+ passive-interface default

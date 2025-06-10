@@ -1,33 +1,35 @@
 sysname P
+return
+ mpls ccc out-interface GigabitEthernet1/0/1.100
+ mpls ccc out-interface GigabitEthernet1/0/1
 mpls label protocol ldp
-router id 2.2.2.2
+mpls
+ mpls ldp
+ mpls rsvp-te
+ mpls te
+mpls ldp lsr-id 2.2.2.2
 interface GigabitEthernet0/0/0
  undo shutdown
  ip address 192.168.1.2 255.255.255.0
- ipv6 address none mpls
  ip address 192.168.10.1 255.255.255.0
  ip address 2.2.2.2 255.255.255.255
-interface LoopBack0
+interface GigabitEthernet0/0/1
  undo shutdown
-ospf none router-id 2.2.2.2
-network none 0.0.0.255
-area 0.0.0.0
- ospf 1
- area 0.0.0.0
- network 2.2.2.2 0.0.0.0
+router id 2.2.2.2
 ospf 1 router-id 2.2.2.2
+ silent-interface LoopBack0
+ undo shutdown
  area 0.0.0.0
-  network 0.0.0.0 ge-0/0/0
-  network 0.0.0.0 ge-0/0/1.0
-mpls rsvp-te
-interface ge-0/0/0.0 p2p
-interface ge-0/0/1.0 p2p
-traffic-policy ospf-mpls-te inbound
+  network 0.0.0.0 ge-0/0/0.0
+  network 0.0.0.0 255.255.255.0
+mpls lsr-id 2.2.2.2
+network none 0.0.0.0
+area 0.0.0.0
+route-policy ospf-mpls-te permit node 1
+if-match protocol ospf
 traffic policy 1
 bgp 1
- import-route ospf
  ipv4-family unicast
-bgp 600
+  import-route ospf
  peer 10.1.1.2 enable
- ipv4-family unicast
 load-balance packet ospf-mpls-te

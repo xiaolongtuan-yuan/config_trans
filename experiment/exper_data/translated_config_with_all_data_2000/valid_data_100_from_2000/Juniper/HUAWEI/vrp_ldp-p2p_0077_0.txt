@@ -1,30 +1,40 @@
 sysname LSRA
-mpls rsvp-te
+return
+ mpls ccc out-interface GigabitEthernet1/0/0
+ mpls ccc out-interface GigabitEthernet1/0/1
+mpls
+ mpls ldp
 mpls label protocol ldp
-interface GigabitEthernet1/0/0.0
-interface GigabitEthernet1/0/1.0
-interface LoopBack0
- mpls traffic-eng passive-interface LoopBack0
- undo shutdown
- ip address 1.1.1.9 255.255.255.255
+isis 1
+ network-entity 10.0000.0000.0001.00
+ auto-cost enable
+ is-level level-2
+  isis 1
+  cost-style wide
 isis 2
  is-level level-2
-link-protocol ppp
+bfd session_name bind peer-ip none interface ge-1/0/0 source-ip none auto
 bfd none bind peer-ip none interface GigabitEthernet1/0/0 source-ip none auto
-bfd bfd_session_name bind link-bundle peer-ip peer_ip_value interface interface_name source-ip source_ip_value
+ bfd ge-1/0/0 bind peer-ip 10.1.1.2 interface ge-1/0/0
+ bfd ge-1/0/0 min-tx-interval 300 min-rx-interval 300
+ bfd ge-1/0/1 bind peer-ip 10.1.2.2 interface ge-1/0/1
+ bfd ge-1/0/1 min-tx-interval 300 min-rx-interval 300
+bfd session_ge1_0_1 bind peer-ip none interface GigabitEthernet1/0/1 source-ip none auto
+ bfd lsra bind peer-ip 10.1.1.2 interface gigabitethernet1/0/0
+ discriminator local 1
+ discriminator remote 2
+ min-tx-interval 300
  min-rx-interval 300
-bfd session_ge_1_0_1 bind peer-ip none interface GigabitEthernet1/0/1 source-ip none auto
-bfd bfd_300 bind link-bundle peer-ip 192.168.1.2 interface ge-1/0/1 source-ip 192.168.1.1
- min-rx-interval 300
+ commit
+ bfd lsra bind peer-ip 10.1.2.2 interface gigabitethernet1/0/1
+ discriminator local 3
+ discriminator remote 4
 interface GigabitEthernet1/0/0
  undo shutdown
  ip address 10.1.1.1 255.255.255.0
- ipv6 address none mpls
-interface GigabitEthernet1/0/1
- undo shutdown
  ip address 10.1.2.1 255.255.255.0
- ipv6 address 2001::DB8/64 eui-64
-traffic-policy fec-policy inbound
+ ip address 1.1.1.9 255.255.255.255
+ip ip-prefix fec-policy permit 0.0.0.0 0 less-equal 32
 bgp 600
  peer 10.1.1.2 enable
  ipv4-family unicast

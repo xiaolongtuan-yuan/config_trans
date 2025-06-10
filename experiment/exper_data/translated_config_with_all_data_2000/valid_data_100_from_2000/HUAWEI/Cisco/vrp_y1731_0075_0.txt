@@ -1,20 +1,21 @@
 hostname CE1
 vlan batch 2
 vlan 2
-ethernet cfm global
+ethernet cfm ieee
 interface GigabitEthernet1/0/1
  switchport
  switchport mode access
  no shutdown
  switchport trunk allowed vlan 2
  ethernet cfm domain md3 level 3
-  ethernet cfm mip synthetics-loss single-ended continual test-id 1 mep-id 3 remote-mep-id 4 interval 1000
+end
 interface ma3
- ethernet cfm domain md3 service ma3 evc vlan-2
+ ethernet cfm domain md3 service ma3 vlan 2
  ethernet cfm mep domain md3 service ma3 3 outward
  ethernet cfm mep domain md3 service ma3 mpid 3 direction outward
- ethernet cfm mep 3 service ma3 domain md3 continuity-check transmission
- ethernet cfm mep crosscheck 4
- ethernet cfm mep crosscheck mep-id 4 vlan 2
- ethernet cfm mep crosscheck start 3 peer mep-id 4 test-id 1
-end
+ ethernet cfm mep ccm-send 3 enable
+ ethernet cfm remote-mep 4
+ ethernet cfm mep cc-receive 4 enable
+ ethernet cfm mep crosscheck start 3 remote-mep 4 test-id 1
+ ethernet cfm domain md3 level 3
+  ethernet cfm mip synthetics loss measurement single-ended test-id 1 continuous interval 1000

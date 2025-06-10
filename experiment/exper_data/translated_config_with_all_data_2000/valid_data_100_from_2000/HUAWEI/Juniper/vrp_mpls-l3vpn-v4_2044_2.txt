@@ -1,30 +1,32 @@
 set system host-name CE1
-set interfaces ge-0/0/0 unit 0 family inet mpls lsr-id 2.2.2.9
-set interfaces ge-0/0/0 unit 0 family inet mpls ldp
-set interfaces ge-0/0/0 unit 0 family inet service input none
-set protocols l2vpn vpls vpls-id 1
+set system host-name 2.2.2.9
+set interfaces ge-1/0/0 unit 0 family mpls
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 unit 0 disable
-set interfaces ge-1/0/0 unit 0 family inet address 40.1.1.2/24
-set interfaces ge-1/0/0 unit 0 family inet mpls
-set interfaces ge-1/0/0 unit 0 family inet mpls ldp
+set interfaces ge-1/0/0 unit 1 family inet address 40.1.1.2/24
+set interfaces ge-1/0/0 set protocols ldp interface all
+set interfaces ge-1/0/0 unit 1 vlan-id 2
+set protocols mpls interface ge-1/0/2.0
+set protocols ldp interface all
+set protocols ldp interface lo0.0
 set interfaces ge-2/0/0 disable
 set interfaces ge-2/0/0 unit 0 disable
 set interfaces ge-2/0/0 unit 0 family inet address 11.1.1.1/24
-set interfaces ge-2/0/0 unit 0 family inet mpls
+set interfaces ge-2/0/0 unit 0 family mpls
 set interfaces lo0.1 disable
 set interfaces lo0.1 unit 0 family inet address 2.2.2.9/32
 set routing-options autonomous-system 200
 set protocols bgp group 200 type external
 set protocols bgp group 200 neighbor 11.1.1.2 peer-as 100
+set protocols bgp group 200 peer-as 100
 set protocols bgp group 200 export BGP-PEER-100
 set protocols bgp group 200 family inet unicast
-set protocols bgp group 200 local-as 200
-set protocols bgp group 200 term 1 then accept
-set protocols bgp group 200 peer-as 200
+set protocols bgp group 200 family inet-vpn unicast
+set protocols bgp group 200 family inet unicast add-path receive
 set protocols bgp group 200 export policy1
-set protocols bgp group 200 neighbor 11.1.1.2 peer-as 200
-set protocols ospf area 0.0.0.0 interface 0.0.0.0
+set protocols bgp group 200 neighbor-11.1.1.2 peer-as 200
+set policy-options policy-statement BGP-PEER-11.1.1.2 term 1 then accept
 set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set policy-options policy-statement OSPF-IMPORT-BGP term 1 from protocol bgp
 set protocols isis export policy1
-set routing-options static route none discard
+set routing-options static route 0.0.0.0/0 discard

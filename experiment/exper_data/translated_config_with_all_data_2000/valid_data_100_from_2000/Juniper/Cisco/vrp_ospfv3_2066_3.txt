@@ -1,46 +1,25 @@
 hostname DeviceE
 interface GigabitEthernet1/0/1
- isis metric 5
-ip route none none all none
+ no ipv6 ospf cost 5 interface GigabitEthernet1/0/1
+ipv6 nd ra suppress all
+interface range all
+ipv6 nd ra suppress
+no ipv6 nd ra suppress
 router ospfv3 1
  address-family ipv4 unicast
   area 0.0.0.1
-   interface GigabitEthernet1/0/1
-area 1 interface GigabitEthernet1/0/0
-area 1 interface GigabitEthernet2/0/0
-area 1 interface GigabitEthernet3/0/0
-area 1 interface GigabitEthernet1/0/1 cost 5
-network none none area 0.0.0.1
-network 0.0.0.0 0.0.0.1 area ge-2/0/0
-bfd map ipv4 none ge-1/0/0
-bfd map ipv4 10.1.1.1/24 ge-1/0/0
- interface GigabitEthernet1/0/0
- bfd interval 300 min_rx 300 multiplier 3
- !
- interface GigabitEthernet2/0/0
- interface GigabitEthernet3/0/0
- interface GigabitEthernet1/0/1
-bfd map ipv4 10.1.1.1/24 ge-2/0/0
-bfd map ipv4 none ge-2/0/0
- interface GigabitEthernet1/0/0
- bfd interval 300 min_rx 300 multiplier 3
- interface GigabitEthernet2/0/0
- interface GigabitEthernet3/0/0
- interface GigabitEthernet1/0/1
-bfd map ipv4 none ge-3/0/0
- interface GigabitEthernet1/0/0
- bfd interval 300 min_rx 300 multiplier 3
- !
- interface GigabitEthernet2/0/0
- interface GigabitEthernet3/0/0
- interface GigabitEthernet1/0/1
-bfd map ipv4 none ge-1/0/1
- interface GigabitEthernet1/0/0
- bfd interval 300 min_rx 300 multiplier 3
- !
- interface GigabitEthernet2/0/0
- interface GigabitEthernet3/0/0
- interface GigabitEthernet1/0/1
-bfd interval none min_rx none multiplier 3
+   interface ge-1/0/1
+end
+router ospf 1
+ no passive-interface GigabitEthernet1/0/0
+ no passive-interface GigabitEthernet2/0/0
+ no passive-interface GigabitEthernet3/0/0
+bfd ge-1/0/0
+bfd all-interfaces
+bfd ge-2/0/0
+bfd ge-3/0/0
+bfd ge-1/0/1
+bfd interval 300 min_rx 300 multiplier 3
 ipv6 route 2001:DB8::/62 Null0
 ipv6 route ::/0 reject
+ ipv6 route ::/0 Null0

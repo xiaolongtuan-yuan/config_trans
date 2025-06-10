@@ -1,22 +1,23 @@
-sysname name CE1
+sysname CE1
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 10.1.1.1 255.255.255.252
+ ip address 3.3.3.3 255.255.255.255
+return
 bgp 65410
- import-route direct
  ipv4-family unicast
-  peer 10.1.1.1 next-hop-local
-  undo synchronization
+  import-route direct
  peer 10.1.1.2 enable
- import-route external
- confederation peer-as none 100
+traffic-policy 1 inbound
 traffic policy 1
 traffic policy 2
 user-group external
-interface GigabitEthernet0/0/0
-ip address 10.1.1.1 255.255.255.252
-interface LoopBack0
-ip address 3.3.3.3 255.255.255.255
-ip ip-prefix direct-import index 10 permit 0.0.0.0 0 less-equal 32
-route-policy direct-import permit node 10
-if-match ip-prefix direct-import
-route-policy direct-import deny node 20
-peer 10.1.1.2 as-number 100
-peer 10.1.1.2 route-policy direct-import import
+ peer 10.1.1.2 as-number 100
+ peer 10.1.1.2 route-policy direct-import import
+bgp 600
+ peer 10.1.1.1 as-number 0
+ ipv4-family unicast
+  peer 10.1.1.2 route-policy direct-import import
+ ipv6-family unicast
+bgp 100
+ peer 100 ebgp-max-hop 10

@@ -1,29 +1,33 @@
 sysname UPE
-l2vpn
-peer 3.3.3.9
-vsi-id 101
-encapsulation ethernet
+ptp-adaptive local-ip 3.3.3.9
+ l2vpn
+ peer 3.3.3.9
+ signaling ldp
+ vsi ldp101 static
+ pw-class pw101
+ trans-mit-vc-id 101
+ trans-mit-vc-type ethernet
+  quit
+ mpls encapsulation ethernet
 interface GigabitEthernet1/0/0.1
-quit
- signaling vpls
-ospf 1 router-id 3.3.3.9
- area 0.0.0.0
-  network 3.3.3.9 ge-1/0/0.1
-bfd pst bind peer-ip 3.3.3.9 interface 101
- discriminator remote 101
-bfd pst bind peer-ip 3.3.3.9 interface ethernet
-interface GigabitEthernet1/0/0
  undo shutdown
  vlan-type dot1q 10
- ipv6 address :: none
-mpls rsvp-te
+return
+ mpls ccc out-interface GigabitEthernet1/0/1
+ospf 1 router-id 3.3.3.9
+ undo shutdown
+ area 0.0.0.0
+  network 3.3.3.9 ge-1/0/0.1
+mpls
+ mpls ldp
 mpls label protocol ldp
 router id 1.1.1.9
 ospf 1.1.1.9 router-id 1
+mpls lsr-id 1.1.1.9
 area 0.0.0.0
- ospf 1
- area 0.0.0.0
- network 1.1.1.9 0.0.0.0
 ospf 1 router-id 0.0.0.0
+ silent-interface LoopBack0
+ospf 0.0.0.0 router-id ge-2/0/0.0
+ undo shutdown
  area 0.0.0.0
-  network 0.0.0.0 255.255.255.0
+  network 0.0.0.0 ge-2/0/0.0

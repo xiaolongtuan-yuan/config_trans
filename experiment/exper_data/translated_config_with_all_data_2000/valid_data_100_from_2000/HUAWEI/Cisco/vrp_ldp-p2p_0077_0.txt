@@ -1,40 +1,35 @@
 hostname LSRA
 hostname PE1
 mpls ldp router-id 1.1.1.9
+mpls ldp router-id Loopback0 force
+mpls ldp router-id 1.1.1.9 force
 ip cef
- mpls ldp bfd fec-list list1
 interface GigabitEthernet2/0/0
  mpls ip
- mpls ip ldp autoconfig
- vrrp 1 ip 10.1.1.3
-mpls traffic-eng
-mpls ldp explicit-null for list1
+ mpls ldp autoconfig
+ address-family ipv4
+mpls ldp bfd
+mpls list1
+ip access-list standard list1
  mpls ldp neighbor 4.4.4.9 targeted
-mpls ldp router-id loopback0 force
-mpls ldp neighbor 4.4.4.9 targeted
 router isis 1
  is-type level-2
  net 10.0000.0000.0001.00
-router ospf {'name': 'process ID', 'type': 'integer', 'explanation': 'OSPF Process ID', 'example': 1}
- mpls traffic-eng
-router ospf {'name': 'process ID', 'type': 'integer', 'explanation': 'OSPF Process ID'}
- mpls traffic-eng
+ fast-reroute
   fast-reroute per-prefix level-1
-router ospf {'name': 'process ID', 'type': 'integer', 'explanation': 'OSF Project ID'}
- mpls traffic-eng
-  fast-reroute per-prefix level-2
+  fast-reroute per-prefix level 2
 interface GigabitEthernet1/0/0
  ip address 10.1.1.1 255.255.255.0
  isis network point-to-point
  mpls ip
- mpls ip ldp autoconfig
+ mpls ldp autoconfig
 interface GigabitEthernet1/0/1
  no shutdown
  ip address 10.1.2.1 255.255.255.0
  isis network point-to-point
  mpls ip
- mpls ip ldp autoconfig
+ mpls ldp autoconfig
+end
 interface LoopBack0
  ip address 1.1.1.9 255.255.255.255
  isis network point-to-point
-end

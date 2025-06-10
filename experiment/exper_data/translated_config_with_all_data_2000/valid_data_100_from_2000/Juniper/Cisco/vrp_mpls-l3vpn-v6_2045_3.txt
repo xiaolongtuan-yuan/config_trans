@@ -1,5 +1,22 @@
 hostname CE
-aaa authentication login default group ipv6-peers local
-redistribute bgp
-aaa authentication login ipv6-peers group 2001:db8:0:1:2::1 local
-redistribute connected
+end
+router bgp ipv6-peers
+ neighbor none remote-as none
+ neighbor none activate
+ no synchronization
+ address-family ipv4 unicast
+ address-family ipv6
+aaa authentication login ipv6-peers group external local
+router bgp 600
+ neighbor 2001:db8:0:1:2::1 remote-as none
+  router bgp [AS_NUMBER]
+  neighbor 2001:db8:1::2 update-source 2001:db8:0:1:2::1
+  neighbor 2001:db8:3::2 update-source 2001:db8:0:1:2::1
+router bgp 100
+ neighbor 2001:db8:1::2 remote-as 100
+  router bgp [local-as-number]
+  neighbor 2001:db8:1::2 remote-as 100
+ neighbor 2001:db8:3::2 remote-as 100
+  neighbor 2001:db8:3::2 remote-as 100
+aaa authentication login ipv6-peers group inet6 local
+aaa authentication login advertise-loopback group ipv6-peers local

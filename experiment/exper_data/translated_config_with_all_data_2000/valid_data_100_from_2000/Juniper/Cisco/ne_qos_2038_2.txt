@@ -2,10 +2,28 @@ hostname DeviceC
 interface GigabitEthernet1/0/0
  no shutdown
  ip address 10.20.1.1 255.255.255.0
-aaa authentication login default group internal local
-redistribute bgp
-redistribute connected
-policy-map IMPORT-CONNECTED
+end
+router bgp 600
+ neighbor none remote-as none
+ neighbor 10.1.1.2 activate
+ no synchronization
+ address-family ipv4 unicast
+ address-family ipv4
+ address-family inet unicast
+ exit-address-family
+ bgp confederation identifier 1
+aaa authentication login internal group internal local
+aaa authentication login internal group 10.20.1.2 local
+aaa authentication login IMPORT-CONNECTED group 100 local
+router bgp 100
  route-map IMPORT-CONNECTED permit 10
- match interface
-network 0.0.0.0 0.0.0.0 area 0
+ match protocol connected
+neighbor 10.20.1.2 remote-as 100
+neighbor 10.20.1.2 update-source ge-1/0/0
+neighbor 10.20.1.2 activate
+ address-family ipv4 unicast
+ exit-address-family
+route-map IMPORT-CONNECTED permit 1
+router ospf 1
+ router-id 4.4.4.4
+ no passive-interface GigabitEthernet1/0/0

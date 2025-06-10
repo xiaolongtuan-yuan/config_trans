@@ -2,16 +2,17 @@ set system host-name CE2
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 ether-options no-auto-negotiation
-set interfaces ge-1/0/0 set protocols ipv6
-set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6
-set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:3::1/64
-set interfaces lo0.1 unit 1 disable
+set interfaces ge-1/0/0 unit 0 tunnel ipv6-prefix 2001:db8::/32
+set interfaces ge-1/0/0 unit 0 tunnel ipv6-prefix-length 64
+set interfaces lo0.1 unit 0 disable
 set interfaces lo0.1 disable
-set interfaces lo0.1 set interfaces lo0 unit 1 family inet6 address 2001:db8:9::1/64
-set interfaces lo0 set interfaces <interface-name> family inet6
+set interfaces lo0.1 unit 0 tunnel ipv6-prefix ::/0
+set interfaces lo0.1 unit 1 tunnel ipv6-prefix-length 64
 set routing-options autonomous-system 65410
+set routing-options router-id 30.30.30.30
 set protocols bgp group IBGP type external
 set protocols bgp group IBGP neighbor 2001:db8:2::2 peer-as 100
-set protocols bgp group IBGP export BGP-NETWORKS
+set protocols bgp group IBGP peer-as 100
+set protocols bgp group IBGP export BGP-AS100
 set protocols bgp local-as 65410 set protocols bgp group <group-name> family inet6 unicast export connected
 set protocols isis export REDIST-CONNECTED

@@ -1,51 +1,51 @@
 {
-    "command_accuracy": 0.4090909090909091,
+    "command_accuracy": 0.45454545454545453,
     "missed_commands": [
         "set vlans vlan300 vlan-id 300",
         "set vlans vlan301 vlan-id 301",
         "set vlans vlan400 vlan-id 400",
+        "set protocols rstp interface ge-0/0/1 edge",
+        "set protocols rstp interface ge-0/0/2 edge",
         "set protocols rstp bridge-priority 4096",
         "set interfaces ge-0/0/1 flexible-vlan-tagging",
         "set interfaces ge-0/0/2 flexible-vlan-tagging",
         "set interfaces ge-0/0/1 encapsulation flexible-ethernet-services",
         "set interfaces ge-0/0/2 encapsulation flexible-ethernet-services",
-        "set interfaces ge-0/0/1 unit 0 family ethernet-switching vlan members vlan400",
-        "set interfaces ge-0/0/2 unit 0 family ethernet-switching vlan members vlan20",
-        "set interfaces ge-0/0/2 unit 0 family ethernet-switching vlan members vlan300",
         "set interfaces ge-0/0/2 unit 0 family ethernet-switching vlan members vlan301",
         "set interfaces ge-0/0/2 unit 0 family ethernet-switching vlan members vlan400"
     ],
-    "grammatical_accuracy": 0.7727272727272727,
+    "grammatical_accuracy": 0.6818181818181818,
     "missed_templates": [
+        "set protocols rstp interface [parameter1] edge",
         "set protocols rstp bridge-priority [parameter1]",
         "set interfaces [parameter1] flexible-vlan-tagging",
         "set interfaces [parameter1] encapsulation [parameter2]"
     ],
-    "llm_command_accuracy": 0.22727272727272727,
-    "llm_command_ratio": 0.25,
+    "llm_command_accuracy": 0.2727272727272727,
+    "llm_command_ratio": 0.2608695652173913,
     "command_for_llm": [
-        "switchport trunk allowed vlan 20,300-400",
-        "spanning-tree portfast trunk"
+        "switchport trunk allowed vlan 20,300-400"
     ],
     "llm_trans_commands": [
+        "set interfaces ge-1/0/1 unit 0 family ethernet-switching vlan members 20",
+        "set interfaces ge-1/0/1 unit 0 family ethernet-switching vlan members 300-400",
+        "set interfaces ge-1/0/2 unit 0 family ethernet-switching vlan members 20",
+        "set interfaces ge-1/0/2 unit 0 family ethernet-switching vlan members 300-400",
         "set interfaces ge-1/0/1 unit 0 family ethernet-switching vlan members [20 300-400]",
-        "set protocols rstp interface all edge",
-        "set interfaces ge-1/0/1 unit 0 family ethernet-switching vlan members [20 300-400]",
-        "set interfaces ge-1/0/2 unit 0 family ethernet-switching vlan members [20 300-400]",
-        "set protocols rstp interface all edge"
+        "set interfaces ge-1/0/2 unit 0 family ethernet-switching vlan members [20 300-400]"
     ],
     "source_commands": [
-        "switchport trunk allowed vlan 20,300-400",
+        "hostname DeviceC",
         "interface GigabitEthernet1/0/1",
-        "vlan 20",
-        "spanning-tree vlan 20,300-400 root primary",
-        "end",
-        "switchport mode trunk",
-        "no shutdown",
         "vlan 300-400",
+        "end",
+        "vlan 20",
         "interface GigabitEthernet1/0/2",
+        "no shutdown",
+        "switchport trunk allowed vlan 20,300-400",
         "spanning-tree portfast trunk",
-        "hostname DeviceC"
+        "switchport mode trunk",
+        "spanning-tree vlan 20,300-400 root primary"
     ],
     "llm_origin_response": [
         ""

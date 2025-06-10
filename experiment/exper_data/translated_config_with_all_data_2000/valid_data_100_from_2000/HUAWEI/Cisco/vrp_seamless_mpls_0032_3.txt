@@ -1,16 +1,17 @@
 hostname Core
 mpls ldp router-id 4.4.4.4
+mpls ldp router-id Loopback0 force
 ip cef
 interface GigabitEthernet2/0/0
  mpls ip
- mpls ip ldp autoconfig
+ mpls ldp autoconfig
  no shutdown
  ip address 10.4.1.1 255.255.255.0
 interface GigabitEthernet1/0/0
+ no shutdown
  ip address 10.3.1.2 255.255.255.0
  mpls ip
-interface GigabitEthernet1/0/1
- no shutdown
+end
 interface LoopBack1
  ip address 4.4.4.4 255.255.255.255
 router bgp 200
@@ -19,15 +20,15 @@ router bgp 200
  neighbor 5.5.5.5 update-source LoopBack1
  neighbor 10.3.1.1 remote-as 100
  address-family ipv4 unicast
-  neighbor 5.5.5.5 send-label
-  neighbor 10.3.1.1 send-label explicit-null
  neighbor 5.5.5.5 activate
  exit-address-family
  address-family ipv4
   neighbor 5.5.5.5 route-map policy1 in
   neighbor 5.5.5.5 route-map policy1 out
+  neighbor 5.5.5.5 capability add-path receive
   neighbor 10.3.1.1 route-map policy1 in
   neighbor 10.3.1.1 route-map policy1 out
+  neighbor 10.3.1.1 capability add-path receive
  neighbor 10.3.1.1 activate
 router ospf 2
  network 4.4.4.4 0.0.0.0 area 0
@@ -35,4 +36,3 @@ router ospf 2
 route-map policy1 permit 1
  match mpls-label
  set mpls-label
-end

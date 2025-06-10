@@ -1,20 +1,16 @@
 set system host-name CE2
-set routing-options multicast ipv6
+set routing-options multicast
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 unit 0 disable
-set interfaces ge-1/0/0 unit 0 family inet6
-set interfaces ge-1/0/0 unit 0 family inet address 2001:db8:3::1/64
-set interfaces ge-1/0/0 set protocols isis interface <interface_name> ipv6 enable
-set interfaces ge-1/0/0 unit none family inet address none/none vrrp-group FF3E::1 virtual-address none
-set interfaces ge-1/0/0 unit 0 tunnel source 2001:DB8:5::2
-set interfaces ge-1/0/0 unit 0 family inet address 2001:db8:14::1/64
-set interfaces ge-1/0/0 set protocols isis interface ge-1/0/0.0 ipv6
-set interfaces ge-1/0/0 set protocols isis interface ge-1/0/4.0 ipv6
-set interfaces ge-1/0/0 set protocols isis level 2
-set interfaces ge-1/0/0 set protocols isis net 10.0000.0000.0004.00
-set interfaces ge-1/0/0 unit 4 family inet6
+set interfaces ge-1/0/0 unit 1 tunnel ipv6-prefix none
+set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:3::1/64
+set interfaces ge-1/0/0 unit 1 tunnel ipv6-prefix ::/0
+set interfaces ge-1/0/0 unit 0 family inet address 2001:DB8:5::2 vrrp-group 10 virtual-address 2001:DB8:5::2
+set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:14::1/64
+set interfaces ge-1/0/0 unit 0 tunnel ipv6-prefix 2001:db8::/32
+set interfaces ge-1/0/0 unit 1 vlan-id 2
 set protocols isis level 1
 set protocols isis interface ge-1/0/0.0 level 2 metric none
-set system host-name pim-ipv6
-set interfaces irb unit 100 family inet6 address 2001:db8:6::3/128
-set system host-name CE1
+set protocols pim rp static address 2001:db8:6::3
+set protocols pim
+set protocols pim rp static 2001:db8:6::3

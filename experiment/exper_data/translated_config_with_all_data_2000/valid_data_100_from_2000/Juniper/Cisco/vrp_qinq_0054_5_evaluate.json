@@ -1,56 +1,48 @@
 {
-    "command_accuracy": 0.3333333333333333,
+    "command_accuracy": 0.75,
     "missed_commands": [
         "router bgp 65421",
-        "neighbor 172.17.1.1 remote-as 100",
-        "address-family ipv4",
-        "no synchronization",
         "network 172.17.1.0 mask 255.255.255.0",
-        "neighbor 172.17.1.1 activate",
-        "exit-address-family",
-        "end",
-        "router bgp 65421",
-        "neighbor 172.17.1.1 remote-as 100",
-        "address-family ipv4",
-        "no synchronization",
-        "network 172.17.1.0 mask 255.255.255.0",
-        "neighbor 172.17.1.1 activate",
-        "exit-address-family",
-        "end"
+        "neighbor 172.17.1.1 activate"
     ],
-    "grammatical_accuracy": 0.3333333333333333,
+    "grammatical_accuracy": 0.9166666666666666,
     "missed_templates": [
-        "router bgp [parameter1]",
-        "neighbor [parameter1] remote-as [parameter2]",
-        "address-family [parameter1]",
-        "no synchronization",
-        "network [parameter1] mask [parameter2]",
-        "neighbor [parameter1] activate",
-        "exit-address-family",
-        "end"
+        "network [parameter1] mask [parameter2]"
     ],
-    "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.15384615384615385,
+    "llm_command_accuracy": 0.08333333333333333,
+    "llm_command_ratio": 0.3448275862068966,
     "command_for_llm": [
-        "term 1 then accept"
-    ],
-    "llm_trans_commands": [
-        "route-map IMPORT-DIRECT permit 10",
-        "match interface"
-    ],
-    "source_commands": [
-        "term 1 then accept",
-        "neighbor 172.17.1.1 peer-as 100",
+        "set policy-options policy-statement IMPORT-DIRECT",
+        "local-address 172.17.1.2",
         "neighbor 172.17.1.1 import IMPORT-DIRECT",
         "term 1 from protocol direct",
-        "set system host-name CE3",
-        "unit 1 family inet address 172.17.1.2/24",
-        "type external",
-        "local-address 172.17.1.2",
-        "family inet unicast",
+        "neighbor 172.17.1.1 peer-as 100"
+    ],
+    "llm_trans_commands": [
+        "neighbor 172.17.1.1 update-source 172.17.1.2",
+        "router bgp [local-as-number]",
+        "neighbor 172.17.1.1 remote-as 100",
+        "router bgp 65000",
+        "neighbor 172.17.1.1 route-map IMPORT-DIRECT in",
+        "router bgp 65000",
+        "neighbor 172.17.1.1 route-map IMPORT-DIRECT in",
+        "router bgp 65000",
+        "route-map IMPORT-DIRECT permit 10",
+        "match protocol connected"
+    ],
+    "source_commands": [
         "set interfaces ge-1/0/1",
+        "local-address 172.17.1.2",
         "set policy-options policy-statement IMPORT-DIRECT",
-        "set protocols bgp group external"
+        "set protocols bgp group external",
+        "unit 1 family inet address 172.17.1.2/24",
+        "family inet unicast",
+        "neighbor 172.17.1.1 import IMPORT-DIRECT",
+        "term 1 from protocol direct",
+        "type external",
+        "set system host-name CE3",
+        "term 1 then accept",
+        "neighbor 172.17.1.1 peer-as 100"
     ],
     "llm_origin_response": [
         ""

@@ -1,5 +1,5 @@
 sysname P
-ip route-static none none none
+ip route-static 0.0.0.0 0.0.0.0 10.1.1.2
 mpls lsr-id 3.3.3.9
 interface GigabitEthernet2/0/0
  mpls
@@ -7,22 +7,19 @@ interface GigabitEthernet2/0/0
  ip address 10.2.1.1 255.255.255.0
  isis network-type p2p
  isis metric 10
-ospf 1
- ma Loopback0
-  mep mep-id 1 interface Loopback0 outward
+mpls te router-id LoopBack0
 isis 1
  is-level level-1
  network-entity 49.0001.1111.1111.2222.00
  isis-level level-2
  cost-style wide
-ospf 1 router-id 192.168.1.1
- silent-interface LoopBack1
+ isis silent-interface Loopback1
 interface GigabitEthernet1/0/0
  ip address 10.1.1.2 255.255.255.0
  isis network-type p2p
  isis metric 10
+return
 interface Loopback1
 interface LoopBack1
  ip address 2.2.2.2 255.255.255.255
 mpls traffic-eng router-id LoopBack16
-return

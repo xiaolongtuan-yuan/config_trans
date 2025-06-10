@@ -1,4 +1,22 @@
 hostname DeviceB
-aaa authentication login default group external local
-redistribute bgp
-aaa authentication login external group 2001:db8:100::2 local
+end
+router bgp 600
+ neighbor 10.1.1.2 remote-as 100
+ neighbor 10.1.1.2 activate
+ no synchronization
+ address-family ipv4 unicast
+ address-family ipv4
+ neighbor 2001:db8:100::2 remote-as none
+  router bgp [AS_NUMBER]
+  neighbor 2001:db8:100::1 update-source 2001:db8:100::2
+aaa authentication login inet6 group external local
+router bgp 100
+ neighbor 2001:db8:100::1 remote-as 100
+  router bgp 100
+  neighbor 2001:db8:100::1 remote-as 100
+router bgp 200
+ neighbor 2001:db8:101::1 remote-as 200
+  router bgp
+  neighbor 2001:db8:101::1 remote-as 200
+aaa authentication login inet6 group unicast local
+aaa authentication login next-hop-self-policy group none local

@@ -1,12 +1,10 @@
 set system host-name DeviceC
-set protocols synchronization ssm-control enable
-set chassis synchronization interfaces bits0 bandwidth 2m
-set protocols ntp source-address bits0
-set system ntp server bits0 prefer
+set protocols pim ssm-translate-policy ssm-policy
+set system ntp server 2.2.2.2 key 42
+set chassis clock source bits0 2mhz
+set chassis synchronization network-clock source BITS0 priority 1
 set interfaces ge-1/0/0 disable
-set interfaces ge-1/0/0 set protocols synchronization enable
-set interfaces ge-1/0/0 set interfaces ge-1/0/0 synchronization
-set interfaces ge-1/0/0 set interfaces ge-2/0/0 synchronization
-set interfaces ge-1/0/0 set protocols ntp enable
-set interfaces ge-1/0/0 unit none family none address none vrrp-group none priority 3
-set system host-name CE1
+set interfaces ge-1/0/0 ether-options speed 10m
+set interfaces ge-1/0/0 ether-options speed 1g
+set interfaces ge-1/0/0 unit 0 family inet address none vrrp-group none priority 3
+set interfaces ge-1/0/0 unit 1 vlan-id 2

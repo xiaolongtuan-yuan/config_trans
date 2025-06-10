@@ -1,18 +1,20 @@
 hostname P2
-mpls ldp advertise-labels interface GigabitEthernet1/0/0
-mpls ldp advertise-labels interface GigabitEthernet2/0/0
-ip route 4.4.4.9 255.255.255.255 none
+end
+mpls ip
 interface GigabitEthernet1/0/0
+ mpls label protocol ldp
  no shutdown
- description MPLS-enabled interface
+ interface GigabitEthernet1/0/0
+ mpls ip
  ip address 10.3.1.2 255.255.255.0
- ipv6 address mpls eui-64
+ mpls ldp ipv4
  ip address 4.4.4.9 255.255.255.255
 interface GigabitEthernet2/0/0
- no shutdown
+ mpls label protocol ldp
  ip address 10.4.1.1 255.255.255.0
- ipv6 address mpls eui-64
+router-id 4.4.4.9
 router ospf 1
-network 0.0.0.0 0.0.0.0 area 0
-network 0.0.0.0 255.255.255.255 area 0
-network none none area 0.0.0.0
+ router-id 4.4.4.4
+ no passive-interface Loopback0
+ no passive-interface GigabitEthernet1/0/0
+ no passive-interface GigabitEthernet2/0/0

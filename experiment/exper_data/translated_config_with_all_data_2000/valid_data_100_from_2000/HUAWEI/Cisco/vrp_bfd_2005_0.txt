@@ -4,11 +4,9 @@ interface GigabitEthernet1/0/0
  ip address 10.1.1.1 255.255.255.0
 interface GigabitEthernet1/0/1
  no shutdown
-bfd-template single-hop PST
-neighbor 10.1.1.2 interface GigabitEthernet1/0/0
-ipv6 bfd BFD_session_name bind peer-ipv6 2001:db8:3::2 source-ipv6 2001:db8:1::1
- bfd pst discriminator local 1
- bfd pst discriminator remote 10
-ipv6 bfd aa bind peer-ipv6 2001:db8:3::2 source-ipv6 2001:db8:1::1
- bfd pst discriminator remote 2
 end
+ipv6 bfd GigabitEthernet1/0/0 bind peer-ipv6 2001:db8:3::2 source-ipv6 2001:db8:1::1
+ bfd pst discriminator local 1
+ bfd pst discriminator remote 2
+ipv6 bfd GigabitEthernet1/0/0 bind peer-ipv6 2001:db8::2 source-ipv6 2001:db8::1
+ bfd pst discriminator remote 10

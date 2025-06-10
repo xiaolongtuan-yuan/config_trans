@@ -9,15 +9,6 @@
         "set policy-options policy-statement ssm-policy then accept",
         "set policy-options prefix-list ssm-allowed 232.1.1.0/24",
         "set protocols pim ssm-translate-policy ssm-policy",
-        "set protocols pim static-rp 192.168.4.1 family inet",
-        "set protocols pim interface ge-1/0/0.0 mode sparse",
-        "set protocols igmp interface ge-1/0/0.0 version 3",
-        "set interfaces ge-2/0/0 unit 0 family inet address 192.168.3.1/24",
-        "set protocols pim interface ge-2/0/0.0 mode sparse",
-        "set policy-options policy-statement ssm-policy term allow-ssm from prefix-list ssm-allowed",
-        "set policy-options policy-statement ssm-policy then accept",
-        "set policy-options prefix-list ssm-allowed 232.1.1.0/24",
-        "set protocols pim ssm-translate-policy ssm-policy",
         "set protocols pim static-rp 192.168.4.1 family inet"
     ],
     "grammatical_accuracy": 0.2727272727272727,
@@ -31,42 +22,34 @@
         "set protocols pim static-rp [parameter1] family [parameter2]"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.38095238095238093,
+    "llm_command_ratio": 0.1,
     "command_for_llm": [
-        "isis enable 1",
-        "acl number 2001",
-        "rule 5 permit source 232.1.1.0 0.0.0.255"
+        "pim"
     ],
     "llm_trans_commands": [
-        "set firewall family inet filter 2001",
-        "set firewall family inet filter 2001",
-        "set firewall filter 2001 term 5 from source-address 232.1.1.0/24",
-        "set firewall filter 2001 term 5 then accept",
-        "set protocols isis interface ge-1/0/0",
-        "set protocols isis interface ge-2/0/0",
-        "set protocols isis interface ge-1/0/0",
-        "set protocols isis interface ge-2/0/0"
+        "set protocols pim rp static address 192.168.4.1",
+        "set protocols pim ssm-groups group-ranges 232.1.1.0/24"
     ],
     "source_commands": [
+        "igmp version 3",
+        "isis enable 1",
+        "ip address 192.168.3.1 255.255.255.0",
+        "sysname DeviceC",
+        "ip address 10.110.2.2 255.255.255.0",
         "ssm-policy 2001",
-        "pim sm",
+        "return",
         "undo shutdown",
         "isis 1",
-        "interface GigabitEthernet2/0/0",
-        "return",
-        "ip address 192.168.3.1 255.255.255.0",
-        "multicast routing-enable",
-        "igmp enable",
-        "isis enable 1",
-        "igmp version 3",
-        "network-entity 10.0000.0000.0003.00",
-        "acl number 2001",
+        "rule 5 permit source 232.1.1.0 0.0.0.255",
         "pim",
+        "multicast routing-enable",
         "interface GigabitEthernet1/0/0",
         "static-rp 192.168.4.1",
-        "ip address 10.110.2.2 255.255.255.0",
-        "sysname DeviceC",
-        "rule 5 permit source 232.1.1.0 0.0.0.255"
+        "network-entity 10.0000.0000.0003.00",
+        "pim sm",
+        "igmp enable",
+        "interface GigabitEthernet2/0/0",
+        "acl number 2001"
     ],
     "llm_origin_response": [
         ""

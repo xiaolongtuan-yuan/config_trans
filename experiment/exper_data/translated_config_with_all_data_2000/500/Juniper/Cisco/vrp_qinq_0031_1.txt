@@ -1,19 +1,23 @@
 hostname CE2
 interface GigabitEthernet1/0/1
  no shutdown
+ switchport access vlan 20
  ip address 10.3.1.2 255.255.255.0
-aaa authentication login eBGP group eBGP local
-redistribute bgp
-aaa authentication login eBGP group 10.2.1.1 local
-redistribute connected
+end
 router bgp 600
+ neighbor 10.1.1.2 remote-as 100
+ neighbor 10.1.1.2 activate
+ no synchronization
+ address-family ipv4 unicast
  address-family ipv4
-  neighbor none route-map direct-routes none
+ neighbor none remote-as none
+  router bgp 100
+  neighbor 10.2.1.1 remote-as 100
+ bgp confederation identifier 1
+router bgp 100
+ neighbor none remote-as 100
+  router bgp 100
+  neighbor 10.2.1.1 remote-as 100
+aaa authentication login eBGP group 10.2.1.1 local
+aaa authentication login direct-routes group none local
 route-map direct-routes permit 1
-router bgp AS number
- address-family ipv4
-  neighbor none route-map direct-routes none
-interface GigabitEthernet1/0/1.20
-encapsulation dot1Q 20
-route-map direct-routes permit 10
-match interface

@@ -1,5 +1,5 @@
 {
-    "command_accuracy": 0.6904761904761905,
+    "command_accuracy": 0.6666666666666666,
     "missed_commands": [
         "route-distinguisher 100:1",
         "vpn-target 200:1 import-extcommunity",
@@ -9,13 +9,14 @@
         "undo synchronization",
         "policy vpn-target",
         "peer 1.1.1.9 signaling vpws",
+        "l2vpn-ad-family",
         "map mpls l2vpn vpn1 ce 2 ce-offset 1",
         "ccm-interval 100",
         "mep mep-id 2 interface gigabitethernet1/0/0 inward",
         "remote-mep mep-id 1",
         "ma ma1"
     ],
-    "grammatical_accuracy": 0.6904761904761905,
+    "grammatical_accuracy": 0.6666666666666666,
     "missed_templates": [
         "route-distinguisher [parameter1]:[parameter2]",
         "vpn-target [parameter1] import-extcommunity",
@@ -25,6 +26,7 @@
         "mpls l2vpn [parameter1] encapsulation [parameter2]",
         "policy vpn-target",
         "peer [parameter1] signaling [parameter2]",
+        "l2vpn-ad-family",
         "map mpls l2vpn [vpn_name] ce [ce_id] ce-offset [offset_value]",
         "ccm-interval [parameter1]",
         "mep mep-id [parameter1] interface [parameter2] [parameter3]",
@@ -32,37 +34,37 @@
         "ma [parameter1]"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.02702702702702703,
+    "llm_command_ratio": 0.02857142857142857,
     "command_for_llm": [
-        "pseudowire-class VPWS"
+        "neighbor 1.1.1.9 send-community extended"
     ],
     "llm_trans_commands": [
-        "pw-class VPWS"
+        "peer 1.1.1.9 advertise-community extended"
     ],
     "source_commands": [
-        "interface Loopback1",
-        "xconnect 1.1.1.9 100 encapsulation mpls pw-class VPWS",
-        "router bgp 100",
-        "hostname PE2",
-        "neighbor 1.1.1.9 send-community extended",
-        "mpls ldp autoconfig",
-        "neighbor 1.1.1.9 activate",
-        "neighbor 1.1.1.9 update-source Loopback1",
-        "network 192.168.10.0 0.0.0.255 area 0",
-        "exit-address-family",
-        "encapsulation mpls",
-        "address-family vpnv4",
-        "end",
-        "ip address 3.3.3.9 255.255.255.255",
-        "mpls ip",
         "interface GigabitEthernet1/0/0",
-        "interface GigabitEthernet2/0/0",
-        "pseudowire-class VPWS",
-        "network 3.3.3.9 0.0.0.0 area 0",
-        "router ospf 1",
-        "neighbor 1.1.1.9 remote-as 100",
-        "ip address 192.168.10.2 255.255.255.0",
+        "network 192.168.10.0 0.0.0.255 area 0",
+        "neighbor 1.1.1.9 update-source Loopback1",
         "no shutdown",
+        "ip address 3.3.3.9 255.255.255.255",
+        "neighbor 1.1.1.9 remote-as 100",
+        "mpls ip",
+        "network 3.3.3.9 0.0.0.0 area 0",
+        "pseudowire-class VPWS",
+        "interface GigabitEthernet2/0/0",
+        "ip address 192.168.10.2 255.255.255.0",
+        "router bgp 100",
+        "address-family vpnv4",
+        "neighbor 1.1.1.9 send-community extended",
+        "end",
+        "neighbor 1.1.1.9 activate",
+        "router ospf 1",
+        "hostname PE2",
+        "interface Loopback1",
+        "encapsulation mpls",
+        "exit-address-family",
+        "xconnect 1.1.1.9 100 encapsulation mpls pw-class VPWS",
+        "mpls ldp autoconfig",
         "mpls ldp router-id Loopback1 force"
     ],
     "llm_origin_response": [

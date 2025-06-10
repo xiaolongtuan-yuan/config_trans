@@ -1,15 +1,16 @@
 set system host-name CE2
 set interfaces ge-1/0/1 disable
-set interfaces ge-1/0/1.1 disable
-set interfaces ge-1/0/1.1 unit 0 disable
-set interfaces ge-1/0/1.1 unit 1 vlan-id 20
-set interfaces ge-1/0/1.1 unit 0 family inet address 10.3.1.2/24
+set interfaces ge-1/0/1 unit 0 disable
+set interfaces ge-1/0/1 unit 1 vlan-id 20
+set interfaces ge-1/0/1 unit 0 family ethernet-switching interface-mode trunk
+set interfaces ge-1/0/1 unit 1 encapsulation vlan-ccc
+set interfaces ge-1/0/1 unit 0 family inet address 10.3.1.2/24
 set routing-options autonomous-system 65420
 set protocols bgp group 65420 type external
+set protocols bgp group 65420 neighbor 10.2.1.1 peer-as 100
+set protocols bgp group 65420 peer-as 100
+set protocols bgp group 65420 export BGP-NETWORKS
 set protocols bgp group 65420 family inet unicast
-set protocols bgp group IBGP type external
-set protocols bgp group IBGP neighbor 10.2.1.1 peer-as 100
-set protocols bgp group IBGP export BGP-NETWORKS
-set protocols bgp group IBGP local-as 65420
-set protocols bgp group IBGP neighbor-10.2.1.1 peer-as 65420
-set protocols bgp import-route direct
+set protocols bgp group 65420 family inet-vpn unicast
+set policy-options policy-statement DIRECT-IMPORT term 1 from protocol direct
+set policy-options policy-statement BGP-PEER-10.2.1.1 term 65420 then 10.2.1.1

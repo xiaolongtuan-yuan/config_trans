@@ -2,44 +2,36 @@
     "command_accuracy": 0.6,
     "missed_commands": [
         "bgp 65420",
-        "peer 10.1.2.2 as-number 100",
-        "undo shutdown",
-        "undo synchoronization",
-        "import-route direct",
-        "bgp 65420",
-        "peer 10.1.2.2 as-number 100",
+        "ipv4-family unicast",
         "undo synchoronization",
         "import-route direct"
     ],
     "grammatical_accuracy": 0.8,
     "missed_templates": [
-        "peer [parameter1] as-number [parameter2]",
+        "ipv4-family unicast",
         "import-route direct"
     ],
-    "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.4117647058823529,
+    "llm_command_accuracy": 0.1,
+    "llm_command_ratio": 0.23076923076923078,
     "command_for_llm": [
+        "neighbor 10.1.2.2",
         "family inet unicast prefix-limit 10.1.2.0/24"
     ],
     "llm_trans_commands": [
-        "ip ip-prefix CE2_to_Peer index 10 permit 10.1.2.0 24",
-        "ip route-static 10.1.2.0 24 NULL0",
-        "route-policy CE2_to_Peer deny node 10",
-        "if-match ip-prefix CE2_to_Peer",
-        "route-policy CE2_to_Peer permit node 20",
-        "bgp 100",
-        "peer 10.1.2.2 route-policy CE2_to_Peer export"
+        "peer 10.1.2.2 as-number 100",
+        "ip ip-prefix CE2_to_Peer_PL index 10 permit 10.1.2.0 24",
+        "peer 10.1.2.2 ip-prefix CE2_to_Peer_PL import"
     ],
     "source_commands": [
-        "set protocols bgp group CE2_to_Peer",
-        "unit 0 family inet address 10.1.2.1/24",
-        "neighbor 10.1.2.2",
-        "type external",
         "set interfaces ge-0/0/1",
-        "peer-as 100",
-        "family inet unicast",
+        "set system host-name CE2",
+        "unit 0 family inet address 10.1.2.1/24",
+        "set protocols bgp group CE2_to_Peer",
+        "neighbor 10.1.2.2",
         "family inet unicast prefix-limit 10.1.2.0/24",
-        "set system host-name CE2"
+        "family inet unicast",
+        "peer-as 100",
+        "type external"
     ],
     "llm_origin_response": [
         ""

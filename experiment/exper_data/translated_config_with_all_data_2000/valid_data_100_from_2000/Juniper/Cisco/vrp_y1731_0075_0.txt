@@ -1,21 +1,52 @@
 hostname CE1
+end
 vlan 2
-name vlan2
-ethernet cfm ais ma connectivity-fault-management enable
-ethernet cfm maintenance-association ma1s md3
-ethernet cfm maintenance-association ma3 md md3
-ethernet cfm maintenance-association md3 ma3
- ethernet cfm domain md3 level 0
- ethernet cfm service ma3 evc ma3 vlan 2
- ethernet cfm mep crosscheck start 4 interface gigabitethernet 0/0/1 service ma3 domain md3
-ethernet cfm maintenance-association ma3 md3
- ethernet cfm domain md3 level 0
- ethernet cfm service ma3 evc ma3 vlan 2
- ethernet cfm mep crosscheck mpid 4 service ma3 domain md3
- ethernet cfm mip auto-create level 0
+ name vlan2
+ethernet cfm
+ethernet cfm domain md3 service ma3 evc ma3 vlan 2
+ethernet cfm mep crosscheck
+ethernet cfm global
 interface GigabitEthernet0/0/1
  no shutdown
  switchport
  switchport access vlan 2
  switchport trunk allowed vlan 2
-interface range ge-0/0/1 - 0
+ethernet cfm mep domain md3 service ma3 mep-id 3 outward
+ethernet cfm mep domain md3 service ma3 continuity-check interval 1s
+ethernet cfm mep domain md3 service ma3 remote-mep 4
+ ethernet cfm domain md3 level 0
+ethernet cfm mip auto-create
+ethernet cfm mep domain md3 mpid 3 direction outward
+ethernet cfm mep domain md3 mpid 3
+ethernet cfm cc enable interval 1s
+ethernet cfm remote-mep domain md3 mpid 4
+ ethernet cfm domain md3 level 0
+ethernet cfm domain md3 level 0
+ ethernet cfm domain md3 level 0
+  ethernet cfm domain md3 service ma3 evc ma3
+  ethernet cfm mep crosscheck start 3 service ma3 domain md3
+ ethernet cfm mep domain md3 service ma3 mpid 3
+ ethernet cfm mep domain md3 service ma3 continuity-check interval 1s
+ ethernet cfm mep domain md3 service ma3 direction outward
+ ethernet cfm mip level 0
+ ethernet cfm remote-mep domain md3 service ma3 mpid 4
+ ethernet cfm mep crosscheck start delay 0
+  interface GigabitEthernet0/0/1
+   ethernet cfm domain md3 level 0
+   ethernet cfm service ma3 evc ma3 vlan 2
+ ethernet cfm mep 3 service ma3 evc ma3 vlan 2 interface GigabitEthernet0/0/1 outward
+ ethernet cfm continuity-check interval 1s service ma3 evc ma3 vlan 2 mep 3
+  ethernet cfm domain md3 level 0
+  ethernet cfm service ma3 evc ma3 vlan 2
+ ethernet cfm mep crosscheck start-delay 3
+ ethernet cfm mep 3 service ma3 direction outward
+  ethernet cfm domain md3 level 0
+  ethernet cfm service ma3 evc ma3 vlan 2
+ ethernet cfm mep crosscheck 3 service ma3
+ interface GigabitEthernet0/0/1
+ ethernet cfm mep 3 service ma3 outward
+  ethernet cfm domain md3 level 0
+  ethernet cfm service ma3 evc ma3 vlan 2
+ ethernet cfm service ma3 evc ma3 vlan 2
+ ethernet cfm mep crosscheck start ma3 mep-id 4
+ ethernet cfm mep crosscheck ma3 mep-id 4

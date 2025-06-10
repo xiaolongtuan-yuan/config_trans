@@ -1,29 +1,27 @@
 set system host-name PE1
-set system host-name CE1
-set system host-name mpls
-set interfaces ge-1/0/0 unit 0 family inet mpls te
+set system host-name 1.1.1.1
+set interfaces ge-1/0/0 unit 0 family mpls
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 unit 0 family inet address 10.1.2.1/24
-set interfaces ge-1/0/0 set protocols isis interface ge-1/0/0.0
-set interfaces ge-1/0/0 set protocols isis interface lo0.0
-set interfaces ge-1/0/0 unit 0 family inet mpls
-set system host-name pce-client
-set interfaces irb unit 100 family inet address 10.2.1.2/32
-set system host-name segment-routing
-set protocols isis level 1 set protocols isis segment-routing mpls
+set interfaces ge-1/0/0 unit 0 family inet service input none
+set interfaces mpls unit 0 family mpls
+set protocols mpls path-computation-client
+set protocols mpls path-computation-client segment-routing
+set protocols mpls path-computation-client pccd pce address 10.2.1.2
+set services pppoe-client interface ge-0/0/0.0
+set services pppoe-client profile default client-name rta
+set protocols source-packet-routing
+set protocols isis source-packet-routing
+set protocols isis level 1
 set protocols isis interface ge-1/0/0.0 level 2 metric none
 set protocols isis interface ge-1/0/0.0 level wide metric 1
 set interfaces lo0 disable
 set interfaces lo0 unit 0 family inet address 1.1.1.1/32
-set interfaces lo0 set protocols isis interface ge-1/0/0.0
-set interfaces lo0 set protocols isis interface lo0.0
-set interfaces lo0 set interfaces lo0 unit 0 family inet
-set interfaces lo0 set interfaces gr-1/0/0 unit 0 tunnel unnumbered-inet-protection lo0.0
-set interfaces lo0 set interfaces gr-1/0/0 unit 0 family inet unnumbered-address lo0.0
-set interfaces lo0 set protocols mpls interface tunnel1
-set interfaces lo0 set protocols mpls traffic-engineering interface tunnel1
-set interfaces lo0 set protocols mpls label-switched-path LSP-to-PE3 to 3.3.3.3
-set interfaces lo0 set protocols mpls no-cspf segment-routing
-set interfaces lo0 set protocols mpls label-switched-path Tunnel1 to 3.3.3.3
-set interfaces lo0 unit 0 family inet mpls te pce delegate
+set interfaces lo0 unit 0 family inet service input none
+set interfaces lo0 unit 0 tunnel mpls te
+set interfaces lo0 tunnel destination 3.3.3.3
+set interfaces lo0 unit 0 family mpls maximum-labels 5
+set interfaces lo0 unit 1 tunnel key 1
+set interfaces lo0 unit 0 family mpls
+set interfaces lo0 unit 0 vlan-id 0

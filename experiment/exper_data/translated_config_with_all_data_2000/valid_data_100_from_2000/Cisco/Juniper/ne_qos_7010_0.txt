@@ -1,27 +1,23 @@
 set system host-name DeviceA
-set security nat destination pool ACL_TUN30 address ACL_TUN30/24
-set services nat rule NAT_RULE1 term permit1 from source-address 10.100.0.11/32
+set security nat destination pool ACL_TUN30 address ACL_TUN30/none
+set services nat rule NAT_RULE1 term 10.100.0.11/32 from source-address any
 set services nat rule NAT_RULE1 term permit1 from source-address 10.110.0.11/32
 set security nat destination pool ACL_TUN40 address ACL_TUN40/24
-set protocols ospf import PBR_AAA from policy-options policy-statement PBR_AAA term 5 {
-set protocols ospf import PBR_AAA from {
-set protocols ospf import PBR_AAA source-address 10.100.0.11/32;
-set protocols ospf import PBR_AAA }
-set protocols ospf import PBR_AAA then {
-set protocols ospf import PBR_AAA next-hop 10.1.1.1;
-set protocols ospf import PBR_AAA set routing-options static route 0.0.0.0/0 next-hop 10.1.1.1
-set protocols ospf import PBR_AAA from policy-options policy-statement PBR_AAA term 10 then match source-address 10.110.0.11/32
-set protocols ospf import PBR_AAA set routing-options static route 0.0.0.0/0 next-hop 10.2.2.2
-set policy-options as-path PBR_AAA ^5$
-set policy-options as-path PBR_AAA 10
-set interfaces ge-1/0/0 unit 0 disable
+set protocols ospf import PBR_AAA
+set policy-options as-path PBR_AAA .*
+set policy-options as-path ACL_TUN30 ^.*_30_.*$
+set policy-options as-path PBR_AAA ^.*_10.1.1.1_.*$
+set policy-options as-path ACL_TUN40 ^.*_40_.*$
+set policy-options as-path as-path-1 ^.*_10.2.2.2_.*$
+set interfaces ge-1/0/0 unit ge-1/0/0 disable
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 unit 0 family inet address 10.100.0.10/24
-set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet filter input PBR_AAA
+set interfaces ge-1/0/0 unit 0 family inet filter input PBR_AAA
 set interfaces ge-2/0/0 unit 0 disable
 set interfaces ge-2/0/0 disable
 set interfaces ge-2/0/0 unit 0 family inet address 10.110.0.10/24
-set protocols ospf area 1 interface 1
+set protocols ospf area 0.0.0.1 interface 1
 set protocols ospf area 0 interface ge-0/0/1.0
+set protocols ospf area 0 interface lo0.0 passive
 set protocols isis export REDIST-CONNECTED

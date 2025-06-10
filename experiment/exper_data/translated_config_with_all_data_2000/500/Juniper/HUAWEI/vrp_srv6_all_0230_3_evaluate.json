@@ -1,41 +1,37 @@
 {
     "command_accuracy": 0.8333333333333334,
     "missed_commands": [
-        "peer 10.1.1.1 as-number 100",
-        "network 11.11.11.11 255.255.255.255",
-        "peer 10.1.1.1 as-number 100",
+        "interface loopback1",
         "network 11.11.11.11 255.255.255.255"
     ],
     "grammatical_accuracy": 0.9166666666666666,
     "missed_templates": [
-        "peer [parameter1] as-number [parameter2]"
+        "network [parameter1] [parameter2]"
     ],
-    "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.13043478260869565,
+    "llm_command_accuracy": 0.08333333333333333,
+    "llm_command_ratio": 0.045454545454545456,
     "command_for_llm": [
-        "set policy-options policy-statement announce-lo0"
+        "neighbor 10.1.1.1"
     ],
     "llm_trans_commands": [
-        "ip ip-prefix announce-lo0 index 10 permit 11.11.11.11 32",
-        "route-policy announce-lo0 permit node 10",
-        "if-match ip-prefix announce-lo0"
+        "peer 10.1.1.1 as-number 100"
     ],
     "source_commands": [
-        "term 1 then accept",
+        "export announce-lo0",
+        "set protocols bgp group external-peers",
+        "set system host-name CE1",
+        "set protocols bgp local-as 65410",
+        "term 1 from route-filter 11.11.11.11/32 exact",
         "unit 1 family inet address 11.11.11.11/32",
+        "family inet unicast",
+        "peer-as 100",
+        "term 1 then accept",
+        "set interfaces lo0",
+        "type external",
         "neighbor 10.1.1.1",
         "set policy-options policy-statement announce-lo0",
-        "type external",
-        "set interfaces lo0",
-        "peer-as 100",
-        "family inet unicast",
-        "export announce-lo0",
-        "set protocols bgp local-as 65410",
-        "set system host-name CE1",
-        "term 1 from route-filter 11.11.11.11/32 exact",
-        "unit 0 family inet address 10.1.1.2/24",
-        "set protocols bgp group external-peers",
-        "set interfaces ge-1/0/0"
+        "set interfaces ge-1/0/0",
+        "unit 0 family inet address 10.1.1.2/24"
     ],
     "llm_origin_response": [
         ""

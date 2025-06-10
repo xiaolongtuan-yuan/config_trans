@@ -1,23 +1,22 @@
-sysname name CE1
+sysname CE1
 interface GigabitEthernet1/0/0
  undo shutdown
-interface LoopBack0
  ip address 10.1.1.2 255.255.255.0
- undo shutdown
  ip address 11.11.11.11 255.255.255.255
+return
 user-group external-peers
-bgp 65410
- import-route external
- confederation peer-as none 100
- network 10.1.1.1 0.0.0.0
+ peer 10.1.1.1 as-number 100
+bgp 600
+ ipv6-family unicast
  ipv4-family unicast
-  undo synchronization
-  peer none route-policy announce-lo0 export
+  peer 5.5.5.5 route-policy announce-lo0 export
  peer 11.11.11.11 enable
-  undo synchronization
-  import-route direct
+ undo synchronization
+ import-route direct
  peer 10.1.1.2 enable
+bgp 100
+ peer 100 ebgp-max-hop 10
+bgp 65410
+ peer none as-number 65410
+traffic-policy 1 inbound
 traffic policy 1
-ip ip-prefix announce-lo0 index 10 permit 11.11.11.11 32
-route-policy announce-lo0 permit node 10
-if-match ip-prefix announce-lo0

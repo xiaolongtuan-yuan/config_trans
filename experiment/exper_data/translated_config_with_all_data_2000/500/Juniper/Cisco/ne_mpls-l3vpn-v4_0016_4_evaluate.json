@@ -1,49 +1,43 @@
 {
-    "command_accuracy": 0.5454545454545454,
+    "command_accuracy": 0.8181818181818182,
     "missed_commands": [
-        "neighbor 10.3.1.2 remote-as 100",
-        "no synchronization",
         "network 10.3.1.0 mask 255.255.255.0",
-        "neighbor 10.3.1.2 activate",
-        "exit-address-family",
-        "neighbor 10.3.1.2 remote-as 100",
-        "no synchronization",
-        "network 10.3.1.0 mask 255.255.255.0",
-        "neighbor 10.3.1.2 activate",
-        "exit-address-family"
+        "neighbor 10.3.1.2 activate"
     ],
-    "grammatical_accuracy": 0.5454545454545454,
+    "grammatical_accuracy": 0.9090909090909091,
     "missed_templates": [
-        "neighbor [parameter1] remote-as [parameter2]",
-        "no synchronization",
-        "network [parameter1] mask [parameter2]",
-        "neighbor [parameter1] activate",
-        "exit-address-family"
+        "network [parameter1] mask [parameter2]"
     ],
-    "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.05555555555555555,
+    "llm_command_accuracy": 0.18181818181818182,
+    "llm_command_ratio": 0.23076923076923078,
     "command_for_llm": [
-        "then reject"
+        "term 1 from route-filter 10.3.1.0/24 exact",
+        "type external"
     ],
     "llm_trans_commands": [
-        "route-map ADVERTISE_NETWORK deny 65535"
+        "router bgp 800",
+        "neighbor 10.3.1.2 remote-as 100",
+        "route-map ADVERTISE_NETWORK permit 10",
+        "match ip address prefix-list EXACT_10.3.1.0_24",
+        "!",
+        "ip prefix-list EXACT_10.3.1.0_24 seq 5 permit 10.3.1.0/24"
     ],
     "source_commands": [
-        "term 1 then accept",
-        "export ADVERTISE_NETWORK",
-        "unit 0 family inet address 10.3.1.1/24",
-        "neighbor 10.3.1.2 family inet unicast",
-        "then reject",
-        "type external",
-        "family inet unicast",
         "unit 0 disable",
+        "neighbor 10.3.1.2 peer-as 100",
         "set routing-options autonomous-system 800",
-        "set protocols bgp group BGP_GROUP",
-        "set system host-name CE3",
+        "then reject",
         "set policy-options policy-statement ADVERTISE_NETWORK",
-        "term 1 from route-filter 10.3.1.0/24 exact",
+        "set system host-name CE3",
+        "family inet unicast",
+        "term 1 then accept",
+        "type external",
+        "export ADVERTISE_NETWORK",
+        "set protocols bgp group BGP_GROUP",
+        "neighbor 10.3.1.2 family inet unicast",
         "set interfaces ge-1/0/0",
-        "neighbor 10.3.1.2 peer-as 100"
+        "term 1 from route-filter 10.3.1.0/24 exact",
+        "unit 0 family inet address 10.3.1.1/24"
     ],
     "llm_origin_response": [
         ""

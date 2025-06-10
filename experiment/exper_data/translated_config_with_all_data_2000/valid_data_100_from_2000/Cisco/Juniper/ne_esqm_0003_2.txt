@@ -2,41 +2,32 @@ set system host-name NPE
 set security nat destination rule-set NAT64_DEST
 set protocols vrrp track interface vpn1
 set protocols vrrp track interface ge-0/0/1
-set protocols ldp router-id 1.1.1.1
+set protocols ldp router-id Loopback1
 set protocols isis interface ge-1/0/0.0
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 unit 0 family inet address 10.2.1.2/24
 set interfaces ge-1/0/0 unit 0 family mpls
-set interfaces ge-1/0/0 unit 0 family inet address 192.168.30.1/24
+set interfaces ge-1/0/0 unit 0 family inet address none/none vrrp-group none virtual-address vpn1
+set protocols mpls interface ge-1/0/0.0
 set interfaces ge-2/0/0 unit 0 disable
 set interfaces ge-2/0/0 disable
 set interfaces ge-2/0/0 ether-options no-auto-negotiation
-set interfaces ge-2/0/0 unit 0 family inet address none/none vrrp-group none virtual-address vpn1
-set interfaces lo0.1 unit 1 disable
-set interfaces lo0.1 disable
-set interfaces lo0 unit 0 family inet address 3.3.3.3/32
+set interfaces ge-2/0/0 unit 0 family inet address 192.168.30.1/24
+set interfaces lo0 unit 1 disable
+set interfaces lo0 disable
+set interfaces lo0.1 unit 0 family inet address 3.3.3.3/32
 set routing-options autonomous-system 100
-set protocols bgp group IBGP type external
+set protocols bgp group IBGP type internal
 set protocols bgp group IBGP neighbor 2.2.2.2 peer-as 100
+set protocols bgp group IBGP peer-as 100
 set protocols bgp group IBGP export BGP-NETWORKS
-set protocols bgp group IBGP family inet unicast set protocols bgp group internal neighbor 2.2.2.2 next-hop-self
-set protocols bgp local-as 100 set protocols bgp group internal neighbor 2.2.2.2 family inet-vpn unicast
-set protocols bgp local-as 100 set protocols bgp group internal neighbor 2.2.2.2 export send-community-both
-set protocols bgp local-as 100 set protocols bgp group internal neighbor 2.2.2.2 family inet-vpn unicast community both
-set protocols ospf import SPE from policy-options policy-statement SPE term 10 {
-set protocols ospf import SPE from {
-set protocols ospf import SPE route-filter 0.0.0.0/0 exact;
-set protocols ospf import SPE }
-set protocols ospf import SPE then accept;
-set protocols ospf import SPE policy-options {
-set protocols ospf import SPE prefix-list default {
-set protocols ospf import SPE 0.0.0.0/0;
-set protocols ospf import SPE policy-statement SPE {
-set protocols ospf import SPE term 10 {
-set protocols ospf import SPE prefix-list default;
-set policy-options as-path as-path-1 ^.*_10_.*$
-set policy-options as-path as-path-20 ^.*_20_.*$
+set protocols bgp group IBGP family inet unicast
+set protocols bgp local-as 100
+set protocols ospf import SPE
+set policy-options as-path SPE ^10$
+set policy-options as-path default ^.*$
+set policy-options as-path none 20
 set policy-options prefix-list default 0.0.0.0/0
 set protocols isis export REDIST-CONNECTED

@@ -1,72 +1,56 @@
 {
-    "command_accuracy": 0.3333333333333333,
+    "command_accuracy": 0.4444444444444444,
     "missed_commands": [
-        "set protocols mpls interface ge-2/0/0.0",
         "set protocols ldp interface ge-2/0/0.0",
         "set routing-instances vpls interface ge-1/0/0.0",
         "set routing-instances vpn1 route-distinguisher 100:1",
         "set interfaces ge-1/0/0 unit 0 family ethernet-switching",
         "set interfaces ge-1/0/0 unit 0 encapsulation vlan-vpls",
-        "set protocols bgp group vpnv4 type internal",
         "set protocols bgp group vpnv4 local-address 3.3.3.9",
         "set protocols bgp group vpnv4 peer-as 100",
+        "set protocols bgp group vpnv4 neighbor 1.1.1.9 family inet-vpn unicast",
         "set protocols bgp group vpnv4 neighbor 1.1.1.9 family l2vpn signaling",
-        "set protocols ospf area 0.0.0.0 interface ge-2/0/0.0",
-        "set protocols ospf area 0.0.0.0 interface lo0.0 passive"
+        "set protocols ospf area 0.0.0.0 interface ge-2/0/0.0"
     ],
-    "grammatical_accuracy": 0.5,
+    "grammatical_accuracy": 0.6111111111111112,
     "missed_templates": [
-        "set protocols mpls interface [parameter1]",
         "set protocols ldp interface [parameter1]",
         "set routing-instances [parameter1] interface [parameter2]",
         "set routing-instances [parameter1] route-distinguisher [parameter2]",
         "set interfaces [parameter1] unit [parameter2] encapsulation [parameter3]",
         "set protocols bgp group [parameter1] local-address [parameter2]",
-        "set protocols bgp group [parameter1] peer-as [parameter2]",
-        "set protocols bgp group [parameter1] neighbor [parameter2] family [parameter3] signaling",
-        "set protocols ospf area [area_id] interface [interface_name] passive"
+        "set protocols bgp group [parameter1] neighbor [parameter2] family [parameter3] [parameter4]",
+        "set protocols bgp group [parameter1] neighbor [parameter2] family [parameter3] signaling"
     ],
-    "llm_command_accuracy": 0.05555555555555555,
-    "llm_command_ratio": 0.18518518518518517,
-    "command_for_llm": [
-        "pseudowire-class VPWS",
-        "xconnect 1.1.1.9 100 encapsulation mpls pw-class VPWS",
-        "neighbor 1.1.1.9 send-community extended"
-    ],
-    "llm_trans_commands": [
-        "set interfaces ge-1/0/0 unit 0 family ccc",
-        "set protocols l2circuit neighbor 1.1.1.9 interface ge-1/0/0 virtual-circuit-id 100",
-        "set protocols bgp group <group-name> neighbor 1.1.1.9 family inet-vpn unicast",
-        "set protocols bgp group <group-name> neighbor 1.1.1.9 export <policy-name> (to send extended communities)",
-        "set protocols l2circuit pseudowire-class VPWS"
-    ],
+    "llm_command_accuracy": 0.0,
+    "llm_command_ratio": 0.0,
+    "command_for_llm": [],
+    "llm_trans_commands": [],
     "source_commands": [
-        "interface GigabitEthernet2/0/0",
-        "router bgp 100",
-        "exit-address-family",
-        "pseudowire-class VPWS",
-        "end",
-        "xconnect 1.1.1.9 100 encapsulation mpls pw-class VPWS",
-        "no shutdown",
-        "neighbor 1.1.1.9 update-source Loopback1",
-        "interface GigabitEthernet1/0/0",
-        "hostname PE2",
-        "mpls ldp autoconfig",
-        "interface Loopback1",
-        "encapsulation mpls",
-        "network 3.3.3.9 0.0.0.0 area 0",
+        "mpls ldp router-id Loopback1 force",
         "network 192.168.10.0 0.0.0.255 area 0",
-        "router ospf 1",
+        "hostname PE2",
+        "exit-address-family",
+        "end",
+        "neighbor 1.1.1.9 remote-as 100",
+        "neighbor 1.1.1.9 send-community extended",
+        "mpls ip",
+        "interface Loopback1",
+        "pseudowire-class VPWS",
+        "neighbor 1.1.1.9 activate",
+        "interface GigabitEthernet1/0/0",
         "address-family vpnv4",
         "ip address 3.3.3.9 255.255.255.255",
-        "neighbor 1.1.1.9 send-community extended",
-        "neighbor 1.1.1.9 activate",
+        "router bgp 100",
+        "neighbor 1.1.1.9 update-source Loopback1",
+        "xconnect 1.1.1.9 100 encapsulation mpls pw-class VPWS",
+        "network 3.3.3.9 0.0.0.0 area 0",
+        "encapsulation mpls",
+        "mpls ldp autoconfig",
         "ip address 192.168.10.2 255.255.255.0",
-        "mpls ip",
-        "neighbor 1.1.1.9 remote-as 100",
-        "mpls ldp router-id Loopback1 force"
+        "interface GigabitEthernet2/0/0",
+        "router ospf 1",
+        "no shutdown"
     ],
-    "llm_origin_response": [
-        ""
-    ]
+    "llm_origin_response": []
 }

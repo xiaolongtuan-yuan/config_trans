@@ -1,25 +1,27 @@
 hostname CE1
-router bgp 65410
- address-family ipv4
-  neighbor none route-map direct-import none
-  neighbor {'name': 'neighbor IP address', 'type': 'string', 'explanation': 'IP address of the neighbor', 'value': 'none'} route-map {'name': 'route-map policy name', 'type': 'string', 'explanation': 'Name of the route-map policy to apply', 'value': '1'} {'name': 'direction', 'type': 'string', 'explanation': "'in' or 'out'", 'value': 'none'}
-  neighbor {'name': 'neighbor IP address', 'type': 'string', 'explanation': 'IP address of the neighbor', 'value': 'none'} route-map {'name': 'route-map policy name', 'type': 'string', 'explanation': 'Name of the route-map policy to apply', 'value': 'direct-import'} {'name': 'direction', 'type': 'string', 'explanation': "'in' or 'out'", 'value': 'out'}
-route-map direct-import permit 1
-route-map direct-import reject 2
-aaa authentication login none group external local
-redistribute bgp
-aaa authentication login external group 10.1.1.1 local
 interface GigabitEthernet0/0/0
-ip address 10.1.1.1 255.255.255.252
-interface Loopback0
-ip address 3.3.3.3 255.255.255.255
-route-map direct-import permit 10
-match interface
-neighbor 10.1.1.2 remote-as 100
-neighbor 10.1.1.2 update-source 10.1.1.1
-neighbor 10.1.1.2 route-map DIRECT-IMPORT in
-!
-route-map DIRECT-IMPORT permit 10
-match protocol connected
-route-map DIRECT-IMPORT deny 20
-neighbor 10.1.1.2 route-map direct-import in
+ no shutdown
+ ip address 10.1.1.1 255.255.255.252
+ ip address 3.3.3.3 255.255.255.255
+end
+router bgp 65410
+ bgp confederation identifier 1
+ bgp confederation identifier 2
+ neighbor 10.1.1.2 remote-as 100
+  router bgp 65410
+  neighbor 10.1.1.2 remote-as 100
+ neighbor 10.1.1.2 activate
+ no synchronization
+ address-family ipv4 unicast
+ address-family ipv4
+ neighbor 10.1.1.2 remote-as none
+  router bgp 65410
+  neighbor 10.1.1.2 remote-as 100
+  neighbor 10.1.1.2 update-source 10.1.1.1
+  neighbor 10.1.1.2 route-map direct-import in
+ address-family inet unicast
+ exit-address-family
+route-map direct-import permit 1
+route-map direct-import deny 2
+aaa authentication login external group 10.1.1.1 local
+aaa authentication login direct-import group external local

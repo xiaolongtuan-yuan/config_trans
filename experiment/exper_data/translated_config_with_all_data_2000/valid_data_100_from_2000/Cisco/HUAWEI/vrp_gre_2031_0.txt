@@ -3,6 +3,7 @@ ip route-static none 255.255.255.0 none
 interface GigabitEthernet1/0/0
  undo shutdown
  ip address 172.20.1.1 255.255.255.0
+return
 interface GigabitEthernet2/0/0
  undo shutdown
  ip address 10.1.1.2 255.255.255.0
@@ -10,7 +11,7 @@ interface Tunnel1
  ip address 172.22.1.1 255.255.255.0
  source 172.20.1.1
  destination 172.21.1.2
- tunnel-protocol gre p2mp
+ tunnel-protocol gre multipoint
 ospf 1
 ospf 1 router-id 172.20.1.0
  area 0
@@ -19,5 +20,4 @@ ospf 1 router-id 172.22.1.0
  area 0
   network 172.22.1.0 0.0.0.255
 ip route-static 10.2.1.0 255.255.255.0 Tunnel1 preference 60
-ip route-static 10.2.1.0 255.255.255.0 Tunnel1
-return
+ip route-static 10.2.1.0 255.255.255.0 none

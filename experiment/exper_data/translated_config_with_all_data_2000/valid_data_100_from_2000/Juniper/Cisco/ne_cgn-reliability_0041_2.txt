@@ -1,16 +1,18 @@
 hostname CR
-mpls label protocol ldp
-router isis 1
- address-family vpnv4
-  redistribute ldp
-mpls ldp discovery transport-address GigabitEthernet1/0/3
-mpls ldp discovery transport-address GigabitEthernet1/0/4
+mpls ip
+router ldp
+mpls ldp advertise-labels interface GigabitEthernet1/0/3
+mpls ldp advertise-labels interface GigabitEthernet1/0/4
 mpls ldp router-id Loopback0
+mpls ldp router-id Loopback0 force
 interface GigabitEthernet1/0/3
  no shutdown
  ip address 10.2.1.2 255.255.255.0
- ipv6 address 2001:DB8::/64 eui-64
+ mpls ldp ipv4
  ip address 10.3.1.1 255.255.255.0
-network 0.0.0.0 0.0.0.0 area 0
-network 0.0.0.0 255.255.255.255 area 0
-network 0.0.0.0 0.0.0.0 area 0.0.0.1
+end
+router ospf 1
+ router-id 4.4.4.4
+ no passive-interface GigabitEthernet1/0/3
+ router-id 0.0.0.1
+ no passive-interface GigabitEthernet1/0/4

@@ -1,24 +1,26 @@
 hostname CE2
+end
 ip multicast-routing distributed
-ip multicast-routing multicast6-global
+ipv6 multicast routing
 interface GigabitEthernet0/0/0
- ip ospf 1 area 0
- track 1 interface GigabitEthernet0/0/0 line-protocol
- ip pim sparse-mode
- ip igmp join-group 225.0.0.1
- ipv6 mld join-group FF3E::1 source 2001:DB8:5::2
+ no ipv6 ospf 0 area 0
+ no ipv6 pim sparse-mode GigabitEthernet0/0/0
+ no ipv6 pim sparse-mode GigabitEthernet0/0/4
+interface ge-0/0/0
+ ptp adaptive device-type client
+ ptp adaptive remote-server1-ip 1.1.1.1
 interface GigabitEthernet0/0/4
- ip ospf 1 area 0
- interface GigabitEthernet0/0/0
- no ip pim sparse-mode
- interface GigabitEthernet0/0/4
- track 1 interface GigabitEthernet0/0/0 line-protocol
-ipv6 ospf 1 area 0
-!
-network none none area 0.0.0.0
-network 0.0.0.0 0.0.0.0 area 0
-ip pim rp-address 2001:db8:6::3 none
+ no ipv6 ospf 0 area 0 interface GigabitEthernet0/0/0
+ no ipv6 ospf 0 area 0 interface GigabitEthernet0/0/4
+ no ipv6 pim sparse-mode GigabitEthernet0/0/0
+ no ipv6 pim sparse-mode GigabitEthernet0/0/4
+router ospfv3 1
+router ospf 1
+ no passive-interface GigabitEthernet0/0
+ no passive-interface GigabitEthernet0/0/4
+ip pim rp-address 2001:db8:6::3 override
 ip multicast-routing sparse
-aaa authorization network default group radius
-ipv6 access-list 2001:db8:5::2
- permit ipv6 2001:db8:5::2 FF3E::1
+ipv6 mld join-group FF3E::1
+ipv6 pim rp-address 2001:db8:6::3
+ no ipv6 mld join-group FF3E::1 2001:DB8:5::2 ge-0/0/0
+ ipv6 mld static-group FF3E::1 source 2001:DB8:5::2

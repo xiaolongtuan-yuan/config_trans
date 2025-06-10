@@ -1,17 +1,22 @@
 set system host-name DeviceB
-set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 1/0/0 disable
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.2/24
-set interfaces lo0.1 unit 1 disable
+set interfaces lo0.1 unit 0 disable
 set interfaces lo0.1 disable
 set interfaces lo0 unit 0 family inet address 2.2.2.2/32
 set routing-options autonomous-system 100
-set protocols bgp group IBGP type external
+set routing-options router-id 2.2.2.2
+set protocols bgp group IBGP type internal
 set protocols bgp group IBGP neighbor 3.3.3.3 peer-as 100
-set protocols bgp group IBGP export BGP-NETWORKS
+set protocols bgp group IBGP peer-as 100
+set protocols bgp group IBGP export BGP-100
 set protocols bgp group IBGP family inet unicast
 set protocols bgp local-as 100
 set protocols ospf area 0.0.0.1 interface ge-0/0/1.0
 set protocols ospf area 0 interface ge-0/0/1.0
+set protocols ospf area 0 interface lo0.0 passive
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.0 interface lo0.0 passive
 set protocols isis export REDIST-CONNECTED

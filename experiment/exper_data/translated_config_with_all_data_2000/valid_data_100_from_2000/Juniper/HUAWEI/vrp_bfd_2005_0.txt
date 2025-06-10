@@ -1,11 +1,14 @@
 sysname DeviceA
+return
 interface GigabitEthernet1/0/0
  undo shutdown
  ip address 10.1.1.1 255.255.255.0
-area 0
-ospfv3 1
-bfd bfd_session bind peer-ip none interface GigabitEthernet1/0/0 source-ip none auto
-bfd bfd_session bind link-bundle peer-ip peer_ip interface ge-1/0/0 source-ip source_ip
- min-rx-interval 300
-bfd bfd_ge_1_0_0 bind link-bundle peer-ip 300 interface ge-1/0/0 source-ip
- min-tx-interval 3
+area 0.0.0.0
+ospf 0 router-id ge-1/0/0
+ undo silent-interface GigabitEthernet1/0/0
+bfd session_name bind peer-ip none interface GigabitEthernet1/0/0 source-ip none auto
+bfd none bind peer-ip none interface GigabitEthernet1/0/0 source-ip none auto
+ bfd ge-1/0/0 bind peer-ip 10.1.1.1 interface GigabitEthernet1/0/0
+ bfd ge-1/0/0 min-tx-interval 300
+ bfd ge-1/0/0 bind peer-ip 10.1.1.1 interface ge-1/0/0
+ detect-multiplier 3

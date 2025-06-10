@@ -9,15 +9,6 @@
         "set interfaces ge-1/0/2 unit 0 family ethernet-switching interface-mode access",
         "set interfaces ge-1/0/3 unit 0 family ethernet-switching interface-mode access",
         "set interfaces ge-1/0/4 unit 0 family ethernet-switching interface-mode access",
-        "set interfaces ge-1/0/5 unit 0 family ethernet-switching interface-mode trunk",
-        "set vlans vlan-9 vlan-id 9",
-        "set interfaces ge-1/0/1 unit 0 family ethernet-switching interface-mode access",
-        "set interfaces ge-1/0/2 unit 0 family ethernet-switching interface-mode access",
-        "set interfaces ge-1/0/3 unit 0 family ethernet-switching interface-mode access",
-        "set interfaces ge-1/0/4 unit 0 family ethernet-switching vlan members vlan-9",
-        "set interfaces ge-1/0/4 unit 0 family ethernet-switching interface-mode access",
-        "set interfaces ge-1/0/5 unit 0 family ethernet-switching vlan members vlan-5",
-        "set interfaces ge-1/0/5 unit 0 family ethernet-switching vlan members vlan-9",
         "set interfaces ge-1/0/5 unit 0 family ethernet-switching interface-mode trunk"
     ],
     "grammatical_accuracy": 0.7222222222222222,
@@ -30,23 +21,23 @@
         "port trunk allow-pass vlan 5 9"
     ],
     "llm_trans_commands": [
-        "set interfaces ge-1/0/5 unit 0 family ethernet-switching vlan members [5 9]"
+        "set interfaces ge-1/0/5 unit 0 family ethernet-switching vlan members [ vlan5 vlan9 ]"
     ],
     "source_commands": [
-        "portswitch",
-        "port default vlan 9",
-        "interface GigabitEthernet1/0/2",
-        "undo shutdown",
-        "vlan batch 5 9",
-        "interface GigabitEthernet1/0/1",
-        "port default vlan 5",
-        "interface GigabitEthernet1/0/5",
-        "port link-type trunk",
         "interface GigabitEthernet1/0/3",
+        "interface GigabitEthernet1/0/5",
         "port link-type access",
+        "port default vlan 9",
+        "portswitch",
         "sysname CE1",
+        "undo shutdown",
+        "interface GigabitEthernet1/0/4",
+        "interface GigabitEthernet1/0/2",
         "port trunk allow-pass vlan 5 9",
-        "interface GigabitEthernet1/0/4"
+        "vlan batch 5 9",
+        "port link-type trunk",
+        "interface GigabitEthernet1/0/1",
+        "port default vlan 5"
     ],
     "llm_origin_response": [
         ""

@@ -1,18 +1,24 @@
 set system host-name P
 set protocols ldp router-id 1.1.1.9
-set interfaces ge-1/0/0 unit 0 disable
+set interfaces ge-1/0/0 unit 1/0/0 disable
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 unit 0 family inet address 192.168.10.2/24
 set interfaces ge-1/0/0 unit 0 family mpls
+set protocols mpls interface ge-1/0/0.0
 set interfaces ge-2/0/0 unit 0 disable
 set interfaces ge-2/0/0 disable
 set interfaces ge-2/0/0 ether-options no-auto-negotiation
 set interfaces ge-2/0/0 unit 0 family inet address 192.168.20.1/24
 set interfaces ge-2/0/0 unit 0 family mpls
+set protocols mpls interface ge-2/0/0.0
 set interfaces lo0.1 unit 1 disable
 set interfaces lo0.1 disable
 set interfaces lo0.1 unit 0 family inet address 2.2.2.9/32
-set protocols ospf area 1 interface 1
+set protocols ospf area 0.0.0.1 interface ge-0/0/1.0
+set protocols ospf area 0 interface ge-0/0/0.0
+set protocols ospf area 0 interface lo0.0 passive
 set protocols ospf area 0 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.0 interface lo0.0 passive
 set protocols isis export REDIST-CONNECTED

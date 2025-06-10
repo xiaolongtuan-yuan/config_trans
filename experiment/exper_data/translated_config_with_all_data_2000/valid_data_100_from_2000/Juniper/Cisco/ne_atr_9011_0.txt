@@ -1,10 +1,20 @@
 hostname Server1
-track 60 interface exp-classifier line-protocol
-mls qos map cos-dscp 0 0
-track 60 interface low line-protocol
+end
+match cos 60
+policy-map exp-classifier
+class exp-classifier
+set dscp default
+set qos-group 0
+ class-map match-any exp-classifier
+class-map match-any exp-classifier
+ class-map match-any exp-classifier
+  match cos 60
+  policy-map exp-classifier
+  class exp-classifier
+  set dscp default
+  set cos 0
 interface GigabitEthernet1/0/0
  no shutdown
  ip address 192.168.1.1 255.255.255.0
- ipv6 address 2001:DB8::/64 eui-64
-interface Loopback0
+ mpls ldp ipv4
  ip address 1.1.1.1 255.255.255.255

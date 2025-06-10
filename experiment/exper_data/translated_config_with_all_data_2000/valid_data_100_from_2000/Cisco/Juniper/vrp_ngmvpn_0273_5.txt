@@ -3,17 +3,13 @@ set routing-options multicast
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 ether-options no-auto-negotiation
-set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6
-set interfaces ge-1/0/0 set interfaces ge-1/0/4 unit 0 family inet6
-set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:3::1/64
-set interfaces ge-1/0/0 set protocols ospf3 area 0 interface GigabitEthernet1/0/0
-set interfaces ge-1/0/0 set protocols pim interface <interface-name> mode sparse
-set interfaces ge-1/0/0 set protocols mld interface ge-1/0/0.0 group FF3E::1 source 2001:DB8:5::2
-set interfaces ge-1/0/0 set interfaces ge-1/0/4 unit 0 family inet6 address 2001:db8:14::1/64
-set interfaces ge-1/0/0 set protocols ospf3 area 0 interface ge-1/0/0
-set interfaces ge-1/0/0 set protocols pim ipv6 interface all mode sparse
-set interfaces ge-1/0/4 unit 4 disable
-set interfaces ge-1/0/4 disable
-set protocols ospf3 area 1
+set interfaces ge-1/0/0 unit 0 tunnel ipv6-prefix 2001:db8::/32
+set interfaces ge-1/0/0 unit 0 tunnel ipv6-prefix-length 64
+set interfaces ge-1/0/0 unit 0 family inet6 filter input ospf
+set interfaces ge-1/0/0 unit 0 family inet6 interface-mode sparse-mode
+set interfaces ge-1/0/0 unit 0 tunnel source 2001:DB8:5::2
+set interfaces ge-1/0/0 unit 4 disable
+set interfaces ge-1/0/0 unit 4 tunnel ipv6-prefix-length 64
+set interfaces ge-1/0/0 unit 0 family inet6 filter input 1
 set protocols ospf3 area 0.0.0.1
 set protocols pim rp static address 2001:db8:6::3

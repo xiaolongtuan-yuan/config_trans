@@ -1,21 +1,20 @@
 set system host-name DeviceC
 set routing-options multicast family inet
-set firewall family inet filter 2001 set firewall filter 2001 term 5 from source-address 232.1.1.0/24
-set firewall family inet filter 2001 set firewall filter 2001 term 5 then accept
+set system login vty 0 4
+set access class 232.1.1.0/24 acl-name ACL-2001
 set protocols isis level 1
 set protocols isis interface ge-1/0/0.0
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 unit 0 family inet address 10.110.2.2/24
-set interfaces ge-1/0/0 unit 0 family inet policer input policer_default
-set interfaces ge-1/0/0 unit 0 family inet address inet vrrp-group none preempt hold-time none
-set interfaces ge-1/0/0 unit 3 family inet address none vrrp-group none priority none
-set interfaces ge-1/0/0 set protocols isis interface ge-1/0/0
-set interfaces ge-1/0/0 set protocols isis interface ge-2/0/0
-set interfaces ge-1/0/0 unit 0 family inet address 192.168.3.1/24
 set interfaces ge-1/0/0 unit 0 family inet policer input default_policer
-set interfaces ge-2/0/0 disable
-set system host-name pim
-set protocols oam ethernet connectivity-fault-management mep 2001 md md2001 ma ma2001 continuity-check receive enable
-set interfaces irb unit 100 family inet address 192.168.4.1
-set system host-name CE1
+set interfaces ge-1/0/0 unit 0 family inet address none vrrp-group none preempt hold-time none
+set interfaces ge-1/0/0 unit 3 family inet address none vrrp-group none priority none
+set interfaces ge-1/0/0 unit 0 family inet service input none
+set interfaces ge-1/0/0 unit 0 family inet address 192.168.3.1/24
+set interfaces ge-1/0/0 unit 0 family inet policer input policer_default
+set interfaces ge-1/0/0 unit 1 vlan-id 1
+set protocols pim rp static address 192.168.4.1
+set protocols pim ssm-groups group-ranges 232.1.1.0/24
+set protocols pim interface ge-0/0/0.0
+set protocols pim rp static 192.168.4.1

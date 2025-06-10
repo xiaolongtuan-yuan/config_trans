@@ -5,12 +5,37 @@ interface GigabitEthernet0/0/3
  ip address 172.16.2.2 255.255.255.0
  ip address 172.16.5.1 255.255.255.0
  ip address 5.5.5.5 255.255.255.255
-interface GigabitEthernet2/0/3
- no shutdown
-aaa authentication login default group RR local
-redistribute bgp
-aaa authentication login RR group 5.5.5.5 local
-redistribute bgp 65008
-redistribute inet unicast
-policy-map export-direct
+end
+router bgp 600
+ neighbor none remote-as none
+  router bgp 65008
+  neighbor RR peer-group
+  neighbor RR multipath multiple-as
+ neighbor 10.1.1.2 activate
+ no synchronization
+ address-family ipv4 unicast
+ address-family ipv4
+ neighbor 5.5.5.5 remote-as none
+  router bgp 65008
+  neighbor RR update-source Loopback0
+ address-family inet unicast
+ exit-address-family
+ bgp confederation identifier 1
+aaa authentication login RR group external local
+router bgp 65008
+ neighbor 172.16.2.1 remote-as 65008
+  router bgp 65008
+  neighbor 172.16.2.1 remote-as 65008
+ neighbor 172.16.4.2 remote-as 65008
+  router bgp 65008
+  neighbor 172.16.4.2 remote-as 65008
+ neighbor 172.16.5.2 remote-as 65008
+  router bgp 65008
+  neighbor 172.16.5.2 remote-as 65008
+aaa authentication login export-direct group RR local
+match protocol connected
  route-map export-direct permit 10
+route-map export-direct permit 10
+ route-map export-direct permit 10
+  match protocol connected
+route-map export-direct permit 1

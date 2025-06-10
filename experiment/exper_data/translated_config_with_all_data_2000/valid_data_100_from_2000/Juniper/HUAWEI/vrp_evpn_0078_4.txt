@@ -1,19 +1,26 @@
 sysname CE1
+description v100
+#
+interface GigabitEthernet1/0/0.0
+ undo shutdown
+port link-type access
+port default vlan 100
+interface Eth-Trunk0.0
+ vlan 100
 vlan 100
  vlan 100
- port gigabitethernet 1/0/0
-ospf 1 router-id 192.168.1.1
- area 0.0.0.0
-  network none 0.0.0.255
-interface Eth-Trunk0
+return
+ospf 1 router-id 172.16.1.3
  undo shutdown
- interface Eth-Trunk0
- mode lacp-static
- min active linknumber 1
- ipv6 address 2001::DB8/64 eui-64
+ area 0.0.0.0
+  network v100 ae0.0
+interface GigabitEthernet1/0/0
+ undo shutdown
+ mpls ccc out-interface GigabitEthernet1/0/1
  portswitch
  port default vlan 100
  port trunk allow-pass vlan 100
-interface GigabitEthernet1/0/0
- undo shutdown
- stp disable
+ eth-trunk 0
+ interface GigabitEthernet1/0/0
+ shutdown
+interface ae0.1

@@ -1,5 +1,5 @@
 {
-    "command_accuracy": 0.5263157894736842,
+    "command_accuracy": 0.5789473684210527,
     "missed_commands": [
         "interface gigabitethernet1/0/0",
         "interface gigabitethernet2/0/0",
@@ -7,41 +7,42 @@
         "undo shutdown",
         "ipv6 address 2001:db8:101::2/96",
         "ipv6 address 2001:db8:100::2/96",
-        "router-id 2.2.2.2",
-        "ipv6-family unicast",
-        "return",
-        "interface gigabitethernet1/0/0",
-        "undo shutdown",
-        "ipv6 address 2001:db8:101::2/96",
-        "interface gigabitethernet2/0/0",
-        "undo shutdown",
-        "ipv6 address 2001:db8:100::2/96",
-        "router-id 2.2.2.2",
-        "ipv6-family unicast",
-        "return"
+        "bgp 200",
+        "router-id 2.2.2.2"
     ],
-    "grammatical_accuracy": 0.5263157894736842,
+    "grammatical_accuracy": 0.631578947368421,
     "missed_templates": [
         "interface [parameter1]",
         "undo shutdown",
         "ipv6 address [parameter1]",
-        "router-id [parameter1]",
-        "ipv6-family unicast",
-        "return"
+        "router-id [parameter1]"
     ],
-    "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.0,
-    "command_for_llm": [],
-    "llm_trans_commands": [],
-    "source_commands": [
-        "neighbor 2001:db8:100::1 peer-as 100",
-        "set system host-name DeviceB",
-        "neighbor 2001:db8:101::1 peer-as 200",
-        "local-address 2001:db8:100::2",
-        "type external",
-        "family inet6 unicast",
-        "export next-hop-self-policy",
+    "llm_command_accuracy": 0.21052631578947367,
+    "llm_command_ratio": 0.47058823529411764,
+    "command_for_llm": [
         "set protocols bgp group external"
     ],
-    "llm_origin_response": []
+    "llm_trans_commands": [
+        "bgp 100",
+        "peer 2001:db8:100::1 as-number 100",
+        "peer 2001:db8:101::1 as-number 200",
+        "peer 2001:db8:100::1 enable",
+        "peer 2001:db8:101::1 enable",
+        "peer 2001:db8:100::1 next-hop-local",
+        "peer 2001:db8:101::1 next-hop-local",
+        "ipv6-family unicast"
+    ],
+    "source_commands": [
+        "set system host-name DeviceB",
+        "set protocols bgp group external",
+        "family inet6 unicast",
+        "neighbor 2001:db8:100::1 peer-as 100",
+        "neighbor 2001:db8:101::1 peer-as 200",
+        "type external",
+        "export next-hop-self-policy",
+        "local-address 2001:db8:100::2"
+    ],
+    "llm_origin_response": [
+        ""
+    ]
 }

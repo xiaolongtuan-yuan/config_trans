@@ -1,15 +1,15 @@
 set system host-name CE2
-set bridge-domains BD10 vlan-id 10
+set bridge-domains BD10 domain-type bridge
 set interfaces ae10 unit 10 disable
 set interfaces ae10 disable
-set interfaces ae10 unit 1 family ethernet-switching interface-mode trunk
-set interfaces ae10 unit 0 family ethernet-switching port-mode trunk
-set interfaces ae10 set interfaces ae10.1 family ethernet-switching vlan members 100
-set interfaces ae10 set bridge-domains BD10 vlan-id 10
-set interfaces ae10.1 unit 10.1 disable
+set interfaces ae10 ether-options 802.3ad ae10
+set interfaces ae10.1 unit 1 disable
 set interfaces ae10.1 disable
+set interfaces ae10.1 unit 1 family ethernet-switching interface-mode trunk
+set interfaces ae10.1 unit 0 family ethernet-switching port-mode trunk
+set interfaces ae10.1 set interfaces ae10 unit 1 family ethernet-switching vlan members 100
+set interfaces ae10.1 unit 10 family bridge interface-mode trunk
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
 set interfaces ge-1/0/0 ether-options no-auto-negotiation
-set interfaces ge-1/0/0 ether-options 802.3ad ae10
 set protocols isis export REDIST-CONNECTED

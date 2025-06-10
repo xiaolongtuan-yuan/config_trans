@@ -1,11 +1,10 @@
 set system host-name DeviceA
-set protocols oam ethernet connectivity-fault-management mep 2
+set system internet-protocols ipv6
 set interfaces ge-2/0/0 disable
 set interfaces ge-2/0/0 unit 0 disable
 set interfaces ge-2/0/0 unit 0 tunnel ipv6-prefix 2001:db8::/32
-set interfaces ge-2/0/0 set interfaces ge-2/0/0 unit 0 family inet6 address 2001:db8:1::1/64
-set interfaces ge-2/0/0 unit 1 vlan-id 2
+set interfaces ge-2/0/0 unit 0 tunnel ipv6-prefix-length 64
+set interfaces ge-2/0/0 unit 1 vlan-id 1
 set interfaces ge-1/0/0 disable
-set interfaces ge-1/0/0 unit 0 tunnel ipv6-prefix 2001:db8::/32
-set interfaces ge-1/0/0 set interfaces ge-1/0/0 unit 0 family inet6 address 2001:db8:4::1/64
-set routing-options rib inet6.0 static route ::/0 next-hop 2001:db8:4::2
+set interfaces ge-1/0/0 unit 0 tunnel ipv6-prefix-length 64
+set services 6rd ipv6-prefix 2001:db8::/32

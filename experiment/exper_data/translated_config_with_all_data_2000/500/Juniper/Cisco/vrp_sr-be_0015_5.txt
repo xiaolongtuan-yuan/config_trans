@@ -2,19 +2,32 @@ hostname CE2
 interface GigabitEthernet1/0/0
  no shutdown
  ip address 10.2.1.1 255.255.255.0
-interface Loopback0
- no shutdown
  ip address 10.22.2.2 255.255.255.255
-aaa authentication login external-peers group external-peers local
-redistribute bgp
-aaa authentication login external-peers group 10.2.1.2 local
-redistribute connected
-router bgp 600
+end
+router bgp external-peers
+ neighbor none remote-as none
+  router bgp 100
+  neighbor 10.2.1.2 remote-as 100
+ neighbor 10.1.1.2 activate
+ no synchronization
+ address-family ipv4 unicast
  address-family ipv4
-  neighbor none route-map advertise-lo0 out
 router bgp 100
-neighbor 10.2.1.2 remote-as 100
-neighbor 10.2.1.2 activate
+ neighbor none remote-as 100
+  router bgp 100
+  neighbor 10.2.1.2 remote-as 100
+router bgp 600
+ neighbor 10.2.1.2 remote-as none
+  router bgp 100
+  neighbor 10.2.1.2 remote-as 100
+  neighbor 10.2.1.2 address-family ipv4 unicast
+ address-family ipv4 unicast
+ address-family inet unicast
+ exit-address-family
+ bgp confederation identifier 1
+aaa authentication login external-peers group 10.2.1.2 local
+aaa authentication login advertise-lo0 group external-peers local
 route-map advertise-lo0 permit 10
-match ip address prefix-list exact-lo0
-ip prefix-list exact-lo0 permit 10.22.2.2/32
+ route-map advertise-lo0 permit 10
+ match ip address prefix-list exact-lo0
+ ip prefix-list exact-lo0 permit 10.22.2.2/32

@@ -1,13 +1,14 @@
 sysname DeviceB
 interface GigabitEthernet1/0/1
  undo shutdown
-interface Eth-Trunk1
  ip address 10.1.1.2 255.255.255.0
-interface GigabitEthernet0/0/0
- undo shutdown
+return
+interface GigabitEthernet1/0/0
+ eth-trunk 1
 interface GigabitEthernet0/0/1
  undo shutdown
-bfd btoa bind link-bundle peer-ip 10.1.1.1 interface none source-ip 10.1.1.2
+ eth-trunk 1
+bfd btoa bind link-bundle peer-ip 10.1.1.1 interface Eth-Trunk1 source-ip 10.1.1.2
  min-tx-interval 10
-bfd bfd_session_ae1 bind peer-ip none interface ae1 source-ip none auto
+bfd none bind peer-ip none interface ae1 source-ip none auto
 bfd btoa bind link-bundle peer-ip 10.1.1.1 interface ae1 source-ip 10.1.1.2

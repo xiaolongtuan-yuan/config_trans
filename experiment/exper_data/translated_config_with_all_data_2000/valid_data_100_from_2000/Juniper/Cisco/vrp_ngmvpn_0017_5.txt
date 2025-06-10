@@ -4,11 +4,15 @@ interface GigabitEthernet1/0/0
  no shutdown
  ip address 192.168.2.2 255.255.255.0
  ip address 10.1.5.1 255.255.255.0
+end
+ip multicast-routing sparse
+ip igmp join-group 225.0.0.1
+ interface GigabitEthernet1/0/1
 interface GigabitEthernet1/0/1
- no shutdown
-ethernet cfm mep none ma ma1 interface GigabitEthernet1/0/1 inward
-ethernet cfm mep ma1 ma 225.0.0.1 interface GigabitEthernet1/0/1 inward
-network 0.0.0.0 255.255.255.255 area 0
-network 0.0.0.0 0 area ge-1/0/0
-network 0.0.0.0 0.0.0.0 area 0
-ip pim rp-address 4.4.4.4 none
+ interface GigabitEthernet1/0/1
+  ip igmp join-group 225.0.0.1
+router ospf 1
+ router-id 4.4.4.4
+ no passive-interface GigabitEthernet1/0/0
+ no passive-interface GigabitEthernet1/0/1
+ip pim rp-address 4.4.4.4 override

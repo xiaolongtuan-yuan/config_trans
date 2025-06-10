@@ -2,13 +2,25 @@ hostname CE4
 interface GigabitEthernet0/0/0
  no shutdown
  ip address 172.16.2.1 255.255.255.0
-aaa authentication login default group neighbor-172.16.2.2 local
-redistribute bgp
-redistribute bgp 300
-redistribute unicast
-redistribute connected
-policy-map EXPORT-DIRECT
+end
+router bgp 600
+ neighbor 172.16.2.2 remote-as none
+ neighbor 172.16.2.2 activate
+ no synchronization
+ address-family ipv4 unicast
+ address-family ipv4
+ address-family inet unicast
+ exit-address-family
+ bgp confederation identifier 1
+aaa authentication login neighbor-172.16.2.2 group external local
+aaa authentication login neighbor-172.16.2.2 group 300 local
+aaa authentication login default group external local
+aaa authentication login EXPORT-DIRECT group none local
+router bgp 300
  route-map EXPORT-DIRECT permit 10
- match interface
- match ip address connected
-ip route 172.16.2.0 255.255.255.0 Null0
+ match protocol connected
+neighbor 172.16.2.2 remote-as 300
+neighbor 172.16.2.2 activate
+network 172.16.2.0 mask 255.255.255.0
+route-map EXPORT-DIRECT permit 1
+ip route 172.16.2.0 255.255.255.0 discard none

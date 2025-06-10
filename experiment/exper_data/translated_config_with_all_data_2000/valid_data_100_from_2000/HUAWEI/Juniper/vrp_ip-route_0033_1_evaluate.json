@@ -3,19 +3,9 @@
     "missed_commands": [
         "set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.1/24",
         "set interfaces ge-0/0/1 unit 0 family inet address 10.1.3.1/24",
-        "set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.111 vrrp-group 1 virtual-address 10.1.1.111",
         "set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.111 vrrp-group 1 priority 120",
         "set interfaces ge-0/0/0 unit 0 family mpls",
-        "set protocols ospf area 0.0.0.0 interface ge-0/0/0.0",
         "set protocols ospf area 0.0.0.0 interface ge-0/0/1.0",
-        "set protocols ospf export export-direct",
-        "set policy-options policy-statement export-direct term 1 from protocol direct",
-        "set policy-options policy-statement export-direct term 1 then accept",
-        "set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.1/24",
-        "set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.111 vrrp-group 1 virtual-address 10.1.1.111",
-        "set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.111 vrrp-group 1 priority 120",
-        "set interfaces ge-0/0/0 unit 0 family mpls",
-        "set interfaces ge-0/0/1 unit 0 family inet address 10.1.3.1/24",
         "set protocols ospf export export-direct",
         "set policy-options policy-statement export-direct term 1 from protocol direct",
         "set policy-options policy-statement export-direct term 1 then accept"
@@ -28,28 +18,28 @@
         "set policy-options policy-statement [parameter1] term [parameter2] then [parameter3]"
     ],
     "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.07692307692307693,
+    "llm_command_ratio": 0.09090909090909091,
     "command_for_llm": [
-        "vrrp vrid 1 priority 120"
+        "ospf 1"
     ],
     "llm_trans_commands": [
-        "set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.1/24 vrrp-group 1 priority 120"
+        "set protocols ospf area 0.0.0.0"
     ],
     "source_commands": [
-        "sysname Device1",
-        "interface GigabitEthernet1/0/0",
-        "import-route direct",
-        "default cost inherit-metric",
         "direct-route track vrrp vrid 1 degrade-cost 300",
-        "network 10.1.3.0 0.0.0.255",
         "interface GigabitEthernet1/0/1",
-        "ip address 10.1.1.1 255.255.255.0",
-        "vrrp vrid 1 priority 120",
+        "interface GigabitEthernet1/0/0",
         "ip address 10.1.3.1 255.255.255.0",
-        "ospf 1",
+        "import-route direct",
+        "undo shutdown",
         "area 0.0.0.0",
+        "vrrp vrid 1 priority 120",
+        "default cost inherit-metric",
+        "network 10.1.3.0 0.0.0.255",
+        "sysname Device1",
         "vrrp vrid 1 virtual-ip 10.1.1.111",
-        "undo shutdown"
+        "ospf 1",
+        "ip address 10.1.1.1 255.255.255.0"
     ],
     "llm_origin_response": [
         ""

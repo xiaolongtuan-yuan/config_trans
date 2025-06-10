@@ -1,12 +1,16 @@
 hostname Tail
 route-target import 100:2
+ vrf definition vpna
+route-target import 500:1
+ vrf definition vpna
+ rd 500:1
+end
+router ospf 1
+ no passive-interface GigabitEthernet1/0/2
 router isis
- interface vpna
-  isis network point-to-point
  is-type level-1
- metric-style wide
-network none none area 0
-interface ge-1/0/2
- no shutdown
-interface GigabitEthernet1/0/2
+ interface GigabitEthernet2/0/0
+  isis metric 10
  ip address 10.5.1.2 255.255.255.252
+interface GigabitEthernet1/0/2
+ no shutdown

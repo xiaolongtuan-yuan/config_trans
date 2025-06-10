@@ -1,17 +1,27 @@
 hostname CE2
-interface ge-1/0/0
- no shutdown
 interface GigabitEthernet1/0/0
- ip address 10.2.1.2 255.255.255.0
-interface Loopback0
  no shutdown
+ ip address 10.2.1.2 255.255.255.0
  ip address 22.22.22.22 255.255.255.255
-aaa authentication login none group external-peers local
-redistribute bgp
-router bgp AS number
+end
+router bgp 600
+ neighbor none remote-as none
+ neighbor 10.1.1.2 activate
+ no synchronization
+ address-family ipv4 unicast
  address-family ipv4
-  neighbor none route-map advertise-networks none
-  neighbor {'name': 'neighbor IP address', 'type': 'string', 'explanation': 'IP address of the neighbor', 'value': '22.22.22.22'} route-map {'name': 'route-map policy name', 'type': 'string', 'explanation': 'Name of the route-map policy to apply', 'value': 'advertise-networks'} {'name': 'direction', 'type': 'string', 'explanation': "'in' or 'out'", 'value': 'out'}
-route-map advertise-networks permit 10
+ neighbor 10.2.1.1 remote-as none
+  router bgp 100
+  neighbor 10.2.1.1 remote-as 100
+router bgp external-peers
+ neighbor none remote-as none
+  router bgp 100
+  neighbor 10.2.1.1 remote-as 100
 router bgp 100
-neighbor 10.2.1.1 remote-as 100
+ neighbor none remote-as 100
+  neighbor 10.2.1.1 remote-as 100
+aaa authentication login advertise-networks group external-peers local
+route-map advertise-networks permit 10
+ route-map advertise-networks permit 1
+ match ip address prefix-list exact-route
+ ip prefix-list exact-route permit 22.22.22.22/32

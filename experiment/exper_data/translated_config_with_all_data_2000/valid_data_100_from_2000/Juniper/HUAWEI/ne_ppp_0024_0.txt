@@ -1,17 +1,33 @@
 sysname DeviceA
-interface ge-0/0/0.0 p2p
-ptp profile default enable
+interface ge-0/0/0.0
+ pppoe-server bind Virtual-Template 1
+pppoe-client enable
+interface GigabitEthernet0/0/0.0
+pppoe-client dial-bundle-number 1
+ppp chap user rta
+ppp chap password cipher %@%@%edf~dadffd934j3<daf#*<!@%@%
 ppp authentication-mode pap
-ipsec policy default 1 isakmp
-Sysname DeviceA
-ipsec policy IPSEC_PROFILE 10 isakmp
- proposal 10
-  transform none @%@%j]v~7%f[#S'W>j9zzM)3,*!u@%@%
-ipv6 pool pool1 bas local
- prefix 2001:DB8::/64
+aaa
+ aaa authentication-scheme default authentication-mode chap
+ interface GigabitEthernet0/0/0.0
+ pppoe-client dial-bundle-number 1
+ #
+ aaa authentication-scheme default
+ authentication-mode chap
+ aaa local-user rtb password cipher %@%@%j]v~7%f[#S'W>j9zzM)3,*!u@%@%
+ aaa local-user rtb service-type ppp
+ ip pool pool1 10.110.0.2 10.110.0.254
+local-user rtb password cipher %@%@%j]v~7%f[#s'w>j9zzm)3,*!u@%@%
+local-user rtb service-type ppp
+#
+ip pool pool1
+ ip pool pool1 bas local
+ gateway 10.110.0.1 255.255.255.0
+ ip pool pool1 network 10.110.0.0 mask 255.255.255.0
  ip pool pool1 section 0 10.110.0.2 10.110.0.254
+network 10.110.0.0 mask 255.255.255.0
+gateway-list 10.110.0.1
+section 0 10.110.0.2 10.110.0.254
+host-routing
 ipv6 pool pool1 bas delegation
-bgp 600
- ipv4-family unicast
- ipv4-family unicast
-  undo synchronization
+return

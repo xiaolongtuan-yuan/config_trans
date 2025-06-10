@@ -1,51 +1,51 @@
 {
-    "command_accuracy": 0.6428571428571429,
+    "command_accuracy": 0.7142857142857143,
     "missed_commands": [
+        "interface gigabitethernet1/0/0",
         "no shutdown",
-        "no synchronization",
         "network 10.1.1.0 mask 255.255.255.0",
-        "neighbor 10.1.1.2 activate",
-        "ip route 0.0.0.0 0.0.0.0 10.1.1.2",
-        "no shutdown",
-        "no synchronization",
-        "network 10.1.1.0 mask 255.255.255.0",
-        "neighbor 10.1.1.2 activate",
-        "ip route 0.0.0.0 0.0.0.0 10.1.1.2"
+        "neighbor 10.1.1.2 activate"
     ],
-    "grammatical_accuracy": 0.7857142857142857,
+    "grammatical_accuracy": 0.9285714285714286,
     "missed_templates": [
-        "no synchronization",
-        "network [parameter1] mask [parameter2]",
-        "neighbor [parameter1] activate"
+        "network [parameter1] mask [parameter2]"
     ],
-    "llm_command_accuracy": 0.14285714285714285,
-    "llm_command_ratio": 0.14285714285714285,
+    "llm_command_accuracy": 0.07142857142857142,
+    "llm_command_ratio": 0.28125,
     "command_for_llm": [
-        "family inet unicast",
+        "peer-as 100",
+        "term 1 from route-filter 10.1.1.0/24 exact",
+        "type external",
         "neighbor 10.1.1.2"
     ],
     "llm_trans_commands": [
         "router bgp 100",
         "neighbor 10.1.1.2 remote-as 100",
-        "address-family ipv4 unicast"
+        "neighbor 10.1.1.2 ebgp-multihop 255",
+        "router bgp 100",
+        "neighbor 10.1.1.2 remote-as 100",
+        "router bgp 100",
+        "neighbor 10.1.1.2 remote-as 100",
+        "route-map BGP-NETWORKS permit 10",
+        "match ip address prefix-list BGP-NETWORKS"
     ],
     "source_commands": [
-        "term 1 then accept",
-        "term 1 from route-filter 10.1.1.0/24 exact",
-        "set interfaces ge-2/0/0",
-        "type external",
-        "unit 0 family inet address 10.1.1.1/24",
-        "peer-as 100",
-        "export BGP-NETWORKS",
-        "neighbor 10.1.1.2",
-        "family inet unicast",
-        "unit 0 family inet address 10.4.1.1/24",
-        "set system host-name CE1",
-        "set protocols bgp group IBGP",
-        "next-hop 10.1.1.2",
         "set routing-options static route 0.0.0.0/0",
+        "set interfaces ge-2/0/0",
+        "next-hop 10.1.1.2",
+        "set system host-name CE1",
+        "unit 0 family inet address 10.1.1.1/24",
+        "set policy-options policy-statement BGP-NETWORKS",
+        "family inet unicast",
+        "set protocols bgp group IBGP",
+        "peer-as 100",
+        "type external",
+        "neighbor 10.1.1.2",
+        "export BGP-NETWORKS",
+        "term 1 then accept",
         "set interfaces ge-1/0/0",
-        "set policy-options policy-statement BGP-NETWORKS"
+        "term 1 from route-filter 10.1.1.0/24 exact",
+        "unit 0 family inet address 10.4.1.1/24"
     ],
     "llm_origin_response": [
         ""

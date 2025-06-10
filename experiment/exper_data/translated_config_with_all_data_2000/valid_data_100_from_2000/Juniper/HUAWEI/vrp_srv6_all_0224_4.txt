@@ -1,20 +1,16 @@
 sysname Tail
-route-distinguisher 500:1
-#
+ip route-static none 500:1 vpna
+ ip vpn-instance vpna
 interface GigabitEthernet1/0/2.0
-ip binding vpn-instance vpna
- ip vpn-instance vpna
- ipv4-family
-segment-routing mpls
-ip vpn-instance vpna
- ip vpn-instance vpna
-  route-distinguisher 500:1
-ospf 1 router-id 192.168.1.1
+return
+ospf 1 router-id 172.16.1.3
+ undo shutdown
  area 0.0.0.0
   network none ge-1/0/2.0
 isis 1
  is-level level-1
-link-protocol isis
+  isis 1
+  cost-style wide
 interface GigabitEthernet1/0/2
  undo shutdown
  ip address 10.5.1.2 255.255.255.252

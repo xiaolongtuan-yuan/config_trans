@@ -1,24 +1,26 @@
 hostname ASBR1
-vrf definition vpn1
+l2vpn evpn instance vpn1
+ address-family ipv4
+line vty 0 4
+ login authentication default
+ transport input ssh netconf-ssh
+ip vrf vpn1
+mpls ldp router-id 2.2.2.9
+mpls ldp router-id Loopback0 force
+ip cef
 interface GigabitEthernet2/0/0
- vrrp 1 ip 10.1.1.3
-  rd 100:2
-  mpls label mode all-vrfs protocol bgp vrf vpn1 per-vrf
-  route-target export 1:1
-  route-target import 1:1
  mpls ip
- mpls ip ldp autoconfig
+ mpls ldp autoconfig
  no shutdown
  ip vrf forwarding vpn1
  ip address 12.12.12.1 255.255.255.0
-mpls ldp router-id 2.2.2.9
-ip cef
 interface GigabitEthernet1/0/0
  ip address 10.10.1.1 255.255.255.0
  mpls ip
- mpls ip ldp autoconfig
+ mpls ldp autoconfig
 interface GigabitEthernet1/0/1
  no shutdown
+end
 interface LoopBack1
  ip address 2.2.2.9 255.255.255.255
 router bgp 100
@@ -35,4 +37,3 @@ router bgp 100
 router ospf 1
  network 2.2.2.9 0.0.0.0 area 0
  network 10.10.1.0 0.0.0.255 area 0
-end

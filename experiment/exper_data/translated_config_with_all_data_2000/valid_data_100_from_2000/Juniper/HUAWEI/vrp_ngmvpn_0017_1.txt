@@ -1,19 +1,20 @@
 sysname CE3
+return
 interface GigabitEthernet0/0/0
  undo shutdown
  ip address 10.1.4.2 255.255.255.0
-interface GigabitEthernet0/0/1
  ip address 192.168.3.1 255.255.255.0
-interface LoopBack0
  ip address 4.4.4.4 255.255.255.255
 area 0.0.0.0
-ospf 0.0.0.0 router-id ge-0/0/0.0
- area 0.0.0.0
-  network 0.0.0.0 ge-0/0/0.0
 ospf 1 router-id 0.0.0.0
+ undo shutdown
+ area 0.0.0.0
+  network 0.0.0.0 255.255.255.0
+  network 0.0.0.0 255.255.255.255
+interface GigabitEthernet0/0/1
+ospf 0.0.0.0 router-id ge-0/0/1.0
+ undo shutdown
  area 0.0.0.0
   network 0.0.0.0 ge-0/0/1.0
-ospf 0.0.0.0 router-id 1
- area 0.0.0.0
-  network 0.0.0.0 255.255.255.255
-lldp management-address 4.4.4.4
+pim
+static-rp 4.4.4.4

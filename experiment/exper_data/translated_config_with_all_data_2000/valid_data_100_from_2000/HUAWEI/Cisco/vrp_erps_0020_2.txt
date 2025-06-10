@@ -1,30 +1,29 @@
 hostname DeviceC
 vlan batch 400
 spanning-tree mst configuration
- spanning-tree vlan 20,300-400 instance 2
-erps enable 2
+ instance 2 vlan 20,300-400
+erps enable
  erps control-vlan 20
- erps instance 2 protected vlan 300-400
+ erps instance 2 protected-vlan 20,300-400
  erps wtr-timer 6
  erps timer guard-time 100
  erps version 2
- erps sub-ring
+ revertive
+ role secondary
+erps domain 2
 interface GigabitEthernet1/0/1
  switchport
  switchport mode access
  no shutdown
  spanning-tree portfast trunk
  switchport trunk allowed vlan 400
- no spanning-tree portfast
- erps ring 2 rpl owner
- interface GigabitEthernet1/0/1
- rep segment 2 edge primary
+ ptp clock-domain 2
 interface GigabitEthernet1/0/2
  switchport
  switchport mode access
  no shutdown
  spanning-tree portfast trunk
  switchport trunk allowed vlan 400
- spanning-tree disable
- erps ring 2
+ erps enable
+ erps domain 2
 end

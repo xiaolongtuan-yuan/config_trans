@@ -1,7 +1,7 @@
 sysname DeviceC
-multicast routing-enable
-ip as-path-filter 2001 deny _232_
-ip as-path-filter 1 permit .*
+multicast ipv6 routing-enable
+acl number 2001
+rule 5 permit ip destination 232.1.1.0 0.0.0.255
 isis 1
  is-level level-1
  network-entity 10.0000.0000.0003.00
@@ -11,6 +11,7 @@ interface GigabitEthernet1/0/0
  pim sm
  igmp version 3
  isis network-type p2p
+return
 interface GigabitEthernet2/0/0
  undo shutdown
  ip address 192.168.3.1 255.255.255.0

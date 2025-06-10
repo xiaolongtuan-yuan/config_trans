@@ -1,16 +1,17 @@
 sysname DeviceB
-user-group external
-bgp 600
- import-route direct
- ipv4-family unicast
-  peer 2001:db8:100::2 next-hop-local
-  undo synchronization
-  peer 5.5.5.5 route-policy next-hop-self-policy export
+return
 bgp 100
  peer 2001:db8:100::1 as-number 100
- ipv4-family unicast
-  peer 2001:db8:100::1 next-hop-local
-bgp 200
+peer 2001:db8:100::1 as-number 100
+peer 2001:db8:101::1 as-number 200
+peer 2001:db8:100::1 enable
+peer 2001:db8:101::1 enable
+peer 2001:db8:100::1 next-hop-local
+peer 2001:db8:101::1 next-hop-local
+ ipv6-family unicast
+bgp 600
+ peer 2001:db8:100::2 as-number 0
  peer 2001:db8:101::1 as-number 200
  ipv4-family unicast
-  peer 2001:db8:101::1 next-hop-local
+  peer 5.5.5.5 route-policy next-hop-self-policy export
+ undo synchronization

@@ -1,47 +1,41 @@
 {
-    "command_accuracy": 0.5454545454545454,
+    "command_accuracy": 0.9090909090909091,
     "missed_commands": [
-        "neighbor 10.2.1.2 remote-as 200",
-        "address-family ipv4 unicast",
-        "no synchronization",
-        "neighbor 10.2.1.2 activate",
-        "end",
-        "neighbor 10.2.1.2 remote-as 200",
-        "address-family ipv4 unicast",
-        "no synchronization",
-        "neighbor 10.2.1.2 activate",
-        "end"
+        "redistribute connected"
     ],
-    "grammatical_accuracy": 0.5454545454545454,
+    "grammatical_accuracy": 0.9090909090909091,
     "missed_templates": [
-        "neighbor [parameter1] remote-as [parameter2]",
-        "address-family ipv4 unicast",
-        "no synchronization",
-        "neighbor [parameter1] activate",
-        "end"
+        "redistribute connected"
     ],
-    "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.16666666666666666,
+    "llm_command_accuracy": 0.36363636363636365,
+    "llm_command_ratio": 0.3076923076923077,
     "command_for_llm": [
-        "term 1 then accept"
+        "set policy-options policy-statement EXPORT_DIRECT",
+        "term 1 from protocol direct"
     ],
     "llm_trans_commands": [
+        "router bgp 65002",
+        "neighbor 10.2.1.2 remote-as 200",
+        "neighbor 10.2.1.2 activate",
+        "address-family ipv4 unicast",
+        "exit-address-family",
+        "router bgp 65002",
         "route-map EXPORT_DIRECT permit 10",
         "match interface"
     ],
     "source_commands": [
-        "set protocols bgp group EBGP",
-        "neighbor 10.2.1.2",
-        "unit 0 family inet address 10.2.1.1/24",
         "set system host-name CE2",
-        "set routing-options autonomous-system 65002",
-        "term 1 from protocol direct",
-        "set interfaces ge-0/0/0",
-        "type external",
-        "family inet unicast",
-        "export EXPORT_DIRECT",
         "peer-as 200",
+        "set interfaces ge-0/0/0",
+        "set protocols bgp group EBGP",
+        "set routing-options autonomous-system 65002",
         "set policy-options policy-statement EXPORT_DIRECT",
+        "family inet unicast",
+        "term 1 from protocol direct",
+        "unit 0 family inet address 10.2.1.1/24",
+        "export EXPORT_DIRECT",
+        "neighbor 10.2.1.2",
+        "type external",
         "term 1 then accept"
     ],
     "llm_origin_response": [

@@ -2,18 +2,18 @@ sysname CE2
 interface GigabitEthernet0/0/0
  undo shutdown
  ip address 10.2.1.1 255.255.255.0
-user-group EBGP
+return
+peer 10.2.1.2 as-number 200
+peer 10.2.1.2 enable
+ ipv4-family unicast
 bgp 600
- import-route direct
- network 10.2.1.2 0.0.0.0
- ipv6-family unicast
  ipv4-family unicast
+  peer 10.2.1.2 next-hop-local
   peer 5.5.5.5 route-policy EXPORT_DIRECT export
-bgp 200
- confederation peer-as none 200
+ipv4-family unicast
+ peer 10.2.1.2 as-number 200
 bgp 65002
- import-route direct
  ipv4-family unicast
+  import-route direct
  peer 10.1.1.2 enable
-traffic-policy EXPORT_DIRECT outbound
 traffic policy 1

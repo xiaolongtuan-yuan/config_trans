@@ -1,16 +1,15 @@
 sysname DeviceA
+return
 interface GigabitEthernet1/0/1
  undo shutdown
  ip address 10.1.1.1 255.255.255.0
  source 10.1.1.1
  destination 0.0.0.0
-service-instance-group 6RD_SS
-remote-backup-service rbsv8
-remote-backup-service 6RD_SS
-tunnel-policy ipv4
- tunnel binding destination none te ipv4
-ipv6 prefix 2001:db8::/32 local
- prefix 2001:db8::/32
-ip ip-prefix none index none permit none 8 greater-equal none less-equal none
-ipv6 route-static :: 0 gr-0/0/0.1 none
+ipv6 route-static 2001:db8:: 32 Tunnel0/0/1
+ service-set 6rd_ss type tunnel
+ service-set 6rd_ss bind interface Tunnel0/0/0
+ip address 10.1.1.1 255.255.255.0
+ipv6 prefix 6RD_PREFIX 2001:db8::/32
+ipv6 prefix-length 8
+ipv6 route-static none inet6.0 none none
 ipv6 route-static 2001:db8:: 32 gr-0/0/0.1 none

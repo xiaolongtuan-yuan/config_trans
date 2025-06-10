@@ -1,9 +1,22 @@
 hostname CE1
-ip route 10.11.1.1 255.255.255.255 none
-aaa authentication login none group EXTERNAL local
-redistribute bgp
-redistribute unicast
-redistribute direct
-policy-map IMPORT_DIRECT
+router-id 10.11.1.1
+router bgp 600
+ neighbor none remote-as none
+ neighbor 10.1.1.2 activate
+ no synchronization
+ address-family ipv4 unicast
+ address-family ipv4
+ bgp confederation identifier 1
+aaa authentication login EXTERNAL group external local
+aaa authentication login EXTERNAL group 100 local
+aaa authentication login inet6 group unicast local
+aaa authentication login IMPORT_DIRECT group none local
+router bgp 100
  route-map IMPORT_DIRECT permit 10
- match interface
+ match protocol connected
+neighbor 2001:db8:11::1 remote-as 100
+neighbor 2001:db8:11::1 activate
+ address-family ipv6 unicast
+ exit-address-family
+route-map IMPORT_DIRECT permit 1
+end

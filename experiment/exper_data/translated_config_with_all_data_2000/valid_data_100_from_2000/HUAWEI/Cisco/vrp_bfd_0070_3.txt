@@ -4,6 +4,7 @@ interface GigabitEthernet1/0/0
  ip address 10.1.1.1 255.255.255.0
 interface GigabitEthernet1/0/1
  no shutdown
+end
 interface GigabitEthernet2/0/0
  no shutdown
  ip address 10.2.1.1 255.255.255.0
@@ -14,11 +15,5 @@ interface LoopBack1
  ip address 10.1.1.2 255.255.255.255
  tunnel destination 10.2.1.2
  ip address 10.2.1.2 255.255.255.255
-bfd-template single-hop ce1_to_pe1
-destination-address ipv4 10.1.1.2
-source-address ipv4 10.1.1.1
-bfd interval 50 min_rx 50 multiplier 3
-bfd echo
-ip route 0.0.0.0 0.0.0.0 10.2.1.2 track 10
-track 10 bfd interface GigabitEthernet2/0/0 ipv4 10.2.1.2
-end
+ipv6 bfd ce1_to_pe1 bind peer-ipv6 2001:db8:3::2 source-ipv6 2001:db8:1::1
+ipv6 bfd ce1_to_pe2 bind peer-ipv6 2001:db8:3::2 source-ipv6 2001:db8:1::1

@@ -1,25 +1,27 @@
 sysname DeviceC
 router id 3.3.3.3
 ospf 1 router-id 3.3.3.3
+ undo shutdown
  area 0.0.0.0
-  network 0.0.0.0 ge-0/0/0.0
+  network 0.0.0.0 255.255.255.0
   network 0.0.0.0 ge-0/0/2.0
   network 0.0.0.0 ge-0/0/3.0
+mpls lsr-id 3.3.3.3
 interface GigabitEthernet0/0/0
  undo shutdown
  ip address 172.16.6.1 255.255.255.0
  ip address 172.16.2.1 255.255.255.0
  ip address 172.16.4.2 255.255.255.0
+return
 area 0.0.0.0
-ip route-static 172.16.7.0 255.255.255.0
+ip route-static 172.16.7.0 255.255.255.0 none none
 ip route-static 172.16.7.0 255.255.255.0 172.16.6.2
-traffic-policy OSPF-IMPORT inbound
-traffic policy OSPF-IMPORT
-bgp 1
+ospf 1
  import-route static
+traffic policy 1
+bgp 1
  ipv4-family unicast
-bgp 600
+  import-route static
  peer 10.1.1.2 enable
- ipv4-family unicast
 ospf OSPF-IMPORT
  import-route static type OSPF-IMPORT

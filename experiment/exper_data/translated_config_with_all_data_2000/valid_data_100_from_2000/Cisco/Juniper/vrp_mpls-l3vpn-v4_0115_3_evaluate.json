@@ -7,7 +7,7 @@
         "set interfaces ge-0/0/0 unit 0 family inet address 192.168.1.2/24",
         "set interfaces ge-0/0/1 unit 0 family inet address 192.168.2.1/24",
         "set interfaces lo0 unit 0 family inet address 10.35.5.9/32",
-        "set protocols ospf area 0.0.0.0 interface ge-0/0/1.0"
+        "set interfaces ge-0/0/1 unit 0 family mpls"
     ],
     "grammatical_accuracy": 0.75,
     "missed_templates": [
@@ -19,22 +19,22 @@
     "command_for_llm": [],
     "llm_trans_commands": [],
     "source_commands": [
-        "interface GigabitEthernet2/0/0",
+        "ip address 10.35.5.9 255.255.255.255",
+        "network 10.35.5.9 0.0.0.0 area 0",
+        "network 192.168.1.0 0.0.0.255 area 0",
+        "interface GigabitEthernet1/0/0",
+        "mpls ldp router-id Loopback1 force",
+        "ip address 192.168.2.1 255.255.255.0",
+        "hostname P",
         "network 192.168.2.0 0.0.0.255 area 0",
         "end",
-        "network 10.35.5.9 0.0.0.0 area 0",
-        "no shutdown",
-        "ip address 192.168.1.2 255.255.255.0",
-        "hostname P",
-        "ip address 192.168.2.1 255.255.255.0",
         "mpls ldp autoconfig",
-        "interface Loopback1",
+        "ip address 192.168.1.2 255.255.255.0",
         "router ospf 1",
-        "ip address 10.35.5.9 255.255.255.255",
-        "interface GigabitEthernet1/0/0",
+        "interface GigabitEthernet2/0/0",
         "mpls ip",
-        "network 192.168.1.0 0.0.0.255 area 0",
-        "mpls ldp router-id Loopback1 force"
+        "interface Loopback1",
+        "no shutdown"
     ],
     "llm_origin_response": []
 }

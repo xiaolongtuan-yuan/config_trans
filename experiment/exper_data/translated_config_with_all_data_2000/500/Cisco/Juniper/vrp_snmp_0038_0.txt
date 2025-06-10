@@ -1,49 +1,45 @@
 set system host-name DeviceA
-set system authentication-order radius local
-set protocols igmp static-group group-address
-set snmp trap-options link-up
+set protocols oam ethernet connectivity-fault-management maintenance-association ma1
+set system authentication-order tacplus password
+set system login tacplus accounting events login
+set system login tacplus authorization
+set system login user * authentication-order [ tacplus password ]
+set system tacplus-server 1.1.2.1 secret "$secret" source-address 1.1.3.1
+set system tacplus-options authorization
+set system login user nms2-admin class super-user authentication encrypted-password "$1$gXnG$Oa1s4f1Sx6lQ4z1mGAb7Q1"
+set snmp v3 usm local-engine user nms2-admin authentication-sha authentication-password "$1$gXnG$Oa1s4f1Sx6lQ4z1mGAb7Q1" privacy-aes128 privacy-password "at{pQGh!uMyq..8WSJ(<bU`~K_)[f-}s&*Gmw!iE"
+set snmp engine-id 800007DB03001974593301
+set snmp community public authorization read-only
+set snmp trap-options linkup
 set interfaces ge-1/0/0 unit 0 disable
 set interfaces ge-1/0/0 disable
+set interfaces ge-1/0/0 ether-options no-auto-negotiation
 set interfaces ge-1/0/0 unit 0 family inet address 1.1.2.1/24
-interfaces ge-1/0/0.0
 set interfaces lo0 unit 0 disable
 set interfaces lo0 disable
 set interfaces lo0 unit 0 family inet address 1.1.3.1/32
-set protocols ospf area 0.0.0.0 interface gr-0/0/0.0
-set protocols ospf area 0 interface gr-0/0/0.0
+set protocols ospf area 0.0.0.1 interface 1
+set protocols ospf area 0 interface ge-0/0/1.0
+set protocols ospf area 0 interface lo0.0 passive
+set snmp v3 target-address 1.1.2.1 parameters security-name nms2-admin
+set snmp v3 notify notify1 type trap
+set snmp v3 notify notify1 tag-list notify1
+set snmp v3 target-parameters targetParam1 parameters message-processing-model v3
+set snmp v3 target-parameters targetParam1 parameters security-model v3
+set snmp v3 target-parameters targetParam1 parameters security-level privacy
+set snmp v3 target-parameters targetParam1 parameters security-name nms2-admin
+set snmp v3 target-parameters targetParam1 notify-filter notify1
 set snmp contact Operator at 010-12345678
-set snmp trap-options linkup
 set snmp trap-options warmstart
 set snmp trap-options entity-mib-change
+set snmp trap-options fru-insert-remove
+set snmp trap-options module-status
 set snmp trap-options link-down
+set snmp trap-options link-up
 set snmp trap-options neighbor-change
+set snmp trap-options neighbor-loss
+set snmp trap-options pim neighbor-up
 set snmp trap-options rp-candidate-change
 set snmp trap-options rp-candidate-trigger
-set system authentication-order tacplus
-set system authentication-order tacplus password
-set system login user nms2-admin class super-user
-set system login user nms2-admin authentication encrypted-password "$1$gXnG$Oa1s4f1Sx6lQ4z1mGAb7Q1"
-set snmp v3 usm local-engine user nms2-admin authentication-sha authentication-password "$1$gXnG$Oa1s4f1Sx6lQ4z1mGAb7Q1"
-set snmp v3 usm local-engine user nms2-admin privacy-aes128 privacy-password "$1$gXnG$Oa1s4f1Sx6lQ4z1mGAb7Q1"
-set snmp v3 vacm security-to-group security-model usm security-name nms2-admin group grp1
-set snmp engine-id local 800007DB03001974593301
-set snmp community public authorization read-only
-set protocols ospf area 0 interface ge-1/0/0
-set protocols ospf area 0 network 1.1.2.0/24
-set snmp v3 target-address 1.1.2.1
-set snmp v3 target-parameters 1.1.2.1 parameters nms2-admin
-set snmp v3 notify notify1 type trap
-set snmp v3 notify notify1 tag 1.1.2.1
-set snmp trap-group FRU-TRAPS targets 1.1.2.1
-set snmp trap-group FRU-TRAPS categories chassis
-set snmp trap-group snmp targets 1.1.2.1
-set snmp trap-group snmp categories entity module-status
-set snmp trap-group pim-trap targets 1.1.2.1
-set snmp trap-group pim-trap categories pim-neighbor-loss
-set snmp trap-group snmp categories pim
-set snmp trap-group snmp version v3
-set snmp trap-group snmp security-model usm
-set snmp trap-group snmp security-level auth-priv
-set snmp trap-group snmp traps pim-neighbor-up
-set snmp trap-group <group-name> categories vrrp
-set snmp trap-group snmp categories syslog
+set snmp trap-options rtr
+set snmp trap-options syslog

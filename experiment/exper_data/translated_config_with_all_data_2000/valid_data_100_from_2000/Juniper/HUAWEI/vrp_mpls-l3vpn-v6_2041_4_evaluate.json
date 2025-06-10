@@ -1,5 +1,5 @@
 {
-    "command_accuracy": 0.375,
+    "command_accuracy": 0.5625,
     "missed_commands": [
         "interface gigabitethernet1/0/0",
         "interface loopback1",
@@ -7,53 +7,66 @@
         "ipv6 address 2001:db8:3::1 64",
         "ipv6 address 2001:db8:9::1/64",
         "bgp 65410",
-        "router-id 30.30.30.30",
-        "peer 2001:db8:2::2 as-number 100",
-        "ipv6-family unicast",
-        "return",
-        "interface gigabitethernet1/0/0",
-        "undo shutdown",
-        "ipv6 address 2001:db8:3::1 64",
-        "interface loopback1",
-        "ipv6 address 2001:db8:9::1/64",
-        "bgp 65410",
-        "router-id 30.30.30.30",
-        "peer 2001:db8:2::2 as-number 100",
-        "ipv6-family unicast",
-        "return"
+        "router-id 30.30.30.30"
     ],
-    "grammatical_accuracy": 0.4375,
+    "grammatical_accuracy": 0.625,
     "missed_templates": [
         "interface [parameter1]",
         "undo shutdown",
         "ipv6 address [parameter1] [parameter2]",
         "ipv6 address [parameter1]/[parameter2]",
-        "router-id [parameter1]",
-        "peer [parameter1] as-number [parameter2]",
-        "ipv6-family [parameter1]",
-        "return"
+        "router-id [parameter1]"
     ],
-    "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.0,
-    "command_for_llm": [],
-    "llm_trans_commands": [],
-    "source_commands": [
-        "term 1 then accept",
-        "family inet6 unicast no synchronization",
-        "local-address 30.30.30.30",
+    "llm_command_accuracy": 0.125,
+    "llm_command_ratio": 0.6923076923076923,
+    "command_for_llm": [
+        "peer-as 100",
+        "set protocols bgp group external",
         "set policy-options policy-statement EXPORT-CONNECTED",
+        "delete set protocols bgp group external",
+        "family inet6 unicast no synchronization",
+        "family inet6 unicast redistribute connected",
+        "neighbor 2001:db8:2::2 activate"
+    ],
+    "llm_trans_commands": [
+        "bgp 100",
+        "peer 2001:db8:2::2 as-number 100",
+        "peer 2001:db8:2::2 connect-interface LoopBack0",
+        "peer 2001:db8:2::2 enable",
+        "peer 2001:db8:2::2 route-policy EXPORT-CONNECTED export",
+        "ipv6-family unicast",
+        "bgp 100",
+        "peer 2001:db8:2::2 as-number 100",
+        "undo ipv6-family unicast",
+        "undo peer 2001:db8:2::2 enable",
+        "undo peer 2001:db8:2::2 enable",
+        "undo peer 2001:db8:2::2 enable",
+        "undo peer 2001:db8:2::2 enable",
+        "undo ipv6-family unicast synchronization",
+        "undo peer 2001:db8:2::2 enable",
+        "undo ipv6-family unicast redistribute connected",
+        "peer 2001:db8:2::2 enable",
+        "ipv6-family unicast"
+    ],
+    "source_commands": [
         "set system host-name CE2",
         "peer-as 100",
+        "set protocols bgp group external",
+        "family inet6 unicast",
         "term 1 from protocol direct",
+        "set policy-options policy-statement EXPORT-CONNECTED",
+        "local-address 2001:db8:9::1",
         "type external",
         "neighbor 2001:db8:2::2",
-        "family inet6 unicast redistribute connected",
-        "neighbor 2001:db8:2::2 activate",
         "delete set protocols bgp group external",
-        "family inet6 unicast",
-        "export EXPORT-CONNECTED",
-        "set protocols bgp group external",
-        "local-address 2001:db8:9::1"
+        "family inet6 unicast no synchronization",
+        "family inet6 unicast redistribute connected",
+        "term 1 then accept",
+        "neighbor 2001:db8:2::2 activate",
+        "local-address 30.30.30.30",
+        "export EXPORT-CONNECTED"
     ],
-    "llm_origin_response": []
+    "llm_origin_response": [
+        ""
+    ]
 }

@@ -1,13 +1,14 @@
 hostname PE1
 mpls ldp router-id 1.1.1.1
+mpls ldp router-id Loopback0 force
+mpls ldp router-id 1.1.1.1 force
 ip cef
 interface GigabitEthernet2/0/0
  mpls ip
- mpls rsvp-te
-mpls traffic-eng pcc
- capability segment-routing
+ mpls traffic-eng
+track 1 ip sla 1 reachability
+ segment-routing
  pce server ipv4 10.2.1.2
- segment-routing mpls
 router isis 1
  is-type level-2
  metric-style wide
@@ -17,12 +18,12 @@ router isis 1
  mpls traffic-eng level-2
  segment-routing mpls
 interface GigabitEthernet1/0/0
+ no shutdown
  ip address 10.1.2.1 255.255.255.0
  isis network point-to-point
  mpls ip
- mpls rsvp-te
-interface GigabitEthernet1/0/1
- no shutdown
+ mpls traffic-eng
+end
 interface LoopBack0
  ip address 1.1.1.1 255.255.255.255
  isis network point-to-point
@@ -33,4 +34,3 @@ interface Tunnel1
  tunnel mpls traffic-eng signalling segment-routing
  tunnel mpls traffic-eng 1
  mpls traffic-eng pce delegation
-end

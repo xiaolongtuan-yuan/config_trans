@@ -1,60 +1,48 @@
 {
-    "command_accuracy": 0.35714285714285715,
+    "command_accuracy": 0.7857142857142857,
     "missed_commands": [
-        "router bgp 100",
-        "neighbor 10.20.1.2 remote-as 100",
-        "address-family ipv4 unicast",
         "synchronization",
-        "neighbor 10.20.1.2 activate",
-        "exit-address-family",
-        "router ospf 1",
-        "network 10.20.1.0 0.0.0.255 area 0",
-        "end",
-        "router bgp 100",
-        "neighbor 10.20.1.2 remote-as 100",
-        "address-family ipv4 unicast",
-        "synchronization",
-        "neighbor 10.20.1.2 activate",
-        "exit-address-family",
-        "router ospf 1",
-        "network 10.20.1.0 0.0.0.255 area 0",
-        "end"
+        "redistribute connected",
+        "network 10.20.1.0 0.0.0.255 area 0"
     ],
-    "grammatical_accuracy": 0.42857142857142855,
+    "grammatical_accuracy": 0.7857142857142857,
     "missed_templates": [
-        "router bgp [parameter1]",
-        "neighbor [parameter1] remote-as [parameter2]",
-        "address-family [parameter1] [parameter2]",
         "synchronization",
-        "neighbor [parameter1] activate",
-        "exit-address-family",
-        "router ospf [parameter1]",
-        "end"
+        "redistribute [parameter1]",
+        "network [parameter1] [parameter2] area [parameter3]"
     ],
-    "llm_command_accuracy": 0.0,
-    "llm_command_ratio": 0.18181818181818182,
+    "llm_command_accuracy": 0.35714285714285715,
+    "llm_command_ratio": 0.3103448275862069,
     "command_for_llm": [
-        "term 1 then accept"
+        "set policy-options policy-statement IMPORT-CONNECTED",
+        "term 1 from protocol direct"
     ],
     "llm_trans_commands": [
+        "router bgp 100",
+        "neighbor 10.20.1.2 remote-as 100",
+        "neighbor 10.20.1.2 update-source ge-1/0/0",
+        "neighbor 10.20.1.2 activate",
+        "address-family ipv4 unicast",
+        "exit-address-family",
+        "router bgp 100",
         "route-map IMPORT-CONNECTED permit 10",
-        "match interface"
+        "match protocol connected"
     ],
     "source_commands": [
-        "set protocols ospf area 0.0.0.0",
         "peer-as 100",
+        "unit 0 family inet address 10.20.1.1/24",
+        "set interfaces ge-1/0/0",
+        "family inet unicast",
+        "set policy-options policy-statement IMPORT-CONNECTED",
         "term 1 from protocol direct",
         "type internal",
-        "unit 0 family inet address 10.20.1.1/24",
-        "family inet unicast",
         "interface ge-1/0/0.0",
+        "neighbor 10.20.1.2",
         "import IMPORT-CONNECTED",
-        "set interfaces ge-1/0/0",
-        "set policy-options policy-statement IMPORT-CONNECTED",
         "set system host-name DeviceC",
         "term 1 then accept",
-        "set protocols bgp group internal",
-        "neighbor 10.20.1.2"
+        "set protocols ospf area 0.0.0.0",
+        "set protocols bgp group internal"
     ],
     "llm_origin_response": [
         ""

@@ -3,10 +3,12 @@ ipv4-family vpn-instance vpn1
  import-route 1:1
 evpn vpn-instance vpn1 100:2
  route-distinguisher 100:2
-bgp 600
+bgp ipv4
  ipv4-family unicast
 evpn vpn-instance vpn1 ipv4
  vpn-target 1:1 export-extcommunity
+bgp 600
+ ipv4-family unicast
 mpls ldp router-id LoopBack1
 mpls lsr-id 3.3.3.9
 mpls
@@ -16,9 +18,10 @@ interface GigabitEthernet1/0/0
  undo shutdown
  ip address 10.10.1.1 255.255.255.0
  mpls
+return
 interface GigabitEthernet2/0/0
  undo shutdown
- ip vpn-instance vpn1
+ vrrp vrid 1 virtual-ip none
  ip address 12.12.12.1 255.255.255.0
 interface Loopback1
 interface LoopBack1
@@ -33,17 +36,15 @@ bgp 100
   peer 12.12.12.2 next-hop-local
  peer 1.1.1.9 connect-interface LoopBack1
  ipv4-family vpnv4
- l2vpn-ad-family
-  peer 1.1.1.9 send-community extended
+  peer 1.1.1.9 advertise-ext-community
  ipv4-family vpn1
  ipv6-family vpn-instance vpn1
  peer 12.12.12.2 as-number 200
  peer 12.12.12.2 enable
 ospf 1
- ospf 1 silent-interface all
  undo silent-interface GigabitEthernet1/0/0
 ospf 1 router-id 2.2.2.9
  area 0
   network 2.2.2.9 0.0.0.0
   network 10.10.1.0 0.0.0.255
-return
+ silent-interface all

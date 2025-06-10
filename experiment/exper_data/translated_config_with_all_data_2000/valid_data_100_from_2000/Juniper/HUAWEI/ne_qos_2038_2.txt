@@ -2,20 +2,25 @@ sysname DeviceC
 interface GigabitEthernet1/0/0
  undo shutdown
  ip address 10.20.1.1 255.255.255.0
-user-group internal
-bgp 600
- import-route internal
- network 10.20.1.0 0.0.0.255
- ipv6-family unicast
- ipv4-family unicast
-  peer 10.3.3.3 route-policy IMPORT-CONNECTED import
- import-route direct
- peer 10.1.1.2 enable
+return
 bgp 100
- confederation peer-as 100 none
-traffic-policy 1 inbound
-traffic policy IMPORT-CONNECTED
+ peer 10.20.1.2 as-number 100
+ ipv4-family unicast
+ peer 10.20.1.2 connect-interface GigabitEthernet1/0/0
+peer 10.20.1.2 as-number 100
+peer 10.20.1.2 connect-interface LoopBack0
+peer 10.20.1.2 enable
+peer 10.20.1.2 route-policy IMPORT-CONNECTED import
+ ipv4-family unicast
+bgp 600
+ ipv4-family unicast
+  peer 10.20.1.2 next-hop-local
+  import-route direct
+ peer 10.1.1.2 enable
+peer 10.20.1.2 connect-interface GigabitEthernet1/0/0
+traffic policy 1
 area 0.0.0.0
-ospf 1 router-id 0.0.0.0
+ospf 0.0.0.0 router-id ge-1/0/0.0
+ undo shutdown
  area 0.0.0.0
-  network 10.20.1.0 0.0.0.255
+  network 0.0.0.0 ge-1/0/0.0

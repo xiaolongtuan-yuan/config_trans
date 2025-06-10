@@ -1,17 +1,17 @@
 hostname CE1
 interface GigabitEthernet1/0/1.1
-interface {'name': 'interface name', 'type': 'string', 'explanation': 'Interface name'}.{'name': 'subinterface number', 'type': 'integer', 'explanation': 'subinterface number'}
  no shutdown
-interface GigabitEthernet1/0/2.1
  ip address 192.168.1.2 255.255.255.0
- ip address 172.16.1.2 255.255.255.0
+end
 router bgp 65410
  neighbor 172.16.1.1 remote-as 100
  address-family ipv4 unicast
  no synchronization
- bgp router-id 4.4.4.4
- neighbor 192.168.1.1 remote-as 65410
- neighbor 172.16.1.1 remote-as 65410
-neighbor 172.16.1.1 remote-as 100
-interface {'name': 'interface name', 'type': 'string', 'explanation': 'Interface name', 'example': 'GigabitEthernet1/0/2'}.{'name': 'subinterface number', 'type': 'integer', 'explanation': 'subinterface number', 'example': '1'}
+ address-family ipv4 vrf vpn1
+  redistribute connected
+ neighbor 192.168.1.1 activate
+ exit-address-family
+ neighbor 172.16.1.1 activate
+interface GigabitEthernet1/0/2.1
  no shutdown
+ ip address 172.16.1.2 255.255.255.0

@@ -1,9 +1,13 @@
 sysname Server1
-traffic classifier exp-classifier operator exp
-traffic classifier exp-classifier
+return
+ mpls ccc out-interface GigabitEthernet1/0/0
+if precedence 60 then
+behavior best-effort
+ traffic classifier exp-classifier operator or
 traffic classifier exp-classifier operator or
+ traffic classifier exp-classifier operator or
+  if-match mpls-exp 60
 interface GigabitEthernet1/0/0
  undo shutdown
  ip address 192.168.1.1 255.255.255.0
- ipv6 address 2001::DB8/64 eui-64
  ip address 1.1.1.1 255.255.255.255

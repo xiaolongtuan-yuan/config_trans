@@ -1,11 +1,8 @@
 {
-    "command_accuracy": 0.29411764705882354,
+    "command_accuracy": 0.47058823529411764,
     "missed_commands": [
         "set interfaces lo0 unit 0 family inet address 1.1.1.9/32",
         "set protocols ospf area 0.0.0.0 interface ge-2/0/0.0",
-        "set protocols ospf area 0.0.0.0 interface lo0.0 passive",
-        "set protocols mpls interface ge-1/0/0.0",
-        "set protocols mpls interface ge-2/0/0.0",
         "set protocols ldp interface ge-1/0/0.0",
         "set protocols ldp interface ge-2/0/0.0",
         "set protocols ldp transport-address 1.1.1.9",
@@ -14,10 +11,8 @@
         "set protocols l2circuit neighbor 3.3.3.9 encapsulation-type ethernet",
         "set protocols l2circuit neighbor 3.3.3.9 control-word"
     ],
-    "grammatical_accuracy": 0.4117647058823529,
+    "grammatical_accuracy": 0.5882352941176471,
     "missed_templates": [
-        "set protocols ospf area [parameter1] interface [parameter2] passive",
-        "set protocols mpls interface [parameter1]",
         "set protocols ldp interface [parameter1]",
         "set protocols ldp transport-address [parameter1]",
         "set protocols l2circuit neighbor [parameter1] interface [parameter2]",
@@ -30,22 +25,22 @@
     "command_for_llm": [],
     "llm_trans_commands": [],
     "source_commands": [
-        "interface GigabitEthernet2/0/0",
-        "network 1.1.1.9 0.0.0.0 area 0",
-        "router bgp 100",
-        "neighbor 3.3.3.9 remote-as 100",
-        "no shutdown",
+        "ip cef",
+        "ip address 1.1.1.9 255.255.255.255",
         "ip address 10.1.1.1 255.255.255.0",
         "neighbor 3.3.3.9 update-source Loopback0",
-        "ip cef",
-        "hostname U-PE1",
-        "ip address 1.1.1.9 255.255.255.255",
-        "router ospf 1",
         "interface GigabitEthernet1/0/0",
+        "hostname U-PE1",
+        "network 10.1.1.0 0.0.0.255 area 0",
+        "neighbor 3.3.3.9 remote-as 100",
+        "interface Loopback0",
+        "router bgp 100",
+        "interface GigabitEthernet2/0/0",
         "mpls ldp router-id Loopback0",
         "mpls ip",
-        "network 10.1.1.0 0.0.0.255 area 0",
-        "interface Loopback0"
+        "router ospf 1",
+        "no shutdown",
+        "network 1.1.1.9 0.0.0.0 area 0"
     ],
     "llm_origin_response": []
 }

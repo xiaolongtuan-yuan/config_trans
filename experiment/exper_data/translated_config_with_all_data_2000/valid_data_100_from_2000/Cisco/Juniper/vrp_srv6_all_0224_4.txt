@@ -1,23 +1,25 @@
 set system host-name Tail
+set protocols vrrp track interface VPNA
 set protocols vrrp track interface ge-0/0/1
-set protocols bgp local-as 65410 set protocols isis address-family ipv6-unicast multi-topology
-set protocols vrrp track interface ge-111:1
-set routing-options rib inet6.0 static route ::/0 discard
-set protocols router-advertisement interface all
-set policy-options prefix-list AS1 2001:DB8:15::/64
+set protocols bgp local-as 65410
+set protocols vrrp track interface ge-0/0/0
+set services 6rd ipv6-prefix 2001:DB8:15::/64
+set services 6rd ipv4-prefix-length 5
 set services 6rd ipv6-prefix 2001:db8:15::/64
 set services 6rd ipv6-prefix 2001:DB8:15::/96
-set protocols isis interface ge-1/0/0.0 level 1 metric wide
+set protocols isis interface ge-1/0/0.0 level wide metric 1
+set protocols isis interface ge-1/0/0.0 point-to-point
 set interfaces ge-1/0/1 unit 0 disable
 set interfaces ge-1/0/1 disable
 set interfaces ge-1/0/1 ether-options no-auto-negotiation
-set interfaces ge-1/0/1 set interfaces ge-1/0/1 unit 0 family inet6
-set interfaces ge-1/0/1 set interfaces ge-1/0/1 unit 0 family inet6 address 2001:db8:4::2/96
-set interfaces ge-1/0/1 set protocols isis interface GigabitEthernet1/0/1
-set interfaces ge-1/0/1 unit 2 disable
-set interfaces ge-1/0/1 unit 0 family inet address none/none vrrp-group none virtual-address VPNA
+set interfaces ge-1/0/1 unit 0 tunnel ipv6-prefix 2001:db8::/32
+set interfaces ge-1/0/1 unit 0 tunnel ipv6-prefix-length 96
+set interfaces ge-1/0/1 unit 0 tunnel ipv6-prefix isis
+set interfaces ge-1/0/1 unit 0 family inet address none/none vrrp-group 1 virtual-address none
 set interfaces ge-1/0/1 unit 0 family inet address 10.5.1.2/30
-set interfaces lo0.1 unit 1 disable
+set interfaces ge-1/0/2 unit ge-1/0/2 disable
+set interfaces ge-1/0/2 disable
+set interfaces lo0.1 unit 0 disable
 set interfaces lo0.1 disable
-set interfaces lo0.1 set interfaces lo0 unit 0 family inet6 address 5::5/128
+set interfaces lo0.1 unit 0 tunnel ipv6-prefix-length 128
 set protocols isis export REDIST-CONNECTED
