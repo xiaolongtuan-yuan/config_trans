@@ -93,7 +93,7 @@ def collect_test_dataset(range_num):
 
 if __name__ == "__main__":
     # single_syntax()
-    range_num = '400'
+    range_num = '2000'
     batch_syntax(range_num)
     # range_num = '1200'
     # range_num = '2000'
