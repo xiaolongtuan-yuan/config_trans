@@ -166,7 +166,7 @@ if __name__ == '__main__':
     juniper_model = load_json_file('../dataset_multi_vendor_config/config_model/scale388en/Juniper.json')
     translation_llm = LLM_Model('aliyun_deepseek-v3', endpoint_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
 
-    for condif_dir in ['2000']:
+    for condif_dir in ['1200', '2800']:
         source_dir = f'../experiment/test_dataset/test_data_{condif_dir}/command_tree/Juniper'
         save_dir = f'../experiment/test_dataset/test_data_{condif_dir}/command_tree/Juniper_subdivided'
         os.makedirs(save_dir, exist_ok=True)

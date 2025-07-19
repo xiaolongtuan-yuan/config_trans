@@ -76,7 +76,7 @@ def tree_match(parent_command, child_command, config_model):
     for template, details in config_model.items():
         # 使用正则表达式匹配模板
         # pattern = re.sub(r'\[parameter\d+\]', r'[\\w\\s]+', template)
-        pattern = re.sub(r'\[parameter\d+\]', r'(\\S+)', template)
+        pattern = re.sub(r"\[[^\]]+\]", r'(\\S+)', template)
         pattern = f'^{pattern}$'
         if re.match(pattern, parent_command):
             if isinstance(details, dict) and 'template' in details:

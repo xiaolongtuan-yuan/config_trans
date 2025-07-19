@@ -48,7 +48,7 @@ def copy_tree_skip_existing(src_dir, dst_dir):
 
 # 使用示例
 if __name__ == "__main__":
-    source_dir = "../experiment/test_dataset/test_data_2000"
+    source_dir = "../experiment/test_dataset/test_data_2800"
     target_dir = "../experiment/test_dataset/all_data"
 
     print(f"开始复制 {source_dir} 到 {target_dir}")

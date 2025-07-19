@@ -231,7 +231,7 @@ def save_json_file(data, file_path):
 
 def main():
     project_root = Path(__file__).parent.parent
-    name = 'all_data_2000'
+    name = 'all_data_2800'
     local_EMmodel_path = str(project_root / 'EmbeddingModel/MiniLM-L6-v2')
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path)
 

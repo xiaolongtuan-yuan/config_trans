@@ -96,8 +96,13 @@ def flatten_json_tree(json_tree):
         for k, v in d.items():
             if isinstance(v, dict):
                 # 只保留属性字段
-                flat[k] = {attr: v[attr] for attr in ["template", "command", "explanation", "parameters"] if attr in v}
-                _flatten(v)
+                try:
+                    flat[k] = {attr: v[attr] for attr in ["template", "command", "explanation", "parameters"]}
+                    _flatten(v)
+                except Exception as e:
+                    print(e)
+                    _flatten(v)
+
     _flatten(json_tree)
     return flat
 
@@ -142,7 +147,7 @@ def merge_tree_with_flat(txt_tree, flat_json, filename):
 def process_vendor(vendor):
     tasks = []
     # for condif_dir in ['400', '1200', '2000', '2800']:
-    for condif_dir in ['2000']:
+    for condif_dir in ['1200', '2800']:
         txt_dir = f"../experiment/test_dataset/test_data_{condif_dir}/text_config/{vendor}"
         json_dir = f"../experiment/test_dataset/test_data_{condif_dir}/command_tree/{vendor}"
         save_dir = f"../experiment/test_dataset/test_data_{condif_dir}/command_tree/{vendor}"

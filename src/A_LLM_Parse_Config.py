@@ -70,7 +70,9 @@ def prompt_massage_for_vendors(vendor):
 def parse_config(client, model_name, prompt, messages, config_chunks:[]):
     config_parsed = {}
     for config_chunk in config_chunks:
-        formatted_prompt = prompt.replace("{配置命令}", config_chunk)
+        formatted_prompt = prompt.replace("{Config command}", config_chunk)
+        if len(prompt) == len(formatted_prompt):
+            raise ValueError("Prompt template not replaced")
         messages[1]["content"] = formatted_prompt
 
         max_retries = 2

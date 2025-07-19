@@ -210,7 +210,7 @@ if __name__ == "__main__":
     # 不同规模
     vendors = ['Cisco', "HUAWEI", "Juniper"]
     train_dataset_dir = 'experiment/test_dataset/all_data'
-    name = 'all_data_2000'
+    name = 'all_data_2800'
     project_root = Path(__file__).parent.parent
     vendor_model_dir = str(project_root / f'dataset_multi_vendor_config/config_model/{name}')
     os.makedirs(vendor_model_dir, exist_ok=True)

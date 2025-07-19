@@ -5,6 +5,7 @@
 @File ：juniper_translate.py
 """
 import json
+import os
 import re
 import pandas as pd
 from langchain_community.embeddings import HuggingFaceEmbeddings
@@ -13,7 +14,7 @@ from tqdm import tqdm
 from data_process.rearrange_command_tree import LLM_Model
 from data_process.subdivision_juniper_json import split_parameters
 from huawei_test.juniper_trans import view_to_command
-from src.F_new_device_configtrans import mapping_library_load, config_matchers_load, Translation_Model, \
+from src.F_device_configtrans2 import mapping_library_load, config_matchers_load, Translation_Model, \
     Config_Translater, config_model_load
 
 def find_template(command, config_model, subdivide_model):
@@ -94,22 +95,36 @@ def parse_config_file(config_str, config_model, subdivide_model):
 if __name__ == '__main__':
     llm_model = LLM_Model('deepseek-chat')
     source_vendor = "Juniper"
+    name = 'all_data_2800'
     local_EMmodel_path = '../EmbeddingModel/MiniLM-L6-v2'
     embedding_model = HuggingFaceEmbeddings(model_name=local_EMmodel_path,
                                             model_kwargs={"device": 'cuda:0'})
     vendors = ["HUAWEI", "Juniper"]
     manual_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
-    templates_path = f'../dataset_multi_vendor_config/config_command_node/verified_data/{{}}.json'
-    mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}.json'
-    module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}_module_match.json'
-    config_model_dir = f'../dataset_multi_vendor_config/config_model/verified_data/{{}}.json'
+    # templates_path = f'../dataset_multi_vendor_config/config_command_node/verified_data/{{}}.json'
+    templates_path = f'../dataset_multi_vendor_config/config_command_node/{name}/{{}}.json'
+    # mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}.json'
+    mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}.json'
 
-    mapping_libraries = mapping_library_load(mapping_library_path, vendors, manual_mapping_path)
+    error_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{{}}_{{}}.json'
+    llm_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/llm_mapping/{{}}_{{}}.json'
+
+    # module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}_module_match.json'
+    module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}_module_match.json'
+    # config_model_dir = f'../dataset_multi_vendor_config/config_model/verified_data/{{}}.json'
+    config_model_dir = f'../dataset_multi_vendor_config/config_model/{name}/{{}}.json'
+
+    mapping_libraries = mapping_library_load(mapping_library_path, vendors, manual_mapping_path,
+                                             error_mapping_path, llm_mapping_path)
     config_matchers = config_matchers_load(templates_path, config_model_dir, module_match_path, vendors)
 
-    translation_llm = Translation_Model('aliyun_deepseek-r1',
-                                        config_model_dir=config_model_dir,
-                                        vendors=vendors)
+    # translation_llm = Translation_Model('aliyun_deepseek-r1',
+    #                                     config_model_dir=config_model_dir,
+    #                                     vendors=vendors)
+    # translation_llm = Translation_Model('aliyun_deepseek-v3', config_model_dir=config_model_dir,
+    #                                     vendors=vendors)
+    translation_llm = Translation_Model('deepseek-chat', config_model_dir, vendors)
+
 
     config_models = config_model_load(config_model_dir, vendors)
 
@@ -117,33 +132,43 @@ if __name__ == '__main__':
                                           translation_llm, embedding_model, config_models)
 
     # 读取xlsx文件
-    df = pd.read_excel('JUNIPER_validation_set(no_answer)v2.xlsx')
-
+    df = pd.read_excel('test2/JUNIPER_validation_set(no_answer)v3.xlsx')
+    df['translated'] = 'NULL'
+    df['trans_type'] = 'NULL'
     # 遍历每一行数据
     for index, row in tqdm(df.iterrows(), total=len(df)):
         # 这里可以对每一行数据进行处理
         # 例如：打印每一行的数据
         origin_config = str(row['Origin'])
         command_config = view_to_command(origin_config)
-        df.at[index, 'command_config'] = command_config
+        # df.at[index, 'command_config'] = command_config
+        if not origin_config.strip():
+            df.at[index, 'translated'] = 'NULL'
 
-        if origin_config.strip():
+        elif origin_config.strip() and origin_config.strip() != 'nan':
             source_config_json, tasks = parse_config_file(config_str=command_config,
                                                           config_model=config_models['conbined_Juniper'], subdivide_model=config_models['Juniper'])
 
             for future, template in tasks:  # 处理LLM解析的任务
                 result = future.result()
-
                 template.update(result)
 
-            trans_res_dict = config_translater.translation(source_config_json, source_vendor, 'HUAWEI',
-                                                           source_total_config=command_config, add_parents=False)
-            df.at[index, 'config_json'] = json.dumps(source_config_json, ensure_ascii=False, indent=4)
-            df.at[index, 'translated'] = trans_res_dict['trans_res']
-            print(trans_res_dict['trans_res'])
+            try:
+                trans_res_dict = config_translater.translation(source_config_json, source_vendor, 'HUAWEI',
+                                                           source_total_config=command_config, add_parents=False, need_end=False)
+            except Exception as e:
+                print(f"Error translating {index}: {str(e)}")
+                trans_res_dict = {'trans_res': 'NULL', 'trans_mapping_info': 'NULL'}
+            if not trans_res_dict['trans_res']:
+                df.at[index, 'translated'] = 'NULL'
+            else:
+                if len(trans_res_dict['command_for_llm']) > 0:
+                    df.at[index, 'trans_type'] = 'llm'
+                else:
+                    df.at[index, 'trans_type'] = 'rule'
+                df.at[index, 'translated'] = trans_res_dict['trans_res']
+                # print(trans_res_dict['trans_res'])
         else:
-            df.at[index, 'config_json'] = ''
-            df.at[index, 'translated'] = ''
-
-
-    df.to_excel('Juniper_translated.xlsx', index=False)
+            df.at[index, 'translated'] = 'NULL'
+    os.makedirs('test2/answer', exist_ok=True)
+    df.to_excel('test2/answer/JUNIPER_validation_set(translated)v3.xlsx', index=False)

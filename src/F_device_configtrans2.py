@@ -154,7 +154,7 @@ class Config_Translater:
 
     # 进行配置翻译
     def translation(self, json_configuration, vendor, target_vendor, tau=0.65, source_total_config=None,
-                    add_parents=True):
+                    add_parents=True, need_end=False):
         config_match = []  # 保存翻译（匹配）集合
         # 给juniper配置模型加个保险
         if vendor == 'Juniper':
@@ -163,10 +163,13 @@ class Config_Translater:
         commands_feature = build_command_node(commands_feature, json_configuration)
 
         # 阶段一：规则映射rule_mapping, rest_commands_feature是在映射库中不存在的配置命令
-        rest_commands_feature, config_match = self.rule_mapping(commands_feature,
-                                                                config_match, vendor, target_vendor)
+        rest_commands_feature, llm_mapping_feature, config_match = self.rule_mapping(commands_feature,
+                                                                                     config_match, vendor,
+                                                                                     target_vendor, need_end=need_end)
 
         # 阶段二：模糊映射fuzzy_mapping-->针对规则映射库未覆盖的配置命令
+        config_match = self.llm_library_mapping(llm_mapping_feature, config_match, vendor, target_vendor)
+
         config_match = self.fuzzy_mapping(rest_commands_feature, config_match, vendor, target_vendor, tau=tau,
                                           source_total_config=source_total_config)
 
@@ -196,7 +199,10 @@ class Config_Translater:
             'trans_templates': trans_res_dict['trans_templates'],
             'map_rule_freq': map_rule_freq,
             'llm_transd_commands': trans_res_dict['llm_transd_commands'],
+            'heuristic_transd_commands': trans_res_dict['heuristic_transd_commands'],
+            'all_transd_commands': trans_res_dict['all_transd_commands'],
             'command_for_llm': trans_res_dict['command_for_llm'],
+            'command_for_heuristic': trans_res_dict['command_for_heuristic'],
             'llm_origin_response': trans_res_dict['llm_origin_response'],
             'source_commands': trans_res_dict['source_commands'],
         }
@@ -273,29 +279,34 @@ class Config_Translater:
             return statistic_data, map_rule_freq
 
     # 阶段一借助模板映射库实现规则映射
-    def rule_mapping(self, commands_feature, config_match, vendor, target_vendor):
+    def rule_mapping(self, commands_feature, config_match, vendor, target_vendor, need_end=False):
         rest_commands_feature = []  # 保存不包含在规则映射库中的配置命令
+        llm_mapping_feature = []
         specific_mapping_library = self.mapping_libraries['{}_{}'.format(vendor, target_vendor)]
+        llm_mapping_library = self.mapping_libraries['llm_mapping']['{}_{}'.format(vendor, target_vendor)]
         # 查找每一条配置在规则库里的映射关系
         for key in commands_feature.keys():
             for feature in commands_feature[key]:
                 # 不在配置映射库中
                 template = feature.semantic_features['template']
+                command = feature.semantic_features['command']
                 if template not in specific_mapping_library.keys():
-                    # print(template)
-                    rest_commands_feature.append(feature)
+                    if command not in llm_mapping_library.keys():
+                        rest_commands_feature.append(feature)
+                    else:
+                        llm_mapping_feature.append(feature)
                 # 在映射库中的配置命令
                 else:
                     feature.set_match(specific_mapping_library[template])
                 config_match.append(feature)
-        if target_vendor == 'Cisco':
+        if target_vendor == 'Cisco' and need_end:
             config_match[-1].match.append({
                 "para_map": [],
                 "trans_command": "end",
                 "parent_command": [],
                 "root": "end"
             })
-        elif target_vendor == 'HUAWEI':
+        elif target_vendor == 'HUAWEI' and need_end:
             config_match[-1].match.append({
                 "para_map": [],
                 "trans_command": "return",
@@ -303,7 +314,106 @@ class Config_Translater:
                 "root": "return"
             })
 
-        return rest_commands_feature, config_match
+        return rest_commands_feature, llm_mapping_feature, config_match
+
+    def llm_library_mapping(self, llm_mapping_feature, config_match, vendor, target_vendor):
+        llm_mapping_library = self.mapping_libraries['llm_mapping']['{}_{}'.format(vendor, target_vendor)]
+        for feature in llm_mapping_feature:
+            command = feature.semantic_features['command']
+            target_command_list = llm_mapping_library[command]
+            if feature.parent:  # 有父节点
+                if feature.parent.match:
+                    target_parent_root = feature.parent.match[0]['root']
+                    target_parent_template = feature.parent.match[0]['trans_command']
+                    parent_command_node = self.config_matchers[target_vendor].templates[target_parent_root][
+                        target_parent_template]
+                    parent_command = feature.parent.match[0]['parent_command'] + [target_parent_template]
+
+                    result_node = {
+                        "structural_features": {
+                            "context_topology": {
+                                "parent_command": parent_command
+                            },
+                            "param_signature": {
+                                "count": 0,
+                                "order": []
+                            },
+                            "command_depth": parent_command_node['structural_features'][
+                                                 'command_depth'] + 1,
+                        },
+                    }
+                    match = []
+                    for target_command in target_command_list:
+                        self.config_matchers[target_vendor].templates[target_parent_root][
+                            target_command] = result_node.copy()
+                        match.append({
+                            "para_map": [],
+                            "trans_command": target_command,
+                            "parent_command": parent_command,
+                            "root": target_parent_root,
+                            "source": "llm",
+                            "trans_template": target_command
+                        })
+                else:
+                    result_node = {
+                        "structural_features": {
+                            "context_topology": {
+                                "parent_command": []
+                            },
+                            "param_signature": {
+                                "count": 0,
+                                "order": []
+                            },
+                            "command_depth": 0,
+                        },
+                    }
+                    match = []
+                    for target_command in target_command_list:
+                        if target_command in self.config_matchers[target_vendor].templates:
+                            self.config_matchers[target_vendor].templates[target_command][
+                                target_command] = result_node.copy()
+                        else:
+                            self.config_matchers[target_vendor].templates[target_command] = {
+                                target_command: result_node.copy()}
+                        match.append({
+                            "para_map": [],
+                            "trans_command": target_command,
+                            "parent_command": [],
+                            "root": target_command,
+                            "source": "llm",
+                            "trans_template": target_command
+                        })
+            else:
+                result_node = {
+                    "structural_features": {
+                        "context_topology": {
+                            "parent_command": []
+                        },
+                        "param_signature": {
+                            "count": 0,
+                            "order": []
+                        },
+                        "command_depth": 0,
+                    },
+                }
+                match = []
+                for target_command in target_command_list:
+                    if target_command in self.config_matchers[target_vendor].templates:
+                        self.config_matchers[target_vendor].templates[target_command][
+                            target_command] = result_node.copy()
+                    else:
+                        self.config_matchers[target_vendor].templates[target_command] = {
+                            target_command: result_node.copy()}
+                    match.append({
+                        "para_map": [],
+                        "trans_command": target_command,
+                        "parent_command": [],
+                        "root": target_command,
+                        "source": "llm",
+                        "trans_template": target_command
+                    })
+            feature.set_match(match)
+        return config_match
 
     # 阶段二借助目标供应商配置模板基于语义相似度实现模糊映射
     def fuzzy_mapping(self, rest_commands_feature, config_match, vendor, target_vendor, tau=0.65,
@@ -466,7 +576,7 @@ class Config_Translater:
                 translated_command = para_match['trans_command']
                 root = para_match['root']
                 try:
-                    if 'source' in para_match:
+                    if 'source' in para_match and para_match['source'] == 'llm':
                         command_node = self.config_matchers[target_vendor].templates[root][
                             para_match['trans_template']]  # 至少这这前面的不能随便改
                     else:
@@ -499,7 +609,7 @@ class Config_Translater:
                                                                                                      translated_command),
                                                                 'target_command': translated_command,
                                                                 'parent_node': parent_commands,
-                                                                'source': 'llm' if 'source' in para_match.keys() else 'rule',
+                                                                'source': para_match['source'] if 'source' in para_match.keys() else 'rule',
                                                                 'origin_response': para_match[
                                                                     'origin_response'] if 'origin_response' in para_match.keys() else ''
                                                                 }
@@ -523,7 +633,7 @@ class Config_Translater:
                                                                                                           translated_command),
                                                                      'target_command': translated_command,
                                                                      'parent_node': parent_commands,
-                                                                     'source': 'llm' if 'source' in para_match.keys() else 'rule',
+                                                                     'source': para_match['source'] if 'source' in para_match.keys() else 'rule',
                                                                      'origin_response': para_match[
                                                                          'origin_response'] if 'origin_response' in para_match.keys() else ''
                                                                      }
@@ -749,8 +859,11 @@ class Config_Translater:
         root = ConfigNode("system", "", self.get_next_node_id())
         stack = [(root, -1)]
         llm_transd_commands = []
+        heuristic_transd_commands = []
+        all_transd_commands = [] # 没去重
         source_commands = set()
         command_for_llm = set()
+        command_for_heuristic = set()
         llm_origin_response = set()
         # 遍历每一个需要翻译的配置命令
         for trans_context in target_config:
@@ -765,11 +878,16 @@ class Config_Translater:
                     source = command_info['source']
                     if source == 'llm':
                         temp = self.find_command_template(target_vendor, line)
-                        llm_transd_commands.append([line, temp])  # 0: command , 1: template
+                        llm_transd_commands.append([line, temp, trans_context.command])  # 0: command , 1: template
                         command_for_llm.add(trans_context.command)
                         llm_origin_response.add(command_info['origin_response'])
+                    elif source == 'heuristic':
+                        command_for_heuristic.add(trans_context.command)
+                        heuristic_transd_commands.append([line, target_temp, trans_context.command])
+                        temp = target_temp
                     else:
                         temp = target_temp
+                    all_transd_commands.append([line, temp, trans_context.command])
                     source_commands.add(trans_context.command)
                     # 使用 get_next_node_id 方法获取 node_id
                     node = ConfigNode(line, temp, node_id, source)
@@ -804,7 +922,10 @@ class Config_Translater:
             'trans_mapping_info': mapping_info,
             'trans_templates': trans_templates,
             'command_for_llm': list(command_for_llm),
+            'command_for_heuristic': list(command_for_heuristic),
             'llm_transd_commands': llm_transd_commands,
+            'heuristic_transd_commands': heuristic_transd_commands,
+            'all_transd_commands': all_transd_commands,
             'llm_origin_response': list(llm_origin_response),
             'source_commands': list(source_commands)
         }
@@ -1065,6 +1186,16 @@ class ConfigNode:
         dfs(self)
         return tags
 
+    def merge_child(self):
+        merged_child = {}
+        for i, child_i in enumerate(self.children):
+            child_i.merge_child()
+            if child_i.line not in merged_child:
+                merged_child[child_i.line] = child_i
+            else:
+                merged_child[child_i.line].merge(child_i)
+        self.children = list(merged_child.values())
+
 
 # 最后阶段使用大模型做配置映射，保留接口，后续补充
 class Translation_Model:
@@ -1095,33 +1226,6 @@ class Translation_Model:
                 config_models[vendor] = config_model
         return config_models
 
-    # def param_map_rewrite(self, vendor, src_command, target_vendor, target_temp_command):
-    #     prompt_file = project_root / 'resource/parameter_mapping_F_prompt.txt'
-    #     prompt = open(prompt_file, 'r', encoding='utf-8').read()
-    #     prompt = prompt.replace("{vendor}", vendor)
-    #     prompt = prompt.replace("{target_vendor}", target_vendor)
-    #     prompt = prompt.replace("{src_command}", src_command)
-    #     prompt = prompt.replace("{target_command}", target_temp_command)
-    #
-    #     messages = [
-    #         {"role": "user", "content": prompt}
-    #     ]
-    #     for i in range(3):
-    #         try:
-    #             response = self.llm_model.chat.completions.create(
-    #                 model=self.model_name,
-    #                 messages=messages,
-    #                 response_format={
-    #                     'type': 'json_object'
-    #                 }
-    #             )
-    #             json_response = response.choices[0].message.content
-    #             json_response = json.loads(json_response)
-    #             return json_response.get('target_command', '')
-    #         except Exception as e:
-    #             print(f"第 {i + 1} 次尝试失败，错误信息: {str(e)}")
-    #     return ''
-
     def find_command_template(self, vendor, command_template):
         # 在字典中递归寻找该命令
         def find_command(template_dict, target_command):
@@ -1145,12 +1249,6 @@ class Translation_Model:
         _, command_template_info = self.find_command_template(target_vendor, command_v['target_command'])
         if not command_template_info:
             raise ValueError(f"未找到命令模板: {command_v['target_command']}")
-
-        command_object = {
-            'para_match': command_v['para_match'],
-            'target_command': command_v['target_command'],
-            'para_num': len(command_template_info['parameters'])
-        }
 
         param_info = []
         for index, parameter in enumerate(command_template_info['parameters']):
@@ -1265,8 +1363,10 @@ def load_json_file(file_path):
 
 
 # 规则映射库加载
-def mapping_library_load(file_path, vendors, manual_mapping_path=None, error_mapping_path=None, topk=3):
+def mapping_library_load(file_path, vendors, manual_mapping_path=None, error_mapping_path=None, llm_mapping_path=None,
+                         topk=3):
     mapping_libraries = {}
+    mapping_libraries['llm_mapping'] = {}
     for vendor in vendors:
         for target_vendor in vendors:
             if vendor == target_vendor:
@@ -1286,6 +1386,9 @@ def mapping_library_load(file_path, vendors, manual_mapping_path=None, error_map
                         mapping_libraries[library_name][key] = value
                 else:
                     mapping_libraries[library_name].update(manual_mapping)
+            if llm_mapping_path:
+                mapping_libraries['llm_mapping'][library_name] = load_json_file(
+                    llm_mapping_path.format(vendor, target_vendor))
 
     return mapping_libraries
 

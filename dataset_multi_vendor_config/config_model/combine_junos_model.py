@@ -7,7 +7,7 @@
 """
 import json
 
-model_dir = 'all_data_2000'
+model_dir = 'all_data_2800'
 
 combine_model = {}
 # for scale in [40, 80, 120]:
@@ -26,11 +26,10 @@ for root, value in juniper_model.items():
                 'parameters': total_parameters
             }
             flag = False
-    if flag:
-        combine_model[root] = {
-            'template': root,
-            'parameters': root_parameter
-        }
+    combine_model[root] = {
+        'template': root,
+        'parameters': root_parameter
+    }
 
 with open(f'./{model_dir}/Juniper_combined.json', 'w', encoding='utf-8') as f:
     json.dump(combine_model, f, ensure_ascii=False, indent=4)

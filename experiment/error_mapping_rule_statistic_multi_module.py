@@ -23,16 +23,18 @@ def find_files(directory, extension):
 
 
 def main():
-    name = 'all_data_2000'
-    num = "valid_data_100_from_2000"
+    name = 'all_data_2800'
+    num = "valid_data_100_from_all"
     # num = "500"
     # scale = '500'
-    scale = '680'
+    scale = '2800'
+    filter_files = False
 
     vendors = ['HUAWEI', 'Juniper', 'Cisco']
     grammatical_accuracy = {}
     command_accuracy = {}
     llm_command_ratio = {}
+    useful_file_name = defaultdict(set)
     for vendor1 in vendors:
         for vendor2 in vendors:
             if vendor1 == vendor2:
@@ -50,8 +52,6 @@ def main():
             result_extension = '_evaluate.json'
             # 获取所有匹配的文件
             match_rule_files = find_files(folder_path.format(vendors[0], vendors[1]), map_rule_extension)
-            label_template_files = find_files(folder_path.format(vendors[0], vendors[1]), label_template_extension)
-            result_files = find_files(folder_path.format(vendors[0], vendors[1]), result_extension)
             for i in range(len(match_rule_files)):
                 matched_file = match_rule_files[i]
                 label_template_file = matched_file.replace(map_rule_extension, label_template_extension)
@@ -65,6 +65,12 @@ def main():
                 label_template_data = list(load_json_file(label_template_file))
                 # 读取结果文件
                 result_data = load_json_file(result_file)
+                command_accuracy_value = result_data["command_accuracy"]
+                if command_accuracy_value < 0.666:
+                    continue
+                else:
+                    useful_file_name[f'{vendor1}_{vendor2}'].add(matched_file.split('/')[-1].replace(map_rule_extension, ''))
+
                 grammatical_accuracy[f'{vendor1}_{vendor2}'].append(result_data["grammatical_accuracy"])
                 command_accuracy[f'{vendor1}_{vendor2}'].append(result_data["command_accuracy"])
                 llm_command_ratio[f'{vendor1}_{vendor2}'].append(result_data["llm_command_ratio"])
@@ -118,6 +124,18 @@ def main():
             with open(missing_template_path, mode='w', encoding='utf-8') as f:
                 json.dump(missing_template, f, ensure_ascii=False, indent=2)
             print(f"Missing template frequency saved to {missing_template_path}")
+
+    if filter_files:
+        final_useful_file_name = set()
+        if useful_file_name:
+            # 获取第一个集合作为初始交集
+            final_useful_file_name = next(iter(useful_file_name.values()))
+            # 遍历后续集合，计算交集
+            for k, v in useful_file_name.items():
+                final_useful_file_name.intersection_update(v)
+        print("Intersection of all useful file names:", len(final_useful_file_name))
+        with open(f'../syntactic_check/candidate_file_names/final_useful_file_name.json', mode='w', encoding='utf-8') as f:
+            json.dump(list(final_useful_file_name), f, ensure_ascii=False, indent=2)
 
     for key, value in grammatical_accuracy.items():
         print('task:', key, 'grammatical_accuracy_result:', np.mean(value))

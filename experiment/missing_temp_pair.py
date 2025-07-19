@@ -46,8 +46,8 @@ def query_main(missing_temp, vendor1, vendor2):
         return
 
 def missing_template_peer_statistic_main():
-    name = 'all_data_2000'
-    num = 'valid_data_100_from_2000'
+    name = 'all_data_2800'
+    num = 'valid_data_100_from_all'
     # num = 500
     vendors = ['HUAWEI', 'Juniper', 'Cisco']
     for vendor1 in vendors:
@@ -55,7 +55,7 @@ def missing_template_peer_statistic_main():
             if vendor1 == vendor2:
                 continue
             folder_path = f'./exper_data/translated_config_with_{name}/{num}/{vendor1}/{vendor2}/'
-            source_folder_path = f'./exper_data/translated_config_with_{name}/{num}//{vendor2}/{vendor1}/'
+            source_folder_path = f'./exper_data/translated_config_with_{name}/{num}/{vendor2}/{vendor1}/'
             # folder_path = f'./exper_data/translated_config_with_use_freq/400/{vendor1}/{vendor2}/'
             map_rule_extension = '_map_rules.json'
             label_template_extension = '_expected_temp.json'
@@ -66,22 +66,22 @@ def missing_template_peer_statistic_main():
             result_files = find_files(folder_path.format(vendor1, vendor2), result_extension)
 
             for file_name in result_files:
-                evaluate_data = load_json_file(file_name)
                 if file_name.startswith(folder_path) and file_name.endswith(result_extension):
                     config_file = file_name[len(folder_path):-len(result_extension)] + label_extension
                     template_file = file_name[len(folder_path):-len(result_extension)] + label_template_extension
                     rule_mapping_file = file_name[:-len(result_extension)] + map_rule_extension
                     command_tree_file = file_name[:-len(result_extension)] + command_tree_extension
 
-                # print(load_text_file(os.path.join(folder_path, config_file)))
-                template_list = load_json_file(os.path.join(folder_path, template_file))
-                # print('\n')
-                # print(load_text_file(os.path.join(source_folder_path, config_file)))
-                source_template_list = load_json_file(os.path.join(source_folder_path, template_file))
+                try:
+                    template_list = load_json_file(os.path.join(folder_path, template_file))
+                    source_template_list = load_json_file(os.path.join(source_folder_path, template_file))
 
-                # 读取匹配规则文件与命令树
-                match_rule_data = load_json_file(rule_mapping_file)
-                command_tree = load_json_file(command_tree_file)
+                    # 读取匹配规则文件与命令树
+                    match_rule_data = load_json_file(rule_mapping_file)
+                    command_tree = load_json_file(command_tree_file)
+                except Exception as e:
+                    print(f"Error loading files: {e}")
+                    continue
                 rest_template_list = copy.deepcopy(template_list)
                 rest_source_template_list = copy.deepcopy(source_template_list)
                 len_rest_list = len(rest_template_list)

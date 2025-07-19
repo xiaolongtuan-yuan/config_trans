@@ -125,6 +125,8 @@ def parse_config_file(config_str, vendor):
     return root, tasks
 
 def initialize_translation_service():
+    name = 'all_data_2800'
+
     # vendors = ["Cisco", "HUAWEI", "Juniper"]
     # templates_path = f'../dataset_multi_vendor_config/config_command_node/verified_data/{{}}.json'
     # config_model_dir = f'../dataset_multi_vendor_config/config_model/verified_data/{{}}.json'
@@ -133,18 +135,26 @@ def initialize_translation_service():
     # module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}_module_match.json'
     # mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/multi_module/{{}}_{{}}.json'
     vendors = ["Cisco", "HUAWEI", "Juniper"]
-    templates_path = f'../dataset_multi_vendor_config/config_command_node/all_data/{{}}.json'
-    config_model_dir = f'../dataset_multi_vendor_config/config_model/all_data/{{}}.json'
+    # templates_path = f'../dataset_multi_vendor_config/config_command_node/all_data/{{}}.json'
+    templates_path = f'../dataset_multi_vendor_config/config_command_node/{name}/{{}}.json'
+
+    # config_model_dir = f'../dataset_multi_vendor_config/config_model/all_data/{{}}.json'
+    config_model_dir = f'../dataset_multi_vendor_config/config_model/{name}/{{}}.json'
+
     manual_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/manual_mapping/{{}}_{{}}.json'
     error_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/error_mapping/{{}}_{{}}.json'
-    module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/all_data/{{}}_{{}}_module_match.json'
-    mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/all_data/{{}}_{{}}.json'
+    llm_mapping_path = f'../dataset_multi_vendor_config/mapping_template_library/llm_mapping/{{}}_{{}}.json'
 
+    # module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/all_data/{{}}_{{}}_module_match.json'
+    module_match_path = f'../dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}_module_match.json'
+
+    # mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/all_data/{{}}_{{}}.json'
+    mapping_library_path = f'../dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}.json'
 
     # 加载规则映射库
     print('Mapping library loading.')
     mapping_libraries = mapping_library_load(mapping_library_path, vendors, manual_mapping_path,
-                                             error_mapping_path)
+                                             error_mapping_path, llm_mapping_path)
     # 加载配置匹配器
     print('Config matchers loading.')
     config_matchers = config_matchers_load(templates_path, config_model_dir, module_match_path, vendors)
@@ -161,9 +171,10 @@ def initialize_translation_service():
 
     # 加载用于配置翻译的语言模型
     print('Translation model based on llm loading.')
-    translation_llm = Translation_Model('aliyun_deepseek-v3', config_model_dir=config_model_dir,
-                                        vendors=vendors,
-                                        endpoint_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
+    # translation_llm = Translation_Model('aliyun_deepseek-v3', config_model_dir=config_model_dir,
+    #                                     vendors=vendors,
+    #                                     endpoint_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
+    translation_llm = Translation_Model('deepseek-chat', config_model_dir, vendors)
 
     # 创建翻译器
     print('Config translater loading.')
@@ -177,7 +188,7 @@ config_translater, config_models = initialize_translation_service()
 
 def translate_config(json_config, vendor, target_vendor, config):
     # 执行翻译
-    trans_res_dict = config_translater.translation(json_config, vendor, target_vendor, tau=0.999, source_total_config=config)
+    trans_res_dict = config_translater.translation(json_config, vendor, target_vendor, tau=0.999, source_total_config=config, add_parents=True, need_end=False)
     return trans_res_dict['trans_res'], trans_res_dict['trans_mapping_info']
 
 
@@ -205,9 +216,11 @@ if __name__ == '__main__':
     vendor="Cisco"
     target_vendor="HUAWEI"
     config='''
-router ospf 2
-  router-id 10.1.3.10
-  network 10.1.3.0 0.0.0.255 area 0.0.0.1
+interface Bundle-Ether2.101
+ service-policy input DCI-FZGGL-9_bjbjDCI202_in
+ service-policy output DCI-FZGGL-9_bjbjDCI202_out account user-defined 20
+ vrf vpn1
+ ipv4 address 10.135.247.49 255.255.255.252
 '''
 #     config='''
 # interface GigabitEthernet1/0/0

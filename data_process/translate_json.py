@@ -46,11 +46,11 @@ if __name__ == '__main__':
     '''
     将原始json command json转换为command tree
     '''
-    scale = '2000'
+    name = 'test_data_2800'
     llm_model = LLM_Model('deepseek-chat')
-    for vendor in ['Juniper_subdivided', 'HUAWEI', 'Cisco']:
-        source_dir = f'../experiment/test_dataset/test_data_{scale}/command_tree/{vendor}'
-        save_dir = f'../experiment/test_dataset/test_data_{scale}/command_tree/{vendor}'
+    for vendor in ['Juniper_subdivided', 'HUAWEI', 'Cisco', 'Juniper']:
+        source_dir = f'../experiment/test_dataset/{name}/command_tree/{vendor}'
+        save_dir = f'../experiment/test_dataset/{name}/command_tree/{vendor}'
 
         for filename in tqdm(os.listdir(source_dir)):
             if filename.endswith('.json'):

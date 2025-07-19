@@ -170,7 +170,7 @@ class ConfigMatcher:
                         "parent_command"]
                 root = parent_commands[0] if len(parent_commands) > 0 else match_item[0][0]
                 match_list.append({'para_map': [index, match_item[0][2]], 'trans_command': match_item[0][0],
-                                   'parent_command': parent_commands, 'root': root})
+                                   'parent_command': parent_commands, 'root': root, "source": "heuristic"})
             return match_list
         # 不带参数命令映射
         else:
@@ -180,7 +180,7 @@ class ConfigMatcher:
                         "parent_command"]
                 # root = parent_commands[0] if parent_commands else ranked_candidates[0][0]
             return [{'para_map': [], 'trans_command': ranked_candidates[0][0], 'parent_command': parent_commands,
-                     'root': root}]
+                     'root': root, "source": "heuristic"}]
 
 def _build_mapping_template_library_experiment(vendors, template_path, config_model_dir, save_path,
                                                module_match_path=None, topk=3):
@@ -348,7 +348,7 @@ if __name__ == "__main__":
     print('加载供应商配置模板节点库, 建立相应配置匹配器')
     vendors = ["Cisco", "HUAWEI", "Juniper"]
     project_root = Path(__file__).parent.parent
-    name = 'all_data_2000'
+    name = 'all_data_2800'
 
     save_path = str(project_root / f'dataset_multi_vendor_config/mapping_template_library/{name}/{{}}_{{}}.json')
     os.makedirs(str(project_root / f'dataset_multi_vendor_config/mapping_template_library/{name}'), exist_ok=True)

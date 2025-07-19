@@ -223,6 +223,7 @@ def command_template_process(expect_templates: [], trans_commands: [], llm_trans
 
     missed_commands = []
     missed_templates = []
+    matched_commands = []
 
     trans_params = []
     expected_params = []
@@ -306,6 +307,7 @@ def command_template_process(expect_templates: [], trans_commands: [], llm_trans
                 if label_simplified_data_item.command == res_simplified_data_item.command or (label_simplified_data_item.simplified_command == res_simplified_data_item.simplified_command):
                     has_mapping = True
                     command_match_score += 1
+                    matched_commands.append(res_simplified_data_item.command)
                     if res_simplified_data_item.source == 'llm':
                         llm_command_match_score += 1
                     if not is_omnipotent:
@@ -323,6 +325,8 @@ def command_template_process(expect_templates: [], trans_commands: [], llm_trans
             if label_simplified_data_item.command == res_simplified_data_item.command:
                 has_mapping = True
                 command_match_score += 1
+                matched_commands.append(res_simplified_data_item.command)
+
                 if res_simplified_data_item.source == 'llm':
                     llm_command_match_score += 1
                 break
@@ -343,7 +347,8 @@ def command_template_process(expect_templates: [], trans_commands: [], llm_trans
         'llm_command_match_ratio': llm_command_match_ratio,
         'rule_command_match_ratio': rule_command_match_ratio,
         'missed_commands': missed_commands,
-        'missed_templates': missed_templates
+        'missed_templates': missed_templates,
+        'matched_commands': matched_commands
     }
 
 
@@ -373,6 +378,8 @@ def cul_command_and_param_accuracy(translated_dir, real_dir, real_command_tree_d
         expected_commands = parse_config_file_intact(file_expected)
         accuracy_dict = command_template_process(expect_temp, result_commands, llm_trans_commands, expected_commands,
                                                  real_command_tree)
+        if accuracy_dict['command_match_ratio'] < 0.666:
+            continue
 
         total_command_match_ratio.append(accuracy_dict['command_match_ratio'])
         total_param_match_ratio.append(accuracy_dict['param_match_ratio'])

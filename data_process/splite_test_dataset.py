@@ -75,7 +75,7 @@ def check_filename(dir_order, file_name):
 
 if __name__ == '__main__':
 
-    dir_orders = ['2000']
+    dir_orders = ['1200', '2800']
     for dir_order in dir_orders:
         print(f"begin {dir_order}")
         test_filenames= json.load(open( f'../syntactic_check/config_data_{dir_order}/error_info/config_summary.json'))['test_config']['config']

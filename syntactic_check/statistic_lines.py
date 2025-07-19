@@ -16,7 +16,7 @@ def save_json_file(data, file_path):
     # print("JSON文件已保存至{}".format(file_path))
 
 def statistic_config_lines(range_num):
-    summary_path = f'syntactic_check/config_data_{range_num}/error_info/config_summary.json'
+    summary_path = f'./config_data_{range_num}/error_info/config_summary.json'
     summary_info = load_json_file(summary_path)
     all_config = [config_name.replace(".txt", "") for config_name in summary_info['all_config']['config']]
     test_config = [config_name.replace(".txt", "") for config_name in summary_info['test_config']['config']]
@@ -27,18 +27,20 @@ def statistic_config_lines(range_num):
         all_config_line = {}
         all_lines_count = 0
         for config_name in all_config:
-            config_file_path = f'syntactic_check/config_data_{range_num}/{vendor}_config/{vendor}_{config_name}/configs/{config_name}.cfg'
-            # 统计行数
-            with open(config_file_path, 'r', encoding='utf-8') as f:
-                lines = f.readlines()
-                non_blank_lines = [line for line in lines if line.strip() and not line.startswith('!')]
-                all_config_line[config_name] = len(non_blank_lines)
-                all_lines_count += len(non_blank_lines)
+            config_file_path = f'./config_data_{range_num}/{vendor}_config/{vendor}_{config_name}/configs/{config_name}.cfg'
+            if os.path.isfile(config_file_path):
+                # 统计行数
+                with open(config_file_path, 'r', encoding='utf-8') as f:
+                    lines = f.readlines()
+                    non_blank_lines = [line for line in lines if line.strip() and not line.strip().startswith(('#', '!', '*', '/*', '*/', '/'))]
+                    all_config_line[config_name] = len(non_blank_lines)
+                    all_lines_count += len(non_blank_lines)
+
         # 测试的配置文件行数
         test_config_line = {}
         test_lines_count = 0
         for config_name in test_config:
-            config_file_path = f'syntactic_check/config_data_{range_num}/{vendor}_config/{vendor}_{config_name}/configs/{config_name}.cfg'
+            config_file_path = f'./config_data_{range_num}/{vendor}_config/{vendor}_{config_name}/configs/{config_name}.cfg'
             # 统计行数
             with open(config_file_path, 'r', encoding='utf-8') as f:
                 lines = f.readlines()
@@ -50,14 +52,14 @@ def statistic_config_lines(range_num):
                                 'all_config_line': all_config_line, 
                                 'test_config_line': test_config_line}
     # 保存配置文件行数
-    save_json_file(config_lines, f'syntactic_check/config_data_{range_num}/error_info/config_lines.json')
+    save_json_file(config_lines, f'./config_data_{range_num}/error_info/config_lines.json')
     return config_lines
 
 
 if __name__ == "__main__":
 
-    # range_num = ['400', '1200', '2000','2800']
-    range_num = ['400', '2000']
+    range_num = ['400', '1200', '2000','2800']
+    # range_num = ['1200', '2800']
     all_config_lines = {j:0 for j in ['Cisco', 'HUAWEI','Juniper']}
     for i in range_num:
         config_lines = statistic_config_lines(i)
