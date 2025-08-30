@@ -8,6 +8,9 @@ from concurrent.futures import ThreadPoolExecutor
 from openai import OpenAI
 from tqdm import tqdm
 
+from src.C_Model_growth import placeholder_count
+
+
 class LLM_Model:
     def __init__(self, model_name: str, endpoint_url: str = 'https://api.deepseek.com/v1'):
         if 'gpt' in model_name:
@@ -27,7 +30,7 @@ class LLM_Model:
         messages = [
             {
                 "role": "user",
-                "content": open('../resource/command_parse_config_prompt.txt', 'r').read().replace('{command}', command),
+                "content": open('resource/command_parse_config_prompt.txt', 'r').read().replace('{command}', command),
             }
         ]
         def _request():
@@ -41,6 +44,9 @@ class LLM_Model:
                         }
                     )
                     parsed_command = json.loads(response.choices[0].message.content)
+                    if not placeholder_count(parsed_command['template']) == len(parsed_command["parameters"]):
+                        messages.append({"role": "user", "content": "注意template中参数占位符需要与parameters个数严格匹配"})
+                        raise ValueError("占位符与参数不匹配")
                     return parsed_command
                 except Exception as e:
                     print(f"第 {i + 1} 次尝试失败，错误信息: {str(e)}")

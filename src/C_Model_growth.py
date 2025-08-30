@@ -100,29 +100,6 @@ def merge_models(config1, config2, vendor_command, template_used_statistic):
                     continue
             except:
                 continue
-
-            ''' # 检查模版是否重复 但是会极大影响模版
-            template_dict, regex = check_template_duplication(command_line, vendor_command)
-            if template_dict:
-                # 如果 vendor_command 中已经存在这个命令对应的模版, 选择具有最大参数的模版
-                if len(value["parameters"]) < len(template_dict['parameters']) or 'parameter' in template_dict['template']:# 需要模版库
-                    value['template'] = template_dict['template']
-                    key = template_dict['template']
-                    value['parameters'] = template_dict['parameters']
-                    template_used_statistic[key] += 1
-                else:
-                    # 更换regex
-                    template_used_statistic[key] = template_used_statistic[template_dict['template']] + 1
-                    del vendor_command[regex]
-                    del template_used_statistic[template_dict['template']]
-
-                    new_regex = template_to_regex(value['template'])
-                    vendor_command[new_regex] = {k: value[k] for k in ['template', 'parameters'] if k in value}
-            else:
-                new_regex = template_to_regex(value['template'])
-                vendor_command[new_regex] = {k: value[k] for k in ['template', 'parameters'] if k in value}
-                template_used_statistic[value['template']] = 1
-            '''
         if key not in config1:
             # 如果 config1 中没有该键，直接插入
             config1[key] = value

@@ -2,6 +2,7 @@
 import sys
 
 from experiment.tree_match import parse_config_file_content_intact
+from src.rag_client import RAGClient
 from src.trans_node import TransCommandNodeContext
 
 sys.path.append("/data/public/hrx/Repositories/config_trans")
@@ -449,7 +450,7 @@ class Config_Translater:
                 # 补充现有的模板库
                 self.mapping_libraries['{}_{}'.format(vendor, target_vendor)][template] = matched_result
             else:
-                llm_matched_result = self.translation_llm.llm_command_mapping(feature.command, vendor,
+                llm_matched_result = self.translation_llm.rag_command_mapping(feature.command, vendor,
                                                                               target_vendor,
                                                                               source_total_config)  # matched_result = str
                 if not llm_matched_result:
@@ -1216,6 +1217,7 @@ class Translation_Model:
         self.model_name = model_name
         self.llm_model = OpenAI(api_key=api_key, base_url=endpoint_url)
         self.config_models = self.load_config_models(config_model_dir, vendors)
+        self.rag_client = RAGClient("http://10.112.19.133:6001")
 
     def load_config_models(self, config_model_dir: str, vendors: []):
         config_models = {}
@@ -1334,6 +1336,41 @@ class Translation_Model:
 
                 if len(target_commands) == 0:
                     print("llm mapping returns 0 results")
+                matched_results = []
+                for target_command in target_commands:
+                    target_command = target_command.strip()
+                    root, command_template = self.find_command_template(target_vendor, target_command)
+                    # if command_template:
+                    matched_results.append({
+                        "para_map": [],
+                        "trans_command": target_command,
+                        "parent_command": [],
+                        "root": root,
+                        "source": "llm",
+                        "origin_reponse": response,  # 保存原始响应
+                        "trans_template": command_template['template'] if command_template else None
+                    })
+
+                return matched_results
+            except Exception as e:
+                print(f"llm command mapping 第 {i + 1} 次尝试失败，错误信息: {str(e)}")
+        return None
+
+    def rag_command_mapping(self, source_command, source_vendor, target_vendor, source_total_config):
+        if source_vendor == 'Juniper':
+            source_command = self.get_complete_commands(source_command, source_total_config)
+
+        for i in range(2):
+            try:
+                response = self.rag_client.translate_config(source_command, source_vendor, target_vendor, source_total_config)
+                answer = response.get('answer', "error!")
+                matches = re.findall(r'##\s*(.*?)\s*##', answer, re.DOTALL)
+                if len(matches) == 0:
+                    print("llm mapping returns 0 results")
+                    continue
+                target_commands = []
+                target_commands.extend(matches[0].split('\n'))
+
                 matched_results = []
                 for target_command in target_commands:
                     target_command = target_command.strip()
