@@ -1,0 +1,242 @@
+{
+    "sysname [parameter1]": {
+        "template": "sysname [parameter1]",
+        "command": "sysname DeviceA",
+        "explanation": "设置设备的主机名为 'DeviceA'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet3/0/0",
+        "explanation": "进入接口GigabitEthernet3/0/0的配置模式",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "启用接口 (默认情况下接口是关闭的)",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 1.1.5.2 255.255.255.0",
+            "explanation": "配置接口的IPv4地址为 1.1.5.2，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "sub musk",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        }
+    },
+    "bgp [parameter1]": {
+        "template": "bgp [parameter1]",
+        "command": "bgp 100",
+        "explanation": "进入BGP配置模式，AS号为100",
+        "parameters": [
+            {
+                "name": "AS number",
+                "type": "integer",
+                "explanation": "AS号"
+            }
+        ],
+        "peer [parameter1] as-number [parameter2]": {
+            "template": "peer [parameter1] as-number [parameter2]",
+            "command": "peer 1.1.5.1 as-number 100",
+            "explanation": "配置BGP对等体1.1.5.1，AS号为100",
+            "parameters": [
+                {
+                    "name": "peer ip",
+                    "type": "IPv4",
+                    "explanation": "对等体IP地址"
+                },
+                {
+                    "name": "AS number",
+                    "type": "integer",
+                    "explanation": "AS号"
+                }
+            ]
+        },
+        "ipv4-family unicast": {
+            "template": "ipv4-family unicast",
+            "command": "ipv4-family unicast",
+            "explanation": "进入IPv4单播地址族配置模式",
+            "parameters": [],
+            "undo synchronization": {
+                "template": "undo synchronization",
+                "command": "undo synchronization",
+                "explanation": "关闭BGP与IGP的同步",
+                "parameters": []
+            },
+            "import-route static": {
+                "template": "import-route static",
+                "command": "import-route static",
+                "explanation": "引入静态路由到BGP",
+                "parameters": []
+            },
+            "peer [parameter1] enable": {
+                "template": "peer [parameter1] enable",
+                "command": "peer 1.1.5.1 enable",
+                "explanation": "使能对等体1.1.5.1",
+                "parameters": [
+                    {
+                        "name": "peer ip",
+                        "type": "IPv4",
+                        "explanation": "对等体IP地址"
+                    }
+                ]
+            },
+            "peer [parameter1] route-filter [parameter2] export": {
+                "template": "peer [parameter1] route-filter [parameter2] export",
+                "command": "peer 1.1.5.1 route-filter r1 export",
+                "explanation": "对从对等体1.1.5.1导出的路由应用路由过滤器r1",
+                "parameters": [
+                    {
+                        "name": "peer ip",
+                        "type": "IPv4",
+                        "explanation": "对等体IP地址"
+                    },
+                    {
+                        "name": "route-filter name",
+                        "type": "string",
+                        "explanation": "路由过滤器名称"
+                    }
+                ]
+            }
+        }
+    },
+    "ip route-static [parameter1] [parameter2] [parameter3]": {
+        "template": "ip route-static [parameter1] [parameter2] [parameter3]",
+        "command": "ip route-static 2.2.2.0 255.255.255.0 NULL0",
+        "explanation": "配置静态路由，目的网络为2.2.2.0/24，下一跳为NULL0",
+        "parameters": [
+            {
+                "name": "destination network",
+                "type": "IPv4",
+                "explanation": "目的网络地址"
+            },
+            {
+                "name": "subnet mask",
+                "type": "IPv4",
+                "explanation": "子网掩码"
+            },
+            {
+                "name": "next hop",
+                "type": "string",
+                "explanation": "下一跳地址"
+            }
+        ]
+    },
+    "xpl route-filter [parameter1]": {
+        "template": "xpl route-filter [parameter1]",
+        "command": "xpl route-filter r1",
+        "explanation": "进入路由过滤器r1的配置模式",
+        "parameters": [
+            {
+                "name": "route-filter name",
+                "type": "string",
+                "explanation": "路由过滤器名称"
+            }
+        ],
+        "if ip route-destination in [parameter1] then": {
+            "template": "if ip route-destination in [parameter1] then",
+            "command": "if ip route-destination in prefix1 then",
+            "explanation": "如果路由目的地在prefix1中，则执行后续操作",
+            "parameters": [
+                {
+                    "name": "prefix-list name",
+                    "type": "string",
+                    "explanation": "前缀列表名称"
+                }
+            ]
+        },
+        "approve": {
+            "template": "approve",
+            "command": "approve",
+            "explanation": "允许路由通过",
+            "parameters": []
+        },
+        "else": {
+            "template": "else",
+            "command": "else",
+            "explanation": "否则执行拒绝操作",
+            "parameters": []
+        },
+        "refuse": {
+            "template": "refuse",
+            "command": "refuse",
+            "explanation": "拒绝路由通过",
+            "parameters": []
+        },
+        "endif": {
+            "template": "endif",
+            "command": "endif",
+            "explanation": "结束if条件语句",
+            "parameters": []
+        },
+        "end-filter": {
+            "template": "end-filter",
+            "command": "end-filter",
+            "explanation": "结束路由过滤器配置",
+            "parameters": []
+        }
+    },
+    "xpl ip-prefix-list [parameter1]": {
+        "template": "xpl ip-prefix-list [parameter1]",
+        "command": "xpl ip-prefix-list prefix1",
+        "explanation": "进入前缀列表prefix1的配置模式",
+        "parameters": [
+            {
+                "name": "prefix-list name",
+                "type": "string",
+                "explanation": "前缀列表名称"
+            }
+        ],
+        "[parameter1] [parameter2]": {
+            "template": "[parameter1] [parameter2]",
+            "command": "2.2.2.0 24",
+            "explanation": "添加前缀2.2.2.0/24到前缀列表",
+            "parameters": [
+                {
+                    "name": "network",
+                    "type": "IPv4",
+                    "explanation": "网络地址"
+                },
+                {
+                    "name": "prefix length",
+                    "type": "integer",
+                    "explanation": "前缀长度"
+                }
+            ]
+        },
+        "end-list": {
+            "template": "end-list",
+            "command": "end-list",
+            "explanation": "结束前缀列表配置",
+            "parameters": []
+        }
+    },
+    "return": {
+        "template": "return",
+        "command": "return",
+        "explanation": "退出当前配置模式，返回到用户视图",
+        "parameters": []
+    }
+}

@@ -1,0 +1,162 @@
+{
+    "set system": {
+        "template": "set system",
+        "set system host-name [parameter1]": {
+            "template": "set system host-name [parameter1]",
+            "command": "set system host-name CE2",
+            "explanation": "配置设备的主机名。",
+            "parameters": [
+                {
+                    "name": "hostname",
+                    "type": "string",
+                    "explanation": "设备的主机名，用于标识网络中的设备。"
+                }
+            ]
+        }
+    },
+    "set protocols": {
+        "template": "set protocols",
+        "set protocols pim interface [parameter1] mode [parameter2]": {
+            "template": "set protocols pim interface [parameter1] mode [parameter2]",
+            "command": "set protocols pim interface ge-1/0/0 mode sparse",
+            "explanation": "配置PIM协议在指定接口上以稀疏模式运行。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0。"
+                },
+                {
+                    "name": "mode",
+                    "type": "string",
+                    "explanation": "PIM模式，例如sparse。"
+                }
+            ]
+        },
+        "set protocols pim rp local address [parameter1]": {
+            "template": "set protocols pim rp local address [parameter1]",
+            "command": "set protocols pim rp local address 10.1.3.5",
+            "explanation": "配置PIM协议的本地RP地址。",
+            "parameters": [
+                {
+                    "name": "rp-address",
+                    "type": "string",
+                    "explanation": "RP的IP地址。"
+                }
+            ]
+        },
+        "set protocols ospf area [parameter1] interface [parameter2]": {
+            "template": "set protocols ospf area [parameter1] interface [parameter2]",
+            "command": "set protocols ospf area 0 interface ge-1/0/0",
+            "explanation": "配置OSPF协议在指定区域和接口上运行。",
+            "parameters": [
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "OSPF区域号。"
+                },
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0。"
+                }
+            ]
+        }
+    },
+    "set interfaces": {
+        "template": "set interfaces",
+        "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+            "command": "set interfaces ge-1/0/0 unit 0 family inet address 192.168.2.2/24",
+            "explanation": "配置接口的IPv4地址及子网掩码。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "ip-address",
+                    "type": "string",
+                    "explanation": "分配给接口的IPv4地址。"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "integer",
+                    "explanation": "IPv4子网掩码的位数。"
+                }
+            ]
+        },
+        "set interfaces [parameter1] unit [parameter2] family inet igmp join-group [parameter3] source [parameter4]": {
+            "template": "set interfaces [parameter1] unit [parameter2] family inet igmp join-group [parameter3] source [parameter4]",
+            "command": "set interfaces ge-1/0/1 unit 0 family inet igmp join-group 225.1.1.1 source 10.1.3.5",
+            "explanation": "配置接口加入指定的IGMP组播组，并指定源地址。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/1。"
+                },
+                {
+                    "name": "unit",
+                    "type": "integer",
+                    "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+                },
+                {
+                    "name": "group-address",
+                    "type": "string",
+                    "explanation": "要加入的IGMP组播组地址。"
+                },
+                {
+                    "name": "source-address",
+                    "type": "string",
+                    "explanation": "组播流的源地址。"
+                }
+            ]
+        }
+    },
+    "set routing-options": {
+        "template": "set routing-options",
+        "set routing-options multicast inet6-routing [parameter1]": {
+            "template": "set routing-options multicast inet6-routing [parameter1]",
+            "command": "set routing-options multicast inet6-routing no-restrictedpacket",
+            "explanation": "配置IPv6组播路由不限制特定类型的包。",
+            "parameters": [
+                {
+                    "name": "option",
+                    "type": "string",
+                    "explanation": "配置选项，例如no-restrictedpacket。"
+                }
+            ]
+        }
+    },
+    "activate": {
+        "template": "activate",
+        "activate interfaces [parameter1]": {
+            "template": "activate interfaces [parameter1]",
+            "command": "activate interfaces ge-1/0/0",
+            "explanation": "激活指定接口的配置。",
+            "parameters": [
+                {
+                    "name": "interface",
+                    "type": "string",
+                    "explanation": "接口名称，例如ge-1/0/0。"
+                }
+            ]
+        }
+    },
+    "commit and-quit": {
+        "template": "commit and-quit",
+        "commit and-quit": {
+            "template": "commit and-quit",
+            "command": "commit and-quit",
+            "explanation": "提交配置并退出配置模式。",
+            "parameters": []
+        }
+    }
+}

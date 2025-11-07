@@ -1,0 +1,290 @@
+{
+  "set system": {
+    "set system host-name PE1": {
+      "template": "set system host-name [parameter1]",
+      "command": "set system host-name PE1",
+      "explanation": "配置设备的主机名。",
+      "parameters": [
+        {
+          "name": "hostname",
+          "type": "string",
+          "explanation": "设备的主机名，用于标识网络中的设备。"
+        }
+      ]
+    }
+  },
+  "set interfaces": {
+    "set interfaces ae10 unit 0 family inet address 10.1.1.1/24": {
+      "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+      "command": "set interfaces ae10 unit 0 family inet address 10.1.1.1/24",
+      "explanation": "配置接口的IPv4地址及子网掩码。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称，例如ae10。"
+        },
+        {
+          "name": "unit",
+          "type": "integer",
+          "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+        },
+        {
+          "name": "ip-address",
+          "type": "string",
+          "explanation": "分配给接口的IPv4地址。"
+        },
+        {
+          "name": "subnet-mask",
+          "type": "integer",
+          "explanation": "IPv4子网掩码的位数。"
+        }
+      ]
+    },
+    "set interfaces ae10 unit 0 family mpls": {
+      "template": "set interfaces [parameter1] unit [parameter2] family mpls",
+      "command": "set interfaces ae10 unit 0 family mpls",
+      "explanation": "配置接口的MPLS协议族。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称，例如ae10。"
+        },
+        {
+          "name": "unit",
+          "type": "integer",
+          "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+        }
+      ]
+    },
+    "set interfaces ge-1/0/1 ether-options 802.3ad ae10": {
+      "template": "set interfaces [parameter1] ether-options 802.3ad [parameter2]",
+      "command": "set interfaces ge-1/0/1 ether-options 802.3ad ae10",
+      "explanation": "配置接口的以太网选项，将其加入链路聚合组。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称，例如ge-1/0/1。"
+        },
+        {
+          "name": "aggregated-interface",
+          "type": "string",
+          "explanation": "链路聚合接口名称，例如ae10。"
+        }
+      ]
+    },
+    "set interfaces ge-1/0/1 disable off": {
+      "template": "set interfaces [parameter1] disable [parameter2]",
+      "command": "set interfaces ge-1/0/1 disable off",
+      "explanation": "启用接口。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称，例如ge-1/0/1。"
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "explanation": "接口状态，off表示启用。"
+        }
+      ]
+    },
+    "set interfaces ge-2/0/1 disable off": {
+      "template": "set interfaces [parameter1] disable [parameter2]",
+      "command": "set interfaces ge-2/0/1 disable off",
+      "explanation": "启用接口。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称，例如ge-2/0/1。"
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "explanation": "接口状态，off表示启用。"
+        }
+      ]
+    },
+    "set interfaces lo0 unit 1 family inet address 1.1.1.9/32": {
+      "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+      "command": "set interfaces lo0 unit 1 family inet address 1.1.1.9/32",
+      "explanation": "配置环回接口的IPv4地址及子网掩码。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称，例如lo0。"
+        },
+        {
+          "name": "unit",
+          "type": "integer",
+          "explanation": "接口单元号，用于区分同一接口下的多个逻辑配置。"
+        },
+        {
+          "name": "ip-address",
+          "type": "string",
+          "explanation": "分配给接口的IPv4地址。"
+        },
+        {
+          "name": "subnet-mask",
+          "type": "integer",
+          "explanation": "IPv4子网掩码的位数。"
+        }
+      ]
+    }
+  },
+  "set protocols": {
+    "set protocols mpls interface ae10": {
+      "template": "set protocols mpls interface [parameter1]",
+      "command": "set protocols mpls interface ae10",
+      "explanation": "在指定接口上启用MPLS协议。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称，例如ae10。"
+        }
+      ]
+    },
+    "set protocols mpls ldp interface lo0.1": {
+      "template": "set protocols mpls ldp interface [parameter1]",
+      "command": "set protocols mpls ldp interface lo0.1",
+      "explanation": "在指定接口上启用LDP协议。",
+      "parameters": [
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称，例如lo0.1。"
+        }
+      ]
+    },
+    "set protocols mpls ldp targeted-session 2.2.2.9": {
+      "template": "set protocols mpls ldp targeted-session [parameter1]",
+      "command": "set protocols mpls ldp targeted-session 2.2.2.9",
+      "explanation": "配置LDP目标会话的IP地址。",
+      "parameters": [
+        {
+          "name": "ip-address",
+          "type": "string",
+          "explanation": "目标会话的IP地址。"
+        }
+      ]
+    },
+    "set protocols l2vpn vfi ldp1 vpn-id 2": {
+      "template": "set protocols l2vpn vfi [parameter1] vpn-id [parameter2]",
+      "command": "set protocols l2vpn vfi ldp1 vpn-id 2",
+      "explanation": "配置L2VPN的VFI（虚拟转发实例）及其VPN ID。",
+      "parameters": [
+        {
+          "name": "vfi-name",
+          "type": "string",
+          "explanation": "VFI名称，例如ldp1。"
+        },
+        {
+          "name": "vpn-id",
+          "type": "integer",
+          "explanation": "VPN的标识符。"
+        }
+      ]
+    },
+    "set protocols mpls label-switched-path ldp": {
+      "template": "set protocols mpls label-switched-path [parameter1]",
+      "command": "set protocols mpls label-switched-path ldp",
+      "explanation": "配置MPLS的标签交换路径。",
+      "parameters": [
+        {
+          "name": "path-name",
+          "type": "string",
+          "explanation": "标签交换路径的名称，例如ldp。"
+        }
+      ]
+    },
+    "set protocols ospf area 0 interface lo0.1": {
+      "template": "set protocols ospf area [parameter1] interface [parameter2]",
+      "command": "set protocols ospf area 0 interface lo0.1",
+      "explanation": "在指定区域和接口上启用OSPF协议。",
+      "parameters": [
+        {
+          "name": "area",
+          "type": "integer",
+          "explanation": "OSPF区域号。"
+        },
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称，例如lo0.1。"
+        }
+      ]
+    },
+    "set protocols ospf area 0 interface ae10": {
+      "template": "set protocols ospf area [parameter1] interface [parameter2]",
+      "command": "set protocols ospf area 0 interface ae10",
+      "explanation": "在指定区域和接口上启用OSPF协议。",
+      "parameters": [
+        {
+          "name": "area",
+          "type": "integer",
+          "explanation": "OSPF区域号。"
+        },
+        {
+          "name": "interface",
+          "type": "string",
+          "explanation": "接口名称，例如ae10。"
+        }
+      ]
+    },
+    "set protocols bfd session 1.1.1.9 neighbor 2.2.2.9 local-discriminator 1 remote-discriminator 2": {
+      "template": "set protocols bfd session [parameter1] neighbor [parameter2] local-discriminator [parameter3] remote-discriminator [parameter4]",
+      "command": "set protocols bfd session 1.1.1.9 neighbor 2.2.2.9 local-discriminator 1 remote-discriminator 2",
+      "explanation": "配置BFD会话的本地和远端标识符。",
+      "parameters": [
+        {
+          "name": "session-ip",
+          "type": "string",
+          "explanation": "BFD会话的IP地址。"
+        },
+        {
+          "name": "neighbor-ip",
+          "type": "string",
+          "explanation": "邻居的IP地址。"
+        },
+        {
+          "name": "local-discriminator",
+          "type": "integer",
+          "explanation": "本地标识符。"
+        },
+        {
+          "name": "remote-discriminator",
+          "type": "integer",
+          "explanation": "远端标识符。"
+        }
+      ]
+    },
+    "set protocols bfd session 1.1.1.9 neighbor 2.2.2.9 echo-source 1.1.1.9": {
+      "template": "set protocols bfd session [parameter1] neighbor [parameter2] echo-source [parameter3]",
+      "command": "set protocols bfd session 1.1.1.9 neighbor 2.2.2.9 echo-source 1.1.1.9",
+      "explanation": "配置BFD会话的回声源地址。",
+      "parameters": [
+        {
+          "name": "session-ip",
+          "type": "string",
+          "explanation": "BFD会话的IP地址。"
+        },
+        {
+          "name": "neighbor-ip",
+          "type": "string",
+          "explanation": "邻居的IP地址。"
+        },
+        {
+          "name": "echo-source-ip",
+          "type": "string",
+          "explanation": "回声源的IP地址。"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,267 @@
+{
+    "sysname Device1": {
+        "template": "sysname [parameter1]",
+        "command": "sysname Device1",
+        "explanation": "Set the device host name to 'Device1'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "hostname"
+            }
+        ]
+    },
+    "bridge-domain 10": {
+        "template": "bridge-domain [parameter1]",
+        "command": "bridge-domain 10",
+        "explanation": "Create a bridge domain with ID 10",
+        "parameters": [
+            {
+                "name": "bridge domain ID",
+                "type": "integer",
+                "explanation": "Bridge domain identifier"
+            }
+        ],
+        "vxlan vni 5010": {
+            "template": "vxlan vni [parameter1]",
+            "command": "vxlan vni 5010",
+            "explanation": "Associate VXLAN Network Identifier 5010 with the bridge domain",
+            "parameters": [
+                {
+                    "name": "VNI",
+                    "type": "integer",
+                    "explanation": "VXLAN Network Identifier"
+                }
+            ]
+        }
+    },
+    "interface GigabitEthernet1/0/1": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/1",
+        "explanation": "Enter the interface configuration mode for GigabitEthernet1/0/1",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "Interface name"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "Enable the interface (the interface is disabled by default)",
+            "parameters": []
+        },
+        "ip address 192.168.1.1 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 192.168.1.1 255.255.255.0",
+            "explanation": "The IPv4 address of the configuration interface is 192.168.1.1, and the subnet mask is 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 address"
+                },
+                {
+                    "name": "sub musk",
+                    "type": "IPv4",
+                    "explanation": "subnet mask"
+                }
+            ]
+        }
+    },
+    "interface GigabitEthernet1/0/2": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/2",
+        "explanation": "Enter the interface configuration mode for GigabitEthernet1/0/2",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "Interface name"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "Enable the interface (the interface is disabled by default)",
+            "parameters": []
+        }
+    },
+    "interface GigabitEthernet1/0/2.1 mode l2": {
+        "template": "interface [parameter1] mode l2",
+        "command": "interface GigabitEthernet1/0/2.1 mode l2",
+        "explanation": "Enter the sub-interface configuration mode for GigabitEthernet1/0/2.1 in Layer 2 mode",
+        "parameters": [
+            {
+                "name": "sub-interface name",
+                "type": "string",
+                "explanation": "Sub-interface name"
+            }
+        ],
+        "encapsulation dot1q vid 10": {
+            "template": "encapsulation dot1q vid [parameter1]",
+            "command": "encapsulation dot1q vid 10",
+            "explanation": "Configure the sub-interface to accept packets tagged with VLAN ID 10",
+            "parameters": [
+                {
+                    "name": "VLAN ID",
+                    "type": "integer",
+                    "explanation": "VLAN identifier"
+                }
+            ]
+        },
+        "rewrite pop single": {
+            "template": "rewrite pop single",
+            "command": "rewrite pop single",
+            "explanation": "Remove the outermost VLAN tag from incoming packets",
+            "parameters": []
+        },
+        "bridge-domain 10": {
+            "template": "bridge-domain [parameter1]",
+            "command": "bridge-domain 10",
+            "explanation": "Add the sub-interface to bridge domain 10",
+            "parameters": [
+                {
+                    "name": "bridge domain ID",
+                    "type": "integer",
+                    "explanation": "Bridge domain identifier"
+                }
+            ]
+        }
+    },
+    "interface LoopBack1": {
+        "template": "interface [parameter1]",
+        "command": "interface LoopBack1",
+        "explanation": "Configure LoopBack interface 1",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "LoopBack interface name"
+            }
+        ],
+        "ip address 2.2.2.2 255.255.255.255": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 2.2.2.2 255.255.255.255",
+            "explanation": "The IPv4 address of the configuration interface is 2.2.2.2, and the subnet mask is 255.255.255.255",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 address"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "subnet mask"
+                }
+            ]
+        }
+    },
+    "interface Nve1": {
+        "template": "interface [parameter1]",
+        "command": "interface Nve1",
+        "explanation": "Configure NVE interface 1",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "NVE interface name"
+            }
+        ],
+        "source 2.2.2.2": {
+            "template": "source [parameter1]",
+            "command": "source 2.2.2.2",
+            "explanation": "Set the source IP address for the NVE interface to 2.2.2.2",
+            "parameters": [
+                {
+                    "name": "source IP address",
+                    "type": "IPv4",
+                    "explanation": "source IP address for NVE interface"
+                }
+            ]
+        },
+        "vni 5010 head-end peer-list 4.4.4.4": {
+            "template": "vni [parameter1] head-end peer-list [parameter2]",
+            "command": "vni 5010 head-end peer-list 4.4.4.4",
+            "explanation": "Configure VNI 5010 as a head-end replication with peer 4.4.4.4",
+            "parameters": [
+                {
+                    "name": "VNI",
+                    "type": "integer",
+                    "explanation": "Virtual Network Identifier"
+                },
+                {
+                    "name": "peer IP address",
+                    "type": "IPv4",
+                    "explanation": "IP address of the peer"
+                }
+            ]
+        }
+    },
+    "ospf 1": {
+        "template": "ospf [parameter1]",
+        "command": "ospf 1",
+        "explanation": "Configure OSPF process 1",
+        "parameters": [
+            {
+                "name": "process ID",
+                "type": "integer",
+                "explanation": "OSPF process ID"
+            }
+        ],
+        "area 0.0.0.0": {
+            "template": "area [parameter1]",
+            "command": "area 0.0.0.0",
+            "explanation": "Configure OSPF area 0.0.0.0",
+            "parameters": [
+                {
+                    "name": "area ID",
+                    "type": "IPv4",
+                    "explanation": "OSPF area ID"
+                }
+            ],
+            "network 2.2.2.2 0.0.0.0": {
+                "template": "network [parameter1] [parameter2]",
+                "command": "network 2.2.2.2 0.0.0.0",
+                "explanation": "Advertise network 2.2.2.2/32 in OSPF area 0.0.0.0",
+                "parameters": [
+                    {
+                        "name": "network address",
+                        "type": "IPv4",
+                        "explanation": "Network address to advertise"
+                    },
+                    {
+                        "name": "wildcard mask",
+                        "type": "IPv4",
+                        "explanation": "Wildcard mask for the network"
+                    }
+                ]
+            },
+            "network 192.168.1.0 0.0.0.255": {
+                "template": "network [parameter1] [parameter2]",
+                "command": "network 192.168.1.0 0.0.0.255",
+                "explanation": "Advertise network 192.168.1.0/24 in OSPF area 0.0.0.0",
+                "parameters": [
+                    {
+                        "name": "network address",
+                        "type": "IPv4",
+                        "explanation": "Network address to advertise"
+                    },
+                    {
+                        "name": "wildcard mask",
+                        "type": "IPv4",
+                        "explanation": "Wildcard mask for the network"
+                    }
+                ]
+            }
+        }
+    },
+    "return": {
+        "template": "return",
+        "command": "return",
+        "explanation": "Exit from the current view and return to the user view",
+        "parameters": []
+    }
+}

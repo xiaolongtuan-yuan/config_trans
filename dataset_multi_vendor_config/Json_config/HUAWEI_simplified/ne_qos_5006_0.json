@@ -1,0 +1,123 @@
+{
+    "sysname [parameter1]": {
+        "template": "sysname [parameter1]",
+        "command": "sysname DeviceA",
+        "explanation": "设置设备的主机名为 'DeviceA'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "controller e1 [parameter1]": {
+        "template": "controller e1 [parameter1]",
+        "command": "controller e1 2/0/0",
+        "explanation": "配置E1控制器，槽位2，端口0，控制器0",
+        "parameters": [
+            {
+                "name": "controller id",
+                "type": "string",
+                "explanation": "控制器标识"
+            }
+        ],
+        "channel-set [parameter1] timeslot-list [parameter2]": {
+            "template": "channel-set [parameter1] timeslot-list [parameter2]",
+            "command": "channel-set 0 timeslot-list 1-31",
+            "explanation": "设置通道组0使用时隙1到31",
+            "parameters": [
+                {
+                    "name": "channel-set id",
+                    "type": "integer",
+                    "explanation": "通道组ID"
+                },
+                {
+                    "name": "timeslot-list",
+                    "type": "string",
+                    "explanation": "时隙列表"
+                }
+            ]
+        },
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "启用控制器",
+            "parameters": []
+        }
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface Serial2/0/0:0",
+        "explanation": "配置串行接口2/0/0:0",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名称"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "启用接口",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 3.3.3.1 255.255.255.0",
+            "explanation": "配置接口的IPv4地址为3.3.3.1，子网掩码为255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "port-queue [parameter1] wfq shaping cir [parameter2] pir percentage [parameter3]": {
+            "template": "port-queue [parameter1] wfq shaping cir [parameter2] pir percentage [parameter3]",
+            "command": "port-queue af2 wfq shaping cir 400 pir percentage 40",
+            "explanation": "配置端口队列af2，使用WFQ调度，CIR为400，PIR百分比为40",
+            "parameters": [
+                {
+                    "name": "queue name",
+                    "type": "string",
+                    "explanation": "队列名称"
+                },
+                {
+                    "name": "cir",
+                    "type": "integer",
+                    "explanation": "承诺信息速率"
+                },
+                {
+                    "name": "pir percentage",
+                    "type": "integer",
+                    "explanation": "峰值信息速率百分比"
+                }
+            ]
+        },
+        "port-queue [parameter1] pq shaping pir percentage [parameter2]": {
+            "template": "port-queue [parameter1] pq shaping pir percentage [parameter2]",
+            "command": "port-queue ef pq shaping pir percentage 60",
+            "explanation": "配置端口队列ef，使用PQ调度，PIR百分比为60",
+            "parameters": [
+                {
+                    "name": "queue name",
+                    "type": "string",
+                    "explanation": "队列名称"
+                },
+                {
+                    "name": "pir percentage",
+                    "type": "integer",
+                    "explanation": "峰值信息速率百分比"
+                }
+            ]
+        }
+    }
+}
