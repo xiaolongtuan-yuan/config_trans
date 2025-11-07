@@ -1,0 +1,407 @@
+
+ router-id 10.159.255.50
+dampening route-policy rp3
+mpls
+ip ip-prefix gn-to-iu index 10 permit 10.17.151.192 32
+ ipv6 avoid-microloop segment-routing
+ospf 230
+default-route-advertise
+ statistic enable
+network 0.0.0.0 0
+timer lsp-max-age 65834     
+ distribute-link-state instance-id 100
+traffic classifier ATT_B
+ipv4-family vpn-instance EDF
+ peer 212.31.216.217 as-number 12641
+peer 212.31.216.217 timer advertise-interval 5
+interface Eth-Trunk 1
+ remote-peer 1.1.1.1
+peer 2.2.2.2 weight 100
+network 132.50.8.0 24 route-policy rp_SetComConnect_in
+apply weight 10
+ip vpn-instance vpn-1
+ area 0
+peer 1.1.1.1 as-number 2860
+ip vpn-instance HuaZhu-S2
+ lsr-id 218.105.18.20
+maximum load-balancing ebgp 8
+interface Eth-Trunk1.99
+apply community 100:100
+import-route direct tag 100
+import-route isis 10 level-1
+ip ip-prefix gn-to-iu index 20 permit 10.17.151.193 32
+import-route isis 10 level-2
+import-route static route-policy rp_SetEdcEW_med
+vpn-target 17922:1 export-extcommunity
+ospf 100
+ip ip-prefix SAE_S1_UP index 10 permit 10.4.11.112 0.0.0.15 ge 29 le 32
+import-route static med 2 route-policy NGN-BGP-AHAQ-IN
+peer 2.2.2.2 as-number 2860
+interface BVI771773
+route-policy NO_ADVERTISE permit node 10
+isis cost 25 level-2
+interface Ethernet 0/0/0
+ip community-filter basic COMM_CN_652866 permit 47612:1866
+ isis enable 1
+apply as-path 1000 prepend
+import-route ospf 10 route-policy OSPF_External
+peer 1.1.1.1 timer advertise-interval 5
+isis circuit-level level-1
+isis cost 24000 level-2
+bgp 12641
+peer 4.4.4.4 advertise-community
+route-policy STC_OUT permit node 10
+route-policy STATIC_TO_BGP_IPV6 permit node 10
+interface GigabitEthernet0/0/1/6.40
+  ospf authentication-mode md5 1 cipher 01322B3C782A395D2A
+carrier up-hold-time 3000 down-hold-time 150
+mpls ldp auto-config
+peer bj-NMS-IP route-policy default_route_out export
+  if-match ip-prefix FILTER_P2P
+import-route ospf 100
+ timer lsp-generation 50 50 1000
+if-match ip-precedence 1
+  ospf network-type p2p
+cost-style wide
+  remote-ip 1.1.1.1
+reflector cluster-id 210.52.128.164
+ip address 192.168.101.1 255.255.255.252
+stub
+peer 4.4.4.4 advertise-ext-community
+ip as-path-filter test_set permit ".*(^| )65021( |$).*"
+ session-establish passive
+default local-preference 500
+group bj-NMS-IP external
+peer 2.2.2.2 weight 200
+if-match acl name acl_100
+ip address 10.52.41.97 255.255.255.252
+bgp 26615
+ if-match tag 260 
+rule 50 permit ip source any destination any
+timer lsp-generation 10 20 30 level-2
+bandwidth 2048
+undo isis padding-hello
+traffic classifier HuaZhu-S2_aqaqmv8_out operator or
+isis circuit-level level-2
+peer 4.4.4.4 ebgp-max-hop 2
+route-policy test_policy permit node 10
+ traffic-policy DCI-FZGGL-9_bjbjDCI202_out outbound user-defined-accounting 20
+timer lsp-generation 10 20 30
+timer keepalive 30 hold 90
+  apply extcommunity soo SOO:FNS01
+sysname GAMAGTAMN130A06B04FFM3
+peer 100.10.10.10 password simple passwd
+router-id 1.1.1.1
+default-route-advertise route-policy abc
+ mpls te
+import-route bgp permit-ibgp
+ traffic-policy DCI-FZGGL-9_bjbjDCI202_in inbound
+graceful-restart
+  vsi-id 17922
+peer 212.31.216.217 password cipher 04610F1736011E1E5B49
+ospf 1
+mpls te
+group-name bj-NMS-IP
+ preference 20 100 200
+peer 2.2.2.2 capability-advertise add-path receive
+ apply origin igp
+peer 3.3.3.3 ebgp-max-hop 2
+ip vpn-instance ZYWL
+ ip binding vpn-instance vpn1
+mpls l2vc 114.1.211.7 513512209
+nssa no-summary
+network 10.103.0.4 30
+ntp-service unicast-server 210.52.128.18
+bestroute med-none-as-maximum
+interface GigabitEthernet0/0/1
+apply community test_set_name
+preference 20 99 200
+ipv4-family vpn-instance vpn_test2
+peer 3.3.3.3 next-hop-local
+bgp 100
+apply cost 20
+apply local-preference 200
+ if-match community-filter test_filter_name
+apply ip-address next-hop 1.1.1.1
+ip address 192.168.255.78 255.255.255.252
+  route-distinguisher 14080:1806
+ipv4-family vpn-instance vpn_test1
+ apply ipv6 next-hop fd00:30bf::1:1:dead
+maximum load-balancing ibgp 6
+prefix-priority medium ip-prefix test_prefix_list
+ ospf preference ase 109
+prefix-priority high tag 10
+ntp-service unicast-server 210.52.128.218 preference
+ link-state distribute 100 bgp-ls level-1-2
+group MPLS-ISP-sg internal/external
+ dot1q termination vid 100 
+route-policy test_policy_name permit node 10
+peer 2.2.2.2 default-route-advertise
+ apply community 26615:40001
+ classifier mark_exp1 behavior mark_exp1
+preference 255
+maximum load-balancing 3
+router-id 218.105.18.20
+remark dscp ef
+  apply community 26615:8040 26615:9028 26615:40001 additive
+isis
+ classifier HuaZhu-S2_aqaqmv8_out behavior HuaZhu-S2_aqaqmv8_out
+timer reconnect 5 10
+if-match community-filter test_name
+ospf 2
+ip ip-prefix none index none permit none 1866 greater-equal none less-equal none
+ apply ip-address next-hop recursive 114.1.211.8
+route-policy POLICY_NAME permit node 20   
+timer lsp-max-age 1092
+isis ldp-sync timer 5
+ipv4-family vpn-instance vpn_name
+ ipv4-family
+nssa no-import-route
+  import-route static metric-type 2
+network 132.50.7.0 24 route-policy rp_SetComConnect_in
+peer 3.3.3.3 advertise-ext-community
+apply ip-address next-hop 2.2.2.2
+network 30.30.30.30 0.0.0.255
+isis cost 25 level-1
+  network 10.0.0.0 0.0.0.255
+ process-name cnc-core
+traffic behavior mark_exp1
+peer rr-group connect-interface LoopBack0
+  quit
+ ip ip-prefix none index none permit none 10
+  isis p2p enable
+maximum load-balancing ebgp 6
+ apply community 26615:9041
+if-match mpls-exp topmost 1
+ip ip-prefix SAE_S1_UP index 10 permit 10.4.11.112 0.0.0.15 ge 30 le 30 
+ remark ip-precedence 1
+acl name acl_15 advance
+ address-family ipv4 unicast
+isis timer csnp 10 level-1
+ip ip-prefix test_prefix index 30 permit 119.167.141.0 25 greater-equal 25 less-equal 32
+shutdown
+ mpls te enable
+dampening route-policy rp2
+interface Eth-Trunk2.101
+ traffic-policy HuaZhu-S2_aqaqmv8_out outbound
+ import-route bgp 200 type 1 tag 12 cost 100 route-policy loop
+bfd all-interfaces enable
+min-tx-interval 15
+ip ip-prefix test_prefix index 20 permit 119.167.140.0 24 greater-equal 24 less-equal 32
+network 10.10.10.10 0.0.0.255
+peer 4.4.4.4 next-hop-local
+advertise-explicit-null
+dot1q termination vid 40
+peer-group V6_rr-group
+ if-match tag 240 
+peer 20.20.20.20 password cipher passwd1
+network 20.20.20.20 0.0.0.255
+peer 2.2.2.2 advertise-ext-community
+route-policy TIMGPRS permit node 10
+timer lsp-generation 10 20 30 level-1
+ospf network-type p2p
+route-policy CN_652200_COMMUNITY permit node 10
+isis circuit-level level-1-2
+ apply origin incomplete
+default-route-advertise cost 150
+ip address 10.10.10.2 255.255.255.0
+peer 2.2.2.2 as-override
+graceful-restart period 180
+peer 1.1.1.1
+ area 0.0.0.3
+timer lsp-generation 50 60 1000
+peer V6_rr-group password cipher 0955573E1435470B2C
+peer 2.2.2.2 advertise-community
+interface TenGigabitEthernet0/0/0/2
+timer keepalive 70 hold 80
+peer 3.3.3.3 as-number 2860
+import-route direct route-policy rp_SetCom_in
+import-route ospf 2 med 1024 route-policy NGN-BGP-AHAQ-IN
+ospf 6855
+ if-match any 
+interface Loopback 10
+area 0.0.0.0
+isis bfd detect-multiplier 3
+import-route isis 10 cost 500
+isis timer csnp 10
+ vrrp vrid 178 preempt-mode timer delay 0
+remark cos 3
+ip address 58.254.254.129 255.255.255.224 sub
+route-policy bgpvrf-exportx export
+explicit-path to_PRC-EN1_CSC_SVID5007_Loose
+rule 40 permit icmp source 218.105.2.54 0 destination 218.105.2.53 0 icmp-type echo-reply
+ip ip-prefix FILTER_P2P index 10 permit none
+  ospf cost 100
+isis traffic-eng level-1
+vpn-target 17922:1 import-extcommunity
+interface tunnel 102
+mpls ldp
+ip ip-prefix test_prefix index 10 permit 10.0.5.12 24 greater-equal 26 less-equal 30
+default local-preference 1000
+network 132.50.20.0 24 route-policy rp_SetComConnect_in
+  nssa default-route-advertise no-summary
+ apply community 26615:1000
+#
+import-route isis 10 cost 500 route-policy rp1
+interface Eth-Trunk1.110
+rule 10 permit ip source 210.52.149.0 0.0.0.255 source-port eq xx destination any destination-port gt yy icmp-type echo-reply
+traffic-policy EGRESS-NNI-MPLS outbound
+ipv4 reassembling timeout 5
+ip vpn-instance IPRAN_NMS
+ip address 218.105.11.225 255.255.255.252
+ vpn-instance cnc_voice
+peer 2.2.2.2 password cipher passwd1
+ apply community 26615:20000
+maximum load-balancing ibgp 8
+peer 3.3.3.3 timer advertise-interval 30
+peer 212.31.216.217 route-update-interval 5
+ipv6 address 2408:8120:2::5c3/127
+peer 3.3.3.3 connect-interface LoopBack 0
+ mpls enable
+bgp 9929
+isis timer lsp 1000
+ip address 210.53.31.129 255.255.255.224
+ip ip-prefix test_prefix index 10 permit 119.167.134.0 24 greater-equal 24 less-equal 32
+ link-state-family
+import-route static
+import-route ospf 10
+traffic classifier match-all default-class
+peer 4.4.4.4 route-reflector-client enable
+ipv6-family unicast
+ if-match any
+ timer lsp-refresh 65000
+router-id 20.20.20.20
+nexthop recursive-lookup non-critical-event delay 5
+ apply ip-address next-hop recursive 124.195.92.31
+peer 212.31.216.217 route-policy PASS_all import
+isis traffic-eng level-2
+ip address 192.168.2.25 255.255.255.252 sub
+peer 2.2.2.2 timer advertise-interval 15
+remark local-precedence 7
+peer 20.20.20.20 password simple passwd1
+ peer bj-NMS-IP route-policy default_route_out export
+import-route isis level-1 into level-2 route-policy ISIS_Core_L1_INTO_L2
+import-route isis 10
+peer 212.31.216.217 as-number 12641
+clock timezone GMT add -6:00:00
+rule 30 permit icmp source 218.105.2.54 0 destination 218.105.2.53 0 icmp-type echo
+peer 3.3.3.3 remove-private-as
+traffic policy HuaZhu-S2_aqaqmv8_out
+peer 3.3.3.3 default-route-advertise
+ip route-static 114.0.116.5 255.255.255.255 Bundle-Ethernet50.1000 114.0.116.5
+traffic-policy resetipp inbound
+ipv4-family unicast
+mtu 4484
+ vrrp vrid 178 virtual-ip 10.20.151.1
+ipv4-family vpn-instance BNL
+  import-route direct
+preference 100
+ apply origin egp
+peer 212.31.216.217 route-policy PASS_all export
+reflector cluster-id 7
+ip vpn-instance Ruta-IPv6
+import-route isis 10 level-2 route-policy testRp
+isis 1
+reflector cluster-id 10
+route-policy STATIC_TO_BGP_IPV6 permit node 20
+peer bj-NMS-IP password cipher 12001C201F3B5C1D0D
+traffic-policy HuaZhu-S2_aqaqmv8_in inbound
+route-policy POLICY_NAME permit node 10   
+ipv4-family vpn-instance vpnv4 unicast
+area 0
+interface TenGigE0/0/5/0
+isis 1 
+peer 100.10.10.10 connect-interface LoopBack 0
+isis 100
+apply community test_set_name additive
+import-route direct
+ area 0.0.0.0
+cost-style transition
+quit
+default-route-advertise type 1
+router-id 10.10.10.10
+dot1q termination vid 107
+ network-entity 49.0001.0010.0100.1001.00 
+if-match vlan-id 1
+import-route rip 1
+ accept-target-hello
+route-policy test_policy permit node 20
+apply extcommunity rt 100:2 additive
+ip community-filter 1 permit 37963:65517
+interface LoopBack0
+dot1q termination vid 99
+traffic classifier mark_exp1 operator or
+bgp 2860
+peer 2.2.2.2 capability-advertise add-path send receive
+mpls ldp sync
+min-rx-interval 15
+dampening route-policy rp1
+ip as-path-filter my-as-set permit ^.*$
+traffic policy mark_exp1
+ipv6 address 2015::18:105:16:32/128
+ target-peer accept from loopback
+maximum load-balancing 2
+area <area-id> nssa default-route-advertise
+timer lsp-refresh 65534
+destination 114.1.221.82
+isis cnc-core
+default-route-advertise always
+apply community 3489665689:3489665689
+ port link-type access
+peer 3.3.3.3 timer keepalive 30 hold 90
+mpls rsvp-te
+  if-match community-filter 1
+isis traffic-eng level-1-2
+ interface GigabitEthernet0/0/1/7
+import-route ospf 10 cost 30 route-policy rp1
+ip ip-prefix test_prefix index 10 permit 10.0.5.12 24 greater-equal 24 less-equal 30
+peer 2.2.2.2 next-hop-invariable
+rule 20 permit ip source 210.53.130.0 0.0.1.255 destination any
+vsi vpls17922 static   
+ ip address 10.135.247.49 255.255.255.252
+is-level level-2
+peer 212.31.216.217 timer 60 180
+maximum load-balancing ibgp 2
+ avoid-microloop frr-protected
+ apply community 26615:40001 26615:8040 26615:9041 additive
+apply cost-type internal
+interface Eth-Trunk 1.99
+ip as-path-filter test_set permit ".*(^| )65000( |$).*"
+interface GigabitEthernet0/3/1/15
+interface FastEthernet0/1
+ if-match tag 40001
+ interface GigabitEthernet0/4/0/4
+peer 10.10.10.10 timer keepalive 30 hold 120
+  apply community no-advertise
+mpls enable
+ip prefix-list test_prefix index 10 permit 10.0.5.12 24 greater-equal 26 less-equal 32
+traffic behavior HuaZhu-S2_aqaqmv8_out
+ip address 18.105.16.32 255.255.255.255
+peer 212.31.216.217 timer keepalive 60 hold 180
+peer rr-group reflect-client
+isis 11
+peer 2.2.2.2 capability-advertise add-path send
+if-match dscp 48
+ if-match tag 1000
+ipv6-family labeled-unicast
+ pwsignal ldp
+peer bj-NMS-IP route-policy deny-all import
+bridge-domain 513512209
+ isis enable
+ vrrp vrid 178 priority 110
+  domain identifier 26615:0.0.0.100
+mtu 1500
+ domain-id 14754
+ip route-static 1.34.140.166 255.255.255.255 NULL0 description 5094
+ set-overload-bit on-startup 360
+timer spf 60000 60
+action tag 413
+interface GigabitEthernet 0/0/0.107
+ ipv4-family vpn-instance BNL
+preference 2000
+graceful-restart timer recovery 120
+import-route ospf 10 cost 30
+ip address unnumbered interface LoopBack0
+remark ip-precedence 0
+network-entity 88.8888.8888.8888.2181.0501.8020.00
+cost-style narrow

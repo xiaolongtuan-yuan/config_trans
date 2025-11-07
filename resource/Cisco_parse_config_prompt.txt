@@ -1,0 +1,74 @@
+The Cisco configuration is parsed into JSON according to the following format, each configuration command is treated as a node, the key of the node is the configuration command itself, and the value is the parsed JSON structure.
+The following information is extracted during parsing:
+- **template** : A common format for configuration commands
+- **command** : Concrete command examples
+- **explanation** : The explanation of the command
+- **parameters** : A list of parameters, each containing:
+  - **name** : The parameter name
+  - **type** : The type of the parameter
+  - **explanation** : explanation of the parameters
+
+if the command contains a child configuration, it is nested as its child node and parsed in the same way.
+
+### Example:
+#### config:
+hostname DeviceA
+
+interface GigabitEthernet1/0/0
+    no shutdown
+    ip address 1.1.1.1 255.0.0.0
+
+#### for JSON：
+{
+  "hostname DeviceA": {
+    "template": "hostname [parameter1]",
+    "command": "hostname DeviceA",
+    "explanation": "Set the device host name to 'DeviceA'",
+    "parameters": [
+      {
+        "name": "host name",
+        "type": "string",
+        "explanation": "the hostname of this device"
+      }
+    ]
+  },
+  "interface GigabitEthernet1/0/0": {
+    "template": "interface [parameter1]",
+    "command": "interface GigabitEthernet1/0/0",
+    "explanation": "Configure interface 'GigabitEthernet1/0/0",
+    "parameters": [
+      {
+        "name": "interface name",
+        "type": "string",
+        "explanation": "interface name"
+      }
+    ],
+    "no shutdown": {
+      "template": "no shutdown",
+      "command": "no shutdown",
+      "explanation": "Enable the interface (the interface is disabled by default)",
+      "parameters": []
+    },
+    "ip address 1.1.1.1 255.0.0.0": {
+      "template": "ip address [parameter1] [parameter2]",
+      "command": "ip address 1.1.1.1 255.0.0.0",
+      "explanation": "The IPv4 address of the configuration interface is 1.1.1.1, and the subnet mask is 255.0.0.0",
+      "parameters": [
+        {
+          "name": "ip address",
+          "type": "IPv4",
+          "explanation": "IPv4 address"
+        },
+        {
+          "name": "subnet mask",
+          "type": "IPv4",
+          "explanation": "subnet mask"
+        }
+      ]
+    }
+  }
+}
+
+### Task:
+Please convert the following configuration to JSON and output it directly in JSON format:
+{Config command}

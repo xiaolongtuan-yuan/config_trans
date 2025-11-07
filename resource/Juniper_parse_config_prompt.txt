@@ -1,0 +1,60 @@
+Please parse the Juniper configuration into JSON in the following format. Each configuration command corresponds to a node one by one.
+The key of the node is the configuration command itself, and the value is the parsed JSON structure. The following information needs to be extracted during the parsing:
+- **template**: The common format of configuration commands
+- **command**: Specific command examples
+- **explanation**: Explanation of commands
+- **parameters**: List of parameters. Each parameter needs to include:
+    - **name**: Parameter name
+    - **type**: Parameter type
+    - **explanation**: Parameter explanation
+
+### Example:
+#### Configuration command:
+set system host-name Hub
+set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.10/24
+
+#### for JSON：
+{
+  "set system host-name Hub": {
+    "template": "set system host-name [parameter1]",
+    "command": "set system host-name Hub",
+    "explanation": "Configure the hostname of the device.",
+    "parameters": [
+      {
+        "name": "hostname",
+        "type": "string",
+        "explanation": "The hostname of the device, used to identify the device in the network."
+      }
+    ]
+  },
+  "set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.10/24": {
+    "template": "set interfaces [parameter1] unit [parameter2] family inet address [parameter3]/[parameter4]",
+    "command": "set interfaces ge-1/0/0 unit 0 family inet address 10.1.1.10/24",
+    "explanation": "Configure the IPv4 address and subnet mask of the interface.",
+    "parameters": [
+      {
+        "name": "interface",
+        "type": "string",
+        "explanation": "nterface names, such as ge-1/0/0."
+      },
+      {
+        "name": "unit",
+        "type": "integer",
+        "explanation": "The interface unit number is used to distinguish multiple logical configurations under the same interface."
+      },
+      {
+        "name": "ip-address",
+        "type": "string",
+        "explanation": "The IPv4 address assigned to the interface."
+      },
+      {
+        "name": "subnet-mask",
+        "type": "integer",
+        "explanation": "The number of bits of the IPv4 subnet mask."
+      }
+    ]
+  }
+}
+### Task:
+Please convert the following configuration to JSON and output it directly in JSON format:
+{Config command}

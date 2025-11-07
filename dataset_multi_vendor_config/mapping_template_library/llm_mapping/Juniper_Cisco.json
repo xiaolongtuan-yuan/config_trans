@@ -1,0 +1,74 @@
+{
+    "set class-of-service forwarding-classes queue 1 af1": [
+        "class af1"
+    ],
+    "set class-of-service classifiers dscp": [
+        "set dscp af11"
+    ],
+    "set policy-options policy-statement EXPORT-DIRECT": [
+        "neighbor 172.16.2.2 remote-as 300"
+    ],
+    "set protocols isis interface ge-1/0/0.0": [
+        "isis network point-to-point"
+    ],
+    "set protocols isis interface ge-2/0/0.0": [
+        "isis network point-to-point"
+    ],
+    "set policy-options policy-statement BGP-NETWORKS": [
+        "neighbor 10.1.1.2 activate",
+        "neighbor 10.1.1.2 remote-as 100",
+        "network 10.1.1.0 mask 255.255.255.0"
+    ],
+    "set protocols igmp interface ge-1/0/1": [
+        "ip igmp version 3"
+    ],
+    "set access address-assignment pool pool1": [
+        "network 10.82.0.0 255.255.255.0",
+        "default-router 10.82.0.1",
+        "ip dhcp pool pool1",
+        "dns-server 192.168.7.252"
+    ],
+    "set routing-options route-distinguisher-id 1.1.1.1": [
+        "bgp router-id 1.1.1.1"
+    ],
+    "set policy-options policy-statement RTC": [
+        "isis network point-to-point"
+    ],
+    "set class-of-service forwarding-classes queue 4 AF4": [
+        "match dscp af41"
+    ],
+    "set protocols lldp interface all": [
+        "lldp run"
+    ],
+    "set protocols lldp interface ge-1/0/1": [
+        "lldp management-address 10.10.10.2"
+    ],
+    "set policy-options policy-statement EXPORT-NETWORK": [
+        "neighbor 10.3.1.2 remote-as 100"
+    ],
+    "set protocols igmp interface ge-2/0/0.0": [
+        "ip igmp version 3"
+    ],
+    "set protocols rstp interface ge-1/0/1": [
+        "spanning-tree portfast"
+    ],
+    "set protocols rstp interface ge-1/0/2": [
+        "spanning-tree portfast"
+    ],
+    "set protocols oam cfm version 0": [
+        "ethernet cfm global"
+    ],
+    "set protocols ospf reference-bandwidth 10000m": [
+        "auto-cost reference-bandwidth 10000"
+    ],
+    "set protocols ospf export redistribute-bgp": [
+        "redistribute bgp 65420 subnets"
+    ],
+    "set system services ssh protocol-version v2": [
+        "ip ssh version 2"
+    ],
+    "set policy-options policy-statement EXPORT-POLICY": [
+        "neighbor 172.16.4.1 remote-as 65009",
+        "neighbor 172.16.5.2 remote-as 65009"
+    ]
+}
