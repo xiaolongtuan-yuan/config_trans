@@ -1,0 +1,251 @@
+{
+    "sysname SSH_Server": {
+        "template": "sysname [parameter1]",
+        "command": "sysname SSH_Server",
+        "explanation": "设置设备的主机名为 'SSH_Server'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "interface GigabitEthernet0/0/0": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet0/0/0",
+        "explanation": "选择接口 GigabitEthernet0/0/0 进行配置",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address 10.1.1.2 255.255.0.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.1.1.2 255.255.0.0",
+            "explanation": "配置接口的IPv4地址为 10.1.1.2，子网掩码为 255.255.0.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "sub mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        }
+    },
+    "rsa local-key-pair create 2048": {
+        "template": "rsa local-key-pair create [parameter1]",
+        "command": "rsa local-key-pair create 2048",
+        "explanation": "创建一个2048位的RSA本地密钥对",
+        "parameters": [
+            {
+                "name": "key size",
+                "type": "integer",
+                "explanation": "密钥长度（位数）"
+            }
+        ]
+    },
+    "pki realm TP": {
+        "template": "pki realm [parameter1]",
+        "command": "pki realm TP",
+        "explanation": "配置PKI实例外部CA",
+        "parameters": [
+            {
+                "name": "realm name",
+                "type": "string",
+                "explanation": "实例外部CA名称"
+            }
+        ],
+        "certificate self-signed": {
+            "template": "certificate self-signed",
+            "command": "certificate self-signed",
+            "explanation": "创建自签名证书",
+            "parameters": []
+        },
+        "common-name SSH_Server": {
+            "template": "common-name [parameter1]",
+            "command": "common-name SSH_Server",
+            "explanation": "设置通用名称为 'SSH_Server'",
+            "parameters": [
+                {
+                    "name": "common name",
+                    "type": "string",
+                    "explanation": "通用名称"
+                }
+            ]
+        }
+    },
+    "ssh server enable": {
+        "template": "ssh server enable",
+        "command": "ssh server enable",
+        "explanation": "启用SSH服务器",
+        "parameters": []
+    },
+    "ssh authentication-type default password": {
+        "template": "ssh authentication-type default [parameter1]",
+        "command": "ssh authentication-type default password",
+        "explanation": "设置默认的SSH身份验证类型为密码",
+        "parameters": [
+            {
+                "name": "authentication type",
+                "type": "string",
+                "explanation": "身份验证类型"
+            }
+        ]
+    },
+    "ssh user client001 authentication-type password": {
+        "template": "ssh user [parameter1] authentication-type [parameter2]",
+        "command": "ssh user client001 authentication-type password",
+        "explanation": "为用户 client001 设置SSH身份验证类型为密码",
+        "parameters": [
+            {
+                "name": "username",
+                "type": "string",
+                "explanation": "用户名"
+            },
+            {
+                "name": "authentication type",
+                "type": "string",
+                "explanation": "身份验证类型"
+            }
+        ]
+    },
+    "ssh user client001 service-type ssh": {
+        "template": "ssh user [parameter1] service-type [parameter2]",
+        "command": "ssh user client001 service-type ssh",
+        "explanation": "为用户 client001 设置服务类型为SSH",
+        "parameters": [
+            {
+                "name": "username",
+                "type": "string",
+                "explanation": "用户名"
+            },
+            {
+                "name": "service type",
+                "type": "string",
+                "explanation": "服务类型"
+            }
+        ]
+    },
+    "ssh user client001 level 3": {
+        "template": "ssh user [parameter1] level [parameter2]",
+        "command": "ssh user client001 level 3",
+        "explanation": "设置用户 client001 的权限级别为3",
+        "parameters": [
+            {
+                "name": "username",
+                "type": "string",
+                "explanation": "用户名"
+            },
+            {
+                "name": "level",
+                "type": "integer",
+                "explanation": "权限级别"
+            }
+        ]
+    },
+    "ssh user client002 authentication-type publickey": {
+        "template": "ssh user [parameter1] authentication-type [parameter2]",
+        "command": "ssh user client002 authentication-type publickey",
+        "explanation": "为用户 client002 设置SSH身份验证类型为公钥",
+        "parameters": [
+            {
+                "name": "username",
+                "type": "string",
+                "explanation": "用户名"
+            },
+            {
+                "name": "authentication type",
+                "type": "string",
+                "explanation": "身份验证类型"
+            }
+        ]
+    },
+    "ssh user client002 publickey sm2-key sm2key001": {
+        "template": "ssh user [parameter1] publickey [parameter2] [parameter3]",
+        "command": "ssh user client002 publickey sm2-key sm2key001",
+        "explanation": "为用户 client002 配置公钥，使用 sm2-key 类型，密钥名为 sm2key001",
+        "parameters": [
+            {
+                "name": "username",
+                "type": "string",
+                "explanation": "用户名"
+            },
+            {
+                "name": "key type",
+                "type": "string",
+                "explanation": "密钥类型"
+            },
+            {
+                "name": "key name",
+                "type": "string",
+                "explanation": "密钥名称"
+            }
+        ]
+    },
+    "ssh user client002 service-type ssh": {
+        "template": "ssh user [parameter1] service-type [parameter2]",
+        "command": "ssh user client002 service-type ssh",
+        "explanation": "为用户 client002 设置服务类型为SSH",
+        "parameters": [
+            {
+                "name": "username",
+                "type": "string",
+                "explanation": "用户名"
+            },
+            {
+                "name": "service type",
+                "type": "string",
+                "explanation": "服务类型"
+            }
+        ]
+    },
+    "scp server enable": {
+        "template": "scp server enable",
+        "command": "scp server enable",
+        "explanation": "启用SCP服务器",
+        "parameters": []
+    },
+    "user-interface vty 0 4": {
+        "template": "user-interface vty [parameter1] [parameter2]",
+        "command": "user-interface vty 0 4",
+        "explanation": "配置VTTY用户界面，端口范围从0到4",
+        "parameters": [
+            {
+                "name": "start port",
+                "type": "integer",
+                "explanation": "起始端口"
+            },
+            {
+                "name": "end port",
+                "type": "integer",
+                "explanation": "结束端口"
+            }
+        ],
+        "protocol inbound ssh": {
+            "template": "protocol inbound ssh",
+            "command": "protocol inbound ssh",
+            "explanation": "允许SSH协议的入站连接",
+            "parameters": []
+        },
+        "authentication-mode aaa": {
+            "template": "authentication-mode aaa",
+            "command": "authentication-mode aaa",
+            "explanation": "设置认证模式为AAA",
+            "parameters": []
+        }
+    }
+}

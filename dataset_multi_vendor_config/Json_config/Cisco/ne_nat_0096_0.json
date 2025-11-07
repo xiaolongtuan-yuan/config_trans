@@ -1,0 +1,277 @@
+{
+    "hostname NATA": {
+        "template": "hostname [parameter1]",
+        "command": "hostname NATA",
+        "explanation": "设置设备的主机名为 'NATA'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "vsm on-board-mode enable": {
+        "template": "vsm on-board-mode enable",
+        "command": "vsm on-board-mode enable",
+        "explanation": "启用虚拟交换矩阵（VSM）板载模式",
+        "parameters": []
+    },
+    "ip nat inside source list 1 interface GigabitEthernet1/0/1 overload": {
+        "template": "ip nat inside source list [parameter1] interface [parameter2] overload",
+        "command": "ip nat inside source list 1 interface GigabitEthernet1/0/1 overload",
+        "explanation": "配置NAT，使用访问控制列表1定义的内部地址，通过接口GigabitEthernet1/0/1进行地址转换，并启用overload（PAT）",
+        "parameters": [
+            {
+                "name": "access-list number",
+                "type": "integer",
+                "explanation": "访问控制列表编号"
+            },
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ]
+    },
+    "access-list 1 permit ip 192.168.10.0 0.0.0.255": {
+        "template": "access-list [parameter1] permit ip [parameter2] [parameter3]",
+        "command": "access-list 1 permit ip 192.168.10.0 0.0.0.255",
+        "explanation": "定义访问控制列表1，允许来自192.168.10.0/24网络的IP流量",
+        "parameters": [
+            {
+                "name": "access-list number",
+                "type": "integer",
+                "explanation": "访问控制列表编号"
+            },
+            {
+                "name": "source network",
+                "type": "IPv4",
+                "explanation": "源网络地址"
+            },
+            {
+                "name": "wildcard mask",
+                "type": "IPv4",
+                "explanation": "通配符掩码"
+            }
+        ]
+    },
+    "interface GigabitEthernet1/0/1": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/1",
+        "explanation": "配置接口 'GigabitEthernet1/0/1'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address 192.168.10.1 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 192.168.10.1 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 192.168.10.1，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "ip nat inside": {
+            "template": "ip nat inside",
+            "command": "ip nat inside",
+            "explanation": "配置接口为NAT内部接口",
+            "parameters": []
+        },
+        "ip policy route-map policy1": {
+            "template": "ip policy route-map [parameter1]",
+            "command": "ip policy route-map policy1",
+            "explanation": "应用路由映射策略 'policy1' 到接口",
+            "parameters": [
+                {
+                    "name": "route-map name",
+                    "type": "string",
+                    "explanation": "路由映射名称"
+                }
+            ]
+        }
+    },
+    "interface GigabitEthernet1/0/2": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/2",
+        "explanation": "配置接口 'GigabitEthernet1/0/2'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address 2.2.2.1 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 2.2.2.1 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 2.2.2.1，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "ip nat outside": {
+            "template": "ip nat outside",
+            "command": "ip nat outside",
+            "explanation": "配置接口为NAT外部接口",
+            "parameters": []
+        }
+    },
+    "ip route 0.0.0.0 0.0.0.0 2.2.2.2": {
+        "template": "ip route [parameter1] [parameter2] [parameter3]",
+        "command": "ip route 0.0.0.0 0.0.0.0 2.2.2.2",
+        "explanation": "配置默认路由，所有流量通过2.2.2.2转发",
+        "parameters": [
+            {
+                "name": "destination network",
+                "type": "IPv4",
+                "explanation": "目的网络地址"
+            },
+            {
+                "name": "destination mask",
+                "type": "IPv4",
+                "explanation": "目的网络掩码"
+            },
+            {
+                "name": "next hop",
+                "type": "IPv4",
+                "explanation": "下一跳地址"
+            }
+        ]
+    },
+    "access-list 100 permit ip any any": {
+        "template": "access-list [parameter1] permit ip [parameter2] [parameter3]",
+        "command": "access-list 100 permit ip any any",
+        "explanation": "定义访问控制列表100，允许所有IP流量",
+        "parameters": [
+            {
+                "name": "access-list number",
+                "type": "integer",
+                "explanation": "访问控制列表编号"
+            },
+            {
+                "name": "source",
+                "type": "keyword",
+                "explanation": "源地址，'any' 表示任意地址"
+            },
+            {
+                "name": "destination",
+                "type": "keyword",
+                "explanation": "目的地址，'any' 表示任意地址"
+            }
+        ]
+    },
+    "route-map policy1 permit 10": {
+        "template": "route-map [parameter1] [parameter2] [parameter3]",
+        "command": "route-map policy1 permit 10",
+        "explanation": "定义路由映射 'policy1'，序列号为10，操作为允许",
+        "parameters": [
+            {
+                "name": "route-map name",
+                "type": "string",
+                "explanation": "路由映射名称"
+            },
+            {
+                "name": "action",
+                "type": "keyword",
+                "explanation": "操作，'permit' 表示允许"
+            },
+            {
+                "name": "sequence number",
+                "type": "integer",
+                "explanation": "序列号"
+            }
+        ],
+        "match ip address 100": {
+            "template": "match ip address [parameter1]",
+            "command": "match ip address 100",
+            "explanation": "匹配访问控制列表100定义的IP地址",
+            "parameters": [
+                {
+                    "name": "access-list number",
+                    "type": "integer",
+                    "explanation": "访问控制列表编号"
+                }
+            ]
+        },
+        "set ip next-hop 1.1.1.100": {
+            "template": "set ip next-hop [parameter1]",
+            "command": "set ip next-hop 1.1.1.100",
+            "explanation": "设置下一跳地址为1.1.1.100",
+            "parameters": [
+                {
+                    "name": "next hop",
+                    "type": "IPv4",
+                    "explanation": "下一跳地址"
+                }
+            ]
+        }
+    },
+    "router ospf 1": {
+        "template": "router ospf [parameter1]",
+        "command": "router ospf 1",
+        "explanation": "启用OSPF进程1",
+        "parameters": [
+            {
+                "name": "process ID",
+                "type": "integer",
+                "explanation": "OSPF进程ID"
+            }
+        ],
+        "network 2.2.2.0 0.0.0.255 area 0": {
+            "template": "network [parameter1] [parameter2] area [parameter3]",
+            "command": "network 2.2.2.0 0.0.0.255 area 0",
+            "explanation": "在OSPF进程1中宣告网络2.2.2.0/24到区域0",
+            "parameters": [
+                {
+                    "name": "network address",
+                    "type": "IPv4",
+                    "explanation": "网络地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                },
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "区域号"
+                }
+            ]
+        }
+    }
+}

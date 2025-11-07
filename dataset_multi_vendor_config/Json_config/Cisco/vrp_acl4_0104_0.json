@@ -1,0 +1,316 @@
+{
+    "hostname Router": {
+        "template": "hostname [parameter1]",
+        "command": "hostname Router",
+        "explanation": "设置设备的主机名为 'Router'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "vlan 10": {
+        "template": "vlan [parameter1]",
+        "command": "vlan 10",
+        "explanation": "创建 VLAN 10",
+        "parameters": [
+            {
+                "name": "VLAN ID",
+                "type": "integer",
+                "explanation": "VLAN 编号"
+            }
+        ]
+    },
+    "vlan 20": {
+        "template": "vlan [parameter1]",
+        "command": "vlan 20",
+        "explanation": "创建 VLAN 20",
+        "parameters": [
+            {
+                "name": "VLAN ID",
+                "type": "integer",
+                "explanation": "VLAN 编号"
+            }
+        ]
+    },
+    "access-list 3001 deny ip 10.1.1.0 0.0.0.255 10.1.2.0 0.0.0.255": {
+        "template": "access-list [parameter1] deny ip [parameter2] [parameter3] [parameter4] [parameter5]",
+        "command": "access-list 3001 deny ip 10.1.1.0 0.0.0.255 10.1.2.0 0.0.0.255",
+        "explanation": "创建访问控制列表 3001，拒绝从 10.1.1.0/24 到 10.1.2.0/24 的 IP 流量",
+        "parameters": [
+            {
+                "name": "access-list number",
+                "type": "integer",
+                "explanation": "访问控制列表编号"
+            },
+            {
+                "name": "source network",
+                "type": "IPv4",
+                "explanation": "源网络地址"
+            },
+            {
+                "name": "source wildcard mask",
+                "type": "IPv4",
+                "explanation": "源网络通配符掩码"
+            },
+            {
+                "name": "destination network",
+                "type": "IPv4",
+                "explanation": "目的网络地址"
+            },
+            {
+                "name": "destination wildcard mask",
+                "type": "IPv4",
+                "explanation": "目的网络通配符掩码"
+            }
+        ]
+    },
+    "access-list 3002 deny ip 10.1.2.0 0.0.0.255 10.1.1.0 0.0.0.255": {
+        "template": "access-list [parameter1] deny ip [parameter2] [parameter3] [parameter4] [parameter5]",
+        "command": "access-list 3002 deny ip 10.1.2.0 0.0.0.255 10.1.1.0 0.0.0.255",
+        "explanation": "创建访问控制列表 3002，拒绝从 10.1.2.0/24 到 10.1.1.0/24 的 IP 流量",
+        "parameters": [
+            {
+                "name": "access-list number",
+                "type": "integer",
+                "explanation": "访问控制列表编号"
+            },
+            {
+                "name": "source network",
+                "type": "IPv4",
+                "explanation": "源网络地址"
+            },
+            {
+                "name": "source wildcard mask",
+                "type": "IPv4",
+                "explanation": "源网络通配符掩码"
+            },
+            {
+                "name": "destination network",
+                "type": "IPv4",
+                "explanation": "目的网络地址"
+            },
+            {
+                "name": "destination wildcard mask",
+                "type": "IPv4",
+                "explanation": "目的网络通配符掩码"
+            }
+        ]
+    },
+    "class-map match-any cm1": {
+        "template": "class-map match-any [parameter1]",
+        "command": "class-map match-any cm1",
+        "explanation": "创建类映射 cm1，匹配任一条件",
+        "parameters": [
+            {
+                "name": "class-map name",
+                "type": "string",
+                "explanation": "类映射名称"
+            }
+        ],
+        "match access-group 3001": {
+            "template": "match access-group [parameter1]",
+            "command": "match access-group 3001",
+            "explanation": "匹配访问控制列表 3001",
+            "parameters": [
+                {
+                    "name": "access-list number",
+                    "type": "integer",
+                    "explanation": "访问控制列表编号"
+                }
+            ]
+        },
+        "match access-group 3002": {
+            "template": "match access-group [parameter1]",
+            "command": "match access-group 3002",
+            "explanation": "匹配访问控制列表 3002",
+            "parameters": [
+                {
+                    "name": "access-list number",
+                    "type": "integer",
+                    "explanation": "访问控制列表编号"
+                }
+            ]
+        }
+    },
+    "policy-map pm1": {
+        "template": "policy-map [parameter1]",
+        "command": "policy-map pm1",
+        "explanation": "创建策略映射 pm1",
+        "parameters": [
+            {
+                "name": "policy-map name",
+                "type": "string",
+                "explanation": "策略映射名称"
+            }
+        ],
+        "class cm1": {
+            "template": "class [parameter1]",
+            "command": "class cm1",
+            "explanation": "应用类映射 cm1",
+            "parameters": [
+                {
+                    "name": "class-map name",
+                    "type": "string",
+                    "explanation": "类映射名称"
+                }
+            ],
+            "drop": {
+                "template": "drop",
+                "command": "drop",
+                "explanation": "丢弃匹配的流量",
+                "parameters": []
+            }
+        }
+    },
+    "interface Vlan10": {
+        "template": "interface [parameter1]",
+        "command": "interface Vlan10",
+        "explanation": "配置 VLAN 10 接口",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "ip address 10.1.1.1 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.1.1.1 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 10.1.1.1，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        }
+    },
+    "interface Vlan20": {
+        "template": "interface [parameter1]",
+        "command": "interface Vlan20",
+        "explanation": "配置 VLAN 20 接口",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "ip address 10.1.2.1 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.1.2.1 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 10.1.2.1，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        }
+    },
+    "interface GigabitEthernet1/0/0": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "配置接口 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "switchport mode trunk": {
+            "template": "switchport mode trunk",
+            "command": "switchport mode trunk",
+            "explanation": "将接口模式设置为 trunk",
+            "parameters": []
+        },
+        "switchport trunk allowed vlan 10": {
+            "template": "switchport trunk allowed vlan [parameter1]",
+            "command": "switchport trunk allowed vlan 10",
+            "explanation": "允许 VLAN 10 通过 trunk 接口",
+            "parameters": [
+                {
+                    "name": "VLAN ID",
+                    "type": "integer",
+                    "explanation": "VLAN 编号"
+                }
+            ]
+        },
+        "service-policy input pm1": {
+            "template": "service-policy input [parameter1]",
+            "command": "service-policy input pm1",
+            "explanation": "在接口的输入方向应用策略映射 pm1",
+            "parameters": [
+                {
+                    "name": "policy-map name",
+                    "type": "string",
+                    "explanation": "策略映射名称"
+                }
+            ]
+        }
+    },
+    "interface GigabitEthernet2/0/0": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet2/0/0",
+        "explanation": "配置接口 'GigabitEthernet2/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "switchport mode trunk": {
+            "template": "switchport mode trunk",
+            "command": "switchport mode trunk",
+            "explanation": "将接口模式设置为 trunk",
+            "parameters": []
+        },
+        "switchport trunk allowed vlan 20": {
+            "template": "switchport trunk allowed vlan [parameter1]",
+            "command": "switchport trunk allowed vlan 20",
+            "explanation": "允许 VLAN 20 通过 trunk 接口",
+            "parameters": [
+                {
+                    "name": "VLAN ID",
+                    "type": "integer",
+                    "explanation": "VLAN 编号"
+                }
+            ]
+        },
+        "service-policy input pm1": {
+            "template": "service-policy input [parameter1]",
+            "command": "service-policy input pm1",
+            "explanation": "在接口的输入方向应用策略映射 pm1",
+            "parameters": [
+                {
+                    "name": "policy-map name",
+                    "type": "string",
+                    "explanation": "策略映射名称"
+                }
+            ]
+        }
+    },
+    "end": {
+        "template": "end",
+        "command": "end",
+        "explanation": "退出配置模式",
+        "parameters": []
+    }
+}

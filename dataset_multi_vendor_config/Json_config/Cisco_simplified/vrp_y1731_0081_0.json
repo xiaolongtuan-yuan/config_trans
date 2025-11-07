@@ -1,0 +1,185 @@
+{
+    "hostname [parameter1]": {
+        "template": "hostname [parameter1]",
+        "command": "hostname CE1",
+        "explanation": "设置设备的主机名为 'CE1'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "cfm": {
+        "template": "cfm",
+        "command": "cfm",
+        "explanation": "进入 CFM（Connectivity Fault Management）配置模式",
+        "parameters": []
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0.1",
+        "explanation": "配置子接口 'GigabitEthernet1/0/0.1'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "子接口名"
+            }
+        ],
+        "encapsulation dot1q [parameter1]": {
+            "template": "encapsulation dot1q [parameter1]",
+            "command": "encapsulation dot1q 1",
+            "explanation": "配置子接口的封装类型为 dot1q，VLAN ID 为 1",
+            "parameters": [
+                {
+                    "name": "VLAN ID",
+                    "type": "integer",
+                    "explanation": "VLAN ID"
+                }
+            ]
+        },
+        "cfm mep domain [parameter1] ma [parameter2] id [parameter3]": {
+            "template": "cfm mep domain [parameter1] ma [parameter2] id [parameter3]",
+            "command": "cfm mep domain md1 ma ma1 id 1",
+            "explanation": "在子接口上配置 CFM MEP（Maintenance End Point），域名为 md1，MA（Maintenance Association）为 ma1，MEP ID 为 1",
+            "parameters": [
+                {
+                    "name": "domain name",
+                    "type": "string",
+                    "explanation": "域名"
+                },
+                {
+                    "name": "MA name",
+                    "type": "string",
+                    "explanation": "MA 名称"
+                },
+                {
+                    "name": "MEP ID",
+                    "type": "integer",
+                    "explanation": "MEP ID"
+                }
+            ]
+        },
+        "ethernet cfm mep receive md [parameter1] ma [parameter2] mep [parameter3]": {
+            "template": "ethernet cfm mep receive md [parameter1] ma [parameter2] mep [parameter3]",
+            "command": "ethernet cfm mep receive md md1 ma ma1 mep 1",
+            "explanation": "配置子接口接收来自指定域 md1、MA ma1、MEP ID 1 的 CFM 消息",
+            "parameters": [
+                {
+                    "name": "domain name",
+                    "type": "string",
+                    "explanation": "域名"
+                },
+                {
+                    "name": "MA name",
+                    "type": "string",
+                    "explanation": "MA 名称"
+                },
+                {
+                    "name": "MEP ID",
+                    "type": "integer",
+                    "explanation": "MEP ID"
+                }
+            ]
+        }
+    },
+    "policy-map [parameter1]": {
+        "template": "policy-map [parameter1]",
+        "command": "policy-map qos-profile-1",
+        "explanation": "创建或进入名为 'qos-profile-1' 的策略映射配置模式",
+        "parameters": [
+            {
+                "name": "policy map name",
+                "type": "string",
+                "explanation": "策略映射名称"
+            }
+        ],
+        "class [parameter1]": {
+            "template": "class [parameter1]",
+            "command": "class class-default",
+            "explanation": "进入默认类配置模式",
+            "parameters": [
+                {
+                    "name": "class name",
+                    "type": "string",
+                    "explanation": "类名称"
+                }
+            ],
+            "police cir [parameter1] pir [parameter2] conform-action [parameter3] exceed-action [parameter4]": {
+                "template": "police cir [parameter1] pir [parameter2] conform-action [parameter3] exceed-action [parameter4]",
+                "command": "police cir 10000 pir 12000 conform-action transmit exceed-action drop",
+                "explanation": "配置流量监管，承诺信息速率为 10000，峰值信息速率为 12000，符合速率的流量传输，超出速率的流量丢弃",
+                "parameters": [
+                    {
+                        "name": "CIR",
+                        "type": "integer",
+                        "explanation": "承诺信息速率"
+                    },
+                    {
+                        "name": "PIR",
+                        "type": "integer",
+                        "explanation": "峰值信息速率"
+                    },
+                    {
+                        "name": "conform action",
+                        "type": "string",
+                        "explanation": "符合速率的动作"
+                    },
+                    {
+                        "name": "exceed action",
+                        "type": "string",
+                        "explanation": "超出速率的动作"
+                    }
+                ]
+            }
+        }
+    },
+    "service-policy [parameter1] [parameter2]": {
+        "template": "service-policy [parameter1] [parameter2]",
+        "command": "service-policy output qos-profile-1",
+        "explanation": "将策略映射 'qos-profile-1' 应用到接口的输出方向",
+        "parameters": [
+            {
+                "name": "direction",
+                "type": "string",
+                "explanation": "方向"
+            },
+            {
+                "name": "policy map name",
+                "type": "string",
+                "explanation": "策略映射名称"
+            }
+        ]
+    },
+    "cfm md [parameter1]": {
+        "template": "cfm md [parameter1]",
+        "command": "cfm md md1",
+        "explanation": "创建或进入名为 'md1' 的 CFM 域配置模式",
+        "parameters": [
+            {
+                "name": "domain name",
+                "type": "string",
+                "explanation": "域名"
+            }
+        ]
+    },
+    "cfm ma [parameter1] md [parameter2]": {
+        "template": "cfm ma [parameter1] md [parameter2]",
+        "command": "cfm ma ma1 md md1",
+        "explanation": "创建或进入名为 'ma1' 的 CFM MA 配置模式，并关联到域 'md1'",
+        "parameters": [
+            {
+                "name": "MA name",
+                "type": "string",
+                "explanation": "MA 名称"
+            },
+            {
+                "name": "domain name",
+                "type": "string",
+                "explanation": "域名"
+            }
+        ]
+    }
+}

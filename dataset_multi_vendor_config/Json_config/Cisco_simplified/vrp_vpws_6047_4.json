@@ -1,0 +1,246 @@
+{
+    "hostname [parameter1]": {
+        "template": "hostname [parameter1]",
+        "command": "hostname PE2",
+        "explanation": "设置设备的主机名为 'PE2'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "mpls label protocol [parameter1]": {
+        "template": "mpls label protocol [parameter1]",
+        "command": "mpls label protocol ldp",
+        "explanation": "配置 MPLS 标签分发协议为 LDP",
+        "parameters": [
+            {
+                "name": "protocol",
+                "type": "string",
+                "explanation": "标签分发协议"
+            }
+        ]
+    },
+    "mpls ldp router-id [parameter1]": {
+        "template": "mpls ldp router-id [parameter1]",
+        "command": "mpls ldp router-id Loopback1",
+        "explanation": "配置 MPLS LDP 的路由器 ID 为 Loopback1 接口的 IP 地址",
+        "parameters": [
+            {
+                "name": "router-id",
+                "type": "string",
+                "explanation": "路由器 ID"
+            }
+        ]
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "配置接口 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.30.1.2 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 10.30.1.2，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "mpls ip": {
+            "template": "mpls ip",
+            "command": "mpls ip",
+            "explanation": "在接口上启用 MPLS IP 转发",
+            "parameters": []
+        },
+        "mpls l2transport vc [parameter1] remote-peer [parameter2]": {
+            "template": "mpls l2transport vc [parameter1] remote-peer [parameter2]",
+            "command": "mpls l2transport vc 100 remote-peer 1.1.1.1",
+            "explanation": "配置 MPLS L2VPN 的虚拟电路 ID 为 100，远程对等体为 1.1.1.1",
+            "parameters": [
+                {
+                    "name": "vc id",
+                    "type": "integer",
+                    "explanation": "虚拟电路 ID"
+                },
+                {
+                    "name": "remote peer",
+                    "type": "IPv4",
+                    "explanation": "远程对等体 IP 地址"
+                }
+            ]
+        }
+    },
+    "router bgp [parameter1]": {
+        "template": "router bgp [parameter1]",
+        "command": "router bgp 200",
+        "explanation": "配置 BGP 进程，AS 号为 200",
+        "parameters": [
+            {
+                "name": "AS number",
+                "type": "integer",
+                "explanation": "自治系统号"
+            }
+        ],
+        "neighbor [parameter1] remote-as [parameter2]": {
+            "template": "neighbor [parameter1] remote-as [parameter2]",
+            "command": "neighbor 1.1.1.1 remote-as 100",
+            "explanation": "配置 BGP 邻居 1.1.1.1，远程 AS 号为 100",
+            "parameters": [
+                {
+                    "name": "neighbor ip",
+                    "type": "IPv4",
+                    "explanation": "邻居 IP 地址"
+                },
+                {
+                    "name": "remote AS",
+                    "type": "integer",
+                    "explanation": "远程自治系统号"
+                }
+            ]
+        },
+        "neighbor [parameter1] ebgp-multihop [parameter2]": {
+            "template": "neighbor [parameter1] ebgp-multihop [parameter2]",
+            "command": "neighbor 1.1.1.1 ebgp-multihop 255",
+            "explanation": "配置 BGP 邻居 1.1.1.1 的 EBGP 多跳为 255",
+            "parameters": [
+                {
+                    "name": "neighbor ip",
+                    "type": "IPv4",
+                    "explanation": "邻居 IP 地址"
+                },
+                {
+                    "name": "ttl",
+                    "type": "integer",
+                    "explanation": "生存时间"
+                }
+            ]
+        },
+        "neighbor [parameter1] update-source [parameter2]": {
+            "template": "neighbor [parameter1] update-source [parameter2]",
+            "command": "neighbor 1.1.1.1 update-source Loopback1",
+            "explanation": "配置 BGP 邻居 1.1.1.1 的更新源为 Loopback1 接口",
+            "parameters": [
+                {
+                    "name": "neighbor ip",
+                    "type": "IPv4",
+                    "explanation": "邻居 IP 地址"
+                },
+                {
+                    "name": "update source",
+                    "type": "string",
+                    "explanation": "更新源接口"
+                }
+            ]
+        },
+        "address-family [parameter1]": {
+            "template": "address-family [parameter1]",
+            "command": "address-family ipv4",
+            "explanation": "进入 IPv4 地址族配置模式",
+            "parameters": [
+                {
+                    "name": "address family",
+                    "type": "string",
+                    "explanation": "地址族"
+                }
+            ],
+            "no synchronization": {
+                "template": "no synchronization",
+                "command": "no synchronization",
+                "explanation": "禁用 BGP 同步",
+                "parameters": []
+            },
+            "neighbor [parameter1] activate": {
+                "template": "neighbor [parameter1] activate",
+                "command": "neighbor 1.1.1.1 activate",
+                "explanation": "激活 BGP 邻居 1.1.1.1 的 IPv4 地址族",
+                "parameters": [
+                    {
+                        "name": "neighbor ip",
+                        "type": "IPv4",
+                        "explanation": "邻居 IP 地址"
+                    }
+                ]
+            },
+            "neighbor [parameter1] capability [parameter2]": {
+                "template": "neighbor [parameter1] capability [parameter2]",
+                "command": "neighbor 3.3.3.3 capability dynamic-label-binding",
+                "explanation": "配置 BGP 邻居 3.3.3.3 支持动态标签绑定",
+                "parameters": [
+                    {
+                        "name": "neighbor ip",
+                        "type": "IPv4",
+                        "explanation": "邻居 IP 地址"
+                    },
+                    {
+                        "name": "capability",
+                        "type": "string",
+                        "explanation": "能力"
+                    }
+                ]
+            }
+        }
+    },
+    "router ospf [parameter1]": {
+        "template": "router ospf [parameter1]",
+        "command": "router ospf 1",
+        "explanation": "配置 OSPF 进程，进程 ID 为 1",
+        "parameters": [
+            {
+                "name": "process id",
+                "type": "integer",
+                "explanation": "进程 ID"
+            }
+        ],
+        "network [parameter1] [parameter2] area [parameter3]": {
+            "template": "network [parameter1] [parameter2] area [parameter3]",
+            "command": "network 4.4.4.4 0.0.0.0 area 0",
+            "explanation": "将 IP 地址 4.4.4.4 配置到 OSPF 区域 0",
+            "parameters": [
+                {
+                    "name": "network",
+                    "type": "IPv4",
+                    "explanation": "网络地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                },
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "区域号"
+                }
+            ]
+        }
+    },
+    "end": {
+        "template": "end",
+        "command": "end",
+        "explanation": "退出配置模式",
+        "parameters": []
+    }
+}

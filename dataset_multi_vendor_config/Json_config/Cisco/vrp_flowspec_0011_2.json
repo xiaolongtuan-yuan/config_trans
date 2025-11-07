@@ -1,0 +1,401 @@
+{
+    "hostname DeviceC": {
+        "template": "hostname [parameter1]",
+        "command": "hostname DeviceC",
+        "explanation": "设置设备的主机名为 'DeviceC'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "interface GigabitEthernet1/0/0": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "配置接口 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address 10.2.1.2 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.2.1.2 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 10.2.1.2，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "ip flow ingress": {
+            "template": "ip flow ingress",
+            "command": "ip flow ingress",
+            "explanation": "启用接口的入方向流量采集",
+            "parameters": []
+        },
+        "ip flow egress": {
+            "template": "ip flow egress",
+            "command": "ip flow egress",
+            "explanation": "启用接口的出方向流量采集",
+            "parameters": []
+        },
+        "ip policy route-map FlowSpec1": {
+            "template": "ip policy route-map [parameter1]",
+            "command": "ip policy route-map FlowSpec1",
+            "explanation": "在接口上应用路由映射 'FlowSpec1'",
+            "parameters": [
+                {
+                    "name": "route-map name",
+                    "type": "string",
+                    "explanation": "路由映射名称"
+                }
+            ]
+        }
+    },
+    "interface Loopback1": {
+        "template": "interface [parameter1]",
+        "command": "interface Loopback1",
+        "explanation": "配置接口 'Loopback1'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "ip address 3.3.3.3 255.255.255.255": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 3.3.3.3 255.255.255.255",
+            "explanation": "配置接口的 IPv4 地址为 3.3.3.3，子网掩码为 255.255.255.255",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        }
+    },
+    "router bgp 200": {
+        "template": "router bgp [parameter1]",
+        "command": "router bgp 200",
+        "explanation": "配置 BGP 进程，AS 号为 200",
+        "parameters": [
+            {
+                "name": "AS number",
+                "type": "integer",
+                "explanation": "自治系统号"
+            }
+        ],
+        "bgp router-id 3.3.3.3": {
+            "template": "bgp router-id [parameter1]",
+            "command": "bgp router-id 3.3.3.3",
+            "explanation": "设置 BGP 路由器的 ID 为 3.3.3.3",
+            "parameters": [
+                {
+                    "name": "router-id",
+                    "type": "IPv4",
+                    "explanation": "路由器 ID"
+                }
+            ]
+        },
+        "neighbor 2.2.2.2 remote-as 200": {
+            "template": "neighbor [parameter1] remote-as [parameter2]",
+            "command": "neighbor 2.2.2.2 remote-as 200",
+            "explanation": "配置 BGP 邻居，IP 地址为 2.2.2.2，AS 号为 200",
+            "parameters": [
+                {
+                    "name": "neighbor ip",
+                    "type": "IPv4",
+                    "explanation": "邻居 IP 地址"
+                },
+                {
+                    "name": "AS number",
+                    "type": "integer",
+                    "explanation": "自治系统号"
+                }
+            ]
+        },
+        "neighbor 2.2.2.2 update-source Loopback1": {
+            "template": "neighbor [parameter1] update-source [parameter2]",
+            "command": "neighbor 2.2.2.2 update-source Loopback1",
+            "explanation": "设置 BGP 更新源为接口 Loopback1",
+            "parameters": [
+                {
+                    "name": "neighbor ip",
+                    "type": "IPv4",
+                    "explanation": "邻居 IP 地址"
+                },
+                {
+                    "name": "source interface",
+                    "type": "string",
+                    "explanation": "源接口"
+                }
+            ]
+        },
+        "address-family ipv4 unicast": {
+            "template": "address-family ipv4 unicast",
+            "command": "address-family ipv4 unicast",
+            "explanation": "进入 IPv4 单播地址族配置模式",
+            "parameters": [],
+            "neighbor 2.2.2.2 activate": {
+                "template": "neighbor [parameter1] activate",
+                "command": "neighbor 2.2.2.2 activate",
+                "explanation": "激活邻居 2.2.2.2 的 IPv4 单播地址族",
+                "parameters": [
+                    {
+                        "name": "neighbor ip",
+                        "type": "IPv4",
+                        "explanation": "邻居 IP 地址"
+                    }
+                ]
+            },
+            "neighbor 2.2.2.2 next-hop-self": {
+                "template": "neighbor [parameter1] next-hop-self",
+                "command": "neighbor 2.2.2.2 next-hop-self",
+                "explanation": "设置向邻居 2.2.2.2 通告路由时，下一跳为自己",
+                "parameters": [
+                    {
+                        "name": "neighbor ip",
+                        "type": "IPv4",
+                        "explanation": "邻居 IP 地址"
+                    }
+                ]
+            },
+            "no synchronization": {
+                "template": "no synchronization",
+                "command": "no synchronization",
+                "explanation": "关闭 BGP 同步",
+                "parameters": []
+            },
+            "redistribute connected": {
+                "template": "redistribute connected",
+                "command": "redistribute connected",
+                "explanation": "重分发直连路由到 BGP",
+                "parameters": []
+            },
+            "exit-address-family": {
+                "template": "exit-address-family",
+                "command": "exit-address-family",
+                "explanation": "退出地址族配置模式",
+                "parameters": []
+            }
+        },
+        "address-family ipv4 flow": {
+            "template": "address-family ipv4 flow",
+            "command": "address-family ipv4 flow",
+            "explanation": "进入 IPv4 流地址族配置模式",
+            "parameters": [],
+            "neighbor 2.2.2.2 activate": {
+                "template": "neighbor [parameter1] activate",
+                "command": "neighbor 2.2.2.2 activate",
+                "explanation": "激活邻居 2.2.2.2 的 IPv4 流地址族",
+                "parameters": [
+                    {
+                        "name": "neighbor ip",
+                        "type": "IPv4",
+                        "explanation": "邻居 IP 地址"
+                    }
+                ]
+            },
+            "exit-address-family": {
+                "template": "exit-address-family",
+                "command": "exit-address-family",
+                "explanation": "退出地址族配置模式",
+                "parameters": []
+            }
+        }
+    },
+    "router ospf 1": {
+        "template": "router ospf [parameter1]",
+        "command": "router ospf 1",
+        "explanation": "配置 OSPF 进程，进程号为 1",
+        "parameters": [
+            {
+                "name": "process id",
+                "type": "integer",
+                "explanation": "进程号"
+            }
+        ],
+        "network 3.3.3.3 0.0.0.0 area 0": {
+            "template": "network [parameter1] [parameter2] area [parameter3]",
+            "command": "network 3.3.3.3 0.0.0.0 area 0",
+            "explanation": "将 IP 地址 3.3.3.3 的网络加入到 OSPF 区域 0",
+            "parameters": [
+                {
+                    "name": "network address",
+                    "type": "IPv4",
+                    "explanation": "网络地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                },
+                {
+                    "name": "area id",
+                    "type": "integer",
+                    "explanation": "区域 ID"
+                }
+            ]
+        },
+        "network 10.2.1.0 0.0.0.255 area 0": {
+            "template": "network [parameter1] [parameter2] area [parameter3]",
+            "command": "network 10.2.1.0 0.0.0.255 area 0",
+            "explanation": "将 IP 地址 10.2.1.0 的网络加入到 OSPF 区域 0",
+            "parameters": [
+                {
+                    "name": "network address",
+                    "type": "IPv4",
+                    "explanation": "网络地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                },
+                {
+                    "name": "area id",
+                    "type": "integer",
+                    "explanation": "区域 ID"
+                }
+            ]
+        }
+    },
+    "ip flow-export destination 2.2.2.2 9996": {
+        "template": "ip flow-export destination [parameter1] [parameter2]",
+        "command": "ip flow-export destination 2.2.2.2 9996",
+        "explanation": "配置 NetFlow 导出目的地址为 2.2.2.2，端口为 9996",
+        "parameters": [
+            {
+                "name": "destination ip",
+                "type": "IPv4",
+                "explanation": "目的 IP 地址"
+            },
+            {
+                "name": "port",
+                "type": "integer",
+                "explanation": "端口号"
+            }
+        ]
+    },
+    "ip flow-export version 9": {
+        "template": "ip flow-export version [parameter1]",
+        "command": "ip flow-export version 9",
+        "explanation": "配置 NetFlow 导出版本为 9",
+        "parameters": [
+            {
+                "name": "version",
+                "type": "integer",
+                "explanation": "版本号"
+            }
+        ]
+    },
+    "access-list 100 permit tcp any any eq 159": {
+        "template": "access-list [parameter1] permit [parameter2] [parameter3] [parameter4] eq [parameter5]",
+        "command": "access-list 100 permit tcp any any eq 159",
+        "explanation": "配置访问控制列表 100，允许任何源地址到任何目的地址的 TCP 端口 159 的流量",
+        "parameters": [
+            {
+                "name": "access-list number",
+                "type": "integer",
+                "explanation": "访问控制列表号"
+            },
+            {
+                "name": "protocol",
+                "type": "string",
+                "explanation": "协议"
+            },
+            {
+                "name": "source",
+                "type": "string",
+                "explanation": "源地址"
+            },
+            {
+                "name": "destination",
+                "type": "string",
+                "explanation": "目的地址"
+            },
+            {
+                "name": "port",
+                "type": "integer",
+                "explanation": "端口号"
+            }
+        ]
+    },
+    "route-map FlowSpec1 permit 10": {
+        "template": "route-map [parameter1] [parameter2] [parameter3]",
+        "command": "route-map FlowSpec1 permit 10",
+        "explanation": "配置路由映射 'FlowSpec1'，序列号为 10，动作为允许",
+        "parameters": [
+            {
+                "name": "route-map name",
+                "type": "string",
+                "explanation": "路由映射名称"
+            },
+            {
+                "name": "action",
+                "type": "string",
+                "explanation": "动作"
+            },
+            {
+                "name": "sequence number",
+                "type": "integer",
+                "explanation": "序列号"
+            }
+        ],
+        "match ip address 100": {
+            "template": "match ip address [parameter1]",
+            "command": "match ip address 100",
+            "explanation": "匹配访问控制列表 100 的流量",
+            "parameters": [
+                {
+                    "name": "access-list number",
+                    "type": "integer",
+                    "explanation": "访问控制列表号"
+                }
+            ]
+        },
+        "set ip next-hop 0.0.0.0": {
+            "template": "set ip next-hop [parameter1]",
+            "command": "set ip next-hop 0.0.0.0",
+            "explanation": "设置下一跳地址为 0.0.0.0",
+            "parameters": [
+                {
+                    "name": "next-hop address",
+                    "type": "IPv4",
+                    "explanation": "下一跳地址"
+                }
+            ]
+        }
+    },
+    "end": {
+        "template": "end",
+        "command": "end",
+        "explanation": "退出配置模式",
+        "parameters": []
+    }
+}

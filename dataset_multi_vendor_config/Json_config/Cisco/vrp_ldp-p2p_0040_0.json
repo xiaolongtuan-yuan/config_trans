@@ -1,0 +1,193 @@
+{
+    "hostname LSRA": {
+        "template": "hostname [parameter1]",
+        "command": "hostname LSRA",
+        "explanation": "设置设备的主机名为 'LSRA'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "interface GigabitEthernet1/0/0": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "配置接口 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address 10.1.1.1 255.255.255.252": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.1.1.1 255.255.255.252",
+            "explanation": "配置接口的 IPv4 地址为 10.1.1.1，子网掩码为 255.255.255.252",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        }
+    },
+    "interface Loopback1": {
+        "template": "interface [parameter1]",
+        "command": "interface Loopback1",
+        "explanation": "配置环回接口 'Loopback1'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "ip address 1.1.1.9 255.255.255.255": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 1.1.1.9 255.255.255.255",
+            "explanation": "配置环回接口的 IPv4 地址为 1.1.1.9，子网掩码为 255.255.255.255",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        }
+    },
+    "router ospf 1": {
+        "template": "router ospf [parameter1]",
+        "command": "router ospf 1",
+        "explanation": "启用 OSPF 进程 1",
+        "parameters": [
+            {
+                "name": "process id",
+                "type": "integer",
+                "explanation": "OSPF 进程 ID"
+            }
+        ],
+        "network 1.1.1.9 0.0.0.0 area 0": {
+            "template": "network [parameter1] [parameter2] area [parameter3]",
+            "command": "network 1.1.1.9 0.0.0.0 area 0",
+            "explanation": "将 IP 地址 1.1.1.9 和通配符掩码 0.0.0.0 配置为 OSPF 区域 0 的一部分",
+            "parameters": [
+                {
+                    "name": "network address",
+                    "type": "IPv4",
+                    "explanation": "网络地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                },
+                {
+                    "name": "area id",
+                    "type": "integer",
+                    "explanation": "区域 ID"
+                }
+            ]
+        },
+        "network 10.1.1.0 0.0.0.3 area 0": {
+            "template": "network [parameter1] [parameter2] area [parameter3]",
+            "command": "network 10.1.1.0 0.0.0.3 area 0",
+            "explanation": "将 IP 地址 10.1.1.0 和通配符掩码 0.0.0.3 配置为 OSPF 区域 0 的一部分",
+            "parameters": [
+                {
+                    "name": "network address",
+                    "type": "IPv4",
+                    "explanation": "网络地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                },
+                {
+                    "name": "area id",
+                    "type": "integer",
+                    "explanation": "区域 ID"
+                }
+            ]
+        }
+    },
+    "mpls label protocol ldp": {
+        "template": "mpls label protocol [parameter1]",
+        "command": "mpls label protocol ldp",
+        "explanation": "配置 MPLS 标签分发协议为 LDP",
+        "parameters": [
+            {
+                "name": "protocol",
+                "type": "string",
+                "explanation": "标签分发协议"
+            }
+        ]
+    },
+    "mpls ldp router-id Loopback1 force": {
+        "template": "mpls ldp router-id [parameter1] force",
+        "command": "mpls ldp router-id Loopback1 force",
+        "explanation": "强制使用环回接口 'Loopback1' 的 IP 地址作为 LDP 路由器 ID",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ]
+    },
+    "mpls ldp discovery transport-address loopback 1": {
+        "template": "mpls ldp discovery transport-address [parameter1] [parameter2]",
+        "command": "mpls ldp discovery transport-address loopback 1",
+        "explanation": "配置 LDP 发现传输地址为环回接口 '1' 的 IP 地址",
+        "parameters": [
+            {
+                "name": "interface type",
+                "type": "string",
+                "explanation": "接口类型"
+            },
+            {
+                "name": "interface number",
+                "type": "integer",
+                "explanation": "接口编号"
+            }
+        ]
+    },
+    "mpls ldp neighbor 3.3.3.9 targeted": {
+        "template": "mpls ldp neighbor [parameter1] targeted",
+        "command": "mpls ldp neighbor 3.3.3.9 targeted",
+        "explanation": "配置目标 LDP 邻居为 3.3.3.9",
+        "parameters": [
+            {
+                "name": "neighbor address",
+                "type": "IPv4",
+                "explanation": "邻居地址"
+            }
+        ]
+    },
+    "end": {
+        "template": "end",
+        "command": "end",
+        "explanation": "退出配置模式",
+        "parameters": []
+    }
+}

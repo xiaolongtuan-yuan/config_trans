@@ -1,0 +1,87 @@
+{
+  "hostname DeviceA": {
+    "template": "hostname [parameter1]",
+    "command": "hostname DeviceA",
+    "explanation": "设置设备的主机名为 'DeviceA'",
+    "parameters": [
+      {
+        "name": "host name",
+        "type": "string",
+        "explanation": "主机名"
+      }
+    ]
+  },
+  "ip sla twamp-light": {
+    "template": "ip sla twamp-light",
+    "command": "ip sla twamp-light",
+    "explanation": "配置IP SLA TWAMP-Light测试",
+    "parameters": [],
+    "client": {
+      "template": "client",
+      "command": "client",
+      "explanation": "配置TWAMP-Light客户端",
+      "parameters": [],
+      "test-session 1 sender-ipv6 1::1 reflector-ipv6 2::2 sender-port 2001 reflector-port 2010": {
+        "template": "test-session [parameter1] sender-ipv6 [parameter2] reflector-ipv6 [parameter3] sender-port [parameter4] reflector-port [parameter5]",
+        "command": "test-session 1 sender-ipv6 1::1 reflector-ipv6 2::2 sender-port 2001 reflector-port 2010",
+        "explanation": "配置测试会话1，发送方IPv6地址为1::1，反射方IPv6地址为2::2，发送方端口为2001，反射方端口为2010",
+        "parameters": [
+          {
+            "name": "test session id",
+            "type": "integer",
+            "explanation": "测试会话ID"
+          },
+          {
+            "name": "sender IPv6 address",
+            "type": "IPv6",
+            "explanation": "发送方IPv6地址"
+          },
+          {
+            "name": "reflector IPv6 address",
+            "type": "IPv6",
+            "explanation": "反射方IPv6地址"
+          },
+          {
+            "name": "sender port",
+            "type": "integer",
+            "explanation": "发送方端口"
+          },
+          {
+            "name": "reflector port",
+            "type": "integer",
+            "explanation": "反射方端口"
+          }
+        ]
+      }
+    },
+    "sender": {
+      "template": "sender",
+      "command": "sender",
+      "explanation": "配置TWAMP-Light发送方",
+      "parameters": [],
+      "test start-continual test-session 1 period 10": {
+        "template": "test start-continual test-session [parameter1] period [parameter2]",
+        "command": "test start-continual test-session 1 period 10",
+        "explanation": "启动测试会话1的持续测试，测试周期为10秒",
+        "parameters": [
+          {
+            "name": "test session id",
+            "type": "integer",
+            "explanation": "测试会话ID"
+          },
+          {
+            "name": "period",
+            "type": "integer",
+            "explanation": "测试周期（秒）"
+          }
+        ]
+      }
+    }
+  },
+  "end": {
+    "template": "end",
+    "command": "end",
+    "explanation": "退出配置模式",
+    "parameters": []
+  }
+}

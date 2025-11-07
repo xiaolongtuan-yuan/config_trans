@@ -1,0 +1,251 @@
+{
+    "sysname PE2": {
+        "template": "sysname [parameter1]",
+        "command": "sysname PE2",
+        "explanation": "设置设备的主机名为 'PE2'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "ip vpn-instance vpna": {
+        "template": "ip vpn-instance [parameter1]",
+        "command": "ip vpn-instance vpna",
+        "explanation": "创建或进入名为 'vpna' 的VPN实例配置模式",
+        "parameters": [
+            {
+                "name": "vpn-instance name",
+                "type": "string",
+                "explanation": "VPN实例名称"
+            }
+        ],
+        "ipv6-family": {
+            "template": "ipv6-family",
+            "command": "ipv6-family",
+            "explanation": "进入IPv6地址族视图",
+            "parameters": [],
+            "route-distinguisher 200:1": {
+                "template": "route-distinguisher [parameter1]",
+                "command": "route-distinguisher 200:1",
+                "explanation": "配置VPN实例的RD值为200:1",
+                "parameters": [
+                    {
+                        "name": "route-distinguisher",
+                        "type": "string",
+                        "explanation": "路由区分符"
+                    }
+                ]
+            },
+            "apply-label per-instance": {
+                "template": "apply-label per-instance",
+                "command": "apply-label per-instance",
+                "explanation": "为VPN实例配置标签分配方式为每个实例分配一个标签",
+                "parameters": []
+            },
+            "vpn-target 111:1 export-extcommunity": {
+                "template": "vpn-target [parameter1] export-extcommunity",
+                "command": "vpn-target 111:1 export-extcommunity",
+                "explanation": "配置VPN实例的导出VPN Target为111:1",
+                "parameters": [
+                    {
+                        "name": "vpn-target",
+                        "type": "string",
+                        "explanation": "VPN Target值"
+                    }
+                ]
+            },
+            "vpn-target 111:1 import-extcommunity": {
+                "template": "vpn-target [parameter1] import-extcommunity",
+                "command": "vpn-target 111:1 import-extcommunity",
+                "explanation": "配置VPN实例的导入VPN Target为111:1",
+                "parameters": [
+                    {
+                        "name": "vpn-target",
+                        "type": "string",
+                        "explanation": "VPN Target值"
+                    }
+                ]
+            }
+        }
+    },
+    "interface GigabitEthernet1/0/0": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "进入接口GigabitEthernet1/0/0的配置模式",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "undo shutdown": {
+            "template": "undo shutdown",
+            "command": "undo shutdown",
+            "explanation": "启用接口 (默认情况下接口是关闭的)",
+            "parameters": []
+        },
+        "ip address 10.2.1.2 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.2.1.2 255.255.255.0",
+            "explanation": "配置接口的IPv4地址为10.2.1.2，子网掩码为255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "sub musk",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        }
+    },
+    "bgp 200": {
+        "template": "bgp [parameter1]",
+        "command": "bgp 200",
+        "explanation": "进入BGP配置模式，AS号为200",
+        "parameters": [
+            {
+                "name": "AS number",
+                "type": "integer",
+                "explanation": "自治系统号"
+            }
+        ],
+        "peer 10.2.1.1 as-number 200": {
+            "template": "peer [parameter1] as-number [parameter2]",
+            "command": "peer 10.2.1.1 as-number 200",
+            "explanation": "配置BGP对等体10.2.1.1，AS号为200",
+            "parameters": [
+                {
+                    "name": "peer ip address",
+                    "type": "IPv4",
+                    "explanation": "对等体IP地址"
+                },
+                {
+                    "name": "AS number",
+                    "type": "integer",
+                    "explanation": "自治系统号"
+                }
+            ]
+        },
+        "ipv6-family unicast": {
+            "template": "ipv6-family unicast",
+            "command": "ipv6-family unicast",
+            "explanation": "进入IPv6单播地址族视图",
+            "parameters": [],
+            "undo synchronization": {
+                "template": "undo synchronization",
+                "command": "undo synchronization",
+                "explanation": "关闭BGP与IGP的同步",
+                "parameters": []
+            },
+            "peer 10.2.1.1 enable": {
+                "template": "peer [parameter1] enable",
+                "command": "peer 10.2.1.1 enable",
+                "explanation": "在IPv6单播地址族下启用与对等体10.2.1.1的会话",
+                "parameters": [
+                    {
+                        "name": "peer ip address",
+                        "type": "IPv4",
+                        "explanation": "对等体IP地址"
+                    }
+                ]
+            }
+        },
+        "vpn-instance vpna": {
+            "template": "vpn-instance [parameter1]",
+            "command": "vpn-instance vpna",
+            "explanation": "进入VPN实例vpna的BGP视图",
+            "parameters": [
+                {
+                    "name": "vpn-instance name",
+                    "type": "string",
+                    "explanation": "VPN实例名称"
+                }
+            ]
+        },
+        "ipv6-flow vpn-instance vpna": {
+            "template": "ipv6-flow vpn-instance [parameter1]",
+            "command": "ipv6-flow vpn-instance vpna",
+            "explanation": "进入VPN实例vpna的IPv6流策略视图",
+            "parameters": [
+                {
+                    "name": "vpn-instance name",
+                    "type": "string",
+                    "explanation": "VPN实例名称"
+                }
+            ]
+        },
+        "ipv6-flow vpnv6": {
+            "template": "ipv6-flow vpnv6",
+            "command": "ipv6-flow vpnv6",
+            "explanation": "进入VPNv6流策略视图",
+            "parameters": [],
+            "policy vpn-target": {
+                "template": "policy vpn-target",
+                "command": "policy vpn-target",
+                "explanation": "配置VPNv6流策略的VPN Target策略",
+                "parameters": []
+            },
+            "peer 10.2.1.1 enable": {
+                "template": "peer [parameter1] enable",
+                "command": "peer 10.2.1.1 enable",
+                "explanation": "在VPNv6流策略下启用与对等体10.2.1.1的会话",
+                "parameters": [
+                    {
+                        "name": "peer ip address",
+                        "type": "IPv4",
+                        "explanation": "对等体IP地址"
+                    }
+                ]
+            }
+        }
+    },
+    "flow-route FlowSpec1 ipv6 vpn-instance vpna": {
+        "template": "flow-route [parameter1] ipv6 vpn-instance [parameter2]",
+        "command": "flow-route FlowSpec1 ipv6 vpn-instance vpna",
+        "explanation": "创建或进入名为FlowSpec1的IPv6流策略，应用于VPN实例vpna",
+        "parameters": [
+            {
+                "name": "flow-route name",
+                "type": "string",
+                "explanation": "流策略名称"
+            },
+            {
+                "name": "vpn-instance name",
+                "type": "string",
+                "explanation": "VPN实例名称"
+            }
+        ],
+        "if-match source-port equal 159": {
+            "template": "if-match source-port equal [parameter1]",
+            "command": "if-match source-port equal 159",
+            "explanation": "配置流策略的匹配条件为源端口等于159",
+            "parameters": [
+                {
+                    "name": "source port",
+                    "type": "integer",
+                    "explanation": "源端口号"
+                }
+            ]
+        },
+        "apply deny": {
+            "template": "apply deny",
+            "command": "apply deny",
+            "explanation": "配置流策略的动作为拒绝",
+            "parameters": []
+        }
+    },
+    "return": {
+        "template": "return",
+        "command": "return",
+        "explanation": "退出当前视图并返回到用户视图",
+        "parameters": []
+    }
+}

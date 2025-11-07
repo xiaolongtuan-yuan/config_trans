@@ -1,0 +1,304 @@
+{
+    "ip cef": {
+        "template": "ip cef",
+        "command": "ip cef",
+        "explanation": "启用 Cisco Express Forwarding (CEF)",
+        "parameters": []
+    },
+    "mpls ip": {
+        "template": "mpls ip",
+        "command": "mpls ip",
+        "explanation": "在设备上启用 MPLS IP 转发",
+        "parameters": []
+    },
+    "mpls label protocol ldp": {
+        "template": "mpls label protocol [parameter1]",
+        "command": "mpls label protocol ldp",
+        "explanation": "指定使用 LDP 作为标签分发协议",
+        "parameters": [
+            {
+                "name": "protocol",
+                "type": "string",
+                "explanation": "标签分发协议的名称，这里是 LDP"
+            }
+        ]
+    },
+    "class-map match-any COS5": {
+        "template": "class-map match-any [parameter1]",
+        "command": "class-map match-any COS5",
+        "explanation": "定义一个类映射，名称为 COS5，匹配方式为 match-any",
+        "parameters": [
+            {
+                "name": "class-map-name",
+                "type": "string",
+                "explanation": "类映射的名称"
+            }
+        ],
+        "match cos 5": {
+            "template": "match cos [parameter1]",
+            "command": "match cos 5",
+            "explanation": "匹配 CoS 值为 5 的流量",
+            "parameters": [
+                {
+                    "name": "cos-value",
+                    "type": "integer",
+                    "explanation": "CoS 值，范围通常是 0-7"
+                }
+            ]
+        }
+    },
+    "policy-map COS5-POLICY": {
+        "template": "policy-map [parameter1]",
+        "command": "policy-map COS5-POLICY",
+        "explanation": "定义一个策略映射，名称为 COS5-POLICY",
+        "parameters": [
+            {
+                "name": "policy-map-name",
+                "type": "string",
+                "explanation": "策略映射的名称"
+            }
+        ],
+        "class COS5": {
+            "template": "class [parameter1]",
+            "command": "class COS5",
+            "explanation": "指定类映射 COS5",
+            "parameters": [
+                {
+                    "name": "class-map-name",
+                    "type": "string",
+                    "explanation": "要应用的类映射名称"
+                }
+            ],
+            "priority 800": {
+                "template": "priority [parameter1]",
+                "command": "priority 800",
+                "explanation": "设置优先级队列，带宽为 800 kbps",
+                "parameters": [
+                    {
+                        "name": "bandwidth",
+                        "type": "integer",
+                        "explanation": "优先级队列的带宽，单位 kbps"
+                    }
+                ]
+            },
+            "random-detect cos 5 50 50 1": {
+                "template": "random-detect cos [parameter1] [parameter2] [parameter3] [parameter4]",
+                "command": "random-detect cos 5 50 50 1",
+                "explanation": "设置 CoS 为 5 的流量的 WRED 参数，最小阈值 50%，最大阈值 50%，丢弃概率 1%",
+                "parameters": [
+                    {
+                        "name": "cos-value",
+                        "type": "integer",
+                        "explanation": "CoS 值"
+                    },
+                    {
+                        "name": "min-threshold",
+                        "type": "percentage",
+                        "explanation": "最小阈值，百分比"
+                    },
+                    {
+                        "name": "max-threshold",
+                        "type": "percentage",
+                        "explanation": "最大阈值，百分比"
+                    },
+                    {
+                        "name": "drop-probability",
+                        "type": "percentage",
+                        "explanation": "丢弃概率，百分比"
+                    }
+                ]
+            },
+            "police 120000 8000 8000 conform-action transmit exceed-action transmit violate-action drop": {
+                "template": "police [parameter1] [parameter2] [parameter3] conform-action [parameter4] exceed-action [parameter5] violate-action [parameter6]",
+                "command": "police 120000 8000 8000 conform-action transmit exceed-action transmit violate-action drop",
+                "explanation": "对流量进行速率限制，设置承诺信息速率 (CIR) 为 120000 bps，承诺突发尺寸 (CBS) 为 8000 bytes，超额突发尺寸 (EBS) 为 8000 bytes。符合 CIR 的流量传输，超过 CIR 但仍在 CBS 内的流量也传输，超过 CBS 的流量丢弃",
+                "parameters": [
+                    {
+                        "name": "cir",
+                        "type": "integer",
+                        "explanation": "承诺信息速率，单位 bps"
+                    },
+                    {
+                        "name": "cbs",
+                        "type": "integer",
+                        "explanation": "承诺突发尺寸，单位 bytes"
+                    },
+                    {
+                        "name": "ebs",
+                        "type": "integer",
+                        "explanation": "超额突发尺寸，单位 bytes"
+                    },
+                    {
+                        "name": "conform-action",
+                        "type": "string",
+                        "explanation": "符合 CIR 的动作，这里是传输"
+                    },
+                    {
+                        "name": "exceed-action",
+                        "type": "string",
+                        "explanation": "超过 CIR 但仍在 CBS 内的动作，这里是传输"
+                    },
+                    {
+                        "name": "violate-action",
+                        "type": "string",
+                        "explanation": "超过 CBS 的动作，这里是丢弃"
+                    }
+                ]
+            }
+        }
+    },
+    "policy-map PARENT-POLICY": {
+        "template": "policy-map [parameter1]",
+        "command": "policy-map PARENT-POLICY",
+        "explanation": "定义一个策略映射，名称为 PARENT-POLICY",
+        "parameters": [
+            {
+                "name": "policy-map-name",
+                "type": "string",
+                "explanation": "策略映射的名称"
+            }
+        ],
+        "class class-default": {
+            "template": "class class-default",
+            "command": "class class-default",
+            "explanation": "指定默认类",
+            "parameters": [],
+            "shape average 4000000": {
+                "template": "shape average [parameter1]",
+                "command": "shape average 4000000",
+                "explanation": "设置平均 shaping 率为 4000000 bps",
+                "parameters": [
+                    {
+                        "name": "rate",
+                        "type": "integer",
+                        "explanation": "shaping 率，单位 bps"
+                    }
+                ]
+            },
+            "service-policy COS5-POLICY": {
+                "template": "service-policy [parameter1]",
+                "command": "service-policy COS5-POLICY",
+                "explanation": "应用服务策略 COS5-POLICY",
+                "parameters": [
+                    {
+                        "name": "policy-map-name",
+                        "type": "string",
+                        "explanation": "要应用的策略映射名称"
+                    }
+                ]
+            }
+        }
+    },
+    "interface GigabitEthernet1/0/3.11": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/3.11",
+        "explanation": "进入接口 GigabitEthernet1/0/3.11 的配置模式",
+        "parameters": [
+            {
+                "name": "interface-id",
+                "type": "string",
+                "explanation": "接口的标识符"
+            }
+        ],
+        "encapsulation dot1Q 11": {
+            "template": "encapsulation dot1Q [parameter1]",
+            "command": "encapsulation dot1Q 11",
+            "explanation": "设置接口的封装为 802.1Q，VLAN ID 为 11",
+            "parameters": [
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN 的标识符"
+                }
+            ]
+        },
+        "ip address 10.192.167.3 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.192.167.3 255.255.255.0",
+            "explanation": "配置接口的 IP 地址为 10.192.167.3，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip-address",
+                    "type": "IPv4",
+                    "explanation": "接口的 IP 地址"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "mpls ip": {
+            "template": "mpls ip",
+            "command": "mpls ip",
+            "explanation": "在接口上启用 MPLS IP 转发",
+            "parameters": []
+        },
+        "mls qos trust cos": {
+            "template": "mls qos trust cos",
+            "command": "mls qos trust cos",
+            "explanation": "设置 QoS 信任模式为 CoS，即信任进入接口的 CoS 标签",
+            "parameters": []
+        }
+    },
+    "interface GigabitEthernet1/0/4.22": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/4.22",
+        "explanation": "进入接口 GigabitEthernet1/0/4.22 的配置模式",
+        "parameters": [
+            {
+                "name": "interface-id",
+                "type": "string",
+                "explanation": "接口的标识符"
+            }
+        ],
+        "encapsulation dot1Q 22": {
+            "template": "encapsulation dot1Q [parameter1]",
+            "command": "encapsulation dot1Q 22",
+            "explanation": "设置接口的封装为 802.1Q，VLAN ID 为 22",
+            "parameters": [
+                {
+                    "name": "vlan-id",
+                    "type": "integer",
+                    "explanation": "VLAN 的标识符"
+                }
+            ]
+        },
+        "ip address 10.192.169.4 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.192.169.4 255.255.255.0",
+            "explanation": "配置接口的 IP 地址为 10.192.169.4，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip-address",
+                    "type": "IPv4",
+                    "explanation": "接口的 IP 地址"
+                },
+                {
+                    "name": "subnet-mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "mpls ip": {
+            "template": "mpls ip",
+            "command": "mpls ip",
+            "explanation": "在接口上启用 MPLS IP 转发",
+            "parameters": []
+        },
+        "mls qos trust cos": {
+            "template": "mls qos trust cos",
+            "command": "mls qos trust cos",
+            "explanation": "设置 QoS 信任模式为 CoS，即信任进入接口的 CoS 标签",
+            "parameters": []
+        },
+        "no service-policy output": {
+            "template": "no service-policy output",
+            "command": "no service-policy output",
+            "explanation": "取消应用出站服务策略",
+            "parameters": []
+        }
+    }
+}

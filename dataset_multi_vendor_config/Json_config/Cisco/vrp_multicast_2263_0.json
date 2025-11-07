@@ -1,0 +1,276 @@
+{
+    "hostname PE1": {
+        "template": "hostname [parameter1]",
+        "command": "hostname PE1",
+        "explanation": "设置设备的主机名为 'PE1'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "ip multicast-routing": {
+        "template": "ip multicast-routing",
+        "command": "ip multicast-routing",
+        "explanation": "启用IP组播路由",
+        "parameters": []
+    },
+    "mpls label protocol ldp": {
+        "template": "mpls label protocol [parameter1]",
+        "command": "mpls label protocol ldp",
+        "explanation": "设置MPLS标签分发协议为LDP",
+        "parameters": [
+            {
+                "name": "protocol",
+                "type": "string",
+                "explanation": "协议类型"
+            }
+        ]
+    },
+    "mpls ip": {
+        "template": "mpls ip",
+        "command": "mpls ip",
+        "explanation": "在接口上启用MPLS IP",
+        "parameters": []
+    },
+    "interface GigabitEthernet1/0/0": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "配置接口 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no switchport": {
+            "template": "no switchport",
+            "command": "no switchport",
+            "explanation": "将接口设置为三层模式",
+            "parameters": []
+        },
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口",
+            "parameters": []
+        },
+        "ip address 192.168.1.1 255.255.255.0": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 192.168.1.1 255.255.255.0",
+            "explanation": "配置接口的IPv4地址为192.168.1.1，子网掩码为255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "ip pim sparse-mode": {
+            "template": "ip pim sparse-mode",
+            "command": "ip pim sparse-mode",
+            "explanation": "在接口上启用PIM稀疏模式",
+            "parameters": []
+        },
+        "mpls ip": {
+            "template": "mpls ip",
+            "command": "mpls ip",
+            "explanation": "在接口上启用MPLS IP",
+            "parameters": []
+        },
+        "mpls ldp autoconfig": {
+            "template": "mpls ldp autoconfig",
+            "command": "mpls ldp autoconfig",
+            "explanation": "在接口上自动配置MPLS LDP",
+            "parameters": []
+        }
+    },
+    "interface Loopback1": {
+        "template": "interface [parameter1]",
+        "command": "interface Loopback1",
+        "explanation": "配置环回接口 'Loopback1'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "ip address 1.1.1.1 255.255.255.255": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 1.1.1.1 255.255.255.255",
+            "explanation": "配置环回接口的IPv4地址为1.1.1.1，子网掩码为255.255.255.255",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "ip pim sparse-mode": {
+            "template": "ip pim sparse-mode",
+            "command": "ip pim sparse-mode",
+            "explanation": "在环回接口上启用PIM稀疏模式",
+            "parameters": []
+        }
+    },
+    "router bgp 100": {
+        "template": "router bgp [parameter1]",
+        "command": "router bgp 100",
+        "explanation": "配置BGP进程，AS号为100",
+        "parameters": [
+            {
+                "name": "AS number",
+                "type": "integer",
+                "explanation": "自治系统号"
+            }
+        ],
+        "neighbor 3.3.3.3 remote-as 100": {
+            "template": "neighbor [parameter1] remote-as [parameter2]",
+            "command": "neighbor 3.3.3.3 remote-as 100",
+            "explanation": "配置BGP邻居3.3.3.3，远程AS号为100",
+            "parameters": [
+                {
+                    "name": "neighbor ip",
+                    "type": "IPv4",
+                    "explanation": "邻居IP地址"
+                },
+                {
+                    "name": "remote AS",
+                    "type": "integer",
+                    "explanation": "远程自治系统号"
+                }
+            ]
+        },
+        "neighbor 3.3.3.3 update-source Loopback1": {
+            "template": "neighbor [parameter1] update-source [parameter2]",
+            "command": "neighbor 3.3.3.3 update-source Loopback1",
+            "explanation": "配置BGP邻居3.3.3.3的更新源为Loopback1接口",
+            "parameters": [
+                {
+                    "name": "neighbor ip",
+                    "type": "IPv4",
+                    "explanation": "邻居IP地址"
+                },
+                {
+                    "name": "update source",
+                    "type": "string",
+                    "explanation": "更新源接口"
+                }
+            ]
+        },
+        "address-family ipv4": {
+            "template": "address-family ipv4",
+            "command": "address-family ipv4",
+            "explanation": "进入IPv4地址族配置模式",
+            "parameters": [],
+            "neighbor 3.3.3.3 activate": {
+                "template": "neighbor [parameter1] activate",
+                "command": "neighbor 3.3.3.3 activate",
+                "explanation": "激活IPv4地址族下的BGP邻居3.3.3.3",
+                "parameters": [
+                    {
+                        "name": "neighbor ip",
+                        "type": "IPv4",
+                        "explanation": "邻居IP地址"
+                    }
+                ]
+            }
+        },
+        "address-family vpnv4": {
+            "template": "address-family vpnv4",
+            "command": "address-family vpnv4",
+            "explanation": "进入VPNv4地址族配置模式",
+            "parameters": [],
+            "neighbor 3.3.3.3 activate": {
+                "template": "neighbor [parameter1] activate",
+                "command": "neighbor 3.3.3.3 activate",
+                "explanation": "激活VPNv4地址族下的BGP邻居3.3.3.3",
+                "parameters": [
+                    {
+                        "name": "neighbor ip",
+                        "type": "IPv4",
+                        "explanation": "邻居IP地址"
+                    }
+                ]
+            }
+        }
+    },
+    "router ospf 1": {
+        "template": "router ospf [parameter1]",
+        "command": "router ospf 1",
+        "explanation": "配置OSPF进程，进程ID为1",
+        "parameters": [
+            {
+                "name": "process ID",
+                "type": "integer",
+                "explanation": "进程ID"
+            }
+        ],
+        "network 1.1.1.1 0.0.0.0 area 0": {
+            "template": "network [parameter1] [parameter2] area [parameter3]",
+            "command": "network 1.1.1.1 0.0.0.0 area 0",
+            "explanation": "将1.1.1.1/32网络加入到OSPF区域0",
+            "parameters": [
+                {
+                    "name": "network",
+                    "type": "IPv4",
+                    "explanation": "网络地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                },
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "区域号"
+                }
+            ]
+        },
+        "network 192.168.1.0 0.0.0.255 area 0": {
+            "template": "network [parameter1] [parameter2] area [parameter3]",
+            "command": "network 192.168.1.0 0.0.0.255 area 0",
+            "explanation": "将192.168.1.0/24网络加入到OSPF区域0",
+            "parameters": [
+                {
+                    "name": "network",
+                    "type": "IPv4",
+                    "explanation": "网络地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                },
+                {
+                    "name": "area",
+                    "type": "integer",
+                    "explanation": "区域号"
+                }
+            ]
+        }
+    },
+    "end": {
+        "template": "end",
+        "command": "end",
+        "explanation": "退出配置模式",
+        "parameters": []
+    }
+}

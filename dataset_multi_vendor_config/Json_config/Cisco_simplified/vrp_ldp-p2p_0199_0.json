@@ -1,0 +1,146 @@
+{
+    "hostname [parameter1]": {
+        "template": "hostname [parameter1]",
+        "command": "hostname LSRA",
+        "explanation": "设置设备的主机名为 'LSRA'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "主机名"
+            }
+        ]
+    },
+    "mpls ldp router-id [parameter1] force": {
+        "template": "mpls ldp router-id [parameter1] force",
+        "command": "mpls ldp router-id Loopback1 force",
+        "explanation": "强制使用 'Loopback1' 接口的 IP 地址作为 MPLS LDP 的路由器 ID",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ]
+    },
+    "interface [parameter1]": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "配置接口 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "接口名"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "启用接口（默认情况下接口是关闭的）",
+            "parameters": []
+        },
+        "ip address [parameter1] [parameter2]": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.1.1.1 255.255.255.0",
+            "explanation": "配置接口的 IPv4 地址为 10.1.1.1，子网掩码为 255.255.255.0",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 地址"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "子网掩码"
+                }
+            ]
+        },
+        "mpls ip": {
+            "template": "mpls ip",
+            "command": "mpls ip",
+            "explanation": "在接口上启用 MPLS",
+            "parameters": []
+        }
+    },
+    "router ospf [parameter1]": {
+        "template": "router ospf [parameter1]",
+        "command": "router ospf 1",
+        "explanation": "配置 OSPF 进程 1",
+        "parameters": [
+            {
+                "name": "process id",
+                "type": "integer",
+                "explanation": "OSPF 进程 ID"
+            }
+        ],
+        "network [parameter1] [parameter2] area [parameter3]": {
+            "template": "network [parameter1] [parameter2] area [parameter3]",
+            "command": "network 10.1.1.0 0.0.0.255 area 0",
+            "explanation": "将网络 10.1.1.0/24 加入到 OSPF 区域 0",
+            "parameters": [
+                {
+                    "name": "network address",
+                    "type": "IPv4",
+                    "explanation": "网络地址"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "通配符掩码"
+                },
+                {
+                    "name": "area id",
+                    "type": "integer",
+                    "explanation": "区域 ID"
+                }
+            ]
+        }
+    },
+    "mpls label protocol [parameter1]": {
+        "template": "mpls label protocol [parameter1]",
+        "command": "mpls label protocol ldp",
+        "explanation": "设置 MPLS 标签分发协议为 LDP",
+        "parameters": [
+            {
+                "name": "protocol",
+                "type": "string",
+                "explanation": "协议名"
+            }
+        ]
+    },
+    "mpls static-lsp [parameter1] ingress destination [parameter2] next-hop [parameter3] out-label [parameter4]": {
+        "template": "mpls static-lsp [parameter1] ingress destination [parameter2] next-hop [parameter3] out-label [parameter4]",
+        "command": "mpls static-lsp AtoC ingress destination 192.168.3.9/32 next-hop 10.1.1.2 out-label 20",
+        "explanation": "配置从入口到目的地的静态 LSP，名称为 'AtoC'，目的地为 192.168.3.9/32，下一跳为 10.1.1.2，出标签为 20",
+        "parameters": [
+            {
+                "name": "lsp name",
+                "type": "string",
+                "explanation": "LSP 名称"
+            },
+            {
+                "name": "destination address",
+                "type": "IPv4",
+                "explanation": "目的地地址"
+            },
+            {
+                "name": "next-hop address",
+                "type": "IPv4",
+                "explanation": "下一跳地址"
+            },
+            {
+                "name": "out label",
+                "type": "integer",
+                "explanation": "出标签"
+            }
+        ]
+    },
+    "end": {
+        "template": "end",
+        "command": "end",
+        "explanation": "退出配置模式",
+        "parameters": []
+    }
+}

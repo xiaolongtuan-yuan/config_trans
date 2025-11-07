@@ -1,0 +1,353 @@
+{
+    "hostname PE3": {
+        "template": "hostname [parameter1]",
+        "command": "hostname PE3",
+        "explanation": "Set the device host name to 'PE3'",
+        "parameters": [
+            {
+                "name": "host name",
+                "type": "string",
+                "explanation": "the hostname of this device"
+            }
+        ]
+    },
+    "ip vrf vpn1": {
+        "template": "ip vrf [parameter1]",
+        "command": "ip vrf vpn1",
+        "explanation": "Configure a VRF (Virtual Routing and Forwarding) instance named 'vpn1'",
+        "parameters": [
+            {
+                "name": "vrf name",
+                "type": "string",
+                "explanation": "the name of the VRF instance"
+            }
+        ]
+    },
+    "mpls ip": {
+        "template": "mpls ip",
+        "command": "mpls ip",
+        "explanation": "Enable MPLS IP forwarding on the device",
+        "parameters": []
+    },
+    "mpls traffic-eng": {
+        "template": "mpls traffic-eng",
+        "command": "mpls traffic-eng",
+        "explanation": "Enable MPLS Traffic Engineering on the device",
+        "parameters": []
+    },
+    "interface GigabitEthernet1/0/0": {
+        "template": "interface [parameter1]",
+        "command": "interface GigabitEthernet1/0/0",
+        "explanation": "Configure interface 'GigabitEthernet1/0/0'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "interface name"
+            }
+        ],
+        "no shutdown": {
+            "template": "no shutdown",
+            "command": "no shutdown",
+            "explanation": "Enable the interface (the interface is disabled by default)",
+            "parameters": []
+        },
+        "ip address 10.1.1.2 255.255.255.252": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 10.1.1.2 255.255.255.252",
+            "explanation": "The IPv4 address of the configuration interface is 10.1.1.2, and the subnet mask is 255.255.255.252",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 address"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "subnet mask"
+                }
+            ]
+        },
+        "mpls ip": {
+            "template": "mpls ip",
+            "command": "mpls ip",
+            "explanation": "Enable MPLS IP forwarding on the interface",
+            "parameters": []
+        },
+        "mpls traffic-eng tunnels": {
+            "template": "mpls traffic-eng tunnels",
+            "command": "mpls traffic-eng tunnels",
+            "explanation": "Enable MPLS Traffic Engineering tunnels on the interface",
+            "parameters": []
+        }
+    },
+    "interface Loopback1": {
+        "template": "interface [parameter1]",
+        "command": "interface Loopback1",
+        "explanation": "Configure interface 'Loopback1'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "interface name"
+            }
+        ],
+        "ip address 2.2.2.2 255.255.255.255": {
+            "template": "ip address [parameter1] [parameter2]",
+            "command": "ip address 2.2.2.2 255.255.255.255",
+            "explanation": "The IPv4 address of the configuration interface is 2.2.2.2, and the subnet mask is 255.255.255.255",
+            "parameters": [
+                {
+                    "name": "ip address",
+                    "type": "IPv4",
+                    "explanation": "IPv4 address"
+                },
+                {
+                    "name": "subnet mask",
+                    "type": "IPv4",
+                    "explanation": "subnet mask"
+                }
+            ]
+        }
+    },
+    "interface Tunnel1": {
+        "template": "interface [parameter1]",
+        "command": "interface Tunnel1",
+        "explanation": "Configure interface 'Tunnel1'",
+        "parameters": [
+            {
+                "name": "interface name",
+                "type": "string",
+                "explanation": "interface name"
+            }
+        ],
+        "ip unnumbered Loopback1": {
+            "template": "ip unnumbered [parameter1]",
+            "command": "ip unnumbered Loopback1",
+            "explanation": "Enable IP processing on an interface without assigning an explicit IP address, using the address of 'Loopback1' instead",
+            "parameters": [
+                {
+                    "name": "interface name",
+                    "type": "string",
+                    "explanation": "interface name whose IP address is to be used"
+                }
+            ]
+        },
+        "tunnel destination 1.1.1.1": {
+            "template": "tunnel destination [parameter1]",
+            "command": "tunnel destination 1.1.1.1",
+            "explanation": "Set the destination address for a tunnel interface to '1.1.1.1'",
+            "parameters": [
+                {
+                    "name": "destination address",
+                    "type": "IPv4",
+                    "explanation": "destination IPv4 address for the tunnel"
+                }
+            ]
+        }
+    },
+    "router bgp 100": {
+        "template": "router bgp [parameter1]",
+        "command": "router bgp 100",
+        "explanation": "Configure BGP routing process with AS number 100",
+        "parameters": [
+            {
+                "name": "AS number",
+                "type": "integer",
+                "explanation": "Autonomous System number"
+            }
+        ],
+        "neighbor 1.1.1.1 remote-as 100": {
+            "template": "neighbor [parameter1] remote-as [parameter2]",
+            "command": "neighbor 1.1.1.1 remote-as 100",
+            "explanation": "Specify a BGP neighbor with IP 1.1.1.1 and AS number 100",
+            "parameters": [
+                {
+                    "name": "neighbor IP",
+                    "type": "IPv4",
+                    "explanation": "IP address of the BGP neighbor"
+                },
+                {
+                    "name": "AS number",
+                    "type": "integer",
+                    "explanation": "Autonomous System number of the BGP neighbor"
+                }
+            ]
+        },
+        "neighbor 1.1.1.1 update-source Loopback1": {
+            "template": "neighbor [parameter1] update-source [parameter2]",
+            "command": "neighbor 1.1.1.1 update-source Loopback1",
+            "explanation": "Specify the source interface for BGP updates to neighbor 1.1.1.1 as Loopback1",
+            "parameters": [
+                {
+                    "name": "neighbor IP",
+                    "type": "IPv4",
+                    "explanation": "IP address of the BGP neighbor"
+                },
+                {
+                    "name": "source interface",
+                    "type": "string",
+                    "explanation": "Interface used as the source for BGP updates"
+                }
+            ]
+        },
+        "address-family ipv4 unicast": {
+            "template": "address-family [parameter1]",
+            "command": "address-family ipv4 unicast",
+            "explanation": "Enter address family configuration mode for IPv4 unicast",
+            "parameters": [
+                {
+                    "name": "address family",
+                    "type": "string",
+                    "explanation": "Address family type"
+                }
+            ],
+            "neighbor 1.1.1.1 activate": {
+                "template": "neighbor [parameter1] activate",
+                "command": "neighbor 1.1.1.1 activate",
+                "explanation": "Enable the BGP neighbor 1.1.1.1 for the IPv4 unicast address family",
+                "parameters": [
+                    {
+                        "name": "neighbor IP",
+                        "type": "IPv4",
+                        "explanation": "IP address of the BGP neighbor"
+                    }
+                ]
+            }
+        },
+        "address-family vpnv4": {
+            "template": "address-family [parameter1]",
+            "command": "address-family vpnv4",
+            "explanation": "Enter address family configuration mode for VPNv4",
+            "parameters": [
+                {
+                    "name": "address family",
+                    "type": "string",
+                    "explanation": "Address family type"
+                }
+            ],
+            "neighbor 1.1.1.1 activate": {
+                "template": "neighbor [parameter1] activate",
+                "command": "neighbor 1.1.1.1 activate",
+                "explanation": "Enable the BGP neighbor 1.1.1.1 for the VPNv4 address family",
+                "parameters": [
+                    {
+                        "name": "neighbor IP",
+                        "type": "IPv4",
+                        "explanation": "IP address of the BGP neighbor"
+                    }
+                ]
+            }
+        },
+        "address-family ipv4 vrf vpn1": {
+            "template": "address-family [parameter1] vrf [parameter2]",
+            "command": "address-family ipv4 vrf vpn1",
+            "explanation": "Enter address family configuration mode for IPv4 within VRF vpn1",
+            "parameters": [
+                {
+                    "name": "address family",
+                    "type": "string",
+                    "explanation": "Address family type"
+                },
+                {
+                    "name": "VRF name",
+                    "type": "string",
+                    "explanation": "Name of the VRF instance"
+                }
+            ],
+            "redistribute connected": {
+                "template": "redistribute [parameter1]",
+                "command": "redistribute connected",
+                "explanation": "Redistribute connected routes into the BGP process for the IPv4 VRF vpn1 address family",
+                "parameters": [
+                    {
+                        "name": "route source",
+                        "type": "string",
+                        "explanation": "Source of routes to redistribute"
+                    }
+                ]
+            }
+        }
+    },
+    "router ospf 1": {
+        "template": "router ospf [parameter1]",
+        "command": "router ospf 1",
+        "explanation": "Configure OSPF routing process with process ID 1",
+        "parameters": [
+            {
+                "name": "process ID",
+                "type": "integer",
+                "explanation": "OSPF process ID"
+            }
+        ],
+        "mpls traffic-eng router-id Loopback1": {
+            "template": "mpls traffic-eng router-id [parameter1]",
+            "command": "mpls traffic-eng router-id Loopback1",
+            "explanation": "Set the MPLS Traffic Engineering router ID to Loopback1",
+            "parameters": [
+                {
+                    "name": "router ID",
+                    "type": "string",
+                    "explanation": "Router ID for MPLS Traffic Engineering"
+                }
+            ]
+        },
+        "mpls traffic-eng area 0": {
+            "template": "mpls traffic-eng area [parameter1]",
+            "command": "mpls traffic-eng area 0",
+            "explanation": "Enable MPLS Traffic Engineering in OSPF area 0",
+            "parameters": [
+                {
+                    "name": "area ID",
+                    "type": "integer",
+                    "explanation": "OSPF area ID"
+                }
+            ]
+        },
+        "network 10.1.1.0 0.0.0.3 area 0": {
+            "template": "network [parameter1] [parameter2] area [parameter3]",
+            "command": "network 10.1.1.0 0.0.0.3 area 0",
+            "explanation": "Advertise network 10.1.1.0 with wildcard mask 0.0.0.3 in OSPF area 0",
+            "parameters": [
+                {
+                    "name": "network address",
+                    "type": "IPv4",
+                    "explanation": "Network address to advertise"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "Wildcard mask for the network"
+                },
+                {
+                    "name": "area ID",
+                    "type": "integer",
+                    "explanation": "OSPF area ID"
+                }
+            ]
+        },
+        "network 2.2.2.2 0.0.0.0 area 0": {
+            "template": "network [parameter1] [parameter2] area [parameter3]",
+            "command": "network 2.2.2.2 0.0.0.0 area 0",
+            "explanation": "Advertise network 2.2.2.2 with wildcard mask 0.0.0.0 in OSPF area 0",
+            "parameters": [
+                {
+                    "name": "network address",
+                    "type": "IPv4",
+                    "explanation": "Network address to advertise"
+                },
+                {
+                    "name": "wildcard mask",
+                    "type": "IPv4",
+                    "explanation": "Wildcard mask for the network"
+                },
+                {
+                    "name": "area ID",
+                    "type": "integer",
+                    "explanation": "OSPF area ID"
+                }
+            ]
+        }
+    }
+}
