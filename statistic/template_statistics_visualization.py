@@ -45,16 +45,16 @@ for i, vendor in enumerate(vendors):
     # 获取 y 轴最大值，并设置横向偏移，使文本出现在虚线右侧
     y_max = max(y_proportions)
     print(y_max)
-    x_offset = 6  # 根据实际情况调整偏移量
-    ax.text(threshold_index + x_offset, y_max * 0.95, f'{threshold_ratio:.2f}%', color='red', fontsize=30,
+    x_offset = 8  # 根据实际情况调整偏移量
+    ax.text(threshold_index + x_offset, y_max * 0.95, f'{threshold_ratio:.2f}%', color='red', fontsize=60,
             horizontalalignment='left', verticalalignment='top')
 
     # 设置当前子图的标签、标题及其他属性
-    ax.set_xlabel(f'{vendor} Commands', fontsize=30)
-    ax.set_ylabel('Usage Frequency', fontsize=30)
+    ax.set_xlabel(f'{vendor} Commands', fontsize=40)
+    ax.set_ylabel('Usage Frequency', fontsize=40)
     ax.set_xticks([])
     # 设置 y 轴刻度的字体大小
-    ax.tick_params(axis='y', labelsize=20)
+    ax.tick_params(axis='y', labelsize=40)
 
 # 调整整体子图布局，并保存最终的合并图形
 plt.tight_layout()

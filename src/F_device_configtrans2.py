@@ -315,7 +315,6 @@ class Config_Translater:
                 'llm_origin_response': trans_res_dict['llm_origin_response'],
                 'source_commands': trans_res_dict['source_commands'],
             }
-
         else:
             statistic_data = {
                 "command_count": len(rest_commands_feature) + len(config_match),
